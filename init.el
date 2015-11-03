@@ -85,15 +85,16 @@
 (require-package 'powerline)
 (require-package 'spaceline)
 (require 'powerline)
-(setq powerline-default-separator 'wave)
+(setq powerline-default-separator 'arrow)
 (require 'spaceline-config)
 (setq ns-use-srgb-colorspace nil)
 (spaceline-spacemacs-theme)
 
 ;; Themes
+(require-package 'solarized-theme)
 (require-package 'zenburn-theme)
 (require-package 'monokai-theme)
-(load-theme 'zenburn t)
+(load-theme 'monokai t)
 
 ;; Vertical split eshell
 (defun eshell-vertical ()

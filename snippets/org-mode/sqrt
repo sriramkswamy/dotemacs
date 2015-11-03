@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: Square root
+# key: sqrt
+# binding: direct-keybinding
+# --
+\sqrt{$0}

@@ -1,0 +1,7 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: OpenMP pragmas
+# key: pragma
+# binding: direct-keybinding
+# --
+\#pragma omp ${1:$$(yas-choose-value '("parallel" "for" "parallel for"))}
+$0

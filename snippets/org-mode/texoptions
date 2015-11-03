@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: texoptions
+# key: texoptions
+# binding: direct-keybinding
+# --
+#+OPTIONS: H:${1:nil} num:${2:nil} toc:${3:nil} \n:${4:nil} @:t ::t |:t ^:{} _:{} *:t TeX:t LaTeX:t

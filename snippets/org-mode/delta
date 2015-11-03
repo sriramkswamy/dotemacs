@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: Delta
+# key: de
+# binding: direct-keybinding
+# --
+\delta

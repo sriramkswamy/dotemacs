@@ -1,0 +1,8 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: Title
+# key: title
+# binding: direct-keybinding
+# --
+#+TITLE: ${1:Notes}
+#+AUTHOR: ${2:Sriram Krishnaswamy}
+#+DATE: $3

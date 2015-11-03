@@ -1,0 +1,8 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: Matrix with square brackets
+# key: qmat
+# binding: direct-keybinding
+# --
+\begin{bmatrix}
+$1
+\end{bmatrix}

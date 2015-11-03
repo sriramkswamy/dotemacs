@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: noexport
+# key: noexport
+# binding: direct-keybinding
+# --
+#+EXPORT_EXCLUDE_TAGS: noexport

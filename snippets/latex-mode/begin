@@ -1,0 +1,8 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: begin
+# key: beg
+# binding: direct-keybinding
+# --
+\begin{${1:$$(yas-choose-value '("document" "itemize" "enumerate" "figure"))}}
+$0
+\end{$1}

@@ -1,0 +1,8 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: properties option
+# key: properties
+# binding: direct-keybinding
+# --
+:PROPERTIES:
+$1
+:END:

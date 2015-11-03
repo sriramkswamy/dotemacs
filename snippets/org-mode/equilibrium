@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: equilibrium
+# key: eqbm
+# binding: direct-keybinding
+# --
+\leftrightharpoons $0

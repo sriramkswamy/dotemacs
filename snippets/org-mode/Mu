@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: Mu
+# key: mu
+# binding: direct-keybinding
+# --
+\mu

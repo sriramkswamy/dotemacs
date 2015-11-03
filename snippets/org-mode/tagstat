@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: Tags status
+# key: tagstat
+# binding: direct-keybinding
+# --
+#+TAGS: $1

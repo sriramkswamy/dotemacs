@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: superscript
+# key: sup
+# binding: direct-keybinding
+# --
+^{$1}$0

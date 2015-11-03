@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: Options
+# key: opt
+# binding: direct-keybinding
+# --
+#+OPTIONS: $1

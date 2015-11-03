@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: LaTeX include
+# key: tex_include
+# binding: direct-keybinding
+# --
+\includegraphics[scale=${1:1}]{$2}$0

@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: Tensor product
+# key: circross
+# binding: direct-keybinding
+# --
+\otimes

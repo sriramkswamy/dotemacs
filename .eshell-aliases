@@ -1,0 +1,46 @@
+# Eshell specific
+alias f find-file $1
+alias d dired $1
+
+# General Utilities
+alias ls ls -GFh
+alias profile find-file ~/.alias
+alias gscompress gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dNOPAUSE -dQUIET -dBATCH -sOutputFile=gs-compressed.pdf
+alias pingu ping www.google.com
+
+# Compilers and related
+alias gcc gcc -Wall -fopenmp -lgsl -lcblas -llapack -g
+alias gpp g++ -Wall -fopenmp -lgsl -lcblas -llapack -g
+alias mcc /usr/local/openmpi/bin/mpicc -lgsl -lcblas -llapack -g
+alias mpp /usr/local/openmpi/bin/mpic++ -lgsl -lcblas -llapack -g
+alias mrun /usr/local/openmpi/bin/mpirun
+alias mexec /usr/local/openmpi/bin/mpiexec
+alias mpi4py /usr/local/openmpi/bin/mpiexec -n 4 python
+alias ipopt g++ -Wall -fopenmp -lgsl -lcblas -llapack -I/usr/local/ipopt/include -L/usr/local/ipopt/lib -g
+alias tril /usr/local/openmpi/bin/mpic++ -I/usr/local/trilinos/include -L/usr/local/trilinos/lib -lgsl -lcblas -llapack -g
+alias mk latexmk -pvc -pdf
+alias pandoc pandoc -V geometry:margin=1in
+alias ofoam hdiutil attach -quiet -mountpoint $HOME/OpenFOAM $HOME/OpenFOAM.sparsebundle; sleep 1; source $HOME/OpenFOAM/OpenFOAM-2.3.1/etc/bashrc
+alias val valgrind --leak-check=full --show-leak-kinds=all --dsymutil=yes
+
+# Thirdparty programs
+alias firefox open -a "/Applications/Firefox.app/Contents/MacOS/firefox"
+alias skim open -a /Applications/Skim.app
+alias arduino /Applications/Arduino.app
+
+# Directories
+alias cdd='cd ~/Downloads/'
+alias cdu='cd ~/Music/iTunes/iTunes\ Media/Music'
+alias cdt='cd ~/Documents/workspace/tests'
+alias cds='cd ~/Documents/workspace/annealing'
+alias cdi='cd ~/Documents/workspace/ssl'
+alias cdf='cd ~/Documents/workspace/cfokker'
+alias cdm='cd ~/Documents/workspace/matfokker'
+alias cdr='cd ~/Documents/workspace/sriramkswamy.github.io'
+alias cdw='cd ~/Documents/workspace/'
+alias cdo='cd ~/Documents/workspace/openmp'
+alias cdy='cd ~/.vim/plugged/YouCompleteMe/third_party/ycmd/cpp/ycm'
+alias cda='cd ~/Documents/workspace/algorithms'
+alias cdc='cd ~/Documents/workspace/pycfd'
+alias cdl='cd ~/Documents/workspace/lorenz'
+alias cdp='cd ~/Documents/workspace/potato'

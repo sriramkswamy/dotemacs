@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: Rho
+# key: rho
+# binding: direct-keybinding
+# --
+\rho

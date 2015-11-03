@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: Gamma upper case
+# key: GammaU
+# binding: direct-keybinding
+# --
+\Gamma

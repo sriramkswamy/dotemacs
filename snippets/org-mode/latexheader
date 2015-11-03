@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: LaTeX header
+# key: tex_header
+# binding: direct-keybinding
+# --
+#+latex_header: $1

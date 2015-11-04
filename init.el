@@ -85,7 +85,7 @@
 (require-package 'powerline)
 (require-package 'spaceline)
 (require 'powerline)
-(setq powerline-default-separator 'arrow)
+(setq powerline-default-separator 'nil)
 (require 'spaceline-config)
 (setq ns-use-srgb-colorspace nil)
 (spaceline-spacemacs-theme)
@@ -93,8 +93,9 @@
 ;; Themes
 (require-package 'solarized-theme)
 (require-package 'zenburn-theme)
+(require-package 'anti-zenburn-theme)
 (require-package 'monokai-theme)
-(load-theme 'monokai t)
+(load-theme 'anti-zenburn t)
 
 ;; Vertical split eshell
 (defun eshell-vertical ()
@@ -921,6 +922,7 @@
 ;;; Org mode
 (define-key evil-normal-state-map (kbd "SPC o") 'org-capture)
 (define-key evil-visual-state-map (kbd "SPC o") 'org-capture)
+(define-key evil-visual-state-map (kbd "SPC C") 'org-narrow-to-subtree)
 (evil-leader/set-key "a" 'org-agenda)
 (evil-leader/set-key "j" 'org-metadown)
 (evil-leader/set-key "k" 'org-metaup)
@@ -1033,10 +1035,6 @@
 (define-key evil-normal-state-map (kbd "zp") 'magit-blame-previous-chunk-same-commit)
 (define-key evil-normal-state-map (kbd "gy") 'magit-blame-copy-hash)
 (define-key evil-normal-state-map (kbd "gt") 'magit-blame-toggle-headings)
-
-;; Github pulls
-(require-package 'magit-gh-pulls)
-(add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls)
 
 ;; Diff-hl
 (require-package 'diff-hl)

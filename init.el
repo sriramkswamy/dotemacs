@@ -95,7 +95,7 @@
 (require-package 'zenburn-theme)
 (require-package 'anti-zenburn-theme)
 (require-package 'monokai-theme)
-(load-theme 'anti-zenburn t)
+(load-theme 'zenburn t)
 
 ;; Vertical split eshell
 (defun eshell-vertical ()
@@ -146,7 +146,7 @@
 (setq guide-key/idle-delay 0.5
       guide-key/recursive-key-sequence-flag t
       guide-key/popup-window-position 'bottom
-      guide-key/guide-key-sequence '("SPC" "\\" "g" "z" "C" "C-x" "C-c" "C-h"))
+      guide-key/guide-key-sequence '("SPC" "\\" "g" "z" "[" "]"  "C" "C-x" "C-c" "C-h"))
 (guide-key-mode 1)
 
 ;;; Evil - Vim emulation
@@ -226,11 +226,6 @@
 (define-key evil-visual-state-map (kbd "<up>") 'evil-window-up)
 (define-key evil-visual-state-map (kbd "<down>") 'evil-window-down)
 
-;; Evil leader
-(require-package 'evil-leader)
-(global-evil-leader-mode t)
-(evil-leader/set-leader "\\")
-
 ;; Evil surround
 (require-package 'evil-surround)
 (global-evil-surround-mode 1)
@@ -254,7 +249,7 @@
 
 ;; Play nice with god mode
 (require-package 'evil-god-state)
-(define-key evil-normal-state-map (kbd ",") 'evil-execute-in-god-state)
+(define-key evil-normal-state-map (kbd "\\") 'evil-execute-in-god-state)
 
 ;; Search count
 (require-package 'evil-anzu)
@@ -401,12 +396,14 @@
 (define-key evil-operator-state-map "g@" #'evil-macro-on-all-lines)
 (define-key evil-normal-state-map "g@" #'evil-macro-on-all-lines)
 
-;;; Vimish fold
-(require-package 'vimish-fold)
-(vimish-fold-global-mode 1)
-(define-key evil-visual-state-map (kbd "zv") #'vimish-fold)
-(define-key evil-normal-state-map (kbd "zf") #'vimish-fold-toggle)
-(define-key evil-normal-state-map (kbd "zd") #'vimish-fold-delete)
+;; Evil text object proper sentence with abbreviation
+(require-package 'sentence-navigation)
+(define-key evil-normal-state-map ")" 'sentence-nav-evil-forward)
+(define-key evil-normal-state-map "(" 'sentence-nav-evil-backward)
+(define-key evil-normal-state-map "g)" 'sentence-nav-evil-forward-end)
+(define-key evil-normal-state-map "g(" 'sentence-nav-evil-backward-end)
+(define-key evil-outer-text-objects-map "s" 'sentence-nav-evil-outer-sentence)
+(define-key evil-inner-text-objects-map "s" 'sentence-nav-evil-inner-sentence)
 
 ;;; Navigation
 
@@ -425,9 +422,6 @@
 ;; Ediff plain window and vertical
 (setq ediff-window-setup-function 'ediff-setup-windows-plain)
 (setq ediff-split-window-function 'split-window-horizontally)
-
-;; Enable recentf mode
-(recentf-mode)
 
 ;; Remote file navigation
 (require-package 'tramp)
@@ -491,9 +485,9 @@
 (define-key evil-normal-state-map (kbd "SPC b") 'helm-bookmarks)
 (define-key evil-normal-state-map (kbd "t") 'helm-semantic-or-imenu)
 (define-key evil-normal-state-map (kbd "K") 'helm-man-woman)
+(define-key evil-normal-state-map (kbd "SPC 9") 'helm-google-suggest)
+(define-key evil-normal-state-map (kbd "SPC 3") 'helm-calcul-expression)
 (define-key evil-insert-state-map (kbd "C-y") 'helm-show-kill-ring)
-(evil-leader/set-key "g" 'helm-google-suggest)
-(evil-leader/set-key "d" 'helm-calcul-expression)
 ;; Dired and find-file use Ido please
 
 ;; Hide minibuffer when using helm input header line
@@ -532,6 +526,10 @@
 
 ;; Browse offline documentation
 (require-package 'helm-dash)
+(setq helm-dash-browser-func 'eww
+      helm-dash-docset-path "~/.emacs.d/docsets"
+      helm-dash-min-length 2)
+(define-key evil-normal-state-map (kbd "SPC 1") 'helm-dash)
 
 ;; System processes
 (require-package 'helm-proc)
@@ -557,7 +555,7 @@
 (helm-projectile-on)
 ;;Maps
 (define-key evil-normal-state-map (kbd "SPC p") 'helm-projectile)
-(define-key evil-normal-state-map (kbd "SPC aa") 'helm-projectile-find-other-file)
+(define-key evil-normal-state-map (kbd "SPC a") 'helm-projectile-find-other-file)
 
 ;; Project explorer
 (require-package 'project-explorer)
@@ -592,19 +590,18 @@
       jabber-use-global-history nil
       jabber-backlog-number 40
       jabber-backlog-days 30)
-(evil-leader/set-key "f" 'jabber-connect)
 
 ;; Google under point
 (require-package 'google-this)
-(evil-leader/set-key "s" 'google-this)
+(define-key evil-visual-state-map (kbd "SPC 9") 'google-this)
 
 ;; Helm itunes
 (require-package 'helm-itunes)
-(define-key evil-normal-state-map (kbd "SPC ai") 'helm-itunes)
+(define-key evil-normal-state-map (kbd "SPC 2") 'helm-itunes)
 
 ;; Helm spotify
 (require-package 'helm-spotify)
-(define-key evil-normal-state-map (kbd "SPC as") 'helm-spotify)
+(define-key evil-normal-state-map (kbd "SPC 0") 'helm-spotify)
 
 ;; Evernote with geeknote
 (require-package 'geeknote)
@@ -628,8 +625,6 @@
 
 ;; Narrow to region
 (put 'narrow-to-region 'disabled nil)
-(define-key evil-visual-state-map (kbd "SPC c") 'narrow-to-region)
-(define-key evil-normal-state-map (kbd "SPC c") 'widen)
 
 ;; Spell check
 (require 'flyspell)
@@ -920,20 +915,14 @@
   '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
 
 ;;; Org mode
-(define-key evil-normal-state-map (kbd "SPC o") 'org-capture)
-(define-key evil-visual-state-map (kbd "SPC o") 'org-capture)
-(define-key evil-visual-state-map (kbd "SPC C") 'org-narrow-to-subtree)
-(evil-leader/set-key "a" 'org-agenda)
-(evil-leader/set-key "j" 'org-metadown)
-(evil-leader/set-key "k" 'org-metaup)
-(evil-leader/set-key "l" 'org-metaright)
-(evil-leader/set-key "h" 'org-metaleft)
-
-;; PDF tools for better PDF
-(require-package 'pdf-tools)
-(add-hook 'pdf-view-mode-hook 'pdf-view-fit-page-to-window)
-(add-hook 'pdf-outline-buffer-mode-hook 'pdf-outline-follow-mode)
-(evil-leader/set-key "p" 'pdf-tools-install)
+(define-key evil-normal-state-map (kbd "SPC c") 'org-capture)
+(define-key evil-normal-state-map (kbd "SPC o") 'org-agenda)
+(define-key evil-visual-state-map (kbd "SPC c") 'org-capture)
+(define-key evil-visual-state-map (kbd "SPC o") 'org-agenda)
+(define-key evil-normal-state-map (kbd "]h") 'org-metaright)
+(define-key evil-normal-state-map (kbd "[h") 'org-metaleft)
+(define-key evil-normal-state-map (kbd "]n") 'org-metadown)
+(define-key evil-normal-state-map (kbd "[n") 'org-metaup)
 
 ;; Turns the next page in adjoining pdf-tools pdf
 (defun other-pdf-next ()
@@ -949,8 +938,8 @@
   (other-window 1)
   (doc-view-previous-page)
   (other-window 1))
-(evil-leader/set-key "]" 'other-pdf-next)
-(evil-leader/set-key "[" 'other-pdf-previous)
+(define-key evil-normal-state-map (kbd "]p") 'other-pdf-next)
+(define-key evil-normal-state-map (kbd "[p") 'other-pdf-previous)
 
 (setq org-directory "~/Dropbox/notes/"
       org-completion-use-ido t

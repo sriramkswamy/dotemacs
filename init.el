@@ -176,11 +176,6 @@
 ;; Escape for everything
 (define-key evil-normal-state-map [escape] 'keyboard-quit)
 (define-key evil-visual-state-map [escape] 'keyboard-quit)
-(define-key minibuffer-local-map [escape] 'minibuffer-keyboard-quit)
-(define-key minibuffer-local-ns-map [escape] 'minibuffer-keyboard-quit)
-(define-key minibuffer-local-completion-map [escape] 'minibuffer-keyboard-quit)
-(define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
-(define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit)
 (define-key evil-emacs-state-map [escape] 'evil-exit-emacs-state)
 ;; Maps
 (define-key evil-normal-state-map (kbd "j") 'evil-next-visual-line)
@@ -555,7 +550,7 @@
 (helm-projectile-on)
 ;;Maps
 (define-key evil-normal-state-map (kbd "SPC p") 'helm-projectile)
-(define-key evil-normal-state-map (kbd "SPC a") 'helm-projectile-find-other-file)
+(define-key evil-normal-state-map (kbd "SPC aa") 'helm-projectile-find-other-file)
 
 ;; Project explorer
 (require-package 'project-explorer)
@@ -575,13 +570,14 @@
 (setenv "PATH" (concat (getenv "PATH") ":/usr/local/Cellar/global/6.5/bin"))
 (setq exec-path (append exec-path '("/usr/local/Cellar/global/6.5/bin")))
 (setq-local imenu-create-index-function #'ggtags-build-imenu-index)
+(define-key evil-normal-state-map (kbd "SPC as") 'ggtags-create-tags)
 
 ;; Helm Gtags
 (require-package 'helm-gtags)
 (helm-gtags-mode 1)
 ;; Tags using appropriate methods
 (define-key evil-normal-state-map (kbd "T") 'helm-gtags-select)
-(define-key evil-normal-state-map (kbd "SPC jk") 'helm-gtags-dwim)
+(define-key evil-normal-state-map (kbd "SPC jj") 'helm-gtags-dwim)
 
 ;;; Interact with OS services
 ;; Jabber
@@ -704,6 +700,7 @@
 ;; Maps
 (define-key company-active-map (kbd "C-n") 'company-select-next)
 (define-key company-active-map (kbd "C-p") 'company-select-previous)
+(define-key company-active-map [tab] 'company-complete-common-or-cycle)
 
 ;; Company C headers
 (require-package 'company-c-headers)
@@ -742,13 +739,6 @@
 (add-hook 'company-completion-finished-hook 'company-maybe-turn-on-fci)
 (add-hook 'company-completion-cancelled-hook 'company-maybe-turn-on-fci)
 
-;; Helm company
-(require-package 'helm-company)
-(define-key evil-insert-state-map (kbd "TAB") 'helm-company)
-;; Activate helm-company when pressed tab
-(define-key company-active-map (kbd "TAB") 'helm-company)
-(define-key company-active-map [tab] 'helm-company)
-
 ;; Support auctex
 (require-package 'company-auctex)
 
@@ -775,9 +765,8 @@
     (append (if (consp backend) backend (list backend))
             '(:with company-yasnippet))))
 (setq company-backends (mapcar #'company-mode/backend-with-yas company-backends))
-;; Prompt using helm/ido/normal in that order
-(setq yas-prompt-functions '(;; shk-yas/helm-prompt
-                             yas-ido-prompt
+;; Prompt using ido/normal in that order if helm-yasnippet is not there
+(setq yas-prompt-functions '(yas-ido-prompt
                              yas-completing-prompt))
 ;; Disable in shell
 (defun force-yasnippet-off ()
@@ -817,7 +806,6 @@
 
 ;; Markdown
 (require-package 'markdown-mode)
-(add-to-list 'auto-mode-alist '("\\.text\\'" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
 
@@ -832,9 +820,12 @@
   (jedi:setup)
   (add-to-list 'company-backends 'company-jedi))
 (add-hook 'python-mode-hook 'my/python-mode-hook)
-(define-key evil-normal-state-map (kbd "SPC jj") 'jedi:goto-definition)
+(define-key evil-normal-state-map (kbd "SPC jk") 'jedi:goto-definition)
 (define-key evil-normal-state-map (kbd "SPC sp") 'python-shell-send-buffer)
 (define-key evil-visual-state-map (kbd "SPC sp") 'python-shell-send-region)
+
+;; Cython mode
+(require-package 'cython-mode)
 
 ;; Virtualenv for python
 (require-package 'virtualenvwrapper)

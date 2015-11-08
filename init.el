@@ -199,11 +199,13 @@
 (define-key evil-normal-state-map (kbd "SPC u") 'universal-argument)
 (define-key evil-normal-state-map (kbd "SPC z") 'toggle-frame-fullscreen-non-native)
 (define-key evil-normal-state-map (kbd "SPC f") 'find-file)
+(define-key evil-normal-state-map (kbd "SPC se") 'eval-buffer)
 (define-key evil-normal-state-map (kbd "gos") 'flyspell-mode)
 (define-key evil-normal-state-map (kbd "gol") 'whitespace-mode)
 (define-key evil-normal-state-map (kbd "gon") 'linum-mode)
 (define-key evil-normal-state-map (kbd "gow") 'toggle-truncate-lines)
 (define-key evil-normal-state-map (kbd "goe") 'evil-show-marks)
+(define-key evil-visual-state-map (kbd "SPC se") 'eval-region)
 (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
 (define-key evil-insert-state-map (kbd "C-u") 'universal-argument)
 
@@ -427,16 +429,8 @@
 
 ;;; Avy
 (require-package 'avy)
-(define-key evil-normal-state-map (kbd "SPC t") 'avy-goto-line)
-(define-key evil-visual-state-map (kbd "SPC t") 'avy-goto-line)
-
-;; Smex
-(require-package 'smex)
-(global-set-key (kbd "M-x") 'smex)
-(global-set-key (kbd "C-x C-m") 'smex)
-(define-key evil-normal-state-map (kbd "SPC d") 'smex)
-(define-key evil-visual-state-map (kbd "SPC d") 'smex)
-(define-key evil-insert-state-map (kbd "C-l") 'smex)
+(define-key evil-normal-state-map (kbd "SPC h") 'avy-goto-line)
+(define-key evil-visual-state-map (kbd "SPC h") 'avy-goto-line)
 
 ;;; Helm
 (require-package 'helm)
@@ -472,6 +466,10 @@
 ;; Maps
 (global-set-key (kbd "C-s") 'helm-occur)
 (global-set-key (kbd "C-r") 'helm-occur)
+(global-set-key (kbd "M-x") 'helm-M-x)
+(global-set-key (kbd "C-x C-m") 'helm-M-x)
+(define-key evil-normal-state-map (kbd "SPC d") 'helm-M-x)
+(define-key evil-visual-state-map (kbd "SPC d") 'helm-M-x)
 (define-key evil-normal-state-map (kbd "SPC SPC") 'helm-occur)
 (define-key evil-normal-state-map (kbd "SPC x") 'helm-apropos)
 (define-key evil-normal-state-map (kbd "SPC r") 'helm-mini)
@@ -482,8 +480,7 @@
 (define-key evil-normal-state-map (kbd "K") 'helm-man-woman)
 (define-key evil-normal-state-map (kbd "SPC 9") 'helm-google-suggest)
 (define-key evil-normal-state-map (kbd "SPC 3") 'helm-calcul-expression)
-(define-key evil-insert-state-map (kbd "C-y") 'helm-show-kill-ring)
-;; Dired and find-file use Ido please
+(define-key evil-insert-state-map (kbd "C-l") 'helm-M-x)
 
 ;; Hide minibuffer when using helm input header line
 (defun helm-hide-minibuffer-maybe ()
@@ -497,7 +494,7 @@
 
 ;; Helm swoop
 (require-package 'helm-swoop)
-(define-key evil-normal-state-map (kbd "SPC h") 'helm-multi-swoop-all)
+(define-key evil-normal-state-map (kbd "SPC t") 'helm-multi-swoop-all)
 (define-key evil-normal-state-map (kbd "SPC i") 'helm-swoop)
 (define-key evil-visual-state-map (kbd "SPC i") 'helm-swoop)
 

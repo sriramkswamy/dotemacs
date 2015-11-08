@@ -66,6 +66,7 @@
              (if (eq (frame-parameter nil 'maximized) 'maximized)
                  'maximized)
            'fullboth)))))
+(toggle-frame-maximized)
 
 ;; DocView Settings
 (setq doc-view-continuous t
@@ -517,11 +518,73 @@
 (require-package 'helm-flyspell)
 (define-key evil-insert-state-map (kbd "C-d") 'helm-flyspell-correct)
 
-;; Browse offline documentation
+;; Browse offline documentation - code courtesy http://jwintz.me/blog/
 (require-package 'helm-dash)
 (setq helm-dash-browser-func 'eww
-      helm-dash-docset-path "~/.emacs.d/docsets"
+      helm-dash-docsets-path "~/.emacs.d/docsets"
       helm-dash-min-length 2)
+(defun custom-dash-docset-path (docset)
+  (if (string= docset "OpenGL_2")
+      (concat (concat helm-dash-docsets-path "/") "OpenGL_2.docset")
+    (if (string= docset "OpenGL_3")
+        (concat (concat helm-dash-docsets-path "/") "OpenGL_3.docset")
+      (if (string= docset "OpenGL_4")
+          (concat (concat helm-dash-docsets-path "/") "OpenGL_4.docset")
+        (if (string= docset "Emacs_Lisp")
+            (concat (concat helm-dash-docsets-path "/") "Emacs_Lisp.docset")
+          (concat
+           (concat
+            (concat
+             (concat helm-dash-docsets-path "/")
+             (nth 0 (split-string docset "_")))) ".docset"))))))
+(defun custom-dash-install (docset)
+  (unless (file-exists-p (custom-dash-docset-path docset))
+    (helm-dash-install-docset docset)))
+(custom-dash-install "C++")
+(custom-dash-install "Boost")
+(custom-dash-install "C")
+(custom-dash-install "Python 2")
+(custom-dash-install "NumPy")
+(custom-dash-install "SciPy")
+;; (custom-dash-install "MatPlotLib")
+(custom-dash-install "Julia")
+(custom-dash-install "R")
+(custom-dash-install "LaTeX")
+(custom-dash-install "Markdown")
+(custom-dash-install "Java_SE8")
+(custom-dash-install "HTML")
+(custom-dash-install "Bootstrap 4")
+(custom-dash-install "CSS")
+(custom-dash-install "JavaScript")
+(custom-dash-install "jQuery")
+(defun c++-local-docsets ()
+  (interactive)
+  (setq-local helm-dash-docsets '("C++" "Boost")))
+(defun c-local-docsets ()
+  (interactive)
+  (setq-local helm-dash-docsets '("C")))
+(defun python-local-docsets ()
+  (interactive)
+  (setq-local helm-dash-docsets '("Python_2" "Numpy" "Scipy" "MatPlotLib")))
+(defun julia-local-docsets ()
+  (interactive)
+  (setq-local helm-dash-docsets '("Julia")))
+(defun r-local-docsets ()
+  (interactive)
+  (setq-local helm-dash-docsets '("R")))
+(defun web-local-docsets ()
+  (interactive)
+  (setq-local helm-dash-docsets '("HTML" "Bootstrap_4" "CSS" "JavaScript" "jQuery")))
+(defun java-local-docsets ()
+  (interactive)
+  (setq-local helm-dash-docsets '("Java_SE8")))
+(add-hook 'c++-mode-hook 'c++-local-docsets)
+(add-hook 'c-mode-hook 'c-local-docsets)
+(add-hook 'python-mode-hook 'python-local-docsets)
+(add-hook 'julia-mode-hook 'julia-local-docsets)
+(add-hook 'r-mode-hook 'r-local-docsets)
+(add-hook 'web-mode-hook 'web-local-docsets)
+(add-hook 'java-mode-hook 'java-local-docsets)
 (define-key evil-normal-state-map (kbd "SPC 1") 'helm-dash)
 
 ;; System processes
@@ -575,6 +638,7 @@
 (helm-gtags-mode 1)
 ;; Tags using appropriate methods
 (define-key evil-normal-state-map (kbd "T") 'helm-gtags-select)
+(define-key evil-normal-state-map (kbd "R") 'helm-gtags-find-rtag)
 (define-key evil-normal-state-map (kbd "SPC jj") 'helm-gtags-dwim)
 
 ;;; Interact with OS services
@@ -1112,6 +1176,9 @@
 
 ;; Which function mode
 (which-function-mode 1)
+
+;; Enable subword mode
+(global-subword-mode)
 
 ;; Enable smartparens-mode
 (require-package 'smartparens)

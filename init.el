@@ -163,6 +163,7 @@
     (abort-recursive-edit)))
 
 (require-package 'evil)
+(setq evil-want-C-u-scroll t)
 (require 'evil)
 (setq evil-default-cursor t
       evil-want-C-u-scroll t)

@@ -494,9 +494,17 @@
       (setq-local cursor-type nil))))
 (add-hook 'helm-minibuffer-set-up-hook 'helm-hide-minibuffer-maybe)
 
-;; Helm swoop
+;;; Ag
+(require-package 'helm-ag)
+(setq helm-ag-base-command "ag --nocolor --nogroup --ignore-case"
+      helm-ag-command-option "--all-text"
+      helm-ag-insert-at-point 'symbol)
+(define-key evil-normal-state-map (kbd "SPC e") 'helm-do-ag-project-root)
+(define-key evil-visual-state-map (kbd "SPC e") 'helm-do-ag-project-root)
+(define-key evil-normal-state-map (kbd "SPC t") 'helm-do-ag-buffers)
+
+;; ;; Helm swoop
 (require-package 'helm-swoop)
-(define-key evil-normal-state-map (kbd "SPC t") 'helm-multi-swoop-all)
 (define-key evil-normal-state-map (kbd "SPC i") 'helm-swoop)
 (define-key evil-visual-state-map (kbd "SPC i") 'helm-swoop)
 
@@ -592,11 +600,6 @@
 
 ;;; Manage external services
 (require-package 'prodigy)
-
-;;; Ag
-(require-package 'ag)
-(define-key evil-normal-state-map (kbd "SPC e") 'ag)
-(define-key evil-visual-state-map (kbd "SPC e") 'ag)
 
 ;;; Projectile
 (require-package 'projectile)

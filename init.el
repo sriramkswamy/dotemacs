@@ -89,6 +89,7 @@
 (setq powerline-default-separator 'nil)
 (require 'spaceline-config)
 (setq ns-use-srgb-colorspace nil)
+(spaceline-toggle-anzu-on)
 (spaceline-spacemacs-theme)
 
 ;; Themes
@@ -198,6 +199,7 @@
 (define-key evil-normal-state-map (kbd "SPC q") 'evil-quit)
 (define-key evil-normal-state-map (kbd "SPC w") 'save-buffer)
 (define-key evil-normal-state-map (kbd "SPC k") 'kill-buffer)
+(define-key evil-normal-state-map (kbd "SPC t") 'switch-to-buffer)
 (define-key evil-normal-state-map (kbd "SPC u") 'universal-argument)
 (define-key evil-normal-state-map (kbd "SPC z") 'toggle-frame-fullscreen-non-native)
 (define-key evil-normal-state-map (kbd "SPC f") 'find-file)
@@ -242,8 +244,8 @@
 
 ;; Evil args
 (require-package 'evil-args)
-(define-key evil-inner-text-objects-map "a" #'evil-inner-arg)
-(define-key evil-outer-text-objects-map "a" #'evil-outer-arg)
+(define-key evil-inner-text-objects-map "," #'evil-inner-arg)
+(define-key evil-outer-text-objects-map "," #'evil-outer-arg)
 (define-key evil-normal-state-map "\C-j" #'evil-jump-out-args)
 
 ;; Play nice with god mode
@@ -434,6 +436,18 @@
 (define-key evil-normal-state-map (kbd "SPC h") 'avy-goto-line)
 (define-key evil-visual-state-map (kbd "SPC h") 'avy-goto-line)
 
+;; Smex
+(require-package 'smex)
+(global-set-key (kbd "M-x") 'smex)
+(global-set-key (kbd "C-x C-m") 'smex)
+(define-key evil-normal-state-map (kbd "SPC d") 'smex)
+(define-key evil-visual-state-map (kbd "SPC d") 'smex)
+
+;; Swiper and Swiper helm - best I-Search I found
+(require-package 'swiper)
+(require-package 'swiper-helm)
+(define-key evil-normal-state-map (kbd "SPC SPC") 'swiper-helm)
+
 ;;; Helm
 (require-package 'helm)
 (setq helm-split-window-in-side-p t
@@ -468,16 +482,11 @@
 ;; Maps
 (global-set-key (kbd "C-s") 'helm-occur)
 (global-set-key (kbd "C-r") 'helm-occur)
-(global-set-key (kbd "M-x") 'helm-M-x)
-(global-set-key (kbd "C-x C-m") 'helm-M-x)
-(define-key evil-normal-state-map (kbd "SPC d") 'helm-M-x)
-(define-key evil-visual-state-map (kbd "SPC d") 'helm-M-x)
-(define-key evil-normal-state-map (kbd "SPC SPC") 'helm-occur)
 (define-key evil-normal-state-map (kbd "SPC x") 'helm-apropos)
-(define-key evil-normal-state-map (kbd "SPC r") 'helm-mini)
+(define-key evil-normal-state-map (kbd "SPC r") 'helm-recentf)
+(define-key evil-normal-state-map (kbd "SPC `") 'helm-bookmarks)
 (define-key evil-normal-state-map (kbd "SPC .") 'helm-resume)
 (define-key evil-normal-state-map (kbd "SPC y") 'helm-show-kill-ring)
-(define-key evil-normal-state-map (kbd "SPC b") 'helm-bookmarks)
 (define-key evil-normal-state-map (kbd "t") 'helm-semantic-or-imenu)
 (define-key evil-normal-state-map (kbd "K") 'helm-man-woman)
 (define-key evil-normal-state-map (kbd "SPC 9") 'helm-google-suggest)
@@ -501,7 +510,7 @@
       helm-ag-insert-at-point 'symbol)
 (define-key evil-normal-state-map (kbd "SPC e") 'helm-do-ag-project-root)
 (define-key evil-visual-state-map (kbd "SPC e") 'helm-do-ag-project-root)
-(define-key evil-normal-state-map (kbd "SPC t") 'helm-do-ag-buffers)
+(define-key evil-normal-state-map (kbd "SPC b") 'helm-do-ag-buffers)
 
 ;; ;; Helm swoop
 (require-package 'helm-swoop)
@@ -975,10 +984,14 @@
 (define-key evil-normal-state-map (kbd "SPC o") 'org-agenda)
 (define-key evil-visual-state-map (kbd "SPC c") 'org-capture)
 (define-key evil-visual-state-map (kbd "SPC o") 'org-agenda)
+(define-key evil-normal-state-map (kbd "SPC -") 'org-edit-src-code)
+(define-key evil-normal-state-map (kbd "SPC =") 'org-edit-src-exit)
+(define-key evil-normal-state-map (kbd "SPC 4") 'org-toggle-latex-fragment)
+(define-key evil-normal-state-map (kbd "SPC 5") 'org-toggle-inline-images)
 (define-key evil-normal-state-map (kbd "]h") 'org-metaright)
 (define-key evil-normal-state-map (kbd "[h") 'org-metaleft)
-(define-key evil-normal-state-map (kbd "]n") 'org-metadown)
-(define-key evil-normal-state-map (kbd "[n") 'org-metaup)
+(define-key evil-normal-state-map (kbd "]j") 'org-metadown)
+(define-key evil-normal-state-map (kbd "[j") 'org-metaup)
 
 ;; Turns the next page in adjoining pdf-tools pdf
 (defun other-pdf-next ()
@@ -1107,6 +1120,8 @@
 
 ;; Interact with Tmux
 (require-package 'emamux)
+(setq emamux:completing-read-type 'helm)
+(define-key evil-normal-state-map (kbd "SPC sc") 'emamux:send-command)
 
 ;; Make the compilation window automatically disapper from enberg on #emacs
 (setq compilation-finish-functions
@@ -1122,6 +1137,10 @@
 ;; Helm make
 (require-package 'helm-make)
 (define-key evil-normal-state-map (kbd "SPC m") 'helm-make)
+
+;; Quickrun
+(require-package 'quickrun)
+(define-key evil-normal-state-map (kbd "SPC 8") 'helm-quickrun)
 
 ;;; Eshell
 (setq eshell-glob-case-insensitive t

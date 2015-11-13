@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: Differential double fraction
+# key: dff
+# binding: direct-keybinding
+# --
+\frac{\mathrm{d}^2{$1}}{\mathrm{d}{$2}^2}

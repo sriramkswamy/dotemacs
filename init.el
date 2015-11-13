@@ -97,7 +97,7 @@
 (require-package 'zenburn-theme)
 (require-package 'anti-zenburn-theme)
 (require-package 'monokai-theme)
-(load-theme 'zenburn t)
+(load-theme 'leuven t)
 
 ;; Vertical split eshell
 (defun eshell-vertical ()
@@ -554,7 +554,7 @@
 (helm-projectile-on)
 ;;Maps
 (define-key evil-normal-state-map (kbd "SPC p") 'helm-projectile)
-(define-key evil-normal-state-map (kbd "SPC 6") 'projectile-switch-project)
+(define-key evil-normal-state-map (kbd "SPC 7") 'projectile-switch-project)
 (define-key evil-normal-state-map (kbd "SPC aa") 'helm-projectile-find-other-file)
 
 ;; Project explorer
@@ -916,6 +916,7 @@
 (define-key evil-normal-state-map (kbd "SPC =") 'org-edit-src-exit)
 (define-key evil-normal-state-map (kbd "SPC 4") 'org-toggle-latex-fragment)
 (define-key evil-normal-state-map (kbd "SPC 5") 'org-toggle-inline-images)
+(define-key evil-normal-state-map (kbd "SPC 6") 'org-latex-export-to-pdf)
 (define-key evil-normal-state-map (kbd "]h") 'org-metaright)
 (define-key evil-normal-state-map (kbd "[h") 'org-metaleft)
 (define-key evil-normal-state-map (kbd "]j") 'org-metadown)
@@ -943,6 +944,8 @@
       org-default-notes-file "~/Dropbox/notes/inbox.org"
       ;; Indent
       org-startup-indented t
+      ;; Images
+      org-image-actual-width '(300)
       ;; Source code
       org-src-fontify-natively t
       org-src-tab-acts-natively t
@@ -1165,6 +1168,7 @@
     (evil-mc-mode . "")
     (evil-commentary-mode . "")
     (helm-mode . "")
+    (subword-mode . "")
     (helm-gtags-mode . "")
     (volatile-highlights-mode . "")
     (flycheck-mode . "")

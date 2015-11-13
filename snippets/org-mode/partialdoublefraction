@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: Partial double fraction
+# key: pff
+# binding: direct-keybinding
+# --
+\frac{\partial^2{$1}}{\partial{$2}^2}

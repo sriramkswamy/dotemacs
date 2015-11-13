@@ -445,8 +445,7 @@
 
 ;; Swiper and Swiper helm - best I-Search I found
 (require-package 'swiper)
-(require-package 'swiper-helm)
-(define-key evil-normal-state-map (kbd "SPC SPC") 'swiper-helm)
+(define-key evil-normal-state-map (kbd "SPC SPC") 'swiper)
 
 ;;; Helm
 (require-package 'helm)
@@ -560,7 +559,7 @@
 (custom-dash-install "C++")
 (custom-dash-install "Boost")
 (custom-dash-install "C")
-(custom-dash-install "Python 2")
+(custom-dash-install "Python_2")
 (custom-dash-install "NumPy")
 (custom-dash-install "SciPy")
 ;; (custom-dash-install "MatPlotLib")
@@ -570,38 +569,12 @@
 (custom-dash-install "Markdown")
 (custom-dash-install "Java_SE8")
 (custom-dash-install "HTML")
-(custom-dash-install "Bootstrap 4")
+(custom-dash-install "Bootstrap_4")
 (custom-dash-install "CSS")
 (custom-dash-install "JavaScript")
 (custom-dash-install "jQuery")
-(defun c++-local-docsets ()
-  (interactive)
-  (setq-local helm-dash-docsets '("C++" "Boost")))
-(defun c-local-docsets ()
-  (interactive)
-  (setq-local helm-dash-docsets '("C")))
-(defun python-local-docsets ()
-  (interactive)
-  (setq-local helm-dash-docsets '("Python_2" "Numpy" "Scipy" "MatPlotLib")))
-(defun julia-local-docsets ()
-  (interactive)
-  (setq-local helm-dash-docsets '("Julia")))
-(defun r-local-docsets ()
-  (interactive)
-  (setq-local helm-dash-docsets '("R")))
-(defun web-local-docsets ()
-  (interactive)
-  (setq-local helm-dash-docsets '("HTML" "Bootstrap_4" "CSS" "JavaScript" "jQuery")))
-(defun java-local-docsets ()
-  (interactive)
-  (setq-local helm-dash-docsets '("Java_SE8")))
-(add-hook 'c++-mode-hook 'c++-local-docsets)
-(add-hook 'c-mode-hook 'c-local-docsets)
-(add-hook 'python-mode-hook 'python-local-docsets)
-(add-hook 'julia-mode-hook 'julia-local-docsets)
-(add-hook 'r-mode-hook 'r-local-docsets)
-(add-hook 'web-mode-hook 'web-local-docsets)
-(add-hook 'java-mode-hook 'java-local-docsets)
+(custom-dash-install "Emacs_Lisp")
+(define-key evil-normal-state-map (kbd "SPC 7") 'helm-dash-activate-docset)
 (define-key evil-normal-state-map (kbd "SPC 1") 'helm-dash)
 
 ;; System processes
@@ -623,6 +596,7 @@
 (helm-projectile-on)
 ;;Maps
 (define-key evil-normal-state-map (kbd "SPC p") 'helm-projectile)
+(define-key evil-normal-state-map (kbd "SPC 6") 'projectile-switch-project)
 (define-key evil-normal-state-map (kbd "SPC aa") 'helm-projectile-find-other-file)
 
 ;; Project explorer

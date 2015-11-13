@@ -93,11 +93,9 @@
 (spaceline-spacemacs-theme)
 
 ;; Themes
-(require-package 'solarized-theme)
-(require-package 'zenburn-theme)
-(require-package 'anti-zenburn-theme)
-(require-package 'monokai-theme)
-(load-theme 'leuven t)
+(require-package 'color-theme-modern)
+(load-theme 'leuven t t)
+(enable-theme 'leuven)
 
 ;; Vertical split eshell
 (defun eshell-vertical ()
@@ -531,9 +529,52 @@
 (require-package 'helm-flyspell)
 (define-key evil-insert-state-map (kbd "C-d") 'helm-flyspell-correct)
 
-;; Dash at point
-(require-package 'dash-at-point)
-(define-key evil-normal-state-map (kbd "SPC 1") 'dash-at-point-with-docset)
+;; Browse offline documentation - code courtesy http://jwintz.me/blog/
+(require-package 'helm-dash)
+(setq helm-dash-browser-func 'eww
+      helm-dash-docsets-path "~/.emacs.d/docsets"
+      helm-dash-min-length 2)
+(defun custom-dash-docset-path (docset)
+  (if (string= docset "Python_2")
+      (concat (concat helm-dash-docsets-path "/") "Python 2.docset")
+    (if (string= docset "Python_3")
+        (concat (concat helm-dash-docsets-path "/") "Python 3.docset")
+      (if (string= docset "Bootstrap_4")
+          (concat (concat helm-dash-docsets-path "/") "Bootstrap 4.docset")
+        (if (string= docset "Emacs_Lisp")
+            (concat (concat helm-dash-docsets-path "/") "Emacs Lisp.docset")
+          (concat
+           (concat
+            (concat
+             (concat helm-dash-docsets-path "/")
+             (nth 0 (split-string docset "_")))) ".docset"))))))
+(defun custom-dash-install (docset)
+  (unless (file-exists-p (custom-dash-docset-path docset))
+    (helm-dash-install-docset docset)))
+(custom-dash-install "C++")
+(custom-dash-install "Boost")
+(custom-dash-install "C")
+(custom-dash-install "Python_2")
+(custom-dash-install "Python_3")
+(custom-dash-install "NumPy")
+(custom-dash-install "SciPy")
+(custom-dash-install "Matplotlib")
+(custom-dash-install "Julia")
+(custom-dash-install "R")
+(custom-dash-install "LaTeX")
+(custom-dash-install "Markdown")
+(custom-dash-install "Java_SE8")
+(custom-dash-install "HTML")
+(custom-dash-install "Bootstrap_4")
+(custom-dash-install "CSS")
+(custom-dash-install "JavaScript")
+(custom-dash-install "jQuery")
+(define-key evil-normal-state-map (kbd "SPC 1") 'helm-dash)
+(define-key evil-normal-state-map (kbd "SPC ad") 'helm-dash-activate-docset)
+
+;; ;; Dash at point
+;; (require-package 'dash-at-point)
+;; (define-key evil-normal-state-map (kbd "SPC 1") 'dash-at-point-with-docset)
 
 ;; System processes
 (require-package 'helm-proc)
@@ -878,6 +919,9 @@
 (require-package 'emacsql)
 (require-package 'emacsql-mysql)
 (require-package 'emacsql-sqlite)
+(require-package 'esqlite)
+(require-package 'esqlite-helm)
+(require-package 'pcsv)
 
 ;; Go mode
 (require-package 'go-mode)

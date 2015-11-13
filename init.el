@@ -204,6 +204,7 @@
 (define-key evil-normal-state-map (kbd "SPC z") 'toggle-frame-fullscreen-non-native)
 (define-key evil-normal-state-map (kbd "SPC f") 'find-file)
 (define-key evil-normal-state-map (kbd "SPC se") 'eval-buffer)
+(define-key evil-normal-state-map (kbd "SPC SPC") 'isearch-forward-regexp)
 (define-key evil-normal-state-map (kbd "gos") 'flyspell-mode)
 (define-key evil-normal-state-map (kbd "gol") 'whitespace-mode)
 (define-key evil-normal-state-map (kbd "gon") 'linum-mode)
@@ -443,10 +444,6 @@
 (define-key evil-normal-state-map (kbd "SPC d") 'smex)
 (define-key evil-visual-state-map (kbd "SPC d") 'smex)
 
-;; Swiper and Swiper helm - best I-Search I found
-(require-package 'swiper)
-(define-key evil-normal-state-map (kbd "SPC SPC") 'swiper)
-
 ;;; Helm
 (require-package 'helm)
 (setq helm-split-window-in-side-p t
@@ -513,8 +510,8 @@
 
 ;; ;; Helm swoop
 (require-package 'helm-swoop)
-(define-key evil-normal-state-map (kbd "SPC i") 'helm-swoop)
-(define-key evil-visual-state-map (kbd "SPC i") 'helm-swoop)
+(define-key evil-normal-state-map (kbd "SPC i") 'helm-swoop-from-isearch)
+(define-key evil-visual-state-map (kbd "SPC i") 'helm-swoop-from-isearch)
 
 ;; Helm describe-bindings
 (require-package 'helm-descbinds)
@@ -534,48 +531,9 @@
 (require-package 'helm-flyspell)
 (define-key evil-insert-state-map (kbd "C-d") 'helm-flyspell-correct)
 
-;; Browse offline documentation - code courtesy http://jwintz.me/blog/
-(require-package 'helm-dash)
-(setq helm-dash-browser-func 'eww
-      helm-dash-docsets-path "~/.emacs.d/docsets"
-      helm-dash-min-length 2)
-(defun custom-dash-docset-path (docset)
-  (if (string= docset "OpenGL_2")
-      (concat (concat helm-dash-docsets-path "/") "OpenGL_2.docset")
-    (if (string= docset "OpenGL_3")
-        (concat (concat helm-dash-docsets-path "/") "OpenGL_3.docset")
-      (if (string= docset "OpenGL_4")
-          (concat (concat helm-dash-docsets-path "/") "OpenGL_4.docset")
-        (if (string= docset "Emacs_Lisp")
-            (concat (concat helm-dash-docsets-path "/") "Emacs_Lisp.docset")
-          (concat
-           (concat
-            (concat
-             (concat helm-dash-docsets-path "/")
-             (nth 0 (split-string docset "_")))) ".docset"))))))
-(defun custom-dash-install (docset)
-  (unless (file-exists-p (custom-dash-docset-path docset))
-    (helm-dash-install-docset docset)))
-(custom-dash-install "C++")
-(custom-dash-install "Boost")
-(custom-dash-install "C")
-(custom-dash-install "Python_2")
-(custom-dash-install "NumPy")
-(custom-dash-install "SciPy")
-;; (custom-dash-install "MatPlotLib")
-(custom-dash-install "Julia")
-(custom-dash-install "R")
-(custom-dash-install "LaTeX")
-(custom-dash-install "Markdown")
-(custom-dash-install "Java_SE8")
-(custom-dash-install "HTML")
-(custom-dash-install "Bootstrap_4")
-(custom-dash-install "CSS")
-(custom-dash-install "JavaScript")
-(custom-dash-install "jQuery")
-(custom-dash-install "Emacs_Lisp")
-(define-key evil-normal-state-map (kbd "SPC 7") 'helm-dash-activate-docset)
-(define-key evil-normal-state-map (kbd "SPC 1") 'helm-dash)
+;; Dash at point
+(require-package 'dash-at-point)
+(define-key evil-normal-state-map (kbd "SPC 1") 'dash-at-point-with-docset)
 
 ;; System processes
 (require-package 'helm-proc)
@@ -813,9 +771,8 @@
     (append (if (consp backend) backend (list backend))
             '(:with company-yasnippet))))
 (setq company-backends (mapcar #'company-mode/backend-with-yas company-backends))
-;; Prompt using ido/normal in that order if helm-yasnippet is not there
-(setq yas-prompt-functions '(yas-ido-prompt
-                             yas-completing-prompt))
+;; Just enable helm/ivy/ido and this uses them automatically
+(setq yas-prompt-functions '(yas-completing-prompt))
 ;; Disable in shell
 (defun force-yasnippet-off ()
   (yas-minor-mode -1)
@@ -823,10 +780,7 @@
 (add-hook 'term-mode-hook 'force-yasnippet-off)
 (add-hook 'shell-mode-hook 'force-yasnippet-off)
 (yas-global-mode)
-
-;; Helm yasnippet
-(require-package 'helm-c-yasnippet)
-(define-key evil-insert-state-map (kbd "C-j") 'helm-yas-complete)
+(define-key evil-insert-state-map (kbd "C-j") 'yas-insert-snippet)
 
 ;;; Language and Syntax
 
@@ -1095,7 +1049,7 @@
 ;; Interact with Tmux
 (require-package 'emamux)
 (setq emamux:completing-read-type 'helm)
-(define-key evil-normal-state-map (kbd "SPC sc") 'emamux:send-command)
+(define-key evil-normal-state-map (kbd "SPC st") 'emamux:send-command)
 
 ;; Make the compilation window automatically disapper from enberg on #emacs
 (setq compilation-finish-functions

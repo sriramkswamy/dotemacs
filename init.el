@@ -2,7 +2,7 @@
 (require 'package)
 
 ;; Add packages
-(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
+(add-to-list 'package-archives '("melpa" . "https://melpa.milkbox.net/packages/") t)
 (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
 
 ;; packages based on versions
@@ -203,11 +203,14 @@
 (define-key evil-normal-state-map (kbd "SPC f") 'find-file)
 (define-key evil-normal-state-map (kbd "SPC se") 'eval-buffer)
 (define-key evil-normal-state-map (kbd "SPC SPC") 'isearch-forward-regexp)
+(define-key evil-normal-state-map (kbd "SPC DEL") 'whitespace-cleanup)
+(define-key evil-normal-state-map (kbd "SPC ]") 'narrow-to-region)
+(define-key evil-normal-state-map (kbd "SPC [") 'widen)
 (define-key evil-normal-state-map (kbd "gos") 'flyspell-mode)
 (define-key evil-normal-state-map (kbd "gol") 'whitespace-mode)
 (define-key evil-normal-state-map (kbd "gon") 'linum-mode)
 (define-key evil-normal-state-map (kbd "gow") 'toggle-truncate-lines)
-(define-key evil-normal-state-map (kbd "goe") 'evil-show-marks)
+(define-key evil-visual-state-map (kbd "SPC ]") 'narrow-to-region)
 (define-key evil-visual-state-map (kbd "SPC se") 'eval-region)
 (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
 (define-key evil-insert-state-map (kbd "C-u") 'universal-argument)
@@ -435,13 +438,6 @@
 (define-key evil-normal-state-map (kbd "SPC h") 'avy-goto-line)
 (define-key evil-visual-state-map (kbd "SPC h") 'avy-goto-line)
 
-;; Smex
-(require-package 'smex)
-(global-set-key (kbd "M-x") 'smex)
-(global-set-key (kbd "C-x C-m") 'smex)
-(define-key evil-normal-state-map (kbd "SPC d") 'smex)
-(define-key evil-visual-state-map (kbd "SPC d") 'smex)
-
 ;;; Helm
 (require-package 'helm)
 (setq helm-split-window-in-side-p t
@@ -454,7 +450,7 @@
       helm-file-cache-fuzzy-match t
       helm-imenu-fuzzy-match t
       helm-mode-fuzzy-match t
-      helm-locate-fuzzy-match t
+      helm-locate-fuzzy-match nil
       helm-quick-update t
       helm-recentf-fuzzy-match t
       helm-semantic-fuzzy-match t
@@ -476,11 +472,16 @@
 ;; Maps
 (global-set-key (kbd "C-s") 'helm-occur)
 (global-set-key (kbd "C-r") 'helm-occur)
+(global-set-key (kbd "M-x") 'helm-M-x)
+(global-set-key (kbd "C-x C-m") 'helm-M-x)
+(define-key evil-normal-state-map (kbd "SPC d") 'helm-M-x)
+(define-key evil-visual-state-map (kbd "SPC d") 'helm-M-x)
 (define-key evil-normal-state-map (kbd "SPC x") 'helm-apropos)
 (define-key evil-normal-state-map (kbd "SPC r") 'helm-recentf)
 (define-key evil-normal-state-map (kbd "SPC `") 'helm-bookmarks)
 (define-key evil-normal-state-map (kbd "SPC .") 'helm-resume)
 (define-key evil-normal-state-map (kbd "SPC y") 'helm-show-kill-ring)
+(define-key evil-normal-state-map (kbd "SPC /") 'helm-occur)
 (define-key evil-normal-state-map (kbd "t") 'helm-semantic-or-imenu)
 (define-key evil-normal-state-map (kbd "K") 'helm-man-woman)
 (define-key evil-normal-state-map (kbd "SPC 9") 'helm-google-suggest)
@@ -513,6 +514,7 @@
 
 ;; Helm describe-bindings
 (require-package 'helm-descbinds)
+(define-key evil-normal-state-map (kbd "SPC '") 'helm-descbinds)
 
 ;; Helm to open colorschemes
 (require-package 'helm-themes)
@@ -554,30 +556,36 @@
 (custom-dash-install "C++")
 (custom-dash-install "Boost")
 (custom-dash-install "C")
+(custom-dash-install "CMake")
 (custom-dash-install "Python_2")
 (custom-dash-install "Python_3")
 (custom-dash-install "NumPy")
 (custom-dash-install "SciPy")
 (custom-dash-install "Matplotlib")
+(custom-dash-install "Pandas")
+(custom-dash-install "MATLAB")
 (custom-dash-install "Julia")
 (custom-dash-install "R")
 (custom-dash-install "LaTeX")
 (custom-dash-install "Markdown")
+(custom-dash-install "Java_EE7")
 (custom-dash-install "Java_SE8")
 (custom-dash-install "HTML")
 (custom-dash-install "Bootstrap_4")
 (custom-dash-install "CSS")
 (custom-dash-install "JavaScript")
 (custom-dash-install "jQuery")
+(setq helm-dash-common-docsets '("C++" "Boost" "Python 2" "NumPy" "Matplotlib"))
 (define-key evil-normal-state-map (kbd "SPC 1") 'helm-dash)
 (define-key evil-normal-state-map (kbd "SPC ad") 'helm-dash-activate-docset)
 
-;; ;; Dash at point
-;; (require-package 'dash-at-point)
-;; (define-key evil-normal-state-map (kbd "SPC 1") 'dash-at-point-with-docset)
-
 ;; System processes
 (require-package 'helm-proc)
+
+;;; Visual regexp
+(require-package 'visual-regexp)
+(require-package 'visual-regexp-steroids)
+(define-key evil-normal-state-map (kbd "SPC ;") 'vr/select-query-replace)
 
 ;;; Manage external services
 (require-package 'prodigy)
@@ -595,8 +603,8 @@
 (helm-projectile-on)
 ;;Maps
 (define-key evil-normal-state-map (kbd "SPC p") 'helm-projectile)
-(define-key evil-normal-state-map (kbd "SPC 7") 'projectile-switch-project)
-(define-key evil-normal-state-map (kbd "SPC aa") 'helm-projectile-find-other-file)
+(define-key evil-normal-state-map (kbd "SPC 8") 'projectile-switch-project)
+(define-key evil-normal-state-map (kbd "SPC TAB") 'helm-projectile-find-other-file)
 
 ;; Project explorer
 (require-package 'project-explorer)
@@ -623,7 +631,7 @@
 (helm-gtags-mode 1)
 ;; Tags using appropriate methods
 (define-key evil-normal-state-map (kbd "T") 'helm-gtags-select)
-(define-key evil-normal-state-map (kbd "R") 'helm-gtags-find-rtag)
+(define-key evil-normal-state-map (kbd "SPC jk") 'helm-gtags-find-rtag)
 (define-key evil-normal-state-map (kbd "SPC jj") 'helm-gtags-dwim)
 
 ;;; Interact with OS services
@@ -863,7 +871,7 @@
   (jedi:setup)
   (add-to-list 'company-backends 'company-jedi))
 (add-hook 'python-mode-hook 'my/python-mode-hook)
-(define-key evil-normal-state-map (kbd "SPC jk") 'jedi:goto-definition)
+(define-key evil-normal-state-map (kbd "SPC jl") 'jedi:goto-definition)
 (define-key evil-normal-state-map (kbd "SPC sp") 'python-shell-send-buffer)
 (define-key evil-visual-state-map (kbd "SPC sp") 'python-shell-send-region)
 
@@ -958,6 +966,7 @@
 (define-key evil-visual-state-map (kbd "SPC o") 'org-agenda)
 (define-key evil-normal-state-map (kbd "SPC -") 'org-edit-src-code)
 (define-key evil-normal-state-map (kbd "SPC =") 'org-edit-src-exit)
+(define-key evil-normal-state-map (kbd "SPC ,") 'org-narrow-to-subtree)
 (define-key evil-normal-state-map (kbd "SPC 4") 'org-toggle-latex-fragment)
 (define-key evil-normal-state-map (kbd "SPC 5") 'org-toggle-inline-images)
 (define-key evil-normal-state-map (kbd "SPC 6") 'org-latex-export-to-pdf)
@@ -1115,7 +1124,7 @@
 
 ;; Quickrun
 (require-package 'quickrun)
-(define-key evil-normal-state-map (kbd "SPC 8") 'helm-quickrun)
+(define-key evil-normal-state-map (kbd "SPC 7") 'helm-quickrun)
 
 ;;; Eshell
 (setq eshell-glob-case-insensitive t
@@ -1124,6 +1133,7 @@
       eshell-history-size 1024
       eshell-cmpl-ignore-case t
       eshell-last-dir-ring-size 512)
+(add-hook 'shell-mode-hook 'goto-address-mode)
 
 ;; Aliases
 (setq eshell-aliases-file (concat user-emacs-directory ".eshell-aliases"))

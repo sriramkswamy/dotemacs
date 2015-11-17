@@ -1305,6 +1305,7 @@
 
 ;; Delete trailing whitespace on save
 (require-package 'ws-butler)
+(ws-butler-global-mode)
 
 ;; Restart Emacs from Emacs
 (require-package 'restart-emacs)
@@ -1319,6 +1320,7 @@
     (evil-mc-mode . "")
     (evil-commentary-mode . "")
     (helm-mode . "")
+    (ws-butlet-mode . "")
     (subword-mode . "")
     (helm-gtags-mode . "")
     (volatile-highlights-mode . "")

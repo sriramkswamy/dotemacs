@@ -192,8 +192,6 @@
 (define-key evil-normal-state-map (kbd "BS") 'evil-scroll-up)
 (define-key evil-normal-state-map (kbd "+") 'eshell-vertical)
 (define-key evil-normal-state-map (kbd "-") 'eshell-horizontal)
-(define-key evil-normal-state-map (kbd "]b") 'evil-next-buffer)
-(define-key evil-normal-state-map (kbd "[b") 'evil-prev-buffer)
 (define-key evil-normal-state-map (kbd "SPC q") 'evil-quit)
 (define-key evil-normal-state-map (kbd "SPC w") 'save-buffer)
 (define-key evil-normal-state-map (kbd "SPC k") 'kill-buffer)
@@ -201,15 +199,16 @@
 (define-key evil-normal-state-map (kbd "SPC u") 'universal-argument)
 (define-key evil-normal-state-map (kbd "SPC z") 'toggle-frame-fullscreen-non-native)
 (define-key evil-normal-state-map (kbd "SPC f") 'find-file)
-(define-key evil-normal-state-map (kbd "SPC se") 'eval-buffer)
-(define-key evil-normal-state-map (kbd "SPC SPC") 'isearch-forward-regexp)
 (define-key evil-normal-state-map (kbd "SPC DEL") 'whitespace-cleanup)
 (define-key evil-normal-state-map (kbd "SPC ]") 'narrow-to-region)
 (define-key evil-normal-state-map (kbd "SPC [") 'widen)
-(define-key evil-normal-state-map (kbd "gos") 'flyspell-mode)
-(define-key evil-normal-state-map (kbd "gol") 'whitespace-mode)
-(define-key evil-normal-state-map (kbd "gon") 'linum-mode)
-(define-key evil-normal-state-map (kbd "gow") 'toggle-truncate-lines)
+(define-key evil-normal-state-map (kbd "SPC se") 'eval-buffer)
+(define-key evil-normal-state-map (kbd "SPC as") 'flyspell-mode)
+(define-key evil-normal-state-map (kbd "SPC al") 'whitespace-mode)
+(define-key evil-normal-state-map (kbd "SPC an") 'linum-mode)
+(define-key evil-normal-state-map (kbd "SPC aw") 'toggle-truncate-lines)
+(define-key evil-normal-state-map (kbd "SPC ab") 'display-battery-mode)
+(define-key evil-normal-state-map (kbd "SPC at") 'display-time-mode)
 (define-key evil-visual-state-map (kbd "SPC ]") 'narrow-to-region)
 (define-key evil-visual-state-map (kbd "SPC se") 'eval-region)
 (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
@@ -481,7 +480,8 @@
 (define-key evil-normal-state-map (kbd "SPC `") 'helm-bookmarks)
 (define-key evil-normal-state-map (kbd "SPC .") 'helm-resume)
 (define-key evil-normal-state-map (kbd "SPC y") 'helm-show-kill-ring)
-(define-key evil-normal-state-map (kbd "SPC /") 'helm-occur)
+(define-key evil-normal-state-map (kbd "SPC /") 'helm-locate)
+(define-key evil-normal-state-map (kbd "SPC SPC") 'helm-occur)
 (define-key evil-normal-state-map (kbd "t") 'helm-semantic-or-imenu)
 (define-key evil-normal-state-map (kbd "K") 'helm-man-woman)
 (define-key evil-normal-state-map (kbd "SPC 9") 'helm-google-suggest)
@@ -502,6 +502,7 @@
 (require-package 'helm-ag)
 (setq helm-ag-base-command "ag --nocolor --nogroup --ignore-case"
       helm-ag-command-option "--all-text"
+      helm-ag-use-agignore t
       helm-ag-insert-at-point 'symbol)
 (define-key evil-normal-state-map (kbd "SPC e") 'helm-do-ag-project-root)
 (define-key evil-visual-state-map (kbd "SPC e") 'helm-do-ag-project-root)
@@ -509,8 +510,8 @@
 
 ;; ;; Helm swoop
 (require-package 'helm-swoop)
-(define-key evil-normal-state-map (kbd "SPC i") 'helm-swoop-from-isearch)
-(define-key evil-visual-state-map (kbd "SPC i") 'helm-swoop-from-isearch)
+(define-key evil-normal-state-map (kbd "SPC i") 'helm-swoop)
+(define-key evil-visual-state-map (kbd "SPC i") 'helm-swoop)
 
 ;; Helm describe-bindings
 (require-package 'helm-descbinds)
@@ -594,6 +595,7 @@
 (require-package 'projectile)
 (setq projectile-enable-caching t
       projectile-require-project-root nil
+      projectile-use-git-grep t
       projectile-mode-line '(:eval (format " [%s]" (projectile-project-name))))
 (projectile-global-mode)
 
@@ -624,7 +626,7 @@
 (setenv "PATH" (concat (getenv "PATH") ":/usr/local/Cellar/global/6.5/bin"))
 (setq exec-path (append exec-path '("/usr/local/Cellar/global/6.5/bin")))
 (setq-local imenu-create-index-function #'ggtags-build-imenu-index)
-(define-key evil-normal-state-map (kbd "SPC as") 'ggtags-create-tags)
+(define-key evil-normal-state-map (kbd "SPC ag") 'ggtags-create-tags)
 
 ;; Helm Gtags
 (require-package 'helm-gtags)
@@ -948,32 +950,124 @@
 ;;; Flycheck
 (require-package 'flycheck)
 (add-hook 'after-init-hook #'global-flycheck-mode)
-(define-key evil-normal-state-map (kbd "]l") 'flycheck-next-error)
-(define-key evil-normal-state-map (kbd "[l") 'flycheck-previous-error)
-(define-key evil-normal-state-map (kbd "]L") 'flycheck-last-checker)
-(define-key evil-normal-state-map (kbd "[L") 'flycheck-first-error)
-(define-key evil-normal-state-map (kbd "SPC l") 'flycheck-list-errors)
+(define-key evil-normal-state-map (kbd "]e") 'flycheck-next-error)
+(define-key evil-normal-state-map (kbd "[e") 'flycheck-previous-error)
+(define-key evil-normal-state-map (kbd "]E") 'flycheck-last-checker)
+(define-key evil-normal-state-map (kbd "[E") 'flycheck-first-error)
 
 ;; Irony for flycheck
 (require-package 'flycheck-irony)
 (eval-after-load 'flycheck
   '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
 
+;; Helm for flycheck
+(require-package 'helm-flycheck)
+(define-key evil-normal-state-map (kbd "SPC l") 'helm-flycheck)
+
 ;;; Org mode
 (define-key evil-normal-state-map (kbd "SPC c") 'org-capture)
 (define-key evil-normal-state-map (kbd "SPC o") 'org-agenda)
-(define-key evil-visual-state-map (kbd "SPC c") 'org-capture)
-(define-key evil-visual-state-map (kbd "SPC o") 'org-agenda)
 (define-key evil-normal-state-map (kbd "SPC -") 'org-edit-src-code)
 (define-key evil-normal-state-map (kbd "SPC =") 'org-edit-src-exit)
 (define-key evil-normal-state-map (kbd "SPC ,") 'org-narrow-to-subtree)
 (define-key evil-normal-state-map (kbd "SPC 4") 'org-toggle-latex-fragment)
 (define-key evil-normal-state-map (kbd "SPC 5") 'org-toggle-inline-images)
-(define-key evil-normal-state-map (kbd "SPC 6") 'org-latex-export-to-pdf)
 (define-key evil-normal-state-map (kbd "]h") 'org-metaright)
 (define-key evil-normal-state-map (kbd "[h") 'org-metaleft)
 (define-key evil-normal-state-map (kbd "]j") 'org-metadown)
 (define-key evil-normal-state-map (kbd "[j") 'org-metaup)
+(define-key evil-normal-state-map (kbd "]k") 'outline-demote)
+(define-key evil-normal-state-map (kbd "[k") 'outline-promote)
+(define-key evil-normal-state-map (kbd "]o") 'outline-next-visible-heading)
+(define-key evil-normal-state-map (kbd "[o") 'outline-previous-visible-heading)
+(define-key evil-normal-state-map (kbd "]t") 'outline-forward-same-level)
+(define-key evil-normal-state-map (kbd "[t") 'outline-backward-same-level)
+(define-key evil-normal-state-map (kbd "]b") 'org-next-block)
+(define-key evil-normal-state-map (kbd "[b") 'org-previous-block)
+(define-key evil-normal-state-map (kbd "]r") 'org-table-move-row-down)
+(define-key evil-normal-state-map (kbd "[r") 'org-table-move-row-up)
+(define-key evil-normal-state-map (kbd "]c") 'org-table-move-column-right)
+(define-key evil-normal-state-map (kbd "[c") 'org-table-move-column-left)
+(define-key evil-normal-state-map (kbd "]f") 'org-table-next-field)
+(define-key evil-normal-state-map (kbd "[f") 'org-table-previous-field)
+(define-key evil-normal-state-map (kbd "]l") 'org-next-link)
+(define-key evil-normal-state-map (kbd "[l") 'org-previous-link)
+(define-key evil-normal-state-map (kbd "]u") 'org-down-element)
+(define-key evil-normal-state-map (kbd "[u") 'org-up-element)
+(define-key evil-normal-state-map (kbd "gog") 'org-set-tags-command)
+(define-key evil-normal-state-map (kbd "goG") 'org-tags-view)
+(define-key evil-normal-state-map (kbd "goj") 'org-goto)
+(define-key evil-normal-state-map (kbd "goJ") 'org-clock-goto)
+(define-key evil-normal-state-map (kbd "goc") 'org-table-delete-column)
+(define-key evil-normal-state-map (kbd "gor") 'org-table-kill-row)
+(define-key evil-normal-state-map (kbd "gob") 'org-table-blank-field)
+(define-key evil-normal-state-map (kbd "got") 'org-todo)
+(define-key evil-normal-state-map (kbd "god") 'org-deadline)
+(define-key evil-normal-state-map (kbd "goD") 'org-deadline-close)
+(define-key evil-normal-state-map (kbd "goS") 'org-check-deadlines)
+(define-key evil-normal-state-map (kbd "gos") 'org-schedule)
+(define-key evil-normal-state-map (kbd "gou") 'org-update-dblock)
+(define-key evil-normal-state-map (kbd "goU") 'org-update-all-dblocks)
+(define-key evil-normal-state-map (kbd "gov") 'org-reveal)
+(define-key evil-normal-state-map (kbd "gof") 'org-refile)
+(define-key evil-normal-state-map (kbd "goF") 'org-refile-goto-last-stored)
+(define-key evil-normal-state-map (kbd "gox") 'org-reftex-citation)
+(define-key evil-normal-state-map (kbd "goa") 'org-attach)
+(define-key evil-normal-state-map (kbd "goA") 'org-archive-subtree-default)
+(define-key evil-normal-state-map (kbd "goi") 'org-clock-in)
+(define-key evil-normal-state-map (kbd "goo") 'org-clock-out)
+(define-key evil-normal-state-map (kbd "goq") 'org-clock-cancel)
+(define-key evil-normal-state-map (kbd "gop") 'org-clock-report)
+(define-key evil-normal-state-map (kbd "goz") 'org-resolve-clocks)
+(define-key evil-normal-state-map (kbd "goX") 'org-clock-in-last)
+(define-key evil-normal-state-map (kbd "goC") 'org-clock-display)
+(define-key evil-normal-state-map (kbd "goT") 'org-timer)
+(define-key evil-normal-state-map (kbd "gon") 'org-add-note)
+(define-key evil-normal-state-map (kbd "goN") 'org-footnote-new)
+(define-key evil-normal-state-map (kbd "goe") 'org-export-dispatch)
+(define-key evil-normal-state-map (kbd "gol") 'org-insert-link)
+(define-key evil-normal-state-map (kbd "goL") 'org-store-link)
+(define-key evil-normal-state-map (kbd "goO") 'org-open-at-point)
+(define-key evil-normal-state-map (kbd "gom") 'org-match-sparse-tree)
+(define-key evil-normal-state-map (kbd "goy") 'org-copy-subtree)
+(define-key evil-normal-state-map (kbd "gok") 'org-cut-subtree)
+(define-key evil-normal-state-map (kbd "goh") 'org-set-property)
+(define-key evil-normal-state-map (kbd "goR") 'org-toggle-ordered-property)
+(define-key evil-normal-state-map (kbd "goH") 'org-delete-property)
+(define-key evil-normal-state-map (kbd "goE") 'org-set-effort)
+(define-key evil-normal-state-map (kbd "goP") 'org-publish)
+(define-key evil-normal-state-map (kbd "gow") 'org-insert-drawer)
+(define-key evil-normal-state-map (kbd "goW") 'org-insert-property-drawer)
+(define-key evil-normal-state-map (kbd "goM") 'orgstruct-mode)
+(define-key evil-normal-state-map (kbd "goB") 'orgtbl-mode)
+(define-key evil-normal-state-map (kbd "go-") 'org-table-insert-hline)
+(define-key evil-normal-state-map (kbd "go?") 'org-table-field-info)
+(define-key evil-normal-state-map (kbd "go`") 'org-table-edit-field)
+(define-key evil-normal-state-map (kbd "go*") 'org-toggle-heading)
+(define-key evil-normal-state-map (kbd "go#") 'org-update-statistics-cookies)
+(define-key evil-normal-state-map (kbd "go+") 'org-table-sum)
+(define-key evil-normal-state-map (kbd "go=") 'org-table-eval-formula)
+(define-key evil-normal-state-map (kbd "go>") 'org-goto-calendar)
+(define-key evil-normal-state-map (kbd "go<") 'org-date-from-calendar)
+(define-key evil-normal-state-map (kbd "go.") 'org-time-stamp)
+(define-key evil-normal-state-map (kbd "go\"") 'org-time-stamp-inactive)
+(define-key evil-normal-state-map (kbd "go,") 'org-priority)
+(define-key evil-normal-state-map (kbd "go%") 'org-timer-set-timer)
+(define-key evil-normal-state-map (kbd "go;") 'org-timer-start)
+(define-key evil-normal-state-map (kbd "go:") 'org-timer-stop)
+(define-key evil-normal-state-map (kbd "go^") 'org-sort)
+(define-key evil-normal-state-map (kbd "go/") 'org-sparse-tree)
+(define-key evil-normal-state-map (kbd "go|") 'org-table-create-or-convert-from-region)
+(define-key evil-normal-state-map (kbd "go'") 'org-columns)
+(define-key evil-normal-state-map (kbd "go_") 'org-table-insert-row)
+(define-key evil-normal-state-map (kbd "go!") 'org-table-insert-column)
+(define-key evil-normal-state-map (kbd "go]") 'org-remove-file)
+(define-key evil-normal-state-map (kbd "go[") 'org-agenda-file-to-front)
+(define-key evil-visual-state-map (kbd "SPC c") 'org-capture)
+(define-key evil-visual-state-map (kbd "SPC o") 'org-agenda)
+(define-key evil-visual-state-map (kbd "go|") 'org-table-create-or-convert-from-region)
+(define-key evil-visual-state-map (kbd "goe") 'org-export-dispatch)
+(define-key evil-visual-state-map (kbd "go'") 'org-columns)
 
 ;; Turns the next page in adjoining pdf-tools pdf
 (defun other-pdf-next ()
@@ -1009,26 +1103,33 @@
 
 ;; Tags with fast selection keys
 (setq org-tag-alist (quote ((:startgroup)
-                            ("@errand" . ?e)
                             ("@office" . ?o)
-                            ("@home" . ?H)
-                            ("@farm" . ?f)
+                            ("@home" . ?h)
                             (:endgroup)
-                            ("WAITING" . ?w)
-                            ("HOLD" . ?h)
-                            ("PERSONAL" . ?P)
-                            ("WORK" . ?W)
-                            ("FARM" . ?F)
-                            ("ORG" . ?O)
-                            ("NORANG" . ?N)
-                            ("crypt" . ?E)
-                            ("NOTE" . ?n)
-                            ("CANCELLED" . ?c)
-                            ("FLAGGED" . ??))))
+                            ("errand" . ?t)
+                            ("personal" . ?p)
+                            ("work" . ?w)
+                            ("noexport" . ?e)
+                            ("note" . ?n))))
 
-;; Better bullets
-(require-package 'org-bullets)
-(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+;; TODO Keywords
+(setq org-todo-keywords
+           '((sequence "TODO(t)" "HOLD(h@/!)" "|" "DONE(d!)")
+             (sequence "|" "CANCELLED(c@)")))
+
+;; Links
+(setq org-link-abbrev-alist
+       '(("bugzilla"  . "http://10.1.2.9/bugzilla/show_bug.cgi?id=")
+         ("url-to-ja" . "http://translate.google.fr/translate?sl=en&tl=ja&u=%h")
+         ("google"    . "http://www.google.com/search?q=")
+         ("gmaps"      . "http://maps.google.com/maps?q=%s")))
+
+;; Capture templates
+(setq org-capture-templates
+      '(("t" "Todo" entry (file+headline "~/Dropbox/notes/tasks.org" "Tasks")
+             "* TODO %?\n  %i\n  %a")
+        ("j" "Journal" entry (file+datetree "~/Dropbox/notes/journal.org")
+             "* %?\nEntered on %U\n  %i\n  %a")))
 
 ;; Pomodoro
 (require-package 'org-pomodoro)
@@ -1087,8 +1188,8 @@
 (add-hook 'org-mode-hook 'diff-hl-mode)
 (diff-hl-margin-mode)
 (diff-hl-flydiff-mode)
-(define-key evil-normal-state-map (kbd "]c") 'diff-hl-next-hunk)
-(define-key evil-normal-state-map (kbd "[c") 'diff-hl-previous-hunk)
+(define-key evil-normal-state-map (kbd "]d") 'diff-hl-next-hunk)
+(define-key evil-normal-state-map (kbd "[d") 'diff-hl-previous-hunk)
 (define-key evil-normal-state-map (kbd "gh") 'diff-hl-revert-hunk)
 
 ;; Git time-machine
@@ -1099,6 +1200,12 @@
 (define-key evil-normal-state-map (kbd "[q") 'git-timemachine-show-previous-revision)
 (define-key evil-normal-state-map (kbd "]Q") 'git-timemachine-show-nth-revision)
 (define-key evil-normal-state-map (kbd "[Q") 'git-timemachine-show-current-revision)
+
+;; Gists
+(require-package 'yagist)
+(setq yagist-view-gist t)
+(define-key evil-normal-state-map (kbd "SPC 6") 'yagist-buffer)
+(define-key evil-visual-state-map (kbd "SPC 6") 'yagist-region)
 
 ;;; REPL
 
@@ -1169,17 +1276,16 @@
 ;; Fill column indicator
 (require-package 'fill-column-indicator)
 (setq fci-rule-width 5
-      fci-rule-column 99)
-(define-key evil-normal-state-map (kbd "gox") 'fci-mode)
+      fci-rule-column 79)
+(define-key evil-normal-state-map (kbd "SPC ax") 'fci-mode)
 
 ;; Column enforce column that highlights if I go over 100 characters
 ;; I try to stick within 80 characters but, frankly, I prefer 100.
 ;; Hence a compromise
 (require-package 'column-enforce-mode)
 (require 'column-enforce-mode)
-(setq column-enforce-column 79)
+(setq column-enforce-column 99)
 (global-column-enforce-mode)
-(define-key evil-normal-state-map (kbd "goc") 'column-enforce-mode)
 
 ;; Which function mode
 (which-function-mode 1)
@@ -1197,17 +1303,8 @@
 ;; Column number mode
 (column-number-mode)
 
-;; Display time
-(define-key evil-normal-state-map (kbd "got") 'display-time-mode)
-
-;; Display battery
-(define-key evil-normal-state-map (kbd "gob") 'display-battery-mode)
-
-;; Nice writing environment
-(require-package 'olivetti)
-
-;; Hyperfocus
-(require-package 'focus)
+;; Delete trailing whitespace on save
+(require-package 'ws-butler)
 
 ;; Restart Emacs from Emacs
 (require-package 'restart-emacs)

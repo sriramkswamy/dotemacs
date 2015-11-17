@@ -1320,7 +1320,7 @@
     (evil-mc-mode . "")
     (evil-commentary-mode . "")
     (helm-mode . "")
-    (ws-butlet-mode . "")
+    (ws-butler-mode . "")
     (subword-mode . "")
     (helm-gtags-mode . "")
     (volatile-highlights-mode . "")

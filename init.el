@@ -32,10 +32,8 @@
 
 ;;; Evil - Just can't live without this
 (require-package 'evil)
-(setq evil-want-C-u-scroll t)
 (require 'evil)
-(setq evil-default-cursor t
-      evil-want-C-u-scroll t)
+(setq evil-default-cursor t)
 (evil-mode 1)
 ;; Specify evil initial states
 (evil-set-initial-state 'dired-mode 'emacs)
@@ -102,6 +100,7 @@
 (require 'spaceline-config)
 (setq ns-use-srgb-colorspace nil)
 (spaceline-toggle-anzu-on)
+(spaceline-toggle-workspace-number-off)
 (spaceline-spacemacs-theme)
 
 ;; Themes
@@ -163,7 +162,6 @@
 (guide-key-mode 1)
 
 ;;; Evil - Vim emulation - Continued
-
 ;; Escape for everything
 (define-key evil-normal-state-map [escape] 'keyboard-quit)
 (define-key evil-visual-state-map [escape] 'keyboard-quit)
@@ -173,28 +171,28 @@
 (define-key evil-normal-state-map (kbd "w") 'split-window-horizontally)
 (define-key evil-normal-state-map (kbd "Z") 'delete-other-windows)
 (define-key evil-normal-state-map (kbd "Q") 'winner-undo)
-(define-key evil-normal-state-map (kbd "gs") 'electric-newline-and-maybe-indent)
 (define-key evil-normal-state-map (kbd "w") 'split-window-horizontally)
 (define-key evil-normal-state-map (kbd "W") 'split-window-vertically)
 (define-key evil-normal-state-map (kbd "U") 'undo-tree-visualize)
 (define-key evil-normal-state-map (kbd "RET") 'evil-scroll-down)
-(define-key evil-normal-state-map (kbd "BS") 'evil-scroll-up)
+(define-key evil-normal-state-map (kbd "DEL") 'evil-scroll-up)
 (define-key evil-normal-state-map (kbd "+") 'eshell-vertical)
 (define-key evil-normal-state-map (kbd "-") 'eshell-horizontal)
+(define-key evil-normal-state-map (kbd "gs") 'electric-newline-and-maybe-indent)
 (define-key evil-normal-state-map (kbd "]W") 'enlarge-window)
 (define-key evil-normal-state-map (kbd "[W") 'shrink-window)
 (define-key evil-normal-state-map (kbd "]w") 'enlarge-window-horizontally)
 (define-key evil-normal-state-map (kbd "[w") 'shrink-window-horizontally)
+(define-key evil-normal-state-map (kbd "]b") 'evil-next-buffer)
+(define-key evil-normal-state-map (kbd "[b") 'evil-prev-buffer)
 (define-key evil-normal-state-map (kbd "SPC q") 'evil-quit)
 (define-key evil-normal-state-map (kbd "SPC w") 'save-buffer)
 (define-key evil-normal-state-map (kbd "SPC k") 'kill-buffer)
-(define-key evil-normal-state-map (kbd "SPC t") 'switch-to-buffer)
-(define-key evil-normal-state-map (kbd "SPC u") 'universal-argument)
 (define-key evil-normal-state-map (kbd "SPC z") 'toggle-frame-fullscreen-non-native)
 (define-key evil-normal-state-map (kbd "SPC f") 'find-file)
-(define-key evil-normal-state-map (kbd "SPC DEL") 'whitespace-cleanup)
-(define-key evil-normal-state-map (kbd "SPC ]") 'narrow-to-region)
 (define-key evil-normal-state-map (kbd "SPC [") 'widen)
+(define-key evil-normal-state-map (kbd "SPC ;") 'evil-ex)
+(define-key evil-normal-state-map (kbd "SPC DEL") 'whitespace-cleanup)
 (define-key evil-normal-state-map (kbd "SPC se") 'eval-buffer)
 (define-key evil-normal-state-map (kbd "SPC as") 'flyspell-mode)
 (define-key evil-normal-state-map (kbd "SPC ai") 'whitespace-mode)
@@ -206,9 +204,7 @@
 (define-key evil-normal-state-map (kbd "SPC af") 'set-frame-font)
 (define-key evil-visual-state-map (kbd "SPC ]") 'narrow-to-region)
 (define-key evil-visual-state-map (kbd "SPC se") 'eval-region)
-(define-key evil-visual-state-map (kbd "SPC an") 'delete-non-matching-lines)
 (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
-(define-key evil-insert-state-map (kbd "C-u") 'universal-argument)
 
 ;; More useful arrow keys
 (global-set-key (kbd "<left>") 'evil-window-left)
@@ -276,30 +272,35 @@
 (require-package 'evil-exchange)
 (evil-exchange-install)
 
+;; Increment and decrement numbers like vim
+(require-package 'evil-numbers)
+(define-key evil-normal-state-map (kbd "C-a") 'evil-numbers/inc-at-pt)
+(define-key evil-normal-state-map (kbd "C-d") 'evil-numbers/dec-at-pt)
+
 ;;; Evil text objects - Courtesy PythonNut
 ;; evil block indentation textobject for Python
 (defun evil-indent--current-indentation ()
   "Return the indentation of the current line. Moves point."
   (buffer-substring-no-properties (point-at-bol)
-    (progn (back-to-indentation)
-      (point))))
+                                  (progn (back-to-indentation)
+                                         (point))))
 (defun evil-indent--block-range (&optional point)
   "Return the point at the begin and end of the text block "
   ;; there are faster ways to mark the entire file
   ;; so assume the user wants a block and skip to there
   (while (and (string-empty-p
-                (evil-indent--current-indentation))
-           (not (eobp)))
+               (evil-indent--current-indentation))
+              (not (eobp)))
     (forward-line))
   (cl-flet* ((empty-line-p ()
-               (string-match "^[[:space:]]*$"
-                 (buffer-substring-no-properties
-                   (line-beginning-position)
-                   (line-end-position))))
-              (line-indent-ok (indent)
-                (or (<= (length indent)
-                      (length (evil-indent--current-indentation)))
-                  (empty-line-p))))
+                           (string-match "^[[:space:]]*$"
+                                         (buffer-substring-no-properties
+                                          (line-beginning-position)
+                                          (line-end-position))))
+             (line-indent-ok (indent)
+                             (or (<= (length indent)
+                                     (length (evil-indent--current-indentation)))
+                                 (empty-line-p))))
     (let ((indent (evil-indent--current-indentation)) start begin end)
       ;; now skip ahead to the Nth block with this indentation
       (dotimes (index (or last-prefix-arg 0))
@@ -331,7 +332,7 @@
                   (goto-char (first (evil-indent--block-range)))
                   (forward-line -1)
                   (point-at-bol))
-      (second range) 'line)))
+                (second range) 'line)))
 (evil-define-text-object evil-indent-a-block-end (count &optional beg end type)
   "Text object describing the block with the same indentation as the current line and the lines above and below."
   :type line
@@ -340,11 +341,11 @@
                   (goto-char (first range))
                   (forward-line -1)
                   (point-at-bol))
-      (save-excursion
-        (goto-char (second range))
-        (forward-line 1)
-        (point-at-eol))
-      'line)))
+                (save-excursion
+                  (goto-char (second range))
+                  (forward-line 1)
+                  (point-at-eol))
+                'line)))
 (define-key evil-inner-text-objects-map "i" #'evil-indent-i-block)
 (define-key evil-outer-text-objects-map "i" #'evil-indent-a-block)
 (define-key evil-outer-text-objects-map "I" #'evil-indent-a-block-end)
@@ -355,9 +356,9 @@
   :type line
   (save-excursion
     (let ((beg (evil-avy-jump-line-and-revert))
-           (end (evil-avy-jump-line-and-revert)))
+          (end (evil-avy-jump-line-and-revert)))
       (if (> beg end)
-        (evil-range beg end #'line)
+          (evil-range beg end #'line)
         (evil-range end beg #'line)))))
 (define-key evil-inner-text-objects-map "r" #'evil-i-line-range)
 (define-key evil-inner-text-objects-map "s" #'evil-inner-sentence)
@@ -388,9 +389,9 @@
     (evil-visual-state)
     (goto-char beg)
     (evil-ex-normal (region-beginning) (region-end)
-      (concat "@"
-        (single-key-description
-          (read-char "What macro?"))))))
+                    (concat "@"
+                            (single-key-description
+                             (read-char "What macro?"))))))
 (define-key evil-operator-state-map "g@" #'evil-macro-on-all-lines)
 (define-key evil-normal-state-map "g@" #'evil-macro-on-all-lines)
 
@@ -472,7 +473,7 @@
 (define-key evil-normal-state-map (kbd "SPC d") 'helm-M-x)
 (define-key evil-visual-state-map (kbd "SPC d") 'helm-M-x)
 (define-key evil-normal-state-map (kbd "SPC x") 'helm-apropos)
-(define-key evil-normal-state-map (kbd "SPC r") 'helm-recentf)
+(define-key evil-normal-state-map (kbd "SPC r") 'helm-mini)
 (define-key evil-normal-state-map (kbd "SPC `") 'helm-bookmarks)
 (define-key evil-normal-state-map (kbd "SPC .") 'helm-resume)
 (define-key evil-normal-state-map (kbd "SPC y") 'helm-show-kill-ring)
@@ -481,7 +482,9 @@
 (define-key evil-normal-state-map (kbd "t") 'helm-semantic-or-imenu)
 (define-key evil-normal-state-map (kbd "K") 'helm-man-woman)
 (define-key evil-normal-state-map (kbd "SPC 9") 'helm-google-suggest)
-(define-key evil-normal-state-map (kbd "SPC 3") 'helm-calcul-expression)
+(define-key evil-normal-state-map (kbd "SPC 6") 'helm-calcul-expression)
+(define-key evil-normal-state-map (kbd "SPC 3") 'helm-org-in-buffer-headings)
+(define-key evil-normal-state-map (kbd "SPC '") 'helm-all-mark-rings)
 (define-key evil-insert-state-map (kbd "C-l") 'helm-M-x)
 
 ;; Hide minibuffer when using helm input header line
@@ -502,16 +505,16 @@
       helm-ag-insert-at-point 'symbol)
 (define-key evil-normal-state-map (kbd "SPC e") 'helm-do-ag-project-root)
 (define-key evil-visual-state-map (kbd "SPC e") 'helm-do-ag-project-root)
-(define-key evil-normal-state-map (kbd "SPC b") 'helm-do-ag-buffers)
 
 ;; ;; Helm swoop
 (require-package 'helm-swoop)
 (define-key evil-normal-state-map (kbd "SPC i") 'helm-swoop)
 (define-key evil-visual-state-map (kbd "SPC i") 'helm-swoop)
+(define-key evil-normal-state-map (kbd "SPC b") 'helm-multi-swoop-all)
 
 ;; Helm describe-bindings
 (require-package 'helm-descbinds)
-(define-key evil-normal-state-map (kbd "SPC '") 'helm-descbinds)
+(define-key evil-normal-state-map (kbd "SPC ,") 'helm-descbinds)
 
 ;; Helm to open colorschemes
 (require-package 'helm-themes)
@@ -582,7 +585,8 @@
 ;;; Visual regexp
 (require-package 'visual-regexp)
 (require-package 'visual-regexp-steroids)
-(define-key evil-normal-state-map (kbd "SPC ;") 'vr/select-query-replace)
+(define-key evil-normal-state-map (kbd "SPC 5") 'vr/select-query-replace)
+(define-key evil-visual-state-map (kbd "SPC 5") 'vr/select-query-replace)
 
 ;;; Manage external services
 (require-package 'prodigy)
@@ -604,10 +608,14 @@
 (define-key evil-normal-state-map (kbd "SPC 8") 'projectile-switch-project)
 (define-key evil-normal-state-map (kbd "SPC TAB") 'helm-projectile-find-other-file)
 
-;; Project explorer
-(require-package 'project-explorer)
-(add-to-list 'evil-emacs-state-modes 'project-explorer-mode)
-(define-key evil-normal-state-map (kbd "SPC n") 'project-explorer-toggle)
+;; NeoTree - like NERDTree
+(require-package 'neotree)
+(add-hook 'neotree-mode-hook
+          (lambda ()
+            (define-key evil-normal-state-local-map (kbd "o") 'neotree-enter)
+            (define-key evil-normal-state-local-map (kbd "q") 'neotree-hide)))
+(setq projectile-switch-project-action 'neotree-projectile-action)
+(define-key evil-normal-state-map (kbd "SPC n") 'neotree-projectile-action)
 
 ;;; Rtags - Awesome for C/C++
 (require-package 'rtags)
@@ -623,6 +631,7 @@
 (setq exec-path (append exec-path '("/usr/local/Cellar/global/6.5/bin")))
 (setq-local imenu-create-index-function #'ggtags-build-imenu-index)
 (define-key evil-normal-state-map (kbd "SPC ag") 'ggtags-create-tags)
+(define-key evil-normal-state-map (kbd "SPC au") 'ggtags-update-tags)
 
 ;; Helm Gtags
 (require-package 'helm-gtags)
@@ -835,6 +844,24 @@
 (require-package 'ess)
 (require 'ess-site)
 (add-to-list 'auto-mode-alist '("\\.R$" . R-mode))
+;; Vertical split R shell
+(defun r-shell-here ()
+  "opens up a new r shell in the directory associated with the current buffer's file."
+  (interactive)
+  (split-window-right)
+  (other-window 1)
+  (R)
+  (other-window 1))
+;; Vertical split julia REPL
+(defun julia-shell-here ()
+  "opens up a new julia REPL in the directory associated with the current buffer's file."
+  (interactive)
+  (split-window-right)
+  (other-window 1)
+  (julia)
+  (other-window 1))
+(define-key evil-normal-state-map (kbd "SPC tr") 'r-shell-here)
+(define-key evil-normal-state-map (kbd "SPC tj") 'julia-shell-here)
 (define-key evil-normal-state-map (kbd "SPC sr") 'ess-eval-buffer)
 (define-key evil-visual-state-map (kbd "SPC sr") 'ess-eval-region)
 
@@ -870,6 +897,7 @@
   (add-to-list 'company-backends 'company-jedi))
 (add-hook 'python-mode-hook 'my/python-mode-hook)
 (define-key evil-normal-state-map (kbd "SPC jl") 'jedi:goto-definition)
+(define-key evil-normal-state-map (kbd "SPC tp") 'run-python)
 (define-key evil-normal-state-map (kbd "SPC sp") 'python-shell-send-buffer)
 (define-key evil-visual-state-map (kbd "SPC sp") 'python-shell-send-region)
 
@@ -911,6 +939,15 @@
   '(add-to-list 'matlab-shell-command-switches "-nosplash"))
 (setq matlab-shell-command "/Applications/MATLAB_R2014a.app/bin/matlab"
       matlab-indent-function t)
+;; Vertical split matlab shell
+(defun matlab-shell-here ()
+  "opens up a new matlab shell in the directory associated with the current buffer's file."
+  (interactive)
+  (split-window-right)
+  (other-window 1)
+  (matlab-shell)
+  (other-window 1))
+(define-key evil-normal-state-map (kbd "SPC tm") 'matlab-shell-here)
 (define-key evil-normal-state-map (kbd "SPC sm") 'matlab-shell-run-cell)
 (define-key evil-visual-state-map (kbd "SPC sm") 'matlab-shell-run-region)
 
@@ -965,9 +1002,7 @@
 (define-key evil-normal-state-map (kbd "SPC o") 'org-agenda)
 (define-key evil-normal-state-map (kbd "SPC -") 'org-edit-src-code)
 (define-key evil-normal-state-map (kbd "SPC =") 'org-edit-src-exit)
-(define-key evil-normal-state-map (kbd "SPC ,") 'org-narrow-to-subtree)
-(define-key evil-normal-state-map (kbd "SPC 4") 'org-preview-latex-fragment)
-(define-key evil-normal-state-map (kbd "SPC 5") 'org-toggle-inline-images)
+(define-key evil-normal-state-map (kbd "SPC ]") 'org-narrow-to-subtree)
 (define-key evil-normal-state-map (kbd "]h") 'org-metaright)
 (define-key evil-normal-state-map (kbd "[h") 'org-metaleft)
 (define-key evil-normal-state-map (kbd "]j") 'org-metadown)
@@ -978,8 +1013,8 @@
 (define-key evil-normal-state-map (kbd "[o") 'outline-previous-visible-heading)
 (define-key evil-normal-state-map (kbd "]t") 'outline-forward-same-level)
 (define-key evil-normal-state-map (kbd "[t") 'outline-backward-same-level)
-(define-key evil-normal-state-map (kbd "]b") 'org-next-block)
-(define-key evil-normal-state-map (kbd "[b") 'org-previous-block)
+(define-key evil-normal-state-map (kbd "]B") 'org-next-block)
+(define-key evil-normal-state-map (kbd "[B") 'org-previous-block)
 (define-key evil-normal-state-map (kbd "]r") 'org-table-move-row-down)
 (define-key evil-normal-state-map (kbd "[r") 'org-table-move-row-up)
 (define-key evil-normal-state-map (kbd "]c") 'org-table-move-column-right)
@@ -990,6 +1025,8 @@
 (define-key evil-normal-state-map (kbd "[l") 'org-previous-link)
 (define-key evil-normal-state-map (kbd "]u") 'org-down-element)
 (define-key evil-normal-state-map (kbd "[u") 'org-up-element)
+(define-key evil-normal-state-map (kbd "gox") 'org-preview-latex-fragment)
+(define-key evil-normal-state-map (kbd "goI") 'org-toggle-inline-images)
 (define-key evil-normal-state-map (kbd "gog") 'org-set-tags-command)
 (define-key evil-normal-state-map (kbd "goG") 'org-tags-view)
 (define-key evil-normal-state-map (kbd "goj") 'org-goto)
@@ -1007,7 +1044,7 @@
 (define-key evil-normal-state-map (kbd "gov") 'org-reveal)
 (define-key evil-normal-state-map (kbd "gof") 'org-refile)
 (define-key evil-normal-state-map (kbd "goF") 'org-refile-goto-last-stored)
-(define-key evil-normal-state-map (kbd "gox") 'org-reftex-citation)
+(define-key evil-normal-state-map (kbd "goX") 'org-reftex-citation)
 (define-key evil-normal-state-map (kbd "goa") 'org-attach)
 (define-key evil-normal-state-map (kbd "goA") 'org-archive-subtree-default)
 (define-key evil-normal-state-map (kbd "goi") 'org-clock-in)
@@ -1110,22 +1147,22 @@
 
 ;; TODO Keywords
 (setq org-todo-keywords
-           '((sequence "TODO(t)" "HOLD(h@/!)" "|" "DONE(d!)")
-             (sequence "|" "CANCELLED(c@)")))
+      '((sequence "TODO(t)" "HOLD(h@/!)" "|" "DONE(d!)")
+        (sequence "|" "CANCELLED(c@)")))
 
 ;; Links
 (setq org-link-abbrev-alist
-       '(("bugzilla"  . "http://10.1.2.9/bugzilla/show_bug.cgi?id=")
-         ("url-to-ja" . "http://translate.google.fr/translate?sl=en&tl=ja&u=%h")
-         ("google"    . "http://www.google.com/search?q=")
-         ("gmaps"      . "http://maps.google.com/maps?q=%s")))
+      '(("bugzilla"  . "http://10.1.2.9/bugzilla/show_bug.cgi?id=")
+        ("url-to-ja" . "http://translate.google.fr/translate?sl=en&tl=ja&u=%h")
+        ("google"    . "http://www.google.com/search?q=")
+        ("gmaps"      . "http://maps.google.com/maps?q=%s")))
 
 ;; Capture templates
 (setq org-capture-templates
       '(("t" "Todo" entry (file+headline "~/Dropbox/notes/tasks.org" "Tasks")
-             "* TODO %?\n  %i\n  %a")
+         "* TODO %?\n  %i\n  %a")
         ("j" "Journal" entry (file+datetree "~/Dropbox/notes/journal.org")
-             "* %?\nEntered on %U\n  %i\n  %a")))
+         "* %?\nEntered on %U\n  %i\n  %a")))
 
 ;; LaTeX
 (require-package 'cdlatex)
@@ -1172,10 +1209,10 @@
 (define-key evil-normal-state-map (kbd "SPC g") 'magit-status)
 (define-key evil-normal-state-map (kbd "gb") 'magit-blame)
 (define-key evil-normal-state-map (kbd "gz") 'magit-blame-quit)
-(define-key evil-normal-state-map (kbd "zj") 'magit-blame-next-chunk)
-(define-key evil-normal-state-map (kbd "zn") 'magit-blame-next-chunk-same-commit)
-(define-key evil-normal-state-map (kbd "zk") 'magit-blame-previous-chunk)
-(define-key evil-normal-state-map (kbd "zp") 'magit-blame-previous-chunk-same-commit)
+(define-key evil-normal-state-map (kbd "gj") 'magit-blame-next-chunk)
+(define-key evil-normal-state-map (kbd "zj") 'magit-blame-next-chunk-same-commit)
+(define-key evil-normal-state-map (kbd "gk") 'magit-blame-previous-chunk)
+(define-key evil-normal-state-map (kbd "zk") 'magit-blame-previous-chunk-same-commit)
 (define-key evil-normal-state-map (kbd "gy") 'magit-blame-copy-hash)
 (define-key evil-normal-state-map (kbd "gt") 'magit-blame-toggle-headings)
 
@@ -1195,7 +1232,7 @@
 ;; Git time-machine
 (require-package 'git-timemachine)
 (define-key evil-normal-state-map (kbd "gl") 'git-timemachine)
-(define-key evil-normal-state-map (kbd "gr") 'git-timemachine-kill-revision)
+(define-key evil-normal-state-map (kbd "zy") 'git-timemachine-kill-revision)
 (define-key evil-normal-state-map (kbd "]q") 'git-timemachine-show-next-revision)
 (define-key evil-normal-state-map (kbd "[q") 'git-timemachine-show-previous-revision)
 (define-key evil-normal-state-map (kbd "]Q") 'git-timemachine-show-nth-revision)
@@ -1204,10 +1241,21 @@
 ;; Gists
 (require-package 'yagist)
 (setq yagist-view-gist t)
-(define-key evil-normal-state-map (kbd "SPC 6") 'yagist-buffer)
-(define-key evil-visual-state-map (kbd "SPC 6") 'yagist-region)
+(define-key evil-normal-state-map (kbd "SPC sg") 'yagist-buffer)
+(define-key evil-visual-state-map (kbd "SPC sg") 'yagist-region)
 
 ;;; REPL
+
+;; Multi-term
+(require-package 'multi-term)
+;; Vertical split multi-term
+(defun multi-term-here ()
+  "opens up a new terminal in the directory associated with the current buffer's file."
+  (interactive)
+  (split-window-right)
+  (other-window 1)
+  (multi-term))
+(define-key evil-normal-state-map (kbd "SPC ts") 'multi-term-here)
 
 ;; Interact with Tmux
 (require-package 'emamux)
@@ -1231,7 +1279,7 @@
 
 ;; Quickrun
 (require-package 'quickrun)
-(define-key evil-normal-state-map (kbd "SPC 7") 'helm-quickrun)
+(define-key evil-normal-state-map (kbd "SPC 4") 'helm-quickrun)
 
 ;;; Eshell
 (setq eshell-glob-case-insensitive t
@@ -1252,17 +1300,27 @@
       eshell-review-quick-commands nil
       eshell-smart-space-goes-to-end t)
 
-;;; Project buffer management - Perspective
-(require-package 'perspective)
-(global-set-key (kbd "C-c C-p C-s") 'persp-switch)
-(global-set-key (kbd "C-c C-p C-k") 'persp-remove-buffer)
-(global-set-key (kbd "C-c C-p C-c") 'persp-kill)
-(global-set-key (kbd "C-c C-p C-r") 'persp-rename)
-(global-set-key (kbd "C-c C-p C-a") 'persp-add-buffer)
-(global-set-key (kbd "C-c C-p C-A") 'persp-set-buffer)
-(global-set-key (kbd "C-c C-p C-i") 'persp-import)
-(global-set-key (kbd "C-c C-p C-n") 'persp-next)
-(global-set-key (kbd "C-c C-p C-p") 'persp-prev)
+;; Eyebrowse mode
+(require-package 'eyebrowse)
+(setq eyebrowse-wrap-around t
+      eyebrowse-switch-back-and-forth t)
+(eyebrowse-mode t)
+(define-key evil-normal-state-map (kbd "SPC uu") 'eyebrowse-switch-to-window-config)
+(define-key evil-normal-state-map (kbd "SPC ul") 'eyebrowse-last-window-config)
+(define-key evil-normal-state-map (kbd "SPC un") 'eyebrowse-next-window-config)
+(define-key evil-normal-state-map (kbd "SPC up") 'eyebrowse-prev-window-config)
+(define-key evil-normal-state-map (kbd "SPC ur") 'eyebrowse-rename-window-config)
+(define-key evil-normal-state-map (kbd "SPC uc") 'eyebrowse-close-window-config)
+(define-key evil-normal-state-map (kbd "SPC u0") 'eyebrowse-switch-to-window-config-0)
+(define-key evil-normal-state-map (kbd "SPC u1") 'eyebrowse-switch-to-window-config-1)
+(define-key evil-normal-state-map (kbd "SPC u2") 'eyebrowse-switch-to-window-config-2)
+(define-key evil-normal-state-map (kbd "SPC u3") 'eyebrowse-switch-to-window-config-3)
+(define-key evil-normal-state-map (kbd "SPC u4") 'eyebrowse-switch-to-window-config-4)
+(define-key evil-normal-state-map (kbd "SPC u5") 'eyebrowse-switch-to-window-config-5)
+(define-key evil-normal-state-map (kbd "SPC u6") 'eyebrowse-switch-to-window-config-6)
+(define-key evil-normal-state-map (kbd "SPC u7") 'eyebrowse-switch-to-window-config-7)
+(define-key evil-normal-state-map (kbd "SPC u8") 'eyebrowse-switch-to-window-config-8)
+(define-key evil-normal-state-map (kbd "SPC u9") 'eyebrowse-switch-to-window-config-9)
 
 ;;; Wrap up
 
@@ -1330,6 +1388,7 @@
     (evil-snipe-local-mode . "")
     (evil-mc-mode . "")
     (evil-commentary-mode . "")
+    (eyebrowse-mode . "")
     (helm-mode . "")
     (ws-butler-mode . "")
     (org-cdlatex-mode . "")

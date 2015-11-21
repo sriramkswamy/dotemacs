@@ -30,8 +30,20 @@
       (package-refresh-contents))
     (package-install package)))
 
-;; Paradox for package
+;;; Evil - Just can't live without this
+(require-package 'evil)
+(setq evil-want-C-u-scroll t)
+(require 'evil)
+(setq evil-default-cursor t
+      evil-want-C-u-scroll t)
+(evil-mode 1)
+;; Specify evil initial states
+(evil-set-initial-state 'dired-mode 'emacs)
+(evil-set-initial-state 'paradox-menu-mode 'emacs)
+
+;;; Paradox for package
 (require-package 'paradox)
+(define-key evil-normal-state-map (kbd "SPC al") 'paradox-list-packages)
 (setq paradox-github-token t)
 
 ;; Get the proper path
@@ -150,35 +162,11 @@
       guide-key/guide-key-sequence '("SPC" "\\" "g" "z" "[" "]"  "C" "C-x" "C-c" "C-h"))
 (guide-key-mode 1)
 
-;;; Evil - Vim emulation
-
-;; Escape...escapes things
-(defun minibuffer-keyboard-quit ()
-  "Abort recursive edit.
-   In Delete Selection mode, if the mark is active, just deactivate it;
-   then it takes a second \\[keyboard-quit] to abort the minibuffer."
-  (interactive)
-  (if (and delete-selection-mode transient-mark-mode mark-active)
-      (setq deactivate-mark  t)
-    (when (get-buffer "*Completions*") (delete-windows-on "*Completions*"))
-    (abort-recursive-edit)))
-
-(require-package 'evil)
-(setq evil-want-C-u-scroll t)
-(require 'evil)
-(setq evil-default-cursor t
-      evil-want-C-u-scroll t)
-(evil-mode 1)
-;; Specify evil initial states
-(evil-set-initial-state 'git-commit-mode 'insert)
-(evil-set-initial-state 'dired-mode 'emacs)
-(evil-set-initial-state 'paradox-menu-mode 'emacs)
-(evil-set-initial-state 'undo-tree-mode 'emacs)
+;;; Evil - Vim emulation - Continued
 
 ;; Escape for everything
 (define-key evil-normal-state-map [escape] 'keyboard-quit)
 (define-key evil-visual-state-map [escape] 'keyboard-quit)
-(define-key evil-emacs-state-map [escape] 'evil-exit-emacs-state)
 ;; Maps
 (define-key evil-normal-state-map (kbd "j") 'evil-next-visual-line)
 (define-key evil-normal-state-map (kbd "k") 'evil-previous-visual-line)
@@ -193,6 +181,10 @@
 (define-key evil-normal-state-map (kbd "BS") 'evil-scroll-up)
 (define-key evil-normal-state-map (kbd "+") 'eshell-vertical)
 (define-key evil-normal-state-map (kbd "-") 'eshell-horizontal)
+(define-key evil-normal-state-map (kbd "]W") 'enlarge-window)
+(define-key evil-normal-state-map (kbd "[W") 'shrink-window)
+(define-key evil-normal-state-map (kbd "]w") 'enlarge-window-horizontally)
+(define-key evil-normal-state-map (kbd "[w") 'shrink-window-horizontally)
 (define-key evil-normal-state-map (kbd "SPC q") 'evil-quit)
 (define-key evil-normal-state-map (kbd "SPC w") 'save-buffer)
 (define-key evil-normal-state-map (kbd "SPC k") 'kill-buffer)
@@ -205,12 +197,13 @@
 (define-key evil-normal-state-map (kbd "SPC [") 'widen)
 (define-key evil-normal-state-map (kbd "SPC se") 'eval-buffer)
 (define-key evil-normal-state-map (kbd "SPC as") 'flyspell-mode)
-(define-key evil-normal-state-map (kbd "SPC al") 'whitespace-mode)
+(define-key evil-normal-state-map (kbd "SPC ai") 'whitespace-mode)
 (define-key evil-normal-state-map (kbd "SPC an") 'linum-mode)
 (define-key evil-normal-state-map (kbd "SPC aw") 'toggle-truncate-lines)
 (define-key evil-normal-state-map (kbd "SPC ab") 'display-battery-mode)
 (define-key evil-normal-state-map (kbd "SPC at") 'display-time-mode)
 (define-key evil-normal-state-map (kbd "SPC ap") 'package-install)
+(define-key evil-normal-state-map (kbd "SPC af") 'set-frame-font)
 (define-key evil-visual-state-map (kbd "SPC ]") 'narrow-to-region)
 (define-key evil-visual-state-map (kbd "SPC se") 'eval-region)
 (define-key evil-visual-state-map (kbd "SPC an") 'delete-non-matching-lines)

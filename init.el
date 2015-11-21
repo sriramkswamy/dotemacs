@@ -94,6 +94,7 @@
 
 ;; Themes
 (require-package 'color-theme-modern)
+(require-package 'zenburn-theme)
 (load-theme 'leuven t t)
 (enable-theme 'leuven)
 
@@ -172,7 +173,7 @@
 (evil-set-initial-state 'git-commit-mode 'insert)
 (evil-set-initial-state 'dired-mode 'emacs)
 (evil-set-initial-state 'paradox-menu-mode 'emacs)
-(evil-set-initial-state 'pdf-view-mode 'emacs)
+(evil-set-initial-state 'undo-tree-mode 'emacs)
 
 ;; Escape for everything
 (define-key evil-normal-state-map [escape] 'keyboard-quit)
@@ -209,8 +210,10 @@
 (define-key evil-normal-state-map (kbd "SPC aw") 'toggle-truncate-lines)
 (define-key evil-normal-state-map (kbd "SPC ab") 'display-battery-mode)
 (define-key evil-normal-state-map (kbd "SPC at") 'display-time-mode)
+(define-key evil-normal-state-map (kbd "SPC ap") 'package-install)
 (define-key evil-visual-state-map (kbd "SPC ]") 'narrow-to-region)
 (define-key evil-visual-state-map (kbd "SPC se") 'eval-region)
+(define-key evil-visual-state-map (kbd "SPC an") 'delete-non-matching-lines)
 (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
 (define-key evil-insert-state-map (kbd "C-u") 'universal-argument)
 
@@ -970,7 +973,7 @@
 (define-key evil-normal-state-map (kbd "SPC -") 'org-edit-src-code)
 (define-key evil-normal-state-map (kbd "SPC =") 'org-edit-src-exit)
 (define-key evil-normal-state-map (kbd "SPC ,") 'org-narrow-to-subtree)
-(define-key evil-normal-state-map (kbd "SPC 4") 'org-toggle-latex-fragment)
+(define-key evil-normal-state-map (kbd "SPC 4") 'org-preview-latex-fragment)
 (define-key evil-normal-state-map (kbd "SPC 5") 'org-toggle-inline-images)
 (define-key evil-normal-state-map (kbd "]h") 'org-metaright)
 (define-key evil-normal-state-map (kbd "[h") 'org-metaleft)
@@ -1130,6 +1133,10 @@
              "* TODO %?\n  %i\n  %a")
         ("j" "Journal" entry (file+datetree "~/Dropbox/notes/journal.org")
              "* %?\nEntered on %U\n  %i\n  %a")))
+
+;; LaTeX
+(require-package 'cdlatex)
+(add-hook 'org-mode-hook 'org-cdlatex-mode)
 
 ;; Pomodoro
 (require-package 'org-pomodoro)
@@ -1307,6 +1314,17 @@
 (require-package 'ws-butler)
 (ws-butler-global-mode)
 
+;; Indent guides
+(require-package 'indent-guide)
+(define-key evil-normal-state-map (kbd "SPC ai") 'indent-guide-mode)
+
+;; Region information
+(require-package 'region-state)
+(region-state-mode)
+
+;; Fonts
+(set-frame-font "Monaco")
+
 ;; Restart Emacs from Emacs
 (require-package 'restart-emacs)
 
@@ -1321,6 +1339,7 @@
     (evil-commentary-mode . "")
     (helm-mode . "")
     (ws-butler-mode . "")
+    (org-cdlatex-mode . "")
     (subword-mode . "")
     (helm-gtags-mode . "")
     (volatile-highlights-mode . "")

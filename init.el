@@ -38,6 +38,7 @@
 ;; Specify evil initial states
 (evil-set-initial-state 'dired-mode 'emacs)
 (evil-set-initial-state 'paradox-menu-mode 'emacs)
+(evil-set-initial-state 'calendar-mode 'emacs)
 
 ;;; Paradox for package
 (require-package 'paradox)
@@ -160,6 +161,10 @@
       guide-key/popup-window-position 'bottom
       guide-key/guide-key-sequence '("SPC" "\\" "g" "z" "[" "]"  "C" "C-x" "C-c" "C-h"))
 (guide-key-mode 1)
+
+;; OS clipboard
+(require-package 'simpleclip)
+(simpleclip-mode 1)
 
 ;;; Evil - Vim emulation - Continued
 ;; Escape for everything
@@ -648,6 +653,7 @@
       jabber-use-global-history nil
       jabber-backlog-number 40
       jabber-backlog-days 30)
+(define-key evil-normal-state-map (kbd "SPC aj") 'jabber-connect)
 
 ;; Google under point
 (require-package 'google-this)
@@ -836,6 +842,7 @@
 (add-hook 'term-mode-hook 'force-yasnippet-off)
 (add-hook 'shell-mode-hook 'force-yasnippet-off)
 (yas-global-mode)
+(define-key evil-normal-state-map (kbd "SPC ay") 'yas-minor-mode)
 (define-key evil-insert-state-map (kbd "C-j") 'yas-insert-snippet)
 
 ;;; Language and Syntax
@@ -1163,6 +1170,9 @@
          "* TODO %?\n  %i\n  %a")
         ("j" "Journal" entry (file+datetree "~/Dropbox/notes/journal.org")
          "* %?\nEntered on %U\n  %i\n  %a")))
+
+;; Calendar
+(require-package 'org-caldav)
 
 ;; LaTeX
 (require-package 'cdlatex)

@@ -54,6 +54,8 @@
 ;;; GUI
 ;; No welcome screen - opens directly in scratch buffer
 (setq inhibit-startup-message t
+      initial-scratch-message ""
+      visible-bell nil
       inhibit-splash-screen t)
 
 ;; No toolbar and scrollbar. Menubar only in GUI.
@@ -107,6 +109,7 @@
 ;; Themes
 (require-package 'color-theme-modern)
 (require-package 'zenburn-theme)
+(require-package 'gruvbox-theme)
 (load-theme 'leuven t t)
 (enable-theme 'leuven)
 
@@ -166,6 +169,60 @@
 (require-package 'simpleclip)
 (simpleclip-mode 1)
 
+;; Move lines - from stack overflow
+(defun move-text-internal (arg)
+  (cond
+   ((and mark-active transient-mark-mode)
+    (if (> (point) (mark))
+        (exchange-point-and-mark))
+    (let ((column (current-column))
+          (text (delete-and-extract-region (point) (mark))))
+      (forward-line arg)
+      (move-to-column column t)
+      (set-mark (point))
+      (insert text)
+      (exchange-point-and-mark)
+      (setq deactivate-mark nil)))
+   (t
+    (let ((column (current-column)))
+      (beginning-of-line)
+      (when (or (> arg 0) (not (bobp)))
+        (forward-line)
+        (when (or (< arg 0) (not (eobp)))
+          (transpose-lines arg)
+          (when (and (eval-when-compile
+                       '(and (>= emacs-major-version 24)
+                             (>= emacs-minor-version 3)))
+                     (< arg 0))
+            (forward-line -1)))
+        (forward-line -1))
+      (move-to-column column t)))))
+(defun move-text-down (arg)
+  "Move region (transient-mark-mode active) or current line
+  arg lines down."
+  (interactive "*p")
+  (move-text-internal arg))
+(defun move-text-up (arg)
+  "Move region (transient-mark-mode active) or current line
+  arg lines up."
+  (interactive "*p")
+  (move-text-internal (- arg)))
+(define-key evil-normal-state-map (kbd "]x") 'move-text-down)
+(define-key evil-normal-state-map (kbd "[x") 'move-text-up)
+
+;; Inserting blank lines above and below - should do some mark trickery
+(defun blank-line-up ()
+  (interactive)
+  (move-beginning-of-line nil)
+  (newline))
+(defun blank-line-down ()
+  (interactive)
+  (move-end-of-line nil)
+  (newline)
+  (forward-line -1))
+(define-key evil-normal-state-map (kbd "]n") 'blank-line-down)
+(define-key evil-normal-state-map (kbd "[n") 'blank-line-up)
+
 ;;; Evil - Vim emulation - Continued
 ;; Escape for everything
 (define-key evil-normal-state-map [escape] 'keyboard-quit)
@@ -197,6 +254,7 @@
 (define-key evil-normal-state-map (kbd "SPC f") 'find-file)
 (define-key evil-normal-state-map (kbd "SPC [") 'widen)
 (define-key evil-normal-state-map (kbd "SPC ;") 'evil-ex)
+(define-key evil-normal-state-map (kbd "SPC 3") 'select-frame-by-name)
 (define-key evil-normal-state-map (kbd "SPC DEL") 'whitespace-cleanup)
 (define-key evil-normal-state-map (kbd "SPC se") 'eval-buffer)
 (define-key evil-normal-state-map (kbd "SPC as") 'flyspell-mode)
@@ -488,7 +546,6 @@
 (define-key evil-normal-state-map (kbd "K") 'helm-man-woman)
 (define-key evil-normal-state-map (kbd "SPC 9") 'helm-google-suggest)
 (define-key evil-normal-state-map (kbd "SPC 6") 'helm-calcul-expression)
-(define-key evil-normal-state-map (kbd "SPC 3") 'helm-org-in-buffer-headings)
 (define-key evil-normal-state-map (kbd "SPC '") 'helm-all-mark-rings)
 (define-key evil-insert-state-map (kbd "C-l") 'helm-M-x)
 
@@ -643,8 +700,8 @@
 (helm-gtags-mode 1)
 ;; Tags using appropriate methods
 (define-key evil-normal-state-map (kbd "T") 'helm-gtags-select)
-(define-key evil-normal-state-map (kbd "SPC jk") 'helm-gtags-find-rtag)
-(define-key evil-normal-state-map (kbd "SPC jj") 'helm-gtags-dwim)
+(define-key evil-normal-state-map (kbd "SPC jr") 'helm-gtags-find-rtag)
+(define-key evil-normal-state-map (kbd "SPC jt") 'helm-gtags-dwim)
 
 ;;; Interact with OS services
 ;; Jabber
@@ -871,6 +928,9 @@
 (define-key evil-normal-state-map (kbd "SPC tj") 'julia-shell-here)
 (define-key evil-normal-state-map (kbd "SPC sr") 'ess-eval-buffer)
 (define-key evil-visual-state-map (kbd "SPC sr") 'ess-eval-region)
+;; For Julia - intuitive
+(define-key evil-normal-state-map (kbd "SPC sj") 'ess-eval-buffer)
+(define-key evil-visual-state-map (kbd "SPC sj") 'ess-eval-region)
 
 ;; Lisp
 (require-package 'paredit)
@@ -896,17 +956,21 @@
 (require-package 'pandoc-mode)
 (add-hook 'markdown-mode-hook 'pandoc-mode)
 
-;; Jedi+Company for Python mode
-(require-package 'jedi)
-(require-package 'company-jedi)
-(defun my/python-mode-hook ()
-  (jedi:setup)
-  (add-to-list 'company-backends 'company-jedi))
-(add-hook 'python-mode-hook 'my/python-mode-hook)
-(define-key evil-normal-state-map (kbd "SPC jl") 'jedi:goto-definition)
-(define-key evil-normal-state-map (kbd "SPC tp") 'run-python)
-(define-key evil-normal-state-map (kbd "SPC sp") 'python-shell-send-buffer)
-(define-key evil-visual-state-map (kbd "SPC sp") 'python-shell-send-region)
+;; Highlight indentation
+(require-package 'highlight-indentation)
+(define-key evil-normal-state-map (kbd "SPC ai") 'highlight-indentation-mode)
+
+;; Elpy
+(require-package 'elpy)
+(elpy-enable)
+(elpy-use-ipython)
+(define-key evil-normal-state-map (kbd "SPC jd") 'elpy-goto-definition)
+(define-key evil-normal-state-map (kbd "SPC jl") 'elpy-goto-location)
+(define-key evil-normal-state-map (kbd "SPC tp") 'elpy-shell-switch-to-shell)
+(define-key evil-normal-state-map (kbd "SPC sf") 'python-shell-send-defun)
+(define-key evil-normal-state-map (kbd "SPC sl") 'elpy-shell-send-current-statement)
+(define-key evil-normal-state-map (kbd "SPC sp") 'elpy-shell-send-region-or-buffer)
+(define-key evil-visual-state-map (kbd "SPC sp") 'elpy-shell-send-region-or-buffer)
 
 ;; Cython mode
 (require-package 'cython-mode)
@@ -1375,10 +1439,6 @@
 (require-package 'ws-butler)
 (ws-butler-global-mode)
 
-;; Indent guides
-(require-package 'indent-guide)
-(define-key evil-normal-state-map (kbd "SPC ai") 'indent-guide-mode)
-
 ;; Region information
 (require-package 'region-state)
 (region-state-mode)
@@ -1400,6 +1460,7 @@
     (evil-commentary-mode . "")
     (eyebrowse-mode . "")
     (helm-mode . "")
+    (elpy-mode . "")
     (ws-butler-mode . "")
     (org-cdlatex-mode . "")
     (subword-mode . "")

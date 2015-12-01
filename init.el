@@ -245,12 +245,6 @@
 (define-key evil-normal-state-map (kbd "gl") 'browse-url-at-point)
 (define-key evil-normal-state-map (kbd "gL") 'browse-url-at-mouse)
 (define-key evil-normal-state-map (kbd "gF") 'set-frame-name)
-(define-key evil-normal-state-map (kbd "]F") 'make-frame)
-(define-key evil-normal-state-map (kbd "[F") 'delete-frame)
-(define-key evil-normal-state-map (kbd "]W") 'enlarge-window)
-(define-key evil-normal-state-map (kbd "[W") 'shrink-window)
-(define-key evil-normal-state-map (kbd "]w") 'enlarge-window-horizontally)
-(define-key evil-normal-state-map (kbd "[w") 'shrink-window-horizontally)
 (define-key evil-normal-state-map (kbd "SPC q") 'evil-quit)
 (define-key evil-normal-state-map (kbd "SPC w") 'save-buffer)
 (define-key evil-normal-state-map (kbd "SPC k") 'kill-buffer)
@@ -1085,10 +1079,10 @@
 ;;; Flycheck
 (require-package 'flycheck)
 (add-hook 'after-init-hook #'global-flycheck-mode)
-(define-key evil-normal-state-map (kbd "]e") 'flycheck-next-error)
-(define-key evil-normal-state-map (kbd "[e") 'flycheck-previous-error)
-(define-key evil-normal-state-map (kbd "]E") 'flycheck-last-checker)
-(define-key evil-normal-state-map (kbd "[E") 'flycheck-first-error)
+(define-key evil-normal-state-map (kbd "]l") 'flycheck-next-error)
+(define-key evil-normal-state-map (kbd "[l") 'flycheck-previous-error)
+(define-key evil-normal-state-map (kbd "]L") 'flycheck-last-checker)
+(define-key evil-normal-state-map (kbd "[L") 'flycheck-first-error)
 
 ;; Irony for flycheck
 (require-package 'flycheck-irony)
@@ -1276,8 +1270,8 @@
 (add-hook 'org-mode-hook 'diff-hl-mode)
 (diff-hl-margin-mode)
 (diff-hl-flydiff-mode)
-(define-key evil-normal-state-map (kbd "]d") 'diff-hl-next-hunk)
-(define-key evil-normal-state-map (kbd "[d") 'diff-hl-previous-hunk)
+(define-key evil-normal-state-map (kbd "]c") 'diff-hl-next-hunk)
+(define-key evil-normal-state-map (kbd "[c") 'diff-hl-previous-hunk)
 (define-key evil-normal-state-map (kbd "gh") 'diff-hl-revert-hunk)
 
 ;; Git time-machine

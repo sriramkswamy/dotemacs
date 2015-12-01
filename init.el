@@ -162,7 +162,7 @@
 (setq guide-key/idle-delay 0.5
       guide-key/recursive-key-sequence-flag t
       guide-key/popup-window-position 'bottom
-      guide-key/guide-key-sequence '("SPC" "\\" "g" "z" "[" "]"  "C" "C-x" "C-c" "C-h"))
+      guide-key/guide-key-sequence '("SPC" "\\" "g" "z" "[" "]" "C-x" "C-c" "C-h"))
 (guide-key-mode 1)
 
 ;; OS clipboard
@@ -236,26 +236,34 @@
 (define-key evil-normal-state-map (kbd "w") 'split-window-horizontally)
 (define-key evil-normal-state-map (kbd "W") 'split-window-vertically)
 (define-key evil-normal-state-map (kbd "U") 'undo-tree-visualize)
+(define-key evil-normal-state-map (kbd "K") 'man)
 (define-key evil-normal-state-map (kbd "RET") 'evil-scroll-down)
 (define-key evil-normal-state-map (kbd "DEL") 'evil-scroll-up)
 (define-key evil-normal-state-map (kbd "+") 'eshell-vertical)
 (define-key evil-normal-state-map (kbd "-") 'eshell-horizontal)
 (define-key evil-normal-state-map (kbd "gs") 'electric-newline-and-maybe-indent)
+(define-key evil-normal-state-map (kbd "gl") 'browse-url-at-point)
+(define-key evil-normal-state-map (kbd "gL") 'browse-url-at-mouse)
+(define-key evil-normal-state-map (kbd "gF") 'set-frame-name)
+(define-key evil-normal-state-map (kbd "]F") 'make-frame)
+(define-key evil-normal-state-map (kbd "[F") 'delete-frame)
 (define-key evil-normal-state-map (kbd "]W") 'enlarge-window)
 (define-key evil-normal-state-map (kbd "[W") 'shrink-window)
 (define-key evil-normal-state-map (kbd "]w") 'enlarge-window-horizontally)
 (define-key evil-normal-state-map (kbd "[w") 'shrink-window-horizontally)
-(define-key evil-normal-state-map (kbd "]b") 'evil-next-buffer)
-(define-key evil-normal-state-map (kbd "[b") 'evil-prev-buffer)
 (define-key evil-normal-state-map (kbd "SPC q") 'evil-quit)
 (define-key evil-normal-state-map (kbd "SPC w") 'save-buffer)
 (define-key evil-normal-state-map (kbd "SPC k") 'kill-buffer)
 (define-key evil-normal-state-map (kbd "SPC z") 'toggle-frame-fullscreen-non-native)
 (define-key evil-normal-state-map (kbd "SPC f") 'find-file)
+(define-key evil-normal-state-map (kbd "SPC m") 'compile)
 (define-key evil-normal-state-map (kbd "SPC [") 'widen)
 (define-key evil-normal-state-map (kbd "SPC ;") 'evil-ex)
 (define-key evil-normal-state-map (kbd "SPC 3") 'select-frame-by-name)
 (define-key evil-normal-state-map (kbd "SPC DEL") 'whitespace-cleanup)
+(define-key evil-normal-state-map (kbd "SPC ,") 'describe-bindings)
+(define-key evil-visual-state-map (kbd "SPC ]") 'narrow-to-region)
+(define-key evil-normal-state-map (kbd "SPC 6") 'quick-calc)
 (define-key evil-normal-state-map (kbd "SPC se") 'eval-buffer)
 (define-key evil-normal-state-map (kbd "SPC as") 'flyspell-mode)
 (define-key evil-normal-state-map (kbd "SPC ai") 'whitespace-mode)
@@ -265,7 +273,6 @@
 (define-key evil-normal-state-map (kbd "SPC at") 'display-time-mode)
 (define-key evil-normal-state-map (kbd "SPC ap") 'package-install)
 (define-key evil-normal-state-map (kbd "SPC af") 'set-frame-font)
-(define-key evil-visual-state-map (kbd "SPC ]") 'narrow-to-region)
 (define-key evil-visual-state-map (kbd "SPC se") 'eval-region)
 (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
 
@@ -282,6 +289,10 @@
 (define-key evil-visual-state-map (kbd "<right>") 'evil-window-right)
 (define-key evil-visual-state-map (kbd "<up>") 'evil-window-up)
 (define-key evil-visual-state-map (kbd "<down>") 'evil-window-down)
+(define-key evil-insert-state-map (kbd "<left>") 'evil-window-left)
+(define-key evil-insert-state-map (kbd "<right>") 'evil-window-right)
+(define-key evil-insert-state-map (kbd "<up>") 'evil-window-up)
+(define-key evil-insert-state-map (kbd "<down>") 'evil-window-down)
 
 ;; Evil surround
 (require-package 'evil-surround)
@@ -330,6 +341,14 @@
 ;; Evil commentary
 (require-package 'evil-commentary)
 (evil-commentary-mode)
+
+;; Vimish fold - arbitrary folding
+(require-package 'vimish-fold)
+(define-key evil-normal-state-map (kbd "zf") 'vimish-fold)
+(define-key evil-normal-state-map (kbd "zu") 'vimish-fold-delete)
+(define-key evil-normal-state-map (kbd "zg") 'vimish-fold-toggle)
+(define-key evil-normal-state-map (kbd "]v") 'vimish-fold-next-fold)
+(define-key evil-normal-state-map (kbd "[v") 'vimish-fold-previous-fold)
 
 ;; Evil exchange
 (require-package 'evil-exchange)
@@ -469,13 +488,13 @@
 
 ;;; Navigation
 
-;; Flx
-(require-package 'flx)
+;; Enable recentf mode
+(recentf-mode)
 
-;; Flx with helm and company
-(require-package 'helm-flx)
-(helm-flx-mode +1)
-(require-package 'company-flx)
+;; Ido and Flx
+(require-package 'flx)
+(require-package 'flx-ido)
+(require-package 'ido-completing-read+)
 
 ;; No backups
 (setq make-backup-files nil
@@ -497,158 +516,79 @@
 (define-key evil-normal-state-map (kbd "SPC h") 'avy-goto-line)
 (define-key evil-visual-state-map (kbd "SPC h") 'avy-goto-line)
 
-;;; Helm
-(require-package 'helm)
-(setq helm-split-window-in-side-p t
-      helm-autoresize-max-height 30
-      helm-autoresize-min-height 30
-      helm-M-x-fuzzy-match t
-      helm-bookmark-show-location t
-      helm-buffers-fuzzy-matching t
-      helm-completion-in-region-fuzzy-match t
-      helm-file-cache-fuzzy-match t
-      helm-imenu-fuzzy-match t
-      helm-mode-fuzzy-match t
-      helm-locate-fuzzy-match nil
-      helm-quick-update t
-      helm-recentf-fuzzy-match t
-      helm-semantic-fuzzy-match t
-      helm-echo-input-in-header-line t)
-;; Search integration
-(when (executable-find "ack-grep")
-  (setq helm-grep-default-command "ack-grep -Hn --no-group --no-color %e %p %f"
-        helm-grep-default-recurse-command "ack-grep -H --no-group --no-color %e %p %f"))
-(when (executable-find "ag-grep")
-  (setq helm-grep-default-command "ag-grep -Hn --no-group --no-color %e %p %f"
-        helm-grep-default-recurse-command "ag-grep -H --no-group --no-color %e %p %f"))
-(helm-mode 1)
-(helm-autoresize-mode 1)
-;; Add helm sources
-(add-to-list 'helm-sources-using-default-as-input 'helm-source-man-pages)
-;; Helm persistent action
-(define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
-(define-key helm-map (kbd "C-i") 'helm-execute-persistent-action)
-;; Maps
-(global-set-key (kbd "C-s") 'helm-occur)
-(global-set-key (kbd "C-r") 'helm-occur)
-(global-set-key (kbd "M-x") 'helm-M-x)
-(global-set-key (kbd "C-x C-m") 'helm-M-x)
-(define-key evil-normal-state-map (kbd "SPC d") 'helm-M-x)
-(define-key evil-visual-state-map (kbd "SPC d") 'helm-M-x)
-(define-key evil-normal-state-map (kbd "SPC x") 'helm-apropos)
-(define-key evil-normal-state-map (kbd "SPC r") 'helm-mini)
-(define-key evil-normal-state-map (kbd "SPC `") 'helm-bookmarks)
-(define-key evil-normal-state-map (kbd "SPC .") 'helm-resume)
-(define-key evil-normal-state-map (kbd "SPC y") 'helm-show-kill-ring)
-(define-key evil-normal-state-map (kbd "SPC /") 'helm-locate)
-(define-key evil-normal-state-map (kbd "SPC SPC") 'helm-occur)
-(define-key evil-normal-state-map (kbd "t") 'helm-semantic-or-imenu)
-(define-key evil-normal-state-map (kbd "K") 'helm-man-woman)
-(define-key evil-normal-state-map (kbd "SPC 9") 'helm-google-suggest)
-(define-key evil-normal-state-map (kbd "SPC 6") 'helm-calcul-expression)
-(define-key evil-normal-state-map (kbd "SPC '") 'helm-all-mark-rings)
-(define-key evil-insert-state-map (kbd "C-l") 'helm-M-x)
+;;; Smex
+(require-package 'smex)
+(global-set-key (kbd "M-x") 'smex)
+(global-set-key (kbd "C-x C-m") 'smex)
+(define-key evil-normal-state-map (kbd "SPC d") 'smex)
+(define-key evil-visual-state-map (kbd "SPC d") 'smex)
+(define-key evil-insert-state-map (kbd "C-l") 'smex)
 
-;; Hide minibuffer when using helm input header line
-(defun helm-hide-minibuffer-maybe ()
-  (when (with-helm-buffer helm-echo-input-in-header-line)
-    (let ((ov (make-overlay (point-min) (point-max) nil nil t)))
-      (overlay-put ov 'window (selected-window))
-      (overlay-put ov 'face (let ((bg-color (face-background 'default nil)))
-                              `(:background ,bg-color :foreground ,bg-color)))
-      (setq-local cursor-type nil))))
-(add-hook 'helm-minibuffer-set-up-hook 'helm-hide-minibuffer-maybe)
+;;; Swiper (with Ivy and counsel)
+(require-package 'swiper)
+(require-package 'counsel)
+(ivy-mode 1)
+(global-set-key (kbd "C-s") 'swiper)
+(global-set-key (kbd "C-r") 'swiper)
+(define-key evil-normal-state-map (kbd "t") 'imenu)
+(define-key evil-normal-state-map (kbd "SPC SPC") 'swiper)
+(define-key evil-normal-state-map (kbd "SPC v") 'swiper-all)
+(define-key evil-normal-state-map (kbd "SPC r") 'ivy-recentf)
+(define-key evil-normal-state-map (kbd "SPC u") 'ivy-switch-buffer)
+(define-key evil-normal-state-map (kbd "SPC y") 'counsel-yank-pop)
+(define-key evil-normal-state-map (kbd "SPC c") 'counsel-load-theme)
+(define-key evil-normal-state-map (kbd "SPC .") 'ivy-resume)
+(define-key evil-normal-state-map (kbd "SPC /") 'counsel-locate)
+(define-key evil-normal-state-map (kbd "SPC xf") 'counsel-describe-function)
+(define-key evil-normal-state-map (kbd "SPC xv") 'counsel-describe-variable)
+(define-key evil-insert-state-map (kbd "C-k") 'counsel-unicode-char)
+(define-key evil-insert-state-map (kbd "C-d") 'flyspell-correct-word)
+
+;;; Hydra
+(require-package 'hydra)
+(defhydra hydra-marks (:color red
+                       :hint nil)
+  "All marks"
+  ("s" bookmark-set "set bookmark")
+  ("S" bookmark-save "save bookmark")
+  ("j" bookmark-jump "jump to bookmark")
+  ("d" bookmark-delete "delete bookmark")
+  ("m" pop-global-mark "mark ring")
+  ("q" nil "quit hydra" :color blue))
+(define-key evil-normal-state-map (kbd "SPC `") 'hydra-marks/body)
 
 ;;; Ag
-(require-package 'helm-ag)
-(setq helm-ag-base-command "ag --nocolor --nogroup --ignore-case"
-      helm-ag-command-option "--all-text"
-      helm-ag-use-agignore t
-      helm-ag-insert-at-point 'symbol)
-(define-key evil-normal-state-map (kbd "SPC e") 'helm-do-ag-project-root)
-(define-key evil-visual-state-map (kbd "SPC e") 'helm-do-ag-project-root)
+(require-package 'ag)
+(define-key evil-normal-state-map (kbd "SPC e") 'ag-project-regexp)
+(define-key evil-visual-state-map (kbd "SPC e") 'ag-project-regexp)
 
-;; ;; Helm swoop
-(require-package 'helm-swoop)
-(define-key evil-normal-state-map (kbd "SPC i") 'helm-swoop)
-(define-key evil-visual-state-map (kbd "SPC i") 'helm-swoop)
-(define-key evil-normal-state-map (kbd "SPC b") 'helm-multi-swoop-all)
+;;; wgrep-ag
+(require-package 'wgrep-ag)
 
-;; Helm describe-bindings
-(require-package 'helm-descbinds)
-(define-key evil-normal-state-map (kbd "SPC ,") 'helm-descbinds)
+;; Find file in project
+(require-package 'find-file-in-project)
+(define-key evil-normal-state-map (kbd "SPC p") 'find-file-in-project)
+(define-key evil-normal-state-map (kbd "SPC TAB") 'ff-find-other-file)
 
-;; Helm to open colorschemes
-(require-package 'helm-themes)
-(define-key evil-normal-state-map (kbd "SPC v") 'helm-themes)
+;;; Swoop
+(require-package 'swoop)
+(require 'swoop)
+(define-key evil-normal-state-map (kbd "SPC i") 'swoop-pcre-regexp)
+(define-key evil-visual-state-map (kbd "SPC i") 'swoop-pcre-regexp)
 
-;; Helm for citations
-(require-package 'helm-bibtex)
-
-;; Helm unicode
-(require-package 'helm-unicode)
-(define-key evil-insert-state-map (kbd "C-k") 'helm-unicode)
-
-;; Dictionary
-(require-package 'helm-flyspell)
-(define-key evil-insert-state-map (kbd "C-d") 'helm-flyspell-correct)
-
-;; Browse offline documentation - code courtesy http://jwintz.me/blog/
-(require-package 'helm-dash)
-(setq helm-dash-browser-func 'eww
-      helm-dash-docsets-path "~/.emacs.d/docsets"
-      helm-dash-min-length 2)
-(defun custom-dash-docset-path (docset)
-  (if (string= docset "Python_2")
-      (concat (concat helm-dash-docsets-path "/") "Python 2.docset")
-    (if (string= docset "Python_3")
-        (concat (concat helm-dash-docsets-path "/") "Python 3.docset")
-      (if (string= docset "Bootstrap_4")
-          (concat (concat helm-dash-docsets-path "/") "Bootstrap 4.docset")
-        (if (string= docset "Emacs_Lisp")
-            (concat (concat helm-dash-docsets-path "/") "Emacs Lisp.docset")
-          (concat
-           (concat
-            (concat
-             (concat helm-dash-docsets-path "/")
-             (nth 0 (split-string docset "_")))) ".docset"))))))
-(defun custom-dash-install (docset)
-  (unless (file-exists-p (custom-dash-docset-path docset))
-    (helm-dash-install-docset docset)))
-(custom-dash-install "C++")
-(custom-dash-install "Boost")
-(custom-dash-install "C")
-(custom-dash-install "CMake")
-(custom-dash-install "Python_2")
-(custom-dash-install "Python_3")
-(custom-dash-install "NumPy")
-(custom-dash-install "SciPy")
-(custom-dash-install "Matplotlib")
-(custom-dash-install "Pandas")
-(custom-dash-install "MATLAB")
-(custom-dash-install "Julia")
-(custom-dash-install "R")
-(custom-dash-install "LaTeX")
-(custom-dash-install "Markdown")
-(custom-dash-install "Java_EE7")
-(custom-dash-install "Java_SE8")
-(custom-dash-install "HTML")
-(custom-dash-install "Bootstrap_4")
-(custom-dash-install "CSS")
-(custom-dash-install "JavaScript")
-(custom-dash-install "jQuery")
-(setq helm-dash-common-docsets '("C++" "Boost" "Python 2" "NumPy" "Matplotlib"))
-(define-key evil-normal-state-map (kbd "SPC 1") 'helm-dash)
-(define-key evil-normal-state-map (kbd "SPC ad") 'helm-dash-activate-docset)
-
-;; System processes
-(require-package 'helm-proc)
+;;; Dash at point
+(require-package 'dash-at-point)
+(define-key evil-normal-state-map (kbd "SPC 1") 'dash-at-point-with-docset)
 
 ;;; Visual regexp
 (require-package 'visual-regexp)
 (require-package 'visual-regexp-steroids)
 (define-key evil-normal-state-map (kbd "SPC 5") 'vr/select-query-replace)
 (define-key evil-visual-state-map (kbd "SPC 5") 'vr/select-query-replace)
+
+;;; Spotlight
+(require-package 'spotlight)
+(define-key evil-normal-state-map (kbd "SPC 2") 'spotlight)
 
 ;;; Manage external services
 (require-package 'prodigy)
@@ -661,26 +601,20 @@
       projectile-mode-line '(:eval (format " [%s]" (projectile-project-name))))
 (projectile-global-mode)
 
-;; Helm-projectile
-(require-package 'helm-projectile)
-(setq projectile-completion-system 'helm)
-(helm-projectile-on)
-;;Maps
-(define-key evil-normal-state-map (kbd "SPC p") 'helm-projectile)
-(define-key evil-normal-state-map (kbd "SPC 8") 'projectile-switch-project)
-(define-key evil-normal-state-map (kbd "SPC TAB") 'helm-projectile-find-other-file)
-
 ;; NeoTree - like NERDTree
 (require-package 'neotree)
 (add-hook 'neotree-mode-hook
           (lambda ()
             (define-key evil-normal-state-local-map (kbd "o") 'neotree-enter)
+            (define-key evil-normal-state-local-map (kbd "i") 'neotree-enter)
+            (define-key evil-normal-state-local-map (kbd "RET") 'neotree-enter)
+            (define-key evil-normal-state-local-map (kbd "~") 'neotree-change-root)
+            (define-key evil-normal-state-local-map (kbd "r") 'neotree-refresh)
+            (define-key evil-normal-state-local-map (kbd "C") 'neotree-create-node)
+            (define-key evil-normal-state-local-map (kbd "D") 'neotree-delete-node)
+            (define-key evil-normal-state-local-map (kbd "R") 'neotree-rename-node)
             (define-key evil-normal-state-local-map (kbd "q") 'neotree-hide)))
-(setq projectile-switch-project-action 'neotree-projectile-action)
-(define-key evil-normal-state-map (kbd "SPC n") 'neotree-projectile-action)
-
-;;; Rtags - Awesome for C/C++
-(require-package 'rtags)
+(define-key evil-normal-state-map (kbd "SPC n") 'neotree-toggle)
 
 ;;; Cmake ide
 (require-package 'cmake-ide)
@@ -694,14 +628,9 @@
 (setq-local imenu-create-index-function #'ggtags-build-imenu-index)
 (define-key evil-normal-state-map (kbd "SPC ag") 'ggtags-create-tags)
 (define-key evil-normal-state-map (kbd "SPC au") 'ggtags-update-tags)
-
-;; Helm Gtags
-(require-package 'helm-gtags)
-(helm-gtags-mode 1)
-;; Tags using appropriate methods
-(define-key evil-normal-state-map (kbd "T") 'helm-gtags-select)
-(define-key evil-normal-state-map (kbd "SPC jr") 'helm-gtags-find-rtag)
-(define-key evil-normal-state-map (kbd "SPC jt") 'helm-gtags-dwim)
+(define-key evil-normal-state-map (kbd "T") 'ggtags-find-tag-regexp)
+(define-key evil-normal-state-map (kbd "SPC jr") 'ggtags-find-reference)
+(define-key evil-normal-state-map (kbd "SPC jt") 'ggtags-find-tag-dwim)
 
 ;;; Interact with OS services
 ;; Jabber
@@ -714,15 +643,8 @@
 
 ;; Google under point
 (require-package 'google-this)
-(define-key evil-visual-state-map (kbd "SPC 9") 'google-this)
-
-;; Helm itunes
-(require-package 'helm-itunes)
-(define-key evil-normal-state-map (kbd "SPC 2") 'helm-itunes)
-
-;; Helm spotify
-(require-package 'helm-spotify)
-(define-key evil-normal-state-map (kbd "SPC 0") 'helm-spotify)
+(define-key evil-normal-state-map (kbd "SPC 0") 'google-this-search)
+(define-key evil-visual-state-map (kbd "SPC 0") 'google-this)
 
 ;; Evernote with geeknote
 (require-package 'geeknote)
@@ -810,6 +732,9 @@
 ;;; Multiple cursors
 (require-package 'evil-mc)
 (global-evil-mc-mode 1)
+
+;; Flx with company
+(require-package 'company-flx)
 
 ;;; Company
 (require-package 'company)
@@ -926,6 +851,9 @@
   (other-window 1))
 (define-key evil-normal-state-map (kbd "SPC tr") 'r-shell-here)
 (define-key evil-normal-state-map (kbd "SPC tj") 'julia-shell-here)
+(define-key evil-normal-state-map (kbd "SPC sf") 'ess-eval-function)
+(define-key evil-normal-state-map (kbd "SPC sl") 'ess-eval-line)
+;; For R - Intuitive
 (define-key evil-normal-state-map (kbd "SPC sr") 'ess-eval-buffer)
 (define-key evil-visual-state-map (kbd "SPC sr") 'ess-eval-region)
 ;; For Julia - intuitive
@@ -958,7 +886,7 @@
 
 ;; Highlight indentation
 (require-package 'highlight-indentation)
-(define-key evil-normal-state-map (kbd "SPC ai") 'highlight-indentation-mode)
+(define-key evil-normal-state-map (kbd "SPC ah") 'highlight-indentation-mode)
 
 ;; Elpy
 (require-package 'elpy)
@@ -967,8 +895,8 @@
 (define-key evil-normal-state-map (kbd "SPC jd") 'elpy-goto-definition)
 (define-key evil-normal-state-map (kbd "SPC jl") 'elpy-goto-location)
 (define-key evil-normal-state-map (kbd "SPC tp") 'elpy-shell-switch-to-shell)
-(define-key evil-normal-state-map (kbd "SPC sf") 'python-shell-send-defun)
-(define-key evil-normal-state-map (kbd "SPC sl") 'elpy-shell-send-current-statement)
+(define-key evil-normal-state-map (kbd "SPC sd") 'python-shell-send-defun)
+(define-key evil-normal-state-map (kbd "SPC ss") 'elpy-shell-send-current-statement)
 (define-key evil-normal-state-map (kbd "SPC sp") 'elpy-shell-send-region-or-buffer)
 (define-key evil-visual-state-map (kbd "SPC sp") 'elpy-shell-send-region-or-buffer)
 
@@ -1034,7 +962,6 @@
 (require-package 'emacsql-mysql)
 (require-package 'emacsql-sqlite)
 (require-package 'esqlite)
-(require-package 'esqlite-helm)
 (require-package 'pcsv)
 
 ;; Go mode
@@ -1063,14 +990,11 @@
 (require-package 'flycheck-irony)
 (eval-after-load 'flycheck
   '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
-
-;; Helm for flycheck
-(require-package 'helm-flycheck)
-(define-key evil-normal-state-map (kbd "SPC l") 'helm-flycheck)
+(define-key evil-normal-state-map (kbd "SPC l") 'flycheck-list-errors)
 
 ;;; Org mode
-(define-key evil-normal-state-map (kbd "SPC c") 'org-capture)
-(define-key evil-normal-state-map (kbd "SPC o") 'org-agenda)
+(define-key evil-normal-state-map (kbd "SPC oc") 'org-capture)
+(define-key evil-normal-state-map (kbd "SPC oa") 'org-agenda)
 (define-key evil-normal-state-map (kbd "SPC -") 'org-edit-src-code)
 (define-key evil-normal-state-map (kbd "SPC =") 'org-edit-src-exit)
 (define-key evil-normal-state-map (kbd "SPC ]") 'org-narrow-to-subtree)
@@ -1082,10 +1006,12 @@
 (define-key evil-normal-state-map (kbd "[k") 'outline-promote)
 (define-key evil-normal-state-map (kbd "]o") 'outline-next-visible-heading)
 (define-key evil-normal-state-map (kbd "[o") 'outline-previous-visible-heading)
-(define-key evil-normal-state-map (kbd "]t") 'outline-forward-same-level)
-(define-key evil-normal-state-map (kbd "[t") 'outline-backward-same-level)
-(define-key evil-normal-state-map (kbd "]B") 'org-next-block)
-(define-key evil-normal-state-map (kbd "[B") 'org-previous-block)
+(define-key evil-normal-state-map (kbd "]O") 'outline-forward-same-level)
+(define-key evil-normal-state-map (kbd "[O") 'outline-backward-same-level)
+(define-key evil-normal-state-map (kbd "]i") 'org-move-item-down)
+(define-key evil-normal-state-map (kbd "[i") 'org-move-item-up)
+(define-key evil-normal-state-map (kbd "]b") 'org-next-block)
+(define-key evil-normal-state-map (kbd "[b") 'org-previous-block)
 (define-key evil-normal-state-map (kbd "]r") 'org-table-move-row-down)
 (define-key evil-normal-state-map (kbd "[r") 'org-table-move-row-up)
 (define-key evil-normal-state-map (kbd "]c") 'org-table-move-column-right)
@@ -1097,7 +1023,7 @@
 (define-key evil-normal-state-map (kbd "]u") 'org-down-element)
 (define-key evil-normal-state-map (kbd "[u") 'org-up-element)
 (define-key evil-normal-state-map (kbd "gox") 'org-preview-latex-fragment)
-(define-key evil-normal-state-map (kbd "goI") 'org-toggle-inline-images)
+(define-key evil-normal-state-map (kbd "goi") 'org-toggle-inline-images)
 (define-key evil-normal-state-map (kbd "gog") 'org-set-tags-command)
 (define-key evil-normal-state-map (kbd "goG") 'org-tags-view)
 (define-key evil-normal-state-map (kbd "goj") 'org-goto)
@@ -1110,16 +1036,16 @@
 (define-key evil-normal-state-map (kbd "goD") 'org-deadline-close)
 (define-key evil-normal-state-map (kbd "goS") 'org-check-deadlines)
 (define-key evil-normal-state-map (kbd "gos") 'org-schedule)
-(define-key evil-normal-state-map (kbd "gou") 'org-update-dblock)
 (define-key evil-normal-state-map (kbd "goU") 'org-update-all-dblocks)
+(define-key evil-normal-state-map (kbd "goL") 'org-toggle-link-display)
 (define-key evil-normal-state-map (kbd "gov") 'org-reveal)
 (define-key evil-normal-state-map (kbd "gof") 'org-refile)
 (define-key evil-normal-state-map (kbd "goF") 'org-refile-goto-last-stored)
 (define-key evil-normal-state-map (kbd "goX") 'org-reftex-citation)
 (define-key evil-normal-state-map (kbd "goa") 'org-attach)
 (define-key evil-normal-state-map (kbd "goA") 'org-archive-subtree-default)
-(define-key evil-normal-state-map (kbd "goi") 'org-clock-in)
-(define-key evil-normal-state-map (kbd "goo") 'org-clock-out)
+(define-key evil-normal-state-map (kbd "goI") 'org-clock-in)
+(define-key evil-normal-state-map (kbd "goO") 'org-clock-out)
 (define-key evil-normal-state-map (kbd "goq") 'org-clock-cancel)
 (define-key evil-normal-state-map (kbd "gop") 'org-clock-report)
 (define-key evil-normal-state-map (kbd "goz") 'org-resolve-clocks)
@@ -1130,8 +1056,8 @@
 (define-key evil-normal-state-map (kbd "goN") 'org-footnote-new)
 (define-key evil-normal-state-map (kbd "goe") 'org-export-dispatch)
 (define-key evil-normal-state-map (kbd "gol") 'org-insert-link)
-(define-key evil-normal-state-map (kbd "goL") 'org-store-link)
-(define-key evil-normal-state-map (kbd "goO") 'org-open-at-point)
+(define-key evil-normal-state-map (kbd "gou") 'org-store-link)
+(define-key evil-normal-state-map (kbd "goo") 'org-open-at-point)
 (define-key evil-normal-state-map (kbd "gom") 'org-match-sparse-tree)
 (define-key evil-normal-state-map (kbd "goy") 'org-copy-subtree)
 (define-key evil-normal-state-map (kbd "gok") 'org-cut-subtree)
@@ -1279,14 +1205,14 @@
 
 ;; Magit
 (require-package 'magit)
-(add-to-list 'god-exempt-major-modes 'magit-mode)
+(setq magit-completing-read-function 'magit-ido-completing-read)
 (define-key evil-normal-state-map (kbd "SPC g") 'magit-status)
 (define-key evil-normal-state-map (kbd "gb") 'magit-blame)
 (define-key evil-normal-state-map (kbd "gz") 'magit-blame-quit)
 (define-key evil-normal-state-map (kbd "gj") 'magit-blame-next-chunk)
-(define-key evil-normal-state-map (kbd "zj") 'magit-blame-next-chunk-same-commit)
+(define-key evil-normal-state-map (kbd "gJ") 'magit-blame-next-chunk-same-commit)
 (define-key evil-normal-state-map (kbd "gk") 'magit-blame-previous-chunk)
-(define-key evil-normal-state-map (kbd "zk") 'magit-blame-previous-chunk-same-commit)
+(define-key evil-normal-state-map (kbd "gK") 'magit-blame-previous-chunk-same-commit)
 (define-key evil-normal-state-map (kbd "gy") 'magit-blame-copy-hash)
 (define-key evil-normal-state-map (kbd "gt") 'magit-blame-toggle-headings)
 
@@ -1305,7 +1231,8 @@
 
 ;; Git time-machine
 (require-package 'git-timemachine)
-(define-key evil-normal-state-map (kbd "gl") 'git-timemachine)
+(define-key evil-normal-state-map (kbd "zl") 'git-timemachine)
+(define-key evil-normal-state-map (kbd "zq") 'git-timemachine-quit)
 (define-key evil-normal-state-map (kbd "zy") 'git-timemachine-kill-revision)
 (define-key evil-normal-state-map (kbd "]q") 'git-timemachine-show-next-revision)
 (define-key evil-normal-state-map (kbd "[q") 'git-timemachine-show-previous-revision)
@@ -1333,7 +1260,7 @@
 
 ;; Interact with Tmux
 (require-package 'emamux)
-(setq emamux:completing-read-type 'helm)
+(setq emamux:completing-read-type 'ido)
 (define-key evil-normal-state-map (kbd "SPC st") 'emamux:send-command)
 
 ;; Make the compilation window automatically disapper from enberg on #emacs
@@ -1347,13 +1274,9 @@
                (get-buffer-create "*compilation*"))
               (message "No Compilation Errors!")))))
 
-;; Helm make
-(require-package 'helm-make)
-(define-key evil-normal-state-map (kbd "SPC m") 'helm-make)
-
 ;; Quickrun
 (require-package 'quickrun)
-(define-key evil-normal-state-map (kbd "SPC 4") 'helm-quickrun)
+(define-key evil-normal-state-map (kbd "SPC 4") 'quickrun)
 
 ;;; Eshell
 (setq eshell-glob-case-insensitive t
@@ -1379,22 +1302,22 @@
 (setq eyebrowse-wrap-around t
       eyebrowse-switch-back-and-forth t)
 (eyebrowse-mode t)
-(define-key evil-normal-state-map (kbd "SPC uu") 'eyebrowse-switch-to-window-config)
-(define-key evil-normal-state-map (kbd "SPC ul") 'eyebrowse-last-window-config)
-(define-key evil-normal-state-map (kbd "SPC un") 'eyebrowse-next-window-config)
-(define-key evil-normal-state-map (kbd "SPC up") 'eyebrowse-prev-window-config)
-(define-key evil-normal-state-map (kbd "SPC ur") 'eyebrowse-rename-window-config)
-(define-key evil-normal-state-map (kbd "SPC uc") 'eyebrowse-close-window-config)
-(define-key evil-normal-state-map (kbd "SPC u0") 'eyebrowse-switch-to-window-config-0)
-(define-key evil-normal-state-map (kbd "SPC u1") 'eyebrowse-switch-to-window-config-1)
-(define-key evil-normal-state-map (kbd "SPC u2") 'eyebrowse-switch-to-window-config-2)
-(define-key evil-normal-state-map (kbd "SPC u3") 'eyebrowse-switch-to-window-config-3)
-(define-key evil-normal-state-map (kbd "SPC u4") 'eyebrowse-switch-to-window-config-4)
-(define-key evil-normal-state-map (kbd "SPC u5") 'eyebrowse-switch-to-window-config-5)
-(define-key evil-normal-state-map (kbd "SPC u6") 'eyebrowse-switch-to-window-config-6)
-(define-key evil-normal-state-map (kbd "SPC u7") 'eyebrowse-switch-to-window-config-7)
-(define-key evil-normal-state-map (kbd "SPC u8") 'eyebrowse-switch-to-window-config-8)
-(define-key evil-normal-state-map (kbd "SPC u9") 'eyebrowse-switch-to-window-config-9)
+(define-key evil-normal-state-map (kbd "SPC bu") 'eyebrowse-switch-to-window-config)
+(define-key evil-normal-state-map (kbd "SPC bl") 'eyebrowse-last-window-config)
+(define-key evil-normal-state-map (kbd "SPC bn") 'eyebrowse-next-window-config)
+(define-key evil-normal-state-map (kbd "SPC bp") 'eyebrowse-prev-window-config)
+(define-key evil-normal-state-map (kbd "SPC br") 'eyebrowse-rename-window-config)
+(define-key evil-normal-state-map (kbd "SPC bc") 'eyebrowse-close-window-config)
+(define-key evil-normal-state-map (kbd "SPC b0") 'eyebrowse-switch-to-window-config-0)
+(define-key evil-normal-state-map (kbd "SPC b1") 'eyebrowse-switch-to-window-config-1)
+(define-key evil-normal-state-map (kbd "SPC b2") 'eyebrowse-switch-to-window-config-2)
+(define-key evil-normal-state-map (kbd "SPC b3") 'eyebrowse-switch-to-window-config-3)
+(define-key evil-normal-state-map (kbd "SPC b4") 'eyebrowse-switch-to-window-config-4)
+(define-key evil-normal-state-map (kbd "SPC b5") 'eyebrowse-switch-to-window-config-5)
+(define-key evil-normal-state-map (kbd "SPC b6") 'eyebrowse-switch-to-window-config-6)
+(define-key evil-normal-state-map (kbd "SPC b7") 'eyebrowse-switch-to-window-config-7)
+(define-key evil-normal-state-map (kbd "SPC b8") 'eyebrowse-switch-to-window-config-8)
+(define-key evil-normal-state-map (kbd "SPC b9") 'eyebrowse-switch-to-window-config-9)
 
 ;;; Wrap up
 
@@ -1459,12 +1382,11 @@
     (evil-mc-mode . "")
     (evil-commentary-mode . "")
     (eyebrowse-mode . "")
-    (helm-mode . "")
+    (ivy-mode . "")
     (elpy-mode . "")
     (ws-butler-mode . "")
     (org-cdlatex-mode . "")
     (subword-mode . "")
-    (helm-gtags-mode . "")
     (volatile-highlights-mode . "")
     (flycheck-mode . "")
     (flyspell-mode . " $")

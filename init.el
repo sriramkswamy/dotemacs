@@ -157,13 +157,10 @@
 (global-set-key (kbd "C-x C-k") 'kill-buffer)
 (global-set-key (kbd "C-x C-t") 'eshell-here)
 
-;;; Guide key
-(require-package 'guide-key)
-(setq guide-key/idle-delay 0.5
-      guide-key/recursive-key-sequence-flag t
-      guide-key/popup-window-position 'bottom
-      guide-key/guide-key-sequence '("SPC" "\\" "g" "z" "[" "]" "C-x" "C-c" "C-h"))
-(guide-key-mode 1)
+;;; Which key
+(require-package 'which-key)
+(which-key-setup-side-window-bottom)
+(which-key-mode)
 
 ;; OS clipboard
 (require-package 'simpleclip)
@@ -520,7 +517,8 @@
 ;;; Swiper (with Ivy and counsel)
 (require-package 'swiper)
 (require-package 'counsel)
-(setq ivy-display-style 'fancy)
+(setq ivy-display-style 'fancy
+      ivy-height 15)
 (ivy-mode 1)
 (global-set-key (kbd "C-s") 'swiper)
 (global-set-key (kbd "C-r") 'swiper)
@@ -536,7 +534,7 @@
 (define-key evil-normal-state-map (kbd "SPC xf") 'counsel-describe-function)
 (define-key evil-normal-state-map (kbd "SPC xv") 'counsel-describe-variable)
 (define-key evil-insert-state-map (kbd "C-k") 'counsel-unicode-char)
-(define-key evil-insert-state-map (kbd "C-d") 'flyspell-correct-word)
+(define-key evil-insert-state-map (kbd "C-d") 'ispell-word)
 
 ;;; Hydra
 (require-package 'hydra)
@@ -652,6 +650,8 @@
   ("r" ivy-recentf "recertf")
   ("f" counsel-find-file "files")
   ("F" follow-mode "follow")
+  ("+" text-scale-increase "zoom in")
+  ("-" text-scale-decrease "zoom out")
   ("q" nil "cancel"))
 (define-key evil-normal-state-map (kbd "gw") 'hydra-window/body)
 
@@ -686,7 +686,7 @@
 
 ;;; Spotlight
 (require-package 'spotlight)
-(define-key evil-normal-state-map (kbd "SPC 2") 'spotlight)
+(define-key evil-normal-state-map (kbd "SPC 8") 'spotlight)
 
 ;;; Manage external services
 (require-package 'prodigy)
@@ -734,21 +734,26 @@
 ;; Jabber
 (require-package 'jabber)
 (setq jabber-history-enabled t
+      jabber-activity-mode nil
       jabber-use-global-history nil
       jabber-backlog-number 40
       jabber-backlog-days 30)
+(setq jabber-alert-presence-message-function
+      (lambda (who oldstatus newstatus statustext) nil))
 (define-key evil-normal-state-map (kbd "SPC aj") 'jabber-connect)
 
 ;; Google under point
 (require-package 'google-this)
-(define-key evil-normal-state-map (kbd "SPC 0") 'google-this-search)
-(define-key evil-visual-state-map (kbd "SPC 0") 'google-this)
+(define-key evil-normal-state-map (kbd "SPC 9") 'google-this-search)
+(define-key evil-visual-state-map (kbd "SPC 9") 'google-this)
 
 ;; Evernote with geeknote
 (require-package 'geeknote)
+(define-key evil-normal-state-map (kbd "SPC ae") 'geeknote-create)
 
 ;; Stackexchange
 (require-package 'sx)
+(define-key evil-normal-state-map (kbd "SPC aq") 'sx-tab-all-questions)
 
 ;;; Text editing
 
@@ -1420,7 +1425,7 @@
 ;;; Clean mode-line
 (defvar mode-line-cleaner-alist
   `((smartparens-mode . "")
-    (guide-key-mode . "")
+    (which-key-mode . "")
     (god-local-mode . " ψ")
     (evil-snipe-mode . "")
     (evil-snipe-local-mode . "")

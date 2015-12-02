@@ -770,6 +770,7 @@
 (setq jabber-alert-presence-message-function
       (lambda (who oldstatus newstatus statustext) nil))
 (define-key evil-normal-state-map (kbd "SPC aj") 'jabber-connect)
+(define-key evil-normal-state-map (kbd "SPC 2") 'jabber-chat-with)
 
 ;; Google under point
 (require-package 'google-this)

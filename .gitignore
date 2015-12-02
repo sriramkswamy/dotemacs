@@ -55,3 +55,4 @@
 /srecode-map.el
 /tramp
 /semanticdb/*
+/flycheck_init.el

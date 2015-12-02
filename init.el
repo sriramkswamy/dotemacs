@@ -247,7 +247,6 @@
 (define-key evil-normal-state-map (kbd "SPC k") 'kill-buffer)
 (define-key evil-normal-state-map (kbd "SPC z") 'toggle-frame-fullscreen-non-native)
 (define-key evil-normal-state-map (kbd "SPC f") 'find-file)
-(define-key evil-normal-state-map (kbd "SPC m") 'compile)
 (define-key evil-normal-state-map (kbd "SPC [") 'widen)
 (define-key evil-normal-state-map (kbd "SPC ;") 'evil-ex)
 (define-key evil-normal-state-map (kbd "SPC 3") 'select-frame-by-name)
@@ -485,6 +484,19 @@
 ;; Ido and Flx
 (require-package 'flx)
 (require-package 'flx-ido)
+(require 'ido)
+(require-package 'ido-vertical-mode)
+(setq ido-use-faces t
+      ido-vertical-define-keys 'C-n-and-C-p-only
+      ido-vertical-show-count t)
+(set-face-attribute 'ido-vertical-first-match-face nil
+                    :background "#e5b7c0")
+(set-face-attribute 'ido-vertical-only-match-face nil
+                    :background "#e52b50"
+                    :foreground "white")
+(set-face-attribute 'ido-vertical-match-face nil
+                    :foreground "#b00000")
+(ido-vertical-mode 1)
 
 ;; No backups
 (setq make-backup-files nil
@@ -505,6 +517,14 @@
 (require-package 'avy)
 (define-key evil-normal-state-map (kbd "SPC h") 'avy-goto-line)
 (define-key evil-visual-state-map (kbd "SPC h") 'avy-goto-line)
+
+;; ag
+(require-package 'ag)
+(define-key evil-normal-state-map (kbd "SPC 7") 'ag-project-regexp)
+(define-key evil-visual-state-map (kbd "SPC 7") 'ag-project-regexp)
+
+;;; wgrep-ag
+(require-package 'wgrep-ag)
 
 ;;; Smex
 (require-package 'smex)
@@ -533,6 +553,10 @@
 (define-key evil-normal-state-map (kbd "SPC /") 'counsel-locate)
 (define-key evil-normal-state-map (kbd "SPC xf") 'counsel-describe-function)
 (define-key evil-normal-state-map (kbd "SPC xv") 'counsel-describe-variable)
+(define-key evil-normal-state-map (kbd "SPC xl") 'counsel-load-library)
+(define-key evil-normal-state-map (kbd "SPC xi") 'counsel-info-lookup-symbol)
+(define-key evil-normal-state-map (kbd "SPC e") 'counsel-ag)
+(define-key evil-visual-state-map (kbd "SPC e") 'counsel-ag)
 (define-key evil-insert-state-map (kbd "C-k") 'counsel-unicode-char)
 (define-key evil-insert-state-map (kbd "C-d") 'ispell-word)
 
@@ -655,13 +679,18 @@
   ("q" nil "cancel"))
 (define-key evil-normal-state-map (kbd "gw") 'hydra-window/body)
 
-;;; Ag
-(require-package 'ag)
-(define-key evil-normal-state-map (kbd "SPC e") 'ag-project-regexp)
-(define-key evil-visual-state-map (kbd "SPC e") 'ag-project-regexp)
-
-;;; wgrep-ag
-(require-package 'wgrep-ag)
+;; Apropos
+(defhydra hydra-apropos (:color blue
+                         :hint nil)
+  "Apropos"
+  ("a" apropos "apropos")
+  ("d" apropos-documentation "doc")
+  ("v" apropos-variable "var")
+  ("c" apropos-command "cmd")
+  ("l" apropos-library "lib")
+  ("u" apropos-user-option "option")
+  ("e" apropos-value "value"))
+(define-key evil-normal-state-map (kbd "SPC xa") 'hydra-apropos/body)
 
 ;; Find file in project
 (require-package 'find-file-in-project)
@@ -822,11 +851,6 @@
 (require-package 'volatile-highlights)
 (require 'volatile-highlights)
 (volatile-highlights-mode t)
-
-;; Aggressive indent
-(require-package 'aggressive-indent)
-(add-hook 'c-mode-hook 'aggressive-indent-mode)
-(add-hook 'c++-mode-hook 'aggressive-indent-mode)
 
 ;; Smart tabs
 (require-package 'smart-tab)
@@ -1296,6 +1320,9 @@
 (define-key evil-visual-state-map (kbd "SPC sg") 'yagist-region)
 
 ;;; REPL
+
+;; Compile
+(define-key evil-normal-state-map (kbd "SPC m") 'compile)
 
 ;; Multi-term
 (require-package 'multi-term)

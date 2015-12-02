@@ -481,23 +481,6 @@
 ;; Enable recentf mode
 (recentf-mode)
 
-;; Ido and Flx
-(require-package 'flx)
-(require-package 'flx-ido)
-(require 'ido)
-(require-package 'ido-vertical-mode)
-(setq ido-use-faces t
-      ido-vertical-define-keys 'C-n-and-C-p-only
-      ido-vertical-show-count t)
-(set-face-attribute 'ido-vertical-first-match-face nil
-                    :background "#e5b7c0")
-(set-face-attribute 'ido-vertical-only-match-face nil
-                    :background "#e52b50"
-                    :foreground "white")
-(set-face-attribute 'ido-vertical-match-face nil
-                    :foreground "#b00000")
-(ido-vertical-mode 1)
-
 ;; No backups
 (setq make-backup-files nil
       auto-save-default nil)
@@ -526,14 +509,6 @@
 ;;; wgrep-ag
 (require-package 'wgrep-ag)
 
-;;; Smex
-(require-package 'smex)
-(global-set-key (kbd "M-x") 'smex)
-(global-set-key (kbd "C-x C-m") 'smex)
-(define-key evil-normal-state-map (kbd "SPC d") 'smex)
-(define-key evil-visual-state-map (kbd "SPC d") 'smex)
-(define-key evil-insert-state-map (kbd "C-l") 'smex)
-
 ;;; Swiper (with Ivy and counsel)
 (require-package 'swiper)
 (require-package 'counsel)
@@ -542,6 +517,9 @@
 (ivy-mode 1)
 (global-set-key (kbd "C-s") 'swiper)
 (global-set-key (kbd "C-r") 'swiper)
+(global-set-key (kbd "M-x") 'counsel-M-x)
+(global-set-key (kbd "C-x C-m") 'counsel-M-x)
+(define-key evil-normal-state-map (kbd "SPC d") 'counsel-M-x)
 (define-key evil-normal-state-map (kbd "t") 'imenu)
 (define-key evil-normal-state-map (kbd "SPC SPC") 'swiper)
 (define-key evil-normal-state-map (kbd "SPC v") 'swiper-all)
@@ -557,8 +535,10 @@
 (define-key evil-normal-state-map (kbd "SPC xi") 'counsel-info-lookup-symbol)
 (define-key evil-normal-state-map (kbd "SPC e") 'counsel-ag)
 (define-key evil-visual-state-map (kbd "SPC e") 'counsel-ag)
+(define-key evil-visual-state-map (kbd "SPC d") 'counsel-M-x)
 (define-key evil-insert-state-map (kbd "C-k") 'counsel-unicode-char)
 (define-key evil-insert-state-map (kbd "C-d") 'ispell-word)
+(define-key evil-insert-state-map (kbd "C-l") 'counsel-M-x)
 
 ;;; Hydra
 (require-package 'hydra)
@@ -668,6 +648,7 @@
          (winner-undo)
          (setq this-command 'winner-undo)) "winner undo")
   ("R" winner-redo "winner redo")
+  ("M" toggle-frame-maximized "maximize")
   ("n" make-frame "new frame")
   ("D" delete-frame "delete frame")
   ("u" ivy-switch-buffer "buffers")
@@ -719,14 +700,6 @@
 
 ;;; Manage external services
 (require-package 'prodigy)
-
-;;; Projectile
-(require-package 'projectile)
-(setq projectile-enable-caching t
-      projectile-require-project-root nil
-      projectile-use-git-grep t
-      projectile-mode-line '(:eval (format " [%s]" (projectile-project-name))))
-(projectile-global-mode)
 
 ;; NeoTree - like NERDTree
 (require-package 'neotree)
@@ -862,6 +835,7 @@
 (global-evil-mc-mode 1)
 
 ;; Flx with company
+(require-package 'flx)
 (require-package 'company-flx)
 
 ;;; Company
@@ -1380,7 +1354,7 @@
 (setq eyebrowse-wrap-around t
       eyebrowse-switch-back-and-forth t)
 (eyebrowse-mode t)
-(define-key evil-normal-state-map (kbd "SPC bu") 'eyebrowse-switch-to-window-config)
+(define-key evil-normal-state-map (kbd "SPC bb") 'eyebrowse-switch-to-window-config)
 (define-key evil-normal-state-map (kbd "SPC bl") 'eyebrowse-last-window-config)
 (define-key evil-normal-state-map (kbd "SPC bn") 'eyebrowse-next-window-config)
 (define-key evil-normal-state-map (kbd "SPC bp") 'eyebrowse-prev-window-config)
@@ -1443,9 +1417,6 @@
 ;; Region information
 (require-package 'region-state)
 (region-state-mode)
-
-;; Fonts
-(set-frame-font "Monaco")
 
 ;; Restart Emacs from Emacs
 (require-package 'restart-emacs)

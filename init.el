@@ -1,20 +1,19 @@
 ;;; Packages
 (require 'package)
 
-;; Add packages
-(add-to-list 'package-archives '("melpa" . "https://melpa.milkbox.net/packages/") t)
-(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
+;; Garbage collector - increase threshold
+(setq gc-cons-threshold 100000000)
 
 ;; packages based on versions
 (when (>= emacs-major-version 24)
   (require 'package)
+  (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
+  (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t))
   (package-initialize)
-  (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t))
 (when (< emacs-major-version 24)
   ;; For important compatibility libraries like cl-lib
   (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
 
-(package-initialize)
 (setq package-enable-at-startup nil)
 
 ;; Add homebrew packages
@@ -79,7 +78,6 @@
              (if (eq (frame-parameter nil 'maximized) 'maximized)
                  'maximized)
            'fullboth)))))
-(toggle-frame-maximized)
 
 ;; DocView Settings
 (setq doc-view-continuous t
@@ -162,10 +160,6 @@
 (which-key-setup-side-window-bottom)
 (which-key-mode)
 
-;; OS clipboard
-(require-package 'simpleclip)
-(simpleclip-mode 1)
-
 ;; Move lines - from stack overflow
 (defun move-text-internal (arg)
   (cond
@@ -230,6 +224,7 @@
 (define-key evil-normal-state-map (kbd "w") 'split-window-horizontally)
 (define-key evil-normal-state-map (kbd "Z") 'delete-other-windows)
 (define-key evil-normal-state-map (kbd "Q") 'winner-undo)
+(define-key evil-normal-state-map (kbd "R") 'winner-redo)
 (define-key evil-normal-state-map (kbd "w") 'split-window-horizontally)
 (define-key evil-normal-state-map (kbd "W") 'split-window-vertically)
 (define-key evil-normal-state-map (kbd "U") 'undo-tree-visualize)
@@ -256,7 +251,6 @@
 (define-key evil-normal-state-map (kbd "SPC 6") 'quick-calc)
 (define-key evil-normal-state-map (kbd "SPC se") 'eval-buffer)
 (define-key evil-normal-state-map (kbd "SPC as") 'flyspell-mode)
-(define-key evil-normal-state-map (kbd "SPC ai") 'whitespace-mode)
 (define-key evil-normal-state-map (kbd "SPC an") 'linum-mode)
 (define-key evil-normal-state-map (kbd "SPC aw") 'toggle-truncate-lines)
 (define-key evil-normal-state-map (kbd "SPC ab") 'display-battery-mode)
@@ -522,11 +516,11 @@
 (define-key evil-normal-state-map (kbd "SPC d") 'counsel-M-x)
 (define-key evil-normal-state-map (kbd "t") 'imenu)
 (define-key evil-normal-state-map (kbd "SPC SPC") 'swiper)
-(define-key evil-normal-state-map (kbd "SPC v") 'swiper-all)
+(define-key evil-normal-state-map (kbd "SPC b") 'swiper-all)
 (define-key evil-normal-state-map (kbd "SPC r") 'ivy-recentf)
 (define-key evil-normal-state-map (kbd "SPC u") 'ivy-switch-buffer)
 (define-key evil-normal-state-map (kbd "SPC y") 'counsel-yank-pop)
-(define-key evil-normal-state-map (kbd "SPC c") 'counsel-load-theme)
+(define-key evil-normal-state-map (kbd "SPC v") 'counsel-load-theme)
 (define-key evil-normal-state-map (kbd "SPC .") 'ivy-resume)
 (define-key evil-normal-state-map (kbd "SPC /") 'counsel-locate)
 (define-key evil-normal-state-map (kbd "SPC xf") 'counsel-describe-function)
@@ -681,8 +675,10 @@
 ;;; Swoop
 (require-package 'swoop)
 (require 'swoop)
-(define-key evil-normal-state-map (kbd "SPC i") 'swoop-pcre-regexp)
-(define-key evil-visual-state-map (kbd "SPC i") 'swoop-pcre-regexp)
+(define-key evil-normal-state-map (kbd "*") 'swoop-pcre-regexp)
+(define-key evil-normal-state-map (kbd "*") 'swoop-pcre-regexp)
+(define-key evil-visual-state-map (kbd "#") 'swoop-pcre-regexp)
+(define-key evil-visual-state-map (kbd "#") 'swoop-pcre-regexp)
 
 ;;; Dash at point
 (require-package 'dash-at-point)
@@ -843,20 +839,27 @@
 (global-company-mode)
 (with-eval-after-load 'company
   (company-flx-mode +1))
-(add-to-list 'company-backends 'company-files)
+(eval-after-load 'company
+  '(add-to-list 'company-backends 'company-files))
 (setq company-idle-delay 0
       company-minimum-prefix-length 1
       company-require-match 0
       company-selection-wrap-around t
       company-dabbrev-downcase nil)
 ;; Maps
-(define-key company-active-map (kbd "C-n") 'company-select-next)
-(define-key company-active-map (kbd "C-p") 'company-select-previous)
-(define-key company-active-map [tab] 'company-complete-common-or-cycle)
+(global-set-key [(control return)] 'company-complete-common-or-cycle)
+(define-key evil-normal-state-map (kbd "SPC ac") 'global-company-mode)
+(defun my-company-hook ()
+  (interactive)
+  (define-key company-active-map (kbd "C-n") 'company-select-next)
+  (define-key company-active-map (kbd "C-p") 'company-select-previous)
+  (define-key company-active-map [tab] 'company-complete-common-or-cycle))
+(add-hook 'company-mode-hook 'my-company-hook)
 
 ;; Company C headers
 (require-package 'company-c-headers)
-(add-to-list 'company-backends 'company-c-headers)
+(eval-after-load 'company
+  '(add-to-list 'company-backends 'company-c-headers))
 
 ;; Irony mode for C++
 (require-package 'irony)
@@ -879,18 +882,6 @@
 (eval-after-load 'company
   '(add-to-list 'company-backends 'company-irony))
 
-;; Play well with FCI mode
-(defvar-local company-fci-mode-on-p nil)
-(defun company-turn-off-fci (&rest ignore)
-  (when (boundp 'fci-mode)
-    (setq company-fci-mode-on-p fci-mode)
-    (when fci-mode (fci-mode -1))))
-(defun company-maybe-turn-on-fci (&rest ignore)
-  (when company-fci-mode-on-p (fci-mode 1)))
-(add-hook 'company-completion-started-hook 'company-turn-off-fci)
-(add-hook 'company-completion-finished-hook 'company-maybe-turn-on-fci)
-(add-hook 'company-completion-cancelled-hook 'company-maybe-turn-on-fci)
-
 ;; Support auctex
 (require-package 'company-auctex)
 
@@ -906,6 +897,18 @@
 ;; Support web mode
 (require-package 'company-web)
 
+;; Play well with FCI mode
+(defvar-local company-fci-mode-on-p nil)
+(defun company-turn-off-fci (&rest ignore)
+  (when (boundp 'fci-mode)
+    (setq company-fci-mode-on-p fci-mode)
+    (when fci-mode (fci-mode -1))))
+(defun company-maybe-turn-on-fci (&rest ignore)
+  (when company-fci-mode-on-p (fci-mode 1)))
+(add-hook 'company-completion-started-hook 'company-turn-off-fci)
+(add-hook 'company-completion-finished-hook 'company-maybe-turn-on-fci)
+(add-hook 'company-completion-cancelled-hook 'company-maybe-turn-on-fci)
+
 ;;; YASnippet
 (require-package 'yasnippet)
 ;; Add yasnippet support for all company backends
@@ -916,7 +919,10 @@
       backend
     (append (if (consp backend) backend (list backend))
             '(:with company-yasnippet))))
-(setq company-backends (mapcar #'company-mode/backend-with-yas company-backends))
+(defun yas-company-hook ()
+  (interactive)
+  (setq company-backends (mapcar #'company-mode/backend-with-yas company-backends)))
+(add-hook 'company-mode-hook 'yas-company-hook)
 ;; Just enable helm/ivy/ido and this uses them automatically
 (setq yas-prompt-functions '(yas-completing-prompt))
 ;; Disable in shell
@@ -926,14 +932,13 @@
 (add-hook 'term-mode-hook 'force-yasnippet-off)
 (add-hook 'shell-mode-hook 'force-yasnippet-off)
 (yas-global-mode)
-(define-key evil-normal-state-map (kbd "SPC ay") 'yas-minor-mode)
+(define-key evil-normal-state-map (kbd "SPC ay") 'yas-global-mode)
 (define-key evil-insert-state-map (kbd "C-j") 'yas-insert-snippet)
 
 ;;; Language and Syntax
 
 ;; ESS - Emacs speaks statistics
 (require-package 'ess)
-(require 'ess-site)
 (add-to-list 'auto-mode-alist '("\\.R$" . R-mode))
 ;; Vertical split R shell
 (defun r-shell-here ()
@@ -988,12 +993,12 @@
 
 ;; Highlight indentation
 (require-package 'highlight-indentation)
-(define-key evil-normal-state-map (kbd "SPC ah") 'highlight-indentation-mode)
+(define-key evil-normal-state-map (kbd "SPC ai") 'highlight-indentation-mode)
 
 ;; Elpy
 (require-package 'elpy)
-(elpy-enable)
-(elpy-use-ipython)
+(add-hook 'python-mode-hook 'elpy-enable)
+(add-hook 'python-mode-hook 'elpy-use-ipython)
 (define-key evil-normal-state-map (kbd "SPC jd") 'elpy-goto-definition)
 (define-key evil-normal-state-map (kbd "SPC jl") 'elpy-goto-location)
 (define-key evil-normal-state-map (kbd "SPC tp") 'elpy-shell-switch-to-shell)
@@ -1071,14 +1076,17 @@
 
 ;; Java
 (require-package 'emacs-eclim)
-(require 'eclimd)
-(require 'company-emacs-eclim)
-(setq eclim-executable (or (executable-find "eclim") "/Applications/Eclipse/Eclipse.app/Contents/Eclipse/eclim")
-      eclimd-executable (or (executable-find "eclimd") "/Applications/Eclipse/Eclipse.app/Contents/Eclipse/eclimd")
-      eclimd-wait-for-process nil
-      eclimd-default-workspace "~/Documents/workspace/eclipse/")
+(defun my-eclim-mode-hook ()
+  (interactive)
+  (require 'eclimd)
+  (require 'company-emacs-eclim)
+  (setq eclim-executable (or (executable-find "eclim") "/Applications/Eclipse/Eclipse.app/Contents/Eclipse/eclim")
+        eclimd-executable (or (executable-find "eclimd") "/Applications/Eclipse/Eclipse.app/Contents/Eclipse/eclimd")
+        eclimd-wait-for-process nil
+        eclimd-default-workspace "~/Documents/workspace/eclipse/")
+  (company-emacs-eclim-setup))
+(add-hook 'eclim-mode-hook 'my-eclim-mode-hook)
 (add-hook 'java-mode-hook 'eclim-mode)
-(company-emacs-eclim-setup)
 
 ;;; Flycheck
 (require-package 'flycheck)
@@ -1095,8 +1103,8 @@
 (define-key evil-normal-state-map (kbd "SPC l") 'flycheck-list-errors)
 
 ;;; Org mode
-(define-key evil-normal-state-map (kbd "SPC oc") 'org-capture)
-(define-key evil-normal-state-map (kbd "SPC oa") 'org-agenda)
+(define-key evil-normal-state-map (kbd "SPC c") 'org-capture)
+(define-key evil-normal-state-map (kbd "SPC o") 'org-agenda)
 (define-key evil-normal-state-map (kbd "SPC -") 'org-edit-src-code)
 (define-key evil-normal-state-map (kbd "SPC =") 'org-edit-src-exit)
 (define-key evil-normal-state-map (kbd "SPC ]") 'org-narrow-to-subtree)
@@ -1225,19 +1233,22 @@
 (require-package 'babel)
 (setq org-confirm-babel-evaluate nil)
 ;; Org load languages
-(org-babel-do-load-languages
- 'org-babel-load-languages
- '((emacs-lisp . t)
-   (dot . t)
-   (ditaa . t)
-   (latex . t)
-   (gnuplot . t)
-   (sh . t)
-   (C . t)
-   (R . t)
-   (octave . t)
-   (matlab . t)
-   (python . t)))
+(defun org-custom-load ()
+  (interactive)
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((emacs-lisp . t)
+     ;; (dot . t)
+     ;; (ditaa . t)
+     (latex . t)
+     ;; (gnuplot . t)
+     ;; (sh . t)
+     ;; (C . t)
+     ;; (R . t)
+     ;; (octave . t)
+     (matlab . t)
+     (python . t))))
+(define-key evil-normal-state-map (kbd "SPC ao") 'org-custom-load)
 (require-package 'ob-ipython)
 
 ;; Export using reveal and impress-js
@@ -1296,6 +1307,9 @@
 
 ;;; REPL
 
+;; Eshell send command
+(define-key evil-normal-state-map (kbd "SPC st") 'eshell-command)
+
 ;; Compile
 (define-key evil-normal-state-map (kbd "SPC m") 'compile)
 
@@ -1312,8 +1326,7 @@
 
 ;; Interact with Tmux
 (require-package 'emamux)
-(setq emamux:completing-read-type 'ido)
-(define-key evil-normal-state-map (kbd "SPC st") 'emamux:send-command)
+(define-key evil-normal-state-map (kbd "SPC sx") 'emamux:send-command)
 
 ;; Make the compilation window automatically disapper from enberg on #emacs
 (setq compilation-finish-functions
@@ -1354,22 +1367,22 @@
 (setq eyebrowse-wrap-around t
       eyebrowse-switch-back-and-forth t)
 (eyebrowse-mode t)
-(define-key evil-normal-state-map (kbd "SPC bb") 'eyebrowse-switch-to-window-config)
-(define-key evil-normal-state-map (kbd "SPC bl") 'eyebrowse-last-window-config)
-(define-key evil-normal-state-map (kbd "SPC bn") 'eyebrowse-next-window-config)
-(define-key evil-normal-state-map (kbd "SPC bp") 'eyebrowse-prev-window-config)
-(define-key evil-normal-state-map (kbd "SPC br") 'eyebrowse-rename-window-config)
-(define-key evil-normal-state-map (kbd "SPC bc") 'eyebrowse-close-window-config)
-(define-key evil-normal-state-map (kbd "SPC b0") 'eyebrowse-switch-to-window-config-0)
-(define-key evil-normal-state-map (kbd "SPC b1") 'eyebrowse-switch-to-window-config-1)
-(define-key evil-normal-state-map (kbd "SPC b2") 'eyebrowse-switch-to-window-config-2)
-(define-key evil-normal-state-map (kbd "SPC b3") 'eyebrowse-switch-to-window-config-3)
-(define-key evil-normal-state-map (kbd "SPC b4") 'eyebrowse-switch-to-window-config-4)
-(define-key evil-normal-state-map (kbd "SPC b5") 'eyebrowse-switch-to-window-config-5)
-(define-key evil-normal-state-map (kbd "SPC b6") 'eyebrowse-switch-to-window-config-6)
-(define-key evil-normal-state-map (kbd "SPC b7") 'eyebrowse-switch-to-window-config-7)
-(define-key evil-normal-state-map (kbd "SPC b8") 'eyebrowse-switch-to-window-config-8)
-(define-key evil-normal-state-map (kbd "SPC b9") 'eyebrowse-switch-to-window-config-9)
+(define-key evil-normal-state-map (kbd "SPC ii") 'eyebrowse-switch-to-window-config)
+(define-key evil-normal-state-map (kbd "SPC il") 'eyebrowse-last-window-config)
+(define-key evil-normal-state-map (kbd "SPC in") 'eyebrowse-next-window-config)
+(define-key evil-normal-state-map (kbd "SPC ip") 'eyebrowse-prev-window-config)
+(define-key evil-normal-state-map (kbd "SPC ir") 'eyebrowse-rename-window-config)
+(define-key evil-normal-state-map (kbd "SPC ic") 'eyebrowse-close-window-config)
+(define-key evil-normal-state-map (kbd "SPC i0") 'eyebrowse-switch-to-window-config-0)
+(define-key evil-normal-state-map (kbd "SPC i1") 'eyebrowse-switch-to-window-config-1)
+(define-key evil-normal-state-map (kbd "SPC i2") 'eyebrowse-switch-to-window-config-2)
+(define-key evil-normal-state-map (kbd "SPC i3") 'eyebrowse-switch-to-window-config-3)
+(define-key evil-normal-state-map (kbd "SPC i4") 'eyebrowse-switch-to-window-config-4)
+(define-key evil-normal-state-map (kbd "SPC i5") 'eyebrowse-switch-to-window-config-5)
+(define-key evil-normal-state-map (kbd "SPC i6") 'eyebrowse-switch-to-window-config-6)
+(define-key evil-normal-state-map (kbd "SPC i7") 'eyebrowse-switch-to-window-config-7)
+(define-key evil-normal-state-map (kbd "SPC i8") 'eyebrowse-switch-to-window-config-8)
+(define-key evil-normal-state-map (kbd "SPC i9") 'eyebrowse-switch-to-window-config-9)
 
 ;;; Wrap up
 
@@ -1420,6 +1433,9 @@
 
 ;; Restart Emacs from Emacs
 (require-package 'restart-emacs)
+
+;; Profiler
+(require-package 'esup)
 
 ;;; Clean mode-line
 (defvar mode-line-cleaner-alist
@@ -1478,6 +1494,9 @@ want to use in the modeline *in lieu of* the original.")
              (when (eq mode major-mode)
                (setq mode-name mode-str)))))
 (add-hook 'after-change-major-mode-hook 'clean-mode-line)
+
+;; Garbage collector - decrease threshold by an order
+(setq gc-cons-threshold 10000000)
 
 (server-start)
 ;;; .emacs ends here

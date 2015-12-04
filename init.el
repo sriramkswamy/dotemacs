@@ -326,14 +326,6 @@
 (require-package 'evil-commentary)
 (evil-commentary-mode)
 
-;; Vimish fold - arbitrary folding
-(require-package 'vimish-fold)
-(define-key evil-normal-state-map (kbd "zf") 'vimish-fold)
-(define-key evil-normal-state-map (kbd "zu") 'vimish-fold-delete)
-(define-key evil-normal-state-map (kbd "zg") 'vimish-fold-toggle)
-(define-key evil-normal-state-map (kbd "]v") 'vimish-fold-next-fold)
-(define-key evil-normal-state-map (kbd "[v") 'vimish-fold-previous-fold)
-
 ;; Evil exchange
 (require-package 'evil-exchange)
 (evil-exchange-install)
@@ -508,6 +500,10 @@
 (require-package 'counsel)
 (setq ivy-display-style 'fancy
       ivy-height 15)
+;; Fuzzy for M-x
+(setq ivy-re-builders-alist
+      '((counsel-M-x . ivy--regex-fuzzy)
+        (t . ivy--regex-plus)))
 (ivy-mode 1)
 (global-set-key (kbd "C-s") 'swiper)
 (global-set-key (kbd "C-r") 'swiper)
@@ -553,6 +549,7 @@
 (defhydra hydra-org-navigation (:color red
                                 :hint nil)
   "Org manipulate "
+  ("c" org-cycle "cycle")
   ("u" org-up-element "up")
   ("d" org-down-element "down")
   ("j" org-next-visible-heading "next")
@@ -582,7 +579,7 @@
   ("o" org-clock-out "clock out")
   ("r" org-clock-report "clock report")
   ("z" org-resolve-clocks "clock resolve")
-  ("c" org-clock-cancel "clock cancel")
+  ("C" org-clock-cancel "clock cancel")
   ("S" org-clock-display "clock show")
   ("X" org-clock-in-last "clock last")
   ("G" org-clock-goto "clock goto")
@@ -816,6 +813,19 @@
         (forward-word)))))
 (define-key evil-normal-state-map (kbd "]s") 'flyspell-goto-next-error)
 (define-key evil-normal-state-map (kbd "[s") 'flyspell-goto-previous-error)
+
+;; Better folding
+(require-package 'origami)
+(global-origami-mode)
+(define-key evil-normal-state-map (kbd "]z") 'origami-next-fold)
+(define-key evil-normal-state-map (kbd "[z") 'origami-previous-fold)
+(define-key evil-normal-state-map (kbd "zx") 'origami-toggle-node)
+(define-key evil-normal-state-map (kbd "zs") 'origami-show-only-node)
+(define-key evil-normal-state-map (kbd "zg") 'origami-toggle-all-nodes)
+(define-key evil-normal-state-map (kbd "zu") 'origami-undo)
+(define-key evil-normal-state-map (kbd "zr") 'origami-redo)
+(define-key evil-normal-state-map (kbd "zf") 'origami-close-node)
+(define-key evil-normal-state-map (kbd "zd") 'origami-open-node)
 
 ;; Highlight stuff
 (require-package 'volatile-highlights)
@@ -1179,6 +1189,7 @@
       org-default-notes-file "~/Dropbox/notes/inbox.org"
       ;; Indent
       org-startup-indented t
+      org-hide-leading-stars t
       ;; Images
       org-image-actual-width '(300)
       ;; Source code

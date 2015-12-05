@@ -29,9 +29,9 @@
       (package-refresh-contents))
     (package-install package)))
 
-;; ;; Mac stuff
-;; (when (eq system-type 'darwin)
-;;   (setq mac-option-modifier 'meta))
+;; Mac stuff
+(when (eq system-type 'darwin)
+  (setq mac-option-modifier 'meta))
 
 ;; Get the proper path
 (require-package 'exec-path-from-shell)
@@ -39,11 +39,73 @@
 (when (memq window-system '(mac ns))
   (exec-path-from-shell-initialize))
 
+;;; Hydra - Must have more than evil
+(require-package 'hydra)
+
 ;; Enable winner-mode
 (add-hook 'after-init-hook #'winner-mode)
 
-;;; Hydra - Must have more than evil
-(require-package 'hydra)
+;;; GUI
+;; No welcome screen - opens directly in scratch buffer
+(setq inhibit-startup-message t
+      initial-scratch-message ""
+      initial-major-mode 'org-mode
+      visible-bell nil
+      inhibit-splash-screen t)
+
+;; No toolbar and scrollbar. Menubar only in GUI.
+(when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
+(when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
+(unless (display-graphic-p) (menu-bar-mode -1))
+
+;; Non-native fullscreen
+(setq ns-use-native-fullscreen nil)
+(defun toggle-frame-fullscreen-non-native ()
+  "Toggle full screen non-natively. Uses the `fullboth' frame paramerter
+   rather than `fullscreen'. Useful to fullscreen on OSX w/o animations."
+  (interactive)
+  (modify-frame-parameters
+   nil
+   `((maximized
+      . ,(unless (memq (frame-parameter nil 'fullscreen) '(fullscreen fullboth))
+           (frame-parameter nil 'fullscreen)))
+     (fullscreen
+      . ,(if (memq (frame-parameter nil 'fullscreen) '(fullscreen fullboth))
+             (if (eq (frame-parameter nil 'maximized) 'maximized)
+                 'maximized)
+           'fullboth)))))
+
+;; DocView Settings
+(setq doc-view-continuous t
+      doc-view-resolution 200)
+
+;; Don't blink the cursor
+(blink-cursor-mode -1)
+
+;; Improve dired
+(require-package 'dired+)
+(add-hook 'dired-mode-hook 'dired-hide-details-mode)
+
+;; Speedbar in the same frame
+(require-package 'sr-speedbar)
+(setq speedbar-default-position 'right)
+;; Hydra - especially in emacs mode
+(defhydra hydra-speedbar (:color red)
+  "Speedbar "
+  ("j" speedbar-next)
+  ("k" speedbar-prev)
+  ("l" speedbar-edit-line)
+  ("h" speedbar-up-directory)
+  ("r" speedbar-refresh "refresh")
+  ("c" speedbar-item-rename "rename")
+  ("d" speedbar-item-delete "delete")
+  ("y" speedbar-item-copy "yank")
+  ("}" speedbar-forward-list "prev dir")
+  ("{" speedbar-backward-list "next dir")
+  ("]" speedbar-expand-line-descendants "expand")
+  ("[" speedbar-contract-line-descendants "contract")
+  ("o" speedbar-toggle-line-expansion "toggle")
+  ("q" sr-speedbar-close "quit" :color blue))
 
 ;;; Avy - not sure how to navigate vanilla emacs without this
 (require-package 'avy)
@@ -140,9 +202,6 @@
   ("t" imenu)
   ("u" undo)
   ("r" redo)
-  ("q" kmacro-start-macro)
-  ("Q" kmacro-end-macro)
-  ("@" kmacro-call-macro)
   ("J" vi-join-line)
   ("gs" reindent-then-newline-and-indent)
   ("gu" downcase-region)
@@ -157,68 +216,33 @@
   ("n" isearch-occur)
   ("f" hydra-avy/body :exit t)
   ("W" hydra-window/body :exit t)
+  ("S" hydra-speedbar/body :exit t)
   ("o" vi-open-line-below :color blue)
   ("O" vi-open-line-above :color blue)
   ("c" delete-char :color blue)
   ("a" forward-char :color blue)
-  ("i" nil :color blue))
+  ("i" nil :color blue)
+  ("q" nil :color blue))
 (global-set-key (kbd "C-t") 'hydra-vi/body)
 
 ;;; Evil - Vim emulation layer
 (require-package 'evil)
+(setq evil-default-cursor t
+      evil-want-C-u-scroll t
+      evil-want-Y-yank-to-eol t)
 (require 'evil)
-(setq evil-default-cursor t)
 (evil-mode 1)
 ;; Specify evil initial states
 (evil-set-initial-state 'dired-mode 'emacs)
 (evil-set-initial-state 'paradox-menu-mode 'emacs)
 (evil-set-initial-state 'calendar-mode 'emacs)
 (evil-set-initial-state 'diff-mode 'emacs)
+(evil-set-initial-state 'speedbar-mode 'emacs)
 
 ;;; Paradox for package
 (require-package 'paradox)
 (define-key evil-normal-state-map (kbd "SPC al") 'paradox-list-packages)
 (setq paradox-github-token t)
-
-;;; GUI
-;; No welcome screen - opens directly in scratch buffer
-(setq inhibit-startup-message t
-      initial-scratch-message ""
-      visible-bell nil
-      inhibit-splash-screen t)
-
-;; No toolbar and scrollbar. Menubar only in GUI.
-(when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
-(when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
-(unless (display-graphic-p) (menu-bar-mode -1))
-
-;; Non-native fullscreen
-(setq ns-use-native-fullscreen nil)
-(defun toggle-frame-fullscreen-non-native ()
-  "Toggle full screen non-natively. Uses the `fullboth' frame paramerter
-   rather than `fullscreen'. Useful to fullscreen on OSX w/o animations."
-  (interactive)
-  (modify-frame-parameters
-   nil
-   `((maximized
-      . ,(unless (memq (frame-parameter nil 'fullscreen) '(fullscreen fullboth))
-           (frame-parameter nil 'fullscreen)))
-     (fullscreen
-      . ,(if (memq (frame-parameter nil 'fullscreen) '(fullscreen fullboth))
-             (if (eq (frame-parameter nil 'maximized) 'maximized)
-                 'maximized)
-           'fullboth)))))
-
-;; DocView Settings
-(setq doc-view-continuous t
-      doc-view-resolution 200)
-
-;; Don't blink the cursor
-(blink-cursor-mode -1)
-
-;; Improve dired
-(require-package 'dired+)
-(add-hook 'dired-mode-hook 'dired-hide-details-mode)
 
 ;; Powerline and spaceline
 (require-package 'powerline)
@@ -344,15 +368,13 @@
 (define-key evil-normal-state-map (kbd "w") 'split-window-horizontally)
 (define-key evil-normal-state-map (kbd "W") 'split-window-vertically)
 (define-key evil-normal-state-map (kbd "U") 'undo-tree-visualize)
+(define-key evil-normal-state-map (kbd "\\") 'universal-argument)
 (define-key evil-normal-state-map (kbd "K") 'man)
-(define-key evil-normal-state-map (kbd "RET") 'evil-scroll-down)
-(define-key evil-normal-state-map (kbd "DEL") 'evil-scroll-up)
 (define-key evil-normal-state-map (kbd "+") 'eshell-vertical)
 (define-key evil-normal-state-map (kbd "-") 'eshell-horizontal)
 (define-key evil-normal-state-map (kbd "gs") 'electric-newline-and-maybe-indent)
 (define-key evil-normal-state-map (kbd "gl") 'browse-url-at-point)
 (define-key evil-normal-state-map (kbd "gL") 'browse-url-at-mouse)
-(define-key evil-normal-state-map (kbd "gF") 'set-frame-name)
 (define-key evil-normal-state-map (kbd "[F") 'delete-frame)
 (define-key evil-normal-state-map (kbd "]F") 'make-frame)
 (define-key evil-normal-state-map (kbd "SPC q") 'evil-quit)
@@ -365,8 +387,10 @@
 (define-key evil-normal-state-map (kbd "SPC 3") 'select-frame-by-name)
 (define-key evil-normal-state-map (kbd "SPC DEL") 'whitespace-cleanup)
 (define-key evil-normal-state-map (kbd "SPC ,") 'describe-bindings)
+(define-key evil-normal-state-map (kbd "SPC '") 'set-buffer-file-coding-system)
 (define-key evil-visual-state-map (kbd "SPC ]") 'narrow-to-region)
 (define-key evil-normal-state-map (kbd "SPC 6") 'quick-calc)
+(define-key evil-normal-state-map (kbd "SPC \\") 'toggle-input-method)
 (define-key evil-normal-state-map (kbd "SPC se") 'eval-buffer)
 (define-key evil-normal-state-map (kbd "SPC as") 'flyspell-mode)
 (define-key evil-normal-state-map (kbd "SPC an") 'linum-mode)
@@ -446,8 +470,8 @@
 
 ;; Increment and decrement numbers like vim
 (require-package 'evil-numbers)
-(define-key evil-normal-state-map (kbd "C-a") 'evil-numbers/inc-at-pt)
-(define-key evil-normal-state-map (kbd "C-d") 'evil-numbers/dec-at-pt)
+(define-key evil-normal-state-map (kbd "C-k") 'evil-numbers/inc-at-pt)
+(define-key evil-normal-state-map (kbd "C-j") 'evil-numbers/dec-at-pt)
 
 ;;; Evil text objects - Courtesy PythonNut
 ;; evil block indentation textobject for Python
@@ -578,6 +602,9 @@
 
 ;;; Navigation
 
+;; Evil speedbar binding
+(define-key evil-normal-state-map (kbd "SPC n") 'sr-speedbar-toggle)
+
 ;; Evil avy bindings
 (define-key evil-normal-state-map (kbd "SPC h") 'avy-goto-line)
 (define-key evil-visual-state-map (kbd "SPC h") 'avy-goto-line)
@@ -677,8 +704,8 @@
 (require-package 'swoop)
 (require 'swoop)
 (define-key evil-normal-state-map (kbd "*") 'swoop-pcre-regexp)
-(define-key evil-normal-state-map (kbd "*") 'swoop-pcre-regexp)
-(define-key evil-visual-state-map (kbd "#") 'swoop-pcre-regexp)
+(define-key evil-normal-state-map (kbd "#") 'swoop-pcre-regexp)
+(define-key evil-visual-state-map (kbd "*") 'swoop-pcre-regexp)
 (define-key evil-visual-state-map (kbd "#") 'swoop-pcre-regexp)
 
 ;;; Dash at point
@@ -694,24 +721,12 @@
 ;;; Spotlight
 (require-package 'spotlight)
 (define-key evil-normal-state-map (kbd "SPC 8") 'spotlight)
+;;; Reveal in Finder
+(require-package 'reveal-in-osx-finder)
+(define-key evil-normal-state-map (kbd "gF") 'reveal-in-osx-finder)
 
 ;;; Manage external services
 (require-package 'prodigy)
-
-;; NeoTree - like NERDTree
-(require-package 'neotree)
-(add-hook 'neotree-mode-hook
-          (lambda ()
-            (define-key evil-normal-state-local-map (kbd "o") 'neotree-enter)
-            (define-key evil-normal-state-local-map (kbd "i") 'neotree-enter)
-            (define-key evil-normal-state-local-map (kbd "RET") 'neotree-enter)
-            (define-key evil-normal-state-local-map (kbd "~") 'neotree-change-root)
-            (define-key evil-normal-state-local-map (kbd "r") 'neotree-refresh)
-            (define-key evil-normal-state-local-map (kbd "C") 'neotree-create-node)
-            (define-key evil-normal-state-local-map (kbd "D") 'neotree-delete-node)
-            (define-key evil-normal-state-local-map (kbd "R") 'neotree-rename-node)
-            (define-key evil-normal-state-local-map (kbd "q") 'neotree-hide)))
-(define-key evil-normal-state-map (kbd "SPC n") 'neotree-toggle)
 
 ;;; Cmake ide
 (require-package 'cmake-ide)
@@ -1171,6 +1186,28 @@
 (define-key evil-visual-state-map (kbd "SPC c") 'org-capture)
 (define-key evil-visual-state-map (kbd "SPC o") 'org-agenda)
 
+;; Correct those annoying double caps typos
+(defun dcaps-to-scaps ()
+  "Convert word in DOuble CApitals to Single Capitals."
+  (interactive)
+  (and (= ?w (char-syntax (char-before)))
+       (save-excursion
+         (and (if (called-interactively-p)
+                  (skip-syntax-backward "w")
+                (= -3 (skip-syntax-backward "w")))
+              (let (case-fold-search)
+                (looking-at "\\b[[:upper:]]\\{2\\}[[:lower:]]"))
+              (capitalize-word 1)))))
+(define-minor-mode dubcaps-mode
+  "Toggle `dubcaps-mode'.  Converts words in DOuble CApitals to
+Single Capitals as you type."
+  :init-value nil
+  :lighter (" DC")
+  (if dubcaps-mode
+      (add-hook 'post-self-insert-hook #'dcaps-to-scaps nil 'local)
+    (remove-hook 'post-self-insert-hook #'dcaps-to-scaps 'local)))
+(add-hook 'org-mode-hook #'dubcaps-mode)
+
 ;; Turns the next page in adjoining pdf-tools pdf
 (defun other-pdf-next ()
   "Turns the next page in adjoining PDF file"
@@ -1429,8 +1466,26 @@
 ;; Eshell send command
 (define-key evil-normal-state-map (kbd "SPC st") 'eshell-command)
 
-;; Compile
-(define-key evil-normal-state-map (kbd "SPC m") 'compile)
+;; Compile and multi-compile
+(require-package 'multi-compile)
+(setq multi-compile-alist '(
+                            (c++-mode . (("cpp-omp" . "g++ %file-name -Wall -fopenmp -o -g %file-sans.out")
+                                         ("cpp-mpi" . "mpic++ %file-name -o -g %file-sans.out")
+                                         ("cpp-g++" . "g++ %file-name -o %file-sans.out")))
+                            (c-mode . (("c-omp" . "gcc %file-name -Wall -fopenmp -o -g %file-sans.out")
+                                       ("c-mpi" . "mpicc %file-name -o -g %file-sans.out")
+                                       ("c-gcc" . "gcc %file-name -o %file-sans.out")))
+                            ))
+(setq multi-compile-completion-system 'default)
+
+;; Hydra for compilation
+(defhydra hydra-make (:color blue
+                      :hint nil)
+  "Make/Compile "
+  ("m" compile "make")
+  ("c" multi-compile-run "compile")
+  ("q" nil "quit"))
+(define-key evil-normal-state-map (kbd "SPC m") 'hydra-make/body)
 
 ;; Multi-term
 (require-package 'multi-term)
@@ -1553,6 +1608,9 @@
 ;; Restart Emacs from Emacs
 (require-package 'restart-emacs)
 
+;; Ledger mode for accounting
+(require-package 'ledger-mode)
+
 ;; Profiler
 (require-package 'esup)
 
@@ -1565,6 +1623,7 @@
     (evil-mc-mode . "")
     (evil-commentary-mode . "")
     (eyebrowse-mode . "")
+    (dubcaps-mode . "")
     (ivy-mode . "")
     (elpy-mode . "")
     (ws-butler-mode . "")

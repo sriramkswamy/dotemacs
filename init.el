@@ -29,7 +29,142 @@
       (package-refresh-contents))
     (package-install package)))
 
-;;; Evil - Just can't live without this
+;; ;; Mac stuff
+;; (when (eq system-type 'darwin)
+;;   (setq mac-option-modifier 'meta))
+
+;; Get the proper path
+(require-package 'exec-path-from-shell)
+(exec-path-from-shell-copy-env "PYTHONPATH")
+(when (memq window-system '(mac ns))
+  (exec-path-from-shell-initialize))
+
+;; Enable winner-mode
+(add-hook 'after-init-hook #'winner-mode)
+
+;;; Hydra - Must have more than evil
+(require-package 'hydra)
+
+;;; Avy - not sure how to navigate vanilla emacs without this
+(require-package 'avy)
+;; Hydra - especially in emacs mode
+(defhydra hydra-avy (:color red
+                     :hint nil)
+  "Avy "
+  ("f" avy-goto-char-in-line "char")
+  ("s" avy-goto-char-2 "snipe")
+  ("l" avy-goto-line "line")
+  ("w" avy-goto-word-or-subword-1 "word")
+  ("q" nil "quit" :color blue))
+
+;; some helper functions for vi hydra
+(defun vi-open-line-above ()
+  "Insert a newline above the current line and put point at beginning."
+  (interactive)
+  (unless (bolp)
+    (beginning-of-line))
+  (newline)
+  (forward-line -1)
+  (indent-according-to-mode))
+(defun vi-open-line-below ()
+  "Insert a newline below the current line and put point at beginning."
+  (interactive)
+  (unless (eolp)
+    (end-of-line))
+  (newline-and-indent))
+(defun vi-join-line ()
+  "Join the current line with the next line"
+  (interactive)
+  (next-line)
+  (delete-indentation))
+
+;; some helper hydras for vi
+(defhydra hydra-window (:color red
+                        :hint nil)
+  "win "
+  ("h" windmove-left "left")
+  ("j" windmove-down "down")
+  ("k" windmove-up "up")
+  ("l" windmove-right "right")
+  ("H" shrink-window-horizontally "shrink vertical")
+  ("J" enlarge-window "enlarge horizontal")
+  ("K" shrink-window "shrink horizontal")
+  ("L" enlarge-window-horizontally "enlarge vertical")
+  ("|" split-window-right "split right")
+  ("-" split-window-below "split below")
+  ("s" save-buffer "save")
+  ("d" delete-window "delete")
+  ("Z" delete-other-windows "only")
+  ("Q" (progn
+         (winner-undo)
+         (setq this-command 'winner-undo)) "winner undo")
+  ("R" winner-redo "winner redo")
+  ("M" toggle-frame-maximized "maximize")
+  ("D" delete-frame "delete frame")
+  ("u" switch-to-buffer "buffers")
+  ("r" recentf-open-files-item "recentf")
+  ("f" find-file "files")
+  ("F" follow-mode "follow")
+  ("+" text-scale-increase "zoom in")
+  ("-" text-scale-decrease "zoom out")
+  ("q" nil "quit"))
+
+;; Vi - Hydra
+(defhydra hydra-vi (:color red)
+  "Vi "
+  ("l" forward-char)
+  ("h" backward-char)
+  ("j" next-line)
+  ("k" previous-line)
+  ("e" forward-word)
+  ("b" backward-word)
+  ("0" beginning-of-line)
+  ("_" beginning-of-line-text)
+  ("$" end-of-line)
+  ("}" forward-paragraph)
+  ("{" backward-paragraph)
+  (")" forward-sexp)
+  ("(" backward-sexp)
+  ("gg" beginning-of-buffer)
+  ("G" end-of-buffer)
+  ("F" scroll-up)
+  ("B" scroll-down)
+  ("v" set-mark-command)
+  ("V" set-mark-command)
+  ("x" delete-char)
+  ("X" delete-backward-char)
+  ("d" delete-region)
+  ("y" kill-ring-save)
+  ("w" save-buffer)
+  ("p" yank)
+  ("t" imenu)
+  ("u" undo)
+  ("r" redo)
+  ("q" kmacro-start-macro)
+  ("Q" kmacro-end-macro)
+  ("@" kmacro-call-macro)
+  ("J" vi-join-line)
+  ("gs" reindent-then-newline-and-indent)
+  ("gu" downcase-region)
+  ("gU" upcase-region)
+  ("/" isearch-forward-regexp)
+  ("?" isearch-backward-regexp)
+  ("*" isearch-forward-symbol-at-point)
+  (":" execute-extended-command)
+  (">" indent-region)
+  ("=" indent-relative-maybe)
+  ("zz" recenter)
+  ("n" isearch-occur)
+  ("f" hydra-avy/body :exit t)
+  ("W" hydra-window/body :exit t)
+  ("o" vi-open-line-below :color blue)
+  ("O" vi-open-line-above :color blue)
+  ("c" delete-char :color blue)
+  ("a" forward-char :color blue)
+  ("i" nil :color blue))
+(global-set-key (kbd "C-t") 'hydra-vi/body)
+
+;;; Evil - Vim emulation layer
 (require-package 'evil)
 (require 'evil)
 (setq evil-default-cursor t)
@@ -38,17 +173,12 @@
 (evil-set-initial-state 'dired-mode 'emacs)
 (evil-set-initial-state 'paradox-menu-mode 'emacs)
 (evil-set-initial-state 'calendar-mode 'emacs)
+(evil-set-initial-state 'diff-mode 'emacs)
 
 ;;; Paradox for package
 (require-package 'paradox)
 (define-key evil-normal-state-map (kbd "SPC al") 'paradox-list-packages)
 (setq paradox-github-token t)
-
-;; Get the proper path
-(require-package 'exec-path-from-shell)
-(exec-path-from-shell-copy-env "PYTHONPATH")
-(when (memq window-system '(mac ns))
-  (exec-path-from-shell-initialize))
 
 ;;; GUI
 ;; No welcome screen - opens directly in scratch buffer
@@ -82,9 +212,6 @@
 ;; DocView Settings
 (setq doc-view-continuous t
       doc-view-resolution 200)
-
-;; Enable winner-mode
-(add-hook 'after-init-hook #'winner-mode)
 
 ;; Don't blink the cursor
 (blink-cursor-mode -1)
@@ -139,21 +266,10 @@
     (rename-buffer (concat "*eshell: " name "*"))
     (eshell-send-input)))
 
-;;; God-mode - Absolutely necessary
-(require-package 'god-mode)
-(require 'god-mode)
-(setq god-exempt-major-modes nil
-      god-exempt-predicates nil)
-(add-to-list 'god-exempt-major-modes 'dired-mode)
-(global-set-key (kbd "<escape>") 'god-local-mode)
-(global-set-key (kbd "C-c C-m") 'god-local-mode)
-(global-set-key (kbd "C-x C-1") 'delete-other-windows)
-(global-set-key (kbd "C-x C-2") 'split-window-below)
-(global-set-key (kbd "C-x C-3") 'split-window-right)
-(global-set-key (kbd "C-x C-0") 'delete-window)
-(global-set-key (kbd "C-x C-r") 'switch-to-buffer)
-(global-set-key (kbd "C-x C-k") 'kill-buffer)
-(global-set-key (kbd "C-x C-t") 'eshell-here)
+;; Window manipulation - hydra - definition at the beginning
+(define-key evil-normal-state-map (kbd "gw") 'hydra-window/body)
+(global-set-key (kbd "C-c C-h") 'hydra-window/body)
+(global-set-key (kbd "C-x C-h") 'hydra-window/body)
 
 ;;; Which key
 (require-package 'which-key)
@@ -237,6 +353,8 @@
 (define-key evil-normal-state-map (kbd "gl") 'browse-url-at-point)
 (define-key evil-normal-state-map (kbd "gL") 'browse-url-at-mouse)
 (define-key evil-normal-state-map (kbd "gF") 'set-frame-name)
+(define-key evil-normal-state-map (kbd "[F") 'delete-frame)
+(define-key evil-normal-state-map (kbd "]F") 'make-frame)
 (define-key evil-normal-state-map (kbd "SPC q") 'evil-quit)
 (define-key evil-normal-state-map (kbd "SPC w") 'save-buffer)
 (define-key evil-normal-state-map (kbd "SPC k") 'kill-buffer)
@@ -298,10 +416,6 @@
 (define-key evil-inner-text-objects-map "," #'evil-inner-arg)
 (define-key evil-outer-text-objects-map "," #'evil-outer-arg)
 (define-key evil-normal-state-map "\C-j" #'evil-jump-out-args)
-
-;; Play nice with god mode
-(require-package 'evil-god-state)
-(define-key evil-normal-state-map (kbd "\\") 'evil-execute-in-god-state)
 
 ;; Search count
 (require-package 'evil-anzu)
@@ -464,6 +578,10 @@
 
 ;;; Navigation
 
+;; Evil avy bindings
+(define-key evil-normal-state-map (kbd "SPC h") 'avy-goto-line)
+(define-key evil-visual-state-map (kbd "SPC h") 'avy-goto-line)
+
 ;; Enable recentf mode
 (recentf-mode)
 
@@ -482,12 +600,7 @@
 ;; Very large file viewing
 (require-package 'vlf)
 
-;;; Avy
-(require-package 'avy)
-(define-key evil-normal-state-map (kbd "SPC h") 'avy-goto-line)
-(define-key evil-visual-state-map (kbd "SPC h") 'avy-goto-line)
-
-;; ag
+;;; ag
 (require-package 'ag)
 (define-key evil-normal-state-map (kbd "SPC 7") 'ag-project-regexp)
 (define-key evil-visual-state-map (kbd "SPC 7") 'ag-project-regexp)
@@ -530,10 +643,7 @@
 (define-key evil-insert-state-map (kbd "C-d") 'ispell-word)
 (define-key evil-insert-state-map (kbd "C-l") 'counsel-M-x)
 
-;;; Hydra
-(require-package 'hydra)
-
-;; Bookmarks
+;; Bookmarks - hydra
 (defhydra hydra-marks (:color red
                        :hint nil)
   "All marks"
@@ -545,143 +655,7 @@
   ("q" nil "quit hydra" :color blue))
 (define-key evil-normal-state-map (kbd "SPC `") 'hydra-marks/body)
 
-;; Org navigation and manipulation
-(defhydra hydra-org-navigation (:color red
-                                :hint nil)
-  "Org manipulate "
-  ("c" org-cycle "org cycle")
-  ("h" org-metaleft "meta left")
-  ("l" org-metaright "meta right")
-  ("j" org-metadown "meta down")
-  ("k" org-metaup "meta up")
-  ("H" org-shiftleft "shift left")
-  ("L" org-shiftright "shift right")
-  ("J" org-shiftdown "shift down")
-  ("K" org-shiftup "shift up")
-  ("f" org-promote "promote point")
-  ("b" org-demote "demote point")
-  ("n" org-move-item-down "item down")
-  ("p" org-move-item-up "item up")
-  ("C" org-columns "org columns")
-  ("q" nil "quit" :color blue))
-(define-key evil-normal-state-map (kbd "goo") 'hydra-org-navigation/body)
-
-;; Org table manipulation
-(defhydra hydra-org-tables (:color red
-                            :hint nil)
-  "Org tables "
-  ("a" org-table-align "align")
-  ("l" org-table-next-field "next field")
-  ("h" org-table-previous-field "previous field")
-  ("j" org-table-end-of-field "end of field")
-  ("k" org-table-beginning-of-field "beginning of field")
-  ("r" org-table-insert-row "insert row")
-  ("c" org-table-insert-column "insert column")
-  ("-" org-table-insert-hline "insert hline")
-  ("J" org-table-move-row-down "move row down")
-  ("K" org-table-move-row-up "move row up")
-  ("H" org-table-move-column-left "move column left")
-  ("L" org-table-move-column-right "move column right")
-  ("R" org-table-kill-row "delete row")
-  ("C" org-table-delete-column "delete column")
-  ("b" org-table-blank-field "blank field")
-  ("e" org-table-edit-field "edit field")
-  ("i" org-table-field-info "field info")
-  ("s" org-table-sum "table sum")
-  ("f" org-table-eval-formula "table eval")
-  ("F" org-table-edit-formulas "edit formulas")
-  ("|" org-table-create-or-convert-from-region "create")
-  ("I" org-table-import "import")
-  ("E" org-table-export "export")
-  ("q" nil "quit" :color blue))
-(define-key evil-normal-state-map (kbd "go|") 'hydra-org-tables/body)
-
-;; Org clock manipulation
-(defhydra hydra-org-clock (:color red
-                           :hint nil)
-  "Org clock "
-  ("i" org-clock-in "clock in")
-  ("o" org-clock-out "clock out")
-  ("r" org-clock-report "clock report")
-  ("z" org-resolve-clocks "resolve clocks")
-  ("C" org-clock-cancel "clock cancel")
-  ("d" org-clock-display "clock display")
-  ("l" org-clock-in-last "clock last")
-  ("G" org-clock-goto "clock goto")
-  ("t" org-timer "timer")
-  ("T" org-timer-set-timer "set timer")
-  ("I" org-timer-start "start timer")
-  ("O" org-timer-stop "stop timer")
-  ("s" org-time-stamp "time stamp")
-  ("S" org-time-stamp-inactive "inactive time stamp")
-  ("q" nil "quit" :color blue))
-(define-key evil-normal-state-map (kbd "goC") 'hydra-org-clock/body)
-
-;; Org tags and todo manipulation
-(defhydra hydra-org-tag-todo (:color red
-                              :hint nil)
-  "Org tags and todo stuff "
-  ("t" org-set-tags-command "set tags")
-  ("v" org-tags-view "view tags")
-  ("m" org-match-sparse-tree "match sparse tree")
-  ("s" org-sparse-tree "sparse tree")
-  ("p" org-priority "priority")
-  ("u" org-priority-up "priority up")
-  ("d" org-priority-down "priority down")
-  ("T" org-todo "todo")
-  ("D" org-deadline "deadline set")
-  ("C" org-deadline-close "deadline close")
-  ("S" org-schedule "schedule set")
-  ("V" org-check-deadlines "check deadlines")
-  ("q" nil "quit" :color blue))
-(define-key evil-normal-state-map (kbd "got") 'hydra-org-tag-todo/body)
-
-;; Org checkbox manipulation
-(defhydra hydra-org-checkbox (:color red
-                              :hint nil)
-  "Org checkbox "
-  ("c" org-checkbox "checkbox")
-  ("t" org-toggle-checkbox "toggle")
-  ("u" org-update-checkbox-count-maybe "update count")
-  ("r" org-reset-checkbox-state-subtree "reset")
-  ("s" org-update-statistics-cookies "update stats")
-  ("q" nil "quit" :color blue))
-(define-key evil-normal-state-map (kbd "goc") 'hydra-org-checkbox/body)
-
-;; Window manipulation
-(defhydra hydra-window (:color red
-                        :hint nil)
-  "Window nav "
-  ("h" windmove-left "left")
-  ("j" windmove-down "down")
-  ("k" windmove-up "up")
-  ("l" windmove-right "right")
-  ("H" shrink-window-horizontally "shrink vertical")
-  ("J" enlarge-window "enlarge horizontally")
-  ("K" shrink-window "shrink horizontally")
-  ("L" enlarge-window-horizontally "enlarge vertically")
-  ("w" split-window-right "split right")
-  ("W" split-window-below "split below")
-  ("s" save-buffer "save")
-  ("d" delete-window "delete")
-  ("Z" delete-other-windows "only")
-  ("Q" (progn
-         (winner-undo)
-         (setq this-command 'winner-undo)) "winner undo")
-  ("R" winner-redo "winner redo")
-  ("M" toggle-frame-maximized "maximize")
-  ("n" make-frame "new frame")
-  ("D" delete-frame "delete frame")
-  ("u" ivy-switch-buffer "buffers")
-  ("r" ivy-recentf "recertf")
-  ("f" counsel-find-file "files")
-  ("F" follow-mode "follow")
-  ("+" text-scale-increase "zoom in")
-  ("-" text-scale-decrease "zoom out")
-  ("q" nil "cancel"))
-(define-key evil-normal-state-map (kbd "gw") 'hydra-window/body)
-
-;; Apropos
+;; Apropos - hydra
 (defhydra hydra-apropos (:color blue
                          :hint nil)
   "Apropos"
@@ -1303,6 +1277,109 @@
 ;; Trello
 (require-package 'org-trello)
 
+;; Org navigation and manipulation - hydra
+(defhydra hydra-org-manipulate (:color red
+                                :hint nil)
+  "Org manipulate "
+  ("c" org-cycle "org cycle")
+  ("h" org-metaleft "meta left")
+  ("l" org-metaright "meta right")
+  ("j" org-metadown "meta down")
+  ("k" org-metaup "meta up")
+  ("H" org-shiftleft "shift left")
+  ("L" org-shiftright "shift right")
+  ("J" org-shiftdown "shift down")
+  ("K" org-shiftup "shift up")
+  ("f" org-promote "promote point")
+  ("b" org-demote "demote point")
+  ("n" org-move-item-down "item down")
+  ("p" org-move-item-up "item up")
+  ("C" org-columns "org columns")
+  ("q" nil "quit" :color blue))
+(define-key evil-normal-state-map (kbd "goo") 'hydra-org-manipulate/body)
+
+;; Org table manipulation - hydra
+(defhydra hydra-org-tables (:color red
+                            :hint nil)
+  "Org tables "
+  ("a" org-table-align "align")
+  ("l" org-table-next-field "next field")
+  ("h" org-table-previous-field "previous field")
+  ("j" org-table-end-of-field "end of field")
+  ("k" org-table-beginning-of-field "beginning of field")
+  ("r" org-table-insert-row "insert row")
+  ("c" org-table-insert-column "insert column")
+  ("-" org-table-insert-hline "insert hline")
+  ("J" org-table-move-row-down "move row down")
+  ("K" org-table-move-row-up "move row up")
+  ("H" org-table-move-column-left "move column left")
+  ("L" org-table-move-column-right "move column right")
+  ("R" org-table-kill-row "delete row")
+  ("C" org-table-delete-column "delete column")
+  ("b" org-table-blank-field "blank field")
+  ("e" org-table-edit-field "edit field")
+  ("i" org-table-field-info "field info")
+  ("s" org-table-sum "table sum")
+  ("f" org-table-eval-formula "table eval")
+  ("F" org-table-edit-formulas "edit formulas")
+  ("|" org-table-create-or-convert-from-region "create")
+  ("I" org-table-import "import")
+  ("E" org-table-export "export")
+  ("q" nil "quit" :color blue))
+(define-key evil-normal-state-map (kbd "go|") 'hydra-org-tables/body)
+
+;; Org clock manipulation - hydra
+(defhydra hydra-org-clock (:color red
+                           :hint nil)
+  "Org clock "
+  ("i" org-clock-in "clock in")
+  ("o" org-clock-out "clock out")
+  ("r" org-clock-report "clock report")
+  ("z" org-resolve-clocks "resolve clocks")
+  ("C" org-clock-cancel "clock cancel")
+  ("d" org-clock-display "clock display")
+  ("l" org-clock-in-last "clock last")
+  ("G" org-clock-goto "clock goto")
+  ("t" org-timer "timer")
+  ("T" org-timer-set-timer "set timer")
+  ("I" org-timer-start "start timer")
+  ("O" org-timer-stop "stop timer")
+  ("s" org-time-stamp "time stamp")
+  ("S" org-time-stamp-inactive "inactive time stamp")
+  ("q" nil "quit" :color blue))
+(define-key evil-normal-state-map (kbd "goC") 'hydra-org-clock/body)
+
+;; Org tags and todo manipulation - hydra
+(defhydra hydra-org-tag-todo (:color red
+                              :hint nil)
+  "Org tags and todo stuff "
+  ("t" org-set-tags-command "set tags")
+  ("v" org-tags-view "view tags")
+  ("m" org-match-sparse-tree "match sparse tree")
+  ("s" org-sparse-tree "sparse tree")
+  ("p" org-priority "priority")
+  ("u" org-priority-up "priority up")
+  ("d" org-priority-down "priority down")
+  ("T" org-todo "todo")
+  ("D" org-deadline "deadline set")
+  ("C" org-deadline-close "deadline close")
+  ("S" org-schedule "schedule set")
+  ("V" org-check-deadlines "check deadlines")
+  ("q" nil "quit" :color blue))
+(define-key evil-normal-state-map (kbd "got") 'hydra-org-tag-todo/body)
+
+;; Org checkbox manipulation - hydra
+(defhydra hydra-org-checkbox (:color red
+                              :hint nil)
+  "Org checkbox "
+  ("c" org-checkbox "checkbox")
+  ("t" org-toggle-checkbox "toggle")
+  ("u" org-update-checkbox-count-maybe "update count")
+  ("r" org-reset-checkbox-state-subtree "reset")
+  ("s" org-update-statistics-cookies "update stats")
+  ("q" nil "quit" :color blue))
+(define-key evil-normal-state-map (kbd "goc") 'hydra-org-checkbox/body)
+
 ;;; Version control
 
 ;; Magit
@@ -1328,6 +1405,7 @@
 (diff-hl-flydiff-mode)
 (define-key evil-normal-state-map (kbd "]d") 'diff-hl-next-hunk)
 (define-key evil-normal-state-map (kbd "[d") 'diff-hl-previous-hunk)
+(define-key evil-normal-state-map (kbd "gD") 'diff-hl-diff-goto-hunk)
 (define-key evil-normal-state-map (kbd "gh") 'diff-hl-revert-hunk)
 
 ;; Git time-machine
@@ -1482,7 +1560,6 @@
 (defvar mode-line-cleaner-alist
   `((smartparens-mode . "")
     (which-key-mode . "")
-    (god-local-mode . " ψ")
     (evil-snipe-mode . "")
     (evil-snipe-local-mode . "")
     (evil-mc-mode . "")

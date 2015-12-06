@@ -1,5 +1,6 @@
 ;;; Packages
 (require 'package)
+(setq package-enable-at-startup nil)
 
 ;; Garbage collector - increase threshold
 (setq gc-cons-threshold 100000000)
@@ -13,8 +14,6 @@
 (when (< emacs-major-version 24)
   ;; For important compatibility libraries like cl-lib
   (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
-
-(setq package-enable-at-startup nil)
 
 ;; Add homebrew packages
 (let ((default-directory "/usr/local/share/emacs/site-lisp/"))
@@ -39,11 +38,11 @@
 (when (memq window-system '(mac ns))
   (exec-path-from-shell-initialize))
 
-;;; Hydra - Must have more than evil
-(require-package 'hydra)
-
 ;; Enable winner-mode
 (add-hook 'after-init-hook #'winner-mode)
+
+;;; Hydra - Must have more than evil
+(require-package 'hydra)
 
 ;;; GUI
 ;; No welcome screen - opens directly in scratch buffer
@@ -90,7 +89,6 @@
 (require-package 'sr-speedbar)
 (setq speedbar-default-position 'right)
 ;; Hydra - especially in emacs mode
-
 (defhydra hydra-speedbar (:color red
                           :hint nil)
   "
@@ -153,9 +151,9 @@ _h_ ^+^ _l_     ^ ^ ^+^ ^ ^   _d_elete      _r_efresh
 ^Move^       ^Size^   ^Buffer^    ^Window^         ^Frame^     ^Text^        ^
 ^^^^^^^^^^^^^^^---------------------------------------------------------------------
 ^ ^ _k_ ^ ^     ^ ^ _K_ ^ ^   _s_ave      _Z_oom           _M_aximize  _+_ zoom in   _q_uit
-_h_ ^+^ _l_     _H_ ^+^ _L_   b_u_ffers   _Q_ winner-undo  _D_elete    _-_ zoom out
+_h_ ^+^ _l_     _H_ ^+^ _L_   b_u_ffers   _Q_ winner-undo  _m_inimize    _-_ zoom out
 ^ ^ _j_ ^ ^     ^ ^ _J_ ^ ^   _r_ecent    _R_ winner-redo  _S_et name
-                  _f_iles     _F_ollow
+                  _f_iles     _F_ollow         _D_elete
 "
   ("h" windmove-left)
   ("j" windmove-down)
@@ -175,6 +173,7 @@ _h_ ^+^ _l_     _H_ ^+^ _L_   b_u_ffers   _Q_ winner-undo  _D_elete    _-_ zoom 
          (setq this-command 'winner-undo)))
   ("R" winner-redo)
   ("M" toggle-frame-maximized)
+  ("m" suspend-frame)
   ("D" delete-frame)
   ("S" set-frame-name)
   ("u" switch-to-buffer)

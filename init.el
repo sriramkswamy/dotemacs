@@ -100,8 +100,8 @@
   ("c" speedbar-item-rename "rename")
   ("d" speedbar-item-delete "delete")
   ("y" speedbar-item-copy "yank")
-  ("}" speedbar-forward-list "prev dir")
-  ("{" speedbar-backward-list "next dir")
+  ("}" speedbar-forward-list "end of list")
+  ("{" speedbar-backward-list "beg of list")
   ("]" speedbar-expand-line-descendants "expand")
   ("[" speedbar-contract-line-descendants "contract")
   ("o" speedbar-toggle-line-expansion "toggle")
@@ -603,7 +603,7 @@
 ;;; Navigation
 
 ;; Evil speedbar binding
-(define-key evil-normal-state-map (kbd "SPC n") 'sr-speedbar-toggle)
+(define-key evil-normal-state-map (kbd "gf") 'sr-speedbar-toggle)
 
 ;; Evil avy bindings
 (define-key evil-normal-state-map (kbd "SPC h") 'avy-goto-line)
@@ -1131,6 +1131,36 @@
 (eval-after-load 'flycheck
   '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
 
+;;; Deft for quickly accessing notes
+(require-package 'deft)
+(setq deft-extensions '("org" "md" "txt" "tex")
+      deft-recursive t
+      deft-use-filename-as-title t
+      deft-directory "~/Dropbox/notes")
+;; Hydra for deft
+(defhydra hydra-deft (:color red)
+  "Deft "
+  ("j" next-line)
+  ("k" previous-line)
+  ("h" beginning-of-buffer)
+  ("l" end-of-buffer)
+  ("g" avy-goto-line "goto line")
+  ("n" deft-new-file-named "new" :color blue)
+  ("f" deft-filter "filter")
+  ("c" deft-filter-clear "clear filter")
+  ("o" deft-open-file-other-window "open other window" :color blue)
+  ("r" deft-refresh "refresh")
+  ("R" deft-rename-file "rename")
+  ("v" deft-show-version "show version")
+  ("a" deft-archive-file "archive")
+  ("A" deft-archive-directory "archive directory")
+  ("q" nil "quit" :color blue))
+(defun open-deft-and-start-hydra ()
+  (interactive)
+  (deft)
+  (hydra-deft/body))
+(define-key evil-normal-state-map (kbd "SPC n") 'open-deft-and-start-hydra)
+
 ;;; Org mode
 (define-key evil-normal-state-map (kbd "SPC c") 'org-capture)
 (define-key evil-normal-state-map (kbd "SPC o") 'org-agenda)
@@ -1242,20 +1272,32 @@ Single Capitals as you type."
       org-latex-to-pdf-process '("pdflatex %f" "biber %b" "pdflatex %f" "pdflatex %f"))
 
 ;; Tags with fast selection keys
-(setq org-tag-alist (quote ((:startgroup)
-                            ("@office" . ?o)
-                            ("@home" . ?h)
-                            (:endgroup)
-                            ("errand" . ?t)
-                            ("personal" . ?p)
+(setq org-tag-alist (quote (("errand" . ?e)
+                            ("blog" . ?b)
+                            ("personal" . ?m)
+                            ("accounts" . ?a)
+                            ("lubby" . ?l)
+                            ("idea" . ?i)
+                            ("project" . ?p)
+                            ("job" . ?j)
                             ("work" . ?w)
-                            ("noexport" . ?e)
+                            ("home" . ?h)
+                            ("noexport" . ?x)
+                            ("technial" . ?t)
+                            ("random" . ?r)
+                            ("crafts" . ?c)
+                            ("story/news" . ?s)
                             ("note" . ?n))))
 
 ;; TODO Keywords
 (setq org-todo-keywords
       '((sequence "TODO(t)" "HOLD(h@/!)" "|" "DONE(d!)")
         (sequence "|" "CANCELLED(c@)")))
+
+(setq org-agenda-files (list "~/Dropbox/notes/work.org"
+                             "~/Dropbox/notes/blog.org"
+                             "~/Dropbox/notes/ledger.org"
+                             "~/Dropbox/notes/notes.org"))
 
 ;; Links
 (setq org-link-abbrev-alist
@@ -1266,10 +1308,23 @@ Single Capitals as you type."
 
 ;; Capture templates
 (setq org-capture-templates
-      '(("t" "Todo" entry (file+headline "~/Dropbox/notes/tasks.org" "Tasks")
-         "* TODO %?\n  %i\n  %a")
-        ("j" "Journal" entry (file+datetree "~/Dropbox/notes/journal.org")
-         "* %?\nEntered on %U\n  %i\n  %a")))
+      '(("n" "Note" entry (file+headline "~/Dropbox/notes/notes.org" "Notes")
+         "* %?\nEntered on %U\n  %i\n  %a")
+        ("j" "Job leads/status" entry (file+headline "~/Dropbox/notes/notes.org" "Job leads/status")
+         "* %?\nEntered on %U\n  %i\n  %a")
+        ("s" "Story/News" entry (file+headline "~/Dropbox/notes/notes.org" "Story/News")
+         "* %?\nEntered on %U\n  %i\n  %a")
+        ("a" "Accounts - Ledger" entry (file+datetree "~/Dropbox/notes/ledger.org")
+         "* %?\nEntered on %U\n  %i\n  %a")
+        ("b" "Blog" entry (file+datetree "~/Dropbox/notes/blog.org")
+         "* %?\nEntered on %U\n  %i\n  %a")
+        ("p" "Project" entry (file+headline "~/Dropbox/notes/notes.org" "Projects")
+         "* %?\nEntered on %U\n  %i\n  %a")
+        ("w" "Work" entry (file+headline "~/Dropbox/notes/work.org" "Work")
+         "* %?\nEntered on %U\n  %i\n  %a :work:")
+        ("h" "Home" entry (file+headline "~/Dropbox/notes/notes.org" "Home")
+         "* %?\nEntered on %U\n  %i\n  %a :personal:")))
+
 
 ;; Calendar
 (require-package 'org-caldav)
@@ -1384,38 +1439,31 @@ Single Capitals as you type."
   ("s" org-time-stamp "time stamp")
   ("S" org-time-stamp-inactive "inactive time stamp")
   ("q" nil "quit" :color blue))
-(define-key evil-normal-state-map (kbd "goC") 'hydra-org-clock/body)
+(define-key evil-normal-state-map (kbd "goc") 'hydra-org-clock/body)
 
 ;; Org tags and todo manipulation - hydra
 (defhydra hydra-org-tag-todo (:color red
                               :hint nil)
   "Org tags and todo stuff "
-  ("t" org-set-tags-command "set tags")
+  ("t" org-set-tags-command "set tags" :color blue)
   ("v" org-tags-view "view tags")
-  ("m" org-match-sparse-tree "match sparse tree")
-  ("s" org-sparse-tree "sparse tree")
+  ("m" org-match-sparse-tree "match sparse tree" :color blue)
+  ("s" org-sparse-tree "sparse tree" :color blue)
   ("p" org-priority "priority")
-  ("u" org-priority-up "priority up")
-  ("d" org-priority-down "priority down")
-  ("T" org-todo "todo")
-  ("D" org-deadline "deadline set")
-  ("C" org-deadline-close "deadline close")
-  ("S" org-schedule "schedule set")
+  (">" org-priority-up "priority up")
+  ("<" org-priority-down "priority down")
+  ("T" org-todo "todo" :color blue)
+  ("D" org-deadline "deadline set" :color blue)
+  ("C" org-deadline-close "deadline close" :color blue)
+  ("S" org-schedule "schedule set" :color blue)
   ("V" org-check-deadlines "check deadlines")
+  ("c" org-checkbox "checkbox")
+  ("x" org-toggle-checkbox "toggle")
+  ("U" org-update-checkbox-count-maybe "update count")
+  ("r" org-reset-checkbox-state-subtree "reset")
+  ("u" org-update-statistics-cookies "update stats")
   ("q" nil "quit" :color blue))
 (define-key evil-normal-state-map (kbd "got") 'hydra-org-tag-todo/body)
-
-;; Org checkbox manipulation - hydra
-(defhydra hydra-org-checkbox (:color red
-                              :hint nil)
-  "Org checkbox "
-  ("c" org-checkbox "checkbox")
-  ("t" org-toggle-checkbox "toggle")
-  ("u" org-update-checkbox-count-maybe "update count")
-  ("r" org-reset-checkbox-state-subtree "reset")
-  ("s" org-update-statistics-cookies "update stats")
-  ("q" nil "quit" :color blue))
-(define-key evil-normal-state-map (kbd "goc") 'hydra-org-checkbox/body)
 
 ;;; Version control
 

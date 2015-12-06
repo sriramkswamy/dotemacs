@@ -148,12 +148,12 @@ _h_ ^+^ _l_     ^ ^ ^+^ ^ ^   _d_elete      _r_efresh
 (defhydra hydra-window (:color red
                         :hint nil)
   "
-^Move^       ^Size^   ^Buffer^    ^Window^         ^Frame^     ^Text^        ^
-^^^^^^^^^^^^^^^---------------------------------------------------------------------
-^ ^ _k_ ^ ^     ^ ^ _K_ ^ ^   _s_ave      _Z_oom           _M_aximize  _+_ zoom in   _q_uit
-_h_ ^+^ _l_     _H_ ^+^ _L_   b_u_ffers   _Q_ winner-undo  _m_inimize    _-_ zoom out
-^ ^ _j_ ^ ^     ^ ^ _J_ ^ ^   _r_ecent    _R_ winner-redo  _S_et name
-                  _f_iles     _F_ollow         _D_elete
+^Move^       ^Size^   ^Buffer^   ^Split^         ^Window^         ^Frame^     ^Text^
+^^^^^^^^^^^^^^^----------------------------------------------------------------------------------
+^ ^ _k_ ^ ^     ^ ^ _K_ ^ ^   _s_ave     _|_ vertical    _Z_oom           _M_aximize  _+_ zoom in   _q_uit
+_h_ ^+^ _l_     _H_ ^+^ _L_   b_u_ffers  ___ horizontal  _Q_ winner-undo  _m_inimize  _-_ zoom out
+^ ^ _j_ ^ ^     ^ ^ _J_ ^ ^   _r_ecent                 _R_ winner-redo  _S_et name
+                  _f_iles                  _F_ollow         _D_elete
 "
   ("h" windmove-left)
   ("j" windmove-down)
@@ -164,7 +164,7 @@ _h_ ^+^ _l_     _H_ ^+^ _L_   b_u_ffers   _Q_ winner-undo  _m_inimize    _-_ zoo
   ("K" shrink-window)
   ("L" enlarge-window-horizontally)
   ("|" split-window-right)
-  ("-" split-window-below)
+  ("_" split-window-below)
   ("s" save-buffer)
   ("d" delete-window)
   ("Z" delete-other-windows)

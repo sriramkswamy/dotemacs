@@ -116,12 +116,23 @@ _h_ ^+^ _l_     ^ ^ ^+^ ^ ^   _d_elete      _r_efresh
 ;; Hydra - especially in emacs mode
 (defhydra hydra-avy (:color red
                      :hint nil)
-  "Avy "
-  ("f" avy-goto-char-in-line "char")
-  ("s" avy-goto-char-2 "snipe")
-  ("l" avy-goto-line "line")
-  ("w" avy-goto-word-or-subword-1 "word")
-  ("q" nil "quit" :color blue))
+  "
+ ^Line^    ^Character^          ^Word^              ^Subword^
+ ^^^^^^^^^-----------------------------------------------------------
+ _l_ine    _c_haracter          _w_ord or subword   _s_ubword
+ _q_uit    _d_ouble character   _W_ord              _S_ubword double
+         _C_haracter in line  _D_ouble word
+"
+  ("l" avy-goto-line)
+  ("c" avy-goto-char)
+  ("d" avy-goto-char-2)
+  ("C" avy-goto-char-in-line)
+  ("w" avy-goto-word-or-subword-1)
+  ("W" avy-goto-word-0)
+  ("D" avy-goto-word-1)
+  ("s" avy-goto-subword-0)
+  ("S" avy-goto-subword-1)
+  ("q" nil :color blue))
 
 ;; some helper functions for vi hydra
 (defun vi-open-line-above ()
@@ -145,29 +156,30 @@ _h_ ^+^ _l_     ^ ^ ^+^ ^ ^   _d_elete      _r_efresh
   (delete-indentation))
 
 ;; some helper hydras for vi
-(defhydra hydra-window (:color red
-                        :hint nil)
+(defhydra hydra-window-and-frame (:color red
+                                  :hint nil)
   "
-^Move^       ^Size^   ^Buffer^   ^Split^         ^Window^         ^Frame^     ^Text^
-^^^^^^^^^^^^^^^----------------------------------------------------------------------------------
-^ ^ _k_ ^ ^     ^ ^ _K_ ^ ^   _s_ave     _|_ vertical    _Z_oom           _M_aximize  _+_ zoom in   _q_uit
-_h_ ^+^ _l_     _H_ ^+^ _L_   b_u_ffers  ___ horizontal  _Q_ winner-undo  _m_inimize  _-_ zoom out
-^ ^ _j_ ^ ^     ^ ^ _J_ ^ ^   _r_ecent                 _R_ winner-redo  _S_et name
-                  _f_iles                  _F_ollow         _D_elete
+ ^Move^      ^Size^    ^Buffer^   ^Split^         ^Window^         ^Frame^     ^Text^
+ ^^^^^^^^^^^^^^^--------------------------------------------------------------------------------
+ ^ ^ _p_ ^ ^     ^ ^ _P_ ^ ^   _s_ave     _|_ vertical    _Z_ fullscreen   _M_aximize  _+_ zoom in
+ _b_ ^+^ _f_     _B_ ^+^ _F_   b_u_ffers  ___ horizontal  _Q_ winner-undo  _m_inimize  _-_ zoom out
+ ^ ^ _n_ ^ ^     ^ ^ _N_ ^ ^   _r_ecent   _O_nly          _R_ winner-redo  _S_et name
+                   f_i_les    _q_uit          f_o_llow         _D_elete
 "
-  ("h" windmove-left)
-  ("j" windmove-down)
-  ("k" windmove-up)
-  ("l" windmove-right)
-  ("H" shrink-window-horizontally)
-  ("J" enlarge-window)
-  ("K" shrink-window)
-  ("L" enlarge-window-horizontally)
+  ("b" windmove-left)
+  ("n" windmove-down)
+  ("p" windmove-up)
+  ("f" windmove-right)
+  ("B" shrink-window-horizontally)
+  ("N" enlarge-window)
+  ("P" shrink-window)
+  ("F" enlarge-window-horizontally)
   ("|" split-window-right)
   ("_" split-window-below)
   ("s" save-buffer)
   ("d" delete-window)
-  ("Z" delete-other-windows)
+  ("Z" toggle-frame-fullscreen-non-native)
+  ("O" delete-other-windows)
   ("Q" (progn
          (winner-undo)
          (setq this-command 'winner-undo)))
@@ -178,8 +190,8 @@ _h_ ^+^ _l_     _H_ ^+^ _L_   b_u_ffers  ___ horizontal  _Q_ winner-undo  _m_ini
   ("S" set-frame-name)
   ("u" switch-to-buffer)
   ("r" recentf-open-files-item)
-  ("f" find-file)
-  ("F" follow-mode)
+  ("i" find-file)
+  ("o" follow-mode)
   ("+" text-scale-increase)
   ("-" text-scale-decrease)
   ("q" nil))
@@ -304,9 +316,9 @@ _h_ ^+^ _l_   _a_ ^+^ _e_   _w_ ^+^ _b_     ^ ^ ^+^ ^ ^        _x_ delete char  
     (eshell-send-input)))
 
 ;; Window manipulation - hydra - definition at the beginning
-(define-key evil-normal-state-map (kbd "gw") 'hydra-window/body)
-(global-set-key (kbd "C-c C-h") 'hydra-window/body)
-(global-set-key (kbd "C-x C-h") 'hydra-window/body)
+(define-key evil-normal-state-map (kbd "gw") 'hydra-window-and-frame/body)
+(global-set-key (kbd "C-c C-h") 'hydra-window-and-frame/body)
+(global-set-key (kbd "C-x C-h") 'hydra-window-and-frame/body)
 
 ;;; Which key
 (require-package 'which-key)
@@ -684,28 +696,36 @@ _h_ ^+^ _l_   _a_ ^+^ _e_   _w_ ^+^ _b_     ^ ^ ^+^ ^ ^        _x_ delete char  
 (define-key evil-insert-state-map (kbd "C-l") 'counsel-M-x)
 
 ;; Bookmarks - hydra
-(defhydra hydra-marks (:color red
-                       :hint nil)
-  "All marks"
-  ("s" bookmark-set "set bookmark")
-  ("S" bookmark-save "save bookmark")
-  ("j" bookmark-jump "jump to bookmark")
-  ("d" bookmark-delete "delete bookmark")
-  ("m" pop-global-mark "mark ring")
-  ("q" nil "quit" :color blue))
-(define-key evil-normal-state-map (kbd "SPC `") 'hydra-marks/body)
+(defhydra hydra-bookmarks (:color red
+                              :hint nil)
+  "
+ ^Bookmarks^
+ ^^^^^^^^^-----------------------------
+ _s_et  _S_ave  _j_ump  _d_elete  _q_uit
+  "
+  ("s" bookmark-set)
+  ("S" bookmark-save)
+  ("j" bookmark-jump)
+  ("d" bookmark-delete)
+  ("q" nil :color blue))
+(define-key evil-normal-state-map (kbd "SPC `") 'hydra-bookmarks/body)
 
 ;; Apropos - hydra
 (defhydra hydra-apropos (:color blue
                          :hint nil)
-  "Apropos"
-  ("a" apropos "apropos")
-  ("d" apropos-documentation "doc")
-  ("v" apropos-variable "var")
-  ("c" apropos-command "cmd")
-  ("l" apropos-library "lib")
-  ("u" apropos-user-option "option")
-  ("e" apropos-value "value"))
+  "
+ ^Apropos^
+ ^^^^^^^^^------------------------------------------------------------
+ _a_propos   _d_oc   _v_ar   _c_md   _l_ib   _u_ser-option   valu_e_   _q_uit
+"
+  ("a" apropos)
+  ("d" apropos-documentation)
+  ("v" apropos-variable)
+  ("c" apropos-command)
+  ("l" apropos-library)
+  ("u" apropos-user-option)
+  ("e" apropos-value)
+  ("q" nil))
 (define-key evil-normal-state-map (kbd "SPC xa") 'hydra-apropos/body)
 
 ;; Find file in project
@@ -1579,10 +1599,14 @@ _s_parse-tree  _S_chedule    _r_eset
 ;; Hydra for compilation
 (defhydra hydra-make (:color blue
                       :hint nil)
-  "Make/Compile "
-  ("m" compile "make")
-  ("c" multi-compile-run "compile")
-  ("q" nil "quit"))
+  "
+ ^Multi-compile^
+ ^^^^^^^^^---------------------
+ _m_ake   _c_ompile   _q_uit
+"
+  ("m" compile)
+  ("c" multi-compile-run)
+  ("q" nil))
 (define-key evil-normal-state-map (kbd "SPC m") 'hydra-make/body)
 
 ;; Multi-term

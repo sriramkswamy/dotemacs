@@ -1001,6 +1001,7 @@ _h_ ^+^ _l_   _a_ ^+^ _e_   _w_ ^+^ _b_     ^ ^ ^+^ ^ ^        _x_ delete char  
 
 ;; ESS - Emacs speaks statistics
 (require-package 'ess)
+(require 'ess-site)
 (add-to-list 'auto-mode-alist '("\\.R$" . R-mode))
 ;; Vertical split R shell
 (defun r-shell-here ()
@@ -1366,7 +1367,6 @@ Single Capitals as you type."
          "* %?\nEntered on %U\n  %i\n  %a")
         ("h" "Home" entry (file+headline "~/Dropbox/notes/notes.org" "Home")
          "* %?\nEntered on %U\n  %i\n  %a")))
-
 
 ;; Calendar
 (require-package 'org-caldav)

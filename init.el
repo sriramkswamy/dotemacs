@@ -90,22 +90,28 @@
 (require-package 'sr-speedbar)
 (setq speedbar-default-position 'right)
 ;; Hydra - especially in emacs mode
-(defhydra hydra-speedbar (:color red)
-  "Speedbar "
+
+(defhydra hydra-speedbar (:color red
+                          :hint nil)
+  "
+^^^^^^           ^List^          ^Operate^     ^
+^^^^^^^^^^^^^^^--------------------------------------
+^ ^ _k_ ^ ^     ^ ^ _}_ ^ ^   _c_hange name t_o_ggle
+_h_ ^+^ _l_     ^ ^ ^+^ ^ ^   _d_elete      _r_efresh
+^ ^ _j_ ^ ^     ^ ^ _{_ ^ ^   _y_ank        _q_uit
+"
   ("j" speedbar-next)
   ("k" speedbar-prev)
   ("l" speedbar-edit-line)
   ("h" speedbar-up-directory)
-  ("r" speedbar-refresh "refresh")
-  ("c" speedbar-item-rename "rename")
-  ("d" speedbar-item-delete "delete")
-  ("y" speedbar-item-copy "yank")
-  ("}" speedbar-forward-list "end of list")
-  ("{" speedbar-backward-list "beg of list")
-  ("]" speedbar-expand-line-descendants "expand")
-  ("[" speedbar-contract-line-descendants "contract")
-  ("o" speedbar-toggle-line-expansion "toggle")
-  ("q" sr-speedbar-close "quit" :color blue))
+  ("r" speedbar-refresh)
+  ("c" speedbar-item-rename)
+  ("d" speedbar-item-delete)
+  ("y" speedbar-item-copy)
+  ("}" speedbar-forward-list)
+  ("{" speedbar-backward-list)
+  ("o" speedbar-toggle-line-expansion)
+  ("q" sr-speedbar-close :color blue))
 
 ;;; Avy - not sure how to navigate vanilla emacs without this
 (require-package 'avy)
@@ -143,84 +149,92 @@
 ;; some helper hydras for vi
 (defhydra hydra-window (:color red
                         :hint nil)
-  "win "
-  ("h" windmove-left "left")
-  ("j" windmove-down "down")
-  ("k" windmove-up "up")
-  ("l" windmove-right "right")
-  ("H" shrink-window-horizontally "shrink vertical")
-  ("J" enlarge-window "enlarge horizontal")
-  ("K" shrink-window "shrink horizontal")
-  ("L" enlarge-window-horizontally "enlarge vertical")
-  ("|" split-window-right "split right")
-  ("-" split-window-below "split below")
-  ("s" save-buffer "save")
-  ("d" delete-window "delete")
-  ("Z" delete-other-windows "only")
+  "
+^Move^       ^Size^   ^Buffer^    ^Window^         ^Frame^     ^Text^        ^
+^^^^^^^^^^^^^^^---------------------------------------------------------------------
+^ ^ _k_ ^ ^     ^ ^ _K_ ^ ^   _s_ave      _Z_oom           _M_aximize  _+_ zoom in   _q_uit
+_h_ ^+^ _l_     _H_ ^+^ _L_   b_u_ffers   _Q_ winner-undo  _D_elete    _-_ zoom out
+^ ^ _j_ ^ ^     ^ ^ _J_ ^ ^   _r_ecent    _R_ winner-redo  _S_et name
+                  _f_iles     _F_ollow
+"
+  ("h" windmove-left)
+  ("j" windmove-down)
+  ("k" windmove-up)
+  ("l" windmove-right)
+  ("H" shrink-window-horizontally)
+  ("J" enlarge-window)
+  ("K" shrink-window)
+  ("L" enlarge-window-horizontally)
+  ("|" split-window-right)
+  ("-" split-window-below)
+  ("s" save-buffer)
+  ("d" delete-window)
+  ("Z" delete-other-windows)
   ("Q" (progn
          (winner-undo)
-         (setq this-command 'winner-undo)) "winner undo")
-  ("R" winner-redo "winner redo")
-  ("M" toggle-frame-maximized "maximize")
-  ("D" delete-frame "delete frame")
-  ("u" switch-to-buffer "buffers")
-  ("r" recentf-open-files-item "recentf")
-  ("f" find-file "files")
-  ("F" follow-mode "follow")
-  ("+" text-scale-increase "zoom in")
-  ("-" text-scale-decrease "zoom out")
-  ("q" nil "quit"))
+         (setq this-command 'winner-undo)))
+  ("R" winner-redo)
+  ("M" toggle-frame-maximized)
+  ("D" delete-frame)
+  ("S" set-frame-name)
+  ("u" switch-to-buffer)
+  ("r" recentf-open-files-item)
+  ("f" find-file)
+  ("F" follow-mode)
+  ("+" text-scale-increase)
+  ("-" text-scale-decrease)
+  ("q" nil))
 
 ;; Vi - Hydra
-(defhydra hydra-vi (:color red)
-  "Vi "
+(defhydra hydra-vi (:color red
+                    :hint nil)
+  "
+^small^   ^large^   ^medium^    ^scroll^                      ^editing^                     ^search^      ^others^
+^^^^^^^^^^^^^--------------------------------------------------------------------------------------------------------------
+^ ^ _k_ ^ ^   ^ ^ _g_ ^ ^   ^ ^ _{_ ^ ^     ^ ^ _B_ ^ ^        _v_ mark           _s_ave       _o_pen line    _/_ forward     _t_ imenu     _q_uit
+_h_ ^+^ _l_   _a_ ^+^ _e_   _w_ ^+^ _b_     ^ ^ ^+^ ^ ^        _x_ delete char    _J_oin       _O_pen line    _?_ backward    _f_ avy
+^ ^ _j_ ^ ^   ^ ^ _G_ ^ ^   ^ ^ _}_ ^ ^     ^ ^ _F_ ^ ^        _d_elete           _S_plit      _>_ indent     _*_ at point    _W_indow
+                            _z_ center   _y_ank             _p_ut        _=_ reindent                 _N_ Speedbar
+"
   ("l" forward-char)
   ("h" backward-char)
   ("j" next-line)
   ("k" previous-line)
-  ("e" forward-word)
+  ("w" forward-word)
   ("b" backward-word)
-  ("0" beginning-of-line)
-  ("_" beginning-of-line-text)
-  ("$" end-of-line)
+  ("a" beginning-of-line)
+  ("e" end-of-line)
   ("}" forward-paragraph)
   ("{" backward-paragraph)
-  (")" forward-sexp)
-  ("(" backward-sexp)
-  ("gg" beginning-of-buffer)
+  ("g" beginning-of-buffer)
   ("G" end-of-buffer)
   ("F" scroll-up)
   ("B" scroll-down)
   ("v" set-mark-command)
-  ("V" set-mark-command)
   ("x" delete-char)
-  ("X" delete-backward-char)
   ("d" delete-region)
   ("y" kill-ring-save)
-  ("w" save-buffer)
+  ("s" save-buffer)
   ("p" yank)
   ("t" imenu)
   ("u" undo)
-  ("r" redo)
+  ("R" redo)
   ("J" vi-join-line)
-  ("gs" reindent-then-newline-and-indent)
-  ("gu" downcase-region)
-  ("gU" upcase-region)
+  ("S" reindent-then-newline-and-indent)
   ("/" isearch-forward-regexp)
   ("?" isearch-backward-regexp)
   ("*" isearch-forward-symbol-at-point)
   (":" execute-extended-command)
   (">" indent-region)
   ("=" indent-relative-maybe)
-  ("zz" recenter)
+  ("z" recenter)
   ("n" isearch-occur)
   ("f" hydra-avy/body :exit t)
   ("W" hydra-window/body :exit t)
-  ("S" hydra-speedbar/body :exit t)
+  ("N" hydra-speedbar/body :exit t)
   ("o" vi-open-line-below :color blue)
   ("O" vi-open-line-above :color blue)
   ("c" delete-char :color blue)
-  ("a" forward-char :color blue)
   ("i" nil :color blue)
   ("q" nil :color blue))
 (global-set-key (kbd "C-t") 'hydra-vi/body)
@@ -679,7 +693,7 @@
   ("j" bookmark-jump "jump to bookmark")
   ("d" bookmark-delete "delete bookmark")
   ("m" pop-global-mark "mark ring")
-  ("q" nil "quit hydra" :color blue))
+  ("q" nil "quit" :color blue))
 (define-key evil-normal-state-map (kbd "SPC `") 'hydra-marks/body)
 
 ;; Apropos - hydra
@@ -1138,23 +1152,29 @@
       deft-use-filename-as-title t
       deft-directory "~/Dropbox/notes")
 ;; Hydra for deft
-(defhydra hydra-deft (:color red)
-  "Deft "
+(defhydra hydra-deft (:color red
+                      :hint nil)
+  "
+        ^Move^                     ^Deft^
+^^^^^^^^^^^^^^^-------------------------------------------------------
+^ ^ _k_ ^ ^      _g_oto      _n_ew       _f_ilter   _v_ersion   _q_uit
+_h_ ^+^ _l_                _o_pen      _c_lear    _R_ename
+^ ^ _j_ ^ ^                _a_rchive   _r_efresh
+"
   ("j" next-line)
   ("k" previous-line)
   ("h" beginning-of-buffer)
   ("l" end-of-buffer)
-  ("g" avy-goto-line "goto line")
-  ("n" deft-new-file-named "new" :color blue)
-  ("f" deft-filter "filter")
-  ("c" deft-filter-clear "clear filter")
-  ("o" deft-open-file-other-window "open other window" :color blue)
-  ("r" deft-refresh "refresh")
-  ("R" deft-rename-file "rename")
-  ("v" deft-show-version "show version")
-  ("a" deft-archive-file "archive")
-  ("A" deft-archive-directory "archive directory")
-  ("q" nil "quit" :color blue))
+  ("g" avy-goto-line)
+  ("n" deft-new-file-named :color blue)
+  ("f" deft-filter)
+  ("c" deft-filter-clear)
+  ("o" deft-open-file-other-window :color blue)
+  ("r" deft-refresh)
+  ("R" deft-rename-file)
+  ("v" deft-show-version)
+  ("a" deft-archive-file)
+  ("q" nil :color blue))
 (defun open-deft-and-start-hydra ()
   (interactive)
   (deft)
@@ -1256,8 +1276,7 @@ Single Capitals as you type."
 (define-key evil-normal-state-map (kbd "[p") 'other-pdf-previous)
 
 (setq org-directory "~/Dropbox/notes/"
-      org-completion-use-ido t
-      org-default-notes-file "~/Dropbox/notes/inbox.org"
+      org-completion-use-ido nil
       ;; Indent
       org-startup-indented t
       org-hide-leading-stars t
@@ -1275,6 +1294,8 @@ Single Capitals as you type."
 (setq org-tag-alist (quote (("errand" . ?e)
                             ("blog" . ?b)
                             ("personal" . ?m)
+                            ("report" . ?r)
+                            ("thesis" . ?t) ;; temporary
                             ("accounts" . ?a)
                             ("lubby" . ?l)
                             ("idea" . ?i)
@@ -1283,9 +1304,9 @@ Single Capitals as you type."
                             ("work" . ?w)
                             ("home" . ?h)
                             ("noexport" . ?x)
-                            ("technial" . ?t)
-                            ("random" . ?r)
-                            ("crafts" . ?c)
+                            ("Technial" . ?T)
+                            ("Random" . ?R)
+                            ("Crafts" . ?C)
                             ("story/news" . ?s)
                             ("note" . ?n))))
 
@@ -1310,6 +1331,8 @@ Single Capitals as you type."
 (setq org-capture-templates
       '(("n" "Note" entry (file+headline "~/Dropbox/notes/notes.org" "Notes")
          "* %?\nEntered on %U\n  %i\n  %a")
+        ("r" "Report" entry (file+headline "~/Dropbox/notes/work.org" "Thesis Notes") ;; temporary
+         "* %?\nEntered on %U\n  %i\n  %a")
         ("j" "Job leads/status" entry (file+headline "~/Dropbox/notes/notes.org" "Job leads/status")
          "* %?\nEntered on %U\n  %i\n  %a")
         ("s" "Story/News" entry (file+headline "~/Dropbox/notes/notes.org" "Story/News")
@@ -1321,9 +1344,9 @@ Single Capitals as you type."
         ("p" "Project" entry (file+headline "~/Dropbox/notes/notes.org" "Projects")
          "* %?\nEntered on %U\n  %i\n  %a")
         ("w" "Work" entry (file+headline "~/Dropbox/notes/work.org" "Work")
-         "* %?\nEntered on %U\n  %i\n  %a :work:")
+         "* %?\nEntered on %U\n  %i\n  %a")
         ("h" "Home" entry (file+headline "~/Dropbox/notes/notes.org" "Home")
-         "* %?\nEntered on %U\n  %i\n  %a :personal:")))
+         "* %?\nEntered on %U\n  %i\n  %a")))
 
 
 ;; Calendar
@@ -1372,97 +1395,125 @@ Single Capitals as you type."
 ;; Org navigation and manipulation - hydra
 (defhydra hydra-org-manipulate (:color red
                                 :hint nil)
-  "Org manipulate "
-  ("c" org-cycle "org cycle")
-  ("h" org-metaleft "meta left")
-  ("l" org-metaright "meta right")
-  ("j" org-metadown "meta down")
-  ("k" org-metaup "meta up")
-  ("H" org-shiftleft "shift left")
-  ("L" org-shiftright "shift right")
-  ("J" org-shiftdown "shift down")
-  ("K" org-shiftup "shift up")
-  ("f" org-promote "promote point")
-  ("b" org-demote "demote point")
-  ("n" org-move-item-down "item down")
-  ("p" org-move-item-up "item up")
-  ("C" org-columns "org columns")
-  ("q" nil "quit" :color blue))
+  "
+^Meta^      ^Shift^             ^Org^
+^^^^^^^^^^^^^^^-----------------------------------------
+^ ^ _k_ ^ ^     ^ ^ _K_ ^ ^     _f_ promote    _c_ycle
+_h_ ^+^ _l_     _H_ ^+^ _L_     _b_ demote     _C_olumns
+^ ^ _j_ ^ ^     ^ ^ _J_ ^ ^     _n_ item down  _q_uit
+                    _p_ item up
+"
+  ("c" org-cycle)
+  ("h" org-metaleft)
+  ("l" org-metaright)
+  ("j" org-metadown)
+  ("k" org-metaup)
+  ("H" org-shiftleft)
+  ("L" org-shiftright)
+  ("J" org-shiftdown)
+  ("K" org-shiftup)
+  ("f" org-promote)
+  ("b" org-demote)
+  ("n" org-move-item-down)
+  ("p" org-move-item-up)
+  ("C" org-columns)
+  ("q" nil :color blue))
 (define-key evil-normal-state-map (kbd "goo") 'hydra-org-manipulate/body)
 
 ;; Org table manipulation - hydra
 (defhydra hydra-org-tables (:color red
                             :hint nil)
-  "Org tables "
-  ("a" org-table-align "align")
-  ("l" org-table-next-field "next field")
-  ("h" org-table-previous-field "previous field")
-  ("j" org-table-end-of-field "end of field")
-  ("k" org-table-beginning-of-field "beginning of field")
-  ("r" org-table-insert-row "insert row")
-  ("c" org-table-insert-column "insert column")
-  ("-" org-table-insert-hline "insert hline")
-  ("J" org-table-move-row-down "move row down")
-  ("K" org-table-move-row-up "move row up")
-  ("H" org-table-move-column-left "move column left")
-  ("L" org-table-move-column-right "move column right")
-  ("R" org-table-kill-row "delete row")
-  ("C" org-table-delete-column "delete column")
-  ("b" org-table-blank-field "blank field")
-  ("e" org-table-edit-field "edit field")
-  ("i" org-table-field-info "field info")
-  ("s" org-table-sum "table sum")
-  ("f" org-table-eval-formula "table eval")
-  ("F" org-table-edit-formulas "edit formulas")
-  ("|" org-table-create-or-convert-from-region "create")
-  ("I" org-table-import "import")
-  ("E" org-table-export "export")
-  ("q" nil "quit" :color blue))
+  "
+^Field^      ^Move^    ^Insert^      ^Delete^   ^Field^     ^Table^     ^Formula^
+^^^^^^^^^^^^^^^------------------------------------------------------------------------------
+^ ^ _k_ ^ ^     ^ ^ _K_ ^ ^     _r_ow        _R_ow      _e_dit      _a_lign      _s_um      _|_ create
+_h_ ^+^ _l_     _H_ ^+^ _L_     _c_olumn     _C_olumn   _b_lank     _I_mport     _f_ eval   _q_uit
+^ ^ _j_ ^ ^     ^ ^ _J_ ^ ^     _-_ hline             _i_nfo      _E_xport     _F_ edit
+"
+  ("a" org-table-align)
+  ("l" org-table-next-field)
+  ("h" org-table-previous-field)
+  ("j" org-table-end-of-field)
+  ("k" org-table-beginning-of-field)
+  ("r" org-table-insert-row)
+  ("c" org-table-insert-column)
+  ("-" org-table-insert-hline)
+  ("J" org-table-move-row-down)
+  ("K" org-table-move-row-up)
+  ("H" org-table-move-column-left)
+  ("L" org-table-move-column-right)
+  ("R" org-table-kill-row)
+  ("C" org-table-delete-column)
+  ("b" org-table-blank-field)
+  ("e" org-table-edit-field)
+  ("i" org-table-field-info)
+  ("s" org-table-sum)
+  ("f" org-table-eval-formula)
+  ("F" org-table-edit-formulas)
+  ("|" org-table-create-or-convert-from-region)
+  ("I" org-table-import)
+  ("E" org-table-export)
+  ("q" nil :color blue))
 (define-key evil-normal-state-map (kbd "go|") 'hydra-org-tables/body)
 
 ;; Org clock manipulation - hydra
 (defhydra hydra-org-clock (:color red
                            :hint nil)
-  "Org clock "
-  ("i" org-clock-in "clock in")
-  ("o" org-clock-out "clock out")
-  ("r" org-clock-report "clock report")
-  ("z" org-resolve-clocks "resolve clocks")
-  ("C" org-clock-cancel "clock cancel")
-  ("d" org-clock-display "clock display")
-  ("l" org-clock-in-last "clock last")
-  ("G" org-clock-goto "clock goto")
-  ("t" org-timer "timer")
-  ("T" org-timer-set-timer "set timer")
-  ("I" org-timer-start "start timer")
-  ("O" org-timer-stop "stop timer")
-  ("s" org-time-stamp "time stamp")
-  ("S" org-time-stamp-inactive "inactive time stamp")
-  ("q" nil "quit" :color blue))
+  "
+       ^Clock^                 ^Timer^
+^^^^^^^^^^^^^^^-----------------------------------------------------
+_i_in      _z_ resolve      _I_n       _s_tamp           _q_uit
+_o_out     _l_ast           _O_out     _S_tamp inactive
+_r_eport   _C_ancel         _t_imer
+_d_isplay  _G_oto           _T_ set timer
+"
+  ("i" org-clock-in)
+  ("o" org-clock-out)
+  ("r" org-clock-report)
+  ("z" org-resolve-clocks)
+  ("C" org-clock-cancel)
+  ("d" org-clock-display)
+  ("l" org-clock-in-last)
+  ("G" org-clock-goto)
+  ("t" org-timer)
+  ("T" org-timer-set-timer)
+  ("I" org-timer-start)
+  ("O" org-timer-stop)
+  ("s" org-time-stamp)
+  ("S" org-time-stamp-inactive)
+  ("q" nil :color blue))
 (define-key evil-normal-state-map (kbd "goc") 'hydra-org-clock/body)
 
 ;; Org tags and todo manipulation - hydra
 (defhydra hydra-org-tag-todo (:color red
                               :hint nil)
-  "Org tags and todo stuff "
-  ("t" org-set-tags-command "set tags" :color blue)
-  ("v" org-tags-view "view tags")
-  ("m" org-match-sparse-tree "match sparse tree" :color blue)
-  ("s" org-sparse-tree "sparse tree" :color blue)
-  ("p" org-priority "priority")
-  (">" org-priority-up "priority up")
-  ("<" org-priority-down "priority down")
-  ("T" org-todo "todo" :color blue)
-  ("D" org-deadline "deadline set" :color blue)
-  ("C" org-deadline-close "deadline close" :color blue)
-  ("S" org-schedule "schedule set" :color blue)
-  ("V" org-check-deadlines "check deadlines")
-  ("c" org-checkbox "checkbox")
-  ("x" org-toggle-checkbox "toggle")
-  ("U" org-update-checkbox-count-maybe "update count")
-  ("r" org-reset-checkbox-state-subtree "reset")
-  ("u" org-update-statistics-cookies "update stats")
-  ("q" nil "quit" :color blue))
+  "
+ ^tags^        ^TODO^        ^Checkbox^        ^Priority^
+^^^^^^^^^^^^^^^----------------------------------------------------------
+_t_ags         _T_ODO        _c_heckbox        _p_riority     _q_uit
+_v_iew         _D_eadline    _x_ toggle        _i_ncrease
+_m_atch        _C_lose       _u_pdate stats    _d_ecrease
+_s_parse-tree  _S_chedule    _r_eset
+             _V_iew        _U_pdate count
+"
+  ("t" org-set-tags-command :color blue)
+  ("v" org-tags-view)
+  ("m" org-match-sparse-tree :color blue)
+  ("s" org-sparse-tree :color blue)
+  ("p" org-priority)
+  ("i" org-priority-up)
+  ("d" org-priority-down)
+  ("T" org-todo :color blue)
+  ("D" org-deadline :color blue)
+  ("C" org-deadline-close :color blue)
+  ("S" org-schedule :color blue)
+  ("V" org-check-deadlines)
+  ("c" org-checkbox)
+  ("x" org-toggle-checkbox)
+  ("U" org-update-checkbox-count-maybe)
+  ("r" org-reset-checkbox-state-subtree)
+  ("u" org-update-statistics-cookies)
+  ("q" nil :color blue))
 (define-key evil-normal-state-map (kbd "got") 'hydra-org-tag-todo/body)
 
 ;;; Version control

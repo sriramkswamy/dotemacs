@@ -113,26 +113,35 @@ _h_ ^+^ _l_     ^ ^ ^+^ ^ ^   _d_elete      _r_efresh
 
 ;;; Avy - not sure how to navigate vanilla emacs without this
 (require-package 'avy)
+
 ;; Hydra - especially in emacs mode
 (defhydra hydra-avy (:color red
                      :hint nil)
   "
- ^Line^    ^Character^          ^Word^              ^Subword^
- ^^^^^^^^^-----------------------------------------------------------
- _l_ine    _c_haracter          _w_ord or subword   _s_ubword
- _q_uit    _d_ouble character   _W_ord              _S_ubword double
-         _C_haracter in line  _D_ouble word
+ ^Line^    ^Char/Word^         ^Scroll^     ^Buffer^   ^Para^      ^Function^
+ ^^^^^^^^^-------------------------------------------------------------------
+ _l_ine    _c_haracter         _r_ecenter   _b_eg      _n_ext      _F_orward
+ _q_uit    _d_ouble character  _N_ext       _e_nd      _p_revious  _B_ackward
+ _H_ead    _w_ord              _P_revious   e_x_exute
 "
   ("l" avy-goto-line)
   ("c" avy-goto-char)
   ("d" avy-goto-char-2)
-  ("C" avy-goto-char-in-line)
   ("w" avy-goto-word-or-subword-1)
-  ("W" avy-goto-word-0)
-  ("D" avy-goto-word-1)
   ("s" avy-goto-subword-0)
-  ("S" avy-goto-subword-1)
+  ("r" recenter-top-bottom)
+  ("N" scroll-up)
+  ("P" scroll-down)
+  ("b" beginning-of-buffer)
+  ("e" end-of-buffer)
+  ("n" forward-paragraph)
+  ("p" backward-paragraph)
+  ("F" beginning-of-defun)
+  ("B" end-of-defun)
+  ("H" ak-hydra-of-hydras/body :exit t)
+  ("x" counsel-M-x :color blue)
   ("q" nil :color blue))
+(global-set-key (kbd "C-l") 'hydra-avy/body)
 
 ;; some helper functions for vi hydra
 (defun vi-open-line-above ()
@@ -248,7 +257,15 @@ _h_ ^+^ _l_   _a_ ^+^ _e_   _w_ ^+^ _b_     ^ ^ ^+^ ^ ^        _x_ delete char  
   ("c" delete-char :color blue)
   ("i" nil :color blue)
   ("q" nil :color blue))
-(global-set-key (kbd "C-t") 'hydra-vi/body)
+(global-set-key (kbd "C-q") 'hydra-vi/body)
+
+;;; God mode
+(require-package 'god-mode)
+(require 'god-mode)
+(setq god-exempt-major-modes nil
+      god-exempt-predicates nil)
+(global-set-key (kbd "<escape>") 'god-local-mode)
+(define-key god-local-mode-map (kbd ".") 'repeat)
 
 ;;; Evil - Vim emulation layer
 (require-package 'evil)
@@ -393,7 +410,6 @@ _h_ ^+^ _l_   _a_ ^+^ _e_   _w_ ^+^ _b_     ^ ^ ^+^ ^ ^        _x_ delete char  
 (define-key evil-normal-state-map (kbd "w") 'split-window-horizontally)
 (define-key evil-normal-state-map (kbd "W") 'split-window-vertically)
 (define-key evil-normal-state-map (kbd "U") 'undo-tree-visualize)
-(define-key evil-normal-state-map (kbd "\\") 'universal-argument)
 (define-key evil-normal-state-map (kbd "K") 'man)
 (define-key evil-normal-state-map (kbd "+") 'eshell-vertical)
 (define-key evil-normal-state-map (kbd "-") 'eshell-horizontal)
@@ -456,10 +472,6 @@ _h_ ^+^ _l_   _a_ ^+^ _e_   _w_ ^+^ _b_     ^ ^ ^+^ ^ ^        _x_ delete char  
 (define-key evil-outer-text-objects-map "%" #'evilmi-text-object)
 (global-evil-matchit-mode 1)
 
-;; Evil visual-star
-(require-package 'evil-visualstar)
-(global-evil-visualstar-mode)
-
 ;; Evil args
 (require-package 'evil-args)
 (define-key evil-inner-text-objects-map "," #'evil-inner-arg)
@@ -497,6 +509,10 @@ _h_ ^+^ _l_   _a_ ^+^ _e_   _w_ ^+^ _b_     ^ ^ ^+^ ^ ^        _x_ delete char  
 (require-package 'evil-numbers)
 (define-key evil-normal-state-map (kbd "C-k") 'evil-numbers/inc-at-pt)
 (define-key evil-normal-state-map (kbd "C-j") 'evil-numbers/dec-at-pt)
+
+;; Evil god state - Devil state
+(require-package 'evil-god-state)
+(define-key evil-normal-state-map (kbd "\\") 'evil-execute-in-god-state)
 
 ;;; Evil text objects - Courtesy PythonNut
 ;; evil block indentation textobject for Python
@@ -677,9 +693,8 @@ _h_ ^+^ _l_   _a_ ^+^ _e_   _w_ ^+^ _b_     ^ ^ ^+^ ^ ^        _x_ delete char  
         (t . ivy--regex-plus)))
 (ivy-mode 1)
 (global-set-key (kbd "C-s") 'swiper)
-(global-set-key (kbd "C-r") 'swiper)
 (global-set-key (kbd "M-x") 'counsel-M-x)
-(global-set-key (kbd "C-x C-m") 'counsel-M-x)
+(global-set-key (kbd "C-r") 'counsel-M-x)
 (define-key evil-normal-state-map (kbd "SPC d") 'counsel-M-x)
 (define-key evil-normal-state-map (kbd "t") 'imenu)
 (define-key evil-normal-state-map (kbd "SPC SPC") 'swiper)
@@ -690,10 +705,6 @@ _h_ ^+^ _l_   _a_ ^+^ _e_   _w_ ^+^ _b_     ^ ^ ^+^ ^ ^        _x_ delete char  
 (define-key evil-normal-state-map (kbd "SPC v") 'counsel-load-theme)
 (define-key evil-normal-state-map (kbd "SPC .") 'ivy-resume)
 (define-key evil-normal-state-map (kbd "SPC /") 'counsel-locate)
-(define-key evil-normal-state-map (kbd "SPC xf") 'counsel-describe-function)
-(define-key evil-normal-state-map (kbd "SPC xv") 'counsel-describe-variable)
-(define-key evil-normal-state-map (kbd "SPC xl") 'counsel-load-library)
-(define-key evil-normal-state-map (kbd "SPC xi") 'counsel-info-lookup-symbol)
 (define-key evil-normal-state-map (kbd "SPC e") 'counsel-ag)
 (define-key evil-visual-state-map (kbd "SPC e") 'counsel-ag)
 (define-key evil-visual-state-map (kbd "SPC d") 'counsel-M-x)
@@ -701,22 +712,7 @@ _h_ ^+^ _l_   _a_ ^+^ _e_   _w_ ^+^ _b_     ^ ^ ^+^ ^ ^        _x_ delete char  
 (define-key evil-insert-state-map (kbd "C-d") 'ispell-word)
 (define-key evil-insert-state-map (kbd "C-l") 'counsel-M-x)
 
-;; Bookmarks - hydra
-(defhydra hydra-bookmarks (:color red
-                              :hint nil)
-  "
- ^Bookmarks^
- ^^^^^^^^^-----------------------------
- _s_et  _S_ave  _j_ump  _d_elete  _q_uit
-  "
-  ("s" bookmark-set)
-  ("S" bookmark-save)
-  ("j" bookmark-jump)
-  ("d" bookmark-delete)
-  ("q" nil :color blue))
-(define-key evil-normal-state-map (kbd "SPC `") 'hydra-bookmarks/body)
-
-;; Apropos - hydra
+;; Help
 (defhydra hydra-apropos (:color blue
                          :hint nil)
   "
@@ -732,7 +728,47 @@ _h_ ^+^ _l_   _a_ ^+^ _e_   _w_ ^+^ _b_     ^ ^ ^+^ ^ ^        _x_ delete char  
   ("u" apropos-user-option)
   ("e" apropos-value)
   ("q" nil))
-(define-key evil-normal-state-map (kbd "SPC xa") 'hydra-apropos/body)
+(defhydra hydra-help (:color blue
+                      :hint nil)
+  "
+ ^Help^
+ ^^^^^^^^^---------------------------------------------------
+ _b_inding    _i_nfo     _t_utorial  _a_ll            _q_uit
+ _f_unction   _s_ymbol   _p_ackage   _l_anguage env
+ _v_ariable   _e_macs    _h_elp
+ _m_ode       synta_x_   _k_ey
+"
+  ("b" describe-binding)
+  ("f" describe-function)
+  ("v" describe-variable)
+  ("m" describe-mode)
+  ("i" info)
+  ("s" info-lookup-symbol)
+  ("e" info-emacs-manual)
+  ("x" describe-syntax)
+  ("t" help-with-tutorial)
+  ("p" describe-package)
+  ("h" help-for-help)
+  ("k" describe-key)
+  ("a" hydra-apropos/body :exit t)
+  ("l" describe-language-environment)
+  ("q" nil))
+(define-key evil-normal-state-map (kbd "SPC x") 'hydra-help/body)
+
+;; Bookmarks - hydra
+(defhydra hydra-bookmarks (:color red
+                              :hint nil)
+  "
+ ^Bookmarks^
+ ^^^^^^^^^-----------------------------
+ _s_et  _S_ave  _j_ump  _d_elete  _q_uit
+  "
+  ("s" bookmark-set)
+  ("S" bookmark-save)
+  ("j" bookmark-jump)
+  ("d" bookmark-delete)
+  ("q" nil :color blue))
+(define-key evil-normal-state-map (kbd "SPC `") 'hydra-bookmarks/body)
 
 ;; Find file in project
 (require-package 'find-file-in-project)
@@ -780,8 +816,6 @@ _h_ ^+^ _l_   _a_ ^+^ _e_   _w_ ^+^ _b_     ^ ^ ^+^ ^ ^        _x_ delete char  
 (define-key evil-normal-state-map (kbd "SPC ag") 'ggtags-create-tags)
 (define-key evil-normal-state-map (kbd "SPC au") 'ggtags-update-tags)
 (define-key evil-normal-state-map (kbd "T") 'ggtags-find-tag-regexp)
-(define-key evil-normal-state-map (kbd "SPC jr") 'ggtags-find-reference)
-(define-key evil-normal-state-map (kbd "SPC jt") 'ggtags-find-tag-dwim)
 
 ;;; Interact with OS services
 ;; Jabber
@@ -895,8 +929,86 @@ _h_ ^+^ _l_   _a_ ^+^ _e_   _w_ ^+^ _b_     ^ ^ ^+^ ^ ^        _x_ delete char  
 (global-smart-tab-mode)
 
 ;;; Multiple cursors
-(require-package 'evil-mc)
-(global-evil-mc-mode 1)
+(require-package 'multiple-cursors)
+
+;; Hydra for multiple-cursors
+(defhydra hydra-mc (:color red
+                    :hint nil)
+  "
+^Mark^             ^Unmark^       ^Lines^
+^^^^^^^^^^^^^^^------------------------------------------------
+^ ^ _k_ ^ ^     _a_ll    _p_revious     _e_dit    _N_umbers   _q_uit
+_h_ ^+^ _l_            _n_ext         _A_ppend  _L_etters   _c_hange
+^ ^ _j_ ^ ^                         _I_nsert            _K_ill
+"
+  ("j" mc/mark-next-like-this)
+  ("k" mc/mark-previous-like-this)
+  ("h" mc/skip-to-next-like-this)
+  ("l" mc/skip-to-previous-like-this)
+  ("a" mc/mark-all-like-this)
+  ("p" mc/unmark-previous-like-this)
+  ("n" mc/unmark-next-like-this)
+  ("e" mc/edit-lines :color blue)
+  ("I" mc/edit-beginnings-of-lines :color blue)
+  ("A" mc/edit-ends-of-lines :color blue)
+  ("N" mc/insert-numbers :color blue)
+  ("L" mc/insert-letters :color blue)
+  ("c" nil :color blue)
+  ("K" mc/keyboard-quit)
+  ("q" nil :color blue))
+(define-key evil-normal-state-map (kbd "gm") 'hydra-mc/body)
+(define-key evil-visual-state-map (kbd "gm") 'hydra-mc/body)
+
+;;; Expand regions
+(require-package 'expand-region)
+
+;; hydra for expand regions python
+(defhydra hydra-ex-py (:color red
+                    :hint nil)
+  "
+^expand^         ^block^     ^string^
+^^^^^^^^^^--------------------------------------------
+_B_lock and dec  _g_oto      _i_nside    _I_nside   _q_uit
+_l_ine           _E_xpand    _o_utside   _O_utside
+"
+  ("B" er/mark-python-block-and-decorator)
+  ("l" er/mark-python-statement)
+  ("g" hydra-avy/body :exit t)
+  ("i" er/mark-python-block)
+  ("o" er/mark-outer-python-block)
+  ("I" er/mark-inside-python-string)
+  ("O" er/mark-outside-python-string)
+  ("E" hydra-ex/body :exit t)
+  ("q" nil :color blue))
+
+;; hydra for expand regions
+(defhydra hydra-ex (:color red
+                    :hint nil)
+  "
+^expand^               ^semantics^                  ^Pairs^    ^Quotes^    ^Lang^
+^^^^^^^^^^----------------------------------------------------------------------------------
+_e_xpand    _c_ontract    _p_ara   _s_ymbol   _S_entence  _i_nside   _I_nside    _P_ython    _q_uit
+_r_estart   _g_oto        _w_ord   _u_rl      _C_omment   _o_utside  _O_utside
+"
+  ("e" er/expand-region)
+  ("c" er/contract-region)
+  ("r" set-mark)
+  ("g" hydra-avy/body :exit t)
+  ("C" er/mark-comment)
+  ("p" er/mark-paragraph)
+  ("f" er/mark-defun)
+  ("s" er/mark-symbol)
+  ("S" er/mark-sentence)
+  ("w" er/mark-word)
+  ("u" er/mark-url)
+  ("i" er/mark-inside-pairs)
+  ("o" er/mark-outside-pairs)
+  ("I" er/mark-inside-quotes)
+  ("O" er/mark-outside-quotes)
+  ("P" hydra-ex-py/body :exit t)
+  ("q" nil :color blue))
+(define-key evil-normal-state-map (kbd "ge") 'hydra-ex/body)
+(define-key evil-visual-state-map (kbd "ge") 'hydra-ex/body)
 
 ;; Flx with company
 (require-package 'flx)
@@ -1068,8 +1180,6 @@ _h_ ^+^ _l_   _a_ ^+^ _e_   _w_ ^+^ _b_     ^ ^ ^+^ ^ ^        _x_ delete char  
 (require-package 'elpy)
 (add-hook 'python-mode-hook 'elpy-enable)
 (add-hook 'python-mode-hook 'elpy-use-ipython)
-(define-key evil-normal-state-map (kbd "SPC jd") 'elpy-goto-definition)
-(define-key evil-normal-state-map (kbd "SPC jl") 'elpy-goto-location)
 (define-key evil-normal-state-map (kbd "SPC tp") 'elpy-shell-switch-to-shell)
 (define-key evil-normal-state-map (kbd "SPC sd") 'python-shell-send-defun)
 (define-key evil-normal-state-map (kbd "SPC ss") 'elpy-shell-send-current-statement)
@@ -1228,12 +1338,11 @@ _h_ ^+^ _l_                _o_pen      _c_lear    _R_ename
 (define-key evil-normal-state-map (kbd "[f") 'org-table-previous-field)
 (define-key evil-normal-state-map (kbd "]f") 'org-table-next-field)
 (define-key evil-normal-state-map (kbd "gob") 'org-table-blank-field)
-(define-key evil-normal-state-map (kbd "gog") 'org-set-tags-command)
 (define-key evil-normal-state-map (kbd "gox") 'org-preview-latex-fragment)
 (define-key evil-normal-state-map (kbd "goi") 'org-toggle-inline-images)
 (define-key evil-normal-state-map (kbd "goj") 'org-goto)
 (define-key evil-normal-state-map (kbd "goU") 'org-update-all-dblocks)
-(define-key evil-normal-state-map (kbd "goL") 'org-toggle-link-display)
+(define-key evil-normal-state-map (kbd "gog") 'org-toggle-link-display)
 (define-key evil-normal-state-map (kbd "gor") 'org-reveal)
 (define-key evil-normal-state-map (kbd "gof") 'org-refile)
 (define-key evil-normal-state-map (kbd "goX") 'org-reftex-citation)
@@ -1247,18 +1356,12 @@ _h_ ^+^ _l_                _o_pen      _c_lear    _R_ename
 (define-key evil-normal-state-map (kbd "goO") 'org-open-at-point)
 (define-key evil-normal-state-map (kbd "goy") 'org-copy-subtree)
 (define-key evil-normal-state-map (kbd "gok") 'org-cut-subtree)
-(define-key evil-normal-state-map (kbd "goT") 'org-toggle-ordered-property)
 (define-key evil-normal-state-map (kbd "goE") 'org-set-effort)
-(define-key evil-normal-state-map (kbd "gop") 'org-set-property)
-(define-key evil-normal-state-map (kbd "goP") 'org-delete-property)
-(define-key evil-normal-state-map (kbd "god") 'org-insert-drawer)
-(define-key evil-normal-state-map (kbd "goD") 'org-insert-property-drawer)
 (define-key evil-normal-state-map (kbd "goh") 'org-toggle-heading)
 (define-key evil-normal-state-map (kbd "go>") 'org-goto-calendar)
 (define-key evil-normal-state-map (kbd "go<") 'org-date-from-calendar)
 (define-key evil-normal-state-map (kbd "gos") 'org-sort)
 (define-key evil-normal-state-map (kbd "goR") 'org-remove-file)
-(define-key evil-normal-state-map (kbd "goS") 'org-agenda-file-to-front)
 (define-key evil-visual-state-map (kbd "SPC c") 'org-capture)
 (define-key evil-visual-state-map (kbd "SPC o") 'org-agenda)
 
@@ -1540,20 +1643,49 @@ _s_parse-tree  _S_chedule    _r_eset
   ("u" org-update-statistics-cookies)
   ("q" nil :color blue))
 (define-key evil-normal-state-map (kbd "got") 'hydra-org-tag-todo/body)
+;; Org drawer - hydra
+(defhydra hydra-org-drawer (:color red
+                            :hint nil)
+  "
+ ^drawer^     ^Property^
+^^^^^^^^^^^^^--------------------------
+ _i_nsert     _I_nsert   _q_uit
+            _S_et
+            _D_elete
+            _T_oggle
+"
+  ("i" org-insert-drawer)
+  ("I" org-insert-property-drawer)
+  ("S" org-set-property)
+  ("D" org-delete-property)
+  ("T" org-toggle-ordered-property)
+  ("q" nil :color blue))
+(define-key evil-normal-state-map (kbd "god") 'hydra-org-drawer/body)
 
 ;;; Version control
 
 ;; Magit
 (require-package 'magit)
 (define-key evil-normal-state-map (kbd "SPC g") 'magit-status)
-(define-key evil-normal-state-map (kbd "gb") 'magit-blame)
-(define-key evil-normal-state-map (kbd "gz") 'magit-blame-quit)
-(define-key evil-normal-state-map (kbd "gj") 'magit-blame-next-chunk)
-(define-key evil-normal-state-map (kbd "gJ") 'magit-blame-next-chunk-same-commit)
-(define-key evil-normal-state-map (kbd "gk") 'magit-blame-previous-chunk)
-(define-key evil-normal-state-map (kbd "gK") 'magit-blame-previous-chunk-same-commit)
-(define-key evil-normal-state-map (kbd "gy") 'magit-blame-copy-hash)
-(define-key evil-normal-state-map (kbd "gt") 'magit-blame-toggle-headings)
+;; Hydra for blame
+(defhydra hydra-git-blame (:color red
+                           :hint nil)
+  "
+ ^blame^
+^^^^^^^^^--------------------------------
+ ^ ^ _k_ ^ ^  _b_lame   _t_oggle   _y_ank
+ _h_ ^+^ _l_  _q_uit
+ ^ ^ _j_ ^ ^
+"
+  ("b" magit-blame)
+  ("j" magit-blame-next-chunk)
+  ("k" magit-blame-previous-chunk)
+  ("l" magit-blame-next-chunk-same-commit)
+  ("h" magit-blame-previous-chunk-same-commit)
+  ("t" magit-blame-toggle-headings)
+  ("y" magit-blame-copy-hash)
+  ("q" magit-blame-quit :color blue))
+(define-key evil-normal-state-map (kbd "gb") 'hydra-git-blame/body)
 
 ;; Diff-hl
 (require-package 'diff-hl)
@@ -1566,18 +1698,29 @@ _s_parse-tree  _S_chedule    _r_eset
 (diff-hl-flydiff-mode)
 (define-key evil-normal-state-map (kbd "]d") 'diff-hl-next-hunk)
 (define-key evil-normal-state-map (kbd "[d") 'diff-hl-previous-hunk)
-(define-key evil-normal-state-map (kbd "gD") 'diff-hl-diff-goto-hunk)
-(define-key evil-normal-state-map (kbd "gh") 'diff-hl-revert-hunk)
+(define-key evil-normal-state-map (kbd "gh") 'diff-hl-diff-goto-hunk)
+(define-key evil-normal-state-map (kbd "gr") 'diff-hl-revert-hunk)
 
 ;; Git time-machine
 (require-package 'git-timemachine)
-(define-key evil-normal-state-map (kbd "zl") 'git-timemachine)
-(define-key evil-normal-state-map (kbd "zq") 'git-timemachine-quit)
-(define-key evil-normal-state-map (kbd "zy") 'git-timemachine-kill-revision)
-(define-key evil-normal-state-map (kbd "]t") 'git-timemachine-show-next-revision)
-(define-key evil-normal-state-map (kbd "[t") 'git-timemachine-show-previous-revision)
-(define-key evil-normal-state-map (kbd "]T") 'git-timemachine-show-nth-revision)
-(define-key evil-normal-state-map (kbd "[T") 'git-timemachine-show-current-revision)
+;; Hydra for timemachine
+(defhydra hydra-git-timemachine (:color red
+                                 :hint nil)
+  "
+ ^time^    ^navigate^            ^hash^
+^^^^^^^^^---------------------------------
+ _s_tart   _n_ext      _g_oto      _b_rief
+ _q_uit    _p_revious  _c_urrent   _f_ull
+"
+  ("s" git-timemachine)
+  ("n" git-timemachine-show-next-revision)
+  ("p" git-timemachine-show-previous-revision)
+  ("g" git-timemachine-show-nth-revision)
+  ("c" git-timemachine-show-current-revision)
+  ("b" git-timemachine-kill-abbreviated-revision)
+  ("f" git-timemachine-kill-revision)
+  ("q" git-timemachine-quit :color blue))
+(define-key evil-normal-state-map (kbd "gt") 'hydra-git-timemachine/body)
 
 ;; Gists
 (require-package 'yagist)
@@ -1742,13 +1885,34 @@ _s_parse-tree  _S_chedule    _r_eset
 ;; Profiler
 (require-package 'esup)
 
+;;; Construct mode hydras
+
+;; Tags
+(defhydra hydra-tags (:color blue
+                      :hint nil)
+  "
+ ^Tags^      ^Jump^         ^Python^
+ ^^^^^^^^^---------------------------
+ _c_reate    _r_eference    _d_efinition
+ _u_pdate    _t_tag         _l_ocation
+ _f_ind                   _q_uit
+"
+  ("c" ggtags-create-tags)
+  ("u" ggtags-update-tags)
+  ("f" ggtags-find-tag-regexp)
+  ("r" ggtags-find-reference)
+  ("t" ggtags-find-tag-dwim)
+  ("d" elpy-goto-definition)
+  ("l" elpy-goto-location)
+  ("q" nil))
+(define-key evil-normal-state-map (kbd "SPC j") 'hydra-tags/body)
+
 ;;; Clean mode-line
 (defvar mode-line-cleaner-alist
   `((smartparens-mode . "")
     (which-key-mode . "")
     (evil-snipe-mode . "")
     (evil-snipe-local-mode . "")
-    (evil-mc-mode . "")
     (evil-commentary-mode . "")
     (eyebrowse-mode . "")
     (dubcaps-mode . "")

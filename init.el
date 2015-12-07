@@ -637,9 +637,15 @@ _h_ ^+^ _l_   _a_ ^+^ _e_   _w_ ^+^ _b_     ^ ^ ^+^ ^ ^        _x_ delete char  
 ;; Enable recentf mode
 (recentf-mode)
 
-;; No backups
-(setq make-backup-files nil
-      auto-save-default nil)
+;; Backups at .saves folder in the current folder
+(setq
+   backup-by-copying t      ; don't clobber symlinks
+   backup-directory-alist
+    '(("." . "~/.saves"))    ; don't litter my fs tree
+   delete-old-versions t
+   kept-new-versions 6
+   kept-old-versions 2
+   version-control t)       ; use versioned backups
 
 ;; Ediff plain window and vertical
 (setq ediff-window-setup-function 'ediff-setup-windows-plain)

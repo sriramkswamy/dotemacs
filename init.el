@@ -268,6 +268,64 @@ _h_ ^+^ _l_   _a_ ^+^ _e_   _w_ ^+^ _b_     ^ ^ ^+^ ^ ^        _x_ delete char  
 (evil-set-initial-state 'diff-mode 'emacs)
 (evil-set-initial-state 'speedbar-mode 'emacs)
 
+;; Help
+(defhydra hydra-apropos (:color blue
+                         :hint nil)
+  "
+ ^Apropos^
+ ^^^^^^^^^------------------------------------------------------------
+ _a_propos   _d_oc   _v_ar   _c_md   _l_ib   _u_ser-option   valu_e_   _q_uit
+"
+  ("a" apropos)
+  ("d" apropos-documentation)
+  ("v" apropos-variable)
+  ("c" apropos-command)
+  ("l" apropos-library)
+  ("u" apropos-user-option)
+  ("e" apropos-value)
+  ("q" nil))
+(defhydra hydra-help (:color blue
+                      :hint nil)
+  "
+ ^Help^
+ ^^^^^^^^^---------------------------------------------------
+ _b_inding    _i_nfo     _t_utorial  _a_ll            _q_uit
+ _f_unction   _s_ymbol   _p_ackage   _l_anguage env
+ _v_ariable   _e_macs    _h_elp
+ _m_ode       synta_x_   _k_ey
+"
+  ("b" describe-binding)
+  ("f" describe-function)
+  ("v" describe-variable)
+  ("m" describe-mode)
+  ("i" info)
+  ("s" info-lookup-symbol)
+  ("e" info-emacs-manual)
+  ("x" describe-syntax)
+  ("t" help-with-tutorial)
+  ("p" describe-package)
+  ("h" help-for-help)
+  ("k" describe-key)
+  ("a" hydra-apropos/body :exit t)
+  ("l" describe-language-environment)
+  ("q" nil))
+(define-key evil-normal-state-map (kbd "SPC x") 'hydra-help/body)
+
+;; Bookmarks - hydra
+(defhydra hydra-bookmarks (:color red
+                              :hint nil)
+  "
+ ^Bookmarks^
+ ^^^^^^^^^-----------------------------
+ _s_et  _S_ave  _j_ump  _d_elete  _q_uit
+  "
+  ("s" bookmark-set)
+  ("S" bookmark-save)
+  ("j" bookmark-jump)
+  ("d" bookmark-delete)
+  ("q" nil :color blue))
+(define-key evil-normal-state-map (kbd "SPC `") 'hydra-bookmarks/body)
+
 ;;; Paradox for package
 (require-package 'paradox)
 (define-key evil-normal-state-map (kbd "SPC al") 'paradox-list-packages)
@@ -392,6 +450,7 @@ _h_ ^+^ _l_   _a_ ^+^ _e_   _w_ ^+^ _b_     ^ ^ ^+^ ^ ^        _x_ delete char  
 ;; Maps
 (define-key evil-normal-state-map (kbd "j") 'evil-next-visual-line)
 (define-key evil-normal-state-map (kbd "k") 'evil-previous-visual-line)
+(define-key evil-normal-state-map (kbd "t") 'imenu)
 (define-key evil-normal-state-map (kbd "Z") 'delete-other-windows)
 (define-key evil-normal-state-map (kbd "Q") 'winner-undo)
 (define-key evil-normal-state-map (kbd "R") 'winner-redo)
@@ -676,7 +735,6 @@ _h_ ^+^ _l_   _a_ ^+^ _e_   _w_ ^+^ _b_     ^ ^ ^+^ ^ ^        _x_ delete char  
 (global-set-key (kbd "M-x") 'counsel-M-x)
 (global-set-key (kbd "C-q") 'counsel-M-x)
 (define-key evil-normal-state-map (kbd "SPC d") 'counsel-M-x)
-(define-key evil-normal-state-map (kbd "t") 'imenu)
 (define-key evil-normal-state-map (kbd "SPC SPC") 'swiper)
 (define-key evil-normal-state-map (kbd "SPC b") 'swiper-all)
 (define-key evil-normal-state-map (kbd "SPC r") 'ivy-recentf)
@@ -695,64 +753,6 @@ _h_ ^+^ _l_   _a_ ^+^ _e_   _w_ ^+^ _b_     ^ ^ ^+^ ^ ^        _x_ delete char  
 ;; Swiper helpers
 (defun swiper-at-point ()
   (swiper symbol-at-point))
-
-;; Help
-(defhydra hydra-apropos (:color blue
-                         :hint nil)
-  "
- ^Apropos^
- ^^^^^^^^^------------------------------------------------------------
- _a_propos   _d_oc   _v_ar   _c_md   _l_ib   _u_ser-option   valu_e_   _q_uit
-"
-  ("a" apropos)
-  ("d" apropos-documentation)
-  ("v" apropos-variable)
-  ("c" apropos-command)
-  ("l" apropos-library)
-  ("u" apropos-user-option)
-  ("e" apropos-value)
-  ("q" nil))
-(defhydra hydra-help (:color blue
-                      :hint nil)
-  "
- ^Help^
- ^^^^^^^^^---------------------------------------------------
- _b_inding    _i_nfo     _t_utorial  _a_ll            _q_uit
- _f_unction   _s_ymbol   _p_ackage   _l_anguage env
- _v_ariable   _e_macs    _h_elp
- _m_ode       synta_x_   _k_ey
-"
-  ("b" describe-binding)
-  ("f" describe-function)
-  ("v" describe-variable)
-  ("m" describe-mode)
-  ("i" info)
-  ("s" info-lookup-symbol)
-  ("e" info-emacs-manual)
-  ("x" describe-syntax)
-  ("t" help-with-tutorial)
-  ("p" describe-package)
-  ("h" help-for-help)
-  ("k" describe-key)
-  ("a" hydra-apropos/body :exit t)
-  ("l" describe-language-environment)
-  ("q" nil))
-(define-key evil-normal-state-map (kbd "SPC x") 'hydra-help/body)
-
-;; Bookmarks - hydra
-(defhydra hydra-bookmarks (:color red
-                              :hint nil)
-  "
- ^Bookmarks^
- ^^^^^^^^^-----------------------------
- _s_et  _S_ave  _j_ump  _d_elete  _q_uit
-  "
-  ("s" bookmark-set)
-  ("S" bookmark-save)
-  ("j" bookmark-jump)
-  ("d" bookmark-delete)
-  ("q" nil :color blue))
-(define-key evil-normal-state-map (kbd "SPC `") 'hydra-bookmarks/body)
 
 ;; Find file in project
 (require-package 'find-file-in-project)

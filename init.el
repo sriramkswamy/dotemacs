@@ -236,7 +236,7 @@ _h_ ^+^ _l_   _a_ ^+^ _e_   _w_ ^+^ _b_     ^ ^ ^+^ ^ ^        _x_ delete char  
   ("c" delete-char :color blue)
   ("i" nil :color blue)
   ("q" nil :color blue))
-(global-set-key (kbd "C-q") 'hydra-vi/body)
+(global-set-key (kbd "C-r") 'hydra-vi/body)
 
 ;; Hydra - for elisp
 (defhydra hydra-elisp (:color red
@@ -662,7 +662,7 @@ _h_ ^+^ _l_   _a_ ^+^ _e_   _w_ ^+^ _b_     ^ ^ ^+^ ^ ^        _x_ delete char  
 (ivy-mode 1)
 (global-set-key (kbd "C-s") 'swiper)
 (global-set-key (kbd "M-x") 'counsel-M-x)
-(global-set-key (kbd "C-r") 'counsel-M-x)
+(global-set-key (kbd "C-q") 'counsel-M-x)
 (define-key evil-normal-state-map (kbd "SPC d") 'counsel-M-x)
 (define-key evil-normal-state-map (kbd "t") 'imenu)
 (define-key evil-normal-state-map (kbd "SPC SPC") 'swiper)
@@ -783,12 +783,11 @@ _h_ ^+^ _l_   _a_ ^+^ _e_   _w_ ^+^ _b_     ^ ^ ^+^ ^ ^        _x_ delete char  
   (interactive)
   (diminish 'ggtags-mode ""))
 (add-hook 'ggtags-mode-hook 'diminish-ggtags)
+(add-hook 'prog-mode-hook 'ggtags-mode)
 ;; Add exec-path for Gtags
 (setenv "PATH" (concat (getenv "PATH") ":/usr/local/Cellar/global/6.5/bin"))
 (setq exec-path (append exec-path '("/usr/local/Cellar/global/6.5/bin")))
 (setq-local imenu-create-index-function #'ggtags-build-imenu-index)
-(define-key evil-normal-state-map (kbd "SPC ag") 'ggtags-create-tags)
-(define-key evil-normal-state-map (kbd "SPC au") 'ggtags-update-tags)
 (define-key evil-normal-state-map (kbd "T") 'ggtags-find-tag-regexp)
 
 ;;; Interact with OS services
@@ -801,7 +800,6 @@ _h_ ^+^ _l_   _a_ ^+^ _e_   _w_ ^+^ _b_     ^ ^ ^+^ ^ ^        _x_ delete char  
       jabber-backlog-days 30)
 (setq jabber-alert-presence-message-function
       (lambda (who oldstatus newstatus statustext) nil))
-(define-key evil-normal-state-map (kbd "SPC aj") 'jabber-connect)
 (define-key evil-normal-state-map (kbd "SPC 2") 'jabber-chat-with)
 
 ;; Google under point
@@ -985,6 +983,7 @@ _r_estart   _g_oto        _w_ord   _u_rl      _C_omment   _o_utside  _O_utside
   (define-key company-active-map (kbd "C-p") 'company-select-previous)
   (define-key company-active-map [tab] 'company-complete-common-or-cycle))
 (add-hook 'company-mode-hook 'my-company-hook)
+(add-hook 'prog-mode-hook 'company-mode)
 
 ;; Company C headers
 (require-package 'company-c-headers)
@@ -993,7 +992,7 @@ _r_estart   _g_oto        _w_ord   _u_rl      _C_omment   _o_utside  _O_utside
 
 ;; Irony mode for C++
 (require-package 'irony)
-(defun diminish-flyspell ()
+(defun diminish-irony ()
   (interactive)
   (diminish 'irony-mode " Γ"))
 (add-hook 'irony-mode-hook 'diminish-irony)
@@ -1069,6 +1068,7 @@ _r_estart   _g_oto        _w_ord   _u_rl      _C_omment   _o_utside  _O_utside
   (interactive)
   (diminish 'yas-minor-mode " γ"))
 (add-hook 'yas-global-mode-hook 'diminish-yas)
+(add-hook 'prog-mode-hook 'yas-global-mode)
 (define-key evil-normal-state-map (kbd "SPC ay") 'yas-global-mode)
 (define-key evil-insert-state-map (kbd "C-j") 'yas-insert-snippet)
 
@@ -1920,6 +1920,7 @@ _s_parse-tree  _S_chedule    _r_eset
   (interactive)
   (diminish 'column-enforce-mode ""))
 (add-hook 'column-enforce-mode-hook 'diminish-column-enforce)
+(add-hook 'prog-mode-hook 'column-enforce-mode)
 
 ;; Which function mode
 (which-function-mode 1)

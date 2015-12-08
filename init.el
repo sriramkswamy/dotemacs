@@ -1242,42 +1242,6 @@ _r_estart   _g_oto        _w_ord   _u_rl      _C_omment   _o_utside  _O_utside
 ;; Editing my gitconfig
 (require-package 'gitconfig-mode)
 
-;; MATLAB mode
-(require-package 'matlab-mode)
-(eval-after-load 'matlab
-  '(add-to-list 'matlab-shell-command-switches "-nosplash"))
-(setq matlab-shell-command "/Applications/MATLAB_R2014a.app/bin/matlab"
-      matlab-indent-function t)
-;; Vertical split matlab shell
-(defun matlab-shell-here ()
-  "opens up a new matlab shell in the directory associated with the current buffer's file."
-  (interactive)
-  (split-window-right)
-  (other-window 1)
-  (matlab-shell)
-  (other-window 1))
-
-;; Hydra - for matlab
-(defhydra hydra-matlab (:color red
-                        :hint nil)
-  "
- ^Send^       ^Shell^
- ^^^^^^^^^-------------------------------
- _c_ell       _s_tart    _L_ang     _q_uit
- _l_ine       _S_witch
- _r_egion     _o_ther
- _C_ommand
-"
-  ("c" matlab-shell-run-cell)
-  ("l" matlab-shell-run-region-or-line)
-  ("r" matlab-shell-run-region)
-  ("C" matlab-shell-run-command)
-  ("s" matlab-shell-here)
-  ("S" matlab-show-matlab-shell-buffer)
-  ("o" other-window)
-  ("L" hydra-langs/body :exit t)
-  ("q" nil :color blue))
-
 ;; Sage
 (require-package 'sage-shell-mode)
 (setq sage-shell:sage-executable "/Applications/Sage-6.8.app/Contents/Resources/sage/sage"
@@ -1472,7 +1436,6 @@ Single Capitals as you type."
                             ("report" . ?r)
                             ("thesis" . ?t) ;; temporary
                             ("accounts" . ?a)
-                            ("lubby" . ?l)
                             ("idea" . ?i)
                             ("project" . ?p)
                             ("job" . ?j)

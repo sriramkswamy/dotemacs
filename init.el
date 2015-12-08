@@ -1,9 +1,9 @@
+;; Garbage collector - increase threshold
+(setq gc-cons-threshold 100000000)
+
 ;;; Packages
 (require 'package)
 (setq package-enable-at-startup nil)
-
-;; Garbage collector - increase threshold
-(setq gc-cons-threshold 100000000)
 
 ;; packages based on versions
 (when (>= emacs-major-version 24)
@@ -48,14 +48,9 @@
 ;; No welcome screen - opens directly in scratch buffer
 (setq inhibit-startup-message t
       initial-scratch-message ""
-      initial-major-mode 'org-mode
+      initial-major-mode 'fundamental-mode
       visible-bell nil
       inhibit-splash-screen t)
-
-;; No toolbar and scrollbar. Menubar only in GUI.
-(when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
-(when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
-(unless (display-graphic-p) (menu-bar-mode -1))
 
 ;; Non-native fullscreen
 (setq ns-use-native-fullscreen nil)
@@ -81,6 +76,13 @@
 ;; Don't blink the cursor
 (blink-cursor-mode -1)
 
+;; Diminish minor modes
+(require-package 'diminish)
+(defun diminish-eldoc ()
+  (interactive)
+  (diminish 'eldoc-mode ""))
+(add-hook 'eldoc-mode-hook 'diminish-eldoc)
+
 ;; Improve dired
 (require-package 'dired+)
 (add-hook 'dired-mode-hook 'dired-hide-details-mode)
@@ -88,28 +90,6 @@
 ;; Speedbar in the same frame
 (require-package 'sr-speedbar)
 (setq speedbar-default-position 'right)
-;; Hydra - especially in emacs mode
-(defhydra hydra-speedbar (:color red
-                          :hint nil)
-  "
-^^^^^^           ^List^          ^Operate^     ^
-^^^^^^^^^^^^^^^--------------------------------------
-^ ^ _k_ ^ ^     ^ ^ _}_ ^ ^   _c_hange name t_o_ggle
-_h_ ^+^ _l_     ^ ^ ^+^ ^ ^   _d_elete      _r_efresh
-^ ^ _j_ ^ ^     ^ ^ _{_ ^ ^   _y_ank        _q_uit
-"
-  ("j" speedbar-next)
-  ("k" speedbar-prev)
-  ("l" speedbar-edit-line)
-  ("h" speedbar-up-directory)
-  ("r" speedbar-refresh)
-  ("c" speedbar-item-rename)
-  ("d" speedbar-item-delete)
-  ("y" speedbar-item-copy)
-  ("}" speedbar-forward-list)
-  ("{" speedbar-backward-list)
-  ("o" speedbar-toggle-line-expansion)
-  ("q" sr-speedbar-close :color blue))
 
 ;;; Avy - not sure how to navigate vanilla emacs without this
 (require-package 'avy)
@@ -214,7 +194,7 @@ _h_ ^+^ _l_     ^ ^ ^+^ ^ ^   _d_elete      _r_efresh
 ^ ^ _k_ ^ ^   ^ ^ _g_ ^ ^   ^ ^ _{_ ^ ^     ^ ^ _B_ ^ ^        _v_ mark           _s_ave       _o_pen line    _/_ forward     _t_ imenu     _q_uit
 _h_ ^+^ _l_   _a_ ^+^ _e_   _w_ ^+^ _b_     ^ ^ ^+^ ^ ^        _x_ delete char    _J_oin       _O_pen line    _?_ backward    _f_ avy
 ^ ^ _j_ ^ ^   ^ ^ _G_ ^ ^   ^ ^ _}_ ^ ^     ^ ^ _F_ ^ ^        _d_elete           _S_plit      _>_ indent     _*_ at point    _W_indow
-                            _z_ center   _y_ank             _p_ut        _=_ reindent                 _N_ Speedbar
+                            _z_ center   _y_ank             _p_ut        _=_ reindent
 "
   ("l" forward-char)
   ("h" backward-char)
@@ -251,7 +231,6 @@ _h_ ^+^ _l_   _a_ ^+^ _e_   _w_ ^+^ _b_     ^ ^ ^+^ ^ ^        _x_ delete char  
   ("n" isearch-occur)
   ("f" hydra-avy/body :exit t)
   ("W" hydra-window/body :exit t)
-  ("N" hydra-speedbar/body :exit t)
   ("o" vi-open-line-below :color blue)
   ("O" vi-open-line-above :color blue)
   ("c" delete-char :color blue)
@@ -259,13 +238,23 @@ _h_ ^+^ _l_   _a_ ^+^ _e_   _w_ ^+^ _b_     ^ ^ ^+^ ^ ^        _x_ delete char  
   ("q" nil :color blue))
 (global-set-key (kbd "C-q") 'hydra-vi/body)
 
-;;; God mode
-(require-package 'god-mode)
-(require 'god-mode)
-(setq god-exempt-major-modes nil
-      god-exempt-predicates nil)
-(global-set-key (kbd "<escape>") 'god-local-mode)
-(define-key god-local-mode-map (kbd ".") 'repeat)
+;; Hydra - for elisp
+(defhydra hydra-elisp (:color red
+                       :hint nil)
+  "
+ ^Send^
+ ^^^^^^^^^---------------------
+ _f_unction    _L_ang     _q_uit
+ _e_xp
+ _r_egion
+ _b_uffer
+"
+  ("f" eval-defun)
+  ("e" eval-expression)
+  ("r" eval-region)
+  ("b" eval-buffer)
+  ("L" hydra-langs/body :exit t)
+  ("q" nil :color blue))
 
 ;;; Evil - Vim emulation layer
 (require-package 'evil)
@@ -285,17 +274,6 @@ _h_ ^+^ _l_   _a_ ^+^ _e_   _w_ ^+^ _b_     ^ ^ ^+^ ^ ^        _x_ delete char  
 (require-package 'paradox)
 (define-key evil-normal-state-map (kbd "SPC al") 'paradox-list-packages)
 (setq paradox-github-token t)
-
-;; Powerline and spaceline
-(require-package 'powerline)
-(require-package 'spaceline)
-(require 'powerline)
-(setq powerline-default-separator 'nil)
-(require 'spaceline-config)
-(setq ns-use-srgb-colorspace nil)
-(spaceline-toggle-anzu-on)
-(spaceline-toggle-workspace-number-off)
-(spaceline-spacemacs-theme)
 
 ;; Themes
 (require-package 'color-theme-modern)
@@ -340,7 +318,10 @@ _h_ ^+^ _l_   _a_ ^+^ _e_   _w_ ^+^ _b_     ^ ^ ^+^ ^ ^        _x_ delete char  
 ;;; Which key
 (require-package 'which-key)
 (which-key-setup-side-window-bottom)
-(which-key-mode)
+(defun diminish-which-key ()
+  (interactive)
+  (diminish 'whick-key-mode ""))
+(add-hook 'which-key-mode-hook 'diminish-which-key)
 
 ;; Move lines - from stack overflow
 (defun move-text-internal (arg)
@@ -424,15 +405,12 @@ _h_ ^+^ _l_   _a_ ^+^ _e_   _w_ ^+^ _b_     ^ ^ ^+^ ^ ^        _x_ delete char  
 (define-key evil-normal-state-map (kbd "SPC z") 'toggle-frame-fullscreen-non-native)
 (define-key evil-normal-state-map (kbd "SPC f") 'find-file)
 (define-key evil-normal-state-map (kbd "SPC [") 'widen)
-(define-key evil-normal-state-map (kbd "SPC ;") 'evil-ex)
 (define-key evil-normal-state-map (kbd "SPC 3") 'select-frame-by-name)
 (define-key evil-normal-state-map (kbd "SPC DEL") 'whitespace-cleanup)
 (define-key evil-normal-state-map (kbd "SPC ,") 'describe-bindings)
-(define-key evil-normal-state-map (kbd "SPC '") 'set-buffer-file-coding-system)
 (define-key evil-visual-state-map (kbd "SPC ]") 'narrow-to-region)
 (define-key evil-normal-state-map (kbd "SPC 6") 'quick-calc)
 (define-key evil-normal-state-map (kbd "SPC \\") 'toggle-input-method)
-(define-key evil-normal-state-map (kbd "SPC se") 'eval-buffer)
 (define-key evil-normal-state-map (kbd "SPC as") 'flyspell-mode)
 (define-key evil-normal-state-map (kbd "SPC an") 'linum-mode)
 (define-key evil-normal-state-map (kbd "SPC aw") 'toggle-truncate-lines)
@@ -440,7 +418,6 @@ _h_ ^+^ _l_   _a_ ^+^ _e_   _w_ ^+^ _b_     ^ ^ ^+^ ^ ^        _x_ delete char  
 (define-key evil-normal-state-map (kbd "SPC at") 'display-time-mode)
 (define-key evil-normal-state-map (kbd "SPC ap") 'package-install)
 (define-key evil-normal-state-map (kbd "SPC af") 'set-frame-font)
-(define-key evil-visual-state-map (kbd "SPC se") 'eval-region)
 (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
 
 ;; More useful arrow keys
@@ -478,27 +455,16 @@ _h_ ^+^ _l_   _a_ ^+^ _e_   _w_ ^+^ _b_     ^ ^ ^+^ ^ ^        _x_ delete char  
 (define-key evil-outer-text-objects-map "," #'evil-outer-arg)
 (define-key evil-normal-state-map "\C-j" #'evil-jump-out-args)
 
-;; Search count
-(require-package 'evil-anzu)
-(with-eval-after-load 'evil
-  (require 'evil-anzu))
-
 ;; Jump lists like vim
 (require-package 'evil-jumper)
 (global-evil-jumper-mode 1)
 
-;; Like vim-sneak
-(require-package 'evil-snipe)
-(require 'evil-snipe)
-(evil-snipe-mode 1)
-(setq evil-snipe-repeat-keys t
-      evil-snipe-scope 'visible
-      evil-snipe-repeat-scope 'whole-visible
-      evil-snipe-enable-highlight t
-      evil-snipe-enable-incremental-highlight t)
-
 ;; Evil commentary
 (require-package 'evil-commentary)
+(defun diminish-evil-commentary ()
+  (interactive)
+  (diminish 'evil-commentary-mode ""))
+(add-hook 'evil-commentary-mode-hook 'diminish-evil-commentary)
 (evil-commentary-mode)
 
 ;; Evil exchange
@@ -509,10 +475,6 @@ _h_ ^+^ _l_   _a_ ^+^ _e_   _w_ ^+^ _b_     ^ ^ ^+^ ^ ^        _x_ delete char  
 (require-package 'evil-numbers)
 (define-key evil-normal-state-map (kbd "C-k") 'evil-numbers/inc-at-pt)
 (define-key evil-normal-state-map (kbd "C-j") 'evil-numbers/dec-at-pt)
-
-;; Evil god state - Devil state
-(require-package 'evil-god-state)
-(define-key evil-normal-state-map (kbd "\\") 'evil-execute-in-god-state)
 
 ;;; Evil text objects - Courtesy PythonNut
 ;; evil block indentation textobject for Python
@@ -649,6 +611,8 @@ _h_ ^+^ _l_   _a_ ^+^ _e_   _w_ ^+^ _b_     ^ ^ ^+^ ^ ^        _x_ delete char  
 ;; Evil avy bindings
 (define-key evil-normal-state-map (kbd "SPC h") 'avy-goto-line)
 (define-key evil-visual-state-map (kbd "SPC h") 'avy-goto-line)
+(define-key evil-normal-state-map (kbd "s") 'avy-goto-char-2)
+(define-key evil-visual-state-map (kbd "s") 'avy-goto-char-2)
 
 ;; Enable recentf mode
 (recentf-mode)
@@ -691,6 +655,10 @@ _h_ ^+^ _l_   _a_ ^+^ _e_   _w_ ^+^ _b_     ^ ^ ^+^ ^ ^        _x_ delete char  
 (setq ivy-re-builders-alist
       '((counsel-M-x . ivy--regex-fuzzy)
         (t . ivy--regex-plus)))
+(defun diminish-ivy ()
+  (interactive)
+  (diminish 'ivy-mode ""))
+(add-hook 'ivy-mode-hook 'diminish-ivy)
 (ivy-mode 1)
 (global-set-key (kbd "C-s") 'swiper)
 (global-set-key (kbd "M-x") 'counsel-M-x)
@@ -711,6 +679,10 @@ _h_ ^+^ _l_   _a_ ^+^ _e_   _w_ ^+^ _b_     ^ ^ ^+^ ^ ^        _x_ delete char  
 (define-key evil-insert-state-map (kbd "C-k") 'counsel-unicode-char)
 (define-key evil-insert-state-map (kbd "C-d") 'ispell-word)
 (define-key evil-insert-state-map (kbd "C-l") 'counsel-M-x)
+
+;; Swiper helpers
+(defun swiper-at-point ()
+  (swiper symbol-at-point))
 
 ;; Help
 (defhydra hydra-apropos (:color blue
@@ -777,7 +749,6 @@ _h_ ^+^ _l_   _a_ ^+^ _e_   _w_ ^+^ _b_     ^ ^ ^+^ ^ ^        _x_ delete char  
 
 ;;; Swoop
 (require-package 'swoop)
-(require 'swoop)
 (define-key evil-normal-state-map (kbd "*") 'swoop-pcre-regexp)
 (define-key evil-normal-state-map (kbd "#") 'swoop-pcre-regexp)
 (define-key evil-visual-state-map (kbd "*") 'swoop-pcre-regexp)
@@ -808,7 +779,10 @@ _h_ ^+^ _l_   _a_ ^+^ _e_   _w_ ^+^ _b_     ^ ^ ^+^ ^ ^        _x_ delete char  
 
 ;;; GTags
 (require-package 'ggtags)
-(ggtags-mode)
+(defun diminish-ggtags ()
+  (interactive)
+  (diminish 'ggtags-mode ""))
+(add-hook 'ggtags-mode-hook 'diminish-ggtags)
 ;; Add exec-path for Gtags
 (setenv "PATH" (concat (getenv "PATH") ":/usr/local/Cellar/global/6.5/bin"))
 (setq exec-path (append exec-path '("/usr/local/Cellar/global/6.5/bin")))
@@ -861,54 +835,22 @@ _h_ ^+^ _l_   _a_ ^+^ _e_   _w_ ^+^ _b_     ^ ^ ^+^ ^ ^        _x_ delete char  
 (put 'narrow-to-region 'disabled nil)
 
 ;; Spell check
-(require 'flyspell)
 (add-hook 'text-mode-hook 'flyspell-mode)
-;; move point to previous error
-;; based on code by hatschipuh at
-;; http://emacs.stackexchange.com/a/14912/2017
-(defun flyspell-goto-previous-error (arg)
-  "Go to arg previous spelling error."
-  (interactive "p")
-  (while (not (= 0 arg))
-    (let ((pos (point))
-          (min (point-min)))
-      (if (and (eq (current-buffer) flyspell-old-buffer-error)
-               (eq pos flyspell-old-pos-error))
-          (progn
-            (if (= flyspell-old-pos-error min)
-                ;; goto beginning of buffer
-                (progn
-                  (message "Restarting from end of buffer")
-                  (goto-char (point-max)))
-              (backward-word 1))
-            (setq pos (point))))
-      ;; seek the next error
-      (while (and (> pos min)
-                  (let ((ovs (overlays-at pos))
-                        (r '()))
-                    (while (and (not r) (consp ovs))
-                      (if (flyspell-overlay-p (car ovs))
-                          (setq r t)
-                        (setq ovs (cdr ovs))))
-                    (not r)))
-        (backward-word 1)
-        (setq pos (point)))
-      ;; save the current location for next invocation
-      (setq arg (1- arg))
-      (setq flyspell-old-pos-error pos)
-      (setq flyspell-old-buffer-error (current-buffer))
-      (goto-char pos)
-      (if (= pos min)
-          (progn
-            (message "No more miss-spelled word!")
-            (setq arg 0))
-        (forward-word)))))
-(define-key evil-normal-state-map (kbd "]s") 'flyspell-goto-next-error)
-(define-key evil-normal-state-map (kbd "[s") 'flyspell-goto-previous-error)
+(defun diminish-flyspell ()
+  (interactive)
+  (diminish 'flyspell-mode ""))
+(add-hook 'flyspell-mode-hook 'diminish-flyspell)
+(defun diminish-aspell ()
+  (interactive)
+  (diminish 'aspell-mode ""))
+(add-hook 'aspell-mode-hook 'diminish-aspell)
+(defun diminish-ispell ()
+  (interactive)
+  (diminish 'ispell-mode ""))
+(add-hook 'ispell-mode-hook 'diminish-ispell)
 
 ;; Better folding
 (require-package 'origami)
-(global-origami-mode)
 (define-key evil-normal-state-map (kbd "]z") 'origami-next-fold)
 (define-key evil-normal-state-map (kbd "[z") 'origami-previous-fold)
 (define-key evil-normal-state-map (kbd "zx") 'origami-toggle-node)
@@ -922,10 +864,18 @@ _h_ ^+^ _l_   _a_ ^+^ _e_   _w_ ^+^ _b_     ^ ^ ^+^ ^ ^        _x_ delete char  
 ;; Highlight stuff
 (require-package 'volatile-highlights)
 (require 'volatile-highlights)
+(defun diminish-volatile-highlights ()
+  (interactive)
+  (diminish 'volatile-highlights-mode ""))
+(add-hook 'volatile-highlights-mode-hook 'diminish-volatile-highlights)
 (volatile-highlights-mode t)
 
 ;; Smart tabs
 (require-package 'smart-tab)
+(defun diminish-smart-tab ()
+  (interactive)
+  (diminish 'smart-tab-mode ""))
+(add-hook 'smart-tab-mode-hook 'diminish-smart-tab)
 (global-smart-tab-mode)
 
 ;;; Multiple cursors
@@ -966,7 +916,7 @@ _h_ ^+^ _l_            _n_ext         _A_ppend  _L_etters   _c_hange
 (defhydra hydra-ex-py (:color red
                     :hint nil)
   "
-^expand^         ^block^     ^string^
+^expand^                   ^block^     ^string^
 ^^^^^^^^^^--------------------------------------------
 _B_lock and dec  _g_oto      _i_nside    _I_nside   _q_uit
 _l_ine           _E_xpand    _o_utside   _O_utside
@@ -1016,7 +966,6 @@ _r_estart   _g_oto        _w_ord   _u_rl      _C_omment   _o_utside  _O_utside
 
 ;;; Company
 (require-package 'company)
-(global-company-mode)
 (with-eval-after-load 'company
   (company-flx-mode +1))
 (eval-after-load 'company
@@ -1031,6 +980,7 @@ _r_estart   _g_oto        _w_ord   _u_rl      _C_omment   _o_utside  _O_utside
 (define-key evil-normal-state-map (kbd "SPC ac") 'company-mode)
 (defun my-company-hook ()
   (interactive)
+  (diminish 'company-mode " ς")
   (define-key company-active-map (kbd "C-n") 'company-select-next)
   (define-key company-active-map (kbd "C-p") 'company-select-previous)
   (define-key company-active-map [tab] 'company-complete-common-or-cycle))
@@ -1043,6 +993,10 @@ _r_estart   _g_oto        _w_ord   _u_rl      _C_omment   _o_utside  _O_utside
 
 ;; Irony mode for C++
 (require-package 'irony)
+(defun diminish-flyspell ()
+  (interactive)
+  (diminish 'irony-mode " Γ"))
+(add-hook 'irony-mode-hook 'diminish-irony)
 (add-hook 'c++-mode-hook 'irony-mode)
 (add-hook 'c-mode-hook 'irony-mode)
 (add-hook 'objc-mode-hook 'irony-mode)
@@ -1111,7 +1065,10 @@ _r_estart   _g_oto        _w_ord   _u_rl      _C_omment   _o_utside  _O_utside
   (setq yas-dont-activate t))
 (add-hook 'term-mode-hook 'force-yasnippet-off)
 (add-hook 'shell-mode-hook 'force-yasnippet-off)
-(yas-global-mode)
+(defun diminish-yas ()
+  (interactive)
+  (diminish 'yas-minor-mode " γ"))
+(add-hook 'yas-global-mode-hook 'diminish-yas)
 (define-key evil-normal-state-map (kbd "SPC ay") 'yas-global-mode)
 (define-key evil-insert-state-map (kbd "C-j") 'yas-insert-snippet)
 
@@ -1119,12 +1076,12 @@ _r_estart   _g_oto        _w_ord   _u_rl      _C_omment   _o_utside  _O_utside
 
 ;; ESS - Emacs speaks statistics
 (require-package 'ess)
-(require 'ess-site)
 (add-to-list 'auto-mode-alist '("\\.R$" . R-mode))
 ;; Vertical split R shell
 (defun r-shell-here ()
   "opens up a new r shell in the directory associated with the current buffer's file."
   (interactive)
+  (require 'ess-site)
   (split-window-right)
   (other-window 1)
   (R)
@@ -1133,20 +1090,53 @@ _r_estart   _g_oto        _w_ord   _u_rl      _C_omment   _o_utside  _O_utside
 (defun julia-shell-here ()
   "opens up a new julia REPL in the directory associated with the current buffer's file."
   (interactive)
+  (require 'ess-site)
   (split-window-right)
   (other-window 1)
   (julia)
   (other-window 1))
-(define-key evil-normal-state-map (kbd "SPC tr") 'r-shell-here)
-(define-key evil-normal-state-map (kbd "SPC tj") 'julia-shell-here)
-(define-key evil-normal-state-map (kbd "SPC sf") 'ess-eval-function)
-(define-key evil-normal-state-map (kbd "SPC sl") 'ess-eval-line)
-;; For R - Intuitive
-(define-key evil-normal-state-map (kbd "SPC sr") 'ess-eval-buffer)
-(define-key evil-visual-state-map (kbd "SPC sr") 'ess-eval-region)
-;; For Julia - intuitive
-(define-key evil-normal-state-map (kbd "SPC sj") 'ess-eval-buffer)
-(define-key evil-visual-state-map (kbd "SPC sj") 'ess-eval-region)
+
+;; Hydra - for julia
+(defhydra hydra-julia (:color red
+                       :hint nil)
+  "
+ ^Send^       ^Shell^
+ ^^^^^^^^^-------------------------
+ _f_unction   _s_tart    _L_ang    _q_uit
+ _l_ine       _S_witch
+ _r_egion     _o_ther
+ _b_uffer
+"
+  ("f" ess-eval-function)
+  ("l" ess-eval-line)
+  ("r" ess-eval-region)
+  ("b" ess-eval-buffer)
+  ("s" julia-shell-here)
+  ("S" ess-switch-to-ESS)
+  ("o" other-window)
+  ("L" hydra-langs/body :exit t)
+  ("q" nil :color blue))
+
+;; Hydra - for r
+(defhydra hydra-r (:color red
+                   :hint nil)
+  "
+ ^Send^       ^Shell^
+ ^^^^^^^^^-------------------------
+ _f_unction   _s_tart    _L_ang    _q_uit
+ _l_ine       _S_witch
+ _r_egion     _o_ther
+ _b_uffer
+"
+  ("f" ess-eval-function)
+  ("l" ess-eval-line)
+  ("r" ess-eval-region)
+  ("b" ess-eval-buffer)
+  ("s" r-shell-here)
+  ("S" ess-switch-to-ESS)
+  ("o" other-window)
+  ("L" hydra-langs/body :exit t)
+  ("q" nil :color blue))
 
 ;; Lisp
 (require-package 'paredit)
@@ -1180,11 +1170,33 @@ _r_estart   _g_oto        _w_ord   _u_rl      _C_omment   _o_utside  _O_utside
 (require-package 'elpy)
 (add-hook 'python-mode-hook 'elpy-enable)
 (add-hook 'python-mode-hook 'elpy-use-ipython)
-(define-key evil-normal-state-map (kbd "SPC tp") 'elpy-shell-switch-to-shell)
-(define-key evil-normal-state-map (kbd "SPC sd") 'python-shell-send-defun)
-(define-key evil-normal-state-map (kbd "SPC ss") 'elpy-shell-send-current-statement)
-(define-key evil-normal-state-map (kbd "SPC sp") 'elpy-shell-send-region-or-buffer)
-(define-key evil-visual-state-map (kbd "SPC sp") 'elpy-shell-send-region-or-buffer)
+(defun diminish-elpy ()
+  (interactive)
+  (diminish 'elpy-mode ""))
+(add-hook 'elpy-mode-hook 'diminish-elpy)
+
+;; Hydra - for python
+(defhydra hydra-python (:color red
+                        :hint nil)
+  "
+ ^Send^       ^Shell^    ^Navigate^
+ ^^^^^^^^^----------------------------------------------
+ _f_unction   _s_tart    _d_efinition   _L_ang     _q_uit
+ _l_ine       _S_witch   l_o_cation
+ _r_egion     _B_uffer
+ _b_uffer
+"
+  ("f" python-shell-send-defun)
+  ("l" elpy-shell-send-current-statement)
+  ("r" elpy-shell-send-region)
+  ("b" elpy-shell-send-buffer)
+  ("s" elpy-shell-switch-to-shell)
+  ("S" elpy-shell-switch-to-shell)
+  ("B" elpy-shell-switch-to-buffer)
+  ("d" elpy-goto-definition)
+  ("o" elpy-goto-location)
+  ("L" hydra-langs/body :exit t)
+  ("q" nil :color blue))
 
 ;; Cython mode
 (require-package 'cython-mode)
@@ -1232,9 +1244,27 @@ _r_estart   _g_oto        _w_ord   _u_rl      _C_omment   _o_utside  _O_utside
   (other-window 1)
   (matlab-shell)
   (other-window 1))
-(define-key evil-normal-state-map (kbd "SPC tm") 'matlab-shell-here)
-(define-key evil-normal-state-map (kbd "SPC sm") 'matlab-shell-run-cell)
-(define-key evil-visual-state-map (kbd "SPC sm") 'matlab-shell-run-region)
+
+;; Hydra - for matlab
+(defhydra hydra-matlab (:color red
+                        :hint nil)
+  "
+ ^Send^       ^Shell^
+ ^^^^^^^^^-------------------------------
+ _c_ell       _s_tart    _L_ang     _q_uit
+ _l_ine       _S_witch
+ _r_egion     _o_ther
+ _C_ommand
+"
+  ("c" matlab-shell-run-cell)
+  ("l" matlab-shell-run-region-or-line)
+  ("r" matlab-shell-run-region)
+  ("C" matlab-shell-run-command)
+  ("s" matlab-shell-here)
+  ("S" matlab-show-matlab-shell-buffer)
+  ("o" other-window)
+  ("L" hydra-langs/body :exit t)
+  ("q" nil :color blue))
 
 ;; Sage
 (require-package 'sage-shell-mode)
@@ -1385,6 +1415,10 @@ Single Capitals as you type."
   (if dubcaps-mode
       (add-hook 'post-self-insert-hook #'dcaps-to-scaps nil 'local)
     (remove-hook 'post-self-insert-hook #'dcaps-to-scaps 'local)))
+(defun diminish-dubcaps ()
+  (interactive)
+  (diminish 'dubcaps-mode ""))
+(add-hook 'dubcaps-mode-hook 'diminish-dubcaps)
 (add-hook 'org-mode-hook #'dubcaps-mode)
 
 ;; Turns the next page in adjoining pdf-tools pdf
@@ -1482,6 +1516,11 @@ Single Capitals as you type."
 
 ;; LaTeX
 (require-package 'cdlatex)
+(defun diminish-org ()
+  (interactive)
+  (diminish 'org-indent-mode "")
+  (diminish 'org-cdlatex-mode ""))
+(add-hook 'org-mode-hook 'diminish-org)
 (add-hook 'org-mode-hook 'org-cdlatex-mode)
 
 ;; Pomodoro
@@ -1694,8 +1733,8 @@ _s_parse-tree  _S_chedule    _r_eset
 (add-hook 'html-mode-hook 'diff-hl-mode)
 (add-hook 'text-mode-hook 'diff-hl-mode)
 (add-hook 'org-mode-hook 'diff-hl-mode)
-(diff-hl-margin-mode)
-(diff-hl-flydiff-mode)
+(add-hook 'diff-hl-mode-hook 'diff-hl-margin-mode)
+(add-hook 'diff-hl-mode-hook 'diff-hl-flydiff-mode)
 (define-key evil-normal-state-map (kbd "]d") 'diff-hl-next-hunk)
 (define-key evil-normal-state-map (kbd "[d") 'diff-hl-previous-hunk)
 (define-key evil-normal-state-map (kbd "gh") 'diff-hl-diff-goto-hunk)
@@ -1710,7 +1749,7 @@ _s_parse-tree  _S_chedule    _r_eset
  ^time^    ^navigate^            ^hash^
 ^^^^^^^^^---------------------------------
  _s_tart   _n_ext      _g_oto      _b_rief
- _q_uit    _p_revious  _c_urrent   _f_ull
+ _k_ill    _p_revious  _c_urrent   _f_ull
 "
   ("s" git-timemachine)
   ("n" git-timemachine-show-next-revision)
@@ -1719,19 +1758,18 @@ _s_parse-tree  _S_chedule    _r_eset
   ("c" git-timemachine-show-current-revision)
   ("b" git-timemachine-kill-abbreviated-revision)
   ("f" git-timemachine-kill-revision)
-  ("q" git-timemachine-quit :color blue))
+  ("k" git-timemachine-quit :color blue)
+  ("q" nil :color blue))
 (define-key evil-normal-state-map (kbd "gt") 'hydra-git-timemachine/body)
 
 ;; Gists
 (require-package 'yagist)
 (setq yagist-view-gist t)
-(define-key evil-normal-state-map (kbd "SPC sg") 'yagist-buffer)
-(define-key evil-visual-state-map (kbd "SPC sg") 'yagist-region)
 
 ;;; REPL
 
-;; Eshell send command
-(define-key evil-normal-state-map (kbd "SPC st") 'eshell-command)
+;; Quickrun
+(require-package 'quickrun)
 
 ;; Compile and multi-compile
 (require-package 'multi-compile)
@@ -1751,10 +1789,11 @@ _s_parse-tree  _S_chedule    _r_eset
   "
  ^Multi-compile^
  ^^^^^^^^^---------------------
- _m_ake   _c_ompile   _q_uit
+ _m_ake   _c_ompile  _r_un   _q_uit
 "
   ("m" compile)
   ("c" multi-compile-run)
+  ("r" quickrun)
   ("q" nil))
 (define-key evil-normal-state-map (kbd "SPC m") 'hydra-make/body)
 
@@ -1767,11 +1806,22 @@ _s_parse-tree  _S_chedule    _r_eset
   (split-window-right)
   (other-window 1)
   (multi-term))
-(define-key evil-normal-state-map (kbd "SPC ts") 'multi-term-here)
 
 ;; Interact with Tmux
 (require-package 'emamux)
-(define-key evil-normal-state-map (kbd "SPC sx") 'emamux:send-command)
+;; Hydra for eamux
+(defhydra hydra-eamux (:color blue
+                       :hint nil)
+  "
+ ^Eamux^
+ ^^^^^^^^^---------------------
+ _s_end   _r_un   _l_ast  _c_lose   _q_uit
+"
+  ("s" emamux:send-command)
+  ("r" emamux:run-command)
+  ("l" emamux:run-last-command)
+  ("c" emamux:close-runner-pane)
+  ("q" nil))
 
 ;; Make the compilation window automatically disapper from enberg on #emacs
 (setq compilation-finish-functions
@@ -1783,10 +1833,6 @@ _s_parse-tree  _S_chedule    _r_eset
                "2 sec" nil 'delete-windows-on
                (get-buffer-create "*compilation*"))
               (message "No Compilation Errors!")))))
-
-;; Quickrun
-(require-package 'quickrun)
-(define-key evil-normal-state-map (kbd "SPC 4") 'quickrun)
 
 ;;; Eshell
 (setq eshell-glob-case-insensitive t
@@ -1800,36 +1846,56 @@ _s_parse-tree  _S_chedule    _r_eset
 ;; Aliases
 (setq eshell-aliases-file (concat user-emacs-directory ".eshell-aliases"))
 
-;; Plan9
-(require 'eshell)
-(require 'em-smart)
-(setq eshell-where-to-jump 'begin
-      eshell-review-quick-commands nil
-      eshell-smart-space-goes-to-end t)
-
 ;; Eyebrowse mode
 (require-package 'eyebrowse)
 (setq eyebrowse-wrap-around t
       eyebrowse-switch-back-and-forth t)
+(defun diminish-eyebrowse ()
+  (interactive)
+  (diminish 'eyebrowse-mode ""))
+(add-hook 'eyebrowse-mode-hook 'diminish-eyebrowse)
 (eyebrowse-mode t)
-(define-key evil-normal-state-map (kbd "SPC ii") 'eyebrowse-switch-to-window-config)
-(define-key evil-normal-state-map (kbd "SPC il") 'eyebrowse-last-window-config)
-(define-key evil-normal-state-map (kbd "SPC in") 'eyebrowse-next-window-config)
-(define-key evil-normal-state-map (kbd "SPC ip") 'eyebrowse-prev-window-config)
-(define-key evil-normal-state-map (kbd "SPC ir") 'eyebrowse-rename-window-config)
-(define-key evil-normal-state-map (kbd "SPC ic") 'eyebrowse-close-window-config)
-(define-key evil-normal-state-map (kbd "SPC i0") 'eyebrowse-switch-to-window-config-0)
-(define-key evil-normal-state-map (kbd "SPC i1") 'eyebrowse-switch-to-window-config-1)
-(define-key evil-normal-state-map (kbd "SPC i2") 'eyebrowse-switch-to-window-config-2)
-(define-key evil-normal-state-map (kbd "SPC i3") 'eyebrowse-switch-to-window-config-3)
-(define-key evil-normal-state-map (kbd "SPC i4") 'eyebrowse-switch-to-window-config-4)
-(define-key evil-normal-state-map (kbd "SPC i5") 'eyebrowse-switch-to-window-config-5)
-(define-key evil-normal-state-map (kbd "SPC i6") 'eyebrowse-switch-to-window-config-6)
-(define-key evil-normal-state-map (kbd "SPC i7") 'eyebrowse-switch-to-window-config-7)
-(define-key evil-normal-state-map (kbd "SPC i8") 'eyebrowse-switch-to-window-config-8)
-(define-key evil-normal-state-map (kbd "SPC i9") 'eyebrowse-switch-to-window-config-9)
+
+;; Hydra for compilation
+(defhydra hydra-eyebrowse (:color blue
+                           :hint nil)
+  "
+ ^Eyebrowse^
+ ^^^^^^^^^---------------------
+ _0_   _4_  _8_   sw_i_tch   _l_ast
+ _1_   _5_  _9_   _r_ename   _q_uit
+ _2_   _6_      _n_ext
+ _3_   _7_      _p_revious
+"
+  ("0" eyebrowse-switch-to-window-config-0)
+  ("1" eyebrowse-switch-to-window-config-1)
+  ("2" eyebrowse-switch-to-window-config-2)
+  ("3" eyebrowse-switch-to-window-config-3)
+  ("4" eyebrowse-switch-to-window-config-4)
+  ("5" eyebrowse-switch-to-window-config-5)
+  ("6" eyebrowse-switch-to-window-config-6)
+  ("7" eyebrowse-switch-to-window-config-7)
+  ("8" eyebrowse-switch-to-window-config-8)
+  ("9" eyebrowse-switch-to-window-config-9)
+  ("i" eyebrowse-switch-to-window-config)
+  ("r" eyebrowse-rename-window-config)
+  ("n" eyebrowse-next-window-config)
+  ("p" eyebrowse-prev-window-config)
+  ("l" eyebrowse-last-window-config)
+  ("q" nil))
+(define-key evil-normal-state-map (kbd "SPC i") 'hydra-eyebrowse/body)
 
 ;;; Wrap up
+
+;; Diminish some stuff
+(defun diminish-abbrev ()
+  (interactive)
+  (diminish 'abbrev-mode ""))
+(add-hook 'abbrev-mode-hook 'diminish-abbrev)
+(defun diminish-undo-tree ()
+  (interactive)
+  (diminish 'undo-tree-mode ""))
+(add-hook 'undo-tree-mode-hook 'diminish-undo-tree)
 
 ;; Highlight the cursor line
 (global-hl-line-mode 1)
@@ -1850,19 +1916,34 @@ _s_parse-tree  _S_chedule    _r_eset
 (require-package 'column-enforce-mode)
 (require 'column-enforce-mode)
 (setq column-enforce-column 99)
-(global-column-enforce-mode)
+(defun diminish-column-enforce ()
+  (interactive)
+  (diminish 'column-enforce-mode ""))
+(add-hook 'column-enforce-mode-hook 'diminish-column-enforce)
 
 ;; Which function mode
 (which-function-mode 1)
 
 ;; Enable subword mode
+(defun diminish-subword ()
+  (interactive)
+  (diminish 'subword-mode ""))
+(add-hook 'subword-mode-hook 'diminish-subword)
 (global-subword-mode)
 
 ;; Enable smartparens-mode
 (require-package 'smartparens)
+(defun diminish-smartparens ()
+  (interactive)
+  (diminish 'smartparens-mode ""))
+(add-hook 'smartparens-mode-hook 'diminish-smartparens)
 (smartparens-global-mode)
 
 ;; Hide/Show mode
+(defun diminish-hs-minor ()
+  (interactive)
+  (diminish 'hs-minor-mode ""))
+(add-hook 'hs-minor-mode-hook 'diminish-hs-minor)
 (add-hook 'prog-mode-hook 'hs-minor-mode)
 
 ;; Column number mode
@@ -1870,6 +1951,10 @@ _s_parse-tree  _S_chedule    _r_eset
 
 ;; Delete trailing whitespace on save
 (require-package 'ws-butler)
+(defun diminish-ws-butler ()
+  (interactive)
+  (diminish 'ws-butler-mode ""))
+(add-hook 'ws-butler-mode-hook 'diminish-ws-butler)
 (ws-butler-global-mode)
 
 ;; Region information
@@ -1888,13 +1973,13 @@ _s_parse-tree  _S_chedule    _r_eset
 ;;; Construct mode hydras
 
 ;; Tags
-(defhydra hydra-tags (:color blue
+(defhydra hydra-tags (:color red
                       :hint nil)
   "
  ^Tags^      ^Jump^         ^Python^
  ^^^^^^^^^---------------------------
  _c_reate    _r_eference    _d_efinition
- _u_pdate    _t_tag         _l_ocation
+ _u_pdate    _t_ag          _l_ocation
  _f_ind                   _q_uit
 "
   ("c" ggtags-create-tags)
@@ -1904,68 +1989,71 @@ _s_parse-tree  _S_chedule    _r_eset
   ("t" ggtags-find-tag-dwim)
   ("d" elpy-goto-definition)
   ("l" elpy-goto-location)
-  ("q" nil))
+  ("q" nil :color blue))
 (define-key evil-normal-state-map (kbd "SPC j") 'hydra-tags/body)
 
-;;; Clean mode-line
-(defvar mode-line-cleaner-alist
-  `((smartparens-mode . "")
-    (which-key-mode . "")
-    (evil-snipe-mode . "")
-    (evil-snipe-local-mode . "")
-    (evil-commentary-mode . "")
-    (eyebrowse-mode . "")
-    (dubcaps-mode . "")
-    (ivy-mode . "")
-    (elpy-mode . "")
-    (ws-butler-mode . "")
-    (org-cdlatex-mode . "")
-    (subword-mode . "")
-    (volatile-highlights-mode . "")
-    (flycheck-mode . "")
-    (flyspell-mode . " $")
-    (aspell-mode . " $")
-    (ispell-mode . " $")
-    (ggtags-mode . "")
-    (aggressive-indent-mode . "")
-    (column-enforce-mode . "")
-    (smart-tab-mode . "")
-    (company-mode . " ς")
-    (irony-mode . " Γ")
-    (yas-minor-mode . " γ")
-    (eldoc-mode . "")
-    (org-indent-mode . "")
-    (hs-minor-mode . "")
-    (auto-complete-mode . "")
-    (abbrev-mode . "")
-    (undo-tree-mode . "")
-    ;; Major modes
-    (lisp-interaction-mode . ":λ:")
-    (hi-lock-mode . "")
-    (markdown-mode . ":MD:")
-    (python-mode . ":PY:")
-    (emacs-lisp-mode . ":EL:")
-    (org-mode . ":ORG:")
-    (nxhtml-mode . ":NX:"))
-  "Alist for `clean-mode-line'.
-When you add a new element to the alist, keep in mind that you
-must pass the correct minor/major mode symbol and a string you
-want to use in the modeline *in lieu of* the original.")
-(defun clean-mode-line ()
-  (interactive)
-  (loop for cleaner in mode-line-cleaner-alist
-        do (let* ((mode (car cleaner))
-                  (mode-str (cdr cleaner))
-                  (old-mode-str (cdr (assq mode minor-mode-alist))))
-             (when old-mode-str
-               (setcar old-mode-str mode-str))
-             ;; major mode
-             (when (eq mode major-mode)
-               (setq mode-name mode-str)))))
-(add-hook 'after-change-major-mode-hook 'clean-mode-line)
+;; Activate stuff
+(defhydra hydra-activate (:color red
+                          :hint nil)
+  "
+ ^(De)Activate^                  ^Packages^    ^Minor mode^
+ ^^^^^^^^^----------------------------------------------------------------------
+ _b_attery   _n_umber   scrollb_a_r  _p_aradox     _c_ompany    _i_ndentation   S_X_      _W_hich-key  _q_uit
+ _t_ime      _w_rap     toolba_r_    instal_l_     _y_asnippet  _x_ FCI         _j_abber  _o_rg        col_f_orce
+ _F_ont      _s_pell               _I_nitialize  _e_lpy       _G_eeknote      _F_old    _g_gtags
+"
+  ("b" display-battery-mode)
+  ("t" display-time-mode)
+  ("F" set-frame-font)
+  ("n" linum-mode :color blue)
+  ("w" toggle-truncate-lines :color blue)
+  ("s" flyspell-mode :color blue)
+  ("r" tool-bar-mode :color blue)
+  ("a" scroll-bar-mode :color blue)
+  ("p" paradox-list-packages :color blue)
+  ("l" package-install :color blue)
+  ("I" package-initialize :color blue)
+  ("c" company-mode :color blue)
+  ("f" column-enforce-mode :color blue)
+  ("y" yas-global-mode :color blue)
+  ("e" elpy-enable :color blue)
+  ("i" highlight-indentation-mode :color blue)
+  ("x" fci-mode)
+  ("G" geeknote-create :color blue)
+  ("X" sx-tab-all-questions :color blue)
+  ("j" jabber-connect :color blue)
+  ("o" org-custom-load :color blue)
+  ("g" ggtags-mode :color blue)
+  ("F" global-origami-mode :color blue)
+  ("W" which-key-mode :color blue)
+  ("q" nil :color blue))
+(define-key evil-normal-state-map (kbd "SPC a") 'hydra-activate/body)
+
+;; Hydra of languages
+(defhydra hydra-langs (:color blue
+                       :hint nil)
+  "
+ ^Languages^                        ^Terminal^
+ ^^^^^^^^^---------------------------------------
+ _j_ulia      _m_atlab    _e_lisp   e_s_hell     multi-_t_erm
+ _p_ython     _r_         _g_ist    tmu_x_       _q_uit
+"
+  ("j" hydra-julia/body :exit t)
+  ("p" hydra-python/body :exit t)
+  ("m" hydra-matlab/body :exit t)
+  ("r" hydra-r/body :exit t)
+  ("e" hydra-elisp/body :exit t)
+  ("g" yagist-region-or-buffer :exit t)
+  ("s" eshell-command :exit t)
+  ("x" hydra-eamux/body :exit t)
+  ("t" multi-term-here :exit t)
+  ("q" nil))
+(define-key evil-normal-state-map (kbd "SPC s") 'hydra-langs/body)
+(define-key evil-visual-state-map (kbd "SPC s") 'hydra-langs/body)
 
 ;; Garbage collector - decrease threshold by an order
 (setq gc-cons-threshold 10000000)
 
-(server-start)
+;; Start server - not very useful since I start emacs-mac these days
+;; (server-start)
 ;;; .emacs ends here

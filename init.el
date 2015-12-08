@@ -401,6 +401,7 @@ _h_ ^+^ _l_   _a_ ^+^ _e_   _w_ ^+^ _b_     ^ ^ ^+^ ^ ^        _x_ delete char  
 (define-key evil-normal-state-map (kbd "K") 'man)
 (define-key evil-normal-state-map (kbd "+") 'eshell-vertical)
 (define-key evil-normal-state-map (kbd "-") 'eshell-horizontal)
+(define-key evil-normal-state-map (kbd "\\") 'universal-argument)
 (define-key evil-normal-state-map (kbd "gs") 'electric-newline-and-maybe-indent)
 (define-key evil-normal-state-map (kbd "gl") 'browse-url-at-point)
 (define-key evil-normal-state-map (kbd "gL") 'browse-url-at-mouse)

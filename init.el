@@ -91,7 +91,7 @@
 (require-package 'sr-speedbar)
 (setq speedbar-default-position 'right)
 
-;;; Avy - not sure how to navigate vanilla emacs without this
+;;; Avy
 (require-package 'avy)
 
 ;; Hydra - especially in emacs mode
@@ -230,7 +230,7 @@ _h_ ^+^ _l_   _a_ ^+^ _e_   _w_ ^+^ _b_     ^ ^ ^+^ ^ ^        _x_ delete char  
   ("z" recenter)
   ("n" isearch-occur)
   ("f" hydra-avy/body :exit t)
-  ("W" hydra-window/body :exit t)
+  ("W" hydra-window-and-frame/body :exit t)
   ("o" vi-open-line-below :color blue)
   ("O" vi-open-line-above :color blue)
   ("c" delete-char :color blue)
@@ -320,7 +320,7 @@ _h_ ^+^ _l_   _a_ ^+^ _e_   _w_ ^+^ _b_     ^ ^ ^+^ ^ ^        _x_ delete char  
 (which-key-setup-side-window-bottom)
 (defun diminish-which-key ()
   (interactive)
-  (diminish 'whick-key-mode ""))
+  (diminish 'which-key-mode ""))
 (add-hook 'which-key-mode-hook 'diminish-which-key)
 
 ;; Move lines - from stack overflow
@@ -377,6 +377,16 @@ _h_ ^+^ _l_   _a_ ^+^ _e_   _w_ ^+^ _b_     ^ ^ ^+^ ^ ^        _x_ delete char  
 (define-key evil-normal-state-map (kbd "]n") 'blank-line-down)
 (define-key evil-normal-state-map (kbd "[n") 'blank-line-up)
 
+;; Split windows and move
+(defun split-below-and-move ()
+  (interactive)
+  (split-window-below)
+  (other-window 1))
+(defun split-right-and-move ()
+  (interactive)
+  (split-window-right)
+  (other-window 1))
+
 ;;; Evil - Vim emulation - Continued
 ;; Escape for everything
 (define-key evil-normal-state-map [escape] 'keyboard-quit)
@@ -384,12 +394,11 @@ _h_ ^+^ _l_   _a_ ^+^ _e_   _w_ ^+^ _b_     ^ ^ ^+^ ^ ^        _x_ delete char  
 ;; Maps
 (define-key evil-normal-state-map (kbd "j") 'evil-next-visual-line)
 (define-key evil-normal-state-map (kbd "k") 'evil-previous-visual-line)
-(define-key evil-normal-state-map (kbd "w") 'split-window-horizontally)
 (define-key evil-normal-state-map (kbd "Z") 'delete-other-windows)
 (define-key evil-normal-state-map (kbd "Q") 'winner-undo)
 (define-key evil-normal-state-map (kbd "R") 'winner-redo)
-(define-key evil-normal-state-map (kbd "w") 'split-window-horizontally)
-(define-key evil-normal-state-map (kbd "W") 'split-window-vertically)
+(define-key evil-normal-state-map (kbd "w") 'split-right-and-move)
+(define-key evil-normal-state-map (kbd "W") 'split-below-and-move)
 (define-key evil-normal-state-map (kbd "U") 'undo-tree-visualize)
 (define-key evil-normal-state-map (kbd "K") 'man)
 (define-key evil-normal-state-map (kbd "+") 'eshell-vertical)
@@ -408,16 +417,9 @@ _h_ ^+^ _l_   _a_ ^+^ _e_   _w_ ^+^ _b_     ^ ^ ^+^ ^ ^        _x_ delete char  
 (define-key evil-normal-state-map (kbd "SPC 3") 'select-frame-by-name)
 (define-key evil-normal-state-map (kbd "SPC DEL") 'whitespace-cleanup)
 (define-key evil-normal-state-map (kbd "SPC ,") 'describe-bindings)
-(define-key evil-visual-state-map (kbd "SPC ]") 'narrow-to-region)
 (define-key evil-normal-state-map (kbd "SPC 6") 'quick-calc)
 (define-key evil-normal-state-map (kbd "SPC \\") 'toggle-input-method)
-(define-key evil-normal-state-map (kbd "SPC as") 'flyspell-mode)
-(define-key evil-normal-state-map (kbd "SPC an") 'linum-mode)
-(define-key evil-normal-state-map (kbd "SPC aw") 'toggle-truncate-lines)
-(define-key evil-normal-state-map (kbd "SPC ab") 'display-battery-mode)
-(define-key evil-normal-state-map (kbd "SPC at") 'display-time-mode)
-(define-key evil-normal-state-map (kbd "SPC ap") 'package-install)
-(define-key evil-normal-state-map (kbd "SPC af") 'set-frame-font)
+(define-key evil-visual-state-map (kbd "SPC ]") 'narrow-to-region)
 (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
 
 ;; More useful arrow keys

@@ -332,8 +332,6 @@ _h_ ^+^ _l_   _a_ ^+^ _e_   _w_ ^+^ _b_     ^ ^ ^+^ ^ ^        _x_ delete char  
 (setq paradox-github-token t)
 
 ;; Themes
-(require-package 'zenburn-theme)
-(require-package 'gruvbox-theme)
 (load-theme 'leuven t)
 
 ;; Vertical split eshell

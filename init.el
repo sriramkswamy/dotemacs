@@ -1,6 +1,9 @@
 ;; Garbage collector - increase threshold
 (setq gc-cons-threshold 100000000)
 
+;; Wrap init file
+(let ((file-name-handler-alist nil)) "~/.emacs.d/init.el")
+
 ;;; Packages
 (require 'package)
 (setq package-enable-at-startup nil)
@@ -86,10 +89,6 @@
 ;; Improve dired
 (require-package 'dired+)
 (add-hook 'dired-mode-hook 'dired-hide-details-mode)
-
-;; Speedbar in the same frame
-(require-package 'sr-speedbar)
-(setq speedbar-default-position 'right)
 
 ;;; Avy
 (require-package 'avy)
@@ -261,7 +260,6 @@ _h_ ^+^ _l_   _a_ ^+^ _e_   _w_ ^+^ _b_     ^ ^ ^+^ ^ ^        _x_ delete char  
 (setq evil-default-cursor t
       evil-want-C-u-scroll t
       evil-want-Y-yank-to-eol t)
-(require 'evil)
 (evil-mode 1)
 ;; Specify evil initial states
 (evil-set-initial-state 'dired-mode 'emacs)
@@ -607,8 +605,19 @@ _h_ ^+^ _l_   _a_ ^+^ _e_   _w_ ^+^ _b_     ^ ^ ^+^ ^ ^        _x_ delete char  
 
 ;;; Navigation
 
-;; Evil speedbar binding
-(define-key evil-normal-state-map (kbd "gf") 'sr-speedbar-toggle)
+;; Neotree
+(require-package 'neotree)
+(add-hook 'neotree-mode-hook
+            (lambda ()
+              (define-key evil-normal-state-local-map (kbd "TAB") 'neotree-enter)
+              (define-key evil-normal-state-local-map (kbd "o") 'neotree-enter)
+              (define-key evil-normal-state-local-map (kbd "h") 'neotree-select-up-node)
+              (define-key evil-normal-state-local-map (kbd "l") 'neotree-change-root)
+              (define-key evil-normal-state-local-map (kbd ".") 'neotree-hidden-file-toggle)
+              (define-key evil-normal-state-local-map (kbd "r") 'neotree-refresh)
+              (define-key evil-normal-state-local-map (kbd "q") 'neotree-hide)
+              (define-key evil-normal-state-local-map (kbd "RET") 'neotree-enter)))
+(define-key evil-normal-state-map (kbd "SPC n") 'neotree-toggle)
 
 ;; Evil avy bindings
 (define-key evil-normal-state-map (kbd "SPC h") 'avy-goto-line)
@@ -1347,7 +1356,7 @@ _h_ ^+^ _l_                _o_pen      _c_lear    _R_ename
   (interactive)
   (deft)
   (hydra-deft/body))
-(define-key evil-normal-state-map (kbd "SPC n") 'open-deft-and-start-hydra)
+(define-key evil-normal-state-map (kbd "SPC t") 'open-deft-and-start-hydra)
 
 ;;; Org mode
 (define-key evil-normal-state-map (kbd "SPC c") 'org-capture)

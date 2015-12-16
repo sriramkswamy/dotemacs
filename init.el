@@ -237,6 +237,34 @@ _h_ ^+^ _l_   _a_ ^+^ _e_   _w_ ^+^ _b_     ^ ^ ^+^ ^ ^        _x_ delete char  
   ("q" nil :color blue))
 (global-set-key (kbd "C-r") 'hydra-vi/body)
 
+;; Hydra rectangle
+(defhydra hydra-rectangle (:body-pre (rectangle-mark-mode 1)
+                           :color pink
+                           :post (deactivate-mark))
+  "
+  ^_k_^     _d_elete    _s_tring
+_h_   _l_   _o_k        _y_ank
+  ^_j_^     _n_ew-copy  _r_eset
+^^^^        _e_xchange  _u_ndo
+^^^^        ^ ^         _p_aste
+"
+  ("h" backward-char nil)
+  ("l" forward-char nil)
+  ("k" previous-line nil)
+  ("j" next-line nil)
+  ("e" exchange-point-and-mark nil)
+  ("n" copy-rectangle-as-kill nil)
+  ("d" delete-rectangle nil)
+  ("r" (if (region-active-p)
+           (deactivate-mark)
+         (rectangle-mark-mode 1)) nil)
+  ("y" yank-rectangle nil)
+  ("u" undo nil)
+  ("s" string-rectangle nil)
+  ("p" kill-rectangle nil)
+  ("o" nil nil))
+;; (global-set-key (kbd "C-x SPC") 'hydra-rectangle/body)
+
 ;; Hydra - for elisp
 (defhydra hydra-elisp (:color red
                        :hint nil)
@@ -469,6 +497,7 @@ _h_ ^+^ _l_   _a_ ^+^ _e_   _w_ ^+^ _b_     ^ ^ ^+^ ^ ^        _x_ delete char  
 (define-key evil-normal-state-map (kbd "SPC f") 'find-file)
 (define-key evil-normal-state-map (kbd "SPC [") 'widen)
 (define-key evil-normal-state-map (kbd "SPC 3") 'select-frame-by-name)
+(define-key evil-normal-state-map (kbd "SPC 4") 'shell-command)
 (define-key evil-normal-state-map (kbd "SPC DEL") 'whitespace-cleanup)
 (define-key evil-normal-state-map (kbd "SPC ,") 'describe-bindings)
 (define-key evil-normal-state-map (kbd "SPC 6") 'quick-calc)
@@ -717,7 +746,8 @@ _h_ ^+^ _l_   _a_ ^+^ _e_   _w_ ^+^ _b_     ^ ^ ^+^ ^ ^        _x_ delete char  
 (require-package 'swiper)
 (require-package 'counsel)
 (setq ivy-display-style 'fancy
-      ivy-height 15)
+      ivy-height 15
+      counsel-yank-pop-truncate t)
 ;; Fuzzy for M-x
 (setq ivy-re-builders-alist
       '((counsel-M-x . ivy--regex-fuzzy)
@@ -842,8 +872,47 @@ _h_ ^+^ _l_   _a_ ^+^ _e_   _w_ ^+^ _b_     ^ ^ ^+^ ^ ^        _x_ delete char  
 
 ;; Spell check
 (add-hook 'text-mode-hook 'flyspell-mode)
+(defun flyspell-goto-previous-error (arg)
+  "Go to arg previous spelling error."
+  (interactive "p")
+  (while (not (= 0 arg))
+    (let ((pos (point))
+          (min (point-min)))
+      (if (and (eq (current-buffer) flyspell-old-buffer-error)
+               (eq pos flyspell-old-pos-error))
+          (progn
+            (if (= flyspell-old-pos-error min)
+                ;; goto beginning of buffer
+                (progn
+                  (message "Restarting from end of buffer")
+                  (goto-char (point-max)))
+              (backward-word 1))
+            (setq pos (point))))
+      ;; seek the next error
+      (while (and (> pos min)
+                  (let ((ovs (overlays-at pos))
+                        (r '()))
+                    (while (and (not r) (consp ovs))
+                      (if (flyspell-overlay-p (car ovs))
+                          (setq r t)
+                        (setq ovs (cdr ovs))))
+                    (not r)))
+        (backward-word 1)
+        (setq pos (point)))
+      ;; save the current location for next invocation
+      (setq arg (1- arg))
+      (setq flyspell-old-pos-error pos)
+      (setq flyspell-old-buffer-error (current-buffer))
+      (goto-char pos)
+      (if (= pos min)
+          (progn
+            (message "No more miss-spelled word!")
+            (setq arg 0))
+        (forward-word)))))
 (defun diminish-flyspell ()
   (interactive)
+  (define-key evil-normal-state-map (kbd "]s") 'flyspell-goto-next-error)
+  (define-key evil-normal-state-map (kbd "[s") 'flyspell-goto-previous-error)
   (diminish 'flyspell-mode ""))
 (add-hook 'flyspell-mode-hook 'diminish-flyspell)
 (defun diminish-aspell ()
@@ -897,11 +966,11 @@ _h_ ^+^ _l_   _a_ ^+^ _e_   _w_ ^+^ _b_     ^ ^ ^+^ ^ ^        _x_ delete char  
 _h_ ^+^ _l_            _n_ext         _A_ppend  _L_etters   _c_hange
 ^ ^ _j_ ^ ^                         _I_nsert            _K_ill
 "
-  ("j" mc/mark-next-like-this)
-  ("k" mc/mark-previous-like-this)
+  ("j" mc/mark-next-like-this-symbol)
+  ("k" mc/mark-previous-symbol-like-this)
   ("h" mc/skip-to-next-like-this)
   ("l" mc/skip-to-previous-like-this)
-  ("a" mc/mark-all-like-this)
+  ("a" mc/mark-all-symbols-like-this)
   ("p" mc/unmark-previous-like-this)
   ("n" mc/unmark-next-like-this)
   ("e" mc/edit-lines :color blue)
@@ -972,8 +1041,8 @@ _r_estart   _g_oto        _w_ord   _u_rl      _C_omment   _o_utside  _O_utside
 
 ;;; Company
 (require-package 'company)
-(with-eval-after-load 'company
-  (company-flx-mode +1))
+;; (with-eval-after-load 'company
+;;   (company-flx-mode +1))
 (eval-after-load 'company
   '(add-to-list 'company-backends 'company-files))
 (setq company-idle-delay 0
@@ -1177,9 +1246,9 @@ _r_estart   _g_oto        _w_ord   _u_rl      _C_omment   _o_utside  _O_utside
 ;; Elpy
 (require-package 'elpy)
 (add-hook 'python-mode-hook 'elpy-enable)
-(add-hook 'python-mode-hook 'elpy-use-ipython)
 (defun diminish-elpy ()
   (interactive)
+  (elpy-use-ipython)
   (diminish 'elpy-mode ""))
 (add-hook 'elpy-mode-hook 'diminish-elpy)
 
@@ -1196,8 +1265,8 @@ _r_estart   _g_oto        _w_ord   _u_rl      _C_omment   _o_utside  _O_utside
 "
   ("f" python-shell-send-defun)
   ("l" elpy-shell-send-current-statement)
-  ("r" elpy-shell-send-region)
-  ("b" elpy-shell-send-buffer)
+  ("r" elpy-shell-send-region-or-buffer)
+  ("b" elpy-shell-send-region-or-buffer)
   ("s" elpy-shell-switch-to-shell)
   ("S" elpy-shell-switch-to-shell)
   ("B" elpy-shell-switch-to-buffer)
@@ -1428,10 +1497,13 @@ Single Capitals as you type."
 ;; Tags with fast selection keys
 (setq org-tag-alist (quote (("errand" . ?e)
                             ("blog" . ?b)
-                            ("personal" . ?m)
+                            ("personal" . ?k)
                             ("report" . ?r)
                             ("thesis" . ?t) ;; temporary
                             ("accounts" . ?a)
+                            ("movie" . ?m)
+                            ("netflix" . ?N)
+                            ("via" . ?v)
                             ("idea" . ?i)
                             ("project" . ?p)
                             ("job" . ?j)
@@ -1449,10 +1521,14 @@ Single Capitals as you type."
       '((sequence "TODO(t)" "HOLD(h@/!)" "|" "DONE(d!)")
         (sequence "|" "CANCELLED(c@)")))
 
+;; Agenda settings
 (setq org-agenda-files (list "~/Dropbox/notes/work.org"
                              "~/Dropbox/notes/blog.org"
                              "~/Dropbox/notes/ledger.org"
                              "~/Dropbox/notes/notes.org"))
+(setq org-deadline-warning-days 7
+      org-agenda-span 'fortnight
+      org-agenda-skip-scheduled-if-deadline-is-shown t)
 
 ;; Links
 (setq org-link-abbrev-alist
@@ -1677,6 +1753,15 @@ _s_parse-tree  _S_chedule    _r_eset
 ;; Magit
 (require-package 'magit)
 (define-key evil-normal-state-map (kbd "SPC g") 'magit-status)
+
+;; Evil magit
+(require-package 'evil-magit)
+(defun sk/magit-hook ()
+  (interactive)
+  (setq evil-magit-state 'motion)
+  (require 'evil-magit))
+(add-hook 'magit-mode-hook 'sk/magit-hook)
+
 ;; Hydra for blame
 (defhydra hydra-git-blame (:color red
                            :hint nil)
@@ -1823,9 +1908,11 @@ _s_parse-tree  _S_chedule    _r_eset
       eyebrowse-switch-back-and-forth t)
 (defun diminish-eyebrowse ()
   (interactive)
+  (require 'eyebrowse)
   (diminish 'eyebrowse-mode ""))
 (add-hook 'eyebrowse-mode-hook 'diminish-eyebrowse)
-(eyebrowse-mode t)
+(add-hook 'prog-mode-hook 'eyebrowse-mode)
+(add-hook 'text-mode-hook 'eyebrowse-mode)
 
 ;; Hydra for compilation
 (defhydra hydra-eyebrowse (:color blue
@@ -1976,12 +2063,12 @@ _s_parse-tree  _S_chedule    _r_eset
 "
   ("b" display-battery-mode)
   ("t" display-time-mode)
-  ("F" set-frame-font)
+  ("F" set-frame-font :color blue)
   ("n" linum-mode :color blue)
   ("w" toggle-truncate-lines :color blue)
   ("s" flyspell-mode :color blue)
-  ("r" tool-bar-mode :color blue)
-  ("a" scroll-bar-mode :color blue)
+  ("r" tool-bar-mode)
+  ("a" scroll-bar-mode)
   ("p" paradox-list-packages :color blue)
   ("l" package-install :color blue)
   ("I" package-initialize :color blue)

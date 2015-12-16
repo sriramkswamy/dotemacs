@@ -1904,11 +1904,11 @@ _s_parse-tree  _S_chedule    _r_eset
 
 ;; Eyebrowse mode
 (require-package 'eyebrowse)
-(require 'eyebrowse)
 (setq eyebrowse-wrap-around t
       eyebrowse-switch-back-and-forth t)
 (defun diminish-eyebrowse ()
   (interactive)
+  (require 'eyebrowse)
   (diminish 'eyebrowse-mode ""))
 (add-hook 'eyebrowse-mode-hook 'diminish-eyebrowse)
 (add-hook 'prog-mode-hook 'eyebrowse-mode)

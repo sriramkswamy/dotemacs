@@ -56,3 +56,6 @@
 /tramp
 /semanticdb/*
 /flycheck_init.el
+/GPATH
+/GRTAGS
+/GTAGS

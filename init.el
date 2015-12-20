@@ -1,3 +1,5 @@
+;;; Optimization
+
 ;; Garbage collector - increase threshold
 (setq gc-cons-threshold 100000000)
 
@@ -5,6 +7,8 @@
 (let ((file-name-handler-alist nil)) "~/.emacs.d/init.el")
 
 ;;; Packages
+
+;; Start
 (require 'package)
 (setq package-enable-at-startup nil)
 
@@ -22,8 +26,12 @@
 (let ((default-directory "/usr/local/share/emacs/site-lisp/"))
   (normal-top-level-add-subdirs-to-load-path))
 
+;; Mac stuff
+(when (eq system-type 'darwin)
+  (setq mac-option-modifier 'meta))
+
 ;; Define function for a required package
-(defun require-package (package)
+(defun sk/require-package (package)
   (setq-default highlight-tabs t)
   "Install given PACKAGE."
   (unless (package-installed-p package)
@@ -31,33 +39,50 @@
       (package-refresh-contents))
     (package-install package)))
 
-;; Mac stuff
-(when (eq system-type 'darwin)
-  (setq mac-option-modifier 'meta))
-
 ;; Get the proper path
-(require-package 'exec-path-from-shell)
+(sk/require-package 'exec-path-from-shell)
 (exec-path-from-shell-copy-env "PYTHONPATH")
 (when (memq window-system '(mac ns))
   (exec-path-from-shell-initialize))
 
-;; Enable winner-mode
-(add-hook 'after-init-hook #'winner-mode)
+;; Paradox for package
+(sk/require-package 'paradox)
+(setq paradox-github-token t)
 
-;;; Hydra - Must have more than evil
-(require-package 'hydra)
+;; Diminish minor modes
+(sk/require-package 'diminish)
+(defun sk/diminish-eldoc ()
+  (interactive)
+  (diminish 'eldoc-mode ""))
+(add-hook 'eldoc-mode-hook 'sk/diminish-eldoc)
 
-;;; GUI
+;;; Basic settings
+
 ;; No welcome screen - opens directly in scratch buffer
 (setq inhibit-startup-message t
-      initial-scratch-message ""
+      initial-scratch-message ";; Scratch"
       initial-major-mode 'fundamental-mode
       visible-bell nil
       inhibit-splash-screen t)
 
+;; Enable winner-mode
+(add-hook 'after-init-hook #'winner-mode)
+
+;; Narrow to region
+(put 'narrow-to-region 'disabled nil)
+
+;; Enable recentf mode
+(recentf-mode)
+
+;; Column number mode
+(column-number-mode)
+
+;; Which function mode
+(which-function-mode 1)
+
 ;; Non-native fullscreen
 (setq ns-use-native-fullscreen nil)
-(defun toggle-frame-fullscreen-non-native ()
+(defun sk/toggle-frame-fullscreen-non-native ()
   "Toggle full screen non-natively. Uses the `fullboth' frame paramerter
    rather than `fullscreen'. Useful to fullscreen on OSX w/o animations."
   (interactive)
@@ -79,19 +104,44 @@
 ;; Don't blink the cursor
 (blink-cursor-mode -1)
 
-;; Diminish minor modes
-(require-package 'diminish)
-(defun diminish-eldoc ()
+;; Hide/Show mode
+(defun sk/diminish-hs-minor ()
   (interactive)
-  (diminish 'eldoc-mode ""))
-(add-hook 'eldoc-mode-hook 'diminish-eldoc)
+  (diminish 'hs-minor-mode ""))
+(add-hook 'hs-minor-mode-hook 'sk/diminish-hs-minor)
+(add-hook 'prog-mode-hook 'hs-minor-mode)
+
+;; Enable subword mode
+(defun sk/diminish-subword ()
+  (interactive)
+  (diminish 'subword-mode ""))
+(add-hook 'subword-mode-hook 'sk/diminish-subword)
+(global-subword-mode)
+
+;; Highlight the cursor line
+(global-hl-line-mode 1)
+
+;; Backups at .saves folder in the current folder
+(setq
+   backup-by-copying t      ; don't clobber symlinks
+   backup-directory-alist
+    '(("." . "~/.saves"))    ; don't litter my fs tree
+   delete-old-versions t
+   kept-new-versions 6
+   kept-old-versions 2
+   version-control t)       ; use versioned backups
+
+;;; Must have packages
+
+;; Hydra
+(sk/require-package 'hydra)
 
 ;; Improve dired
-(require-package 'dired+)
+(sk/require-package 'dired+)
 (add-hook 'dired-mode-hook 'dired-hide-details-mode)
 
 ;;; Avy
-(require-package 'avy)
+(sk/require-package 'avy)
 
 ;; Hydra - especially in emacs mode
 (defhydra hydra-avy (:color red
@@ -166,7 +216,7 @@
   ("_" split-window-below)
   ("s" save-buffer)
   ("d" delete-window)
-  ("Z" toggle-frame-fullscreen-non-native)
+  ("Z" sk/toggle-frame-fullscreen-non-native)
   ("O" delete-other-windows)
   ("Q" (progn
          (winner-undo)
@@ -284,7 +334,7 @@ _h_   _l_   _o_k        _y_ank
   ("q" nil :color blue))
 
 ;;; Evil - Vim emulation layer
-(require-package 'evil)
+(sk/require-package 'evil)
 (setq evil-default-cursor t
       evil-want-C-u-scroll t
       evil-want-Y-yank-to-eol t)
@@ -354,11 +404,6 @@ _h_   _l_   _o_k        _y_ank
   ("q" nil :color blue))
 (define-key evil-normal-state-map (kbd "SPC `") 'hydra-bookmarks/body)
 
-;;; Paradox for package
-(require-package 'paradox)
-(define-key evil-normal-state-map (kbd "SPC al") 'paradox-list-packages)
-(setq paradox-github-token t)
-
 ;; Themes
 (load-theme 'leuven t)
 
@@ -396,7 +441,7 @@ _h_   _l_   _o_k        _y_ank
 (global-set-key (kbd "C-x C-h") 'hydra-window-and-frame/body)
 
 ;;; Which key
-(require-package 'which-key)
+(sk/require-package 'which-key)
 (which-key-setup-side-window-bottom)
 (defun diminish-which-key ()
   (interactive)
@@ -493,7 +538,7 @@ _h_   _l_   _o_k        _y_ank
 (define-key evil-normal-state-map (kbd "SPC q") 'evil-quit)
 (define-key evil-normal-state-map (kbd "SPC w") 'save-buffer)
 (define-key evil-normal-state-map (kbd "SPC k") 'kill-buffer)
-(define-key evil-normal-state-map (kbd "SPC z") 'toggle-frame-fullscreen-non-native)
+(define-key evil-normal-state-map (kbd "SPC z") 'sk/toggle-frame-fullscreen-non-native)
 (define-key evil-normal-state-map (kbd "SPC f") 'find-file)
 (define-key evil-normal-state-map (kbd "SPC [") 'widen)
 (define-key evil-normal-state-map (kbd "SPC 3") 'select-frame-by-name)
@@ -524,28 +569,28 @@ _h_   _l_   _o_k        _y_ank
 (define-key evil-insert-state-map (kbd "<down>") 'evil-window-down)
 
 ;; Evil surround
-(require-package 'evil-surround)
+(sk/require-package 'evil-surround)
 (global-evil-surround-mode 1)
 
 ;; '%' matching like vim
-(require-package 'evil-matchit)
+(sk/require-package 'evil-matchit)
 (define-key evil-normal-state-map "%" #'evilmi-jump-items)
 (define-key evil-inner-text-objects-map "%" #'evilmi-text-object)
 (define-key evil-outer-text-objects-map "%" #'evilmi-text-object)
 (global-evil-matchit-mode 1)
 
 ;; Evil args
-(require-package 'evil-args)
+(sk/require-package 'evil-args)
 (define-key evil-inner-text-objects-map "," #'evil-inner-arg)
 (define-key evil-outer-text-objects-map "," #'evil-outer-arg)
 (define-key evil-normal-state-map "\C-j" #'evil-jump-out-args)
 
 ;; Jump lists like vim
-(require-package 'evil-jumper)
+(sk/require-package 'evil-jumper)
 (global-evil-jumper-mode 1)
 
 ;; Evil commentary
-(require-package 'evil-commentary)
+(sk/require-package 'evil-commentary)
 (defun diminish-evil-commentary ()
   (interactive)
   (diminish 'evil-commentary-mode ""))
@@ -553,11 +598,11 @@ _h_   _l_   _o_k        _y_ank
 (evil-commentary-mode)
 
 ;; Evil exchange
-(require-package 'evil-exchange)
+(sk/require-package 'evil-exchange)
 (evil-exchange-install)
 
 ;; Increment and decrement numbers like vim
-(require-package 'evil-numbers)
+(sk/require-package 'evil-numbers)
 (define-key evil-normal-state-map (kbd "C-k") 'evil-numbers/inc-at-pt)
 (define-key evil-normal-state-map (kbd "C-j") 'evil-numbers/dec-at-pt)
 
@@ -680,7 +725,7 @@ _h_   _l_   _o_k        _y_ank
 (define-key evil-normal-state-map "g@" #'evil-macro-on-all-lines)
 
 ;; Evil text object proper sentence with abbreviation
-(require-package 'sentence-navigation)
+(sk/require-package 'sentence-navigation)
 (define-key evil-normal-state-map ")" 'sentence-nav-evil-forward)
 (define-key evil-normal-state-map "(" 'sentence-nav-evil-backward)
 (define-key evil-normal-state-map "g)" 'sentence-nav-evil-forward-end)
@@ -691,7 +736,7 @@ _h_   _l_   _o_k        _y_ank
 ;;; Navigation
 
 ;; Neotree
-(require-package 'neotree)
+(sk/require-package 'neotree)
 (add-hook 'neotree-mode-hook
             (lambda ()
               (define-key evil-normal-state-local-map (kbd "TAB") 'neotree-enter)
@@ -710,41 +755,28 @@ _h_   _l_   _o_k        _y_ank
 (define-key evil-normal-state-map (kbd "s") 'avy-goto-char-2)
 (define-key evil-visual-state-map (kbd "s") 'avy-goto-char-2)
 
-;; Enable recentf mode
-(recentf-mode)
-
-;; Backups at .saves folder in the current folder
-(setq
-   backup-by-copying t      ; don't clobber symlinks
-   backup-directory-alist
-    '(("." . "~/.saves"))    ; don't litter my fs tree
-   delete-old-versions t
-   kept-new-versions 6
-   kept-old-versions 2
-   version-control t)       ; use versioned backups
-
 ;; Ediff plain window and vertical
 (setq ediff-window-setup-function 'ediff-setup-windows-plain)
 (setq ediff-split-window-function 'split-window-horizontally)
 
 ;; Remote file navigation
-(require-package 'tramp)
+(sk/require-package 'tramp)
 (setq tramp-ssh-controlmaster-options "ssh")
 
 ;; Very large file viewing
-(require-package 'vlf)
+(sk/require-package 'vlf)
 
 ;;; ag
-(require-package 'ag)
+(sk/require-package 'ag)
 (define-key evil-normal-state-map (kbd "SPC 7") 'ag-project-regexp)
 (define-key evil-visual-state-map (kbd "SPC 7") 'ag-project-regexp)
 
 ;;; wgrep-ag
-(require-package 'wgrep-ag)
+(sk/require-package 'wgrep-ag)
 
 ;;; Swiper (with Ivy and counsel)
-(require-package 'swiper)
-(require-package 'counsel)
+(sk/require-package 'swiper)
+(sk/require-package 'counsel)
 (setq ivy-display-style 'fancy
       ivy-height 15
       counsel-yank-pop-truncate t)
@@ -781,42 +813,39 @@ _h_   _l_   _o_k        _y_ank
   (swiper symbol-at-point))
 
 ;; Find file in project
-(require-package 'find-file-in-project)
+(sk/require-package 'find-file-in-project)
 (define-key evil-normal-state-map (kbd "SPC p") 'find-file-in-project)
 (define-key evil-normal-state-map (kbd "SPC TAB") 'ff-find-other-file)
 
 ;;; Swoop
-(require-package 'swoop)
+(sk/require-package 'swoop)
 (define-key evil-normal-state-map (kbd "*") 'swoop-pcre-regexp)
 (define-key evil-normal-state-map (kbd "#") 'swoop-pcre-regexp)
 (define-key evil-visual-state-map (kbd "*") 'swoop-pcre-regexp)
 (define-key evil-visual-state-map (kbd "#") 'swoop-pcre-regexp)
 
 ;;; Dash at point
-(require-package 'dash-at-point)
+(sk/require-package 'dash-at-point)
 (define-key evil-normal-state-map (kbd "SPC 1") 'dash-at-point-with-docset)
 
 ;;; Visual regexp
-(require-package 'visual-regexp)
-(require-package 'visual-regexp-steroids)
+(sk/require-package 'visual-regexp)
+(sk/require-package 'visual-regexp-steroids)
 (define-key evil-normal-state-map (kbd "SPC 5") 'vr/select-query-replace)
 (define-key evil-visual-state-map (kbd "SPC 5") 'vr/select-query-replace)
 
 ;;; Spotlight
-(require-package 'spotlight)
+(sk/require-package 'spotlight)
 (define-key evil-normal-state-map (kbd "SPC 8") 'spotlight)
 ;;; Reveal in Finder
-(require-package 'reveal-in-osx-finder)
+(sk/require-package 'reveal-in-osx-finder)
 (define-key evil-normal-state-map (kbd "gF") 'reveal-in-osx-finder)
 
-;;; Manage external services
-(require-package 'prodigy)
-
 ;;; Cmake ide
-(require-package 'cmake-ide)
+(sk/require-package 'cmake-ide)
 
 ;;; GTags
-(require-package 'ggtags)
+(sk/require-package 'ggtags)
 (defun diminish-ggtags ()
   (interactive)
   (diminish 'ggtags-mode ""))
@@ -830,7 +859,7 @@ _h_   _l_   _o_k        _y_ank
 
 ;;; Interact with OS services
 ;; Jabber
-(require-package 'jabber)
+(sk/require-package 'jabber)
 (setq jabber-history-enabled t
       jabber-activity-mode nil
       jabber-use-global-history nil
@@ -841,17 +870,9 @@ _h_   _l_   _o_k        _y_ank
 (define-key evil-normal-state-map (kbd "SPC 2") 'jabber-chat-with)
 
 ;; Google under point
-(require-package 'google-this)
+(sk/require-package 'google-this)
 (define-key evil-normal-state-map (kbd "SPC 9") 'google-this-search)
 (define-key evil-visual-state-map (kbd "SPC 9") 'google-this)
-
-;; Evernote with geeknote
-(require-package 'geeknote)
-(define-key evil-normal-state-map (kbd "SPC ae") 'geeknote-create)
-
-;; Stackexchange
-(require-package 'sx)
-(define-key evil-normal-state-map (kbd "SPC aq") 'sx-tab-all-questions)
 
 ;;; Text editing
 
@@ -866,9 +887,6 @@ _h_   _l_   _o_k        _y_ank
 (setq-default tab-width 4)
 (defvaralias 'c-basic-offset 'tab-width)
 (setq tab-stop-list (my-generate-tab-stops))
-
-;; Narrow to region
-(put 'narrow-to-region 'disabled nil)
 
 ;; Spell check
 (add-hook 'text-mode-hook 'flyspell-mode)
@@ -925,7 +943,7 @@ _h_   _l_   _o_k        _y_ank
 (add-hook 'ispell-mode-hook 'diminish-ispell)
 
 ;; Better folding
-(require-package 'origami)
+(sk/require-package 'origami)
 (define-key evil-normal-state-map (kbd "]z") 'origami-next-fold)
 (define-key evil-normal-state-map (kbd "[z") 'origami-previous-fold)
 (define-key evil-normal-state-map (kbd "zx") 'origami-toggle-node)
@@ -937,7 +955,7 @@ _h_   _l_   _o_k        _y_ank
 (define-key evil-normal-state-map (kbd "zd") 'origami-open-node)
 
 ;; Highlight stuff
-(require-package 'volatile-highlights)
+(sk/require-package 'volatile-highlights)
 (require 'volatile-highlights)
 (defun diminish-volatile-highlights ()
   (interactive)
@@ -946,7 +964,7 @@ _h_   _l_   _o_k        _y_ank
 (volatile-highlights-mode t)
 
 ;; Smart tabs
-(require-package 'smart-tab)
+(sk/require-package 'smart-tab)
 (defun diminish-smart-tab ()
   (interactive)
   (diminish 'smart-tab-mode ""))
@@ -954,7 +972,7 @@ _h_   _l_   _o_k        _y_ank
 (global-smart-tab-mode)
 
 ;;; Multiple cursors
-(require-package 'multiple-cursors)
+(sk/require-package 'multiple-cursors)
 
 ;; Hydra for multiple-cursors
 (defhydra hydra-mc (:color red
@@ -985,7 +1003,7 @@ _h_ ^+^ _l_            _n_ext         _A_ppend  _L_etters   _c_hange
 (define-key evil-visual-state-map (kbd "gm") 'hydra-mc/body)
 
 ;;; Expand regions
-(require-package 'expand-region)
+(sk/require-package 'expand-region)
 
 ;; hydra for expand regions python
 (defhydra hydra-ex-py (:color red
@@ -1036,11 +1054,11 @@ _r_estart   _g_oto        _w_ord   _u_rl      _C_omment   _o_utside  _O_utside
 (define-key evil-visual-state-map (kbd "ge") 'hydra-ex/body)
 
 ;; Flx with company
-(require-package 'flx)
-(require-package 'company-flx)
+(sk/require-package 'flx)
+(sk/require-package 'company-flx)
 
 ;;; Company
-(require-package 'company)
+(sk/require-package 'company)
 ;; (with-eval-after-load 'company
 ;;   (company-flx-mode +1))
 (eval-after-load 'company
@@ -1063,12 +1081,12 @@ _r_estart   _g_oto        _w_ord   _u_rl      _C_omment   _o_utside  _O_utside
 (add-hook 'prog-mode-hook 'company-mode)
 
 ;; Company C headers
-(require-package 'company-c-headers)
+(sk/require-package 'company-c-headers)
 (eval-after-load 'company
   '(add-to-list 'company-backends 'company-c-headers))
 
 ;; Irony mode for C++
-(require-package 'irony)
+(sk/require-package 'irony)
 (defun diminish-irony ()
   (interactive)
   (diminish 'irony-mode " Γ"))
@@ -1087,25 +1105,22 @@ _r_estart   _g_oto        _w_ord   _u_rl      _C_omment   _o_utside  _O_utside
 (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
 
 ;; Company irony
-(require-package 'company-irony)
-(require-package 'company-irony-c-headers)
+(sk/require-package 'company-irony)
+(sk/require-package 'company-irony-c-headers)
 (eval-after-load 'company
   '(add-to-list 'company-backends 'company-irony))
 
 ;; Support auctex
-(require-package 'company-auctex)
+(sk/require-package 'company-auctex)
 
 ;; Support Go
-(require-package 'company-go)
-
-;; Support inf-ruby
-(require-package 'company-inf-ruby)
+(sk/require-package 'company-go)
 
 ;; Support tern
-(require-package 'company-tern)
+(sk/require-package 'company-tern)
 
 ;; Support web mode
-(require-package 'company-web)
+(sk/require-package 'company-web)
 
 ;; Play well with FCI mode
 (defvar-local company-fci-mode-on-p nil)
@@ -1120,7 +1135,7 @@ _r_estart   _g_oto        _w_ord   _u_rl      _C_omment   _o_utside  _O_utside
 (add-hook 'company-completion-cancelled-hook 'company-maybe-turn-on-fci)
 
 ;;; YASnippet
-(require-package 'yasnippet)
+(sk/require-package 'yasnippet)
 ;; Add yasnippet support for all company backends
 (defvar company-mode/enable-yas t
   "Enable yasnippet for all backends.")
@@ -1152,7 +1167,7 @@ _r_estart   _g_oto        _w_ord   _u_rl      _C_omment   _o_utside  _O_utside
 ;;; Language and Syntax
 
 ;; ESS - Emacs speaks statistics
-(require-package 'ess)
+(sk/require-package 'ess)
 (add-to-list 'auto-mode-alist '("\\.R$" . R-mode))
 ;; Vertical split R shell
 (defun r-shell-here ()
@@ -1216,35 +1231,26 @@ _r_estart   _g_oto        _w_ord   _u_rl      _C_omment   _o_utside  _O_utside
   ("q" nil :color blue))
 
 ;; Lisp
-(require-package 'paredit)
+(sk/require-package 'paredit)
 
 ;; Slime
-(require-package 'slime)
-
-;; Cider
-(require-package 'cider)
-
-;; Geiser for scheme-mode
-(require-package 'geiser)
-
-;; Haskell
-(require-package 'haskell-mode)
+(sk/require-package 'slime)
 
 ;; Markdown
-(require-package 'markdown-mode)
+(sk/require-package 'markdown-mode)
 (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
 
 ;; Pandoc mode
-(require-package 'pandoc-mode)
+(sk/require-package 'pandoc-mode)
 (add-hook 'markdown-mode-hook 'pandoc-mode)
 
 ;; Highlight indentation
-(require-package 'highlight-indentation)
+(sk/require-package 'highlight-indentation)
 (define-key evil-normal-state-map (kbd "SPC ai") 'highlight-indentation-mode)
 
 ;; Elpy
-(require-package 'elpy)
+(sk/require-package 'elpy)
 (add-hook 'python-mode-hook 'elpy-enable)
 (defun diminish-elpy ()
   (interactive)
@@ -1276,56 +1282,54 @@ _r_estart   _g_oto        _w_ord   _u_rl      _C_omment   _o_utside  _O_utside
   ("q" nil :color blue))
 
 ;; Cython mode
-(require-package 'cython-mode)
+(sk/require-package 'cython-mode)
 
 ;; Virtualenv for python
-(require-package 'virtualenvwrapper)
+(sk/require-package 'virtualenvwrapper)
 (setq venv-location "~/Py34/")
 
 ;; LaTeX-mode
-(require-package 'auctex)
-(require-package 'auctex-latexmk)
+(sk/require-package 'auctex)
+(sk/require-package 'auctex-latexmk)
 
 ;; Web mode
-(require-package 'web-mode)
+(sk/require-package 'web-mode)
 (add-hook 'html-mode-hook 'web-mode)
 
 ;; JavaScript
-(require-package 'js2-mode)
-(require-package 'skewer-mode)
+(sk/require-package 'js2-mode)
+(sk/require-package 'skewer-mode)
 
 ;; Applescript
-(require-package 'applescript-mode)
+(sk/require-package 'applescript-mode)
 (add-to-list 'auto-mode-alist '("\\.scpt\\'" . applescript-mode))
 
 ;; YAML mode
-(require-package 'yaml-mode)
-
-;; Ruby
-(require-package 'inf-ruby)
+(sk/require-package 'yaml-mode)
 
 ;; Editing my gitconfig
-(require-package 'gitconfig-mode)
+(sk/require-package 'gitconfig-mode)
+
 
 ;; Sage
-(require-package 'sage-shell-mode)
+(sk/require-package 'sage-shell-mode)
 (setq sage-shell:sage-executable "/Applications/Sage-6.8.app/Contents/Resources/sage/sage"
       sage-shell:input-history-cache-file "~/.emacs.d/.sage_shell_input_history"
       sage-shell-sagetex:auctex-command-name "LaTeX"
       sage-shell-sagetex:latex-command "latexmk")
 
 ;; SQL
-(require-package 'emacsql)
-(require-package 'emacsql-mysql)
-(require-package 'emacsql-sqlite)
-(require-package 'esqlite)
-(require-package 'pcsv)
+(sk/require-package 'emacsql)
+(sk/require-package 'emacsql-mysql)
+(sk/require-package 'emacsql-sqlite)
+(sk/require-package 'esqlite)
+(sk/require-package 'pcsv)
 
 ;; Go mode
-(require-package 'go-mode)
+(sk/require-package 'go-mode)
 
 ;; Java
-(require-package 'emacs-eclim)
+(sk/require-package 'emacs-eclim)
 (defun my-eclim-mode-hook ()
   (interactive)
   (require 'eclimd)
@@ -1339,7 +1343,7 @@ _r_estart   _g_oto        _w_ord   _u_rl      _C_omment   _o_utside  _O_utside
 (add-hook 'java-mode-hook 'eclim-mode)
 
 ;;; Flycheck
-(require-package 'flycheck)
+(sk/require-package 'flycheck)
 (add-hook 'after-init-hook #'global-flycheck-mode)
 (define-key evil-normal-state-map (kbd "]e") 'flycheck-next-error)
 (define-key evil-normal-state-map (kbd "[e") 'flycheck-previous-error)
@@ -1348,12 +1352,12 @@ _r_estart   _g_oto        _w_ord   _u_rl      _C_omment   _o_utside  _O_utside
 (define-key evil-normal-state-map (kbd "SPC l") 'flycheck-list-errors)
 
 ;; Irony for flycheck
-(require-package 'flycheck-irony)
+(sk/require-package 'flycheck-irony)
 (eval-after-load 'flycheck
   '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
 
 ;;; Deft for quickly accessing notes
-(require-package 'deft)
+(sk/require-package 'deft)
 (setq deft-extensions '("org" "md" "txt" "tex")
       deft-recursive t
       deft-use-filename-as-title t
@@ -1501,6 +1505,7 @@ Single Capitals as you type."
                             ("report" . ?r)
                             ("thesis" . ?t) ;; temporary
                             ("accounts" . ?a)
+                            ("lubby" . ?l)
                             ("movie" . ?m)
                             ("netflix" . ?N)
                             ("via" . ?v)
@@ -1558,11 +1563,8 @@ Single Capitals as you type."
         ("h" "Home" entry (file+headline "~/Dropbox/notes/notes.org" "Home")
          "* %?\nEntered on %U\n  %i\n  %a")))
 
-;; Calendar
-(require-package 'org-caldav)
-
 ;; LaTeX
-(require-package 'cdlatex)
+(sk/require-package 'cdlatex)
 (defun diminish-org ()
   (interactive)
   (diminish 'org-indent-mode "")
@@ -1570,11 +1572,8 @@ Single Capitals as you type."
 (add-hook 'org-mode-hook 'diminish-org)
 (add-hook 'org-mode-hook 'org-cdlatex-mode)
 
-;; Pomodoro
-(require-package 'org-pomodoro)
-
 ;; Babel for languages
-(require-package 'babel)
+(sk/require-package 'babel)
 (setq org-confirm-babel-evaluate nil)
 ;; Org load languages
 (defun org-custom-load ()
@@ -1593,18 +1592,15 @@ Single Capitals as you type."
      (matlab . t)
      (python . t))))
 (define-key evil-normal-state-map (kbd "SPC ao") 'org-custom-load)
-(require-package 'ob-ipython)
+(sk/require-package 'ob-ipython)
 
 ;; Export using reveal and impress-js
-(require-package 'ox-reveal)
-(require-package 'ox-impress-js)
+(sk/require-package 'ox-reveal)
+(sk/require-package 'ox-impress-js)
 
 ;; Restructred text and pandoc
-(require-package 'ox-rst)
-(require-package 'ox-pandoc)
-
-;; Trello
-(require-package 'org-trello)
+(sk/require-package 'ox-rst)
+(sk/require-package 'ox-pandoc)
 
 ;; Org navigation and manipulation - hydra
 (defhydra hydra-org-manipulate (:color red
@@ -1751,11 +1747,11 @@ _s_parse-tree  _S_chedule    _r_eset
 ;;; Version control
 
 ;; Magit
-(require-package 'magit)
+(sk/require-package 'magit)
 (define-key evil-normal-state-map (kbd "SPC g") 'magit-status)
 
 ;; Evil magit
-(require-package 'evil-magit)
+(sk/require-package 'evil-magit)
 (defun sk/magit-hook ()
   (interactive)
   (setq evil-magit-state 'motion)
@@ -1783,7 +1779,7 @@ _s_parse-tree  _S_chedule    _r_eset
 (define-key evil-normal-state-map (kbd "gb") 'hydra-git-blame/body)
 
 ;; Diff-hl
-(require-package 'diff-hl)
+(sk/require-package 'diff-hl)
 (add-hook 'dired-mode-hook 'diff-hl-dired-mode)
 (add-hook 'prog-mode-hook 'diff-hl-mode)
 (add-hook 'html-mode-hook 'diff-hl-mode)
@@ -1797,7 +1793,7 @@ _s_parse-tree  _S_chedule    _r_eset
 (define-key evil-normal-state-map (kbd "gr") 'diff-hl-revert-hunk)
 
 ;; Git time-machine
-(require-package 'git-timemachine)
+(sk/require-package 'git-timemachine)
 ;; Hydra for timemachine
 (defhydra hydra-git-timemachine (:color red
                                  :hint nil)
@@ -1819,16 +1815,16 @@ _s_parse-tree  _S_chedule    _r_eset
 (define-key evil-normal-state-map (kbd "gt") 'hydra-git-timemachine/body)
 
 ;; Gists
-(require-package 'yagist)
+(sk/require-package 'yagist)
 (setq yagist-view-gist t)
 
 ;;; REPL
 
 ;; Quickrun
-(require-package 'quickrun)
+(sk/require-package 'quickrun)
 
 ;; Compile and multi-compile
-(require-package 'multi-compile)
+(sk/require-package 'multi-compile)
 (setq multi-compile-alist '(
                             (c++-mode . (("cpp-omp" . "g++ %file-name -Wall -fopenmp -o -g %file-sans.out")
                                          ("cpp-mpi" . "mpic++ %file-name -o -g %file-sans.out")
@@ -1854,7 +1850,7 @@ _s_parse-tree  _S_chedule    _r_eset
 (define-key evil-normal-state-map (kbd "SPC m") 'hydra-make/body)
 
 ;; Multi-term
-(require-package 'multi-term)
+(sk/require-package 'multi-term)
 ;; Vertical split multi-term
 (defun multi-term-here ()
   "opens up a new terminal in the directory associated with the current buffer's file."
@@ -1864,7 +1860,8 @@ _s_parse-tree  _S_chedule    _r_eset
   (multi-term))
 
 ;; Interact with Tmux
-(require-package 'emamux)
+(sk/require-package 'emamux)
+
 ;; Hydra for eamux
 (defhydra hydra-eamux (:color blue
                        :hint nil)
@@ -1903,7 +1900,7 @@ _s_parse-tree  _S_chedule    _r_eset
 (setq eshell-aliases-file (concat user-emacs-directory ".eshell-aliases"))
 
 ;; Eyebrowse mode
-(require-package 'eyebrowse)
+(sk/require-package 'eyebrowse)
 (setq eyebrowse-wrap-around t
       eyebrowse-switch-back-and-forth t)
 (defun diminish-eyebrowse ()
@@ -1955,15 +1952,12 @@ _s_parse-tree  _S_chedule    _r_eset
   (diminish 'undo-tree-mode ""))
 (add-hook 'undo-tree-mode-hook 'diminish-undo-tree)
 
-;; Highlight the cursor line
-(global-hl-line-mode 1)
-
 ;; GDB
 (setq gdb-many-windows t
       gdb-show-main t)
 
 ;; Fill column indicator
-(require-package 'fill-column-indicator)
+(sk/require-package 'fill-column-indicator)
 (setq fci-rule-width 5
       fci-rule-column 79)
 (define-key evil-normal-state-map (kbd "SPC ax") 'fci-mode)
@@ -1971,7 +1965,7 @@ _s_parse-tree  _S_chedule    _r_eset
 ;; Column enforce column that highlights if I go over 100 characters
 ;; I try to stick within 80 characters but, frankly, I prefer 100.
 ;; Hence a compromise
-(require-package 'column-enforce-mode)
+(sk/require-package 'column-enforce-mode)
 (require 'column-enforce-mode)
 (setq column-enforce-column 99)
 (defun diminish-column-enforce ()
@@ -1980,36 +1974,16 @@ _s_parse-tree  _S_chedule    _r_eset
 (add-hook 'column-enforce-mode-hook 'diminish-column-enforce)
 (add-hook 'prog-mode-hook 'column-enforce-mode)
 
-;; Which function mode
-(which-function-mode 1)
-
-;; Enable subword mode
-(defun diminish-subword ()
-  (interactive)
-  (diminish 'subword-mode ""))
-(add-hook 'subword-mode-hook 'diminish-subword)
-(global-subword-mode)
-
 ;; Enable smartparens-mode
-(require-package 'smartparens)
+(sk/require-package 'smartparens)
 (defun diminish-smartparens ()
   (interactive)
   (diminish 'smartparens-mode ""))
 (add-hook 'smartparens-mode-hook 'diminish-smartparens)
 (smartparens-global-mode)
 
-;; Hide/Show mode
-(defun diminish-hs-minor ()
-  (interactive)
-  (diminish 'hs-minor-mode ""))
-(add-hook 'hs-minor-mode-hook 'diminish-hs-minor)
-(add-hook 'prog-mode-hook 'hs-minor-mode)
-
-;; Column number mode
-(column-number-mode)
-
 ;; Delete trailing whitespace on save
-(require-package 'ws-butler)
+(sk/require-package 'ws-butler)
 (defun diminish-ws-butler ()
   (interactive)
   (diminish 'ws-butler-mode ""))
@@ -2017,17 +1991,17 @@ _s_parse-tree  _S_chedule    _r_eset
 (ws-butler-global-mode)
 
 ;; Region information
-(require-package 'region-state)
+(sk/require-package 'region-state)
 (region-state-mode)
 
 ;; Restart Emacs from Emacs
-(require-package 'restart-emacs)
+(sk/require-package 'restart-emacs)
 
 ;; Ledger mode for accounting
-(require-package 'ledger-mode)
+(sk/require-package 'ledger-mode)
 
 ;; Profiler
-(require-package 'esup)
+(sk/require-package 'esup)
 
 ;;; Construct mode hydras
 

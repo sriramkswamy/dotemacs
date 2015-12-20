@@ -150,8 +150,111 @@
 (add-hook 'dired-mode-hook 'dired-hide-details-mode)
 (evil-set-initial-state 'dired-mode 'emacs)
 
+;;; Hydra
+(sk/require-package 'hydra)
+
+;; Hydra of windows
+(defhydra sk/hydra-of-windows (:color pink
+                               :hint nil)
+  "
+ ^Move^   | ^Size^   | ^Change^        | ^Split^        | ^Frame^                | ^Text^       | ^Config^   | ^Menu^
+ ^^^^^^^^^^^-------|--------|---------------|--------------|----------------------|------------|----------|--------------
+ ^ ^ _k_ ^ ^  | ^ ^ _{_ ^ ^  | _u_ winner-undo | _|_ vertical   | _f_ullscreen  _m_aximize | _+_ zoom in  | _I_ config | _H_ome  e_x_ecute
+ _h_ ^+^ _l_  | _<_ ^+^ _>_  | _r_ winner-redo | ___ horizontal | _d_elete      m_i_nimize | _-_ zoom out |          | mo_V_e  _q_uit
+ ^ ^ _j_ ^ ^  | ^ ^ _}_ ^ ^  | _c_lose         | _z_oom         | _s_elect      _n_ame     |            |          |
+"
+  ("h" windmove-left)
+  ("j" windmove-down)
+  ("k" windmove-up)
+  ("l" windmove-right)
+  ("<" shrink-window-horizontally)
+  ("{" shrink-window)
+  ("}" enlarge-window)
+  (">" enlarge-window-horizontally)
+  ("|" sk/split-right-and-move)
+  ("_" sk/split-below-and-move)
+  ("c" delete-window)
+  ("f" sk/toggle-frame-fullscreen-non-native)
+  ("z" delete-other-windows)
+  ("u" (progn
+         (winner-undo)
+         (setq this-command 'winner-undo)))
+  ("r" winner-redo)
+  ("m" toggle-frame-maximized)
+  ("i" suspend-frame)
+  ("d" delete-frame)
+  ("s" select-frame-by-name)
+  ("n" set-frame-name)
+  ("+" text-scale-increase)
+  ("-" text-scale-decrease)
+  ("I" sk/hydra-for-eyebrowse/body :exit t)
+  ("H" sk/hydra-of-hydras/body :exit t)
+  ("V" sk/hydra-of-motion/body :exit t)
+  ("x" counsel-M-x :color blue)
+  ("q" nil :color blue))
+(define-key evil-normal-state-map (kbd "gw") 'sk/hydra-of-windows/body)
+
+;;; Avy
+(sk/require-package 'avy)
+
+;; Hydra of motion
+(defhydra sk/hydra-of-motion (:color pink
+                              :hint nil)
+  "
+ ^Move^   | ^Goto^    | ^Line^    | ^File^  | ^Screen^   | ^Para^   | ^Word^     | ^Edit^ | ^Menu^
+ ^^^^^^-------|---------|---------|-------|----------|--------|----------|------|--------------
+ ^ ^ _k_ ^ ^  | _c_har    | _a_ start | _<_ beg | _r_ecenter | _}_ next | for_w_ard  | _M_ark | _H_ome  _q_uit
+ _h_ ^+^ _l_  | _s_ubword | _e_nd     | _>_ end | _]_ next   | _{_ prev | _b_ackward | _E_dit | _L_ang  e_x_ecute
+ ^ ^ _j_ ^ ^  |         | _g_oto    |       | _[_ prev   |        |          |      | _W_in   _i_nsert
+"
+  ("h" backward-char)
+  ("j" next-line)
+  ("k" previous-line)
+  ("l" forward-char)
+  ("a" move-beginning-of-line)
+  ("e" move-end-of-line)
+  ("g" avy-goto-line)
+  ("c" avy-goto-char)
+  ("s" avy-goto-word-or-subword-1)
+  ("r" recenter-top-bottom)
+  ("]" scroll-up)
+  ("[" scroll-down)
+  ("<" beginning-of-buffer)
+  (">" end-of-buffer)
+  ("}" forward-paragraph)
+  ("{" backward-paragraph)
+  ("w" forward-word)
+  ("b" backward-word)
+  ("M" sk/hydra-of-marks/body :exit t)
+  ("E" sk/hydra-of-edits/body :exit t)
+  ("L" sk/hydra-of-langs/body :exit t)
+  ("H" sk/hydra-of-hydras/body :exit t)
+  ("W" sk/hydra-of-windows/body :exit t)
+  ("i" nil :color blue)
+  ("x" counsel-M-x :color blue)
+  ("q" nil :color blue))
+
 ;;; Undo-tree
 (sk/require-package 'undo-tree)
+
+;; Hydra of undo
+(defhydra sk/hydra-of-undo (:color pink
+                            :hint nil)
+  "
+ ^Undo^             | ^Menu^
+ ^^^^^^^^^-----------------|---------------------
+ _u_ndo  _r_edo  _v_iew | _H_ome   e_x_ecute  _q_uit
+"
+  ("u" undo-tree-undo)
+  ("r" undo-tree-redo)
+  ("v" undo-tree-visualize :color blue)
+  ("E" sk/hydra-of-edits/body :exit t)
+  ("H" sk/hydra-of-hydras/body :exit t)
+  ("x" counsel-M-x :color blue)
+  ("q" nil :color blue))
+
+;; Evil maps for undo-tree
+(define-key evil-normal-state-map (kbd "U") 'undo-tree-visualize)
 
 ;;; Highlight stuff
 (sk/require-package 'volatile-highlights)
@@ -210,54 +313,6 @@
 (add-hook 'prog-mode-hook 'back-button-mode)
 (add-hook 'org-mode-hook 'back-button-mode)
 
-;;; Avy
-(sk/require-package 'avy)
-
-;;; Hydra
-(sk/require-package 'hydra)
-
-;; Hydra of windows
-(defhydra sk/hydra-of-windows (:color pink
-                               :hint nil)
-  "
- ^Move^   | ^Size^   | ^Change^        | ^Split^        | ^Frame^                | ^Text^       | ^Config^   | ^Menu^
- ^^^^^^^^^^^-------|--------|---------------|--------------|----------------------|------------|----------|--------------
- ^ ^ _k_ ^ ^  | ^ ^ _{_ ^ ^  | _u_ winner-undo | _|_ vertical   | _f_ullscreen  _m_aximize | _+_ zoom in  | _I_ config | _H_ome  e_x_ecute
- _h_ ^+^ _l_  | _<_ ^+^ _>_  | _r_ winner-redo | ___ horizontal | _d_elete      m_i_nimize | _-_ zoom out |          | mo_V_e  _q_uit
- ^ ^ _j_ ^ ^  | ^ ^ _}_ ^ ^  | _c_lose         | _z_oom         | _s_elect      _n_ame     |            |          |
-"
-  ("h" windmove-left)
-  ("j" windmove-down)
-  ("k" windmove-up)
-  ("l" windmove-right)
-  ("<" shrink-window-horizontally)
-  ("{" shrink-window)
-  ("}" enlarge-window)
-  (">" enlarge-window-horizontally)
-  ("|" sk/split-right-and-move)
-  ("_" sk/split-below-and-move)
-  ("c" delete-window)
-  ("f" sk/toggle-frame-fullscreen-non-native)
-  ("z" delete-other-windows)
-  ("u" (progn
-         (winner-undo)
-         (setq this-command 'winner-undo)))
-  ("r" winner-redo)
-  ("m" toggle-frame-maximized)
-  ("i" suspend-frame)
-  ("d" delete-frame)
-  ("s" select-frame-by-name)
-  ("n" set-frame-name)
-  ("+" text-scale-increase)
-  ("-" text-scale-decrease)
-  ("I" sk/hydra-for-eyebrowse/body :exit t)
-  ("H" sk/hydra-of-hydras/body :exit t)
-  ("V" sk/hydra-of-motion/body :exit t)
-  ("x" counsel-M-x :color blue)
-  ("q" nil :color blue))
-(define-key evil-normal-state-map (kbd "gw") 'sk/hydra-of-windows/body)
-
-
 ;;; Which key
 (sk/require-package 'which-key)
 (which-key-setup-side-window-bottom)
@@ -309,6 +364,24 @@
 (define-key evil-visual-state-map (kbd "*") 'swoop-pcre-regexp)
 (define-key evil-visual-state-map (kbd "#") 'swoop-pcre-regexp)
 
+;;; Find file in project
+(sk/require-package 'find-file-in-project)
+
+;; Evil maps for ffip
+(define-key evil-normal-state-map (kbd "SPC p") 'find-file-in-project)
+(define-key evil-normal-state-map (kbd "SPC TAB") 'ff-find-other-file)
+
+;;; Visual regexp
+(sk/require-package 'visual-regexp)
+(sk/require-package 'visual-regexp-steroids)
+
+;; Evil maps for visual replace
+(define-key evil-normal-state-map (kbd "SPC 5") 'vr/query-replace)
+(define-key evil-visual-state-map (kbd "SPC 5") 'vr/query-replace)
+
+;;; Expand regions
+(sk/require-package 'expand-region)
+
 ;; Open line above
 (defun sk/open-line-above ()
   "Insert a newline above the current line and put point at beginning."
@@ -333,6 +406,103 @@
   (interactive)
   (next-line)
   (delete-indentation))
+
+;; Hydra of edits
+(defhydra sk/hydra-of-edits (:pre (require 'expand-region)
+                             :color pink
+                             :hint nil)
+  "
+ ^Line^  | ^Blank^  | ^Move^   | ^Select^                    | ^Lang^        | ^Edit^                               | ^Menu^
+ ^^^^^^^------|--------|--------|---------------------------|-------------|------------------------------------|----------------------
+ _a_bove | _[_ up   | _{_ up   | _i_ncrease _p_ara  _o_ in()     | _b_lock-py    | _d_el-region         _K_ill-whole-line | _M_ark   _H_ome   e_x_ecute
+ b_e_low | _]_ down | _}_ down | _r_educe   _f_unc  q_u_otes     | _h_ doc-py    | _k_ill-rest-of-line                  | mo_V_e   _L_ang   _q_uit
+ _j_oin  |        |        | _s_nippet  _w_ord  _-_ org-code | _l_ line-py   | cop_y_                               | _P_ython
+ _S_plit |        |        |          la_t_ex comme_n_t    | _m_ julia-fun | _c_omment                            | _J_ulia
+  "
+  ("a" sk/open-line-above :color blue)
+  ("e" sk/open-line-below :color blue)
+  ("j" sk/join-line)
+  ("S" electric-newline-and-maybe-indent)
+  ("[" sk/blank-line-up)
+  ("]" sk/blank-line-down)
+  ("{" sk/move-text-up)
+  ("}" sk/move-text-down)
+  ("i" er/expand-region)
+  ("r" er/contract-region)
+  ("p" er/mark-paragraph)
+  ("f" er/mark-defun)
+  ("w" er/mark-symbol)
+  ("t" er/mark-LaTeX-math)
+  ("n" er/mark-comment)
+  ("o" er/mark-inside-pairs)
+  ("u" er/mark-inside-quotes)
+  ("-" er/mark-org-code-block)
+  ("b" er/mark-python-block)
+  ("h" er/mark-python-string)
+  ("l" er/mark-python-statement)
+  ("m" er/mark-ruby-block-up)
+  ("d" delete-region)
+  ("K" kill-whole-line)
+  ("k" kill-line)
+  ("y" kill-ring-save)
+  ("c" comment-dwim)
+  ("s" yas-insert-snippet :color blue)
+  ("P" sk/hydra-for-python/body :exit t)
+  ("J" sk/hydra-for-julia/body :exit t)
+  ("L" sk/hydra-of-langs/body :exit t)
+  ("H" sk/hydra-of-hydras/body :exit t)
+  ("V" sk/hydra-of-motion/body :exit t)
+  ("M" sk/hydra-of-marks/body :exit t)
+  ("x" counsel-M-x :color blue)
+  ("q" nil :color blue))
+
+;; Evil maps for edit and expand regions
+(define-key evil-normal-state-map (kbd "ge") 'sk/hydra-of-edits/body)
+(define-key evil-visual-state-map (kbd "ge") 'sk/hydra-of-edits/body)
+
+;;; Multiple cursors
+(sk/require-package 'multiple-cursors)
+
+;; Hydra for multiple-cursors
+(defhydra sk/hydra-of-multiple-cursors (:pre (require 'multiple-cursors)
+                                        :color pink
+                                        :hint nil)
+  "
+^Mark^       | ^Unmark^   | ^Lines^                     | ^Menu^
+^^^^^^^^^^^^-----------|----------|---------------------------|---------
+^ ^ _k_ ^ ^  _a_ll | _p_revious | _c_hange  _#_ numbers  _c_hange | _H_ome
+_h_ ^+^ _l_      | _n_ext     | _a_ppend  le_t_ters           | e_x_ecute
+^ ^ _j_ ^ ^      |          | _i_nsert  _s_top              | _q_uit
+"
+  ("j" mc/mark-next-like-this)
+  ("k" mc/mark-previous-like-this)
+  ("h" mc/skip-to-next-like-this)
+  ("l" mc/skip-to-previous-like-this)
+  ("a" mc/mark-all-like-this)
+  ("p" mc/unmark-previous-like-this)
+  ("n" mc/unmark-next-like-this)
+  ("c" mc/edit-lines :color blue)
+  ("i" mc/edit-beginnings-of-lines :color blue)
+  ("e" mc/edit-ends-of-lines :color blue)
+  ("#" mc/insert-numbers :color blue)
+  ("t" mc/insert-letters :color blue)
+  ("s" mc/keyboard-quit)
+  ("H" sk/hydra-of-hydras/body :exit t)
+  ("x" counsel-M-x :color blue)
+  ("q" nil :color blue))
+(define-key evil-normal-state-map (kbd "gm") 'sk/hydra-of-multiple-cursors/body)
+(define-key evil-visual-state-map (kbd "gm") 'sk/hydra-of-multiple-cursors/body)
+
+;;; ag
+(sk/require-package 'ag)
+(evil-set-initial-state 'ag-mode 'normal)
+
+;; Evil maps for ag
+(define-key evil-normal-state-map (kbd "SPC 7") 'ag-project-regexp)
+(define-key evil-visual-state-map (kbd "SPC 7") 'ag-project-regexp)
+
+;;; wgrep-ag
+(sk/require-package 'wgrep-ag)
 
 ;; Themes
 (load-theme 'leuven t)
@@ -446,7 +616,6 @@
 (define-key evil-normal-state-map (kbd "R") 'winner-redo)
 (define-key evil-normal-state-map (kbd "w") 'split-right-and-move)
 (define-key evil-normal-state-map (kbd "W") 'split-below-and-move)
-(define-key evil-normal-state-map (kbd "U") 'undo-tree-visualize)
 (define-key evil-normal-state-map (kbd "K") 'man)
 (define-key evil-normal-state-map (kbd "+") 'eshell-vertical)
 (define-key evil-normal-state-map (kbd "-") 'eshell-horizontal)
@@ -687,32 +856,13 @@
 ;; Very large file viewing
 (sk/require-package 'vlf)
 
-;;; ag
-(sk/require-package 'ag)
-(define-key evil-normal-state-map (kbd "SPC 7") 'ag-project-regexp)
-(define-key evil-visual-state-map (kbd "SPC 7") 'ag-project-regexp)
-
-;;; wgrep-ag
-(sk/require-package 'wgrep-ag)
-
 ;; Swiper helpers
 (defun swiper-at-point ()
   (swiper symbol-at-point))
 
-;; Find file in project
-(sk/require-package 'find-file-in-project)
-(define-key evil-normal-state-map (kbd "SPC p") 'find-file-in-project)
-(define-key evil-normal-state-map (kbd "SPC TAB") 'ff-find-other-file)
-
 ;;; Dash at point
 (sk/require-package 'dash-at-point)
 (define-key evil-normal-state-map (kbd "SPC 1") 'dash-at-point-with-docset)
-
-;;; Visual regexp
-(sk/require-package 'visual-regexp)
-(sk/require-package 'visual-regexp-steroids)
-(define-key evil-normal-state-map (kbd "SPC 5") 'vr/select-query-replace)
-(define-key evil-visual-state-map (kbd "SPC 5") 'vr/select-query-replace)
 
 ;;; Spotlight
 (sk/require-package 'spotlight)
@@ -748,6 +898,14 @@
 (setq jabber-alert-presence-message-function
       (lambda (who oldstatus newstatus statustext) nil))
 (define-key evil-normal-state-map (kbd "SPC 2") 'jabber-chat-with)
+(setq jabber-account-list
+      '(("sriram.krishnaswamy.92@chat.facebook.com"
+         (:network-server . "chat.facebook.com")
+         (:password . "HZ3RK54H2A"))
+        ("sriram.krish.92@gmail.com"
+         (:network-server . "talk.google.com")
+         (:password . "chceuskratogxjzs")
+         (:connection-type . ssl))))
 
 ;; Google under point
 (sk/require-package 'google-this)
@@ -833,88 +991,6 @@
 (define-key evil-normal-state-map (kbd "zr") 'origami-redo)
 (define-key evil-normal-state-map (kbd "zf") 'origami-close-node)
 (define-key evil-normal-state-map (kbd "zd") 'origami-open-node)
-
-;;; Multiple cursors
-(sk/require-package 'multiple-cursors)
-
-;; Hydra for multiple-cursors
-(defhydra hydra-mc (:color red
-                    :hint nil)
-  "
-^Mark^             ^Unmark^       ^Lines^
-^^^^^^^^^^^^^^^------------------------------------------------
-^ ^ _k_ ^ ^     _a_ll    _p_revious     _e_dit    _N_umbers   _q_uit
-_h_ ^+^ _l_            _n_ext         _A_ppend  _L_etters   _c_hange
-^ ^ _j_ ^ ^                         _I_nsert            _K_ill
-"
-  ("j" mc/mark-next-like-this-symbol)
-  ("k" mc/mark-previous-symbol-like-this)
-  ("h" mc/skip-to-next-like-this)
-  ("l" mc/skip-to-previous-like-this)
-  ("a" mc/mark-all-symbols-like-this)
-  ("p" mc/unmark-previous-like-this)
-  ("n" mc/unmark-next-like-this)
-  ("e" mc/edit-lines :color blue)
-  ("I" mc/edit-beginnings-of-lines :color blue)
-  ("A" mc/edit-ends-of-lines :color blue)
-  ("N" mc/insert-numbers :color blue)
-  ("L" mc/insert-letters :color blue)
-  ("c" nil :color blue)
-  ("K" mc/keyboard-quit)
-  ("q" nil :color blue))
-(define-key evil-normal-state-map (kbd "gm") 'hydra-mc/body)
-(define-key evil-visual-state-map (kbd "gm") 'hydra-mc/body)
-
-;;; Expand regions
-(sk/require-package 'expand-region)
-
-;; hydra for expand regions python
-(defhydra hydra-ex-py (:color red
-                    :hint nil)
-  "
-^expand^                   ^block^     ^string^
-^^^^^^^^^^--------------------------------------------
-_B_lock and dec  _g_oto      _i_nside    _I_nside   _q_uit
-_l_ine           _E_xpand    _o_utside   _O_utside
-"
-  ("B" er/mark-python-block-and-decorator)
-  ("l" er/mark-python-statement)
-  ("g" hydra-avy/body :exit t)
-  ("i" er/mark-python-block)
-  ("o" er/mark-outer-python-block)
-  ("I" er/mark-inside-python-string)
-  ("O" er/mark-outside-python-string)
-  ("E" hydra-ex/body :exit t)
-  ("q" nil :color blue))
-
-;; hydra for expand regions
-(defhydra hydra-ex (:color red
-                    :hint nil)
-  "
-^expand^               ^semantics^                  ^Pairs^    ^Quotes^    ^Lang^
-^^^^^^^^^^----------------------------------------------------------------------------------
-_e_xpand    _c_ontract    _p_ara   _s_ymbol   _S_entence  _i_nside   _I_nside    _P_ython    _q_uit
-_r_estart   _g_oto        _w_ord   _u_rl      _C_omment   _o_utside  _O_utside
-"
-  ("e" er/expand-region)
-  ("c" er/contract-region)
-  ("r" set-mark)
-  ("g" hydra-avy/body :exit t)
-  ("C" er/mark-comment)
-  ("p" er/mark-paragraph)
-  ("f" er/mark-defun)
-  ("s" er/mark-symbol)
-  ("S" er/mark-sentence)
-  ("w" er/mark-word)
-  ("u" er/mark-url)
-  ("i" er/mark-inside-pairs)
-  ("o" er/mark-outside-pairs)
-  ("I" er/mark-inside-quotes)
-  ("O" er/mark-outside-quotes)
-  ("P" hydra-ex-py/body :exit t)
-  ("q" nil :color blue))
-(define-key evil-normal-state-map (kbd "ge") 'hydra-ex/body)
-(define-key evil-visual-state-map (kbd "ge") 'hydra-ex/body)
 
 ;; Flx with company
 (sk/require-package 'flx)
@@ -1173,6 +1249,41 @@ _r_estart   _g_oto        _w_ord   _u_rl      _C_omment   _o_utside  _O_utside
 ;; Editing my gitconfig
 (sk/require-package 'gitconfig-mode)
 
+;; MATLAB mode
+(sk/require-package 'matlab-mode)
+(eval-after-load 'matlab
+  '(add-to-list 'matlab-shell-command-switches "-nosplash"))
+(setq matlab-shell-command "/Applications/MATLAB_R2014a.app/bin/matlab"
+      matlab-indent-function t)
+;; Vertical split matlab shell
+(defun matlab-shell-here ()
+  "opens up a new matlab shell in the directory associated with the current buffer's file."
+  (interactive)
+  (split-window-right)
+  (other-window 1)
+  (matlab-shell)
+  (other-window 1))
+
+;; Hydra - for matlab
+(defhydra hydra-matlab (:color red
+                        :hint nil)
+  "
+ ^Send^       ^Shell^
+ ^^^^^^^^^-------------------------------
+ _c_ell       _s_tart    _L_ang     _q_uit
+ _l_ine       _S_witch
+ _r_egion     _o_ther
+ _C_ommand
+"
+  ("c" matlab-shell-run-cell)
+  ("l" matlab-shell-run-region-or-line)
+  ("r" matlab-shell-run-region)
+  ("C" matlab-shell-run-command)
+  ("s" matlab-shell-here)
+  ("S" matlab-show-matlab-shell-buffer)
+  ("o" other-window)
+  ("L" hydra-langs/body :exit t)
+  ("q" nil :color blue))
 
 ;; Sage
 (sk/require-package 'sage-shell-mode)

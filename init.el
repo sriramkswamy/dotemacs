@@ -209,6 +209,33 @@
 ;;; Avy
 (sk/require-package 'avy)
 
+;; From Sacha Chua's blog
+(defun sk/smarter-move-beginning-of-line (arg)
+  "Move point back to indentation of beginning of line.
+Move point to the first non-whitespace character on this line.
+If point is already there, move to the beginning of the line.
+Effectively toggle between the first non-whitespace character and
+the beginning of the line.
+If ARG is not nil or 1, move forward ARG - 1 lines first.  If
+point reaches the beginning or end of the buffer, stop there."
+  (interactive "^p")
+  (setq arg (or arg 1))
+  ;; Move lines first
+  (when (/= arg 1)
+    (let ((line-move-visual nil))
+      (forward-line (1- arg))))
+  (let ((orig-point (point)))
+    (back-to-indentation)
+    (when (= orig-point (point))
+      (move-beginning-of-line 1))))
+;; remap C-a to `smarter-move-beginning-of-line'
+(global-set-key [remap move-beginning-of-line]
+                'sk/smarter-move-beginning-of-line)
+(defun marker-is-point-p (marker)
+  "test if marker is current point"
+  (and (eq (marker-buffer marker) (current-buffer))
+       (= (marker-position marker) (point))))
+
 ;; Hydra of motion
 (defhydra sk/hydra-of-motion (:color pink
                               :hint nil)
@@ -419,6 +446,56 @@
   (next-line)
   (delete-indentation))
 
+;; Move lines - from stack overflow
+(defun sk/move-text-internal (arg)
+  (cond
+   ((and mark-active transient-mark-mode)
+    (if (> (point) (mark))
+        (exchange-point-and-mark))
+    (let ((column (current-column))
+          (text (delete-and-extract-region (point) (mark))))
+      (forward-line arg)
+      (move-to-column column t)
+      (set-mark (point))
+      (insert text)
+      (exchange-point-and-mark)
+      (setq deactivate-mark nil)))
+   (t
+    (let ((column (current-column)))
+      (beginning-of-line)
+      (when (or (> arg 0) (not (bobp)))
+        (forward-line)
+        (when (or (< arg 0) (not (eobp)))
+          (transpose-lines arg)
+          (when (and (eval-when-compile
+                       '(and (>= emacs-major-version 24)
+                             (>= emacs-minor-version 3)))
+                     (< arg 0))
+            (forward-line -1)))
+        (forward-line -1))
+      (move-to-column column t)))))
+(defun sk/move-text-down (arg)
+  "Move region (transient-mark-mode active) or current line
+  arg lines down."
+  (interactive "*p")
+  (sk/move-text-internal arg))
+(defun sk/move-text-up (arg)
+  "Move region (transient-mark-mode active) or current line
+  arg lines up."
+  (interactive "*p")
+  (sk/move-text-internal (- arg)))
+
+;; Inserting blank lines above and below - should do some mark trickery
+(defun sk/blank-line-up ()
+  (interactive)
+  (move-beginning-of-line nil)
+  (newline))
+(defun sk/blank-line-down ()
+  (interactive)
+  (move-end-of-line nil)
+  (newline)
+  (forward-line -1))
+
 ;; Hydra of edits
 (defhydra sk/hydra-of-edits (:pre (require 'expand-region)
                              :color pink
@@ -471,6 +548,10 @@
 ;; Evil maps for edit and expand regions
 (define-key evil-normal-state-map (kbd "ge") 'sk/hydra-of-edits/body)
 (define-key evil-visual-state-map (kbd "ge") 'sk/hydra-of-edits/body)
+(define-key evil-normal-state-map (kbd "]x") 'sk/move-text-down)
+(define-key evil-normal-state-map (kbd "[x") 'sk/move-text-up)
+(define-key evil-normal-state-map (kbd "]n") 'sk/blank-line-down)
+(define-key evil-normal-state-map (kbd "[n") 'sk/blank-line-up)
 
 ;;; Multiple cursors
 (sk/require-package 'multiple-cursors)
@@ -564,6 +645,13 @@ _h_ ^+^ _l_      | _n_ext     | _a_ppend  le_t_ters           | e_x_ecute
 ;; Evil maps for reveal in finder
 (define-key evil-normal-state-map (kbd "gF") 'reveal-in-osx-finder)
 
+;;; Google
+(sk/require-package 'google-this)
+
+;; Evil maps for Google
+(define-key evil-normal-state-map (kbd "SPC 9") 'google-this-search)
+(define-key evil-visual-state-map (kbd "SPC 9") 'google-this)
+
 ;; Themes
 (load-theme 'leuven t)
 
@@ -598,60 +686,6 @@ _h_ ^+^ _l_      | _n_ext     | _a_ppend  le_t_ters           | e_x_ecute
 ;; Window manipulation - hydra - definition at the beginning
 (global-set-key (kbd "C-c C-h") 'hydra-window-and-frame/body)
 (global-set-key (kbd "C-x C-h") 'hydra-window-and-frame/body)
-
-;; Move lines - from stack overflow
-(defun move-text-internal (arg)
-  (cond
-   ((and mark-active transient-mark-mode)
-    (if (> (point) (mark))
-        (exchange-point-and-mark))
-    (let ((column (current-column))
-          (text (delete-and-extract-region (point) (mark))))
-      (forward-line arg)
-      (move-to-column column t)
-      (set-mark (point))
-      (insert text)
-      (exchange-point-and-mark)
-      (setq deactivate-mark nil)))
-   (t
-    (let ((column (current-column)))
-      (beginning-of-line)
-      (when (or (> arg 0) (not (bobp)))
-        (forward-line)
-        (when (or (< arg 0) (not (eobp)))
-          (transpose-lines arg)
-          (when (and (eval-when-compile
-                       '(and (>= emacs-major-version 24)
-                             (>= emacs-minor-version 3)))
-                     (< arg 0))
-            (forward-line -1)))
-        (forward-line -1))
-      (move-to-column column t)))))
-(defun move-text-down (arg)
-  "Move region (transient-mark-mode active) or current line
-  arg lines down."
-  (interactive "*p")
-  (move-text-internal arg))
-(defun move-text-up (arg)
-  "Move region (transient-mark-mode active) or current line
-  arg lines up."
-  (interactive "*p")
-  (move-text-internal (- arg)))
-(define-key evil-normal-state-map (kbd "]x") 'move-text-down)
-(define-key evil-normal-state-map (kbd "[x") 'move-text-up)
-
-;; Inserting blank lines above and below - should do some mark trickery
-(defun blank-line-up ()
-  (interactive)
-  (move-beginning-of-line nil)
-  (newline))
-(defun blank-line-down ()
-  (interactive)
-  (move-end-of-line nil)
-  (newline)
-  (forward-line -1))
-(define-key evil-normal-state-map (kbd "]n") 'blank-line-down)
-(define-key evil-normal-state-map (kbd "[n") 'blank-line-up)
 
 ;;; Evil - Vim emulation - Continued
 ;; Escape for everything
@@ -932,11 +966,6 @@ _h_ ^+^ _l_      | _n_ext     | _a_ppend  le_t_ters           | e_x_ecute
          (:network-server . "talk.google.com")
          (:password . "chceuskratogxjzs")
          (:connection-type . ssl))))
-
-;; Google under point
-(sk/require-package 'google-this)
-(define-key evil-normal-state-map (kbd "SPC 9") 'google-this-search)
-(define-key evil-visual-state-map (kbd "SPC 9") 'google-this)
 
 ;;; Text editing
 

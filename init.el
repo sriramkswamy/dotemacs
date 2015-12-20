@@ -1,14 +1,14 @@
-;;; Optimization
+;;;; Optimization
 
-;; Garbage collector - increase threshold
+;;; Garbage collector - increase threshold
 (setq gc-cons-threshold 100000000)
 
-;; Wrap init file
+;;; Wrap init file
 (let ((file-name-handler-alist nil)) "~/.emacs.d/init.el")
 
-;;; Packages
+;;;; Packages
 
-;; Start
+;;; Install
 (require 'package)
 (setq package-enable-at-startup nil)
 
@@ -22,15 +22,11 @@
   ;; For important compatibility libraries like cl-lib
   (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
 
-;; Add homebrew packages
+;;; Add homebrew packages
 (let ((default-directory "/usr/local/share/emacs/site-lisp/"))
   (normal-top-level-add-subdirs-to-load-path))
 
-;; Mac stuff
-(when (eq system-type 'darwin)
-  (setq mac-option-modifier 'meta))
-
-;; Define function for a required package
+;;; Define function for a required package
 (defun sk/require-package (package)
   (setq-default highlight-tabs t)
   "Install given PACKAGE."
@@ -39,26 +35,30 @@
       (package-refresh-contents))
     (package-install package)))
 
-;; Get the proper path
+;;;; OSX stuff
+
+;;; Mac modifiers
+(when (eq system-type 'darwin)
+  (setq mac-option-modifier 'meta))
+
+;;; Get the proper path
 (sk/require-package 'exec-path-from-shell)
 (exec-path-from-shell-copy-env "PYTHONPATH")
 (when (memq window-system '(mac ns))
   (exec-path-from-shell-initialize))
 
-;; Paradox for package
-(sk/require-package 'paradox)
-(setq paradox-github-token t)
+;;;; Basic settings
 
-;; Diminish minor modes
+;;; Diminish minor modes
 (sk/require-package 'diminish)
 (defun sk/diminish-eldoc ()
   (interactive)
   (diminish 'eldoc-mode ""))
 (add-hook 'eldoc-mode-hook 'sk/diminish-eldoc)
 
-;;; Basic settings
+;;; Emacs default changes
 
-;; No welcome screen - opens directly in scratch buffer
+;; No welcome screen
 (setq inhibit-startup-message t
       initial-scratch-message ";; Scratch"
       initial-major-mode 'fundamental-mode
@@ -79,23 +79,6 @@
 
 ;; Which function mode
 (which-function-mode 1)
-
-;; Non-native fullscreen
-(setq ns-use-native-fullscreen nil)
-(defun sk/toggle-frame-fullscreen-non-native ()
-  "Toggle full screen non-natively. Uses the `fullboth' frame paramerter
-   rather than `fullscreen'. Useful to fullscreen on OSX w/o animations."
-  (interactive)
-  (modify-frame-parameters
-   nil
-   `((maximized
-      . ,(unless (memq (frame-parameter nil 'fullscreen) '(fullscreen fullboth))
-           (frame-parameter nil 'fullscreen)))
-     (fullscreen
-      . ,(if (memq (frame-parameter nil 'fullscreen) '(fullscreen fullboth))
-             (if (eq (frame-parameter nil 'maximized) 'maximized)
-                 'maximized)
-           'fullboth)))))
 
 ;; DocView Settings
 (setq doc-view-continuous t
@@ -131,207 +114,24 @@
    kept-old-versions 2
    version-control t)       ; use versioned backups
 
-;;; Must have packages
-
-;; Hydra
-(sk/require-package 'hydra)
-
-;; Improve dired
-(sk/require-package 'dired+)
-(add-hook 'dired-mode-hook 'dired-hide-details-mode)
-
-;;; Avy
-(sk/require-package 'avy)
-
-;; Hydra - especially in emacs mode
-(defhydra hydra-avy (:color red
-                     :hint nil)
-  "
- ^Line^    ^Char/Word^         ^Scroll^     ^Buffer^   ^Para^      ^Function^
- ^^^^^^^^^-------------------------------------------------------------------
- _l_ine    _c_haracter         _r_ecenter   _b_eg      _n_ext      _F_orward
- _q_uit    _d_ouble character  _N_ext       _e_nd      _p_revious  _B_ackward
- _H_ead    _w_ord              _P_revious   e_x_exute
-"
-  ("l" avy-goto-line)
-  ("c" avy-goto-char)
-  ("d" avy-goto-char-2)
-  ("w" avy-goto-word-or-subword-1)
-  ("s" avy-goto-subword-0)
-  ("r" recenter-top-bottom)
-  ("N" scroll-up)
-  ("P" scroll-down)
-  ("b" beginning-of-buffer)
-  ("e" end-of-buffer)
-  ("n" forward-paragraph)
-  ("p" backward-paragraph)
-  ("F" beginning-of-defun)
-  ("B" end-of-defun)
-  ("H" ak-hydra-of-hydras/body :exit t)
-  ("x" counsel-M-x :color blue)
-  ("q" nil :color blue))
-(global-set-key (kbd "C-l") 'hydra-avy/body)
-
-;; some helper functions for vi hydra
-(defun vi-open-line-above ()
-  "Insert a newline above the current line and put point at beginning."
+;;; Non-native fullscreen
+(setq ns-use-native-fullscreen nil)
+(defun sk/toggle-frame-fullscreen-non-native ()
+  "Toggle full screen non-natively. Uses the `fullboth' frame paramerter
+   rather than `fullscreen'. Useful to fullscreen on OSX w/o animations."
   (interactive)
-  (unless (bolp)
-    (beginning-of-line))
-  (newline)
-  (forward-line -1)
-  (indent-according-to-mode))
-(defun vi-open-line-below ()
-  "Insert a newline below the current line and put point at beginning."
-  (interactive)
-  (unless (eolp)
-    (end-of-line))
-  (newline-and-indent))
-(defun vi-join-line ()
-  "Join the current line with the next line"
-  (interactive)
-  (next-line)
-  (delete-indentation))
+  (modify-frame-parameters
+   nil
+   `((maximized
+      . ,(unless (memq (frame-parameter nil 'fullscreen) '(fullscreen fullboth))
+           (frame-parameter nil 'fullscreen)))
+     (fullscreen
+      . ,(if (memq (frame-parameter nil 'fullscreen) '(fullscreen fullboth))
+             (if (eq (frame-parameter nil 'maximized) 'maximized)
+                 'maximized)
+           'fullboth)))))
 
-;; some helper hydras for vi
-(defhydra hydra-window-and-frame (:color red
-                                  :hint nil)
-  "
- ^Move^      ^Size^    ^Buffer^   ^Split^         ^Window^         ^Frame^     ^Text^
- ^^^^^^^^^^^^^^^--------------------------------------------------------------------------------
- ^ ^ _p_ ^ ^     ^ ^ _P_ ^ ^   _s_ave     _|_ vertical    _Z_ fullscreen   _M_aximize  _+_ zoom in
- _b_ ^+^ _f_     _B_ ^+^ _F_   b_u_ffers  ___ horizontal  _Q_ winner-undo  _m_inimize  _-_ zoom out
- ^ ^ _n_ ^ ^     ^ ^ _N_ ^ ^   _r_ecent   _O_nly          _R_ winner-redo  _S_et name
-                   f_i_les    _q_uit          f_o_llow         _D_elete
-"
-  ("b" windmove-left)
-  ("n" windmove-down)
-  ("p" windmove-up)
-  ("f" windmove-right)
-  ("B" shrink-window-horizontally)
-  ("N" enlarge-window)
-  ("P" shrink-window)
-  ("F" enlarge-window-horizontally)
-  ("|" split-window-right)
-  ("_" split-window-below)
-  ("s" save-buffer)
-  ("d" delete-window)
-  ("Z" sk/toggle-frame-fullscreen-non-native)
-  ("O" delete-other-windows)
-  ("Q" (progn
-         (winner-undo)
-         (setq this-command 'winner-undo)))
-  ("R" winner-redo)
-  ("M" toggle-frame-maximized)
-  ("m" suspend-frame)
-  ("D" delete-frame)
-  ("S" set-frame-name)
-  ("u" switch-to-buffer)
-  ("r" recentf-open-files-item)
-  ("i" find-file)
-  ("o" follow-mode)
-  ("+" text-scale-increase)
-  ("-" text-scale-decrease)
-  ("q" nil))
-
-;; Vi - Hydra
-(defhydra hydra-vi (:color red
-                    :hint nil)
-  "
-^small^   ^large^   ^medium^    ^scroll^                      ^editing^                     ^search^      ^others^
-^^^^^^^^^^^^^--------------------------------------------------------------------------------------------------------------
-^ ^ _k_ ^ ^   ^ ^ _g_ ^ ^   ^ ^ _{_ ^ ^     ^ ^ _B_ ^ ^        _v_ mark           _s_ave       _o_pen line    _/_ forward     _t_ imenu     _q_uit
-_h_ ^+^ _l_   _a_ ^+^ _e_   _w_ ^+^ _b_     ^ ^ ^+^ ^ ^        _x_ delete char    _J_oin       _O_pen line    _?_ backward    _f_ avy
-^ ^ _j_ ^ ^   ^ ^ _G_ ^ ^   ^ ^ _}_ ^ ^     ^ ^ _F_ ^ ^        _d_elete           _S_plit      _>_ indent     _*_ at point    _W_indow
-                            _z_ center   _y_ank             _p_ut        _=_ reindent
-"
-  ("l" forward-char)
-  ("h" backward-char)
-  ("j" next-line)
-  ("k" previous-line)
-  ("w" forward-word)
-  ("b" backward-word)
-  ("a" beginning-of-line)
-  ("e" end-of-line)
-  ("}" forward-paragraph)
-  ("{" backward-paragraph)
-  ("g" beginning-of-buffer)
-  ("G" end-of-buffer)
-  ("F" scroll-up)
-  ("B" scroll-down)
-  ("v" set-mark-command)
-  ("x" delete-char)
-  ("d" delete-region)
-  ("y" kill-ring-save)
-  ("s" save-buffer)
-  ("p" yank)
-  ("t" imenu)
-  ("u" undo)
-  ("R" redo)
-  ("J" vi-join-line)
-  ("S" reindent-then-newline-and-indent)
-  ("/" isearch-forward-regexp)
-  ("?" isearch-backward-regexp)
-  ("*" isearch-forward-symbol-at-point)
-  (":" execute-extended-command)
-  (">" indent-region)
-  ("=" indent-relative-maybe)
-  ("z" recenter)
-  ("n" isearch-occur)
-  ("f" hydra-avy/body :exit t)
-  ("W" hydra-window-and-frame/body :exit t)
-  ("o" vi-open-line-below :color blue)
-  ("O" vi-open-line-above :color blue)
-  ("c" delete-char :color blue)
-  ("i" nil :color blue)
-  ("q" nil :color blue))
-(global-set-key (kbd "C-r") 'hydra-vi/body)
-
-;; Hydra rectangle
-(defhydra hydra-rectangle (:body-pre (rectangle-mark-mode 1)
-                           :color pink
-                           :post (deactivate-mark))
-  "
-  ^_k_^     _d_elete    _s_tring
-_h_   _l_   _o_k        _y_ank
-  ^_j_^     _n_ew-copy  _r_eset
-^^^^        _e_xchange  _u_ndo
-^^^^        ^ ^         _p_aste
-"
-  ("h" backward-char nil)
-  ("l" forward-char nil)
-  ("k" previous-line nil)
-  ("j" next-line nil)
-  ("e" exchange-point-and-mark nil)
-  ("n" copy-rectangle-as-kill nil)
-  ("d" delete-rectangle nil)
-  ("r" (if (region-active-p)
-           (deactivate-mark)
-         (rectangle-mark-mode 1)) nil)
-  ("y" yank-rectangle nil)
-  ("u" undo nil)
-  ("s" string-rectangle nil)
-  ("p" kill-rectangle nil)
-  ("o" nil nil))
-;; (global-set-key (kbd "C-x SPC") 'hydra-rectangle/body)
-
-;; Hydra - for elisp
-(defhydra hydra-elisp (:color red
-                       :hint nil)
-  "
- ^Send^
- ^^^^^^^^^---------------------
- _f_unction    _L_ang     _q_uit
- _e_xp
- _r_egion
- _b_uffer
-"
-  ("f" eval-defun)
-  ("e" eval-expression)
-  ("r" eval-region)
-  ("b" eval-buffer)
-  ("L" hydra-langs/body :exit t)
-  ("q" nil :color blue))
+;;;; Must have packages
 
 ;;; Evil - Vim emulation layer
 (sk/require-package 'evil)
@@ -339,70 +139,200 @@ _h_   _l_   _o_k        _y_ank
       evil-want-C-u-scroll t
       evil-want-Y-yank-to-eol t)
 (evil-mode 1)
-;; Specify evil initial states
-(evil-set-initial-state 'dired-mode 'emacs)
+
+;;; Paradox for package list
+(sk/require-package 'paradox)
+(setq paradox-github-token t)
 (evil-set-initial-state 'paradox-menu-mode 'emacs)
-(evil-set-initial-state 'calendar-mode 'emacs)
-(evil-set-initial-state 'diff-mode 'emacs)
-(evil-set-initial-state 'speedbar-mode 'emacs)
 
-;; Help
-(defhydra hydra-apropos (:color blue
-                         :hint nil)
-  "
- ^Apropos^
- ^^^^^^^^^------------------------------------------------------------
- _a_propos   _d_oc   _v_ar   _c_md   _l_ib   _u_ser-option   valu_e_   _q_uit
-"
-  ("a" apropos)
-  ("d" apropos-documentation)
-  ("v" apropos-variable)
-  ("c" apropos-command)
-  ("l" apropos-library)
-  ("u" apropos-user-option)
-  ("e" apropos-value)
-  ("q" nil))
-(defhydra hydra-help (:color blue
-                      :hint nil)
-  "
- ^Help^
- ^^^^^^^^^---------------------------------------------------
- _b_inding    _i_nfo     _t_utorial  _a_ll            _q_uit
- _f_unction   _s_ymbol   _p_ackage   _l_anguage env
- _v_ariable   _e_macs    _h_elp
- _m_ode       synta_x_   _k_ey
-"
-  ("b" describe-binding)
-  ("f" describe-function)
-  ("v" describe-variable)
-  ("m" describe-mode)
-  ("i" info)
-  ("s" info-lookup-symbol)
-  ("e" info-emacs-manual)
-  ("x" describe-syntax)
-  ("t" help-with-tutorial)
-  ("p" describe-package)
-  ("h" help-for-help)
-  ("k" describe-key)
-  ("a" hydra-apropos/body :exit t)
-  ("l" describe-language-environment)
-  ("q" nil))
-(define-key evil-normal-state-map (kbd "SPC x") 'hydra-help/body)
+;;; Improve dired
+(sk/require-package 'dired+)
+(add-hook 'dired-mode-hook 'dired-hide-details-mode)
+(evil-set-initial-state 'dired-mode 'emacs)
 
-;; Bookmarks - hydra
-(defhydra hydra-bookmarks (:color red
-                              :hint nil)
+;;; Undo-tree
+(sk/require-package 'undo-tree)
+
+;;; Highlight stuff
+(sk/require-package 'volatile-highlights)
+(require 'volatile-highlights)
+(defun sk/diminish-volatile-highlights ()
+  (interactive)
+  (diminish 'volatile-highlights-mode ""))
+(add-hook 'volatile-highlights-mode-hook 'sk/diminish-volatile-highlights)
+(volatile-highlights-mode t)
+
+;;; Smart tabs
+(sk/require-package 'smart-tab)
+(defun sk/diminish-smart-tab ()
+  (interactive)
+  (diminish 'smart-tab-mode ""))
+(add-hook 'smart-tab-mode-hook 'sk/diminish-smart-tab)
+(global-smart-tab-mode)
+
+;;; Enable smartparens-mode
+(sk/require-package 'smartparens)
+(defun sk/diminish-smartparens ()
+  (interactive)
+  (diminish 'smartparens-mode ""))
+(add-hook 'smartparens-mode-hook 'sk/diminish-smartparens)
+(smartparens-global-mode)
+
+;;; Delete trailing whitespace on save
+(sk/require-package 'ws-butler)
+(defun sk/diminish-ws-butler ()
+  (interactive)
+  (diminish 'ws-butler-mode ""))
+(add-hook 'ws-butler-mode-hook 'sk/diminish-ws-butler)
+(ws-butler-global-mode)
+
+;;; Region information
+(sk/require-package 'region-state)
+(region-state-mode)
+
+;;; Restart Emacs from Emacs
+(sk/require-package 'restart-emacs)
+
+;;; Don't lose the cursor
+(sk/require-package 'beacon)
+(defun sk/diminish-beacon ()
+  (interactive)
+  (diminish 'beacon-mode ""))
+(add-hook 'beacon-mode-hook 'sk/diminish-beacon)
+(beacon-mode 1)
+
+;;; Mark ring
+(sk/require-package 'back-button)
+(defun sk/diminish-back-button ()
+  (interactive)
+  (diminish 'back-button-mode ""))
+(add-hook 'back-button-mode-hook 'sk/diminish-back-button)
+(add-hook 'prog-mode-hook 'back-button-mode)
+(add-hook 'org-mode-hook 'back-button-mode)
+
+;;; Avy
+(sk/require-package 'avy)
+
+;;; Hydra
+(sk/require-package 'hydra)
+
+;; Hydra of windows
+(defhydra sk/hydra-of-windows (:color pink
+                               :hint nil)
   "
- ^Bookmarks^
- ^^^^^^^^^-----------------------------
- _s_et  _S_ave  _j_ump  _d_elete  _q_uit
-  "
-  ("s" bookmark-set)
-  ("S" bookmark-save)
-  ("j" bookmark-jump)
-  ("d" bookmark-delete)
+ ^Move^   | ^Size^   | ^Change^        | ^Split^        | ^Frame^                | ^Text^       | ^Config^   | ^Menu^
+ ^^^^^^^^^^^-------|--------|---------------|--------------|----------------------|------------|----------|--------------
+ ^ ^ _k_ ^ ^  | ^ ^ _{_ ^ ^  | _u_ winner-undo | _|_ vertical   | _f_ullscreen  _m_aximize | _+_ zoom in  | _I_ config | _H_ome  e_x_ecute
+ _h_ ^+^ _l_  | _<_ ^+^ _>_  | _r_ winner-redo | ___ horizontal | _d_elete      m_i_nimize | _-_ zoom out |          | mo_V_e  _q_uit
+ ^ ^ _j_ ^ ^  | ^ ^ _}_ ^ ^  | _c_lose         | _z_oom         | _s_elect      _n_ame     |            |          |
+"
+  ("h" windmove-left)
+  ("j" windmove-down)
+  ("k" windmove-up)
+  ("l" windmove-right)
+  ("<" shrink-window-horizontally)
+  ("{" shrink-window)
+  ("}" enlarge-window)
+  (">" enlarge-window-horizontally)
+  ("|" sk/split-right-and-move)
+  ("_" sk/split-below-and-move)
+  ("c" delete-window)
+  ("f" sk/toggle-frame-fullscreen-non-native)
+  ("z" delete-other-windows)
+  ("u" (progn
+         (winner-undo)
+         (setq this-command 'winner-undo)))
+  ("r" winner-redo)
+  ("m" toggle-frame-maximized)
+  ("i" suspend-frame)
+  ("d" delete-frame)
+  ("s" select-frame-by-name)
+  ("n" set-frame-name)
+  ("+" text-scale-increase)
+  ("-" text-scale-decrease)
+  ("I" sk/hydra-for-eyebrowse/body :exit t)
+  ("H" sk/hydra-of-hydras/body :exit t)
+  ("V" sk/hydra-of-motion/body :exit t)
+  ("x" counsel-M-x :color blue)
   ("q" nil :color blue))
-(define-key evil-normal-state-map (kbd "SPC `") 'hydra-bookmarks/body)
+(define-key evil-normal-state-map (kbd "gw") 'sk/hydra-of-windows/body)
+
+
+;;; Which key
+(sk/require-package 'which-key)
+(which-key-setup-side-window-bottom)
+(defun diminish-which-key ()
+  (interactive)
+  (diminish 'which-key-mode ""))
+(add-hook 'which-key-mode-hook 'diminish-which-key)
+
+;;; Swiper (with Ivy and counsel)
+(sk/require-package 'swiper)
+(sk/require-package 'counsel)
+(setq ivy-display-style 'fancy
+      ivy-height 15
+      counsel-yank-pop-truncate t)
+
+;; Fuzzy for M-x
+(setq ivy-re-builders-alist
+      '((counsel-M-x . ivy--regex-fuzzy)
+        (t . ivy--regex-plus)))
+(defun sk/diminish-ivy ()
+  (interactive)
+  (diminish 'ivy-mode ""))
+(add-hook 'ivy-mode-hook 'sk/diminish-ivy)
+(ivy-mode 1)
+
+;; Evil maps for Swiper, Ivy and Counsel
+(define-key evil-normal-state-map (kbd "SPC d") 'counsel-M-x)
+(define-key evil-normal-state-map (kbd "SPC SPC") 'swiper)
+(define-key evil-normal-state-map (kbd "SPC b") 'swiper-all)
+(define-key evil-normal-state-map (kbd "SPC r") 'ivy-recentf)
+(define-key evil-normal-state-map (kbd "SPC u") 'ivy-switch-buffer)
+(define-key evil-normal-state-map (kbd "SPC y") 'counsel-yank-pop)
+(define-key evil-normal-state-map (kbd "SPC v") 'counsel-load-theme)
+(define-key evil-normal-state-map (kbd "SPC .") 'ivy-resume)
+(define-key evil-normal-state-map (kbd "SPC /") 'counsel-locate)
+(define-key evil-normal-state-map (kbd "SPC e") 'counsel-ag)
+(define-key evil-visual-state-map (kbd "SPC e") 'counsel-ag)
+(define-key evil-visual-state-map (kbd "SPC d") 'counsel-M-x)
+(define-key evil-insert-state-map (kbd "C-k") 'counsel-unicode-char)
+(define-key evil-insert-state-map (kbd "C-d") 'ispell-word)
+(define-key evil-insert-state-map (kbd "C-l") 'counsel-M-x)
+
+;;; Swoop
+(sk/require-package 'swoop)
+
+;; Evil maps for swoop
+(define-key evil-normal-state-map (kbd "*") 'swoop-pcre-regexp)
+(define-key evil-normal-state-map (kbd "#") 'swoop-pcre-regexp)
+(define-key evil-visual-state-map (kbd "*") 'swoop-pcre-regexp)
+(define-key evil-visual-state-map (kbd "#") 'swoop-pcre-regexp)
+
+;; Open line above
+(defun sk/open-line-above ()
+  "Insert a newline above the current line and put point at beginning."
+  (interactive)
+  (unless (bolp)
+    (beginning-of-line))
+  (newline)
+  (forward-line -1)
+  (indent-according-to-mode))
+
+;; Open line below
+(defun sk/open-line-below ()
+  "Insert a newline below the current line and put point at beginning."
+  (interactive)
+  (unless (eolp)
+    (end-of-line))
+  (newline-and-indent))
+
+;; Join next line with current line
+(defun sk/join-line ()
+  "Join the current line with the next line"
+  (interactive)
+  (next-line)
+  (delete-indentation))
 
 ;; Themes
 (load-theme 'leuven t)
@@ -436,17 +366,8 @@ _h_   _l_   _o_k        _y_ank
     (eshell-send-input)))
 
 ;; Window manipulation - hydra - definition at the beginning
-(define-key evil-normal-state-map (kbd "gw") 'hydra-window-and-frame/body)
 (global-set-key (kbd "C-c C-h") 'hydra-window-and-frame/body)
 (global-set-key (kbd "C-x C-h") 'hydra-window-and-frame/body)
-
-;;; Which key
-(sk/require-package 'which-key)
-(which-key-setup-side-window-bottom)
-(defun diminish-which-key ()
-  (interactive)
-  (diminish 'which-key-mode ""))
-(add-hook 'which-key-mode-hook 'diminish-which-key)
 
 ;; Move lines - from stack overflow
 (defun move-text-internal (arg)
@@ -774,40 +695,6 @@ _h_   _l_   _o_k        _y_ank
 ;;; wgrep-ag
 (sk/require-package 'wgrep-ag)
 
-;;; Swiper (with Ivy and counsel)
-(sk/require-package 'swiper)
-(sk/require-package 'counsel)
-(setq ivy-display-style 'fancy
-      ivy-height 15
-      counsel-yank-pop-truncate t)
-;; Fuzzy for M-x
-(setq ivy-re-builders-alist
-      '((counsel-M-x . ivy--regex-fuzzy)
-        (t . ivy--regex-plus)))
-(defun diminish-ivy ()
-  (interactive)
-  (diminish 'ivy-mode ""))
-(add-hook 'ivy-mode-hook 'diminish-ivy)
-(ivy-mode 1)
-(global-set-key (kbd "C-s") 'swiper)
-(global-set-key (kbd "M-x") 'counsel-M-x)
-(global-set-key (kbd "C-q") 'counsel-M-x)
-(define-key evil-normal-state-map (kbd "SPC d") 'counsel-M-x)
-(define-key evil-normal-state-map (kbd "SPC SPC") 'swiper)
-(define-key evil-normal-state-map (kbd "SPC b") 'swiper-all)
-(define-key evil-normal-state-map (kbd "SPC r") 'ivy-recentf)
-(define-key evil-normal-state-map (kbd "SPC u") 'ivy-switch-buffer)
-(define-key evil-normal-state-map (kbd "SPC y") 'counsel-yank-pop)
-(define-key evil-normal-state-map (kbd "SPC v") 'counsel-load-theme)
-(define-key evil-normal-state-map (kbd "SPC .") 'ivy-resume)
-(define-key evil-normal-state-map (kbd "SPC /") 'counsel-locate)
-(define-key evil-normal-state-map (kbd "SPC e") 'counsel-ag)
-(define-key evil-visual-state-map (kbd "SPC e") 'counsel-ag)
-(define-key evil-visual-state-map (kbd "SPC d") 'counsel-M-x)
-(define-key evil-insert-state-map (kbd "C-k") 'counsel-unicode-char)
-(define-key evil-insert-state-map (kbd "C-d") 'ispell-word)
-(define-key evil-insert-state-map (kbd "C-l") 'counsel-M-x)
-
 ;; Swiper helpers
 (defun swiper-at-point ()
   (swiper symbol-at-point))
@@ -816,13 +703,6 @@ _h_   _l_   _o_k        _y_ank
 (sk/require-package 'find-file-in-project)
 (define-key evil-normal-state-map (kbd "SPC p") 'find-file-in-project)
 (define-key evil-normal-state-map (kbd "SPC TAB") 'ff-find-other-file)
-
-;;; Swoop
-(sk/require-package 'swoop)
-(define-key evil-normal-state-map (kbd "*") 'swoop-pcre-regexp)
-(define-key evil-normal-state-map (kbd "#") 'swoop-pcre-regexp)
-(define-key evil-visual-state-map (kbd "*") 'swoop-pcre-regexp)
-(define-key evil-visual-state-map (kbd "#") 'swoop-pcre-regexp)
 
 ;;; Dash at point
 (sk/require-package 'dash-at-point)
@@ -953,23 +833,6 @@ _h_   _l_   _o_k        _y_ank
 (define-key evil-normal-state-map (kbd "zr") 'origami-redo)
 (define-key evil-normal-state-map (kbd "zf") 'origami-close-node)
 (define-key evil-normal-state-map (kbd "zd") 'origami-open-node)
-
-;; Highlight stuff
-(sk/require-package 'volatile-highlights)
-(require 'volatile-highlights)
-(defun diminish-volatile-highlights ()
-  (interactive)
-  (diminish 'volatile-highlights-mode ""))
-(add-hook 'volatile-highlights-mode-hook 'diminish-volatile-highlights)
-(volatile-highlights-mode t)
-
-;; Smart tabs
-(sk/require-package 'smart-tab)
-(defun diminish-smart-tab ()
-  (interactive)
-  (diminish 'smart-tab-mode ""))
-(add-hook 'smart-tab-mode-hook 'diminish-smart-tab)
-(global-smart-tab-mode)
 
 ;;; Multiple cursors
 (sk/require-package 'multiple-cursors)
@@ -1393,6 +1256,7 @@ _h_ ^+^ _l_                _o_pen      _c_lear    _R_ename
 (define-key evil-normal-state-map (kbd "SPC t") 'open-deft-and-start-hydra)
 
 ;;; Org mode
+(evil-set-initial-state 'calendar-mode 'emacs)
 (define-key evil-normal-state-map (kbd "SPC c") 'org-capture)
 (define-key evil-normal-state-map (kbd "SPC o") 'org-agenda)
 (define-key evil-normal-state-map (kbd "SPC -") 'org-edit-src-code)
@@ -1780,6 +1644,7 @@ _s_parse-tree  _S_chedule    _r_eset
 
 ;; Diff-hl
 (sk/require-package 'diff-hl)
+(evil-set-initial-state 'diff-mode 'emacs)
 (add-hook 'dired-mode-hook 'diff-hl-dired-mode)
 (add-hook 'prog-mode-hook 'diff-hl-mode)
 (add-hook 'html-mode-hook 'diff-hl-mode)
@@ -1973,29 +1838,6 @@ _s_parse-tree  _S_chedule    _r_eset
   (diminish 'column-enforce-mode ""))
 (add-hook 'column-enforce-mode-hook 'diminish-column-enforce)
 (add-hook 'prog-mode-hook 'column-enforce-mode)
-
-;; Enable smartparens-mode
-(sk/require-package 'smartparens)
-(defun diminish-smartparens ()
-  (interactive)
-  (diminish 'smartparens-mode ""))
-(add-hook 'smartparens-mode-hook 'diminish-smartparens)
-(smartparens-global-mode)
-
-;; Delete trailing whitespace on save
-(sk/require-package 'ws-butler)
-(defun diminish-ws-butler ()
-  (interactive)
-  (diminish 'ws-butler-mode ""))
-(add-hook 'ws-butler-mode-hook 'diminish-ws-butler)
-(ws-butler-global-mode)
-
-;; Region information
-(sk/require-package 'region-state)
-(region-state-mode)
-
-;; Restart Emacs from Emacs
-(sk/require-package 'restart-emacs)
 
 ;; Ledger mode for accounting
 (sk/require-package 'ledger-mode)

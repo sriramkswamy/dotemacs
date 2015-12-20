@@ -153,15 +153,25 @@
 ;;; Hydra
 (sk/require-package 'hydra)
 
+;; Split windows and move
+(defun sk/split-below-and-move ()
+  (interactive)
+  (split-window-below)
+  (other-window 1))
+(defun sk/split-right-and-move ()
+  (interactive)
+  (split-window-right)
+  (other-window 1))
+
 ;; Hydra of windows
 (defhydra sk/hydra-of-windows (:color pink
                                :hint nil)
   "
  ^Move^   | ^Size^   | ^Change^        | ^Split^        | ^Frame^                | ^Text^       | ^Config^   | ^Menu^
  ^^^^^^^^^^^-------|--------|---------------|--------------|----------------------|------------|----------|--------------
- ^ ^ _k_ ^ ^  | ^ ^ _{_ ^ ^  | _u_ winner-undo | _|_ vertical   | _f_ullscreen  _m_aximize | _+_ zoom in  | _I_ config | _H_ome  e_x_ecute
- _h_ ^+^ _l_  | _<_ ^+^ _>_  | _r_ winner-redo | ___ horizontal | _d_elete      m_i_nimize | _-_ zoom out |          | mo_V_e  _q_uit
- ^ ^ _j_ ^ ^  | ^ ^ _}_ ^ ^  | _c_lose         | _z_oom         | _s_elect      _n_ame     |            |          |
+ ^ ^ _k_ ^ ^  | ^ ^ _{_ ^ ^  | _u_ winner-undo | _v_ vertical   | _f_ullscreen  _m_aximize | _+_ zoom in  | _I_ config | _H_ome  e_x_ecute
+ _h_ ^+^ _l_  | _<_ ^+^ _>_  | _r_ winner-redo | _s_ horizontal | _d_elete      m_i_nimize | _-_ zoom out |          | mo_V_e  _q_uit
+ ^ ^ _j_ ^ ^  | ^ ^ _}_ ^ ^  | _c_lose         | _z_oom         | s_e_lect      _n_ame     |            |          |
 "
   ("h" windmove-left)
   ("j" windmove-down)
@@ -171,8 +181,8 @@
   ("{" shrink-window)
   ("}" enlarge-window)
   (">" enlarge-window-horizontally)
-  ("|" sk/split-right-and-move)
-  ("_" sk/split-below-and-move)
+  ("v" sk/split-right-and-move)
+  ("s" sk/split-below-and-move)
   ("c" delete-window)
   ("f" sk/toggle-frame-fullscreen-non-native)
   ("z" delete-other-windows)
@@ -183,7 +193,7 @@
   ("m" toggle-frame-maximized)
   ("i" suspend-frame)
   ("d" delete-frame)
-  ("s" select-frame-by-name)
+  ("e" select-frame-by-name)
   ("n" set-frame-name)
   ("+" text-scale-increase)
   ("-" text-scale-decrease)
@@ -192,7 +202,9 @@
   ("V" sk/hydra-of-motion/body :exit t)
   ("x" counsel-M-x :color blue)
   ("q" nil :color blue))
-(define-key evil-normal-state-map (kbd "gw") 'sk/hydra-of-windows/body)
+
+;; Evil maps for hydra of windows
+(define-key evil-normal-state-map (kbd "w") 'sk/hydra-of-windows/body)
 
 ;;; Avy
 (sk/require-package 'avy)
@@ -493,16 +505,64 @@ _h_ ^+^ _l_      | _n_ext     | _a_ppend  le_t_ters           | e_x_ecute
 (define-key evil-normal-state-map (kbd "gm") 'sk/hydra-of-multiple-cursors/body)
 (define-key evil-visual-state-map (kbd "gm") 'sk/hydra-of-multiple-cursors/body)
 
-;;; ag
+;;; ag and wgrep-ag
 (sk/require-package 'ag)
+(sk/require-package 'wgrep-ag)
 (evil-set-initial-state 'ag-mode 'normal)
 
 ;; Evil maps for ag
+(define-key evil-normal-state-map (kbd "W") 'wgrep-change-to-wgrep-mode)
+(define-key evil-normal-state-map (kbd "S") 'wgrep-finish-edit)
+(define-key evil-normal-state-map (kbd "R") 'wgrep-remove-all-change)
 (define-key evil-normal-state-map (kbd "SPC 7") 'ag-project-regexp)
 (define-key evil-visual-state-map (kbd "SPC 7") 'ag-project-regexp)
 
-;;; wgrep-ag
-(sk/require-package 'wgrep-ag)
+;;; GTags
+(sk/require-package 'ggtags)
+(defun sk/diminish-ggtags ()
+  (interactive)
+  (diminish 'ggtags-mode ""))
+(add-hook 'ggtags-mode-hook 'sk/diminish-ggtags)
+(add-hook 'prog-mode-hook 'ggtags-mode)
+
+;; Add exec-path for Gtags
+(setenv "PATH" (concat (getenv "PATH") ":/usr/local/Cellar/global/6.5/bin"))
+(setq exec-path (append exec-path '("/usr/local/Cellar/global/6.5/bin")))
+(setq-local imenu-create-index-function #'ggtags-build-imenu-index)
+
+;; Hydra of tags
+(defhydra sk/hydra-of-tags (:color blue
+                         :hint nil)
+  "
+ ^Tags^    | ^Jump^      |  ^Menu^
+ ^^^^^^^^^--------|-----------|---------
+ _c_reate  | _r_eference |  _H_ome
+ _u_pdate  | _t_ag       |  e_x_ecute
+ _f_ind    |           |  _q_uit
+"
+  ("c" ggtags-create-tags)
+  ("u" ggtags-update-tags)
+  ("f" ggtags-find-tag-regexp)
+  ("r" ggtags-find-reference)
+  ("t" ggtags-find-tag-dwim)
+  ("H" sk/hydra-of-hydras/body :exit t)
+  ("x" counsel-M-x :color blue)
+  ("q" nil :color blue))
+
+;; Evil maps
+(define-key evil-normal-state-map (kbd "T") 'sk/hydra-of-tags/body)
+
+;;; Spotlight
+(sk/require-package 'spotlight)
+
+;; Evil maps for spotlight
+(define-key evil-normal-state-map (kbd "SPC 8") 'spotlight)
+
+;;; Reveal in Finder
+(sk/require-package 'reveal-in-osx-finder)
+
+;; Evil maps for reveal in finder
+(define-key evil-normal-state-map (kbd "gF") 'reveal-in-osx-finder)
 
 ;; Themes
 (load-theme 'leuven t)
@@ -593,16 +653,6 @@ _h_ ^+^ _l_      | _n_ext     | _a_ppend  le_t_ters           | e_x_ecute
 (define-key evil-normal-state-map (kbd "]n") 'blank-line-down)
 (define-key evil-normal-state-map (kbd "[n") 'blank-line-up)
 
-;; Split windows and move
-(defun split-below-and-move ()
-  (interactive)
-  (split-window-below)
-  (other-window 1))
-(defun split-right-and-move ()
-  (interactive)
-  (split-window-right)
-  (other-window 1))
-
 ;;; Evil - Vim emulation - Continued
 ;; Escape for everything
 (define-key evil-normal-state-map [escape] 'keyboard-quit)
@@ -613,9 +663,6 @@ _h_ ^+^ _l_      | _n_ext     | _a_ppend  le_t_ters           | e_x_ecute
 (define-key evil-normal-state-map (kbd "t") 'imenu)
 (define-key evil-normal-state-map (kbd "Z") 'delete-other-windows)
 (define-key evil-normal-state-map (kbd "Q") 'winner-undo)
-(define-key evil-normal-state-map (kbd "R") 'winner-redo)
-(define-key evil-normal-state-map (kbd "w") 'split-right-and-move)
-(define-key evil-normal-state-map (kbd "W") 'split-below-and-move)
 (define-key evil-normal-state-map (kbd "K") 'man)
 (define-key evil-normal-state-map (kbd "+") 'eshell-vertical)
 (define-key evil-normal-state-map (kbd "-") 'eshell-horizontal)
@@ -631,7 +678,6 @@ _h_ ^+^ _l_      | _n_ext     | _a_ppend  le_t_ters           | e_x_ecute
 (define-key evil-normal-state-map (kbd "SPC z") 'sk/toggle-frame-fullscreen-non-native)
 (define-key evil-normal-state-map (kbd "SPC f") 'find-file)
 (define-key evil-normal-state-map (kbd "SPC [") 'widen)
-(define-key evil-normal-state-map (kbd "SPC 3") 'select-frame-by-name)
 (define-key evil-normal-state-map (kbd "SPC 4") 'shell-command)
 (define-key evil-normal-state-map (kbd "SPC DEL") 'whitespace-cleanup)
 (define-key evil-normal-state-map (kbd "SPC ,") 'describe-bindings)
@@ -864,28 +910,8 @@ _h_ ^+^ _l_      | _n_ext     | _a_ppend  le_t_ters           | e_x_ecute
 (sk/require-package 'dash-at-point)
 (define-key evil-normal-state-map (kbd "SPC 1") 'dash-at-point-with-docset)
 
-;;; Spotlight
-(sk/require-package 'spotlight)
-(define-key evil-normal-state-map (kbd "SPC 8") 'spotlight)
-;;; Reveal in Finder
-(sk/require-package 'reveal-in-osx-finder)
-(define-key evil-normal-state-map (kbd "gF") 'reveal-in-osx-finder)
-
 ;;; Cmake ide
 (sk/require-package 'cmake-ide)
-
-;;; GTags
-(sk/require-package 'ggtags)
-(defun diminish-ggtags ()
-  (interactive)
-  (diminish 'ggtags-mode ""))
-(add-hook 'ggtags-mode-hook 'diminish-ggtags)
-(add-hook 'prog-mode-hook 'ggtags-mode)
-;; Add exec-path for Gtags
-(setenv "PATH" (concat (getenv "PATH") ":/usr/local/Cellar/global/6.5/bin"))
-(setq exec-path (append exec-path '("/usr/local/Cellar/global/6.5/bin")))
-(setq-local imenu-create-index-function #'ggtags-build-imenu-index)
-(define-key evil-normal-state-map (kbd "T") 'ggtags-find-tag-regexp)
 
 ;;; Interact with OS services
 ;; Jabber
@@ -1957,26 +1983,6 @@ _s_parse-tree  _S_chedule    _r_eset
 (sk/require-package 'esup)
 
 ;;; Construct mode hydras
-
-;; Tags
-(defhydra hydra-tags (:color red
-                      :hint nil)
-  "
- ^Tags^      ^Jump^         ^Python^
- ^^^^^^^^^---------------------------
- _c_reate    _r_eference    _d_efinition
- _u_pdate    _t_ag          _l_ocation
- _f_ind                   _q_uit
-"
-  ("c" ggtags-create-tags)
-  ("u" ggtags-update-tags)
-  ("f" ggtags-find-tag-regexp)
-  ("r" ggtags-find-reference)
-  ("t" ggtags-find-tag-dwim)
-  ("d" elpy-goto-definition)
-  ("l" elpy-goto-location)
-  ("q" nil :color blue))
-(define-key evil-normal-state-map (kbd "SPC j") 'hydra-tags/body)
 
 ;; Activate stuff
 (defhydra hydra-activate (:color red

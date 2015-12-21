@@ -50,11 +50,21 @@
 ;;;; Basic settings
 
 ;;; Diminish minor modes
+
+;; Eldoc
 (sk/require-package 'diminish)
 (defun sk/diminish-eldoc ()
   (interactive)
   (diminish 'eldoc-mode ""))
 (add-hook 'eldoc-mode-hook 'sk/diminish-eldoc)
+
+;; Diminish abbrev
+(defun sk/diminish-abbrev ()
+  (interactive)
+  (diminish 'abbrev-mode ""))
+(add-hook 'abbrev-mode-hook 'sk/diminish-abbrev)
+(add-hook 'prog-mode-hook 'sk/diminish-abbrev)
+(add-hook 'text-mode-hook 'sk/diminish-abbrev)
 
 ;;; Emacs default changes
 
@@ -275,6 +285,10 @@ point reaches the beginning or end of the buffer, stop there."
 
 ;;; Undo-tree
 (sk/require-package 'undo-tree)
+(defun sk/diminish-undo-tree ()
+  (interactive)
+  (diminish 'undo-tree-mode ""))
+(add-hook 'undo-tree-mode-hook 'sk/diminish-undo-tree)
 
 ;; Hydra of undo
 (defhydra sk/hydra-of-undo (:color pink
@@ -652,11 +666,295 @@ _h_ ^+^ _l_      | _n_ext     | _a_ppend  le_t_ters           | e_x_ecute
 (define-key evil-normal-state-map (kbd "SPC 9") 'google-this-search)
 (define-key evil-visual-state-map (kbd "SPC 9") 'google-this)
 
-;; Themes
-(load-theme 'leuven t)
+;;;; Help
+
+;;; Hydras
+
+;; Hydra for apropos
+(defhydra sk/hydra-apropos (:color blue
+                            :hint nil)
+  "
+ ^Apropos - Search anything^    | ^Menu^
+ ^^^^^^^^^-----------------------------|--------------
+ _a_ll   _d_oc   _v_ar   _c_md   _l_ib  | _H_ome  _q_uit
+ _u_ser  valu_e_                  | _h_elp  e_x_ecute
+"
+  ("a" apropos)
+  ("H" sk/hydra-of-hydras/body :exit t)
+  ("d" apropos-documentation)
+  ("v" apropos-variable)
+  ("c" apropos-command)
+  ("l" apropos-library)
+  ("u" apropos-user-option)
+  ("e" apropos-value)
+  ("h" sk/hydra-help/body :exit t)
+  ("x" counsel-M-x :color blue)
+  ("q" nil :color blue))
+
+;; Hydra for help
+(defhydra sk/hydra-of-help (:color blue
+                            :hint nil)
+  "
+ ^Help^                                   | ^Menu^
+ ^^^^^^^^^---------------------------------------|---------
+ _b_inding    _i_nfo     _t_utorial  _a_ll      | _H_ome
+ _f_unction   _s_ymbol   _p_ackage   _l_ang-env | e_x_ecute
+ _v_ariable   _e_macs    _h_elp               | _q_uit
+ _m_ode       synta_x_   _k_ey                |
+"
+  ("b" describe-bindings)
+  ("f" describe-function)
+  ("v" describe-variable)
+  ("m" describe-mode)
+  ("i" info)
+  ("s" info-lookup-symbol)
+  ("e" info-emacs-manual)
+  ("x" describe-syntax)
+  ("t" help-with-tutorial)
+  ("p" describe-package)
+  ("h" help-for-help)
+  ("k" describe-key)
+  ("a" sk/hydra-apropos/body :exit t)
+  ("l" describe-language-environment)
+  ("H" sk/hydra-of-hydras/body :exit t)
+  ("x" counsel-M-x :color blue)
+  ("q" nil :color blue))
+
+;; Evil Maps for help hydra
+(define-key evil-normal-state-map (kbd "SPC x") 'sk/hydra-of-help/body)
+
+;;;; Support some emacs stuff
+
+;;; Marks
+
+;; Rectangle marks
+(defhydra sk/hydra-rectangle (:color pink
+                              :hint nil)
+ "
+ ^Move^   | ^Edit^           | ^Menu^
+ ^^^^^^-------|----------------|--------------
+ ^ ^ _k_ ^ ^  | _s_et       _r_eset | _H_ome  _q_uit
+ _h_ ^+^ _l_  | ex_c_hange  cop_y_  | _M_ark  e_x_ecute
+ ^ ^ _j_ ^ ^  | _d_elete    _p_aste |       _i_nsert
+"
+  ("h" backward-char nil)
+  ("l" forward-char nil)
+  ("k" previous-line nil)
+  ("j" next-line nil)
+  ("s" (rectangle-mark-mode 1))
+  ("c" exchange-point-and-mark nil)
+  ("y" copy-rectangle-as-kill nil)
+  ("d" kill-rectangle nil)
+  ("r" (if (region-active-p)
+           (deactivate-mark)
+         (rectangle-mark-mode 1)) nil)
+  ("p" yank-rectangle nil)
+  ("M" sk/hydra-of-marks/body :exit t)
+  ("H" sk/hydra-of-hydras/body :exit t)
+  ("i" nil :color blue)
+  ("x" counsel-M-x :color blue)
+  ("q" nil :color blue))
+
+;; Hydra of marks
+(defhydra sk/hydra-of-marks (:color pink
+                             :hint nil)
+  "
+ ^Move^   | ^Line^    | ^File^  | ^Mark^     | ^Para^   | ^Word^     | ^Edit^      | ^Menu^
+ ^^^^^^-------|---------|-------|----------|--------|----------|-----------|----------------
+ ^ ^ _k_ ^ ^  | _a_ start | _<_ beg | _s_et      | _}_ next | for_w_ard  | _d_el       | _P_ython _H_ome
+ _h_ ^+^ _l_  | _e_nd     | _>_ end | _r_eset    | _{_ prev | _b_ackward | cop_y_      | _J_ulia  e_x_ecute
+ ^ ^ _j_ ^ ^  | _g_oto    |       | ex_c_hange |        |          | _R_ectangle | _L_ang   _q_uit
+"
+  ("h" backward-char)
+  ("j" next-line)
+  ("k" previous-line)
+  ("l" forward-char)
+  ("a" move-beginning-of-line)
+  ("e" move-end-of-line)
+  ("g" avy-goto-line)
+  ("r" (if (region-active-p)
+           (deactivate-mark)
+         (rectangle-mark-mode 1)) nil)
+  ("s" set-mark-command)
+  ("c" exchange-point-and-mark)
+  ("<" beginning-of-buffer)
+  (">" end-of-buffer)
+  ("}" forward-paragraph)
+  ("{" backward-paragraph)
+  ("w" forward-word)
+  ("b" backward-word)
+  ("d" delete-region)
+  ("y" copy-region-as-kill)
+  ("R" sk/hydra-rectangle/body :exit t)
+  ("P" sk/hydra-for-python/body :exit t)
+  ("J" sk/hydra-for-julia/body :exit t)
+  ("L" sk/hydra-of-langs/body :exit t)
+  ("H" sk/hydra-of-hydras/body :exit t)
+  ("x" counsel-M-x :color blue)
+  ("q" nil :color blue))
+
+;;; Bookmarks
+(defhydra sk/hydra-bookmarks (:color pink
+                              :hint nil)
+  "
+ ^Bookmarks^                   | ^Menu^
+ ^^^^^^^^^----------------------------|-----------------------
+ _s_et  _b_ookmark  _j_ump  _d_elete | _H_ead   e_x_ecute   _q_uit
+  "
+  ("s" bookmark-set)
+  ("b" bookmark-save)
+  ("j" bookmark-jump)
+  ("d" bookmark-delete)
+  ("H" sk/hydra-of-hydras/body :exit t)
+  ("x" counsel-M-x :color blue)
+  ("q" nil :color blue))
+
+;;;; Version control
+
+;;; Magit
+(sk/require-package 'magit)
+
+;; Evil magit
+(sk/require-package 'evil-magit)
+(defun sk/magit-hook ()
+  (interactive)
+  (setq evil-magit-state 'motion)
+  (require 'evil-magit))
+(add-hook 'magit-mode-hook 'sk/magit-hook)
+
+;; Evil maps for Magit
+(define-key evil-normal-state-map (kbd "SPC g") 'magit-status)
+
+;; Hydra for blame
+(defhydra sk/hydra-git-blame (:color pink
+                              :hint nil)
+  "
+ ^Blame^  | ^Commit^     | ^Same commit^ | ^Heading^  | ^Hash-copy^ | ^Menu^
+^^^^^^^^^----------|----------|-------------|----------|-----------|--------------
+ _b_lame  | _j_ next     | _l_ next      | _t_oggle   | cop_y_      | _G_it   e_x_ecute
+        | _k_ previous | _h_ previous  |          |           | _H_ome  _q_uit
+"
+  ("b" magit-blame)
+  ("j" magit-blame-next-chunk)
+  ("k" magit-blame-previous-chunk)
+  ("l" magit-blame-next-chunk-same-commit)
+  ("h" magit-blame-previous-chunk-same-commit)
+  ("t" magit-blame-toggle-headings)
+  ("y" magit-blame-copy-hash)
+  ("G" sk/hydra-of-git/body :exit t)
+  ("H" sk/hydra-of-hydras/body :exit t)
+  ("x" counsel-M-x :color blue)
+  ("q" magit-blame-quit :color blue))
+
+;; Evil maps for blame
+(define-key evil-normal-state-map (kbd "gb") 'sk/hydra-git-blame/body)
+
+;;; Diff-hl
+(sk/require-package 'diff-hl)
+(add-hook 'dired-mode-hook 'diff-hl-dired-mode)
+(add-hook 'prog-mode-hook 'diff-hl-mode)
+(add-hook 'html-mode-hook 'diff-hl-mode)
+(add-hook 'text-mode-hook 'diff-hl-mode)
+(add-hook 'org-mode-hook 'diff-hl-mode)
+(add-hook 'diff-hl-mode-hook 'diff-hl-margin-mode)
+(add-hook 'diff-hl-mode-hook 'diff-hl-flydiff-mode)
+
+;; Evil maps for diff-hl
+(evil-set-initial-state 'diff-mode 'emacs)
+(define-key evil-normal-state-map (kbd "]d") 'diff-hl-next-hunk)
+(define-key evil-normal-state-map (kbd "[d") 'diff-hl-previous-hunk)
+(define-key evil-normal-state-map (kbd "gh") 'diff-hl-diff-goto-hunk)
+(define-key evil-normal-state-map (kbd "gr") 'diff-hl-revert-hunk)
+
+;;; Git time-machine
+(sk/require-package 'git-timemachine)
+
+;; Hydra for timemachine
+(defhydra sk/hydra-git-timemachine (:color pink
+                                    :hint nil)
+  "
+ ^Timemachine^ | ^Navigate^            | ^Hash-copy^ | ^Menu^
+^^^^^^^^^-------------|---------------------|-----------|---------------
+ _s_tart       | _j_ next      _g_oto    | _b_rief     | _G_it   e_x_ecute
+             | _k_ previous  _c_urrent | _f_ull      | _H_ome  _q_uit
+"
+  ("s" git-timemachine)
+  ("j" git-time-machine-next-revision)
+  ("k" git-time-machine-previous-revision)
+  ("g" git-timemachine-nth-revision)
+  ("c" git-timemachine-current-revision)
+  ("b" git-timemachine-kill-abbreviated-revision)
+  ("f" git-timemachine-kill-revision)
+  ("G" sk/hydra-of-git/body :exit t)
+  ("H" sk/hydra-of-hydras/body :exit t)
+  ("x" counsel-M-x :color blue)
+  ("q" git-timemachine-quit :color blue))
+
+;; Evil maps for time machine
+(define-key evil-normal-state-map (kbd "gt") 'hydra-git-timemachine/body)
+
+;;; Gists
+(sk/require-package 'yagist)
+(setq yagist-view-gist t)
+
+;;; YAML mode
+(sk/require-package 'yaml-mode)
+
+;;; Editing my gitconfig
+(sk/require-package 'gitconfig-mode)
+
+;;; Hydra of git
+(defhydra sk/hydra-of-git (:color pink
+                           :hint nil)
+  "
+ ^Git^                          | ^Diff^               | ^Gist^   | ^Menu^
+^^^^^^^^^------------------------------|--------------------|--------|--------------
+ _s_tatus   _b_lame   _t_imemachine | _j_ next      _g_oto   | _u_pload | _H_ome  e_x_ecute
+                              | _k_ previous  _r_evert |        |       _q_uit
+"
+  ("s" magit-status :color blue)
+  ("d" sk/hydra-diff/body :exit t)
+  ("b" sk/hydra-git-blame/body :exit t)
+  ("t" sk/hydra-git-timemachine/body :exit t)
+  ("j" diff-hl-next-hunk)
+  ("k" diff-hl-previous-hunk)
+  ("g" diff-hl-goto-hunk)
+  ("r" diff-hl-revert-hunk)
+  ("u" yagist-region-or-buffer :color blue)
+  ("H" sk/hydra-of-hydras/body :exit t)
+  ("x" counsel-M-x :color blue)
+  ("q" nil :color blue))
+
+;; Evil maps for hydra of git
+(define-key evil-normal-state-map (kbd "gt") 'hydra-git-timemachine/body)
+
+;;;; REPL and Terminal
+
+;;; Make the compilation window automatically disapper from enberg on #emacs
+(setq compilation-finish-functions
+      (lambda (buf str)
+        (if (null (string-match ".*exited abnormally.*" str))
+            ;;no errors, make the compilation window go away in a few seconds
+            (progn
+              (run-at-time
+               "2 sec" nil 'delete-windows-on
+               (get-buffer-create "*compilation*"))
+              (message "No Compilation Errors!")))))
+
+;;; Eshell
+(setq eshell-glob-case-insensitive t
+      eshell-scroll-to-bottom-on-input 'this
+      eshell-buffer-shorthand t
+      eshell-history-size 1024
+      eshell-cmpl-ignore-case t
+      eshell-last-dir-ring-size 512)
+(add-hook 'shell-mode-hook 'goto-address-mode)
+
+;; Aliases
+(setq eshell-aliases-file (concat user-emacs-directory ".eshell-aliases"))
 
 ;; Vertical split eshell
-(defun eshell-vertical ()
+(defun sk/eshell-vertical ()
   "opens up a new shell in the directory associated with the current buffer's file."
   (interactive)
   (let* ((parent (if (buffer-file-name)
@@ -670,7 +968,7 @@ _h_ ^+^ _l_      | _n_ext     | _a_ppend  le_t_ters           | e_x_ecute
     (eshell-send-input)))
 
 ;; Horizontal split eshell
-(defun eshell-horizontal ()
+(defun sk/eshell-horizontal ()
   "opens up a new shell in the directory associated with the current buffer's file."
   (interactive)
   (let* ((parent (if (buffer-file-name)
@@ -683,9 +981,932 @@ _h_ ^+^ _l_      | _n_ext     | _a_ppend  le_t_ters           | e_x_ecute
     (rename-buffer (concat "*eshell: " name "*"))
     (eshell-send-input)))
 
-;; Window manipulation - hydra - definition at the beginning
-(global-set-key (kbd "C-c C-h") 'hydra-window-and-frame/body)
-(global-set-key (kbd "C-x C-h") 'hydra-window-and-frame/body)
+;; Evil maps for eshell
+(define-key evil-normal-state-map (kbd "+") 'sk/eshell-vertical)
+
+;;; Multi-term
+(sk/require-package 'multi-term)
+
+;; Vertical split multi-term
+(defun sk/multi-term-vertical ()
+  "opens up a new terminal in the directory associated with the current buffer's file."
+  (interactive)
+  (split-window-right)
+  (other-window 1)
+  (multi-term))
+
+;; Horizonal split multi-term
+(defun sk/multi-term-horizontal ()
+  "opens up a new terminal in the directory associated with the current buffer's file."
+  (interactive)
+  (split-window-below)
+  (other-window 1)
+  (multi-term))
+
+;; Evil maps for multi-term
+(define-key evil-normal-state-map (kbd "-") 'sk/multi-term-horizontal)
+
+;;; Tmux
+
+;; Interact with Tmux
+(sk/require-package 'emamux)
+
+;; Hydra for emamux
+(defhydra sk/hydra-for-emamux (:color blue
+                              :hint nil)
+  "
+ ^Tmux^           | ^Menu^
+ ^^^^^^^^^------------|-------------
+ _s_end  _r_un    | _H_ome  e_x_ecute
+ _l_ast  _c_lose  | _L_ang  _q_uit
+"
+  ("s" emamux:send-command)
+  ("r" emamux:run-command)
+  ("l" emamux:run-last-command)
+  ("c" emamux:close-runner-pane)
+  ("L" sk/hydra-of-langs/body :exit t)
+  ("H" sk/hydra-of-hydras/body :exit t)
+  ("x" counsel-M-x :color blue)
+  ("q" nil :color blue))
+
+;;; Quickrun
+(sk/require-package 'quickrun)
+
+;;; Multi-compile
+(sk/require-package 'multi-compile)
+(setq multi-compile-alist '((c++-mode . (("cpp-omp" . "g++ %file-name -Wall -fopenmp -o -g %file-sans.out")
+                                         ("cpp-mpi" . "mpic++ %file-name -o -g %file-sans.out")
+                                         ("cpp-g++" . "g++ %file-name -o %file-sans.out")))
+                            (c-mode . (("c-omp" . "gcc %file-name -Wall -fopenmp -o -g %file-sans.out")
+                                       ("c-mpi" . "mpicc %file-name -o -g %file-sans.out")
+                                       ("c-gcc" . "gcc %file-name -o %file-sans.out")))))
+(setq multi-compile-completion-system 'default)
+
+;;;; Auto completion
+
+;;; Company
+
+;; Flx with company
+(sk/require-package 'flx)
+(sk/require-package 'company-flx)
+(sk/require-package 'company)
+;; (with-eval-after-load 'company
+;;   (company-flx-mode +1))
+;; (eval-after-load 'company
+;;   '(add-to-list 'company-backends 'company-files))
+(setq company-idle-delay 0
+      company-minimum-prefix-length 1
+      company-require-match 0
+      company-selection-wrap-around t
+      company-dabbrev-downcase nil)
+
+;; Company Maps
+(global-set-key [(control return)] 'company-complete-common-or-cycle)
+(defun sk/company-hook ()
+  (interactive)
+  (define-key company-active-map (kbd "C-n") 'company-select-next)
+  (define-key company-active-map (kbd "C-p") 'company-select-previous)
+  (define-key company-active-map [tab] 'company-complete-common-or-cycle))
+(defun sk/diminish-company ()
+   (interactive)
+  (diminish 'company-mode " ς"))
+(add-hook 'company-mode-hook 'sk/company-hook)
+(add-hook 'company-mode-hook 'sk/diminish-company)
+(add-hook 'prog-mode-hook 'company-mode)
+
+;;;; Error checking
+
+;;; Flycheck
+(sk/require-package 'flycheck)
+(add-hook 'after-init-hook #'global-flycheck-mode)
+
+;; Evil maps for flycheck
+(define-key evil-normal-state-map (kbd "]e") 'flycheck-next-error)
+(define-key evil-normal-state-map (kbd "[e") 'flycheck-previous-error)
+(define-key evil-normal-state-map (kbd "]E") 'flycheck-last-checker)
+(define-key evil-normal-state-map (kbd "[E") 'flycheck-first-error)
+(define-key evil-normal-state-map (kbd "SPC l") 'flycheck-list-errors)
+
+;;;; Snippets
+
+;;; YASnippet
+(sk/require-package 'yasnippet)
+
+;; ;; Add yasnippet support for all company backends
+;; (defvar company-mode/enable-yas t
+;;   "Enable yasnippet for all backends.")
+;; (defun company-mode/backend-with-yas (backend)
+;;   (if (or (not company-mode/enable-yas) (and (listp backend) (member 'company-yasnippet backend)))
+;;       backend
+;;     (append (if (consp backend) backend (list backend))
+;;             '(:with company-yasnippet))))
+;; (defun yas-company-hook ()
+;;   (interactive)
+;;   (setq company-backends (mapcar #'company-mode/backend-with-yas company-backends)))
+;; (add-hook 'company-mode-hook 'yas-company-hook)
+
+;; Just enable helm/ivy/ido and this uses them automatically
+(setq yas-prompt-functions '(yas-completing-prompt))
+
+;; Disable in shell
+(defun sk/force-yasnippet-off ()
+  (yas-minor-mode -1)
+  (setq yas-dont-activate t))
+(add-hook 'term-mode-hook 'sk/force-yasnippet-off)
+(add-hook 'shell-mode-hook 'sk/force-yasnippet-off)
+(defun sk/diminish-yas ()
+  (interactive)
+  (diminish 'yas-minor-mode " γ"))
+(add-hook 'yas-global-mode-hook 'sk/diminish-yas)
+(add-hook 'prog-mode-hook 'yas-global-mode)
+(define-key evil-insert-state-map (kbd "C-j") 'yas-insert-snippet)
+
+;;;; Language support
+
+;;; Elisp
+
+;; IELM
+(defun sk/ielm-here ()
+  "opens up a new ielm REPL in the directory associated with the current buffer's file."
+  (interactive)
+  (require 'ess-site)
+  (split-window-right)
+  (other-window 1)
+  (ielm)
+  (other-window 1))
+
+;; Hydra - for elisp
+(defhydra sk/hydra-for-elisp (:color pink
+                              :hint nil)
+  "
+ ^Send^     | ^Shell^  | ^Menu^
+ ^^^^^^^^^---------|--------|----------------
+ _f_unction | _s_tart  | _H_ome    e_x_ecute
+ _e_xp      |        | _L_ang    _q_uit
+ _r_egion   |        |
+ _a_ll      |        |
+"
+  ("f" eval-defun)
+  ("e" eval-expression)
+  ("r" eval-region)
+  ("a" eval-buffer)
+  ("s" sk/ielm-here)
+  ("L" sk/hydra-of-langs/body :exit t)
+  ("H" sk/hydra-of-hydras/body :exit t)
+  ("x" counsel-M-x :color blue)
+  ("q" nil :color blue))
+
+;;; C/C++
+
+;;; GDB
+(setq gdb-many-windows t
+      gdb-show-main t)
+
+;;; Company C headers
+(sk/require-package 'company-c-headers)
+(eval-after-load 'company
+  '(add-to-list 'company-backends 'company-c-headers))
+
+;;; Irony mode for C++
+(sk/require-package 'irony)
+(defun sk/diminish-irony ()
+  (interactive)
+  (diminish 'irony-mode " Γ"))
+(add-hook 'irony-mode-hook 'sk/diminish-irony)
+(add-hook 'c++-mode-hook 'irony-mode)
+(add-hook 'c-mode-hook 'irony-mode)
+(add-hook 'objc-mode-hook 'irony-mode)
+
+;; replace the `completion-at-point' and `complete-symbol' bindings in
+;; irony-mode's buffers by irony-mode's function
+(defun sk/irony-mode-hook ()
+  (define-key irony-mode-map [remap completion-at-point]
+    'irony-completion-at-point-async)
+  (define-key irony-mode-map [remap complete-symbol]
+    'irony-completion-at-point-async))
+(add-hook 'irony-mode-hook 'sk/irony-mode-hook)
+(add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+
+;; Company irony
+(sk/require-package 'company-irony)
+(sk/require-package 'company-irony-c-headers)
+(eval-after-load 'company
+  '(add-to-list 'company-backends 'company-irony))
+
+;; Irony for flycheck
+(sk/require-package 'flycheck-irony)
+(eval-after-load 'flycheck
+  '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
+
+;;; Cmake ide
+(sk/require-package 'cmake-ide)
+
+;;; Hydra - for cpp
+(defhydra sk/hydra-for-cpp (:color blue
+                            :hint nil)
+  "
+ ^Compile^ | ^Eshell^       | ^Terminal^     | ^Menu^
+ ^^^^^^^^^--------|--------------|--------------|---------------
+ _m_ake    | _+_ vertical   | _|_ vertical   | _H_ome   e_x_ecute
+ _c_ompile | _-_ horizontal | ___ horizontal | _L_ang   _q_uit
+ _r_un     |              |              |
+"
+  ("m" compile)
+  ("c" multi-compile-run)
+  ("r" quickrun)
+  ("+" sk/eshell-vertical)
+  ("-" sk/eshell-horizontal)
+  ("|" sk/multi-term-vertical)
+  ("_" sk/multi-term-horizontal)
+  ("L" sk/hydra-of-langs/body :exit t)
+  ("H" sk/hydra-of-hydras/body :exit t)
+  ("x" counsel-M-x :color blue)
+  ("q" nil :color blue))
+
+;; Evil maps
+(define-key evil-normal-state-map (kbd "SPC m") 'sk/hydra-for-cpp/body)
+
+;;; Julia, R, and other statistic languages
+
+;; ESS
+(sk/require-package 'ess)
+(add-to-list 'auto-mode-alist '("\\.R$" . R-mode))
+
+;; Vertical split julia REPL
+(defun sk/julia-shell-here ()
+  "opens up a new julia REPL in the directory associated with the current buffer's file."
+  (interactive)
+  (require 'ess-site)
+  (split-window-right)
+  (other-window 1)
+  (julia)
+  (other-window 1))
+
+;; Hydra - for julia
+(defhydra sk/hydra-for-julia (:color pink
+                              :hint nil)
+  "
+ ^Send^     | ^Shell^  | ^Menu^
+ ^^^^^^^^^---------|--------|----------------
+ _f_unction | _s_tart  | _H_ome    e_x_ecute
+ _l_ine     | s_w_itch | _L_ang    _q_uit
+ _r_egion   |        |
+ _a_ll      |        |
+"
+  ("f" ess-eval-function)
+  ("l" ess-eval-line)
+  ("r" ess-eval-region)
+  ("a" ess-eval-buffer)
+  ("s" sk/julia-shell-here)
+  ("w" ess-switch-to-ESS)
+  ("L" sk/hydra-of-langs/body :exit t)
+  ("H" sk/hydra-of-hydras/body :exit t)
+  ("x" counsel-M-x :color blue)
+  ("q" nil :color blue))
+
+;; Vertical split r REPL
+(defun sk/r-shell-here ()
+  "opens up a new r REPL in the directory associated with the current buffer's file."
+  (interactive)
+  (require 'ess-site)
+  (split-window-right)
+  (other-window 1)
+  (R)
+  (other-window 1))
+
+;; Hydra - for R
+(defhydra sk/hydra-for-r (:color pink
+                          :hint nil)
+  "
+ ^Send^     | ^Shell^  | ^Menu^
+ ^^^^^^^^^---------|--------|----------------
+ _f_unction | _s_tart  | _H_ome    e_x_ecute
+ _l_ine     | s_w_itch | _L_ang    _q_uit
+ _r_egion   |        |
+ _a_ll      |        |
+"
+  ("f" ess-eval-function)
+  ("l" ess-eval-line)
+  ("r" ess-eval-region)
+  ("a" ess-eval-buffer)
+  ("s" sk/r-shell-here)
+  ("w" ess-switch-to-ESS)
+  ("L" sk/hydra-of-langs/body :exit t)
+  ("H" sk/hydra-of-hydras/body :exit t)
+  ("x" counsel-M-x :color blue)
+  ("q" nil :color blue))
+
+;;; Python
+
+;; Highlight indentation
+(sk/require-package 'highlight-indentation)
+
+;; Elpy
+(sk/require-package 'elpy)
+(add-hook 'python-mode-hook 'elpy-enable)
+(defun sk/diminish-elpy ()
+  (interactive)
+  (elpy-use-ipython)
+  (diminish 'elpy-mode ""))
+(add-hook 'elpy-mode-hook 'sk/diminish-elpy)
+
+;; Cython mode
+(sk/require-package 'cython-mode)
+
+;; Virtualenv for python
+(sk/require-package 'virtualenvwrapper)
+(setq venv-location "~/Py34/")
+
+;; Hydra - for python
+(defhydra sk/hydra-for-python (:color pink
+                               :hint nil)
+  "
+ ^Send^     | ^Shell^  | ^Navigate^   |
+ ^^^^^^^^^---------|--------|------------|--------------
+ _f_unction | _s_tart  | _d_efinition | _H_ome  e_x_ecute
+ _l_ine     | s_w_itch | l_o_cation   | _L_ang  _q_uit
+ _r_egion   |        |            |
+ _a_ll      |        |            |
+"
+  ("f" python-shell-send-defun)
+  ("l" elpy-shell-send-current-statement)
+  ("r" elpy-shell-send-region)
+  ("a" elpy-shell-send-buffer)
+  ("s" elpy-shell-switch-to-shell)
+  ("w" elpy-shell-switch-to-shell)
+  ("d" elpy-goto-definition)
+  ("o" elpy-goto-location)
+  ("L" sk/hydra-of-langs/body :exit t)
+  ("H" sk/hydra-of-hydras/body :exit t)
+  ("x" counsel-M-x :color blue)
+  ("q" nil :color blue))
+
+;;; Lisp family
+
+;; Lisp - General
+(sk/require-package 'paredit)
+(add-hook 'emacs-lisp-mode-hook 'paredit-mode)
+(add-hook 'lisp-mode-hook 'paredit-mode)
+(defun sk/diminish-paredit ()
+  (interactive)
+  (diminish 'paredit-mode ""))
+(add-hook 'paredit-mode-hook 'sk/diminish-paredit)
+
+;; Slime
+(sk/require-package 'slime)
+(add-hook 'emacs-lisp-mode-hook 'slime-mode)
+(add-hook 'lisp-mode-hook 'slime-mode)
+(defun sk/diminish-slime ()
+  (interactive)
+  (diminish 'slime-mode ""))
+(add-hook 'slime-mode-hook 'sk/diminish-slime)
+
+;;; Markdown
+(sk/require-package 'markdown-mode)
+(add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
+
+;;; Pandoc mode
+(sk/require-package 'pandoc-mode)
+(add-hook 'markdown-mode-hook 'pandoc-mode)
+
+;;; LaTeX-mode
+(sk/require-package 'auctex)
+(sk/require-package 'auctex-latexmk)
+
+;; Company auctex
+(sk/require-package 'company-auctex)
+
+;;; Web mode
+(sk/require-package 'web-mode)
+(add-hook 'html-mode-hook 'web-mode)
+
+;; Company for web mode
+(sk/require-package 'company-web)
+
+;;; JavaScript
+(sk/require-package 'js2-mode)
+(sk/require-package 'skewer-mode)
+
+;;; Applescript
+(sk/require-package 'applescript-mode)
+(add-to-list 'auto-mode-alist '("\\.scpt\\'" . applescript-mode))
+(add-to-list 'auto-mode-alist '("\\.applescript\\'" . applescript-mode))
+
+;;; Go lang
+(sk/require-package 'go-mode)
+
+;; Company for Go
+(sk/require-package 'company-go)
+
+;;; SQL
+(sk/require-package 'emacsql)
+(sk/require-package 'emacsql-mysql)
+(sk/require-package 'emacsql-sqlite)
+(sk/require-package 'esqlite)
+(sk/require-package 'pcsv)
+
+;;; Java
+(sk/require-package 'emacs-eclim)
+(defun sk/eclim-mode-hook ()
+  (interactive)
+  (require 'eclimd)
+  (require 'company-emacs-eclim)
+  (setq eclim-executable (or (executable-find "eclim") "/Applications/Eclipse/Eclipse.app/Contents/Eclipse/eclim")
+        eclimd-executable (or (executable-find "eclimd") "/Applications/Eclipse/Eclipse.app/Contents/Eclipse/eclimd")
+        eclimd-wait-for-process nil
+        eclimd-default-workspace "~/Documents/workspace/eclipse/")
+  (company-emacs-eclim-setup))
+(add-hook 'eclim-mode-hook 'sk/eclim-mode-hook)
+(add-hook 'java-mode-hook 'eclim-mode)
+
+;;; Sage
+(sk/require-package 'sage-shell-mode)
+(setq sage-shell:sage-executable "/Applications/Sage-6.8.app/Contents/Resources/sage/sage"
+      sage-shell:input-history-cache-file "~/.emacs.d/.sage_shell_input_history"
+      sage-shell-sagetex:auctex-command-name "LaTeX"
+      sage-shell-sagetex:latex-command "latexmk")
+
+;;; MATLAB mode
+(sk/require-package 'matlab-mode)
+(eval-after-load 'matlab
+  '(add-to-list 'matlab-shell-command-switches "-nosplash"))
+(setq matlab-shell-command "/Applications/MATLAB_R2014a.app/bin/matlab"
+      matlab-indent-function t)
+
+;; Vertical split matlab shell
+(defun sk/matlab-shell-here ()
+  "opens up a new matlab shell in the directory associated with the current buffer's file."
+  (interactive)
+  (split-window-right)
+  (other-window 1)
+  (matlab-shell)
+  (other-window 1))
+
+;; Hydra - for matlab
+(defhydra sk/hydra-for-matlab (:color pink
+                               :hint nil)
+  "
+ ^Send^    | ^Shell^  | ^Menu^
+ ^^^^^^^^--------|--------|----------------
+ _c_ell    | _s_tart  | _H_ome    e_x_ecute
+ _l_ine    | s_w_itch | _L_ang    _q_uit
+ _r_egion  |        |
+ co_m_mand |        |
+"
+  ("c" matlab-shell-run-cell)
+  ("l" matlab-shell-run-region-or-line)
+  ("r" matlab-shell-run-region)
+  ("m" ess-eval-buffer)
+  ("s" sk/matlab-shell-here)
+  ("w" matlab-show-matlab-shell-buffer)
+  ("L" sk/hydra-of-langs/body :exit t)
+  ("H" sk/hydra-of-hydras/body :exit t)
+  ("x" counsel-M-x :color blue)
+  ("q" nil :color blue))
+
+;;;; Org mode
+
+;;; Org settings
+
+;; General settings
+(setq org-directory "~/Dropbox/notes/"
+      org-completion-use-ido nil
+      ;; Indent
+      org-startup-indented t
+      org-hide-leading-stars t
+      ;; Images
+      org-image-actual-width '(300)
+      ;; Source code
+      org-src-fontify-natively t
+      org-src-tab-acts-natively t
+      ;; Quotes
+      org-export-with-smart-quotes t
+      ;; Citations
+      org-latex-to-pdf-process '("pdflatex %f" "biber %b" "pdflatex %f" "pdflatex %f"))
+
+;; Tags with fast selection keys
+(setq org-tag-alist (quote (("errand" . ?e)
+                            ("blog" . ?b)
+                            ("personal" . ?k)
+                            ("report" . ?r)
+                            ("thesis" . ?t) ;; temporary
+                            ("accounts" . ?a)
+                            ("lubby" . ?l)
+                            ("movie" . ?m)
+                            ("netflix" . ?N)
+                            ("via" . ?v)
+                            ("idea" . ?i)
+                            ("project" . ?p)
+                            ("job" . ?j)
+                            ("work" . ?w)
+                            ("home" . ?h)
+                            ("noexport" . ?x)
+                            ("Technial" . ?T)
+                            ("Random" . ?R)
+                            ("Crafts" . ?C)
+                            ("story/news" . ?s)
+                            ("note" . ?n))))
+
+;; TODO Keywords
+(setq org-todo-keywords
+      '((sequence "TODO(t)" "HOLD(h@/!)" "|" "DONE(d!)")
+        (sequence "|" "CANCELLED(c@)")))
+
+;; Agenda settings
+(setq org-agenda-files (list "~/Dropbox/notes/work.org"
+                             "~/Dropbox/notes/blog.org"
+                             "~/Dropbox/notes/ledger.org"
+                             "~/Dropbox/notes/notes.org"))
+(setq org-deadline-warning-days 7
+      org-agenda-span 'fortnight
+      org-agenda-skip-scheduled-if-deadline-is-shown t)
+
+;; Links
+(setq org-link-abbrev-alist
+      '(("bugzilla"  . "http://10.1.2.9/bugzilla/show_bug.cgi?id=")
+        ("url-to-ja" . "http://translate.google.fr/translate?sl=en&tl=ja&u=%h")
+        ("google"    . "http://www.google.com/search?q=")
+        ("gmaps"      . "http://maps.google.com/maps?q=%s")))
+
+;; Capture templates
+(setq org-capture-templates
+      '(("n" "Note" entry (file+headline "~/Dropbox/notes/notes.org" "Notes")
+         "* %?\nEntered on %U\n  %i\n  %a")
+        ("r" "Report" entry (file+headline "~/Dropbox/notes/work.org" "Thesis Notes") ;; temporary
+         "* %?\nEntered on %U\n  %i\n  %a")
+        ("j" "Job leads/status" entry (file+headline "~/Dropbox/notes/notes.org" "Job leads/status")
+         "* %?\nEntered on %U\n  %i\n  %a")
+        ("s" "Story/News" entry (file+headline "~/Dropbox/notes/notes.org" "Story/News")
+         "* %?\nEntered on %U\n  %i\n  %a")
+        ("a" "Accounts - Ledger" entry (file+datetree "~/Dropbox/notes/ledger.org")
+         "* %?\nEntered on %U\n  %i\n  %a")
+        ("b" "Blog" entry (file+datetree "~/Dropbox/notes/blog.org")
+         "* %?\nEntered on %U\n  %i\n  %a")
+        ("p" "Project" entry (file+headline "~/Dropbox/notes/notes.org" "Projects")
+         "* %?\nEntered on %U\n  %i\n  %a")
+        ("w" "Work" entry (file+headline "~/Dropbox/notes/work.org" "Work")
+         "* %?\nEntered on %U\n  %i\n  %a")
+        ("h" "Home" entry (file+headline "~/Dropbox/notes/notes.org" "Home")
+         "* %?\nEntered on %U\n  %i\n  %a")))
+
+;; LaTeX support
+(sk/require-package 'cdlatex)
+(defun sk/diminish-org ()
+  (interactive)
+  (diminish 'org-indent-mode "")
+  (diminish 'org-cdlatex-mode ""))
+(add-hook 'org-mode-hook 'sk/diminish-org)
+(add-hook 'org-mode-hook 'org-cdlatex-mode)
+
+;;; Custom functions
+
+;; Correct those annoying double caps typos
+(defun sk/dcaps-to-scaps ()
+  "Convert word in DOuble CApitals to Single Capitals."
+  (interactive)
+  (and (= ?w (char-syntax (char-before)))
+       (save-excursion
+         (and (if (called-interactively-p)
+                  (skip-syntax-backward "w")
+                (= -3 (skip-syntax-backward "w")))
+              (let (case-fold-search)
+                (looking-at "\\b[[:upper:]]\\{2\\}[[:lower:]]"))
+              (capitalize-word 1)))))
+(define-minor-mode dubcaps-mode
+  "Toggle `dubcaps-mode'.  Converts words in DOuble CApitals to
+Single Capitals as you type."
+  :init-value nil
+  :lighter (" DC")
+  (if dubcaps-mode
+      (add-hook 'post-self-insert-hook #'sk/dcaps-to-scaps nil 'local)
+    (remove-hook 'post-self-insert-hook #'sk/dcaps-to-scaps 'local)))
+(defun sk/diminish-dubcaps ()
+  (interactive)
+  (diminish 'dubcaps-mode ""))
+(add-hook 'dubcaps-mode-hook 'sk/diminish-dubcaps)
+(add-hook 'org-mode-hook #'dubcaps-mode)
+
+;; PDF pages note taking support
+(defun sk/other-pdf-next ()
+  "Turns the next page in adjoining PDF file"
+  (interactive)
+  (other-window 1)
+  (doc-view-next-page)
+  (other-window 1))
+(defun sk/other-pdf-previous ()
+  "Turns the previous page in adjoining PDF file"
+  (interactive)
+  (other-window 1)
+  (doc-view-previous-page)
+  (other-window 1))
+
+;; Evil maps
+(define-key evil-normal-state-map (kbd "]p") 'sk/other-pdf-next)
+(define-key evil-normal-state-map (kbd "[p") 'sk/other-pdf-previous)
+
+;;; Coding and external packages
+
+;; Babel for languages
+(sk/require-package 'babel)
+(setq org-confirm-babel-evaluate nil)
+;; Org load languages
+(defun sk/org-custom-load ()
+  (interactive)
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((emacs-lisp . t)
+     ;; (dot . t)
+     ;; (ditaa . t)
+     (latex . t)
+     (gnuplot . t)
+     (sh . t)
+     ;; (C . t)
+     (R . t)
+     ;; (octave . t)
+     (matlab . t)
+     (python . t))))
+(sk/require-package 'ob-ipython)
+
+;; Export using reveal and impress-js
+(sk/require-package 'ox-reveal)
+(sk/require-package 'ox-impress-js)
+
+;; Restructred text and pandoc support
+(sk/require-package 'ox-rst)
+(sk/require-package 'ox-pandoc)
+
+;;; Hydras
+
+;; Org navigation and manipulation
+(defhydra sk/hydra-org-manipulate (:color pink
+                                   :hint nil)
+  "
+^Move heading^      | ^Item^ | ^Menu^
+^^^^^^^^^^^^------------------|------|--------------
+^ ^ _k_ ^ ^   _<_ promote | _u_p   | _H_ome  e_x_ecute
+_h_ ^+^ _l_   _>_ demote  | _d_own | _O_rg   _q_uit
+^ ^ _j_ ^ ^             |      |
+"
+  ("h" org-metaleft)
+  ("l" org-metaright)
+  ("j" org-metadown)
+  ("k" org-metaup)
+  ("<" org-promote)
+  (">" org-demote)
+  ("d" org-move-item-down)
+  ("u" org-move-item-up)
+  ("H" sk/hydra-of-hydras/body :exit t)
+  ("O" sk/hydra-of-org/body :exit t)
+  ("x" counsel-M-x :color blue)
+  ("q" nil :color blue))
+
+;; Evil maps
+(define-key evil-normal-state-map (kbd "gom") 'sk/hydra-org-manipulate/body)
+
+;; Org table manipulation
+(defhydra sk/hydra-org-tables (:color pink
+                               :hint nil)
+  "
+^Field^ | ^Shift^ | ^Insert^  | ^Delete^ | ^Field^ | ^Table^    | ^Formula^ | ^Menu^
+^^^^^^^^^^^------|-------|---------|--------|-------|----------|---------|-------------
+^ ^ _k_ ^ ^ | ^ ^ _p_ ^ ^ | _r_ow     | _R_ow    | _e_dit  | _a_lign    | _+_ sum   | _O_rg  e_x_ecute
+_h_ ^+^ _l_ | _b_ ^+^ _f_ | _c_olumn  | _C_olumn | _b_lank | _|_ create | _=_ eval  | _H_ome _q_uit
+^ ^ _j_ ^ ^ | ^ ^ _n_ ^ ^ | _-_ hline |        | _i_nfo  |          | _f_ edit  |
+"
+  ("a" org-table-align)
+  ("l" org-table-next-field)
+  ("h" org-table-previous-field)
+  ("j" org-table-end-of-field)
+  ("k" org-table-beginning-of-field)
+  ("r" org-table-insert-row)
+  ("c" org-table-insert-column)
+  ("-" org-table-insert-hline)
+  ("n" org-table-move-row-down)
+  ("p" org-table-move-row-up)
+  ("b" org-table-move-column-left)
+  ("f" org-table-move-column-right)
+  ("R" org-table-kill-row)
+  ("C" org-table-delete-column)
+  ("b" org-table-blank-field)
+  ("e" org-table-edit-field)
+  ("i" org-table-field-info)
+  ("+" org-table-sum)
+  ("=" org-table-eval-formula)
+  ("f" org-table-edit-formulas)
+  ("|" org-table-create-or-convert-from-region)
+  ("H" sk/hydra-of-hydras/body :exit t)
+  ("O" sk/hydra-of-org/body :exit t)
+  ("x" counsel-M-x :color blue)
+  ("q" nil :color blue))
+
+;; Evil maps
+(define-key evil-normal-state-map (kbd "go|") 'sk/hydra-org-tables/body)
+
+;; Org clock manipulation
+(defhydra sk/hydra-org-clock (:color pink
+                              :hint nil)
+  "
+^Clock^              | ^Timer^ | ^Stamp^    | ^Menu^
+^^^^^^^^^-------------------|-------|----------|---------
+_i_n       _z_ resolve | _b_egin | _s_tamp    | _O_rg
+_o_ut      _l_ast      | _e_nd   | _I_nactive | _H_ome
+_r_eport   _c_ancel    | _t_imer |          | e_x_ecute
+_d_isplay  _g_oto      | _T_ set |          | _q_uit
+"
+  ("i" org-clock-in)
+  ("o" org-clock-out)
+  ("r" org-clock-report)
+  ("z" org-resolve-clocks)
+  ("c" org-clock-cancel)
+  ("d" org-clock-display)
+  ("l" org-clock-in-last)
+  ("g" org-clock-goto)
+  ("t" org-timer)
+  ("T" org-timer-set-timer)
+  ("b" org-timer-start)
+  ("e" org-timer-stop)
+  ("s" org-time-stamp)
+  ("I" org-time-stamp-inactive)
+  ("H" sk/hydra-of-hydras/body :exit t)
+  ("O" sk/hydra-of-org/body :exit t)
+  ("x" counsel-M-x :color blue)
+  ("q" nil :color blue))
+
+;; Evil maps
+(define-key evil-normal-state-map (kbd "goc") 'sk/hydra-org-clock/body)
+
+;; Org tags and todo manipulation
+(defhydra sk/hydra-org-tag-todo (:color pink
+                                 :hint nil)
+  "
+^tags^        | ^TODO^     | ^Checkbox^     | ^Priority^   | ^Menu^
+^^^^^^^^^^^^^------------|----------|--------------|------------|---------
+_t_ags        | _T_ODO     | _c_heckbox     | _#_ priority | _O_rg
+_v_iew        | _d_eadline | t_o_ggle       | _+_ increase | _H_ome
+_m_atch       | _C_lose    | _u_pdate stats | _-_ decrease | e_x_ecute
+s_p_arse-tree | _s_chedule | _r_eset        |            | _q_uit
+            | _a_genda   | _U_pdate count |            |
+"
+  ("t" org-set-tags-command :color blue)
+  ("v" org-tags-view)
+  ("m" org-match-sparse-tree :color blue)
+  ("p" org-sparse-tree :color blue)
+  ("#" org-priority)
+  ("+" org-priority-up)
+  ("-" org-priority-down)
+  ("T" org-todo :color blue)
+  ("d" org-deadline :color blue)
+  ("C" org-deadline-close :color blue)
+  ("s" org-schedule :color blue)
+  ("a" org-check-deadlines)
+  ("c" org-checkbox)
+  ("o" org-toggle-checkbox)
+  ("U" org-update-checkbox-count-maybe)
+  ("r" org-reset-checkbox-state-subtree)
+  ("u" org-update-statistics-cookies)
+  ("H" sk/hydra-of-hydras/body :exit t)
+  ("O" sk/hydra-of-org/body :exit t)
+  ("x" counsel-M-x :color blue)
+  ("q" nil :color blue))
+
+;; Evil maps
+(define-key evil-normal-state-map (kbd "got") 'sk/hydra-org-tag-todo/body)
+
+;; Org drawer
+(defhydra sk/hydra-org-drawer (:color pink
+                               :hint nil)
+  "
+ ^Drawer^ | ^Property^ | ^Menu^
+^^^^^^^^^^--------|----------|--------
+ _i_nsert | _p_roperty | _O_rg
+        | _s_et      | _H_ome
+        | _d_elete   | e_x_ecute
+        | _t_oggle   | _q_uit
+"
+  ("i" org-insert-drawer)
+  ("p" org-insert-property-drawer)
+  ("s" org-set-property)
+  ("d" org-delete-property)
+  ("t" org-toggle-ordered-property)
+  ("H" sk/hydra-of-hydras/body :exit t)
+  ("O" sk/hydra-of-org/body :exit t)
+  ("x" counsel-M-x :color blue)
+  ("q" nil :color blue))
+
+;; Evil maps
+(define-key evil-normal-state-map (kbd "gow") 'sk/hydra-org-drawer/body)
+
+;; Hydra of org-mode
+(defhydra sk/hydra-of-org (:color pink
+                           :hint nil)
+  "
+ ^Outline^       | ^Item^  | ^Table^ | ^Block^  | ^Link^    | ^State^     | ^Toggle^              | ^Subtree^ | ^Org and Menu^
+ ^^^^^^^^^^^--------------|-------|-------|--------|---------|-----------|---------------------|---------|--------------------
+ ^ ^ _k_ ^ ^  ^ ^ _p_ ^ ^  | ^ ^ _u_ ^ ^ | ^ ^ ^ ^ ^ ^ | ^ ^ _[_ ^ ^  | ^ ^ _{_ ^ ^   | _t_ag/_T_odo  | n_o_te      lat_e_x     | _s_ubtree | _c_apture  _R_eorganize
+ _h_ ^+^ _l_  ^ ^ ^+^ ^ ^  | ^ ^ ^+^ ^ ^ | _b_ ^+^ _f_ | ^ ^ ^+^ ^ ^  | ^ ^ ^+^ ^ ^   | re_v_eal    | _F_ootnote  _i_mages    | _w_iden   | _a_genda   _|_ table
+ ^ ^ _j_ ^ ^  ^ ^ _n_ ^ ^  | ^ ^ _d_ ^ ^ | ^ ^ ^ ^ ^ ^ | ^ ^ _]_ ^ ^  | ^ ^ _}_ ^ ^   | _r_efile    | RefTe_X_    _*_ heading | _K_ill    | _-_ code   _H_ome
+               |       | c_L_ear | _U_pdate | _D_isplay | _A_rchive   | eff_O_rt    _E_xport    | cop_y_    | _C_lock    e_x_ecute
+               |       |       |        | _S_tore   |           |           _>_ cal     |         | dra_W_er   _q_uit
+               |       |       |        | _I_nsert  |           |           _<_ date    |         |
+"
+  ("j" outline-next-visible-heading)
+  ("k" outline-previous-visible-heading)
+  ("l" org-down-element)
+  ("h" org-up-element)
+  ("g" sk/hydra-deft :exit t)
+  ("u" org-next-item)
+  ("d" org-previous-item)
+  ("n" org-forward-heading-same-level)
+  ("p" org-backward-heading-same-level)
+  ("]" org-next-block)
+  ("[" org-previous-block)
+  ("U" org-update-all-dblocks :color blue)
+  ("}" org-next-link)
+  ("{" org-previous-link)
+  ("D" org-toggle-link-display)
+  ("S" org-store-link)
+  ("I" org-insert-link)
+  ("f" org-table-next-field)
+  ("b" org-table-previous-field)
+  ("L" org-table-blank-field :color blue)
+  ("t" sk/hydra-org-tag-todo/body :exit t)
+  ("T" sk/hydra-org-tag-todo/body :exit t)
+  ("|" sk/hydra-org-tables :exit t)
+  ("v" org-reveal)
+  ("r" org-refile :color blue)
+  ("A" org-archive-subtree-default :color blue)
+  ("o" org-note)
+  ("F" org-footnote)
+  ("W" sk/hydra-org-drawer/body :exit t)
+  ("e" org-preview-latex-fragment)
+  ("i" org-display-inline-images)
+  ("*" org-toggle-heading)
+  ("E" org-export-dispatch)
+  ("C" sk/hydra-org-clock/body :exit t)
+  ("X" org-reftex-citation :color blue)
+  (">" org-goto-calendar :color blue)
+  ("<" org-date-from-calendar)
+  ("O" org-set-effort)
+  ("s" org-narrow-to-subtree)
+  ("w" widen)
+  ("K" org-cut-subtree)
+  ("y" org-copy-subtree)
+  ("c" org-capture)
+  ("a" org-agenda)
+  ("-" org-edit-src-code)
+  ("R" sk/hydra-org-manipulate/body :exit t)
+  ("H" sk/hydra-of-hydras/body :exit t)
+  ("O" sk/hydra-of-org/body :exit t)
+  ("x" counsel-M-x :color blue)
+  ("q" nil :color blue))
+
+;; Evil maps
+(define-key evil-normal-state-map (kbd "goo") 'sk/hydra-of-org/body)
+
+;;; Evil maps for general org mode
+(evil-set-initial-state 'calendar-mode 'emacs)
+(define-key evil-normal-state-map (kbd "SPC c") 'org-capture)
+(define-key evil-normal-state-map (kbd "SPC o") 'org-agenda)
+(define-key evil-normal-state-map (kbd "SPC -") 'org-edit-src-code)
+(define-key evil-normal-state-map (kbd "SPC =") 'org-edit-src-exit)
+(define-key evil-normal-state-map (kbd "SPC ]") 'org-narrow-to-subtree)
+(define-key evil-normal-state-map (kbd "[u") 'org-up-element)
+(define-key evil-normal-state-map (kbd "]u") 'org-down-element)
+(define-key evil-normal-state-map (kbd "[o") 'org-previous-visible-heading)
+(define-key evil-normal-state-map (kbd "]o") 'org-next-visible-heading)
+(define-key evil-normal-state-map (kbd "[i") 'org-previous-item)
+(define-key evil-normal-state-map (kbd "]i") 'org-next-item)
+(define-key evil-normal-state-map (kbd "[h") 'org-backward-heading-same-level)
+(define-key evil-normal-state-map (kbd "]h") 'org-forward-heading-same-level)
+(define-key evil-normal-state-map (kbd "[b") 'org-previous-block)
+(define-key evil-normal-state-map (kbd "]b") 'org-next-block)
+(define-key evil-normal-state-map (kbd "[l") 'org-previous-link)
+(define-key evil-normal-state-map (kbd "]l") 'org-next-link)
+(define-key evil-normal-state-map (kbd "[f") 'org-table-previous-field)
+(define-key evil-normal-state-map (kbd "]f") 'org-table-next-field)
+(define-key evil-normal-state-map (kbd "gob") 'org-table-blank-field)
+(define-key evil-normal-state-map (kbd "gox") 'org-preview-latex-fragment)
+(define-key evil-normal-state-map (kbd "goi") 'org-toggle-inline-images)
+(define-key evil-normal-state-map (kbd "gor") 'org-refile)
+(define-key evil-normal-state-map (kbd "goa") 'org-archive-subtree-default)
+(define-key evil-normal-state-map (kbd "gon") 'org-add-note)
+(define-key evil-normal-state-map (kbd "gof") 'org-footnote-new)
+(define-key evil-normal-state-map (kbd "goe") 'org-export-dispatch)
+(define-key evil-normal-state-map (kbd "gol") 'org-insert-link)
+(define-key evil-normal-state-map (kbd "gou") 'org-store-link)
+(define-key evil-normal-state-map (kbd "god") 'org-toggle-link-display)
+(define-key evil-normal-state-map (kbd "goy") 'org-copy-subtree)
+(define-key evil-normal-state-map (kbd "gok") 'org-cut-subtree)
+(define-key evil-normal-state-map (kbd "goh") 'org-toggle-heading)
+(define-key evil-normal-state-map (kbd "go>") 'org-goto-calendar)
+(define-key evil-normal-state-map (kbd "go<") 'org-date-from-calendar)
+(define-key evil-normal-state-map (kbd "gos") 'org-sort)
+(define-key evil-visual-state-map (kbd "SPC c") 'org-capture)
+(define-key evil-visual-state-map (kbd "SPC o") 'org-agenda)
+
+;; Themes
+(load-theme 'leuven t)
 
 ;;; Evil - Vim emulation - Continued
 ;; Escape for everything
@@ -698,8 +1919,6 @@ _h_ ^+^ _l_      | _n_ext     | _a_ppend  le_t_ters           | e_x_ecute
 (define-key evil-normal-state-map (kbd "Z") 'delete-other-windows)
 (define-key evil-normal-state-map (kbd "Q") 'winner-undo)
 (define-key evil-normal-state-map (kbd "K") 'man)
-(define-key evil-normal-state-map (kbd "+") 'eshell-vertical)
-(define-key evil-normal-state-map (kbd "-") 'eshell-horizontal)
 (define-key evil-normal-state-map (kbd "\\") 'universal-argument)
 (define-key evil-normal-state-map (kbd "gs") 'electric-newline-and-maybe-indent)
 (define-key evil-normal-state-map (kbd "gl") 'browse-url-at-point)
@@ -944,9 +2163,6 @@ _h_ ^+^ _l_      | _n_ext     | _a_ppend  le_t_ters           | e_x_ecute
 (sk/require-package 'dash-at-point)
 (define-key evil-normal-state-map (kbd "SPC 1") 'dash-at-point-with-docset)
 
-;;; Cmake ide
-(sk/require-package 'cmake-ide)
-
 ;;; Interact with OS services
 ;; Jabber
 (sk/require-package 'jabber)
@@ -1047,75 +2263,6 @@ _h_ ^+^ _l_      | _n_ext     | _a_ppend  le_t_ters           | e_x_ecute
 (define-key evil-normal-state-map (kbd "zf") 'origami-close-node)
 (define-key evil-normal-state-map (kbd "zd") 'origami-open-node)
 
-;; Flx with company
-(sk/require-package 'flx)
-(sk/require-package 'company-flx)
-
-;;; Company
-(sk/require-package 'company)
-;; (with-eval-after-load 'company
-;;   (company-flx-mode +1))
-(eval-after-load 'company
-  '(add-to-list 'company-backends 'company-files))
-(setq company-idle-delay 0
-      company-minimum-prefix-length 1
-      company-require-match 0
-      company-selection-wrap-around t
-      company-dabbrev-downcase nil)
-;; Maps
-(global-set-key [(control return)] 'company-complete-common-or-cycle)
-(define-key evil-normal-state-map (kbd "SPC ac") 'company-mode)
-(defun my-company-hook ()
-  (interactive)
-  (diminish 'company-mode " ς")
-  (define-key company-active-map (kbd "C-n") 'company-select-next)
-  (define-key company-active-map (kbd "C-p") 'company-select-previous)
-  (define-key company-active-map [tab] 'company-complete-common-or-cycle))
-(add-hook 'company-mode-hook 'my-company-hook)
-(add-hook 'prog-mode-hook 'company-mode)
-
-;; Company C headers
-(sk/require-package 'company-c-headers)
-(eval-after-load 'company
-  '(add-to-list 'company-backends 'company-c-headers))
-
-;; Irony mode for C++
-(sk/require-package 'irony)
-(defun diminish-irony ()
-  (interactive)
-  (diminish 'irony-mode " Γ"))
-(add-hook 'irony-mode-hook 'diminish-irony)
-(add-hook 'c++-mode-hook 'irony-mode)
-(add-hook 'c-mode-hook 'irony-mode)
-(add-hook 'objc-mode-hook 'irony-mode)
-;; replace the `completion-at-point' and `complete-symbol' bindings in
-;; irony-mode's buffers by irony-mode's function
-(defun my-irony-mode-hook ()
-  (define-key irony-mode-map [remap completion-at-point]
-    'irony-completion-at-point-async)
-  (define-key irony-mode-map [remap complete-symbol]
-    'irony-completion-at-point-async))
-(add-hook 'irony-mode-hook 'my-irony-mode-hook)
-(add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
-
-;; Company irony
-(sk/require-package 'company-irony)
-(sk/require-package 'company-irony-c-headers)
-(eval-after-load 'company
-  '(add-to-list 'company-backends 'company-irony))
-
-;; Support auctex
-(sk/require-package 'company-auctex)
-
-;; Support Go
-(sk/require-package 'company-go)
-
-;; Support tern
-(sk/require-package 'company-tern)
-
-;; Support web mode
-(sk/require-package 'company-web)
-
 ;; Play well with FCI mode
 (defvar-local company-fci-mode-on-p nil)
 (defun company-turn-off-fci (&rest ignore)
@@ -1128,262 +2275,7 @@ _h_ ^+^ _l_      | _n_ext     | _a_ppend  le_t_ters           | e_x_ecute
 (add-hook 'company-completion-finished-hook 'company-maybe-turn-on-fci)
 (add-hook 'company-completion-cancelled-hook 'company-maybe-turn-on-fci)
 
-;;; YASnippet
-(sk/require-package 'yasnippet)
-;; Add yasnippet support for all company backends
-(defvar company-mode/enable-yas t
-  "Enable yasnippet for all backends.")
-(defun company-mode/backend-with-yas (backend)
-  (if (or (not company-mode/enable-yas) (and (listp backend) (member 'company-yasnippet backend)))
-      backend
-    (append (if (consp backend) backend (list backend))
-            '(:with company-yasnippet))))
-(defun yas-company-hook ()
-  (interactive)
-  (setq company-backends (mapcar #'company-mode/backend-with-yas company-backends)))
-(add-hook 'company-mode-hook 'yas-company-hook)
-;; Just enable helm/ivy/ido and this uses them automatically
-(setq yas-prompt-functions '(yas-completing-prompt))
-;; Disable in shell
-(defun force-yasnippet-off ()
-  (yas-minor-mode -1)
-  (setq yas-dont-activate t))
-(add-hook 'term-mode-hook 'force-yasnippet-off)
-(add-hook 'shell-mode-hook 'force-yasnippet-off)
-(defun diminish-yas ()
-  (interactive)
-  (diminish 'yas-minor-mode " γ"))
-(add-hook 'yas-global-mode-hook 'diminish-yas)
-(add-hook 'prog-mode-hook 'yas-global-mode)
-(define-key evil-normal-state-map (kbd "SPC ay") 'yas-global-mode)
-(define-key evil-insert-state-map (kbd "C-j") 'yas-insert-snippet)
-
 ;;; Language and Syntax
-
-;; ESS - Emacs speaks statistics
-(sk/require-package 'ess)
-(add-to-list 'auto-mode-alist '("\\.R$" . R-mode))
-;; Vertical split R shell
-(defun r-shell-here ()
-  "opens up a new r shell in the directory associated with the current buffer's file."
-  (interactive)
-  (require 'ess-site)
-  (split-window-right)
-  (other-window 1)
-  (R)
-  (other-window 1))
-;; Vertical split julia REPL
-(defun julia-shell-here ()
-  "opens up a new julia REPL in the directory associated with the current buffer's file."
-  (interactive)
-  (require 'ess-site)
-  (split-window-right)
-  (other-window 1)
-  (julia)
-  (other-window 1))
-
-;; Hydra - for julia
-(defhydra hydra-julia (:color red
-                       :hint nil)
-  "
- ^Send^       ^Shell^
- ^^^^^^^^^-------------------------
- _f_unction   _s_tart    _L_ang    _q_uit
- _l_ine       _S_witch
- _r_egion     _o_ther
- _b_uffer
-"
-  ("f" ess-eval-function)
-  ("l" ess-eval-line)
-  ("r" ess-eval-region)
-  ("b" ess-eval-buffer)
-  ("s" julia-shell-here)
-  ("S" ess-switch-to-ESS)
-  ("o" other-window)
-  ("L" hydra-langs/body :exit t)
-  ("q" nil :color blue))
-
-;; Hydra - for r
-(defhydra hydra-r (:color red
-                   :hint nil)
-  "
- ^Send^       ^Shell^
- ^^^^^^^^^-------------------------
- _f_unction   _s_tart    _L_ang    _q_uit
- _l_ine       _S_witch
- _r_egion     _o_ther
- _b_uffer
-"
-  ("f" ess-eval-function)
-  ("l" ess-eval-line)
-  ("r" ess-eval-region)
-  ("b" ess-eval-buffer)
-  ("s" r-shell-here)
-  ("S" ess-switch-to-ESS)
-  ("o" other-window)
-  ("L" hydra-langs/body :exit t)
-  ("q" nil :color blue))
-
-;; Lisp
-(sk/require-package 'paredit)
-
-;; Slime
-(sk/require-package 'slime)
-
-;; Markdown
-(sk/require-package 'markdown-mode)
-(add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
-(add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
-
-;; Pandoc mode
-(sk/require-package 'pandoc-mode)
-(add-hook 'markdown-mode-hook 'pandoc-mode)
-
-;; Highlight indentation
-(sk/require-package 'highlight-indentation)
-(define-key evil-normal-state-map (kbd "SPC ai") 'highlight-indentation-mode)
-
-;; Elpy
-(sk/require-package 'elpy)
-(add-hook 'python-mode-hook 'elpy-enable)
-(defun diminish-elpy ()
-  (interactive)
-  (elpy-use-ipython)
-  (diminish 'elpy-mode ""))
-(add-hook 'elpy-mode-hook 'diminish-elpy)
-
-;; Hydra - for python
-(defhydra hydra-python (:color red
-                        :hint nil)
-  "
- ^Send^       ^Shell^    ^Navigate^
- ^^^^^^^^^----------------------------------------------
- _f_unction   _s_tart    _d_efinition   _L_ang     _q_uit
- _l_ine       _S_witch   l_o_cation
- _r_egion     _B_uffer
- _b_uffer
-"
-  ("f" python-shell-send-defun)
-  ("l" elpy-shell-send-current-statement)
-  ("r" elpy-shell-send-region-or-buffer)
-  ("b" elpy-shell-send-region-or-buffer)
-  ("s" elpy-shell-switch-to-shell)
-  ("S" elpy-shell-switch-to-shell)
-  ("B" elpy-shell-switch-to-buffer)
-  ("d" elpy-goto-definition)
-  ("o" elpy-goto-location)
-  ("L" hydra-langs/body :exit t)
-  ("q" nil :color blue))
-
-;; Cython mode
-(sk/require-package 'cython-mode)
-
-;; Virtualenv for python
-(sk/require-package 'virtualenvwrapper)
-(setq venv-location "~/Py34/")
-
-;; LaTeX-mode
-(sk/require-package 'auctex)
-(sk/require-package 'auctex-latexmk)
-
-;; Web mode
-(sk/require-package 'web-mode)
-(add-hook 'html-mode-hook 'web-mode)
-
-;; JavaScript
-(sk/require-package 'js2-mode)
-(sk/require-package 'skewer-mode)
-
-;; Applescript
-(sk/require-package 'applescript-mode)
-(add-to-list 'auto-mode-alist '("\\.scpt\\'" . applescript-mode))
-
-;; YAML mode
-(sk/require-package 'yaml-mode)
-
-;; Editing my gitconfig
-(sk/require-package 'gitconfig-mode)
-
-;; MATLAB mode
-(sk/require-package 'matlab-mode)
-(eval-after-load 'matlab
-  '(add-to-list 'matlab-shell-command-switches "-nosplash"))
-(setq matlab-shell-command "/Applications/MATLAB_R2014a.app/bin/matlab"
-      matlab-indent-function t)
-;; Vertical split matlab shell
-(defun matlab-shell-here ()
-  "opens up a new matlab shell in the directory associated with the current buffer's file."
-  (interactive)
-  (split-window-right)
-  (other-window 1)
-  (matlab-shell)
-  (other-window 1))
-
-;; Hydra - for matlab
-(defhydra hydra-matlab (:color red
-                        :hint nil)
-  "
- ^Send^       ^Shell^
- ^^^^^^^^^-------------------------------
- _c_ell       _s_tart    _L_ang     _q_uit
- _l_ine       _S_witch
- _r_egion     _o_ther
- _C_ommand
-"
-  ("c" matlab-shell-run-cell)
-  ("l" matlab-shell-run-region-or-line)
-  ("r" matlab-shell-run-region)
-  ("C" matlab-shell-run-command)
-  ("s" matlab-shell-here)
-  ("S" matlab-show-matlab-shell-buffer)
-  ("o" other-window)
-  ("L" hydra-langs/body :exit t)
-  ("q" nil :color blue))
-
-;; Sage
-(sk/require-package 'sage-shell-mode)
-(setq sage-shell:sage-executable "/Applications/Sage-6.8.app/Contents/Resources/sage/sage"
-      sage-shell:input-history-cache-file "~/.emacs.d/.sage_shell_input_history"
-      sage-shell-sagetex:auctex-command-name "LaTeX"
-      sage-shell-sagetex:latex-command "latexmk")
-
-;; SQL
-(sk/require-package 'emacsql)
-(sk/require-package 'emacsql-mysql)
-(sk/require-package 'emacsql-sqlite)
-(sk/require-package 'esqlite)
-(sk/require-package 'pcsv)
-
-;; Go mode
-(sk/require-package 'go-mode)
-
-;; Java
-(sk/require-package 'emacs-eclim)
-(defun my-eclim-mode-hook ()
-  (interactive)
-  (require 'eclimd)
-  (require 'company-emacs-eclim)
-  (setq eclim-executable (or (executable-find "eclim") "/Applications/Eclipse/Eclipse.app/Contents/Eclipse/eclim")
-        eclimd-executable (or (executable-find "eclimd") "/Applications/Eclipse/Eclipse.app/Contents/Eclipse/eclimd")
-        eclimd-wait-for-process nil
-        eclimd-default-workspace "~/Documents/workspace/eclipse/")
-  (company-emacs-eclim-setup))
-(add-hook 'eclim-mode-hook 'my-eclim-mode-hook)
-(add-hook 'java-mode-hook 'eclim-mode)
-
-;;; Flycheck
-(sk/require-package 'flycheck)
-(add-hook 'after-init-hook #'global-flycheck-mode)
-(define-key evil-normal-state-map (kbd "]e") 'flycheck-next-error)
-(define-key evil-normal-state-map (kbd "[e") 'flycheck-previous-error)
-(define-key evil-normal-state-map (kbd "]E") 'flycheck-last-checker)
-(define-key evil-normal-state-map (kbd "[E") 'flycheck-first-error)
-(define-key evil-normal-state-map (kbd "SPC l") 'flycheck-list-errors)
-
-;; Irony for flycheck
-(sk/require-package 'flycheck-irony)
-(eval-after-load 'flycheck
-  '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
 
 ;;; Deft for quickly accessing notes
 (sk/require-package 'deft)
@@ -1422,513 +2314,7 @@ _h_ ^+^ _l_                _o_pen      _c_lear    _R_ename
 (define-key evil-normal-state-map (kbd "SPC t") 'open-deft-and-start-hydra)
 
 ;;; Org mode
-(evil-set-initial-state 'calendar-mode 'emacs)
-(define-key evil-normal-state-map (kbd "SPC c") 'org-capture)
-(define-key evil-normal-state-map (kbd "SPC o") 'org-agenda)
-(define-key evil-normal-state-map (kbd "SPC -") 'org-edit-src-code)
-(define-key evil-normal-state-map (kbd "SPC =") 'org-edit-src-exit)
-(define-key evil-normal-state-map (kbd "SPC ]") 'org-narrow-to-subtree)
-(define-key evil-normal-state-map (kbd "[u") 'org-up-element)
-(define-key evil-normal-state-map (kbd "]u") 'org-down-element)
-(define-key evil-normal-state-map (kbd "[o") 'org-previous-visible-heading)
-(define-key evil-normal-state-map (kbd "]o") 'org-next-visible-heading)
-(define-key evil-normal-state-map (kbd "[i") 'org-previous-item)
-(define-key evil-normal-state-map (kbd "]i") 'org-next-item)
-(define-key evil-normal-state-map (kbd "[h") 'org-backward-heading-same-level)
-(define-key evil-normal-state-map (kbd "]h") 'org-forward-heading-same-level)
-(define-key evil-normal-state-map (kbd "[b") 'org-previous-block)
-(define-key evil-normal-state-map (kbd "]b") 'org-next-block)
-(define-key evil-normal-state-map (kbd "[l") 'org-previous-link)
-(define-key evil-normal-state-map (kbd "]l") 'org-next-link)
-(define-key evil-normal-state-map (kbd "[f") 'org-table-previous-field)
-(define-key evil-normal-state-map (kbd "]f") 'org-table-next-field)
-(define-key evil-normal-state-map (kbd "gob") 'org-table-blank-field)
-(define-key evil-normal-state-map (kbd "gox") 'org-preview-latex-fragment)
-(define-key evil-normal-state-map (kbd "goi") 'org-toggle-inline-images)
-(define-key evil-normal-state-map (kbd "goj") 'org-goto)
-(define-key evil-normal-state-map (kbd "goU") 'org-update-all-dblocks)
-(define-key evil-normal-state-map (kbd "gog") 'org-toggle-link-display)
-(define-key evil-normal-state-map (kbd "gor") 'org-reveal)
-(define-key evil-normal-state-map (kbd "gof") 'org-refile)
-(define-key evil-normal-state-map (kbd "goX") 'org-reftex-citation)
-(define-key evil-normal-state-map (kbd "goa") 'org-attach)
-(define-key evil-normal-state-map (kbd "goA") 'org-archive-subtree-default)
-(define-key evil-normal-state-map (kbd "gon") 'org-add-note)
-(define-key evil-normal-state-map (kbd "goF") 'org-footnote-new)
-(define-key evil-normal-state-map (kbd "goe") 'org-export-dispatch)
-(define-key evil-normal-state-map (kbd "gol") 'org-insert-link)
-(define-key evil-normal-state-map (kbd "gou") 'org-store-link)
-(define-key evil-normal-state-map (kbd "goO") 'org-open-at-point)
-(define-key evil-normal-state-map (kbd "goy") 'org-copy-subtree)
-(define-key evil-normal-state-map (kbd "gok") 'org-cut-subtree)
-(define-key evil-normal-state-map (kbd "goE") 'org-set-effort)
-(define-key evil-normal-state-map (kbd "goh") 'org-toggle-heading)
-(define-key evil-normal-state-map (kbd "go>") 'org-goto-calendar)
-(define-key evil-normal-state-map (kbd "go<") 'org-date-from-calendar)
-(define-key evil-normal-state-map (kbd "gos") 'org-sort)
-(define-key evil-normal-state-map (kbd "goR") 'org-remove-file)
-(define-key evil-visual-state-map (kbd "SPC c") 'org-capture)
-(define-key evil-visual-state-map (kbd "SPC o") 'org-agenda)
-
-;; Correct those annoying double caps typos
-(defun dcaps-to-scaps ()
-  "Convert word in DOuble CApitals to Single Capitals."
-  (interactive)
-  (and (= ?w (char-syntax (char-before)))
-       (save-excursion
-         (and (if (called-interactively-p)
-                  (skip-syntax-backward "w")
-                (= -3 (skip-syntax-backward "w")))
-              (let (case-fold-search)
-                (looking-at "\\b[[:upper:]]\\{2\\}[[:lower:]]"))
-              (capitalize-word 1)))))
-(define-minor-mode dubcaps-mode
-  "Toggle `dubcaps-mode'.  Converts words in DOuble CApitals to
-Single Capitals as you type."
-  :init-value nil
-  :lighter (" DC")
-  (if dubcaps-mode
-      (add-hook 'post-self-insert-hook #'dcaps-to-scaps nil 'local)
-    (remove-hook 'post-self-insert-hook #'dcaps-to-scaps 'local)))
-(defun diminish-dubcaps ()
-  (interactive)
-  (diminish 'dubcaps-mode ""))
-(add-hook 'dubcaps-mode-hook 'diminish-dubcaps)
-(add-hook 'org-mode-hook #'dubcaps-mode)
-
-;; Turns the next page in adjoining pdf-tools pdf
-(defun other-pdf-next ()
-  "Turns the next page in adjoining PDF file"
-  (interactive)
-  (other-window 1)
-  (doc-view-next-page)
-  (other-window 1))
-;; Turns the previous page in adjoining pdf
-(defun other-pdf-previous ()
-  "Turns the previous page in adjoining PDF file"
-  (interactive)
-  (other-window 1)
-  (doc-view-previous-page)
-  (other-window 1))
-(define-key evil-normal-state-map (kbd "]p") 'other-pdf-next)
-(define-key evil-normal-state-map (kbd "[p") 'other-pdf-previous)
-
-(setq org-directory "~/Dropbox/notes/"
-      org-completion-use-ido nil
-      ;; Indent
-      org-startup-indented t
-      org-hide-leading-stars t
-      ;; Images
-      org-image-actual-width '(300)
-      ;; Source code
-      org-src-fontify-natively t
-      org-src-tab-acts-natively t
-      ;; Quotes
-      org-export-with-smart-quotes t
-      ;; Citations
-      org-latex-to-pdf-process '("pdflatex %f" "biber %b" "pdflatex %f" "pdflatex %f"))
-
-;; Tags with fast selection keys
-(setq org-tag-alist (quote (("errand" . ?e)
-                            ("blog" . ?b)
-                            ("personal" . ?k)
-                            ("report" . ?r)
-                            ("thesis" . ?t) ;; temporary
-                            ("accounts" . ?a)
-                            ("lubby" . ?l)
-                            ("movie" . ?m)
-                            ("netflix" . ?N)
-                            ("via" . ?v)
-                            ("idea" . ?i)
-                            ("project" . ?p)
-                            ("job" . ?j)
-                            ("work" . ?w)
-                            ("home" . ?h)
-                            ("noexport" . ?x)
-                            ("Technial" . ?T)
-                            ("Random" . ?R)
-                            ("Crafts" . ?C)
-                            ("story/news" . ?s)
-                            ("note" . ?n))))
-
-;; TODO Keywords
-(setq org-todo-keywords
-      '((sequence "TODO(t)" "HOLD(h@/!)" "|" "DONE(d!)")
-        (sequence "|" "CANCELLED(c@)")))
-
-;; Agenda settings
-(setq org-agenda-files (list "~/Dropbox/notes/work.org"
-                             "~/Dropbox/notes/blog.org"
-                             "~/Dropbox/notes/ledger.org"
-                             "~/Dropbox/notes/notes.org"))
-(setq org-deadline-warning-days 7
-      org-agenda-span 'fortnight
-      org-agenda-skip-scheduled-if-deadline-is-shown t)
-
-;; Links
-(setq org-link-abbrev-alist
-      '(("bugzilla"  . "http://10.1.2.9/bugzilla/show_bug.cgi?id=")
-        ("url-to-ja" . "http://translate.google.fr/translate?sl=en&tl=ja&u=%h")
-        ("google"    . "http://www.google.com/search?q=")
-        ("gmaps"      . "http://maps.google.com/maps?q=%s")))
-
-;; Capture templates
-(setq org-capture-templates
-      '(("n" "Note" entry (file+headline "~/Dropbox/notes/notes.org" "Notes")
-         "* %?\nEntered on %U\n  %i\n  %a")
-        ("r" "Report" entry (file+headline "~/Dropbox/notes/work.org" "Thesis Notes") ;; temporary
-         "* %?\nEntered on %U\n  %i\n  %a")
-        ("j" "Job leads/status" entry (file+headline "~/Dropbox/notes/notes.org" "Job leads/status")
-         "* %?\nEntered on %U\n  %i\n  %a")
-        ("s" "Story/News" entry (file+headline "~/Dropbox/notes/notes.org" "Story/News")
-         "* %?\nEntered on %U\n  %i\n  %a")
-        ("a" "Accounts - Ledger" entry (file+datetree "~/Dropbox/notes/ledger.org")
-         "* %?\nEntered on %U\n  %i\n  %a")
-        ("b" "Blog" entry (file+datetree "~/Dropbox/notes/blog.org")
-         "* %?\nEntered on %U\n  %i\n  %a")
-        ("p" "Project" entry (file+headline "~/Dropbox/notes/notes.org" "Projects")
-         "* %?\nEntered on %U\n  %i\n  %a")
-        ("w" "Work" entry (file+headline "~/Dropbox/notes/work.org" "Work")
-         "* %?\nEntered on %U\n  %i\n  %a")
-        ("h" "Home" entry (file+headline "~/Dropbox/notes/notes.org" "Home")
-         "* %?\nEntered on %U\n  %i\n  %a")))
-
-;; LaTeX
-(sk/require-package 'cdlatex)
-(defun diminish-org ()
-  (interactive)
-  (diminish 'org-indent-mode "")
-  (diminish 'org-cdlatex-mode ""))
-(add-hook 'org-mode-hook 'diminish-org)
-(add-hook 'org-mode-hook 'org-cdlatex-mode)
-
-;; Babel for languages
-(sk/require-package 'babel)
-(setq org-confirm-babel-evaluate nil)
-;; Org load languages
-(defun org-custom-load ()
-  (interactive)
-  (org-babel-do-load-languages
-   'org-babel-load-languages
-   '((emacs-lisp . t)
-     ;; (dot . t)
-     ;; (ditaa . t)
-     (latex . t)
-     ;; (gnuplot . t)
-     ;; (sh . t)
-     ;; (C . t)
-     ;; (R . t)
-     ;; (octave . t)
-     (matlab . t)
-     (python . t))))
-(define-key evil-normal-state-map (kbd "SPC ao") 'org-custom-load)
-(sk/require-package 'ob-ipython)
-
-;; Export using reveal and impress-js
-(sk/require-package 'ox-reveal)
-(sk/require-package 'ox-impress-js)
-
-;; Restructred text and pandoc
-(sk/require-package 'ox-rst)
-(sk/require-package 'ox-pandoc)
-
-;; Org navigation and manipulation - hydra
-(defhydra hydra-org-manipulate (:color red
-                                :hint nil)
-  "
-^Meta^      ^Shift^             ^Org^
-^^^^^^^^^^^^^^^-----------------------------------------
-^ ^ _k_ ^ ^     ^ ^ _K_ ^ ^     _f_ promote    _c_ycle
-_h_ ^+^ _l_     _H_ ^+^ _L_     _b_ demote     _C_olumns
-^ ^ _j_ ^ ^     ^ ^ _J_ ^ ^     _n_ item down  _q_uit
-                    _p_ item up
-"
-  ("c" org-cycle)
-  ("h" org-metaleft)
-  ("l" org-metaright)
-  ("j" org-metadown)
-  ("k" org-metaup)
-  ("H" org-shiftleft)
-  ("L" org-shiftright)
-  ("J" org-shiftdown)
-  ("K" org-shiftup)
-  ("f" org-promote)
-  ("b" org-demote)
-  ("n" org-move-item-down)
-  ("p" org-move-item-up)
-  ("C" org-columns)
-  ("q" nil :color blue))
-(define-key evil-normal-state-map (kbd "goo") 'hydra-org-manipulate/body)
-
-;; Org table manipulation - hydra
-(defhydra hydra-org-tables (:color red
-                            :hint nil)
-  "
-^Field^      ^Move^    ^Insert^      ^Delete^   ^Field^     ^Table^     ^Formula^
-^^^^^^^^^^^^^^^------------------------------------------------------------------------------
-^ ^ _k_ ^ ^     ^ ^ _K_ ^ ^     _r_ow        _R_ow      _e_dit      _a_lign      _s_um      _|_ create
-_h_ ^+^ _l_     _H_ ^+^ _L_     _c_olumn     _C_olumn   _b_lank     _I_mport     _f_ eval   _q_uit
-^ ^ _j_ ^ ^     ^ ^ _J_ ^ ^     _-_ hline             _i_nfo      _E_xport     _F_ edit
-"
-  ("a" org-table-align)
-  ("l" org-table-next-field)
-  ("h" org-table-previous-field)
-  ("j" org-table-end-of-field)
-  ("k" org-table-beginning-of-field)
-  ("r" org-table-insert-row)
-  ("c" org-table-insert-column)
-  ("-" org-table-insert-hline)
-  ("J" org-table-move-row-down)
-  ("K" org-table-move-row-up)
-  ("H" org-table-move-column-left)
-  ("L" org-table-move-column-right)
-  ("R" org-table-kill-row)
-  ("C" org-table-delete-column)
-  ("b" org-table-blank-field)
-  ("e" org-table-edit-field)
-  ("i" org-table-field-info)
-  ("s" org-table-sum)
-  ("f" org-table-eval-formula)
-  ("F" org-table-edit-formulas)
-  ("|" org-table-create-or-convert-from-region)
-  ("I" org-table-import)
-  ("E" org-table-export)
-  ("q" nil :color blue))
-(define-key evil-normal-state-map (kbd "go|") 'hydra-org-tables/body)
-
-;; Org clock manipulation - hydra
-(defhydra hydra-org-clock (:color red
-                           :hint nil)
-  "
-       ^Clock^                 ^Timer^
-^^^^^^^^^^^^^^^-----------------------------------------------------
-_i_in      _z_ resolve      _I_n       _s_tamp           _q_uit
-_o_out     _l_ast           _O_out     _S_tamp inactive
-_r_eport   _C_ancel         _t_imer
-_d_isplay  _G_oto           _T_ set timer
-"
-  ("i" org-clock-in)
-  ("o" org-clock-out)
-  ("r" org-clock-report)
-  ("z" org-resolve-clocks)
-  ("C" org-clock-cancel)
-  ("d" org-clock-display)
-  ("l" org-clock-in-last)
-  ("G" org-clock-goto)
-  ("t" org-timer)
-  ("T" org-timer-set-timer)
-  ("I" org-timer-start)
-  ("O" org-timer-stop)
-  ("s" org-time-stamp)
-  ("S" org-time-stamp-inactive)
-  ("q" nil :color blue))
-(define-key evil-normal-state-map (kbd "goc") 'hydra-org-clock/body)
-
-;; Org tags and todo manipulation - hydra
-(defhydra hydra-org-tag-todo (:color red
-                              :hint nil)
-  "
- ^tags^        ^TODO^        ^Checkbox^        ^Priority^
-^^^^^^^^^^^^^^^----------------------------------------------------------
-_t_ags         _T_ODO        _c_heckbox        _p_riority     _q_uit
-_v_iew         _D_eadline    _x_ toggle        _i_ncrease
-_m_atch        _C_lose       _u_pdate stats    _d_ecrease
-_s_parse-tree  _S_chedule    _r_eset
-             _V_iew        _U_pdate count
-"
-  ("t" org-set-tags-command :color blue)
-  ("v" org-tags-view)
-  ("m" org-match-sparse-tree :color blue)
-  ("s" org-sparse-tree :color blue)
-  ("p" org-priority)
-  ("i" org-priority-up)
-  ("d" org-priority-down)
-  ("T" org-todo :color blue)
-  ("D" org-deadline :color blue)
-  ("C" org-deadline-close :color blue)
-  ("S" org-schedule :color blue)
-  ("V" org-check-deadlines)
-  ("c" org-checkbox)
-  ("x" org-toggle-checkbox)
-  ("U" org-update-checkbox-count-maybe)
-  ("r" org-reset-checkbox-state-subtree)
-  ("u" org-update-statistics-cookies)
-  ("q" nil :color blue))
-(define-key evil-normal-state-map (kbd "got") 'hydra-org-tag-todo/body)
-;; Org drawer - hydra
-(defhydra hydra-org-drawer (:color red
-                            :hint nil)
-  "
- ^drawer^     ^Property^
-^^^^^^^^^^^^^--------------------------
- _i_nsert     _I_nsert   _q_uit
-            _S_et
-            _D_elete
-            _T_oggle
-"
-  ("i" org-insert-drawer)
-  ("I" org-insert-property-drawer)
-  ("S" org-set-property)
-  ("D" org-delete-property)
-  ("T" org-toggle-ordered-property)
-  ("q" nil :color blue))
-(define-key evil-normal-state-map (kbd "god") 'hydra-org-drawer/body)
-
-;;; Version control
-
-;; Magit
-(sk/require-package 'magit)
-(define-key evil-normal-state-map (kbd "SPC g") 'magit-status)
-
-;; Evil magit
-(sk/require-package 'evil-magit)
-(defun sk/magit-hook ()
-  (interactive)
-  (setq evil-magit-state 'motion)
-  (require 'evil-magit))
-(add-hook 'magit-mode-hook 'sk/magit-hook)
-
-;; Hydra for blame
-(defhydra hydra-git-blame (:color red
-                           :hint nil)
-  "
- ^blame^
-^^^^^^^^^--------------------------------
- ^ ^ _k_ ^ ^  _b_lame   _t_oggle   _y_ank
- _h_ ^+^ _l_  _q_uit
- ^ ^ _j_ ^ ^
-"
-  ("b" magit-blame)
-  ("j" magit-blame-next-chunk)
-  ("k" magit-blame-previous-chunk)
-  ("l" magit-blame-next-chunk-same-commit)
-  ("h" magit-blame-previous-chunk-same-commit)
-  ("t" magit-blame-toggle-headings)
-  ("y" magit-blame-copy-hash)
-  ("q" magit-blame-quit :color blue))
-(define-key evil-normal-state-map (kbd "gb") 'hydra-git-blame/body)
-
-;; Diff-hl
-(sk/require-package 'diff-hl)
-(evil-set-initial-state 'diff-mode 'emacs)
-(add-hook 'dired-mode-hook 'diff-hl-dired-mode)
-(add-hook 'prog-mode-hook 'diff-hl-mode)
-(add-hook 'html-mode-hook 'diff-hl-mode)
-(add-hook 'text-mode-hook 'diff-hl-mode)
-(add-hook 'org-mode-hook 'diff-hl-mode)
-(add-hook 'diff-hl-mode-hook 'diff-hl-margin-mode)
-(add-hook 'diff-hl-mode-hook 'diff-hl-flydiff-mode)
-(define-key evil-normal-state-map (kbd "]d") 'diff-hl-next-hunk)
-(define-key evil-normal-state-map (kbd "[d") 'diff-hl-previous-hunk)
-(define-key evil-normal-state-map (kbd "gh") 'diff-hl-diff-goto-hunk)
-(define-key evil-normal-state-map (kbd "gr") 'diff-hl-revert-hunk)
-
-;; Git time-machine
-(sk/require-package 'git-timemachine)
-;; Hydra for timemachine
-(defhydra hydra-git-timemachine (:color red
-                                 :hint nil)
-  "
- ^time^    ^navigate^            ^hash^
-^^^^^^^^^---------------------------------
- _s_tart   _n_ext      _g_oto      _b_rief
- _k_ill    _p_revious  _c_urrent   _f_ull
-"
-  ("s" git-timemachine)
-  ("n" git-timemachine-show-next-revision)
-  ("p" git-timemachine-show-previous-revision)
-  ("g" git-timemachine-show-nth-revision)
-  ("c" git-timemachine-show-current-revision)
-  ("b" git-timemachine-kill-abbreviated-revision)
-  ("f" git-timemachine-kill-revision)
-  ("k" git-timemachine-quit :color blue)
-  ("q" nil :color blue))
-(define-key evil-normal-state-map (kbd "gt") 'hydra-git-timemachine/body)
-
-;; Gists
-(sk/require-package 'yagist)
-(setq yagist-view-gist t)
-
 ;;; REPL
-
-;; Quickrun
-(sk/require-package 'quickrun)
-
-;; Compile and multi-compile
-(sk/require-package 'multi-compile)
-(setq multi-compile-alist '(
-                            (c++-mode . (("cpp-omp" . "g++ %file-name -Wall -fopenmp -o -g %file-sans.out")
-                                         ("cpp-mpi" . "mpic++ %file-name -o -g %file-sans.out")
-                                         ("cpp-g++" . "g++ %file-name -o %file-sans.out")))
-                            (c-mode . (("c-omp" . "gcc %file-name -Wall -fopenmp -o -g %file-sans.out")
-                                       ("c-mpi" . "mpicc %file-name -o -g %file-sans.out")
-                                       ("c-gcc" . "gcc %file-name -o %file-sans.out")))
-                            ))
-(setq multi-compile-completion-system 'default)
-
-;; Hydra for compilation
-(defhydra hydra-make (:color blue
-                      :hint nil)
-  "
- ^Multi-compile^
- ^^^^^^^^^---------------------
- _m_ake   _c_ompile  _r_un   _q_uit
-"
-  ("m" compile)
-  ("c" multi-compile-run)
-  ("r" quickrun)
-  ("q" nil))
-(define-key evil-normal-state-map (kbd "SPC m") 'hydra-make/body)
-
-;; Multi-term
-(sk/require-package 'multi-term)
-;; Vertical split multi-term
-(defun multi-term-here ()
-  "opens up a new terminal in the directory associated with the current buffer's file."
-  (interactive)
-  (split-window-right)
-  (other-window 1)
-  (multi-term))
-
-;; Interact with Tmux
-(sk/require-package 'emamux)
-
-;; Hydra for eamux
-(defhydra hydra-eamux (:color blue
-                       :hint nil)
-  "
- ^Eamux^
- ^^^^^^^^^---------------------
- _s_end   _r_un   _l_ast  _c_lose   _q_uit
-"
-  ("s" emamux:send-command)
-  ("r" emamux:run-command)
-  ("l" emamux:run-last-command)
-  ("c" emamux:close-runner-pane)
-  ("q" nil))
-
-;; Make the compilation window automatically disapper from enberg on #emacs
-(setq compilation-finish-functions
-      (lambda (buf str)
-        (if (null (string-match ".*exited abnormally.*" str))
-            ;;no errors, make the compilation window go away in a few seconds
-            (progn
-              (run-at-time
-               "2 sec" nil 'delete-windows-on
-               (get-buffer-create "*compilation*"))
-              (message "No Compilation Errors!")))))
-
-;;; Eshell
-(setq eshell-glob-case-insensitive t
-      eshell-scroll-to-bottom-on-input 'this
-      eshell-buffer-shorthand t
-      eshell-history-size 1024
-      eshell-cmpl-ignore-case t
-      eshell-last-dir-ring-size 512)
-(add-hook 'shell-mode-hook 'goto-address-mode)
-
-;; Aliases
-(setq eshell-aliases-file (concat user-emacs-directory ".eshell-aliases"))
 
 ;; Eyebrowse mode
 (sk/require-package 'eyebrowse)
@@ -1972,20 +2358,6 @@ _s_parse-tree  _S_chedule    _r_eset
 (define-key evil-normal-state-map (kbd "SPC i") 'hydra-eyebrowse/body)
 
 ;;; Wrap up
-
-;; Diminish some stuff
-(defun diminish-abbrev ()
-  (interactive)
-  (diminish 'abbrev-mode ""))
-(add-hook 'abbrev-mode-hook 'diminish-abbrev)
-(defun diminish-undo-tree ()
-  (interactive)
-  (diminish 'undo-tree-mode ""))
-(add-hook 'undo-tree-mode-hook 'diminish-undo-tree)
-
-;; GDB
-(setq gdb-many-windows t
-      gdb-show-main t)
 
 ;; Fill column indicator
 (sk/require-package 'fill-column-indicator)
@@ -2043,7 +2415,7 @@ _s_parse-tree  _S_chedule    _r_eset
   ("G" geeknote-create :color blue)
   ("X" sx-tab-all-questions :color blue)
   ("j" jabber-connect :color blue)
-  ("o" org-custom-load :color blue)
+  ("o" sk/org-custom-load :color blue)
   ("g" ggtags-mode :color blue)
   ("F" global-origami-mode :color blue)
   ("W" which-key-mode :color blue)

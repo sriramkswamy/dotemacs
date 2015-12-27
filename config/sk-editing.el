@@ -2,27 +2,28 @@
 (defhydra sk/hydra-rectangle (:color red
                               :hint nil)
  "
- ^Move^   | ^Edit^            | ^Menu^
- ^^^^^^-------|-----------------|--------------
- ^ ^ _k_ ^ ^  | _s_et       _r_eset | _H_ome  _q_uit
- _h_ ^+^ _l_  | ex_c_hange  cop_y_  | _M_ark  e_x_ecute
- ^ ^ _j_ ^ ^  | _d_elete    _p_aste |       _i_nsert
+ ^Move^   | ^Edit^                    | ^Menu^
+ ^^^^^^-------|-------------------------|--------------
+ ^ ^ _k_ ^ ^  | _s_et       _r_eset _S_tring  | _H_ome  _q_uit
+ _h_ ^+^ _l_  | ex_c_hange  cop_y_  _R_eplace | _M_ark  e_x_ecute
+ ^ ^ _j_ ^ ^  | _d_elete    _p_aste         |
 "
   ("h" backward-char nil)
   ("l" forward-char nil)
   ("k" previous-line nil)
   ("j" next-line nil)
   ("s" (rectangle-mark-mode 1))
-  ("c" exchange-point-and-mark nil)
-  ("y" copy-rectangle-as-kill nil)
+  ("c" exchange-point-and-mark)
+  ("y" copy-rectangle-as-kill)
   ("d" kill-rectangle nil)
   ("r" (if (region-active-p)
            (deactivate-mark)
          (rectangle-mark-mode 1)) nil)
-  ("p" yank-rectangle nil)
+  ("p" yank-rectangle)
+  ("S" string-rectangle)
+  ("R" replace-rectangle)
   ("M" sk/hydra-of-marks/body :exit t)
   ("H" sk/hydra-of-hydras/body :exit t)
-  ("i" nil :color blue)
   ("x" counsel-M-x :color blue)
   ("q" nil :color blue))
 
@@ -65,12 +66,12 @@ _h_ ^+^ _l_      | _n_ext     | _a_ppend  le_t_ters           | e_x_ecute
                              :color red
                              :hint nil)
   "
- ^Line^  | ^Blank^  | ^Move^   | ^Select^                    | ^Lang^        | ^Edit^                               | ^Menu^
- ^^^^^^^------|--------|--------|---------------------------|-------------|------------------------------------|----------------------
- _a_bove | _[_ up   | _{_ up   | _i_ncrease _p_ara  _o_ in()     | _b_lock-py    | _d_el-region         _K_ill-whole-line | _M_ark   _H_ome   e_x_ecute
- b_e_low | _]_ down | _}_ down | _r_educe   _f_unc  q_u_otes     | _h_ doc-py    | _k_ill-rest-of-line                  | mo_V_e   _L_ang   _q_uit
- _j_oin  |        |        | _s_nippet  _w_ord  _-_ org-code | _l_ line-py   | cop_y_                               | _P_ython
- _S_plit |        |        |          la_t_ex comme_n_t    | _m_ julia-fun | _c_omment                            | _J_ulia
+ ^Line^  | ^Blank^  | ^Move^   | ^Select^                    | ^Lang^                 | ^Edit^                               | ^Menu^
+ ^^^^^^^------|--------|--------|---------------------------|----------------------|------------------------------------|-----------------------
+ _a_bove | _[_ up   | _{_ up   | _i_ncrease _p_ara  _o_ in()     | _b_lock-py    _s_ c-stat | _d_el-region         _K_ill-whole-line | _M_ark   _L_ang    _H_ome
+ b_e_low | _]_ down | _}_ down | _r_educe   _f_unc  q_u_otes     | _h_ doc-py    _v_ c-var  | _k_ill-rest-of-line                  | mo_V_e   _M_atlab  e_x_ecute
+ _j_oin  |        |        | _@_ mail   _w_ord  _-_ org-code | _l_ line-py            | cop_y_                               | _P_ython _R_       _q_uit
+ _S_plit |        |        | _:_ link   la_t_ex comme_n_t    | _m_ julia-fun          | _c_omment                            | _J_ulia  _E_lisp
   "
   ("a" sk/open-line-above :color blue)
   ("e" sk/open-line-below :color blue)
@@ -85,6 +86,8 @@ _h_ ^+^ _l_      | _n_ext     | _a_ppend  le_t_ters           | e_x_ecute
   ("p" er/mark-text-paragraph)
   ("f" er/mark-defun)
   ("w" er/mark-symbol)
+  ("@" er/mark-email)
+  (":" er/mark-url)
   ("t" er/mark-LaTeX-math)
   ("n" er/mark-comment)
   ("o" er/mark-inside-pairs)
@@ -94,13 +97,17 @@ _h_ ^+^ _l_      | _n_ext     | _a_ppend  le_t_ters           | e_x_ecute
   ("h" er/mark-python-string)
   ("l" er/mark-python-statement)
   ("m" er/mark-ruby-block-up)
+  ("s" er/c-mark-statement)
+  ("v" er/c-mark-fully-qualified-name)
   ("d" kill-region :color blue)
   ("K" kill-whole-line :color blue)
   ("k" kill-line :color blue)
   ("y" kill-ring-save)
-  ("c" comment-dwim :color blue)
-  ("s" yas-insert-snippet :color blue)
+  ("c" 'evilnc-comment-or-uncomment-lines)
   ("P" sk/hydra-for-python/body :exit t)
+  ("M" sk/hydra-for-matlab/body :exit t)
+  ("R" sk/hydra-for-r/body :exit t)
+  ("E" sk/hydra-for-elisp/body :exit t)
   ("J" sk/hydra-for-julia/body :exit t)
   ("L" sk/hydra-of-langs/body :exit t)
   ("H" sk/hydra-of-hydras/body :exit t)

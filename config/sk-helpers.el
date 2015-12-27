@@ -39,7 +39,8 @@
   (interactive)
   (diminish 'smartparens-mode ""))
 (add-hook 'smartparens-mode-hook 'sk/diminish-smartparens)
-(smartparens-global-mode)
+(add-hook 'prog-mode-hook 'smartparens-global-mode)
+(add-hook 'org-mode-hook 'smartparens-global-mode)
 
 ;; Delete trailing whitespace on save
 (sk/require-package 'ws-butler)

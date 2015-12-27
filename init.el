@@ -1,5 +1,5 @@
 ;; Garbage collector - increase threshold
-(setq gc-cons-threshold 100000000)
+(setq gc-cons-threshold (* 10 1024 1024 1024 1024))
 
 ;; Load path
 (add-to-list 'load-path (expand-file-name "config" user-emacs-directory))
@@ -61,11 +61,14 @@
 ;; Lisp
 (require 'sk-lisp)
 
-;; MATLAB
-(require 'sk-matlab)
+;; ;; MATLAB
+;; (require 'sk-matlab)
 
 ;; Java
 (require 'sk-java)
+
+;; Writing
+(require  'sk-writing)
 
 ;; Org
 (require 'sk-org)
@@ -76,8 +79,8 @@
 ;; Hydras
 (require 'sk-hydras)
 
-;; Jabber
-(require 'sk-jabber)
+;; ;; Jabber
+;; (require 'sk-jabber)
 
 ;; Interface
 (require 'sk-interface)
@@ -85,16 +88,17 @@
 ;; ;; Evil maps for packages
 ;; (require 'sk-evilmaps)
 
-;; Themes
-(load-theme 'zenburn t)
-
 ;; Some maps
 (global-set-key (kbd "C-s") 'swiper)
 (global-set-key (kbd "C-r") 'swiper)
 (global-set-key (kbd "C-y") 'counsel-yank-pop)
 (global-set-key (kbd "M-x") 'counsel-M-x)
 
-;; Garbage collector - decrease threshold by an order
-(setq gc-cons-threshold 10000000)
+;; Themes
+(sk/require-package 'zenburn-theme)
+(load-theme 'leuven t)
+
+;; Garbage collector - increase threshold
+(setq gc-cons-threshold (* 1 1024 1024 1024 1024))
 
 ;;; .emacs ends here

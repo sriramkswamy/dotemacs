@@ -46,6 +46,9 @@
 ;; Snippets
 (require 'sk-snippets)
 
+;; Flycheck
+(require 'sk-flycheck)
+
 ;; C/C++
 (require 'sk-cpp)
 

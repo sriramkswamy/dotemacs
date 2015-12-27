@@ -1,5 +1,5 @@
 ;; Garbage collector - increase threshold
-(setq gc-cons-threshold (* 10 1024 1024 1024 1024))
+(setq gc-cons-threshold (* 1024 1024 1024 1024))
 
 ;; Load path
 (add-to-list 'load-path (expand-file-name "config" user-emacs-directory))
@@ -99,9 +99,8 @@
 
 ;; Themes
 (sk/require-package 'zenburn-theme)
-(load-theme 'leuven t)
 
 ;; Garbage collector - increase threshold
-(setq gc-cons-threshold (* 1 1024 1024 1024 1024))
+(setq gc-cons-threshold (* 1024 1024 1024))
 
 ;;; .emacs ends here

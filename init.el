@@ -86,11 +86,15 @@
 ;; (require 'sk-evilmaps)
 
 ;; Themes
-(load-theme 'leuven t)
+(load-theme 'zenburn t)
+
+;; Some maps
+(global-set-key (kbd "C-s") 'swiper)
+(global-set-key (kbd "C-r") 'swiper)
+(global-set-key (kbd "C-y") 'counsel-yank-pop)
+(global-set-key (kbd "M-x") 'counsel-M-x)
 
 ;; Garbage collector - decrease threshold by an order
 (setq gc-cons-threshold 10000000)
 
-;; Start server - not very useful since I start emacs-mac these days
-;; (server-start)
 ;;; .emacs ends here

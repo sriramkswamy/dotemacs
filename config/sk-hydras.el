@@ -36,7 +36,7 @@
   "
  ^Languages^                  | ^Errors^           | ^Eshell^       | ^Terminal^     | ^Tmux^  | ^Menu^
  ^^^^^^^^^---------------------------|------------------|--------------|--------------|-------|----------------
- _c_++    _j_ulia   _e_lisp   do_c_ | _h_ previous _a_ll   | _+_ vertical   | _|_ vertical   | _s_tart | _H_ome    _q_uit
+ _c_++    _j_ulia   _e_lisp   _d_oc | _h_ previous _a_ll   | _+_ vertical   | _|_ vertical   | _s_tart | _H_ome    _q_uit
  _p_ython _r_       _m_atlab      | _l_ next     _f_irst | _-_ horizontal | ___ horizontal |       |         e_x_ecute
 "
   ("c" sk/hydra-for-cpp/body :exit t)
@@ -46,7 +46,7 @@
   ("e" sk/hydra-for-elisp/body :exit t)
   ("m" sk/hydra-for-matlab/body :exit t)
   ("s" sk/hydra-for-emamux/body :exit t)
-  ("c" dash-at-point-with-docset :color blue)
+  ("d" dash-at-point-with-docset :color blue)
   ("+" sk/eshell-vertical)
   ("-" sk/eshell-horizontal)
   ("|" sk/multi-term-vertical)

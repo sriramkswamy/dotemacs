@@ -32,6 +32,28 @@
 (eval-after-load 'flycheck
   '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
 
+;; Hydra - for cpp
+(defhydra sk/hydra-for-cpp (:color blue
+                            :hint nil)
+  "
+ ^Compile^ | ^Eshell^       | ^Terminal^     | ^Menu^
+ ^^^^^^^^^--------|--------------|--------------|---------------
+ _m_ake    | _+_ vertical   | _|_ vertical   | _H_ome   e_x_ecute
+ _c_ompile | _-_ horizontal | ___ horizontal | _L_ang   _q_uit
+ _r_un     |              |              |
+"
+  ("m" compile)
+  ("c" multi-compile-run)
+  ("r" quickrun)
+  ("+" sk/eshell-vertical)
+  ("-" sk/eshell-horizontal)
+  ("|" sk/multi-term-vertical)
+  ("_" sk/multi-term-horizontal)
+  ("L" sk/hydra-of-langs/body :exit t)
+  ("H" sk/hydra-of-hydras/body :exit t)
+  ("x" counsel-M-x :color blue)
+  ("q" nil :color blue))
+
 (provide 'sk-cpp)
 
 ;;; sk-cpp.el ends here

@@ -5,6 +5,10 @@
   (diminish 'paredit-mode ""))
 (add-hook 'paredit-mode-hook 'sk/diminish-paredit)
 
+;; Modal lisp editing
+(sk/require-package 'lispy)
+(add-hook 'emacs-lisp-mode-hook (lambda () (lispy-mode 1)))
+
 ;; Common lisp
 (sk/require-package 'slime)
 (defun sk/diminish-slime ()

@@ -8,9 +8,6 @@
 ;; Remove scroll bar
 (scroll-bar-mode -1)
 
-;; Remove tool bar
-(tool-bar-mode -1)
-
 ;; No welcome screen - opens directly in scratch buffer
 (setq inhibit-startup-message t
       initial-scratch-message ";; Scratch"
@@ -36,7 +33,7 @@
       gdb-show-main t)
 
 ;; Which function mode
-(which-function-mode 1)
+(add-hook 'prog-mode-hook 'which-function-mode)
 
 ;; Enable recentf mode
 (recentf-mode)
@@ -72,10 +69,12 @@
 (add-hook 'prog-mode-hook 'hs-minor-mode)
 
 ;; Diminish some stuff
-(defun diminish-abbrev ()
+(defun sk/diminish-abbrev ()
   (interactive)
   (diminish 'abbrev-mode ""))
-(add-hook 'abbrev-mode-hook 'diminish-abbrev)
+(add-hook 'abbrev-mode-hook 'sk/diminish-abbrev)
+(add-hook 'prog-mode-hook 'sk/diminish-abbrev)
+(add-hook 'text-mode-hook 'sk/diminish-abbrev)
 
 ;; Subword mode
 (defun sk/diminish-subword ()

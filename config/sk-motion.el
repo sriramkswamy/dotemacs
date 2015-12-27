@@ -23,7 +23,7 @@
   ("j" next-line)
   ("k" previous-line)
   ("l" forward-char)
-  ("a" move-beginning-of-line)
+  ("a" sk/smarter-move-beginning-of-line)
   ("e" move-end-of-line)
   ("g" avy-goto-line)
   ("r" (if (region-active-p)

@@ -4,7 +4,7 @@
 
 ;; Which key
 (sk/require-package 'which-key)
-(which-key-setup-side-window-bottom)
+(add-hook 'which-key-mode-hook 'which-key-setup-side-window-bottom)
 (defun sk/diminish-which-key ()
   (interactive)
   (diminish 'which-key-mode ""))
@@ -36,6 +36,8 @@
   (interactive)
   (diminish 'ggtags-mode ""))
 (add-hook 'ggtags-mode-hook 'sk/diminish-ggtags)
+(add-hook 'prog-mode-hook 'sk/diminish-ggtags)
+(add-hook 'text-mode-hook 'sk/diminish-ggtags)
 (add-hook 'prog-mode-hook 'ggtags-mode)
 
 ;; Add exec-path for Gtags
@@ -140,13 +142,13 @@
 (defhydra sk/hydra-of-navigation (:color blue
                                   :hint nil)
   "
- ^Files^     | ^Buffers^   | ^Project^   | ^Menu^
- ^^^^^^^^^----------|-----------|-----------|--------
- _f_iles     | _b_uffers   | _p_roject   | _H_ome
- _r_ecent    | book_m_arks | _a_lternate | e_x_ecute
- read-_o_nly | _i_ndex     | _t_ags      | _q_uit
- _n_eotree   |           |           |
- _d_esktop   |           |           |
+ ^Files^     | ^Buffers^   | ^Project^   | ^Snippets^ | ^Menu^
+ ^^^^^^^^^----------|-----------|-----------|----------|--------
+ _f_iles     | _b_uffers   | _p_roject   | _s_nippets | _H_ome
+ _r_ecent    | book_m_arks | _a_lternate | _c_reate   | e_x_ecute
+ read-_o_nly | _i_ndex     | _t_ags      |          | _q_uit
+ _n_eotree   |           |           |          |
+ _d_esktop   |           |           |          |
   "
   ("b" switch-to-buffer)
   ("f" find-file)
@@ -159,6 +161,8 @@
   ("p" find-file-in-project)
   ("a" ff-find-other-file)
   ("t" sk/hydra-tags/body :exit t)
+  ("s" yas-insert-snippet)
+  ("c" yas-new-snippet)
   ("H" sk/hydra-of-hydras/body :exit t)
   ("x" counsel-M-x :color blue)
   ("q" nil :color blue))

@@ -30,7 +30,7 @@
 
 ;; Get the proper path
 (sk/require-package 'exec-path-from-shell)
-(exec-path-from-shell-copy-env "PYTHONPATH")
+;; (exec-path-from-shell-copy-env "PYTHONPATH")
 (when (memq window-system '(mac ns))
   (exec-path-from-shell-initialize))
 

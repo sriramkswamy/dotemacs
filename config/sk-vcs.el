@@ -29,8 +29,8 @@
 (add-hook 'html-mode-hook 'diff-hl-mode)
 (add-hook 'text-mode-hook 'diff-hl-mode)
 (add-hook 'org-mode-hook 'diff-hl-mode)
-(diff-hl-margin-mode)
-(diff-hl-flydiff-mode)
+(add-hook 'diff-hl-mode-hook 'diff-hl-margin-mode)
+(add-hook 'diff-hl-mode-hook 'diff-hl-flydiff-mode)
 
 ;; Git time-machine
 (sk/require-package 'git-timemachine)

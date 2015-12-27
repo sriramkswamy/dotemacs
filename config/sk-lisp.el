@@ -7,6 +7,10 @@
 
 ;; Modal lisp editing
 (sk/require-package 'lispy)
+(defun sk/diminish-lispy ()
+  (interactive)
+  (diminish 'lispy-mode ""))
+(add-hook 'lispy-mode-hook 'sk/diminish-lispy)
 (add-hook 'emacs-lisp-mode-hook (lambda () (lispy-mode 1)))
 
 ;; Common lisp

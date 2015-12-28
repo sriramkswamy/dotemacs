@@ -1,7 +1,5 @@
-;; God mode
-(sk/require-package 'god-mode)
-(require 'god-mode)
-(global-set-key (kbd "\\") 'god-local-mode)
+;; Cursor type change
+(setq-default cursor-type 'bar)
 
 ;; Key chords
 (sk/require-package 'key-chord)

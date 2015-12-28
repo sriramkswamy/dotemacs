@@ -64,7 +64,7 @@
  ^Origami^             | ^Fold^     | ^Menu^
  ^^^^^^^^^--------------------|----------|---------------
  _o_pen  _c_lose  _t_oggle | _n_ext     | _H_ome   e_x_ecute
- _O_pen  _C_lose  _T_oggle | _p_revious |        _q_uit
+ _O_pen  _C_lose  _T_oggle | _p_revious |        _Q_uit
   "
   ("o" origami-open-node)
   ("c" origami-close-node)
@@ -76,7 +76,7 @@
   ("p" origami-previous-fold)
   ("H" sk/hydra-of-hydras/body :exit t)
   ("x" counsel-M-x :color blue)
-  ("q" nil :color blue))
+  ("Q" nil :color blue))
 
 ;; Restart Emacs from Emacs
 (sk/require-package 'restart-emacs)

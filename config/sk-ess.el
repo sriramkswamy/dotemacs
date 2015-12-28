@@ -19,7 +19,7 @@
  ^Send^     | ^Shell^  | ^Menu^
  ^^^^^^^^^---------|--------|----------------
  _f_unction | _s_tart  | _H_ome    e_x_ecute
- _l_ine     | s_w_itch | _L_ang    _q_uit
+ _l_ine     | s_w_itch | _L_ang    _Q_uit
  _r_egion   |        |
  _a_ll      |        |
 "
@@ -32,7 +32,7 @@
   ("L" sk/hydra-of-langs/body :exit t)
   ("H" sk/hydra-of-hydras/body :exit t)
   ("x" counsel-M-x :color blue)
-  ("q" nil :color blue))
+  ("Q" nil :color blue))
 
 ;; Vertical split r REPL
 (defun sk/r-shell-here ()
@@ -51,7 +51,7 @@
  ^Send^     | ^Shell^  | ^Menu^
  ^^^^^^^^^---------|--------|----------------
  _f_unction | _s_tart  | _H_ome    e_x_ecute
- _l_ine     | s_w_itch | _L_ang    _q_uit
+ _l_ine     | s_w_itch | _L_ang    _Q_uit
  _r_egion   |        |
  _a_ll      |        |
 "
@@ -64,7 +64,7 @@
   ("L" sk/hydra-of-langs/body :exit t)
   ("H" sk/hydra-of-hydras/body :exit t)
   ("x" counsel-M-x :color blue)
-  ("q" nil :color blue))
+  ("Q" nil :color blue))
 
 (provide 'sk-ess)
 

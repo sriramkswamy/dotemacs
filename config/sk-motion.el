@@ -10,14 +10,15 @@
 (sk/require-package 'avy)
 
 ;; Hydra of motion
-(defhydra sk/hydra-of-motion (:color red
-                              :hint nil)
+(defhydra sk/hydra-of-motion (:pre (require 'expand-region)
+                                   :color red
+                                   :hint nil)
   "
- ^Move^   | ^Line^    | ^File^  | ^Mark^     | ^Para^   | ^Screen^ | ^Word^     | ^Edit^      | ^Menu^
- ^^^^^^-------|---------|-------|----------|--------|--------|----------|-----------|---------------
- ^ ^ _k_ ^ ^  | _a_ start | _<_ beg | _s_et      | _}_ next | _]_ next | for_w_ard  | _d_el       | _P_ython _H_ome
- _h_ ^+^ _l_  | _e_nd     | _>_ end | _r_eset    | _{_ prev | _[_ prev | _b_ackward | cop_y_      | _J_ulia  e_x_ecute
- ^ ^ _j_ ^ ^  | _g_oto    |       | ex_c_hange |        |        |          | _R_ectangle | _L_ang   _q_uit
+ ^Move^   | ^Line^  | ^File^  | ^Mark^     | ^Para^   | ^Screen^ | ^Word^     | ^Edit^        | ^New-line^ | ^Blank^
+ ^^^^^^-------|-------|-------|----------|--------|--------|----------|-------------|----------|
+ ^ ^ _k_ ^ ^  | st_a_rt | _<_ beg | _s_et      | _}_ next | _]_ next | for_w_ard  | _J_oin  | _O_ above |
+ _h_ ^+^ _l_  | _e_nd   | _>_ end | _r_eset    | _{_ prev | _[_ prev | _b_ackward | _S_plit | _o_ below |
+ ^ ^ _j_ ^ ^  | _g_oto  |       | ex_c_hange |        |        | _f_ind     | _R_ectangle   |
 "
   ("h" backward-char)
   ("j" next-line)
@@ -39,15 +40,49 @@
   ("[" scroll-down)
   ("w" forward-word)
   ("b" backward-word)
-  ("d" delete-region)
-  ("y" copy-region-as-kill)
-  ("R" sk/hydra-rectangle/body :exit t)
+  ("f" avy-goto-char-in-line)
+  ("o" sk/open-line-below :color blue)
+  ("O" sk/open-line-above :color blue)
+  ("J" sk/join-line)
+  ("S" electric-newline-and-maybe-indent)
+  ("[" sk/blank-line-up)
+  ("]" sk/blank-line-down)
+  ("{" sk/move-text-up)
+  ("}" sk/move-text-down)
+  ("i" er/expand-region)
+  ("r" er/contract-region)
+  ("p" er/mark-text-paragraph)
+  ("f" er/mark-defun)
+  ("w" er/mark-symbol)
+  ("@" er/mark-email)
+  (":" er/mark-url)
+  ("t" er/mark-LaTeX-math)
+  ("n" er/mark-comment)
+  ("o" er/mark-inside-pairs)
+  ("u" er/mark-inside-quotes)
+  ("-" er/mark-org-code-block)
+  ("b" er/mark-python-block)
+  ("h" er/mark-python-string)
+  ("l" er/mark-python-statement)
+  ("m" er/mark-ruby-block-up)
+  ("s" er/c-mark-statement)
+  ("v" er/c-mark-fully-qualified-name)
+  ("d" kill-region :color blue)
+  ("K" kill-whole-line :color blue)
+  ("k" kill-line :color blue)
+  ("y" kill-ring-save)
+  ("c" 'evilnc-comment-or-uncomment-lines)
   ("P" sk/hydra-for-python/body :exit t)
+  ("M" sk/hydra-for-matlab/body :exit t)
+  ("R" sk/hydra-for-r/body :exit t)
+  ("E" sk/hydra-for-elisp/body :exit t)
   ("J" sk/hydra-for-julia/body :exit t)
   ("L" sk/hydra-of-langs/body :exit t)
   ("H" sk/hydra-of-hydras/body :exit t)
+  ("V" sk/hydra-of-motion/body :exit t)
+  ("M" sk/hydra-of-marks/body :exit t)
   ("x" counsel-M-x :color blue)
-  ("q" nil :color blue))
+  ("Q" nil :color blue))
 
 ;; Hydra of windows
 (defhydra sk/hydra-of-windows (:color red
@@ -56,7 +91,7 @@
  ^Move^   | ^Size^   | ^Change^        | ^Split^        | ^Frame^                | ^Text^       | ^Config^   | ^Menu^
  ^^^^^^^^^^^-------|--------|---------------|--------------|----------------------|------------|----------|--------------
  ^ ^ _k_ ^ ^  | ^ ^ _{_ ^ ^  | _u_ winner-undo | _v_ertical     | _f_ullscreen  _m_aximize | _+_ zoom in  | _i_ config | _H_ome  e_x_ecute
- _h_ ^+^ _l_  | _<_ ^+^ _>_  | _r_ winner-redo | _s_ horizontal | _d_elete      _M_inimize | _-_ zoom out |          | mo_V_e  _q_uit
+ _h_ ^+^ _l_  | _<_ ^+^ _>_  | _r_ winner-redo | _s_ horizontal | _d_elete      _M_inimize | _-_ zoom out |          | mo_V_e  _Q_uit
  ^ ^ _j_ ^ ^  | ^ ^ _}_ ^ ^  | _c_lose         | _z_oom         | _S_elect      _n_ame     |            |          |
 "
   ("h" windmove-left)
@@ -87,7 +122,7 @@
   ("H" sk/hydra-of-hydras/body :exit t)
   ("V" sk/hydra-of-motion/body :exit t)
   ("x" counsel-M-x :color blue)
-  ("q" nil :color blue))
+  ("Q" nil :color blue))
 
 (provide 'sk-motion)
 

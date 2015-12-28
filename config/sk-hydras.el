@@ -5,7 +5,7 @@
  ^Diff^       | ^Errors^     | ^Spell^      | ^Mark^        | ^Fold^     | ^Menu^
  ^^^^^^^^^-----------|------------|------------|-------------|----------|--------------
  _j_ next     | _l_ next     | _>_ next     | _]_ loc next  | _n_ext     | _H_ome  e_x_ecute
- _k_ previous | _h_ previous | _<_ previous | _[_ loc prev  | _p_revious |       _q_uit
+ _k_ previous | _h_ previous | _<_ previous | _[_ loc prev  | _p_revious |       _Q_uit
  _g_oto       | _a_ll        | _c_orrect    | _}_ glob next |          |
  _r_evert     | _f_irst      |            | _{_ glob prev |          |
  "
@@ -28,7 +28,7 @@
   ("c" ispell-word)
   ("H" sk/hydra-of-hydras/body :exit t)
   ("x" counsel-M-x :color blue)
-  ("q" nil :color blue))
+  ("Q" nil :color blue))
 
 ;; Hydra of languages
 (defhydra sk/hydra-of-langs (:color red
@@ -36,7 +36,7 @@
   "
  ^Languages^                  | ^Errors^           | ^Eshell^       | ^Terminal^     | ^Tmux^  | ^Menu^
  ^^^^^^^^^---------------------------|------------------|--------------|--------------|-------|----------------
- _c_++    _j_ulia   _e_lisp   _d_oc | _h_ previous _a_ll   | _+_ vertical   | _|_ vertical   | _s_tart | _H_ome    _q_uit
+ _c_++    _j_ulia   _e_lisp   _d_oc | _h_ previous _a_ll   | _+_ vertical   | _|_ vertical   | _s_tart | _H_ome    _Q_uit
  _p_ython _r_       _m_atlab      | _l_ next     _f_irst | _-_ horizontal | ___ horizontal |       |         e_x_ecute
 "
   ("c" sk/hydra-for-cpp/body :exit t)
@@ -57,7 +57,7 @@
   ("a" flycheck-list-errors :color blue)
   ("H" sk/hydra-of-hydras/body :exit t)
   ("x" counsel-M-x :color blue)
-  ("q" nil :color blue))
+  ("Q" nil :color blue))
 
 ;; Hydra of search
 (defhydra sk/hydra-of-search (:color blue
@@ -66,7 +66,7 @@
  ^Buffer^          | ^Project^  | ^Desktop^ | ^Google^ | ^Menu^
  ^^^^^^^^^----------------|----------|---------|--------|--------------
  _s_earch  _w_ord    | _p_roject  | _d_esktop | _g_oogle | _H_ome  e_x_ecute
- _a_ll     _r_eplace | refac_t_or | _f_ast    | _c_ursor |       _q_uit
+ _a_ll     _r_eplace | refac_t_or | _f_ast    | _c_ursor |       _Q_uit
 "
   ("s" swiper)
   ("a" swiper-all)
@@ -80,7 +80,7 @@
   ("c" google-this)
   ("H" sk/hydra-of-hydras/body :exit t)
   ("x" counsel-M-x :color blue)
-  ("q" nil :color blue))
+  ("Q" nil :color blue))
 
 ;; Activate modes
 (defhydra sk/hydra-of-activate (:color red
@@ -90,7 +90,7 @@
  ^^^^^^^^^-----------------------------|------------|---------------------------------------------|--------
  _b_attery   _n_umber   scrollb_a_r | _p_aradox    | _c_ompany    _i_ndentation  _W_hich-key  col_f_orce | _H_ome
  _t_ime      _w_rap     toolba_r_   | instal_l_    | _y_asnippet  f_C_i          _j_abber    _o_rg       | e_x_ecute
- _F_ont      _s_pell    _v_ theme   | _I_nitialize | _e_lpy       f_O_ld         _g_gtags              | _q_uit
+ _F_ont      _s_pell    _v_ theme   | _I_nitialize | _e_lpy       f_O_ld         _g_gtags              | _Q_uit
 "
   ("b" display-battery-mode)
   ("t" display-time-mode)
@@ -117,7 +117,7 @@
   ("W" which-key-mode :color blue)
   ("H" sk/hydra-of-hydras/body :exit t)
   ("x" counsel-M-x :color blue)
-  ("q" nil :color blue))
+  ("Q" nil :color blue))
 
 ;; Hydra of undo
 (defhydra sk/hydra-of-undo (:color red
@@ -125,7 +125,7 @@
   "
  ^Undo^             | ^Menu^
  ^^^^^^^^^-----------------|---------------------
- _u_ndo  _r_edo  _v_iew | _H_ome   e_x_ecute  _q_uit
+ _u_ndo  _r_edo  _v_iew | _H_ome   e_x_ecute  _Q_uit
 "
   ("u" undo-tree-undo)
   ("r" undo-tree-redo)
@@ -133,7 +133,7 @@
   ("E" sk/hydra-of-edits/body :exit t)
   ("H" sk/hydra-of-hydras/body :exit t)
   ("x" counsel-M-x :color blue)
-  ("q" nil :color blue))
+  ("Q" nil :color blue))
 
 ;; Hydra of repeat
 (defhydra sk/hydra-of-repeat (:color red
@@ -141,12 +141,12 @@
   "
  ^Repeat^  | ^Menu^
  ^^^^^^^^^--------|----------------------
- _i_vy     | _H_ome   e_x_ecute   _q_uit
+ _i_vy     | _H_ome   e_x_ecute   _Q_uit
   "
   ("i" ivy-resume)
   ("H" sk/hydra-of-hydras/body :exit t)
   ("x" counsel-M-x :color blue)
-  ("q" nil :color blue))
+  ("Q" nil :color blue))
 
 ;; Hydra of hydras
 (defhydra sk/hydra-of-hydras (:color blue
@@ -155,7 +155,7 @@
  ^Menu^                              | ^Emacs^
  ^^^^^^^^^----------------------------------|---------------
  _n_avigate  _a_ctiavte  _o_rg   _e_dit    | _S_ave   e_x_ecute
- _w_indow    mo_v_e      _l_ang  _s_earch  | _C_lose  _q_uit
+ _w_indow    mo_v_e      _l_ang  _s_earch  | _C_lose  _Q_uit
  _h_elp      _m_ark      _g_it   _c_ursors |
 "
   ("n" sk/hydra-of-navigation/body :exit t)
@@ -173,7 +173,7 @@
   ("S" save-buffer :exit t)
   ("C" save-buffers-kill-terminal :exit t)
   ("x" counsel-M-x :color blue)
-  ("q" nil :color blue))
+  ("Q" nil :color blue))
 
 (provide 'sk-hydras)
 

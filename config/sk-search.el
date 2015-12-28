@@ -28,7 +28,7 @@
  ^Refactor^                        | ^Menu^
  ^^^^^^^^^--------------------------------|---------------
  _w_grep  _f_inish    _r_emove    _k_ill | _H_ome   e_x_ecute
-        _s_ave-all  _R_emove-all     |        _q_uit
+        _s_ave-all  _R_emove-all     |        _Q_uit
   "
   ("w" wgrep-change-to-wgrep-mode)
   ("s" wgrep-save-all-buffers)
@@ -38,7 +38,7 @@
   ("k" wgrep-abort-changes)
   ("H" sk/hydra-of-hydras/body :exit t)
   ("x" counsel-M-x :color blue)
-  ("q" nil :color blue))
+  ("Q" nil :color blue))
 
 ;; Spotlight
 (sk/require-package 'spotlight)

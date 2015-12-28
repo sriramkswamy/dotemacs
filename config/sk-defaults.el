@@ -15,9 +15,6 @@
       visible-bell nil
       inhibit-splash-screen t)
 
-;; Cursor type change
-(setq-default cursor-type 'bar)
-
 ;; DocView Settings
 (setq doc-view-continuous t
       doc-view-resolution 200)
@@ -75,6 +72,14 @@
 (add-hook 'abbrev-mode-hook 'sk/diminish-abbrev)
 (add-hook 'prog-mode-hook 'sk/diminish-abbrev)
 (add-hook 'text-mode-hook 'sk/diminish-abbrev)
+
+;; Diminish some stuff
+(defun sk/diminish-auto-fill ()
+  (interactive)
+  (diminish 'auto-fill-mode ""))
+(add-hook 'abbrev-mode-hook 'sk/diminish-auto-fill)
+(add-hook 'prog-mode-hook 'sk/diminish-auto-fill)
+(add-hook 'text-mode-hook 'sk/diminish-auto-fill)
 
 ;; Subword mode
 (defun sk/diminish-subword ()

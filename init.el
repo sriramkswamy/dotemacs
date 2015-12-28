@@ -13,9 +13,6 @@
 ;; Diminish
 (sk/require-package 'diminish)
 
-;; ;; Evil config
-;; (require 'sk-evil)
-
 ;; Change some defaults
 (require 'sk-defaults)
 
@@ -85,20 +82,20 @@
 ;; ;; Jabber
 ;; (require 'sk-jabber)
 
-;; Interface
-(require 'sk-interface)
+;; ;; Interface
+;; (require 'sk-interface)
 
-;; ;; Evil maps for packages
-;; (require 'sk-evilmaps)
+;; Evil
+(require 'sk-evil)
 
 ;; Some maps
 (global-set-key (kbd "C-s") 'swiper)
 (global-set-key (kbd "C-r") 'swiper)
-(global-set-key (kbd "C-y") 'counsel-yank-pop)
 (global-set-key (kbd "M-x") 'counsel-M-x)
 
 ;; Themes
 (sk/require-package 'zenburn-theme)
+(load-theme 'leuven t)
 
 ;; Garbage collector - increase threshold
 (setq gc-cons-threshold (* 1024 1024 1024))

@@ -82,11 +82,11 @@
 ;; ;; Jabber
 ;; (require 'sk-jabber)
 
-;; ;; Interface
-;; (require 'sk-interface)
+;; Interface
+(require 'sk-interface)
 
-;; Evil
-(require 'sk-evil)
+;; ;; Evil
+;; (require 'sk-evil)
 
 ;; Some maps
 (global-set-key (kbd "C-s") 'swiper)

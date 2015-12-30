@@ -58,7 +58,8 @@
 (sk/require-package 'origami)
 
 ;; Hydra for origami
-(defhydra sk/hydra-origami (:color red
+(defhydra sk/hydra-origami (:pre (global-origami-mode 1)
+                            :color red
                             :hint nil)
   "
  ^Origami^             | ^Fold^     | ^Menu^

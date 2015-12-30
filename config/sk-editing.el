@@ -5,7 +5,7 @@
  ^Move^   | ^Edit^                    | ^Menu^
  ^^^^^^-------|-------------------------|--------------
  ^ ^ _k_ ^ ^  | _s_et       _r_eset _S_tring  | _H_ome  _q_uit
- _h_ ^+^ _l_  | ex_c_hange  cop_y_  _R_eplace | _M_ark  e_x_ecute
+ _h_ ^+^ _l_  | ex_c_hange  cop_y_  _R_eplace | _M_ove  e_x_ecute
  ^ ^ _j_ ^ ^  | _d_elete    _p_aste         |
 "
   ("h" backward-char nil)
@@ -22,6 +22,7 @@
   ("p" yank-rectangle)
   ("S" string-rectangle)
   ("R" replace-rectangle)
+  ("M" sk/hydra-of-motion/body :exit t)
   ("H" sk/hydra-of-hydras/body :exit t)
   ("x" counsel-M-x :color blue)
   ("q" nil :color blue))

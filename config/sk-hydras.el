@@ -88,7 +88,7 @@
  ^(De)Activate^                 | ^Packages^   | ^Minor mode^                                  | ^Menu^
  ^^^^^^^^^-----------------------------|------------|---------------------------------------------|--------
  _b_attery   _n_umber   scrollb_a_r | _p_aradox    | _c_ompany    _i_ndentation  _W_hich-key  col_f_orce | _H_ome
- _t_ime      _w_rap     toolba_r_   | instal_l_    | _y_asnippet  f_C_i          _j_abber    _o_rg       | e_x_ecute
+ _t_ime      _w_rap     toolba_r_   | instal_l_    | _y_asnippet  f_C_i          _j_abber     _o_rg      | e_x_ecute
  _F_ont      _s_pell    _v_ theme   | _I_nitialize | _e_lpy       f_O_ld         _g_gtags              | _q_uit
 "
   ("b" display-battery-mode)
@@ -97,8 +97,8 @@
   ("n" linum-mode :color blue)
   ("w" toggle-truncate-lines :color blue)
   ("s" flyspell-mode :color blue)
-  ("r" tool-bar-mode)
-  ("a" scroll-bar-mode)
+  ("r" tool-bar-mode :color blue)
+  ("a" scroll-bar-mode :color blue)
   ("v" load-theme :color blue)
   ("p" paradox-list-packages :color blue)
   ("l" package-install :color blue)
@@ -134,15 +134,25 @@
   ("x" counsel-M-x :color blue)
   ("q" nil :color blue))
 
-;; Hydra of repeat
-(defhydra sk/hydra-of-repeat (:color red
+;; Hydra of macros
+(defhydra sk/hydra-of-macros (:color red
                               :hint nil)
   "
- ^Repeat^  | ^Menu^
- ^^^^^^^^^--------|----------------------
- _i_vy     | _H_ome   e_x_ecute   _q_uit
+ ^Macro^                                   | ^Menu^
+ ^^^^^^^^^----------------------------------------|---------------
+ _m_acro  _l_ossage  _v_iew      _c_ycle  _d_elete | _H_ome   e_x_ecute
+ _p_rev   _e_dit     _r_egister  _b_ack   _k_ey    |        _q_uit
   "
-  ("i" ivy-resume)
+  ("m" kmacro-call-macro)
+  ("p" kmacro-call-ring-2nd)
+  ("l" kmacro-edit-lossage :color blue)
+  ("e" kmacro-edit-macro :color blue)
+  ("v" kmacro-view-macro :color blue)
+  ("r" kmacro-to-register :color blue)
+  ("c" kmacro-cycle-ring-next)
+  ("b" kmacro-cycle-ring-previous)
+  ("d" kmacro-delete-ring-head :color blue)
+  ("k" kmacro-bind-to-key :color blue)
   ("H" sk/hydra-of-hydras/body :exit t)
   ("x" counsel-M-x :color blue)
   ("q" nil :color blue))

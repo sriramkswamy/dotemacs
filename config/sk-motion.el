@@ -8,6 +8,11 @@
 
 ;; Avy
 (sk/require-package 'avy)
+(setq avy-keys-alist
+      `((avy-goto-char-2 . (?j ?k ?l ?f ?s ?d))
+        (avy-goto-line . (?j ?k ?l ?f ?s ?d))))
+(setq avy-style 'pre)
+
 ;; Hydra of motion
 (defhydra sk/hydra-of-motion (:color red
                               :hint nil)
@@ -69,7 +74,7 @@
   ("v" sk/split-right-and-move)
   ("s" sk/split-below-and-move)
   ("c" delete-window)
-  ("f" sk/toggle-frame-fullscreen-non-native)
+  ("f" sk/toggle-frame-fullscreen-non-native :color blue)
   ("z" delete-other-windows)
   ("u" (progn
          (winner-undo)

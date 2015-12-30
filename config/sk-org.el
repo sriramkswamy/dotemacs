@@ -311,7 +311,7 @@ _h_ ^+^ _l_        | _o_pen      _c_lear    rena_m_e  | _H_ome  _q_uit
  ^ ^ _j_ ^ ^  ^ ^ _n_ ^ ^  | ^ ^ _d_ ^ ^ | ^ ^ ^ ^ ^ ^ | ^ ^ _]_ ^ ^  | ^ ^ _}_ ^ ^   | _r_efile    | RefTe_X_    _*_ heading | _K_ill    | _-_ code   _H_ome
                |       | c_L_ear | _U_pdate | _D_isplay | _A_rchive   | eff_O_rt    _E_xport    | cop_y_    | _C_lock    e_x_ecute
                |       |       |        | _S_tore   |           |           _>_ cal     |         | dra_W_er   _q_uit
-               |       |       |        | _I_nsert  |           |           _<_ date    |         |
+               |       |       |        | _I_nsert  |           |           _<_ date    |         | _g_oto
 "
   ("j" outline-next-visible-heading)
   ("k" outline-previous-visible-heading)

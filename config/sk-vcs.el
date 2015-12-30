@@ -72,7 +72,7 @@
  ^Git^                          | ^Diff^               | ^Gist^   | ^Menu^
 ^^^^^^^^^------------------------------|--------------------|--------|--------------
  _s_tatus   _b_lame   _t_imemachine | _j_ next      _g_oto   | _u_pload | _H_ome  e_x_ecute
-                              | _k_ previous  _r_evert |        |       _Q_uit
+                              | _k_ previous  _r_evert |        |       _q_uit
 "
   ("s" magit-status :color blue)
   ("d" sk/hydra-diff/body :exit t)
@@ -85,7 +85,7 @@
   ("u" yagist-region-or-buffer :color blue)
   ("H" sk/hydra-of-hydras/body :exit t)
   ("x" counsel-M-x :color blue)
-  ("Q" nil :color blue))
+  ("q" nil :color blue))
 
 (provide 'sk-vcs)
 

@@ -61,16 +61,16 @@
  ^^^^^^^^^--------|-----------|---------
  _c_reate  | _r_eference |  _H_ome
  _u_pdate  | _t_ag       |  e_x_ecute
- _f_ind    |           |  _Q_uit
+ _f_ind    |           |  _q_uit
 "
   ("c" ggtags-create-tags)
   ("u" ggtags-update-tags)
   ("f" ggtags-find-tag-regexp)
-  ("r" ggtags-find-reference)
-  ("t" ggtags-find-tag-dwim)
+  ("r" ggtags-find-reference :color red)
+  ("t" ggtags-find-tag-dwim :color red)
   ("H" sk/hydra-of-hydras/body :exit t)
   ("x" counsel-M-x :color blue)
-  ("Q" nil :color blue))
+  ("q" nil :color blue))
 
 ;; Apropos
 (defhydra sk/hydra-apropos (:color blue
@@ -78,7 +78,7 @@
   "
  ^Apropos - Search anything^    | ^Menu^
  ^^^^^^^^^-----------------------------|--------------
- _a_ll   _d_oc   _v_ar   _c_md   _l_ib  | _H_ome  _Q_uit
+ _a_ll   _d_oc   _v_ar   _c_md   _l_ib  | _H_ome  _q_uit
  _u_ser  valu_e_                  | _h_elp  e_x_ecute
 "
   ("a" apropos)
@@ -91,7 +91,7 @@
   ("e" apropos-value)
   ("h" sk/hydra-help/body :exit t)
   ("x" counsel-M-x :color blue)
-  ("Q" nil :color blue))
+  ("q" nil :color blue))
 
 ;; Help
 (defhydra sk/hydra-of-help (:color blue
@@ -101,7 +101,7 @@
  ^^^^^^^^^---------------------------------------|---------
  _b_inding    _i_nfo     _t_utorial  _a_ll      | _H_ome
  _f_unction   _s_ymbol   _p_ackage   _l_ang-env | e_x_ecute
- _v_ariable   _e_macs    _h_elp               | _Q_uit
+ _v_ariable   _e_macs    _h_elp               | _q_uit
  _m_ode       synta_x_   _k_ey                |
 "
   ("b" describe-bindings)
@@ -120,7 +120,7 @@
   ("l" describe-language-environment)
   ("H" sk/hydra-of-hydras/body :exit t)
   ("x" counsel-M-x :color blue)
-  ("Q" nil :color blue))
+  ("q" nil :color blue))
 
 ;; Bookmarks - hydra
 (defhydra sk/hydra-bookmarks (:color red
@@ -128,7 +128,7 @@
   "
  ^Bookmarks^                   | ^Menu^
  ^^^^^^^^^----------------------------|-----------------------
- _s_et  _b_ookmark  _j_ump  _d_elete | _H_ome   e_x_ecute   _Q_uit
+ _s_et  _b_ookmark  _j_ump  _d_elete | _H_ome   e_x_ecute   _q_uit
   "
   ("s" bookmark-set)
   ("b" bookmark-save)
@@ -136,7 +136,7 @@
   ("d" bookmark-delete)
   ("H" sk/hydra-of-hydras/body :exit t)
   ("x" counsel-M-x :color blue)
-  ("Q" nil :color blue))
+  ("q" nil :color blue))
 
 ;; Hydra of Navigation
 (defhydra sk/hydra-of-navigation (:color blue
@@ -146,7 +146,7 @@
  ^^^^^^^^^----------|-----------|-----------|----------|--------
  _f_iles     | _b_uffers   | _p_roject   | _s_nippets | _H_ome
  _r_ecent    | book_m_arks | _a_lternate | _c_reate   | e_x_ecute
- read-_o_nly | _i_ndex     | _t_ags      |          | _Q_uit
+ read-_o_nly | _i_ndex     | _t_ags      |          | _q_uit
  _n_eotree   |           |           |          |
  _d_esktop   |           |           |          |
   "
@@ -165,7 +165,7 @@
   ("c" yas-new-snippet)
   ("H" sk/hydra-of-hydras/body :exit t)
   ("x" counsel-M-x :color blue)
-  ("Q" nil :color blue))
+  ("q" nil :color blue))
 
 ;; Eyebrowse mode
 (sk/require-package 'eyebrowse)
@@ -186,7 +186,7 @@
  ^Eyebrowse^                | ^Menu^
  ^^^^^^^^^-------------------------|--------------
  _0_   _4_  _8_   sw_i_tch   _l_ast | _H_ome  e_x_ecute
- _1_   _5_  _9_   _r_ename        | _W_in   _Q_uit
+ _1_   _5_  _9_   _r_ename        | _W_in   _q_uit
  _2_   _6_      _n_ext          |
  _3_   _7_      _p_revious      |
 "
@@ -208,7 +208,7 @@
   ("H" sk/hydra-of-hydras/body :exit t)
   ("W" sk/hydra-of-windows/body :exit t)
   ("x" counsel-M-x :color blue)
-  ("Q" nil :color blue))
+  ("q" nil :color blue))
 
 (provide 'sk-navigate)
 

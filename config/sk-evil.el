@@ -39,7 +39,6 @@
 (define-key evil-normal-state-map (kbd "SPC [") 'widen)
 (define-key evil-normal-state-map (kbd "SPC DEL") 'whitespace-cleanup)
 (define-key evil-normal-state-map (kbd "SPC ,") 'describe-bindings)
-(define-key evil-normal-state-map (kbd "SPC 3") 'quick-calc)
 (define-key evil-normal-state-map (kbd "SPC \\") 'toggle-input-method)
 (define-key evil-visual-state-map (kbd "SPC ]") 'narrow-to-region)
 
@@ -91,14 +90,6 @@
 (define-key evil-normal-state-map "g(" 'sentence-nav-evil-backward-end)
 (define-key evil-outer-text-objects-map "s" 'sentence-nav-evil-outer-sentence)
 (define-key evil-inner-text-objects-map "s" 'sentence-nav-evil-inner-sentence)
-
-;; Evil Magit
-(sk/require-package 'evil-magit)
-(setq evil-magit-state 'motion)
-(defun sk/magit-status ()
-  (interactive)
-  (require 'evil-magit)
-  (magit-status))
 
 ;;; Evil text objects - Courtesy PythonNut
 
@@ -215,11 +206,9 @@
 ;; Swiper (with Ivy and counsel)
 (define-key evil-normal-state-map (kbd "SPC d") 'counsel-M-x)
 (define-key evil-normal-state-map (kbd "SPC SPC") 'swiper)
-(define-key evil-normal-state-map (kbd "SPC b") 'swiper-all)
 (define-key evil-normal-state-map (kbd "SPC r") 'ivy-recentf)
 (define-key evil-normal-state-map (kbd "SPC u") 'ivy-switch-buffer)
 (define-key evil-normal-state-map (kbd "SPC y") 'counsel-yank-pop)
-(define-key evil-normal-state-map (kbd "SPC v") 'counsel-load-theme)
 (define-key evil-normal-state-map (kbd "SPC .") 'ivy-resume)
 (define-key evil-normal-state-map (kbd "SPC /") 'counsel-locate)
 (define-key evil-normal-state-map (kbd "SPC h") 'counsel-ag)
@@ -229,9 +218,9 @@
 (define-key evil-insert-state-map (kbd "C-l") 'counsel-M-x)
 
 ;; ag and wgrep
-(define-key evil-normal-state-map (kbd "s") 'sk/hydra-wgrep/body)
-(define-key evil-normal-state-map (kbd "SPC e") 'ag-project-regexp)
-(define-key evil-visual-state-map (kbd "SPC e") 'ag-project-regexp)
+(define-key evil-normal-state-map (kbd "S") 'sk/hydra-wgrep/body)
+(define-key evil-normal-state-map (kbd "SPC t") 'ag-project-regexp)
+(define-key evil-visual-state-map (kbd "SPC t") 'ag-project-regexp)
 
 ;; Swoop
 (define-key evil-normal-state-map (kbd "*") 'swoop-pcre-regexp)
@@ -240,15 +229,15 @@
 (define-key evil-visual-state-map (kbd "#") 'swoop-pcre-regexp)
 
 ;; Spotlight
-(define-key evil-normal-state-map (kbd "SPC 8") 'spotlight)
+(define-key evil-normal-state-map (kbd "SPC b") 'spotlight)
 
 ;; Google under point
-(define-key evil-normal-state-map (kbd "SPC 9") 'google-this-search)
-(define-key evil-visual-state-map (kbd "SPC 9") 'google-this)
+(define-key evil-normal-state-map (kbd "SPC g") 'google-this-search)
+(define-key evil-visual-state-map (kbd "SPC g") 'google-this)
 
 ;;; Visual regexp
-(define-key evil-normal-state-map (kbd "SPC 0") 'vr/query-replace)
-(define-key evil-visual-state-map (kbd "SPC 0") 'vr/query-replace)
+(define-key evil-normal-state-map (kbd "SPC v") 'vr/query-replace)
+(define-key evil-visual-state-map (kbd "SPC v") 'vr/query-replace)
 
 ;; Winner mode
 (define-key evil-normal-state-map (kbd "Q") 'winner-undo)
@@ -271,7 +260,7 @@
 ;; Window management
 (define-key evil-normal-state-map (kbd "w") 'sk/split-right-and-move)
 (define-key evil-normal-state-map (kbd "W") 'sk/split-below-and-move)
-(define-key evil-normal-state-map (kbd "gw") 'sk/hydra-of-windows/body)
+(define-key evil-normal-state-map (kbd "SPC i") 'sk/hydra-of-windows/body)
 
 ;; Flyspell
 (define-key evil-normal-state-map (kbd "]s") 'flyspell-goto-next-error)
@@ -305,7 +294,7 @@
 (define-key evil-normal-state-map (kbd "gF") 'reveal-in-osx-finder)
 
 ;; Dash at point
-(define-key evil-normal-state-map (kbd "SPC 1") 'dash-at-point-with-docset)
+(define-key evil-normal-state-map (kbd "SPC c") 'dash-at-point-with-docset)
 
 ;; Tags
 (define-key evil-normal-state-map (kbd "T") 'sk/hydra-tags/body)
@@ -316,14 +305,8 @@
 ;; Help hydra
 (define-key evil-normal-state-map (kbd "SPC x") 'sk/hydra-of-help/body)
 
-;; Magit
-(define-key evil-normal-state-map (kbd "SPC g") 'sk/magit-status)
-
-;; Git blame
-(define-key evil-normal-state-map (kbd "gb") 'sk/hydra-git-blame/body)
-
-;; Git time machine
-(define-key evil-normal-state-map (kbd "gt") 'sk/hydra-git-timemachine/body)
+;; Git
+(define-key evil-normal-state-map (kbd "SPC l") 'sk/hydra-of-git/body)
 
 ;; Snippets
 (define-key evil-insert-state-map (kbd "C-j") 'yas-insert-snippet)
@@ -333,7 +316,7 @@
 (define-key evil-normal-state-map (kbd "[e") 'flycheck-previous-error)
 (define-key evil-normal-state-map (kbd "]E") 'flycheck-last-checker)
 (define-key evil-normal-state-map (kbd "[E") 'flycheck-first-error)
-(define-key evil-normal-state-map (kbd "SPC l") 'flycheck-list-errors)
+(define-key evil-normal-state-map (kbd "SPC e") 'flycheck-list-errors)
 
 ;; Diff hl
 (define-key evil-normal-state-map (kbd "]d") 'diff-hl-next-hunk)
@@ -353,8 +336,7 @@
 (define-key evil-normal-state-map (kbd "zd") 'origami-open-node)
 
 ;; Org mode
-(define-key evil-normal-state-map (kbd "SPC c") 'org-capture)
-(define-key evil-normal-state-map (kbd "SPC o") 'org-agenda)
+(define-key evil-normal-state-map (kbd "SPC o") 'sk/hydra-of-org/body)
 (define-key evil-normal-state-map (kbd "SPC -") 'org-edit-src-code)
 (define-key evil-normal-state-map (kbd "SPC =") 'org-edit-src-exit)
 (define-key evil-normal-state-map (kbd "SPC ]") 'org-narrow-to-subtree)
@@ -397,14 +379,14 @@
 (define-key evil-normal-state-map (kbd "go<") 'org-date-from-calendar)
 (define-key evil-normal-state-map (kbd "gos") 'org-sort)
 (define-key evil-normal-state-map (kbd "goR") 'org-remove-file)
-(define-key evil-visual-state-map (kbd "SPC c") 'org-capture)
-(define-key evil-visual-state-map (kbd "SPC o") 'org-agenda)
+(define-key evil-visual-state-map (kbd "SPC o") 'sk/hydra-of-org/body)
 
 ;; Hydra of activate
 (define-key evil-normal-state-map (kbd "SPC a") 'sk/hydra-of-activate/body)
 
 ;; Hydra of langs
 (define-key evil-normal-state-map (kbd "SPC s") 'sk/hydra-of-langs/body)
+(define-key evil-visual-state-map (kbd "SPC s") 'sk/hydra-of-langs/body)
 
 (provide 'sk-evil)
 

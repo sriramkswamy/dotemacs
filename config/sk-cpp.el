@@ -39,7 +39,7 @@
  ^Compile^ | ^Eshell^       | ^Terminal^     | ^Menu^
  ^^^^^^^^^--------|--------------|--------------|---------------
  _m_ake    | _+_ vertical   | _|_ vertical   | _H_ome   e_x_ecute
- _c_ompile | _-_ horizontal | ___ horizontal | _L_ang   _Q_uit
+ _c_ompile | _-_ horizontal | ___ horizontal | _L_ang   _q_uit
  _r_un     |              |              |
 "
   ("m" compile)
@@ -52,7 +52,7 @@
   ("L" sk/hydra-of-langs/body :exit t)
   ("H" sk/hydra-of-hydras/body :exit t)
   ("x" counsel-M-x :color blue)
-  ("Q" nil :color blue))
+  ("q" nil :color blue))
 
 (provide 'sk-cpp)
 

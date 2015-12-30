@@ -19,7 +19,7 @@
  ^Send^     | ^Menu^
  ^^^^^^^^^-- ------|--------------
  _f_unction | _L_ang  e_x_ecute
- _e_xp      | _H_ome  _Q_uit
+ _e_xp      | _H_ome  _q_uit
  _r_egion   |
  _b_uffer   |
 "
@@ -30,7 +30,7 @@
   ("L" hydra-langs/body :exit t)
   ("H" sk/hydra-of-hydras/body :exit t)
   ("x" counsel-M-x :color blue)
-  ("Q" nil :color blue))
+  ("q" nil :color blue))
 
 (provide 'sk-lisp)
 

@@ -28,11 +28,11 @@
       (package-refresh-contents))
     (package-install package)))
 
-;; Get the proper path
-(sk/require-package 'exec-path-from-shell)
-;; (exec-path-from-shell-copy-env "PYTHONPATH")
-(when (memq window-system '(mac ns))
-  (exec-path-from-shell-initialize))
+;; ;; Get the proper path
+;; (sk/require-package 'exec-path-from-shell)
+;; ;; (exec-path-from-shell-copy-env "PYTHONPATH")
+;; (when (memq window-system '(mac ns x))
+;;   (exec-path-from-shell-initialize))
 
 ;; Paradox for package
 (sk/require-package 'paradox)

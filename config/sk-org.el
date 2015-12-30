@@ -124,7 +124,7 @@
 ^Move heading^      | ^Item^ | ^Menu^
 ^^^^^^^^^^^^------------------|------|--------------
 ^ ^ _k_ ^ ^   _<_ promote | _u_p   | _H_ome  e_x_ecute
-_h_ ^+^ _l_   _>_ demote  | _d_own | _O_rg   _Q_uit
+_h_ ^+^ _l_   _>_ demote  | _d_own | _O_rg   _q_uit
 ^ ^ _j_ ^ ^             |      |
 "
   ("h" org-metaleft)
@@ -138,7 +138,7 @@ _h_ ^+^ _l_   _>_ demote  | _d_own | _O_rg   _Q_uit
   ("H" sk/hydra-of-hydras/body :exit t)
   ("O" sk/hydra-of-org/body :exit t)
   ("x" counsel-M-x :color blue)
-  ("Q" nil :color blue))
+  ("q" nil :color blue))
 
 ;; Org table manipulation - hydra
 (defhydra sk/hydra-org-tables (:color red
@@ -147,7 +147,7 @@ _h_ ^+^ _l_   _>_ demote  | _d_own | _O_rg   _Q_uit
 ^Field^ | ^Shift^ | ^Insert^  | ^Delete^ | ^Field^ | ^Table^    | ^Formula^ | ^Menu^
 ^^^^^^^^^^^------|-------|---------|--------|-------|----------|---------|-------------
 ^ ^ _k_ ^ ^ | ^ ^ _p_ ^ ^ | _r_ow     | _R_ow    | _e_dit  | _a_lign    | _+_ sum   | _O_rg  e_x_ecute
-_h_ ^+^ _l_ | _b_ ^+^ _f_ | _c_olumn  | _C_olumn | _b_lank | _|_ create | _=_ eval  | _H_ome _Q_uit
+_h_ ^+^ _l_ | _b_ ^+^ _f_ | _c_olumn  | _C_olumn | _b_lank | _|_ create | _=_ eval  | _H_ome _q_uit
 ^ ^ _j_ ^ ^ | ^ ^ _n_ ^ ^ | _-_ hline |        | _i_nfo  |          | _f_ edit  |
 "
   ("a" org-table-align)
@@ -174,7 +174,7 @@ _h_ ^+^ _l_ | _b_ ^+^ _f_ | _c_olumn  | _C_olumn | _b_lank | _|_ create | _=_ ev
   ("H" sk/hydra-of-hydras/body :exit t)
   ("O" sk/hydra-of-org/body :exit t)
   ("x" counsel-M-x :color blue)
-  ("Q" nil :color blue))
+  ("q" nil :color blue))
 
 ;; Org clock manipulation - hydra
 (defhydra sk/hydra-org-clock (:color red
@@ -185,7 +185,7 @@ _h_ ^+^ _l_ | _b_ ^+^ _f_ | _c_olumn  | _C_olumn | _b_lank | _|_ create | _=_ ev
 _i_n       _z_ resolve | _b_egin | _s_tamp    | _O_rg
 _o_ut      _l_ast      | _e_nd   | _I_nactive | _H_ome
 _r_eport   _c_ancel    | _t_imer |          | e_x_ecute
-_d_isplay  _g_oto      | _T_ set |          | _Q_uit
+_d_isplay  _g_oto      | _T_ set |          | _q_uit
 "
   ("i" org-clock-in)
   ("o" org-clock-out)
@@ -204,7 +204,7 @@ _d_isplay  _g_oto      | _T_ set |          | _Q_uit
   ("H" sk/hydra-of-hydras/body :exit t)
   ("O" sk/hydra-of-org/body :exit t)
   ("x" counsel-M-x :color blue)
-  ("Q" nil :color blue))
+  ("q" nil :color blue))
 
 ;; Org tags and todo manipulation - hydra
 (defhydra sk/hydra-org-tag-todo (:color red
@@ -215,7 +215,7 @@ _d_isplay  _g_oto      | _T_ set |          | _Q_uit
 _t_ags        | _T_ODO     | _c_heckbox     | _#_ priority | _O_rg
 _v_iew        | _d_eadline | t_o_ggle       | _+_ increase | _H_ome
 _m_atch       | _C_lose    | _u_pdate stats | _-_ decrease | e_x_ecute
-s_p_arse-tree | _s_chedule | _r_eset        |            | _Q_uit
+s_p_arse-tree | _s_chedule | _r_eset        |            | _q_uit
             | _a_genda   | _U_pdate count |            |
 "
   ("t" org-set-tags-command :color blue)
@@ -238,7 +238,7 @@ s_p_arse-tree | _s_chedule | _r_eset        |            | _Q_uit
   ("H" sk/hydra-of-hydras/body :exit t)
   ("O" sk/hydra-of-org/body :exit t)
   ("x" counsel-M-x :color blue)
-  ("Q" nil :color blue))
+  ("q" nil :color blue))
 
 ;; Org drawer - hydra
 (defhydra sk/hydra-org-drawer (:color red
@@ -249,7 +249,7 @@ s_p_arse-tree | _s_chedule | _r_eset        |            | _Q_uit
  _i_nsert | _p_roperty | _O_rg
         | _s_et      | _H_ome
         | _d_elete   | e_x_ecute
-        | _t_oggle   | _Q_uit
+        | _t_oggle   | _q_uit
 "
   ("i" org-insert-drawer)
   ("p" org-insert-property-drawer)
@@ -259,7 +259,7 @@ s_p_arse-tree | _s_chedule | _r_eset        |            | _Q_uit
   ("H" sk/hydra-of-hydras/body :exit t)
   ("O" sk/hydra-of-org/body :exit t)
   ("x" counsel-M-x :color blue)
-  ("Q" nil :color blue))
+  ("q" nil :color blue))
 
 ;; Deft for quickly accessing notes
 (sk/require-package 'deft)
@@ -275,7 +275,7 @@ s_p_arse-tree | _s_chedule | _r_eset        |            | _Q_uit
 ^Move^         | ^Deft^                       | ^Menu^
 ^^^^^^^^^^^^^-------------|----------------------------|--------------
 ^ ^ _k_ ^ ^   _g_oto | _n_ew       _f_ilter   _v_ersion | _O_rg   e_x_ecute
-_h_ ^+^ _l_        | _o_pen      _c_lear    rena_m_e  | _H_ome  _Q_uit
+_h_ ^+^ _l_        | _o_pen      _c_lear    rena_m_e  | _H_ome  _q_uit
 ^ ^ _j_ ^ ^        | _a_rchive   _r_efresh          |
 "
   ("j" next-line)
@@ -294,7 +294,7 @@ _h_ ^+^ _l_        | _o_pen      _c_lear    rena_m_e  | _H_ome  _Q_uit
   ("x" counsel-M-x :color blue)
   ("H" sk/hydra-of-hydras/body :exit t)
   ("O" sk/hydra-of-org/body :exit t)
-  ("Q" nil :color blue))
+  ("q" nil :color blue))
 (defun sk/open-deft-and-start-hydra ()
   (interactive)
   (deft)
@@ -310,7 +310,7 @@ _h_ ^+^ _l_        | _o_pen      _c_lear    rena_m_e  | _H_ome  _Q_uit
  _h_ ^+^ _l_  ^ ^ ^+^ ^ ^  | ^ ^ ^+^ ^ ^ | _b_ ^+^ _f_ | ^ ^ ^+^ ^ ^  | ^ ^ ^+^ ^ ^   | re_v_eal    | _F_ootnote  _i_mages    | _w_iden   | _a_genda   _|_ table
  ^ ^ _j_ ^ ^  ^ ^ _n_ ^ ^  | ^ ^ _d_ ^ ^ | ^ ^ ^ ^ ^ ^ | ^ ^ _]_ ^ ^  | ^ ^ _}_ ^ ^   | _r_efile    | RefTe_X_    _*_ heading | _K_ill    | _-_ code   _H_ome
                |       | c_L_ear | _U_pdate | _D_isplay | _A_rchive   | eff_O_rt    _E_xport    | cop_y_    | _C_lock    e_x_ecute
-               |       |       |        | _S_tore   |           |           _>_ cal     |         | dra_W_er   _Q_uit
+               |       |       |        | _S_tore   |           |           _>_ cal     |         | dra_W_er   _q_uit
                |       |       |        | _I_nsert  |           |           _<_ date    |         |
 "
   ("j" outline-next-visible-heading)
@@ -362,7 +362,7 @@ _h_ ^+^ _l_        | _o_pen      _c_lear    rena_m_e  | _H_ome  _Q_uit
   ("H" sk/hydra-of-hydras/body :exit t)
   ("O" sk/hydra-of-org/body :exit t)
   ("x" counsel-M-x :color blue)
-  ("Q" nil :color blue))
+  ("q" nil :color blue))
 
 (provide 'sk-org)
 

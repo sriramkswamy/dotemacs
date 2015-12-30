@@ -22,15 +22,15 @@
 (sk/require-package 'wgrep-ag)
 
 ;; Hydra for wgrep
-(defhydra sk/hydra-wgrep (:color blue
+(defhydra sk/hydra-wgrep (:color red
                           :hint nil)
   "
  ^Refactor^                        | ^Menu^
  ^^^^^^^^^--------------------------------|---------------
  _w_grep  _f_inish    _r_emove    _k_ill | _H_ome   e_x_ecute
-        _s_ave-all  _R_emove-all     |        _Q_uit
+        _s_ave-all  _R_emove-all     |        _q_uit
   "
-  ("w" wgrep-change-to-wgrep-mode)
+  ("w" wgrep-change-to-wgrep-mode :color blue)
   ("s" wgrep-save-all-buffers)
   ("f" wgrep-finish-edit)
   ("r" wgrep-remove-change)
@@ -38,7 +38,7 @@
   ("k" wgrep-abort-changes)
   ("H" sk/hydra-of-hydras/body :exit t)
   ("x" counsel-M-x :color blue)
-  ("Q" nil :color blue))
+  ("q" nil :color blue))
 
 ;; Spotlight
 (sk/require-package 'spotlight)

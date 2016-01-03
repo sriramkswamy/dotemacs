@@ -1,5 +1,6 @@
 ;; Themes
 (sk/require-package 'zenburn-theme)
+(sk/require-package 'material-theme)
 
 ;; Theme changer
 (sk/require-package 'theme-changer)

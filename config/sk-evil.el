@@ -22,10 +22,13 @@
 (define-key evil-normal-state-map (kbd "j") 'evil-next-visual-line)
 (define-key evil-normal-state-map (kbd "k") 'evil-previous-visual-line)
 (define-key evil-normal-state-map (kbd "SPC q") 'evil-quit)
+(define-key evil-normal-state-map (kbd  "v") 'evil-visual-block)
+(define-key evil-normal-state-map (kbd "C-v") 'evil-visual-char)
+(define-key evil-visual-state-map (kbd "v") 'evil-visual-block)
+(define-key evil-visual-state-map (kbd "C-v") 'evil-visual-char)
 (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
 
 ;; Emacs functionality maps
-(define-key evil-normal-state-map (kbd "t") 'imenu)
 (define-key evil-normal-state-map (kbd "Z") 'delete-other-windows)
 (define-key evil-normal-state-map (kbd "K") 'man)
 (define-key evil-normal-state-map (kbd "\\") 'universal-argument)
@@ -40,7 +43,7 @@
 (define-key evil-normal-state-map (kbd "SPC \\") 'toggle-input-method)
 (define-key evil-visual-state-map (kbd "SPC ]") 'narrow-to-region)
 
-;; Macros
+;; Emacs style macros
 (define-key evil-normal-state-map (kbd "H") 'kmacro-start-macro)
 (define-key evil-normal-state-map (kbd "L") 'kmacro-end-macro)
 (define-key evil-normal-state-map (kbd "M") 'sk/hydra-of-macros/body)
@@ -98,7 +101,39 @@
 (define-key evil-outer-text-objects-map "s" 'sentence-nav-evil-outer-sentence)
 (define-key evil-inner-text-objects-map "s" 'sentence-nav-evil-inner-sentence)
 
-;;; Evil text objects - Courtesy PythonNut
+;; Evil smartparens
+(sk/require-package 'evil-smartparens)
+(add-hook 'smartparens-mode-hook #'evil-smartparens-mode)
+(defun sk/diminish-evil-smartparens ()
+  (interactive)
+  (diminish 'evil-smartparens-mode ""))
+(add-hook 'evil-smartparens-mode-hook 'sk/diminish-evil-smartparens)
+
+;;; Create text objects based on regexp - Stack overflow
+(defmacro define-and-bind-text-object (key start-regex end-regex)
+  (let ((inner-name (make-symbol "inner-name"))
+        (outer-name (make-symbol "outer-name")))
+    `(progn
+       (evil-define-text-object ,inner-name (count &optional beg end type)
+         (evil-select-paren ,start-regex ,end-regex beg end type count nil))
+       (evil-define-text-object ,outer-name (count &optional beg end type)
+         (evil-select-paren ,start-regex ,end-regex beg end type count t))
+       (define-key evil-inner-text-objects-map ,key (quote ,inner-name))
+       (define-key evil-outer-text-objects-map ,key (quote ,outer-name)))))
+
+;; Between pipe characters:
+(define-and-bind-text-object "|" "|" "|")
+
+;; Between dollar characters:
+(define-and-bind-text-object "$" "\\$" "\\$")
+
+;; C++ declaration without paranthesis
+(define-and-bind-text-object "k" "[[:space:]\(\)]" "[[:space:]\(\)]")
+
+;; Line text object
+(define-and-bind-text-object "l" "^\\s-*" "\\s-*$")
+
+;; Evil text objects - Courtesy PythonNut
 
 ;; evil block indentation textobject for Python
 (defun evil-indent--current-indentation ()
@@ -211,6 +246,7 @@
 (define-key evil-visual-state-map (kbd "s") 'avy-goto-char-2)
 
 ;; Swiper (with Ivy and counsel)
+(define-key evil-normal-state-map (kbd "t") 'counsel-imenu)
 (define-key evil-normal-state-map (kbd "SPC d") 'counsel-M-x)
 (define-key evil-normal-state-map (kbd "SPC SPC") 'swiper)
 (define-key evil-normal-state-map (kbd "SPC r") 'ivy-recentf)
@@ -224,6 +260,9 @@
 (define-key evil-insert-state-map (kbd "C-k") 'counsel-unicode-char)
 (define-key evil-insert-state-map (kbd "C-l") 'counsel-M-x)
 
+;; Spotlight
+(define-key evil-normal-state-map (kbd "SPC b") 'spotlight)
+
 ;; ag and wgrep
 (define-key evil-normal-state-map (kbd "W") 'sk/hydra-wgrep/body)
 (define-key evil-normal-state-map (kbd "SPC e") 'sk/hydra-of-search/body)
@@ -235,8 +274,49 @@
 (define-key evil-visual-state-map (kbd "n") 'swoop-pcre-regexp)
 (define-key evil-visual-state-map (kbd "N") 'swoop-pcre-regexp)
 
-;; Expand regions
-(define-key evil-normal-state-map (kbd "SPC b") 'sk/hydra-of-edits/body)
+;; Expand regions helpers
+(defun sk/mark-outside-LaTeX-environment ()
+  (interactive)
+  (er/mark-LaTeX-inside-environment)
+  (forward-line -1)
+  (exchange-point-and-mark)
+  (forward-line +1)
+  (end-of-line))
+(defun sk/mark-inside-org-code-block ()
+  (interactive)
+  (er/mark-org-code-block)
+  (forward-line +1)
+  (exchange-point-and-mark)
+  (forward-line -1)
+  (end-of-line))
+
+;; Expand region maps
+(define-key evil-inner-text-objects-map "f" #'er/mark-defun)
+(define-key evil-outer-text-objects-map "f" #'er/mark-defun)
+(define-key evil-inner-text-objects-map "c" #'er/mark-comment)
+(define-key evil-outer-text-objects-map "c" #'er/mark-comment)
+(define-key evil-inner-text-objects-map "j" #'er/mark-ruby-block-up)
+(define-key evil-outer-text-objects-map "j" #'er/mark-ruby-block-up)
+(define-key evil-inner-text-objects-map "h" #'er/mark-inside-python-string)
+(define-key evil-outer-text-objects-map "h" #'er/mark-outside-python-string)
+(define-key evil-inner-text-objects-map "d" #'er/mark-python-block)
+(define-key evil-outer-text-objects-map "d" #'er/mark-outer-python-block)
+(define-key evil-inner-text-objects-map "o" #'sk/mark-inside-org-code-block)
+(define-key evil-outer-text-objects-map "o" #'er/mark-org-code-block)
+(define-key evil-inner-text-objects-map "y" #'er/mark-symbol)
+(define-key evil-outer-text-objects-map "y" #'er/mark-symbol-with-prefix)
+(define-key evil-inner-text-objects-map "x" #'er/mark-python-statement)
+(define-key evil-outer-text-objects-map "x" #'er/mark-python-statement)
+(define-key evil-inner-text-objects-map "m" #'er/c-mark-statement)
+(define-key evil-outer-text-objects-map "m" #'er/c-mark-statement)
+(define-key evil-inner-text-objects-map "v" #'er/c-mark-fully-qualified-name)
+(define-key evil-outer-text-objects-map "v" #'er/c-mark-fully-qualified-name)
+(define-key evil-inner-text-objects-map "e" #'er/mark-LaTeX-inside-environment)
+(define-key evil-outer-text-objects-map "e" #'sk/mark-outside-LaTeX-environment)
+(define-key evil-inner-text-objects-map "@" #'er/mark-email)
+(define-key evil-outer-text-objects-map "@" #'er/mark-email)
+(define-key evil-inner-text-objects-map ":" #'er/mark-url)
+(define-key evil-outer-text-objects-map ":" #'er/mark-url)
 
 ;; Multiple cursors
 (define-key evil-normal-state-map (kbd "SPC m") 'sk/hydra-of-multiple-cursors/body)
@@ -256,26 +336,10 @@
 (define-key evil-normal-state-map (kbd "-") 'sk/multi-term-horizontal)
 (define-key evil-normal-state-map (kbd "+") 'sk/eshell-vertical)
 
-;; Move lines
-(define-key evil-normal-state-map (kbd "]x") 'sk/move-text-down)
-(define-key evil-normal-state-map (kbd "[x") 'sk/move-text-up)
-
-;; Blank lines
-(define-key evil-normal-state-map (kbd "]n") 'sk/blank-line-down)
-(define-key evil-normal-state-map (kbd "[n") 'sk/blank-line-up)
-
 ;; Window management
 (define-key evil-normal-state-map (kbd "w") 'sk/split-right-and-move)
 (define-key evil-normal-state-map (kbd "S") 'sk/split-below-and-move)
 (define-key evil-normal-state-map (kbd "SPC i") 'sk/hydra-of-windows/body)
-
-;; Flyspell
-(define-key evil-normal-state-map (kbd "]s") 'flyspell-goto-next-error)
-(define-key evil-normal-state-map (kbd "[s") 'flyspell-goto-previous-error)
-
-;; PDF
-(define-key evil-normal-state-map (kbd "]p") 'sk/other-pdf-next)
-(define-key evil-normal-state-map (kbd "[p") 'sk/other-pdf-previous)
 
 ;; Neotree
 (add-hook 'neotree-mode-hook
@@ -326,57 +390,11 @@
 (define-key evil-normal-state-map (kbd "SPC o") 'sk/hydra-of-org/body)
 (define-key evil-normal-state-map (kbd "SPC -") 'org-edit-src-code)
 (define-key evil-normal-state-map (kbd "SPC =") 'org-edit-src-exit)
-(define-key evil-normal-state-map (kbd "[u") 'org-up-element)
-(define-key evil-normal-state-map (kbd "]u") 'org-down-element)
-(define-key evil-normal-state-map (kbd "[o") 'org-previous-visible-heading)
-(define-key evil-normal-state-map (kbd "]o") 'org-next-visible-heading)
-(define-key evil-normal-state-map (kbd "[i") 'org-previous-item)
-(define-key evil-normal-state-map (kbd "]i") 'org-next-item)
-(define-key evil-normal-state-map (kbd "[h") 'org-backward-heading-same-level)
-(define-key evil-normal-state-map (kbd "]h") 'org-forward-heading-same-level)
-(define-key evil-normal-state-map (kbd "[b") 'org-previous-block)
-(define-key evil-normal-state-map (kbd "]b") 'org-next-block)
-(define-key evil-normal-state-map (kbd "[l") 'org-previous-link)
-(define-key evil-normal-state-map (kbd "]l") 'org-next-link)
-(define-key evil-normal-state-map (kbd "[f") 'org-table-previous-field)
-(define-key evil-normal-state-map (kbd "]f") 'org-table-next-field)
-(define-key evil-normal-state-map (kbd "gob") 'org-table-blank-field)
-(define-key evil-normal-state-map (kbd "gox") 'org-preview-latex-fragment)
-(define-key evil-normal-state-map (kbd "goi") 'org-toggle-inline-images)
-(define-key evil-normal-state-map (kbd "gor") 'org-reveal)
-(define-key evil-normal-state-map (kbd "gof") 'org-refile)
-(define-key evil-normal-state-map (kbd "goa") 'org-attach)
-(define-key evil-normal-state-map (kbd "gon") 'org-add-note)
-(define-key evil-normal-state-map (kbd "goe") 'org-export-dispatch)
-(define-key evil-normal-state-map (kbd "gol") 'org-insert-link)
-(define-key evil-normal-state-map (kbd "god") 'org-toggle-link-display)
-(define-key evil-normal-state-map (kbd "gou") 'org-store-link)
-(define-key evil-normal-state-map (kbd "goy") 'org-copy-subtree)
-(define-key evil-normal-state-map (kbd "gok") 'org-cut-subtree)
-(define-key evil-normal-state-map (kbd "goh") 'org-toggle-heading)
-(define-key evil-normal-state-map (kbd "go>") 'org-goto-calendar)
-(define-key evil-normal-state-map (kbd "go<") 'org-date-from-calendar)
-(define-key evil-normal-state-map (kbd "gos") 'org-sort)
-(define-key evil-normal-state-map (kbd "goc") 'sk/hydra-org-clock/body)
-(define-key evil-normal-state-map (kbd "got") 'sk/hydra-org-tag-todo/body)
-(define-key evil-normal-state-map (kbd "gow") 'sk/hydra-org-drawer/body)
-(define-key evil-normal-state-map (kbd "gom") 'sk/hydra-org-manipulate/body)
-(define-key evil-normal-state-map (kbd "go|") 'sk/hydra-org-tables/body)
 (define-key evil-visual-state-map (kbd "SPC o") 'sk/hydra-of-org/body)
 
 ;; Jumps
 (define-key evil-normal-state-map (kbd "SPC j") 'sk/hydra-of-jump/body)
 (define-key evil-visual-state-map (kbd "SPC j") 'sk/hydra-of-jump/body)
-
-;; Flycheck
-(define-key evil-normal-state-map (kbd "]l") 'flycheck-next-error)
-(define-key evil-normal-state-map (kbd "[l") 'flycheck-previous-error)
-(define-key evil-normal-state-map (kbd "]L") 'flycheck-last-checker)
-(define-key evil-normal-state-map (kbd "[L") 'flycheck-first-error)
-
-;; Diff hl
-(define-key evil-normal-state-map (kbd "]c") 'diff-hl-next-hunk)
-(define-key evil-normal-state-map (kbd "[c") 'diff-hl-previous-hunk)
 
 ;; Hydra of activate
 (define-key evil-normal-state-map (kbd "SPC a") 'sk/hydra-of-activate/body)

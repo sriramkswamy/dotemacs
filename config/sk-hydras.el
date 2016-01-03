@@ -2,12 +2,12 @@
 (defhydra sk/hydra-of-jump (:color red
                             :hint nil)
   "
- ^Diff^       | ^Errors^     | ^Spell^      | ^Mark^        | ^Fold^     | ^Menu^
- ^^^^^^^^^-----------|------------|------------|-------------|----------|--------------
- _j_ next     | _l_ next     | _>_ next     | _]_ loc next  | _n_ext     | _H_ome  e_x_ecute
- _k_ previous | _h_ previous | _<_ previous | _[_ loc prev  | _p_revious |       _q_uit
- _g_oto       | _a_ll        | _c_orrect    | _}_ glob next |          |
- _r_evert     | _f_irst      |            | _{_ glob prev |          |
+ ^Diff^       | ^Errors^     | ^Spell^      | ^Mark^        | ^PDF^     | ^Move^  | ^Menu^
+ ^^^^^^^^^-----------|------------|------------|-------------|----------|------|--------------
+ _j_ next     | _l_ next     | _>_ next     | _]_ loc next  | _n_ext     | _u_p   | _H_ome  e_x_ecute
+ _k_ previous | _h_ previous | _<_ previous | _[_ loc prev  | _p_revious | _d_own |       _q_uit
+ _g_oto       | _a_ll        | _c_orrect    | _}_ glob next |          |      |
+ _r_evert     | _f_irst      |            | _{_ glob prev |          |      |
  "
   ("j" diff-hl-next-hunk)
   ("k" diff-hl-previous-hunk)
@@ -15,7 +15,7 @@
   ("r" diff-hl-revert-hunk)
   ("l" flycheck-next-error)
   ("h" flycheck-previous-error)
-  ("a" flycheck-list-errors :color blue)
+  ("a" flycheck-list-errors)
   ("f" flycheck-first-error)
   (">" flyspell-goto-next-error)
   ("<" flyspell-goto-previous-error)
@@ -23,8 +23,10 @@
   ("[" back-button-local-backward)
   ("}" back-button-global-forward)
   ("{" back-button-global-backward)
-  ("n" origami-next-fold)
-  ("p" origami-previous-fold)
+  ("n" sk/other-pdf-next)
+  ("p" sk/other-pdf-previous)
+  ("u" sk/move-text-up)
+  ("d" sk/move-text-down)
   ("c" ispell-word)
   ("H" sk/hydra-of-hydras/body :exit t)
   ("x" counsel-M-x :color blue)

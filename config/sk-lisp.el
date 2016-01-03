@@ -4,6 +4,7 @@
   (interactive)
   (diminish 'paredit-mode ""))
 (add-hook 'paredit-mode-hook 'sk/diminish-paredit)
+(add-hook 'emacs-lisp-mode-hook (lambda () (paredit-mode 1)))
 
 ;; Common lisp
 (sk/require-package 'slime)

@@ -1,3 +1,31 @@
+;; Cua selection mode
+(defhydra sk/hydra-cua-selection (:pre (cua-selection-mode 1)
+                                  :color red
+                                  :hint nil)
+ "
+ ^Move^   | ^Edit^              | ^Menu^
+ ^^^^^^-------|-------------------|--------------
+ ^ ^ _k_ ^ ^  | _s_et       _r_eset | _H_ome  _q_uit
+ _h_ ^+^ _l_  | ex_c_hange  cop_y_  | _M_ove  e_x_ecute
+ ^ ^ _j_ ^ ^  | _d_elete          | _R_ect
+"
+  ("h" backward-char nil)
+  ("l" forward-char nil)
+  ("k" previous-line nil)
+  ("j" next-line nil)
+  ("s" (cua-rectangle-mark-mode 1))
+  ("c" exchange-point-and-mark)
+  ("y" copy-region-as-kill)
+  ("d" kill-region nil)
+  ("r" (if (region-active-p)
+           (deactivate-mark)
+         (cua-rectangle-mark-mode 1)) nil)
+  ("R" sk/hydra-rectangle/body :exit t)
+  ("M" sk/hydra-of-motion/body :exit t)
+  ("H" sk/hydra-of-hydras/body :exit t)
+  ("x" counsel-M-x :color blue)
+  ("q" nil :color blue))
+
 ;; Rectangle marks
 (defhydra sk/hydra-rectangle (:color red
                               :hint nil)
@@ -6,7 +34,7 @@
  ^^^^^^-------|-------------------------|--------------
  ^ ^ _k_ ^ ^  | _s_et       _r_eset _S_tring  | _H_ome  _q_uit
  _h_ ^+^ _l_  | ex_c_hange  cop_y_  _R_eplace | _M_ove  e_x_ecute
- ^ ^ _j_ ^ ^  | _d_elete    _p_aste         |
+ ^ ^ _j_ ^ ^  | _d_elete    _p_aste         | _C_ua
 "
   ("h" backward-char nil)
   ("l" forward-char nil)
@@ -22,6 +50,7 @@
   ("p" yank-rectangle)
   ("S" string-rectangle)
   ("R" replace-rectangle)
+  ("C" sk/hydra-cua-selection/body :exit t)
   ("M" sk/hydra-of-motion/body :exit t)
   ("H" sk/hydra-of-hydras/body :exit t)
   ("x" counsel-M-x :color blue)
@@ -60,6 +89,11 @@ _h_ ^+^ _l_      | _n_ext     | _a_ppend  le_t_ters           | e_x_ecute
 
 ;; Expand regions
 (sk/require-package 'expand-region)
+(defun sk/start-expand-region ()
+  (interactive)
+  (require 'expand-region))
+(add-hook 'prog-mode-hook 'sk/start-expand-region)
+(add-hook 'text-mode-hook 'sk/start-expand-region)
 
 ;; Hydra of edits
 (defhydra sk/hydra-of-edits (:pre (require 'expand-region)

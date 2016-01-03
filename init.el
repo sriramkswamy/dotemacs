@@ -93,10 +93,6 @@
 (global-set-key (kbd "C-r") 'swiper)
 (global-set-key (kbd "M-x") 'counsel-M-x)
 
-;; Themes
-(sk/require-package 'zenburn-theme)
-(load-theme 'leuven t)
-
 ;; Garbage collector - increase threshold
 (setq gc-cons-threshold (* 1024 1024 1024))
 

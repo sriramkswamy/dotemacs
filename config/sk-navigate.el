@@ -19,7 +19,10 @@
   (interactive)
   (diminish 'undo-tree-mode ""))
 (add-hook 'undo-tree-mode-hook 'sk/diminish-undo-tree)
-(undo-tree-mode 1)
+(defun sk/start-undo-tree ()
+  (interactive)
+  (undo-tree-mode 1))
+(add-hook 'after-init-hook 'sk/start-undo-tree)
 
 ;; Neotree
 (sk/require-package 'neotree)

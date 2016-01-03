@@ -1,3 +1,11 @@
+;; Themes
+(sk/require-package 'zenburn-theme)
+
+;; Theme changer
+(sk/require-package 'theme-changer)
+(setq calendar-latitude 13.08)
+(setq calendar-longitude 80.27)
+
 ;; Mac stuff
 (when (eq system-type 'darwin)
   (setq mac-option-modifier 'meta))
@@ -5,8 +13,18 @@
 ;; Enable winner-mode
 (add-hook 'after-init-hook #'winner-mode)
 
-;; Remove scroll bar
-(scroll-bar-mode -1)
+;; GUI changes
+(defun sk/gui-defaults ()
+  (interactive)
+  (require 'theme-changer)
+  (change-theme 'material-light 'material)
+  (tool-bar-mode -1)
+  (recentf-mode)
+  (scroll-bar-mode -1))
+(add-hook 'after-init-hook 'sk/gui-defaults)
+
+;; Swiper like regex when using isearch
+(setq search-whitespace-regexp ".*?")
 
 ;; No welcome screen - opens directly in scratch buffer
 (setq inhibit-startup-message t
@@ -31,9 +49,6 @@
 
 ;; Which function mode
 (add-hook 'prog-mode-hook 'which-function-mode)
-
-;; Enable recentf mode
-(recentf-mode)
 
 ;; Backups at .saves folder in the current folder
 (setq

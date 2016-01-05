@@ -122,10 +122,10 @@
        (define-key evil-outer-text-objects-map ,key (quote ,outer-name)))))
 
 ;; Between pipe characters:
-(define-and-bind-text-object "|" "|" "|")
+(define-and-bind-text-object "r" "|" "|")
 
 ;; Between dollar characters:
-(define-and-bind-text-object "$" "\\$" "\\$")
+(define-and-bind-text-object "x" "\\$" "\\$")
 
 ;; C++ declaration without paranthesis
 (define-and-bind-text-object "k" "[[:space:]\(\)]" "[[:space:]\(\)]")
@@ -297,18 +297,14 @@
 (define-key evil-outer-text-objects-map "c" #'er/mark-comment)
 (define-key evil-inner-text-objects-map "j" #'er/mark-ruby-block-up)
 (define-key evil-outer-text-objects-map "j" #'er/mark-ruby-block-up)
-(define-key evil-inner-text-objects-map "h" #'er/mark-inside-python-string)
-(define-key evil-outer-text-objects-map "h" #'er/mark-outside-python-string)
+(define-key evil-inner-text-objects-map "m" #'er/mark-inside-python-string)
+(define-key evil-outer-text-objects-map "m" #'er/mark-outside-python-string)
 (define-key evil-inner-text-objects-map "d" #'er/mark-python-block)
 (define-key evil-outer-text-objects-map "d" #'er/mark-outer-python-block)
 (define-key evil-inner-text-objects-map "o" #'sk/mark-inside-org-code-block)
 (define-key evil-outer-text-objects-map "o" #'er/mark-org-code-block)
 (define-key evil-inner-text-objects-map "y" #'er/mark-symbol)
 (define-key evil-outer-text-objects-map "y" #'er/mark-symbol-with-prefix)
-(define-key evil-inner-text-objects-map "x" #'er/mark-python-statement)
-(define-key evil-outer-text-objects-map "x" #'er/mark-python-statement)
-(define-key evil-inner-text-objects-map "m" #'er/c-mark-statement)
-(define-key evil-outer-text-objects-map "m" #'er/c-mark-statement)
 (define-key evil-inner-text-objects-map "v" #'er/c-mark-fully-qualified-name)
 (define-key evil-outer-text-objects-map "v" #'er/c-mark-fully-qualified-name)
 (define-key evil-inner-text-objects-map "e" #'er/mark-LaTeX-inside-environment)

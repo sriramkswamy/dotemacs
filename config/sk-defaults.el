@@ -2,23 +2,18 @@
 (sk/require-package 'zenburn-theme)
 (sk/require-package 'material-theme)
 
-;; Theme changer
-(sk/require-package 'theme-changer)
-(setq calendar-latitude 13.08)
-(setq calendar-longitude 80.27)
-
 ;; Mac stuff
 (when (eq system-type 'darwin)
   (setq mac-option-modifier 'meta))
 
 ;; Enable winner-mode
-(add-hook 'after-init-hook #'winner-mode)
+(add-hook 'prog-mode-hook #'winner-mode)
+(add-hook 'text-mode-hook #'winner-mode)
 
 ;; GUI changes
 (defun sk/gui-defaults ()
   (interactive)
-  (require 'theme-changer)
-  (change-theme 'material-light 'material)
+  (load-theme 'material-light t)
   (tool-bar-mode -1)
   (recentf-mode)
   (scroll-bar-mode -1))

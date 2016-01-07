@@ -66,12 +66,11 @@
   "
  ^Buffer^          | ^Project^  | ^Desktop^ | ^Google^ | ^Menu^
  ^^^^^^^^^----------------|----------|---------|--------|--------------
- _s_earch  _w_ord    | _p_roject  | _d_esktop | _g_oogle | _H_ome  e_x_ecute
- _a_ll     _r_eplace | refac_t_or | _f_ast    | _c_ursor |       _q_uit
+ _s_earch  _r_eplace | _p_roject  | _d_esktop | _g_oogle | _H_ome  e_x_ecute
+ _a_ll             | refac_t_or | _f_ast    | _c_ursor |       _q_uit
 "
   ("s" swiper)
   ("a" swiper-all)
-  ("w" swoop-pcre-regexp)
   ("r" vr/query-replace)
   ("p" counsel-ag)
   ("t" ag)

@@ -22,7 +22,8 @@
 (defun sk/start-undo-tree ()
   (interactive)
   (undo-tree-mode 1))
-(add-hook 'after-init-hook 'sk/start-undo-tree)
+(add-hook 'prog-mode-hook 'sk/start-undo-tree)
+(add-hook 'text-mode-hook 'sk/start-undo-tree)
 
 ;; Neotree
 (sk/require-package 'neotree)
@@ -54,7 +55,8 @@
   (interactive)
   (diminish 'back-button-mode ""))
 (add-hook 'back-button-mode-hook 'sk/diminish-back-button)
-(add-hook 'after-init-hook 'back-button-mode)
+(add-hook 'prog-mode-hook 'back-button-mode)
+(add-hook 'text-mode-hook 'back-button-mode)
 
 ;; Hydra tags
 (defhydra sk/hydra-tags (:color blue

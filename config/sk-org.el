@@ -9,6 +9,8 @@
       ;; Source code
       org-src-fontify-natively t
       org-src-tab-acts-natively t
+      ;; Links
+      org-return-follows-link t
       ;; Quotes
       org-export-with-smart-quotes t
       ;; Citations

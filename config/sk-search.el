@@ -1,3 +1,7 @@
+;; Smex
+(sk/require-package 'smex)
+(global-set-key (kbd "M-x") 'smex)
+
 ;; Swiper, Ivy and Counsel
 (sk/require-package 'swiper)
 (sk/require-package 'counsel)
@@ -16,11 +20,6 @@
 ;; Some maps
 (global-set-key (kbd "C-s") 'swiper)
 (global-set-key (kbd "C-r") 'swiper)
-(global-set-key (kbd "M-x") 'counsel-M-x)
-
-
-;; Swoop
-(sk/require-package 'swoop)
 
 ;; ag and wgrep
 (sk/require-package 'ag)

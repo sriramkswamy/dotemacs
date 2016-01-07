@@ -32,7 +32,6 @@
 (define-key evil-normal-state-map (kbd "gl") 'browse-url-at-point)
 (define-key evil-normal-state-map (kbd "SPC w") 'save-buffer)
 (define-key evil-normal-state-map (kbd "SPC k") 'kill-buffer)
-(define-key evil-normal-state-map (kbd "SPC f") 'find-file)
 (define-key evil-normal-state-map (kbd "SPC [") 'widen)
 (define-key evil-normal-state-map (kbd "SPC DEL") 'whitespace-cleanup)
 (define-key evil-normal-state-map (kbd "SPC ,") 'describe-bindings)
@@ -49,18 +48,21 @@
 
 ;; Evil surround
 (sk/require-package 'evil-surround)
-(global-evil-surround-mode 1)
+(add-hook 'prog-mode-hook 'evil-surround-mode)
+(add-hook 'text-mode-hook 'evil-surround-mode)
 
 ;; Visual selection '*'
 (sk/require-package 'evil-visualstar)
-(global-evil-visualstar-mode 1)
+(add-hook 'prog-mode-hook 'evil-visualstar-mode)
+(add-hook 'text-mode-hook 'evil-visualstar-mode)
 
 ;; '%' matching like vim
 (sk/require-package 'evil-matchit)
 (define-key evil-normal-state-map "%" #'evilmi-jump-items)
 (define-key evil-inner-text-objects-map "%" #'evilmi-text-object)
 (define-key evil-outer-text-objects-map "%" #'evilmi-text-object)
-(global-evil-matchit-mode 1)
+(add-hook 'prog-mode-hook 'evil-matchit-mode)
+(add-hook 'text-mode-hook 'evil-matchit-mode)
 
 ;; Evil args
 (sk/require-package 'evil-args)
@@ -244,9 +246,14 @@
 (define-key evil-motion-state-map (kbd "x") #'avy-goto-char-2)
 (define-key evil-motion-state-map (kbd "p") #'avy-goto-line)
 
+;; Smex
+(define-key evil-normal-state-map (kbd "SPC d") 'smex)
+(define-key evil-visual-state-map (kbd "SPC d") 'smex)
+(define-key evil-insert-state-map (kbd "C-l") 'smex)
+
 ;; Swiper (with Ivy and counsel)
 (define-key evil-normal-state-map (kbd "t") 'counsel-imenu)
-(define-key evil-normal-state-map (kbd "SPC d") 'counsel-M-x)
+(define-key evil-normal-state-map (kbd "SPC f") 'counsel-find-file)
 (define-key evil-normal-state-map (kbd "SPC SPC") 'swiper)
 (define-key evil-normal-state-map (kbd "SPC r") 'ivy-recentf)
 (define-key evil-normal-state-map (kbd "SPC u") 'ivy-switch-buffer)
@@ -255,9 +262,8 @@
 (define-key evil-normal-state-map (kbd "SPC /") 'counsel-locate)
 (define-key evil-normal-state-map (kbd "SPC h") 'counsel-ag)
 (define-key evil-visual-state-map (kbd "SPC h") 'counsel-ag)
-(define-key evil-visual-state-map (kbd "SPC d") 'counsel-M-x)
 (define-key evil-insert-state-map (kbd "C-k") 'counsel-unicode-char)
-(define-key evil-insert-state-map (kbd "C-l") 'counsel-M-x)
+(define-key evil-insert-state-map (kbd "C-k") 'counsel-unicode-char)
 
 ;; Spotlight
 (define-key evil-normal-state-map (kbd "SPC b") 'spotlight)
@@ -266,12 +272,6 @@
 (define-key evil-normal-state-map (kbd "W") 'sk/hydra-wgrep/body)
 (define-key evil-normal-state-map (kbd "SPC e") 'sk/hydra-of-search/body)
 (define-key evil-visual-state-map (kbd "SPC e") 'sk/hydra-of-search/body)
-
-;; Swoop
-(define-key evil-normal-state-map (kbd "n") 'swoop-pcre-regexp)
-(define-key evil-normal-state-map (kbd "N") 'swoop-pcre-regexp)
-(define-key evil-visual-state-map (kbd "n") 'swoop-pcre-regexp)
-(define-key evil-visual-state-map (kbd "N") 'swoop-pcre-regexp)
 
 ;; Expand regions helpers
 (defun sk/mark-outside-LaTeX-environment ()

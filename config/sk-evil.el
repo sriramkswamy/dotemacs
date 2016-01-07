@@ -22,10 +22,6 @@
 (define-key evil-normal-state-map (kbd "j") 'evil-next-visual-line)
 (define-key evil-normal-state-map (kbd "k") 'evil-previous-visual-line)
 (define-key evil-normal-state-map (kbd "SPC q") 'evil-quit)
-(define-key evil-normal-state-map (kbd  "v") 'evil-visual-block)
-(define-key evil-normal-state-map (kbd "C-v") 'evil-visual-char)
-(define-key evil-visual-state-map (kbd "v") 'evil-visual-block)
-(define-key evil-visual-state-map (kbd "C-v") 'evil-visual-char)
 (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
 
 ;; Emacs functionality maps
@@ -42,6 +38,7 @@
 (define-key evil-normal-state-map (kbd "SPC ,") 'describe-bindings)
 (define-key evil-normal-state-map (kbd "SPC \\") 'toggle-input-method)
 (define-key evil-visual-state-map (kbd "SPC ]") 'narrow-to-region)
+(define-key evil-visual-state-map (kbd "o") 'exchange-point-and-mark)
 
 ;; Emacs style macros
 (define-key evil-normal-state-map (kbd "H") 'kmacro-start-macro)
@@ -244,6 +241,8 @@
 (define-key evil-visual-state-map (kbd "SPC l") 'avy-goto-line)
 (define-key evil-normal-state-map (kbd "s") 'avy-goto-char-2)
 (define-key evil-visual-state-map (kbd "s") 'avy-goto-char-2)
+(define-key evil-motion-state-map (kbd "x") #'avy-goto-char-2)
+(define-key evil-motion-state-map (kbd "p") #'avy-goto-line)
 
 ;; Swiper (with Ivy and counsel)
 (define-key evil-normal-state-map (kbd "t") 'counsel-imenu)

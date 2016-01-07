@@ -13,6 +13,11 @@
   (diminish 'ivy-mode ""))
 (add-hook 'ivy-mode-hook 'sk/diminish-ivy)
 (ivy-mode 1)
+;; Some maps
+(global-set-key (kbd "C-s") 'swiper)
+(global-set-key (kbd "C-r") 'swiper)
+(global-set-key (kbd "M-x") 'counsel-M-x)
+
 
 ;; Swoop
 (sk/require-package 'swoop)

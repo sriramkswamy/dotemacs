@@ -88,10 +88,6 @@
 ;; ;; Evil
 ;; (require 'sk-evil)
 
-;; Some maps
-(global-set-key (kbd "C-s") 'swiper)
-(global-set-key (kbd "C-r") 'swiper)
-(global-set-key (kbd "M-x") 'counsel-M-x)
 
 ;; Garbage collector - increase threshold
 (setq gc-cons-threshold (* 1024 1024 1024))

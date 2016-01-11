@@ -262,8 +262,7 @@
 (define-key evil-normal-state-map (kbd "SPC /") 'counsel-locate)
 (define-key evil-normal-state-map (kbd "SPC h") 'counsel-ag)
 (define-key evil-visual-state-map (kbd "SPC h") 'counsel-ag)
-(define-key evil-insert-state-map (kbd "C-k") 'counsel-unicode-char)
-(define-key evil-insert-state-map (kbd "C-k") 'counsel-unicode-char)
+(define-key evil-insert-state-map (kbd "C-v") 'counsel-unicode-char)
 
 ;; Spotlight
 (define-key evil-normal-state-map (kbd "SPC b") 'spotlight)
@@ -323,6 +322,9 @@
 ;;; Visual regexp
 (define-key evil-normal-state-map (kbd "SPC v") 'vr/query-replace)
 (define-key evil-visual-state-map (kbd "SPC v") 'vr/query-replace)
+
+;; Ivy completion
+(define-key evil-insert-state-map (kbd "C-k") 'completion-at-point)
 
 ;; Winner mode
 (define-key evil-normal-state-map (kbd "Q") 'winner-undo)

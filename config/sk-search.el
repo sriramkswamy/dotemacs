@@ -8,15 +8,21 @@
 (setq ivy-display-style 'fancy
       ivy-height 15
       counsel-yank-pop-truncate t)
-;; Fuzzy for M-x
+;; Fuzzy for a few things
 (setq ivy-re-builders-alist
       '((counsel-M-x . ivy--regex-fuzzy)
+        (ivy-switch-buffer . ivy--regex-fuzzy)
+        (ivy-recentf . ivy--regex-fuzzy)
+        (counsel-describe-variable . ivy--regex-fuzzy)
+        (counsel-describe-function . ivy--regex-fuzzy)
         (t . ivy--regex-plus)))
 (defun sk/diminish-ivy ()
   (interactive)
   (diminish 'ivy-mode ""))
 (add-hook 'ivy-mode-hook 'sk/diminish-ivy)
 (ivy-mode 1)
+;; Completion for a few things
+(setq completion-in-region-function 'ivy-completion-in-region)
 ;; Some maps
 (global-set-key (kbd "C-s") 'swiper)
 (global-set-key (kbd "C-r") 'swiper)

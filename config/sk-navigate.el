@@ -110,8 +110,8 @@
  _m_ode       synta_x_   _k_ey                |
 "
   ("b" describe-bindings)
-  ("f" describe-function)
-  ("v" describe-variable)
+  ("f" counsel-describe-function)
+  ("v" counsel-describe-variable)
   ("m" describe-mode)
   ("i" info)
   ("s" info-lookup-symbol)

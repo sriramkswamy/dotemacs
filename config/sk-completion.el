@@ -23,13 +23,12 @@
   (define-key company-active-map (kbd "C-p") 'company-select-previous)
   (define-key company-active-map [tab] 'company-complete-common-or-cycle))
 (add-hook 'company-mode-hook 'sk/company-hook)
-(add-hook 'prog-mode-hook 'company-mode)
 
 ;; Company C headers
 (sk/require-package 'company-c-headers)
 (eval-after-load 'company
   '(add-to-list 'company-backends 'company-c-headers))
 
-(provide 'sk-company)
+(provide 'sk-completion)
 
-;;; sk-company.el ends here
+;;; sk-completion.el ends here

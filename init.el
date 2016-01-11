@@ -38,7 +38,7 @@
 (require 'sk-vcs)
 
 ;; Auto complete
-(require 'sk-company)
+(require 'sk-completion)
 
 ;; Snippets
 (require 'sk-snippets)

@@ -3,12 +3,15 @@
 
 ;; Elpy
 (sk/require-package 'elpy)
-(add-hook 'python-mode-hook 'elpy-enable)
-(defun diminish-elpy ()
+(defun sk/python-elpy-hook ()
   (interactive)
-  (elpy-use-ipython)
+  (elpy-enable)
+  (elpy-use-ipython))
+(defun sk/diminish-elpy ()
+  (interactive)
   (diminish 'elpy-mode ""))
-(add-hook 'elpy-mode-hook 'diminish-elpy)
+(add-hook 'python-mode-hook 'sk/python-elpy-hook)
+(add-hook 'elpy-mode-hook 'sk/diminish-elpy)
 
 ;; Cython mode
 (sk/require-package 'cython-mode)

@@ -162,7 +162,7 @@
   ("n" neotree-toggle)
   ("d" reveal-in-osx-finder)
   ("m" sk/hydra-bookmarks/body :exit t)
-  ("i" imenu)
+  ("i" counsel-imenu)
   ("p" find-file-in-project)
   ("a" ff-find-other-file)
   ("t" sk/hydra-tags/body :exit t)

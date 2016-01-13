@@ -88,7 +88,6 @@
 ;; ;; Evil
 ;; (require 'sk-evil)
 
-
 ;; Garbage collector - increase threshold
 (setq gc-cons-threshold (* 1024 1024 1024))
 

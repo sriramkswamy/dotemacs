@@ -23,6 +23,7 @@
   (define-key company-active-map (kbd "C-p") 'company-select-previous)
   (define-key company-active-map [tab] 'company-complete-common-or-cycle))
 (add-hook 'company-mode-hook 'sk/company-hook)
+(add-hook 'prog-mode-hook 'company-mode)
 
 ;; Company C headers
 (sk/require-package 'company-c-headers)

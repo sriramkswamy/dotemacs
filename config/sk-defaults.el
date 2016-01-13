@@ -104,7 +104,6 @@
   (interactive)
   (diminish 'eldoc-mode ""))
 (add-hook 'eldoc-mode-hook 'sk/diminish-eldoc)
-(add-hook 'eldoc-mode-hook 'diminish-eldoc)
 
 (provide 'sk-defaults)
 ;;; sk-defaults.el ends here

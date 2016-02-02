@@ -1,7 +1,3 @@
-;; Themes
-(sk/require-package 'zenburn-theme)
-(sk/require-package 'material-theme)
-
 ;; Mac stuff
 (when (eq system-type 'darwin)
   (setq mac-option-modifier 'meta))
@@ -13,7 +9,7 @@
 ;; GUI changes
 (defun sk/gui-defaults ()
   (interactive)
-  (load-theme 'material-light t)
+  (load-theme 'leuven t)
   (tool-bar-mode -1)
   (recentf-mode)
   (scroll-bar-mode -1))
@@ -35,9 +31,6 @@
 
 ;; Don't blink the cursor
 (blink-cursor-mode -1)
-
-;; Highlight the cursor line
-(global-hl-line-mode 1)
 
 ;; GDB
 (setq gdb-many-windows t

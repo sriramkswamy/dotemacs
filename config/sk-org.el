@@ -337,7 +337,7 @@ _h_ ^+^ _l_        | _o_pen      _c_lear    rena_m_e  | _H_ome  _q_uit
   ("L" org-table-blank-field :color blue)
   ("t" sk/hydra-org-tag-todo/body :exit t)
   ("T" sk/hydra-org-tag-todo/body :exit t)
-  ("|" sk/hydra-org-tables :exit t)
+  ("|" sk/hydra-org-tables/body :exit t)
   ("v" org-reveal)
   ("r" org-refile :color blue)
   ("A" org-archive-subtree-default :color blue)

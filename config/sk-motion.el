@@ -9,8 +9,8 @@
 ;; Avy
 (sk/require-package 'avy)
 (setq avy-keys-alist
-      `((avy-goto-char-2 . (?j ?k ?l ?f ?s ?d))
-        (avy-goto-line . (?j ?k ?l ?f ?s ?d))))
+      `((avy-goto-char-2 . (?j ?k ?l ?f ?s ?d ?e ?r ?u ?y))
+        (avy-goto-line . (?j ?k ?l ?f ?s ?d ?e ?r ?u ?y))))
 (setq avy-style 'pre)
 
 ;; Hydra of motion
@@ -61,7 +61,7 @@
  ^^^^^^^^^^^-------|--------|---------------|--------------|----------------------|------------|----------|--------------
  ^ ^ _k_ ^ ^  | ^ ^ _{_ ^ ^  | _u_ winner-undo | _v_ertical     | _f_ullscreen  _m_aximize | _+_ zoom in  | _i_ config | _H_ome  e_x_ecute
  _h_ ^+^ _l_  | _<_ ^+^ _>_  | _r_ winner-redo | _s_ horizontal | _d_elete      sus_p_end  | _-_ zoom out |          | _M_ove  _q_uit
- ^ ^ _j_ ^ ^  | ^ ^ _}_ ^ ^  | _c_lose         | _z_oom         | _S_elect      _n_ame     |            |          | _N_av
+ ^ ^ _j_ ^ ^  | ^ ^ _}_ ^ ^  | _c_lose         | _z_oom         | s_e_lect      _n_ame     |            |          | _N_av
 "
   ("h" windmove-left)
   ("j" windmove-down)
@@ -80,11 +80,11 @@
          (winner-undo)
          (setq this-command 'winner-undo)))
   ("r" winner-redo)
-  ("m" toggle-frame-maximized)
-  ("p" suspend-frame)
+  ("m" toggle-frame-maximized :color blue)
+  ("p" suspend-frame :color blue)
   ("d" delete-frame)
-  ("S" select-frame-by-name)
-  ("n" set-frame-name)
+  ("e" select-frame-by-name :color blue)
+  ("n" set-frame-name :color blue)
   ("+" text-scale-increase)
   ("-" text-scale-decrease)
   ("i" sk/hydra-for-eyebrowse/body :exit t)

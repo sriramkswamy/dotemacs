@@ -1,6 +1,27 @@
 ;; Cursor type change
 (setq-default cursor-type 'bar)
 
+;; God mode
+(sk/require-package 'god-mode)
+(require 'god-mode)
+(global-set-key (kbd "<escape>") 'god-local-mode)
+(global-set-key (kbd "<escape>") 'god-mode-all)
+(setq god-exempt-major-modes nil
+      god-exempt-predicates nil)
+(defun sk/god-mode-update-cursor ()
+  (let ((limited-colors-p (> 257 (length (defined-colors)))))
+    (cond (god-local-mode (progn
+                            (set-face-background 'mode-line (if limited-colors-p "white" "#e9e2cb"))
+                            (set-face-background 'mode-line-inactive (if limited-colors-p "white" "#e9e2cb"))))
+          (t (progn
+               (set-face-background 'mode-line (if limited-colors-p "black" "#0a2832"))
+               (set-face-background 'mode-line-inactive (if limited-colors-p "black" "#0a2832")))))))
+(define-key god-local-mode-map (kbd ".") 'repeat)
+(define-key god-local-mode-map (kbd "i") 'god-local-mode)
+(add-to-list 'god-exempt-major-modes 'paradox-menu-mode)
+(add-to-list 'god-exempt-major-modes 'magit-status)
+(add-to-list 'god-exempt-major-modes 'help-mode)
+
 ;; Key chords
 (sk/require-package 'key-chord)
 (sk/require-package 'key-seq)

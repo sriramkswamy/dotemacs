@@ -25,8 +25,12 @@
 (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
 
 ;; Emacs functionality maps
+(define-key evil-normal-state-map (kbd "m") 'bookmark-set)
+(define-key evil-normal-state-map (kbd "0") 'sk/smarter-move-beginning-of-line)
 (define-key evil-normal-state-map (kbd "Z") 'delete-other-windows)
 (define-key evil-normal-state-map (kbd "K") 'man)
+(define-key evil-normal-state-map (kbd "`") 'bookmark-jump)
+(define-key evil-normal-state-map (kbd "'") 'bookmark-jump-other-window)
 (define-key evil-normal-state-map (kbd "\\") 'universal-argument)
 (define-key evil-normal-state-map (kbd "gs") 'electric-newline-and-maybe-indent)
 (define-key evil-normal-state-map (kbd "gl") 'browse-url-at-point)
@@ -37,7 +41,6 @@
 (define-key evil-normal-state-map (kbd "SPC ,") 'describe-bindings)
 (define-key evil-normal-state-map (kbd "SPC \\") 'toggle-input-method)
 (define-key evil-visual-state-map (kbd "SPC ]") 'narrow-to-region)
-(define-key evil-visual-state-map (kbd "o") 'exchange-point-and-mark)
 
 ;; Emacs style macros
 (define-key evil-normal-state-map (kbd "H") 'kmacro-start-macro)
@@ -68,7 +71,6 @@
 (sk/require-package 'evil-args)
 (define-key evil-inner-text-objects-map "," #'evil-inner-arg)
 (define-key evil-outer-text-objects-map "," #'evil-outer-arg)
-(define-key evil-normal-state-map "\C-j" #'evil-jump-out-args)
 
 ;; Jump lists like vim
 (sk/require-package 'evil-jumper)
@@ -246,13 +248,10 @@
 (define-key evil-motion-state-map (kbd "x") #'avy-goto-char-2)
 (define-key evil-motion-state-map (kbd "p") #'avy-goto-line)
 
-;; Smex
-(define-key evil-normal-state-map (kbd "SPC d") 'smex)
-(define-key evil-visual-state-map (kbd "SPC d") 'smex)
-(define-key evil-insert-state-map (kbd "C-l") 'smex)
-
 ;; Swiper (with Ivy and counsel)
 (define-key evil-normal-state-map (kbd "t") 'counsel-imenu)
+(define-key evil-normal-state-map (kbd "SPC d") 'counsel-M-x)
+(define-key evil-visual-state-map (kbd "SPC d") 'counsel-M-x)
 (define-key evil-normal-state-map (kbd "SPC f") 'counsel-find-file)
 (define-key evil-normal-state-map (kbd "SPC SPC") 'swiper)
 (define-key evil-normal-state-map (kbd "SPC r") 'ivy-recentf)
@@ -263,6 +262,7 @@
 (define-key evil-normal-state-map (kbd "SPC h") 'counsel-ag)
 (define-key evil-visual-state-map (kbd "SPC h") 'counsel-ag)
 (define-key evil-insert-state-map (kbd "C-v") 'counsel-unicode-char)
+(define-key evil-insert-state-map (kbd "C-l") 'counsel-M-x)
 
 ;; Spotlight
 (define-key evil-normal-state-map (kbd "SPC b") 'spotlight)
@@ -314,10 +314,6 @@
 
 ;; Multiple cursors
 (define-key evil-normal-state-map (kbd "SPC m") 'sk/hydra-of-multiple-cursors/body)
-
-;; Search anything
-(define-key evil-normal-state-map (kbd "SPC g") 'sk/hydra-of-search/body)
-(define-key evil-visual-state-map (kbd "SPC g") 'sk/hydra-of-search/body)
 
 ;;; Visual regexp
 (define-key evil-normal-state-map (kbd "SPC v") 'vr/query-replace)
@@ -376,6 +372,9 @@
 
 ;; Git
 (define-key evil-normal-state-map (kbd "SPC g") 'sk/hydra-of-git/body)
+(define-key evil-visual-state-map (kbd "SPC g") 'sk/hydra-of-git/body)
+(define-key evil-inner-text-objects-map "h" 'diff-hl-mark-hunk)
+(define-key evil-outer-text-objects-map "h" 'diff-hl-mark-hunk)
 
 ;; Snippets
 (define-key evil-insert-state-map (kbd "C-j") 'yas-insert-snippet)

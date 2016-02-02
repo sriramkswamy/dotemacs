@@ -85,6 +85,10 @@
 ;; Profiler
 (sk/require-package 'esup)
 
+;; Key frequency
+(sk/require-package 'keyfreq)
+(add-hook 'after-init-hook 'keyfreq-mode)
+
 (provide 'sk-helpers)
 
 ;;; sk-helpers.el ends here

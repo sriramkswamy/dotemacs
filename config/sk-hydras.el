@@ -2,7 +2,7 @@
 (defhydra sk/hydra-of-jump (:color red
                             :hint nil)
   "
- ^Diff^       | ^Errors^     | ^Spell^      | ^Mark^        | ^PDF^     | ^Move^  | ^Menu^
+ ^Diff^       | ^Errors^     | ^Spell^      | ^Mark^        | ^PDF^      | ^Move^ | ^Menu^
  ^^^^^^^^^-----------|------------|------------|-------------|----------|------|--------------
  _j_ next     | _l_ next     | _>_ next     | _]_ loc next  | _n_ext     | _u_p   | _H_ome  e_x_ecute
  _k_ previous | _h_ previous | _<_ previous | _[_ loc prev  | _p_revious | _d_own |       _q_uit

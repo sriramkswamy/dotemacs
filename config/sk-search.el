@@ -1,19 +1,37 @@
-;; Smex
-(sk/require-package 'smex)
-(global-set-key (kbd "M-x") 'smex)
-
-;; Swiper, Ivy and Counsel
+;; Swiper
 (sk/require-package 'swiper)
-(sk/require-package 'counsel)
+(require 'ivy)
+(global-set-key (kbd "M-x") 'counsel-M-x)
+(global-set-key (kbd "C-s") 'swiper)
+(global-set-key (kbd "C-r") 'swiper)
+
+;; Ivy
 (setq ivy-display-style 'fancy
-      ivy-height 15
-      counsel-yank-pop-truncate t)
-;; Fuzzy for a few things
+      ivy-height 15)
 (setq ivy-re-builders-alist
-      '((counsel-M-x . ivy--regex-fuzzy)
-        (ivy-switch-buffer . ivy--regex-fuzzy)
+      '((ivy-switch-buffer . ivy--regex-fuzzy)
         (ivy-recentf . ivy--regex-fuzzy)
         (ivy-completion-in-region . ivy--regex-fuzzy)
+        (t . ivy--regex-plus)))
+(setq completion-in-region-function 'ivy-completion-in-region)
+(defun sk/diminish-ivy ()
+  (interactive)
+  (diminish 'ivy-mode ""))
+(add-hook 'ivy-mode-hook 'sk/diminish-ivy)
+(ivy-mode 1)
+
+;; Ivy maps
+(define-key ivy-minibuffer-map (kbd "C-t") 'ivy-toggle-fuzzy)
+(define-key ivy-minibuffer-map (kbd "C-j") 'ivy-done)
+(define-key ivy-minibuffer-map (kbd "C-i") 'ivy-alt-done)
+(define-key ivy-minibuffer-map (kbd "C-m") 'ivy-alt-done)
+(define-key ivy-minibuffer-map (kbd "C-S-m") 'ivy-immediate-done)
+
+;; Counsel
+(sk/require-package 'counsel)
+(setq counsel-yank-pop-truncate t)
+(setq ivy-re-builders-alist
+      '((counsel-M-x . ivy--regex-fuzzy)
         (counsel-imenu . ivy--regex-fuzzy)
         (counsel-find-file . ivy--regex-fuzzy)
         (counsel-find-symbol . ivy--regex-fuzzy)
@@ -21,16 +39,6 @@
         (counsel-describe-variable . ivy--regex-fuzzy)
         (counsel-describe-function . ivy--regex-fuzzy)
         (t . ivy--regex-plus)))
-(defun sk/diminish-ivy ()
-  (interactive)
-  (diminish 'ivy-mode ""))
-(add-hook 'ivy-mode-hook 'sk/diminish-ivy)
-(ivy-mode 1)
-;; Completion for a few things
-(setq completion-in-region-function 'ivy-completion-in-region)
-;; Some maps
-(global-set-key (kbd "C-s") 'swiper)
-(global-set-key (kbd "C-r") 'swiper)
 
 ;; ag and wgrep
 (sk/require-package 'ag)

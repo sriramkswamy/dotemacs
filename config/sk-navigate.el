@@ -8,6 +8,7 @@
 (defun sk/diminish-which-key ()
   (interactive)
   (diminish 'which-key-mode ""))
+(which-key-mode)
 (add-hook 'which-key-mode-hook 'sk/diminish-which-key)
 
 ;; OS X finder

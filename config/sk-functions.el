@@ -15,6 +15,13 @@
                  'maximized)
            'fullboth)))))
 
+;; Select current line
+(defun sk/select-current-line ()
+  "Select the current line"
+  (interactive)
+  (end-of-line)
+  (set-mark (line-beginning-position)))
+
 ;; Open line above - vi style
 (defun sk/open-line-above ()
   "Insert a newline above the current line and put point at beginning."

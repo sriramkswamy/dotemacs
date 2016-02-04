@@ -82,6 +82,8 @@
 ;; Interact with Tmux
 (sk/require-package 'emamux)
 
+;; Hydra for emamux
+
 (provide 'sk-repl)
 
 ;;; sk-repl.el ends here

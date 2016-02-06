@@ -82,8 +82,8 @@
 ;; ;; Jabber
 ;; (require 'sk-jabber)
 
-;; Interface
-(require 'sk-interface)
+;; God mode
+(require 'sk-god)
 
 ;; ;; Evil
 ;; (require 'sk-evil)

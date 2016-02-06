@@ -88,6 +88,9 @@
 ;; ;; Evil
 ;; (require 'sk-evil)
 
+;; Bindings
+(require 'sk-bindings)
+
 ;; Garbage collector - increase threshold
 (setq gc-cons-threshold (* 1024 1024 1024))
 

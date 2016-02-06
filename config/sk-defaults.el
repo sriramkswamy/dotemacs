@@ -22,6 +22,7 @@
 (setq inhibit-startup-message t
       initial-scratch-message ";; Scratch
 ;; Press C-x C-f to open a file. It opens in home(~) directory by default
+;; To open init file, C-x C-f and then '~/.emacs.d/init.el'
 ;; Open '~/.emacs.d/config/sk-bindings.el' to view/modify custom bindings
 ;; Type 'C-h t' for Emacs tutorial"
       initial-major-mode 'fundamental-mode

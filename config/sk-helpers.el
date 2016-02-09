@@ -55,27 +55,29 @@
 (region-state-mode)
 
 ;; Origami - Code folding
-(sk/require-package 'origami)
+(sk/require-package 'vimish-fold)
 
-;; Hydra for origami
-(defhydra sk/hydra-origami (:pre (global-origami-mode 1)
-                            :color red
-                            :hint nil)
+;; Hydra for vimish-fold
+(defhydra sk/hydra-vimish-fold (:color red
+                                :hint nil)
   "
- ^Origami^             | ^Fold^     | ^Menu^
- ^^^^^^^^^--------------------|----------|---------------
- _o_pen  _c_lose  _t_oggle | _n_ext     | _H_ome   e_x_ecute
- _O_pen  _C_lose  _T_oggle | _p_revious |        _q_uit
+ ^Vimish-Fold^                          | ^Fold^     | ^Menu^
+ ^^^^^^^^^-------------------------------------|----------|---------------
+ _f_old  _u_nfold  _r_efold  _t_oggle  _d_elete | _n_ext     | _H_ome   e_x_ecute
+       _U_nfold  _R_efold  _T_oggle  _D_elete | _p_revious |        _q_uit
   "
-  ("o" origami-open-node)
-  ("c" origami-close-node)
-  ("t" origami-toggle-node)
-  ("O" origami-open-all-nodes)
-  ("C" origami-close-all-nodes)
-  ("T" origami-toggle-all-nodes)
-  ("n" origami-next-fold)
-  ("p" origami-previous-fold)
-  ("H" sk/hydra-of-hydras/body :exit t)
+  ("f" vimish-fold)
+  ("u" vimish-fold-unfold)
+  ("r" vimish-fold-refold)
+  ("t" vimish-fold-toggle)
+  ("d" vimish-fold-delete)
+  ("U" vimish-fold-unfold-all)
+  ("R" vimish-fold-refold-all)
+  ("T" vimish-fold-toggle-all)
+  ("D" vimish-fold-delete-all)
+  ("n" vimish-fold-next-fold)
+  ("p" vimish-fold-previous-fold)
+  ("H" vimish-foldsk/hydra-of-hydras/body :exit t)
   ("x" counsel-M-x :color blue)
   ("q" nil :color blue))
 

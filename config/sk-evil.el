@@ -380,7 +380,8 @@
 (define-key evil-insert-state-map (kbd "C-j") 'yas-insert-snippet)
 
 ;; Better folding
-(define-key evil-normal-state-map (kbd "SPC z") 'sk/hydra-origami/body)
+(define-key evil-normal-state-map (kbd "SPC z") 'sk/hydra-vimish-fold/body)
+(define-key evil-visual-state-map (kbd "SPC z") 'sk/hydra-vimish-fold/body)
 
 ;; Org mode
 (define-key evil-normal-state-map (kbd "SPC o") 'sk/hydra-of-org/body)

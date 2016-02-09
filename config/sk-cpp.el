@@ -20,6 +20,7 @@
 
 ;; Cmake ide
 (sk/require-package 'cmake-ide)
+(cmake-ide-setup)
 
 ;; Company irony
 (sk/require-package 'company-irony)

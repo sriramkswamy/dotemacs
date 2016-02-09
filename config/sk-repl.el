@@ -42,9 +42,10 @@
         (if (null (string-match ".*exited abnormally.*" str))
             ;;no errors, make the compilation window go away in a few seconds
             (progn
-              (run-at-time
-               "2 sec" nil 'delete-windows-on
-               (get-buffer-create "*compilation*"))
+              (run-at-time "0.4 sec" nil
+                           (lambda ()
+                             (select-window (get-buffer-window (get-buffer-create "*compilation*")))
+                             (switch-to-buffer nil)))
               (message "No Compilation Errors!")))))
 
 ;; Quickrun

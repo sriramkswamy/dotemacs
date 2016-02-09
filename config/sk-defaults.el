@@ -31,7 +31,7 @@
 
 ;; DocView Settings
 (setq doc-view-continuous t
-      doc-view-resolution 200)
+      doc-view-resolution 300)
 
 ;; Don't blink the cursor
 (blink-cursor-mode -1)

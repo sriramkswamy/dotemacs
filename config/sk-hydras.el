@@ -86,11 +86,11 @@
 (defhydra sk/hydra-of-activate (:color red
                                 :hint nil)
   "
- ^(De)Activate^               | ^Packages^   | ^Minor mode^                                  | ^Menu^
- ^^^^^^^^^---------------------------|------------|---------------------------------------------|--------
- _b_attery   _n_umber   _v_isual  | _p_aradox    | _c_ompany    _i_ndentation  _W_hich-key  col_f_orce | _H_ome
- _t_ime      _w_rap     toolba_r_ | instal_l_    | _y_asnippet  f_C_i          _j_abber     _o_rg      | e_x_ecute
- _F_ont      _s_pell    _T_heme   | _I_nitialize | _e_lpy       f_O_ld         _g_gtags              | _q_uit
+ ^(De)Activate^              | ^Packages^   | ^Minor mode^                                  | ^Menu^
+ ^^^^^^^^^--------------------------|------------|---------------------------------------------|--------
+ _b_attery   _n_umber   _v_isual | _p_aradox    | _c_ompany    _i_ndentation  _W_hich-key  col_f_orce | _H_ome
+ _t_ime      _w_rap     _m_usic  | instal_l_    | _y_asnippet  f_C_i          _j_abber     _o_rg      | e_x_ecute
+ _F_ont      _s_pell    _T_heme  | _I_nitialize | _e_lpy       f_O_ld         _g_gtags              | _q_uit
 "
   ("b" display-battery-mode)
   ("t" display-time-mode)
@@ -98,7 +98,7 @@
   ("n" linum-mode :color blue)
   ("w" toggle-truncate-lines :color blue)
   ("s" flyspell-mode :color blue)
-  ("r" tool-bar-mode :color blue)
+  ("m" sk/get-itunes-song)
   ("v" visual-line-mode :color blue)
   ("T" load-theme :color blue)
   ("p" paradox-list-packages :color blue)

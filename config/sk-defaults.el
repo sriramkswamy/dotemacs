@@ -10,8 +10,9 @@
 (defun sk/gui-defaults ()
   (interactive)
   (load-theme 'leuven t)
-  (tool-bar-mode -1)
   (recentf-mode)
+  (tool-bar-mode -1)
+  (menu-bar-mode -1)
   (scroll-bar-mode -1))
 (add-hook 'after-init-hook 'sk/gui-defaults)
 

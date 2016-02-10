@@ -119,6 +119,11 @@
 (defvaralias 'c-basic-offset 'tab-width)
 (setq tab-stop-list (sk/generate-tab-stops))
 
+;; Get the current song
+(defun sk/get-itunes-song ()
+  (interactive)
+  (shell-command "osascript ~/applescripts/itunes.scpt"))
+
 ;; Turns the next page in adjoining pdf-tools pdf
 (defun sk/other-pdf-next ()
   "Turns the next page in adjoining PDF file"

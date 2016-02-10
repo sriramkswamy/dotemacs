@@ -18,6 +18,13 @@
 (add-hook 'smart-tab-mode-hook 'sk/diminish-smart-tab)
 (global-smart-tab-mode)
 
+;; Aggressive indent
+(sk/require-package 'aggressive-indent)
+(add-hook 'emacs-lisp-mode-hook #'aggressive-indent-mode)
+(add-hook 'clojure-mode-hook #'aggressive-indent-mode)
+(add-hook 'ruby-mode-hook #'aggressive-indent-mode)
+(add-hook 'cc-mode-hook #'aggressive-indent-mode)
+
 ;; Fill column indicator
 (sk/require-package 'fill-column-indicator)
 (setq fci-rule-width 5

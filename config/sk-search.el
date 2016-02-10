@@ -7,12 +7,10 @@
 
 ;; Ivy
 (setq ivy-display-style 'fancy
-      ivy-height 15)
+      ivy-height 15
+      ivy-initial-inputs-alist nil)
 (setq ivy-re-builders-alist
-      '((ivy-switch-buffer . ivy--regex-fuzzy)
-        (ivy-recentf . ivy--regex-fuzzy)
-        (ivy-completion-in-region . ivy--regex-fuzzy)
-        (t . ivy--regex-plus)))
+      '((t . ivy--regex-fuzzy)))
 (setq completion-in-region-function 'ivy-completion-in-region)
 (defun sk/diminish-ivy ()
   (interactive)
@@ -30,15 +28,6 @@
 ;; Counsel
 (sk/require-package 'counsel)
 (setq counsel-yank-pop-truncate t)
-(setq ivy-re-builders-alist
-      '((counsel-M-x . ivy--regex-fuzzy)
-        (counsel-imenu . ivy--regex-fuzzy)
-        (counsel-find-file . ivy--regex-fuzzy)
-        (counsel-find-symbol . ivy--regex-fuzzy)
-        (counsel-info-lookup-symbol . ivy--regex-fuzzy)
-        (counsel-describe-variable . ivy--regex-fuzzy)
-        (counsel-describe-function . ivy--regex-fuzzy)
-        (t . ivy--regex-plus)))
 
 ;; ag and wgrep
 (sk/require-package 'ag)

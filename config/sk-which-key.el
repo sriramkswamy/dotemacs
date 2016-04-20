@@ -1,0 +1,15 @@
+;;; sk-which-key.el --- Global settings -*- lexical-binding: t; -*-
+
+;;; Commentary:
+
+;; Discoverability using which-key
+
+;;; Code:
+
+(sk/require-package 'which-key)
+(global-set-key (kbd "C-x ?") 'which-key-show-top-level)
+(which-key-add-key-based-replacements
+  "C-x ?" "top level bindings")
+
+(provide 'sk-which-key)
+;;; sk-which-key.el ends here

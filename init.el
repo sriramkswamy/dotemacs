@@ -1,138 +1,71 @@
-;; Commentary: Packages stuff. Initialize and install couple helpers
+;;; init.el --- Global settings -*- lexical-binding: t; -*-
+
+;;; Commentary:
+
+;; Here be dragons
+
+;;; Code:
+
+;; Load path
+
+;; Package.el
 (require 'package)
 
 ;; Don't initialize it until I say so
 (setq package-enable-at-startup nil)
 
-;; packages based on versions
-(when (>= emacs-major-version 24)
-  (require 'package)
-  (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
-  (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t))
-  (package-initialize)
-(when (< emacs-major-version 24)
-  ;; For important compatibility libraries like cl-lib
-  (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
-
-;; ;; Prioritize
-;; (setq package-archive-priorities
-;;       '(("gnu" . 10)
-;;         ("melpa" . 20)))
-
-;; Add homebrew packages
-(let ((default-directory "/usr/local/share/emacs/site-lisp/"))
-  (normal-top-level-add-subdirs-to-load-path))
-
-;; Define function for a required package
-(defun sk/require-package (package)
-  (setq-default highlight-tabs t)
-  "Install given PACKAGE."
-  (unless (package-installed-p package)
-    (unless (assoc package package-archive-contents)
-      (package-refresh-contents))
-    (package-install package)))
-
-;; Get the proper path
-(sk/require-package 'exec-path-from-shell)
-;; (exec-path-from-shell-copy-env "PYTHONPATH")
-(when (memq window-system '(mac ns x))
-  (exec-path-from-shell-initialize))
-
-;; Paradox for package
-(sk/require-package 'paradox)
-(setq paradox-github-token t)
+(add-to-list 'load-path (expand-file-name "config" user-emacs-directory))
 
 ;; Garbage collector - increase threshold
 (setq gc-cons-threshold (* 1024 1024 1024 1024))
 
-;; Load path
-(add-to-list 'load-path (expand-file-name "config" user-emacs-directory))
+;; Now initiliaze packages
+(package-initialize)
 
-;; Hydra
-(sk/require-package 'hydra)
-
-;; Diminish
-(sk/require-package 'diminish)
-
-;; Change some defaults
+;; Defaults
 (require 'sk-defaults)
+(require 'sk-defaults-bindings)
 
-;; Custom functions
-(require 'sk-functions)
+;; packages configuration
+(require 'sk-package)
 
-;; Search
-(require 'sk-search)
+;; Diminish minor modes
+(require 'sk-diminish)
 
-;; Motion
-(require 'sk-motion)
+;; Discover bindings
+(require 'sk-which-key)
+(require 'sk-defaults-which-key)
+(require 'sk-which-key-bindings)
+(require 'sk-which-key-which-key)
+(require 'sk-which-key-diminish)
 
-;; Navigate
-(require 'sk-navigate)
+;; Modal editing
+(require 'sk-modalka)
+(require 'sk-modalka-bindings)
+(require 'sk-modalka-which-key)
+(require 'sk-modalka-diminish)
 
-;; Editing
-(require 'sk-editing)
+;; Sticky bindings
+(require 'sk-hydra)
+(require 'sk-hydra-bindings)
+(require 'sk-hydra-which-key)
+(require 'sk-hydra-modalka)
+(require 'sk-hydra-modalka-which-key)
 
-;; REPL
-(require 'sk-repl)
+;; Navigation using search/completion/motion
+(require 'sk-navigation)
+(require 'sk-navigation-bindings)
+(require 'sk-navigation-which-key)
+(require 'sk-navigation-modalka)
+(require 'sk-navigation-modalka-which-key)
+(require 'sk-navigation-diminish)
+(require 'sk-navigation-functions)
+(require 'sk-navigation-functions-bindings)
+(require 'sk-navigation-functions-modalka)
+(require 'sk-navigation-functions-modalka-which-key)
+(require 'sk-navigation-hydra)
+(require 'sk-navigation-hydra-bindings)
+(require 'sk-navigation-hydra-modalka)
+(require 'sk-navigation-hydra-modalka-which-key)
 
-;; Version Control
-(require 'sk-vcs)
-
-;; Auto complete
-(require 'sk-completion)
-
-;; Snippets
-(require 'sk-snippets)
-
-;; Flycheck
-(require 'sk-flycheck)
-
-;; C/C++
-(require 'sk-cpp)
-
-;; Python
-(require 'sk-python)
-
-;; ESS
-(require 'sk-ess)
-
-;; Web
-(require 'sk-web)
-
-;; Lisp
-(require 'sk-lisp)
-
-;; ;; MATLAB
-;; (require 'sk-matlab)
-
-;; Java
-(require 'sk-java)
-
-;; Writing
-(require  'sk-writing)
-
-;; Org
-(require 'sk-org)
-
-;; Helpers
-(require 'sk-helpers)
-
-;; Hydras
-(require 'sk-hydras)
-
-;; ;; Jabber
-;; (require 'sk-jabber)
-
-;; God mode
-(require 'sk-god)
-
-;; ;; Evil
-;; (require 'sk-evil)
-
-;; Bindings
-(require 'sk-bindings)
-
-;; Garbage collector - increase threshold
-(setq gc-cons-threshold (* 1024 1024 1024))
-
-;;; .emacs ends here
+;;; init.el ends here

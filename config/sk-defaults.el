@@ -1,6 +1,10 @@
-;; Mac stuff
-(when (eq system-type 'darwin)
-  (setq mac-option-modifier 'meta))
+;;; sk-defaults.el --- Global settings -*- lexical-binding: t; -*-
+
+;;; Commentary:
+
+;; My custom maps for modal editing based on Modalka. This follows a Vi-style
+
+;;; Code:
 
 ;; Enable winner-mode
 (add-hook 'prog-mode-hook #'winner-mode)
@@ -15,6 +19,9 @@
   (menu-bar-mode -1)
   (scroll-bar-mode -1))
 (add-hook 'after-init-hook 'sk/gui-defaults)
+
+;; Bar cursor
+(setq-default cursor-type '(bar . 1))
 
 ;; Swiper like regex when using isearch
 (setq search-whitespace-regexp ".*?")
@@ -66,42 +73,6 @@
 
 ;; Column number mode
 (column-number-mode)
-
-;; Hide/Show mode
-(defun sk/diminish-hs-minor ()
-  (interactive)
-  (diminish 'hs-minor-mode ""))
-(add-hook 'hs-minor-mode-hook 'sk/diminish-hs-minor)
-(add-hook 'prog-mode-hook 'hs-minor-mode)
-
-;; Diminish some stuff
-(defun sk/diminish-abbrev ()
-  (interactive)
-  (diminish 'abbrev-mode ""))
-(add-hook 'abbrev-mode-hook 'sk/diminish-abbrev)
-(add-hook 'prog-mode-hook 'sk/diminish-abbrev)
-(add-hook 'text-mode-hook 'sk/diminish-abbrev)
-
-;; Diminish some stuff
-(defun sk/diminish-auto-fill ()
-  (interactive)
-  (diminish 'auto-fill-mode ""))
-(add-hook 'abbrev-mode-hook 'sk/diminish-auto-fill)
-(add-hook 'prog-mode-hook 'sk/diminish-auto-fill)
-(add-hook 'text-mode-hook 'sk/diminish-auto-fill)
-
-;; Subword mode
-(defun sk/diminish-subword ()
-  (interactive)
-  (diminish 'subword-mode ""))
-(add-hook 'subword-mode-hook 'sk/diminish-subword)
-(global-subword-mode)
-
-;; Eldoc
-(defun sk/diminish-eldoc ()
-  (interactive)
-  (diminish 'eldoc-mode ""))
-(add-hook 'eldoc-mode-hook 'sk/diminish-eldoc)
 
 (provide 'sk-defaults)
 ;;; sk-defaults.el ends here

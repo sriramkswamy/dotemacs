@@ -14,6 +14,7 @@
 (global-set-key (kbd "C-c v g U") 'upcase-region)
 (global-set-key (kbd "C-c v g T") 'upcase-initials-region)
 (global-set-key (kbd "C-c v R") 'overwrite-mode)
+(global-set-key (kbd "C-c v C-v") 'rectangle-mark-mode)
 
 (provide 'sk-defaults-bindings)
 ;;; sk-defaults-bindings.el ends here

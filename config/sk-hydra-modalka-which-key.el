@@ -7,7 +7,8 @@
 ;;; Code:
 
 (which-key-add-key-based-replacements
-  "+" "bookmark hydra"
+  "E" "edit rectangle"
+
   "SPC x" "hydra help")
 
 (provide 'sk-hydra-modalka-which-key)

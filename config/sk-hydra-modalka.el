@@ -7,6 +7,7 @@
 ;;; Code:
 
 (modalka-define-kbd "SPC x" "C-c h h")
+(modalka-define-kbd "E" "C-x r R")
 
 ;; which key for modalka bindings
 (require 'sk-hydra-modalka-which-key)

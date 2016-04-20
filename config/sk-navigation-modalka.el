@@ -56,17 +56,17 @@
 
 ;; Perspective mode
 (modalka-define-kbd "I" "C-x x s")
-(modalka-define-kbd "E s" "C-x x s")
-(modalka-define-kbd "E a" "C-x x a")
-(modalka-define-kbd "E A" "C-x x A")
-(modalka-define-kbd "E b" "C-x x b")
-(modalka-define-kbd "E c" "C-x x b")
-(modalka-define-kbd "E r" "C-x x r")
-(modalka-define-kbd "E k" "C-x x k")
-(modalka-define-kbd "E n" "C-x x n")
-(modalka-define-kbd "E p" "C-x x p")
-(modalka-define-kbd "E i" "C-x x i")
-(modalka-define-kbd "E E" "C-x x C-x x")
+(modalka-define-kbd "B s" "C-x x s")
+(modalka-define-kbd "B a" "C-x x a")
+(modalka-define-kbd "B A" "C-x x A")
+(modalka-define-kbd "B b" "C-x x b")
+(modalka-define-kbd "B c" "C-x x b")
+(modalka-define-kbd "B r" "C-x x r")
+(modalka-define-kbd "B k" "C-x x k")
+(modalka-define-kbd "B n" "C-x x n")
+(modalka-define-kbd "B p" "C-x x p")
+(modalka-define-kbd "B i" "C-x x i")
+(modalka-define-kbd "B B" "C-x x C-x x")
 
 ;; which key for modalka bindings
 (require 'sk-navigation-modalka-which-key)

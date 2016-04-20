@@ -46,17 +46,17 @@
   "<" "global backward"
   ">" "global forward"
 
-  "E" "perspective prefix"
   "I" "perspective switch"
-  "E a" "perspective add buffer"
-  "E A" "perspective set buffer"
-  "E b" "perspective switch to buffer"
-  "E r" "perspective rename"
-  "E k" "perspective remove buffer"
-  "E n" "perspective next"
-  "E p" "perspective prev"
-  "E i" "perspective import"
-  "E E" "perspective last")
+  "B" "perspective prefix"
+  "B a" "perspective add buffer"
+  "B A" "perspective set buffer"
+  "B b" "perspective switch to buffer"
+  "B r" "perspective rename"
+  "B k" "perspective remove buffer"
+  "B n" "perspective next"
+  "B p" "perspective prev"
+  "B i" "perspective import"
+  "B B" "perspective last")
 
 (provide 'sk-navigation-modalka-which-key)
 ;;; sk-navigation-modalka-which-key.el ends here

@@ -8,6 +8,27 @@
 
 (sk/require-package 'hydra)
 
+;; Rectangle marks
+(defhydra sk/hydra-rectangle (:color red
+                              :hint nil)
+ "
+ ^Rectangle^
+ ^^^^^^------------------------
+ _p_ paste    _R_ replace
+ _C_ copy     _I_ insert
+ _c_ kill     _q_ quit
+"
+  ("h" backward-char nil)
+  ("l" forward-char nil)
+  ("k" previous-line nil)
+  ("j" next-line nil)
+  ("C" copy-rectangle-as-kill)
+  ("c" kill-rectangle nil)
+  ("p" yank-rectangle)
+  ("R" string-rectangle)
+  ("I" string-insert-rectangle)
+  ("q" nil :color blue))
+
 ;; Apropos
 (defhydra sk/hydra-apropos (:color blue
                             :hint nil)

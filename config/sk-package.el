@@ -38,5 +38,11 @@
 (sk/require-package 'paradox)
 (setq paradox-github-token t)
 
+;; Profiler
+(sk/require-package 'esup)
+
+;; Restart emacs from emacs
+(sk/require-package 'restart-emacs)
+
 (provide 'sk-package)
 ;;; sk-package.el ends here

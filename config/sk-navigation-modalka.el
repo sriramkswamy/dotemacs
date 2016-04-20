@@ -68,5 +68,8 @@
 (modalka-define-kbd "E i" "C-x x i")
 (modalka-define-kbd "E E" "C-x x C-x x")
 
+;; which key for modalka bindings
+(require 'sk-navigation-modalka-which-key)
+
 (provide 'sk-navigation-modalka)
 ;;; sk-navigation-modalka.el ends here

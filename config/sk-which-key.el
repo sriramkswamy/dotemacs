@@ -11,5 +11,9 @@
 (which-key-add-key-based-replacements
   "C-x ?" "top level bindings")
 
+;; aux requirements
+(require 'sk-which-key-bindings)
+(require 'sk-which-key-diminish)
+
 (provide 'sk-which-key)
 ;;; sk-which-key.el ends here

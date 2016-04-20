@@ -7,6 +7,9 @@
 ;;; Code:
 
 (which-key-add-key-based-replacements
+  "C-c v" "vi prefix"
+  "C-c v g" "vi global prefix"
+
   "C-x ?" "top level bindings")
 
 (provide 'sk-which-key-which-key)

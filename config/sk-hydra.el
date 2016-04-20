@@ -53,5 +53,9 @@
   ("l" describe-language-environment)
   ("q" nil :color blue))
 
+;; aux requirements
+(require 'sk-hydra-bindings)
+(require 'sk-hydra-modalka)
+
 (provide 'sk-hydra)
 ;;; sk-hydra.el ends here

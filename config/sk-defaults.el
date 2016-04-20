@@ -74,5 +74,8 @@
 ;; Column number mode
 (column-number-mode)
 
+;; default global bindings
+(require 'sk-defaults-bindings)
+
 (provide 'sk-defaults)
 ;;; sk-defaults.el ends here

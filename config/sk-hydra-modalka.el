@@ -8,5 +8,8 @@
 
 (modalka-define-kbd "SPC x" "C-c h h")
 
+;; which key for modalka bindings
+(require 'sk-hydra-modalka-which-key)
+
 (provide 'sk-hydra-modalka)
 ;;; sk-hydra-modalka.el ends here

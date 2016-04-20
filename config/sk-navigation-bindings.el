@@ -53,5 +53,8 @@
 (global-set-key (kbd "C-c v C-S-o") 'back-button-global-backward)
 (global-set-key (kbd "C-c v C-S-i") 'back-button-global-forward)
 
+;; which key for bindings
+(require 'sk-navigation-which-key)
+
 (provide 'sk-navigation-bindings)
 ;;; sk-navigation-bindings.el ends here

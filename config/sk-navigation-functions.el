@@ -76,5 +76,9 @@ point reaches the beginning or end of the buffer, stop there."
   (and (eq (marker-buffer marker) (current-buffer))
        (= (marker-position marker) (point))))
 
+;; Normal and modalka bindings for these functions
+(require 'sk-navigation-functions-bindings)
+(require 'sk-navigation-functions-modalka)
+
 (provide 'sk-navigation-functions)
 ;;; sk-navigation-functions.el ends here

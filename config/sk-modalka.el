@@ -86,5 +86,9 @@
 (modalka-define-kbd "SPC w" "C-x C-s")
 (modalka-define-kbd "SPC h" "C-c C-c")
 
+;; aux requirements
+(require 'sk-modalka-bindings)
+(require 'sk-modalka-diminish)
+
 (provide 'sk-modalka)
 ;;; sk-modalka.el ends here

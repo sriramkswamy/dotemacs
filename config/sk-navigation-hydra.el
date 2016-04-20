@@ -56,9 +56,8 @@
   ("d" bookmark-delete)
   ("q" nil :color blue))
 
-;; global and modalka bindings for hydras
+;; bindings for hydras
 (require 'sk-navigation-hydra-bindings)
-(require 'sk-navigation-hydra-modalka)
 
 (provide 'sk-navigation-hydra)
 ;;; sk-navigation-hydra.el ends here

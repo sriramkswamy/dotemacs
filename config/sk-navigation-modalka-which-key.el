@@ -7,6 +7,9 @@
 ;;; Code:
 
 (which-key-add-key-based-replacements
+  "[ s" "prev spell error"
+  "] s" "next spell error"
+
   "g i" "beacon blink"
 
   "u" "undo"

@@ -6,6 +6,10 @@
 
 ;;; Code:
 
+;; Flyspell
+(global-set-key (kbd "C-c v [ s") 'sk/flyspell-goto-previous-error)
+(global-set-key (kbd "C-c v ] s") 'flyspell-goto-next-error)
+
 ;; Beacon mode
 (global-set-key (kbd "C-c v g i") 'beacon-blink)
 
@@ -56,6 +60,9 @@
 (global-set-key (kbd "C-c v C-i") 'back-button-local-forward)
 (global-set-key (kbd "C-c v C-S-o") 'back-button-global-backward)
 (global-set-key (kbd "C-c v C-S-i") 'back-button-global-forward)
+
+;; modal bindings
+(require 'sk-navigation-modalka)
 
 ;; which key for bindings
 (require 'sk-navigation-which-key)

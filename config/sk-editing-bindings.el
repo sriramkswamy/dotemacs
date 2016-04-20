@@ -33,6 +33,9 @@
 ;; Visual regexp
 (global-set-key (kbd "C-c v s") 'vr/query-replace)
 
+;; Modal bindings
+(require 'sk-editing-modalka)
+
 ;; which key for bindings
 (require 'sk-editing-bindings-which-key)
 

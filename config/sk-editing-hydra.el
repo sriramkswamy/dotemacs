@@ -27,9 +27,8 @@
   ("k" kmacro-bind-to-key :color blue)
   ("q" nil :color blue))
 
-;; global and modalka bindings
+;; bindings
 (require 'sk-editing-hydra-bindings)
-(require 'sk-editing-hydra-modalka)
 
 (provide 'sk-editing-hydra)
 ;;; sk-editing-hydra.el ends here

@@ -7,7 +7,10 @@
 ;;; Code:
 
 (which-key-add-key-based-replacements
-  "C-c s" "swiper prefix")
+  "C-c s" "swiper prefix"
+  
+  "C-c v [" "vi previous prefix"
+  "C-c v ]" "vi next prefix")
 
 (provide 'sk-navigation-which-key)
 ;;; sk-navigation-which-key.el ends here

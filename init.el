@@ -46,6 +46,9 @@
 ;; Editing
 (require 'sk-editing)
 
+;; Visual helpers
+(require 'sk-visual)
+
 ;; Garbage collector - decrease threshold
 (setq gc-cons-threshold (* 1024 1024 1024))
 ;;; init.el ends here

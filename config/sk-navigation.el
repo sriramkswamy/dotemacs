@@ -77,7 +77,6 @@
 
 ;; aux requirements
 (require 'sk-navigation-bindings)
-(require 'sk-navigation-modalka)
 (require 'sk-navigation-functions)
 (require 'sk-navigation-hydra)
 (require 'sk-navigation-diminish)

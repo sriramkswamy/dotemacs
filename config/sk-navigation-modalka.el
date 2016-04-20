@@ -6,6 +6,10 @@
 
 ;;; Code:
 
+;; Flyspell
+(modalka-define-kbd "[ s" "C-c v [ s")
+(modalka-define-kbd "] s" "C-c v ] s")
+
 ;; Beacon mode
 (modalka-define-kbd "g i" "C-c v g i")
 

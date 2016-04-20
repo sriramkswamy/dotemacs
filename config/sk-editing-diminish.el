@@ -6,6 +6,12 @@
 
 ;;; Code:
 
+;; Diminish double capitals mode
+(defun sk/diminish-dubcaps ()
+  (interactive)
+  (diminish 'sk/dubcaps-mode ""))
+(add-hook 'sk/dubcaps-mode-hook 'sk/diminish-dubcaps)
+
 ;; Wrap region
 (defun sk/diminish-wrap-region ()
   (interactive)

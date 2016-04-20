@@ -39,7 +39,6 @@
 ;; aux requirements
 (require 'sk-editing-functions)
 (require 'sk-editing-bindings)
-(require 'sk-editing-modalka)
 (require 'sk-editing-hydra)
 (require 'sk-editing-diminish)
 

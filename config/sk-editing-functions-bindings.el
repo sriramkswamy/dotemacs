@@ -20,6 +20,9 @@
 (global-set-key (kbd "C-c m k") 'sk/move-text-up)
 (global-set-key (kbd "C-c m j") 'sk/move-text-down)
 
+;; Modal bindings
+(require 'sk-editing-functions-modalka)
+
 ;; which key explanations for bindings
 (require 'sk-editing-functions-bindings-which-key)
 

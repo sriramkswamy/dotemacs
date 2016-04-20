@@ -15,15 +15,15 @@
  ^Rectangle^
  ^^^^^^------------------------
  _p_ paste    _R_ replace
- _C_ copy     _I_ insert
- _c_ kill     _q_ quit
+ _y_ copy     _I_ insert
+ _d_ kill     _q_ quit
 "
   ("h" backward-char nil)
   ("l" forward-char nil)
   ("k" previous-line nil)
   ("j" next-line nil)
-  ("C" copy-rectangle-as-kill)
-  ("c" kill-rectangle nil)
+  ("y" copy-rectangle-as-kill)
+  ("d" kill-rectangle nil)
   ("p" yank-rectangle)
   ("R" string-rectangle)
   ("I" string-insert-rectangle)
@@ -72,6 +72,37 @@
   ("k" describe-key)
   ("a" sk/hydra-apropos/body :exit t)
   ("l" describe-language-environment)
+  ("q" nil :color blue))
+
+;; Activate modes
+(defhydra sk/hydra-of-activate (:color red
+                                :hint nil)
+  "
+ ^(De)Activate^
+ ^^^^^^^^^-----------------------------------------------------------------------------------------
+ _b_ battery   _n_ number   _v_ visual      _c_ company   _i_ indentation   _k_ which-key    _l_ length
+ _t_ time      _w_ wrap     _y_ yasnippet   _m_ margin    _j_ jabber        _o_ org          _q_ quit
+ _f_ font      _s_ spell    _a_ anaconda    _d_ fold      _g_ ggtags        _p_ paradox
+"
+  ("b" display-battery-mode)
+  ("t" display-time-mode)
+  ("f" set-frame-font :color blue)
+  ("n" linum-mode)
+  ("w" toggle-truncate-lines)
+  ("s" flyspell-mode :color blue)
+  ("v" visual-line-mode :color blue)
+  ("p" paradox-list-packages :color blue)
+  ("c" company-mode :color blue)
+  ("l" column-enforce-mode :color blue)
+  ("y" yas-minor-mode :color blue)
+  ("a" anaconda-mode :color blue)
+  ("i" highlight-indentation-mode)
+  ("m" fci-mode)
+  ("j" jabber-connect :color blue)
+  ("o" sk/org-custom-load :color blue)
+  ("g" ggtags-mode :color blue)
+  ("d" global-origami-mode :color blue)
+  ("k" which-key-mode :color blue)
   ("q" nil :color blue))
 
 ;; aux requirements

@@ -34,6 +34,10 @@
 (define-key ivy-minibuffer-map (kbd "C-m") 'ivy-alt-done)
 (define-key ivy-minibuffer-map (kbd "C-S-m") 'ivy-immediate-done)
 
+;; Swoop
+(global-set-key (kbd "C-c v *") 'swoop)
+(global-set-key (kbd "C-c v #") 'swoop-pcre-regexp)
+
 ;; Ag and Wgrep
 (global-set-key (kbd "C-M-s") 'ag)
 (global-set-key (kbd "C-M-S-r") 'wgrep-change-to-wgrep-mode)

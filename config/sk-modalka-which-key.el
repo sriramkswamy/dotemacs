@@ -23,18 +23,20 @@
   ")" "end of sentence"
   "G" "end of file"
   "s" "search"
-  "c" "kill"
-  "C" "kill save"
+  "d" "kill"
+  "y" "kill save"
   "p" "yank"
   "P" "yank ring"
   "x" "delete char"
   "D" "delete rest of line"
   "z" "recenter top bottom"
-  "Z" "move center top bottom"
+  "Z" "only window"
   "H" "scroll left"
   "J" "scroll down"
   "K" "scroll up"
   "L" "scroll right"
+  "I" "completion at point"
+  "'" "org edit special"
   "q" "start macro"
   "Q" "end macro"
   "." "repeat"
@@ -42,7 +44,7 @@
   "v" "set mark"
   "V" "set rectangular mark"
   "X" "exchange point and mark"
-  "g r" "overwrite"
+  "\\" "C-c C-c"
 
   "g" "global prefix"
   "g g" "start of file"
@@ -54,10 +56,11 @@
   "g o" "eval lisp"
   "g w" "vertical split"
   "g W" "horizontal split"
+  "g r" "overwrite"
+  "g S" "electric newline"
 
-  "d" "delete prefix"
-  "d e" "delete end of word"
-  "d d" "delete whole line"
+  "i" "expand prefix"
+  "i a" "expand entire buffer"
 
   "[" "backward nav"
   "[ {" "backward up-list"
@@ -90,7 +93,7 @@
   "SPC w" "save buffer"
   "SPC c" "load theme"
   "SPC q" "quit window"
-  "SPC h" "C-c C-c")
+  "SPC i" "proper edit")
 
 (provide 'sk-modalka-which-key)
 ;;; sk-modalka-which-key.el ends here

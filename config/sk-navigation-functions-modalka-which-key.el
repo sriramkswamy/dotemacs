@@ -8,6 +8,8 @@
 
 ;; DocView
 (which-key-add-key-based-replacements
+  "%" "matching paren"
+
   "SPC z" "toggle fullscreen"
 
   "] d" "adjacent pdf next page"

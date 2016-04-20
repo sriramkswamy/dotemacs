@@ -6,6 +6,9 @@
 
 ;;; Code:
 
+;; Matching parenthesis
+(global-set-key (kbd "C-c v %") 'sk/goto-match-paren)
+
 ;; Full screen
 (global-set-key (kbd "C-z") 'sk/toggle-frame-fullscreen-non-native)
 
@@ -16,7 +19,6 @@
 ;; DocView
 (global-set-key (kbd "C-S-n") 'sk/other-pdf-next)
 (global-set-key (kbd "C-S-p") 'sk/other-pdf-previous)
-
 
 (provide 'sk-navigation-functions-bindings)
 ;;; sk-navigation-functions-bindings.el ends here

@@ -71,6 +71,9 @@
 ;; Narrow to region
 (put 'narrow-to-region 'disabled nil)
 
+;; Electric pair mode
+(electric-pair-mode)
+
 ;; Column number mode
 (column-number-mode)
 

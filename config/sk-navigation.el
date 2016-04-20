@@ -36,6 +36,9 @@
 (add-hook 'after-init-hook 'ivy-mode)
 (add-hook 'after-init-hook 'counsel-mode)
 
+;; Swoop
+(sk/require-package 'swoop)
+
 ;; Ag and Wgrep
 (sk/require-package 'ag)
 (sk/require-package 'wgrep-ag)

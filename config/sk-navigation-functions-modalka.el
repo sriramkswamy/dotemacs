@@ -6,6 +6,9 @@
 
 ;;; Code:
 
+;; Matching paren
+(modalka-define-kbd "%" "C-c v %")
+
 ;; Fullscreen
 (modalka-define-kbd "SPC z" "C-z")
 

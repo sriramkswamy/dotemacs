@@ -43,6 +43,9 @@
 ;; Navigation using search/completion/motion
 (require 'sk-navigation)
 
+;; Editing
+(require 'sk-editing)
+
 ;; Garbage collector - decrease threshold
 (setq gc-cons-threshold (* 1024 1024 1024))
 ;;; init.el ends here

@@ -10,7 +10,6 @@
   (interactive)
   (diminish 'which-key-mode ""))
 (add-hook 'which-key-mode-hook 'sk/diminish-which-key)
-(add-hook 'after-init-hook 'which-key-mode)
 
 (provide 'sk-which-key-diminish)
 ;;; sk-which-key-diminish.el ends here

@@ -18,12 +18,15 @@
   "w" "sneak"
 
   "s" "swipe"
-  "S" "ivy resume"
+  "B" "ivy resume"
   "t" "imenu"
   "R" "recentf"
   "g l" "locate"
   "g s s" "counsel ag"
   "SPC j" "counsel M-x"
+
+  "*" "swoop"
+  "#" "swoop regexp"
 
   "g s r" "ag wgrep"
   "g R" "wgrep mode"
@@ -46,17 +49,17 @@
   "<" "global backward"
   ">" "global forward"
 
-  "I" "perspective switch"
-  "B" "perspective prefix"
-  "B a" "perspective add buffer"
-  "B A" "perspective set buffer"
-  "B b" "perspective switch to buffer"
-  "B r" "perspective rename"
-  "B k" "perspective remove buffer"
-  "B n" "perspective next"
-  "B p" "perspective prev"
-  "B i" "perspective import"
-  "B B" "perspective last")
+  "c" "change perspective"
+  "C" "config perspective prefix"
+  "C a" "perspective add buffer"
+  "C A" "perspective set buffer"
+  "C b" "perspective switch to buffer"
+  "C r" "perspective rename"
+  "C k" "perspective remove buffer"
+  "C n" "perspective next"
+  "C p" "perspective prev"
+  "C i" "perspective import"
+  "C C" "perspective last")
 
 (provide 'sk-navigation-modalka-which-key)
 ;;; sk-navigation-modalka-which-key.el ends here

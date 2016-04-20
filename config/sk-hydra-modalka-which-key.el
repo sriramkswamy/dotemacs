@@ -7,6 +7,8 @@
 ;;; Code:
 
 (which-key-add-key-based-replacements
+  "g a" "activate modes"
+
   "E" "edit rectangle"
 
   "SPC x" "hydra help")

@@ -20,12 +20,16 @@
 (modalka-define-kbd "w" "C-M-t")
 
 ;; Swiper, Ivy and Counsel
-(modalka-define-kbd "S" "C-S-s")
+(modalka-define-kbd "B" "C-S-s")
 (modalka-define-kbd "t" "C-r")
 (modalka-define-kbd "R" "C-M-r")
 (modalka-define-kbd "g s s" "M-s")
 (modalka-define-kbd "g l" "C-x l")
 (modalka-define-kbd "SPC ," "C-c s ,")
+
+;; Swoop
+(modalka-define-kbd "*" "C-c v *")
+(modalka-define-kbd "#" "C-c v #")
 
 ;; Ag and Wgrep
 (modalka-define-kbd "g s r" "C-M-s")
@@ -55,18 +59,18 @@
 (modalka-define-kbd ">" "C-c v C-S-i")
 
 ;; Perspective mode
-(modalka-define-kbd "I" "C-x x s")
-(modalka-define-kbd "B s" "C-x x s")
-(modalka-define-kbd "B a" "C-x x a")
-(modalka-define-kbd "B A" "C-x x A")
-(modalka-define-kbd "B b" "C-x x b")
-(modalka-define-kbd "B c" "C-x x b")
-(modalka-define-kbd "B r" "C-x x r")
-(modalka-define-kbd "B k" "C-x x k")
-(modalka-define-kbd "B n" "C-x x n")
-(modalka-define-kbd "B p" "C-x x p")
-(modalka-define-kbd "B i" "C-x x i")
-(modalka-define-kbd "B B" "C-x x C-x x")
+(modalka-define-kbd "c" "C-x x s")
+(modalka-define-kbd "C s" "C-x x s")
+(modalka-define-kbd "C a" "C-x x a")
+(modalka-define-kbd "C A" "C-x x A")
+(modalka-define-kbd "C b" "C-x x b")
+(modalka-define-kbd "C c" "C-x x b")
+(modalka-define-kbd "C r" "C-x x r")
+(modalka-define-kbd "C k" "C-x x k")
+(modalka-define-kbd "C n" "C-x x n")
+(modalka-define-kbd "C p" "C-x x p")
+(modalka-define-kbd "C i" "C-x x i")
+(modalka-define-kbd "C C" "C-x x C-x x")
 
 ;; which key for modalka bindings
 (require 'sk-navigation-modalka-which-key)

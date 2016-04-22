@@ -57,14 +57,13 @@
 (sk/require-package 'zenburn-theme)
 (sk/require-package 'reykjavik-theme)
 (sk/require-package 'railscasts-theme)
-(sk/require-package 'seoul256-theme)
 (sk/require-package 'caroline-theme)
 (sk/require-package 'pastelmac-theme)
 (sk/require-package 'white-sand-theme)
 (sk/require-package 'paper-theme)
 (sk/require-package 'ample-theme)
 (sk/require-package 'anti-zenburn-theme)
-(load-theme 'badwolf t)
+(load-theme 'ample t)
 
 ;; aux requirements
 (require 'sk-visual-hydra)

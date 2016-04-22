@@ -200,6 +200,12 @@
       org-ref-default-bibliography '("~/Dropbox/references/references.bib")
       org-ref-pdf-directory "~/Dropbox/references/pdfs/")
 
+;; Alert me for stuff
+(sk/require-package 'org-alert)
+(require 'org-alert)
+(setq alert-default-style 'message)
+(add-hook 'after-init-hook 'org-alert-enable)
+
 ;; which key explanations
 (require 'sk-org-hydra)
 (require 'sk-org-bindings)

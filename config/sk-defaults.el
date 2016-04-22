@@ -16,6 +16,7 @@
   (recentf-mode)
   (tool-bar-mode -1)
   (menu-bar-mode -1)
+  ;; (load-theme 'leuven t)
   (scroll-bar-mode -1))
 (add-hook 'after-init-hook 'sk/gui-defaults)
 
@@ -28,10 +29,10 @@
 ;; No welcome screen - opens directly in scratch buffer
 (setq inhibit-startup-message t
       initial-scratch-message ";; Scratch
-;; Press C-x C-f to open a file. It opens in home(~) directory by default
-;; To open init file, C-x C-f and then '~/.emacs.d/init.el'
-;; Open '~/.emacs.d/config/sk-bindings.el' to view/modify custom bindings
-;; Type 'C-h t' for Emacs tutorial"
+;; Press '?' in Modalka mode('MOD' on mode-line if turned on) or 'C-x ?' in Emacs mode for bindings
+
+
+"
       initial-major-mode 'fundamental-mode
       visible-bell nil
       inhibit-splash-screen t)

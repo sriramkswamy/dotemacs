@@ -23,7 +23,6 @@
 (modalka-define-kbd "F" "M-t")
 (modalka-define-kbd "w" "C-M-t")
 
-; ;; Swiper, Ivy and Counsel
 ;; Helm
 (modalka-define-kbd "B" "C-S-s")
 (modalka-define-kbd "t" "C-r")
@@ -47,9 +46,9 @@
 (modalka-define-kbd "&" "C-c p &")
 (modalka-define-kbd "g p" "C-c p p")
 (modalka-define-kbd "g t" "C-c p R")
-; (modalka-define-kbd "SPC p" "C-c p f")
-(modalka-define-kbd "SPC p" "C-c P")
 (modalka-define-kbd "SPC TAB" "C-c p a")
+;; Helm projectile
+(modalka-define-kbd "SPC p" "C-c P")
 
 ;; Helm bibtex
 (modalka-define-kbd "SPC b" "C-c b")

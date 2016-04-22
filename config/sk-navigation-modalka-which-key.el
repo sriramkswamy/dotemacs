@@ -41,8 +41,9 @@
   "&" "async shell command"
   "g p" "switch projects"
   "g t" "regenerate tags"
-  "SPC p" "project files"
   "SPC TAB" "alternate file"
+
+  "SPC p" "helm projectile"
 
   "SPC b" "bibtex entries"
 

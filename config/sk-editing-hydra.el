@@ -12,7 +12,7 @@
  "
  _p_: paste   _c_: clear   _R_: replace   _q_: quit
  _y_: copy    _o_: open    _I_: insert
- _d_: kill              _N_: number
+ _d_: kill               _N_: number
 "
   ("h" backward-char nil)
   ("l" forward-char nil)

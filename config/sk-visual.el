@@ -44,7 +44,6 @@
 
 ;; Origami mode
 (sk/require-package 'origami)
-(global-origami-mode)
 
 ;; Vimish-fold mode
 (sk/require-package 'vimish-fold)

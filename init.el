@@ -35,10 +35,7 @@
 (require 'sk-which-key)
 
 ;; Modal editing
-(require 'sk-modalka)
-
-;; Sticky bindings
-(require 'sk-hydra)
+(require 'sk-modal)
 
 ;; Navigation using search/completion/motion
 (require 'sk-navigation)

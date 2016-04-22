@@ -6,6 +6,9 @@
 
 ;;; Code:
 
+;; activate modes
+(modalka-define-kbd "g a" "C-c h a")
+
 ;; Origami
 (modalka-define-kbd "=" "C-c v z M")
 

@@ -23,34 +23,38 @@
 (global-set-key (kbd "M-t") 'avy-goto-line)
 (global-set-key (kbd "C-M-t") 'avy-goto-char-2)
 
-;; Swiper, Ivy and Counsel
-(global-set-key (kbd "C-s") 'swiper)
-(global-set-key (kbd "M-s") 'counsel-ag)
-(global-set-key (kbd "C-S-s") 'ivy-resume)
-(global-set-key (kbd "C-r") 'counsel-imenu)
-(global-set-key (kbd "C-M-r") 'ivy-recentf)
-(global-set-key (kbd "C-x l") 'counsel-locate)
-(global-set-key (kbd "C-c ,") 'counsel-descbinds)
-;; Ivy maps
-(define-key ivy-minibuffer-map (kbd "C-t") 'ivy-toggle-fuzzy)
-(define-key ivy-minibuffer-map (kbd "C-j") 'ivy-done)
-(define-key ivy-minibuffer-map (kbd "C-i") 'ivy-alt-done)
-(define-key ivy-minibuffer-map (kbd "C-m") 'ivy-alt-done)
-(define-key ivy-minibuffer-map (kbd "C-S-m") 'ivy-immediate-done)
+;; Helm
+(global-set-key (kbd "M-x") 'helm-M-x)
+(global-set-key (kbd "M-y") 'helm-show-kill-ring)
+(global-set-key (kbd "C-x b") 'helm-mini)
+(global-set-key (kbd "C-x C-f") 'helm-find-files)
+(global-set-key (kbd "C-M-r") 'helm-recentf)
+(global-set-key (kbd "C-S-s") 'helm-resume)
+(global-set-key (kbd "C-r") 'helm-semantic-or-imenu)
+(global-set-key (kbd "C-x l") 'helm-locate)
+;; helm maps
+(define-key helm-find-files-map (kbd "<return>") 'helm-execute-persistent-action)
 
-;; Swoop
-(global-set-key (kbd "C-c v *") 'swoop)
-(global-set-key (kbd "C-c v #") 'swoop-pcre-regexp)
+;; Helm ag
+(global-set-key (kbd "C-s") 'helm-do-ag-this-file)
+(global-set-key (kbd "M-s") 'helm-do-ag)
+
+;; Helm descbinds
+(global-set-key (kbd "C-c ,") 'helm-descbinds)
+
+;; Helm swoop
+(global-set-key (kbd "C-c v *") 'helm-swoop)
+(global-set-key (kbd "C-c v #") 'helm-multi-swoop)
 
 ;; Ag and Wgrep
 (global-set-key (kbd "C-M-s") 'ag)
 (global-set-key (kbd "C-M-S-r") 'wgrep-change-to-wgrep-mode)
 
+;; Helm projectile
+(global-set-key (kbd "C-c P") 'helm-projectile)
+
 ;; Neotree
 (global-set-key (kbd "C-c n") 'neotree-toggle)
-
-;; Spotlight
-(global-set-key (kbd "C-S-r") 'spotlight)
 
 ;; Ggtags
 (global-set-key (kbd "C-c v T") 'ggtags-find-tag-regexp)

@@ -19,6 +19,7 @@
 ;; LaTeX mode
 (sk/require-package 'auctex)
 (sk/require-package 'auctex-latexmk)
+(setq reftex-default-bibliography '("~/Dropbox/references/references.bib"))
 
 ;; Fountain mode for screenwriting
 (sk/require-package 'fountain-mode)

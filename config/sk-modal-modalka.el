@@ -1,14 +1,10 @@
-;;; sk-modalka.el --- Global settings -*- lexical-binding: t; -*-
+;;; sk-modal-modalka.el --- Global settings -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 
-;; My custom maps for modal editing based on Modalka. This follows a Vi-style
-;; editing
+;; Modalka bindings
 
 ;;; Code:
-
-(sk/require-package 'modalka)
-(setq modalka-cursor-type 'box)
 
 (modalka-define-kbd "h" "C-b")
 (modalka-define-kbd "j" "C-n")
@@ -94,11 +90,10 @@
 (modalka-define-kbd "SPC i" "C-c C-e")
 (modalka-define-kbd "SPC h" "C-c C-k")
 (modalka-define-kbd "SPC o" "C-c C-w")
+(modalka-define-kbd "SPC g" "C-c C-f")
 
-;; aux requirements
-(require 'sk-modalka-bindings)
-(require 'sk-modalka-diminish)
-(require 'sk-modalka-which-key)
+;; which key explanations
+(require 'sk-modal-modalka-which-key)
 
-(provide 'sk-modalka)
-;;; sk-modalka.el ends here
+(provide 'sk-modal-modalka)
+;;; sk-modal-modalka.el ends here

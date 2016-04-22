@@ -6,6 +6,9 @@
 
 ;;; Code:
 
+;; Activation
+(global-set-key (kbd "C-c h a") 'sk/hydra-of-activate/body)
+
 ;; Origami
 (global-set-key (kbd "C-c v z M") 'origami-toggle-node)
 

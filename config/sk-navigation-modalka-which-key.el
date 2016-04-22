@@ -24,9 +24,12 @@
   "B" "ivy resume"
   "t" "imenu"
   "R" "recentf"
-  "g l" "locate"
+  "SPC r" "locate/spotlight"
   "g s s" "counsel ag"
   "SPC j" "counsel M-x"
+  "SPC ," "counsel descbinds"
+  "SPC x" "apropos"
+  "M" "mark rings"
 
   "*" "swoop"
   "#" "swoop regexp"
@@ -42,8 +45,6 @@
   "SPC TAB" "alternate file"
 
   "SPC n" "neotree"
-
-  "SPC r" "spotlight search"
 
   "T" "global tags"
 

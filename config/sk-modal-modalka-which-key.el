@@ -1,8 +1,8 @@
-;;; sk-modalka-which-key.el --- Global settings -*- lexical-binding: t; -*-
+;;; sk-modal-modalka-which-key.el --- Global settings -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 
-;; Which key explanations for new Modalka bindings
+;; which key for modalka bindings
 
 ;;; Code:
 
@@ -99,7 +99,8 @@
   "SPC i" "proper edit"
   "SPC h" "hide this"
   "SPC o" "omit/over"
+  "SPC g" "go along"
   "SPC SPC" "search")
 
-(provide 'sk-modalka-which-key)
-;;; sk-modalka-which-key.el ends here
+(provide 'sk-modal-modalka-which-key)
+;;; sk-modal-modalka-which-key.el ends here

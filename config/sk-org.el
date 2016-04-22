@@ -181,6 +181,12 @@
       deft-use-filename-as-title t
       deft-directory "~/Dropbox/org")
 
+;; Org ref for academic papers
+(sk/require-package 'org-ref)
+(setq org-ref-bibliography-notes "~/Dropbox/references/references.org"
+      org-ref-default-bibliography '("~/Dropbox/references/references.bib")
+      org-ref-pdf-directory "~/Dropbox/references/pdfs/")
+
 ;; which key explanations
 (require 'sk-org-hydra)
 (require 'sk-org-bindings)

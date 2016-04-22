@@ -9,6 +9,8 @@
 (which-key-add-key-based-replacements
   "=" "origami toggle"
   
+  "g a" "activate modes"
+
   "-" "vimish fold toggle"
   "_" "vimish fold hydra")
 

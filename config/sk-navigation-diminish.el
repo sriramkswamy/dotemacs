@@ -18,15 +18,11 @@
   (diminish 'undo-tree-mode ""))
 (add-hook 'undo-tree-mode-hook 'sk/diminish-undo-tree)
 
-;; Ivy
-(defun sk/diminish-ivy ()
+;; Helm
+(defun sk/diminish-helm ()
   (interactive)
-  (diminish 'ivy-mode ""))
-(add-hook 'ivy-mode-hook 'sk/diminish-ivy)
-(defun sk/diminish-counsel ()
-  (interactive)
-  (diminish 'counsel-mode ""))
-(add-hook 'counsel-mode-hook 'sk/diminish-counsel)
+  (diminish 'helm-mode ""))
+(add-hook 'helm-mode-hook 'sk/diminish-helm)
 
 ;; Ggtags
 (defun sk/diminish-ggtags ()

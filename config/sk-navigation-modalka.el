@@ -23,13 +23,16 @@
 (modalka-define-kbd "F" "M-t")
 (modalka-define-kbd "w" "C-M-t")
 
-;; Swiper, Ivy and Counsel
+; ;; Swiper, Ivy and Counsel
+;; Helm
 (modalka-define-kbd "B" "C-S-s")
 (modalka-define-kbd "t" "C-r")
 (modalka-define-kbd "R" "C-M-r")
 (modalka-define-kbd "g s s" "M-s")
-(modalka-define-kbd "g l" "C-x l")
+(modalka-define-kbd "SPC r" "C-x l")
 (modalka-define-kbd "SPC ," "C-c ,")
+(modalka-define-kbd "SPC x" "C-x c a")
+(modalka-define-kbd "M" "C-x c C-c SPC")
 
 ;; Swoop
 (modalka-define-kbd "*" "C-c v *")
@@ -44,14 +47,12 @@
 (modalka-define-kbd "&" "C-c p &")
 (modalka-define-kbd "g p" "C-c p p")
 (modalka-define-kbd "g t" "C-c p R")
-(modalka-define-kbd "SPC p" "C-c p f")
+; (modalka-define-kbd "SPC p" "C-c p f")
+(modalka-define-kbd "SPC p" "C-c P")
 (modalka-define-kbd "SPC TAB" "C-c p a")
 
 ;; Neotree
 (modalka-define-kbd "SPC n" "C-c n")
-
-;; Spotlight
-(modalka-define-kbd "SPC r" "C-S-r")
 
 ;; Ggtags
 (modalka-define-kbd "T" "C-c v T")

@@ -10,7 +10,6 @@
 (modalka-define-kbd "i l" "C-c e i l")
 
 ;; Vi style open
-(modalka-define-kbd "o" "C-S-o")
 (modalka-define-kbd "O" "C-o")
 
 ;; Join line

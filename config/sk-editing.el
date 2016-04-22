@@ -13,18 +13,29 @@
 ;; Commenting
 (sk/require-package 'comment-dwim-2)
 
-;; Wrap regions
-(sk/require-package 'wrap-region)
-(wrap-region-global-mode)
-(wrap-region-add-wrapper "$" "$")
-(wrap-region-add-wrapper "<" ">")
-(wrap-region-add-wrapper "*" "*" nil '(org-mode markdown-mode))
-(wrap-region-add-wrapper "_" "_" nil '(org-mode markdown-mode))
-(wrap-region-add-wrapper "~" "~" nil '(org-mode))
-(wrap-region-add-wrapper "=" "=" nil '(org-mode))
-(wrap-region-add-wrapper "/* " " */" "#" '(java-mode javascript-mode css-mode cc-mode))
-(wrap-region-add-wrapper "`" "`" nil '(markdown-mode))
-(wrap-region-add-wrapper "```" "```" "#" '(markdown-mode))
+;; Smartparens
+(sk/require-package 'smartparens)
+(require 'smartparens-config)
+(defmacro def-pairs (pairs)
+  `(progn
+     ,@(loop for (key . val) in pairs
+          collect
+            `(defun ,(read (concat
+                            "sk/wrap-with-"
+                            (prin1-to-string key)
+                            "s"))
+                 (&optional arg)
+               (interactive "p")
+               (sp-wrap-with-pair ,val)))))
+(def-pairs ((paren        . "(")
+            (bracket      . "[")
+            (brace        . "{")
+            (latex-dollar . "$")
+            (single-quote . "'")
+            (double-quote . "\"")
+            (back-quote   . "`")))
+(add-hook 'prog-mode-hook 'turn-on-smartparens-strict-mode)
+(add-hook 'markdown-mode-hook 'turn-on-smartparens-strict-mode)
 
 ;; Snippets
 (sk/require-package 'yasnippet)

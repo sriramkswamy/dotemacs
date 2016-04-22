@@ -6,6 +6,13 @@
 
 ;;; Code:
 
+;; Rectangle marks
+(global-set-key (kbd "C-x r R") 'sk/hydra-rectangle/body)
+
+;; Registers
+(global-set-key (kbd "C-x r \"") 'sk/hydra-registers/body)
+
+;; Macros
 (global-set-key (kbd "C-c v @") 'sk/hydra-of-macros/body)
 
 ;; Modal bindings

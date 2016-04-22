@@ -6,6 +6,13 @@
 
 ;;; Code:
 
+;; Edit rectangle
+(modalka-define-kbd "E" "C-x r R")
+
+;; Registers
+(modalka-define-kbd "\"" "C-x r \"")
+
+;; Macros
 (modalka-define-kbd "@" "C-c v @")
 
 ;; which key for modalka

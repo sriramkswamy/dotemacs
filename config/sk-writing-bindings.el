@@ -12,5 +12,5 @@
 ;; Modal bindings
 (require 'sk-writing-modalka)
 
-(provide 'sk-writing)
-;;; sk-writing.el ends here
+(provide 'sk-writing-bindings)
+;;; sk-writing-bindings.el ends here

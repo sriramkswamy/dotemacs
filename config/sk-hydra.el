@@ -8,35 +8,12 @@
 
 (sk/require-package 'hydra)
 
-;; Rectangle marks
-(defhydra sk/hydra-rectangle (:color red
-                              :hint nil)
- "
- ^Rectangle^
- ^^^^^^------------------------
- _p_ paste    _R_ replace
- _y_ copy     _I_ insert
- _d_ kill     _q_ quit
-"
-  ("h" backward-char nil)
-  ("l" forward-char nil)
-  ("k" previous-line nil)
-  ("j" next-line nil)
-  ("y" copy-rectangle-as-kill)
-  ("d" kill-rectangle nil)
-  ("p" yank-rectangle)
-  ("R" string-rectangle)
-  ("I" string-insert-rectangle)
-  ("q" nil :color blue))
-
 ;; Apropos
 (defhydra sk/hydra-apropos (:color blue
                             :hint nil)
   "
- ^Apropos - Search anything^
- ^^^^^^^^^-----------------------------
- _a_ all   _d_ doc    _v_ var  _c_ cmd
- _u_ user  _e_ value  _l_ lib  _q_ quit
+ _a_: all   _d_: doc    _v_: var  _c_: cmd
+ _u_: user  _e_: value  _l_: lib  _q_: quit
 "
   ("a" apropos)
   ("d" apropos-documentation)
@@ -51,12 +28,10 @@
 (defhydra sk/hydra-of-help (:color blue
                             :hint nil)
   "
- ^Help^
- ^^^^^^^^^---------------------------------------------
- _b_ binding    _i_ info     _t_ tutorial   _a_ apropos
- _f_ function   _s_ symbol   _p_ package    _l_ lang-env
- _v_ variable   _e_ emacs    _h_ help       _q_ quit
- _m_ mode       _x_ syntax   _k_ key
+ _b_: binding    _i_: info     _t_: tutorial   _a_: apropos
+ _f_: function   _s_: symbol   _p_: package    _l_: lang-env
+ _v_: variable   _e_: emacs    _h_: help       _q_: quit
+ _m_: mode       _x_: syntax   _k_: key
 "
   ("b" describe-bindings)
   ("f" counsel-describe-function)
@@ -78,11 +53,9 @@
 (defhydra sk/hydra-of-activate (:color red
                                 :hint nil)
   "
- ^(De)Activate^
- ^^^^^^^^^-----------------------------------------------------------------------------------------
- _b_ battery   _n_ number   _v_ visual      _c_ company   _i_ indentation   _k_ which-key    _l_ length
- _t_ time      _w_ wrap     _y_ yasnippet   _m_ margin    _j_ jabber        _o_ org          _q_ quit
- _f_ font      _s_ spell    _a_ anaconda    _d_ fold      _g_ ggtags        _p_ paradox
+ _b_: battery   _n_: number   _v_: visual      _c_: company   _i_: indentation   _k_: which-key    _l_: length
+ _t_: time      _w_: wrap     _y_: yasnippet   _m_: margin    _j_: jabber        _o_: org          _q_: quit
+ _f_: font      _s_: spell    _a_: anaconda    _d_: fold      _g_: ggtags        _p_: paradox
 "
   ("b" display-battery-mode)
   ("t" display-time-mode)

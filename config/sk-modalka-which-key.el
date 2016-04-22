@@ -22,7 +22,7 @@
   "(" "start of sentence"
   ")" "end of sentence"
   "G" "end of file"
-  "s" "search"
+  "/" "search"
   "d" "kill"
   "y" "kill save"
   "p" "yank"
@@ -44,6 +44,7 @@
   "v" "set mark"
   "V" "set rectangular mark"
   "X" "exchange point and mark"
+  "+" "set bookmark"
   "\\" "C-c C-c"
 
   "g" "global prefix"
@@ -67,12 +68,14 @@
   "[ [" "backward list"
   "[ m" "backward sexp"
   "[ f" "start of defun"
+  "[ r" "widen region"
 
   "]" "forward nav"
   "] }" "forward up-list"
   "] ]" "forward list"
   "] m" "forward sexp"
   "] f" "end of defun"
+  "] r" "narrow region"
 
   ":" "extended prefix"
   ": w" "save buffer"
@@ -93,7 +96,10 @@
   "SPC w" "save buffer"
   "SPC c" "load theme"
   "SPC q" "quit window"
-  "SPC i" "proper edit")
+  "SPC i" "proper edit"
+  "SPC h" "hide this"
+  "SPC o" "omit/over"
+  "SPC SPC" "search")
 
 (provide 'sk-modalka-which-key)
 ;;; sk-modalka-which-key.el ends here

@@ -9,9 +9,6 @@
 ;; Help
 (modalka-define-kbd "SPC x" "C-c h h")
 
-;; Edit rectangle
-(modalka-define-kbd "E" "C-x r R")
-
 ;; activate modes
 (modalka-define-kbd "g a" "C-c h a")
 

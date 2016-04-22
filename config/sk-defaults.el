@@ -68,6 +68,9 @@
 ;; Remote file navigation
 (setq tramp-ssh-controlmaster-options "ssh")
 
+;; File size warning - 15 MB
+(setq large-file-warning-threshold (* 15 1024 1024))
+
 ;; Narrow to region
 (put 'narrow-to-region 'disabled nil)
 

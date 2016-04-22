@@ -1,0 +1,255 @@
+* Distraction list
+  :PROPERTIES:
+  :ID: 245642804
+  :REV: 11
+  :END:
+** TODO Play cards with lubby
+   DEADLINE: <2016-04-08 Fri>
+   :PROPERTIES:
+   :ID: 1768697562
+   :REV: 3
+   :END:
+* MOOCs
+  :PROPERTIES:
+  :ID: 241909436
+  :REV: 5
+  :END:
+* Wish list
+  :PROPERTIES:
+  :ID: 165676106
+  :REV: 10
+  :END:
+** TODO CPR training
+   :PROPERTIES:
+   :ID: 1304473397
+   :REV: 1
+   :END:
+** TODO Freelancing
+   :PROPERTIES:
+   :ID: 1220823124
+   :REV: 1
+   :END:
+* Wanderlist
+  :PROPERTIES:
+  :ID: 155940926
+  :REV: 4
+  :END:
+* Movies
+  :PROPERTIES:
+  :ID: 155940937
+  :REV: 147
+  :END:
+** TODO Kaadhalum Kadandhu Pogum
+   :PROPERTIES:
+   :ID: 1707525555
+   :REV: 1
+   :END:
+** TODO Hateful eight
+   :PROPERTIES:
+   :ID: 1682923135
+   :REV: 1
+   :END:
+** TODO Son of saul
+   :PROPERTIES:
+   :ID: 1682920923
+   :REV: 1
+   :END:
+** TODO Jil jung juk
+   :PROPERTIES:
+   :ID: 1648282950
+   :REV: 1
+   :END:
+** TODO Dead pool
+   :PROPERTIES:
+   :ID: 1648282825
+   :REV: 1
+   :END:
+** TODO Kung Fu Panda
+   :PROPERTIES:
+   :ID: 1648282684
+   :REV: 1
+   :END:
+** TODO The revenant
+   :PROPERTIES:
+   :ID: 1576488651
+   :REV: 1
+   :END:
+** TODO Fruitville station
+   :PROPERTIES:
+   :ID: 1519923748
+   :REV: 1
+   :END:
+** TODO Flight club
+   :PROPERTIES:
+   :ID: 1475354274
+   :REV: 1
+   :END:
+** TODO The mist
+   :PROPERTIES:
+   :ID: 1475354172
+   :REV: 1
+   :END:
+** TODO A mighty heart
+   :PROPERTIES:
+   :ID: 1464946764
+   :REV: 1
+   :END:
+** TODO The second mother
+   :PROPERTIES:
+   :ID: 1360501469
+   :REV: 1
+   :END:
+** TODO Rangatiranga
+   :PROPERTIES:
+   :ID: 1303284313
+   :REV: 1
+   :END:
+** TODO TS: King of the hill
+   :PROPERTIES:
+   :ID: 1301779978
+   :REV: 1
+   :END:
+** TODO Mnmadhudu
+   :PROPERTIES:
+   :ID: 1301768703
+   :REV: 1
+   :END:
+** TODO TS: Better call Saul
+   :PROPERTIES:
+   :ID: 1250946632
+   :REV: 1
+   :END:
+** TODO TS: Fargo
+   :PROPERTIES:
+   :ID: 1250946432
+   :REV: 1
+   :END:
+** TODO TS: Rick and Morty
+   :PROPERTIES:
+   :ID: 1250945891
+   :REV: 1
+   :END:
+** TODO TS: Mr Robot
+   :PROPERTIES:
+   :ID: 1250945566
+   :REV: 1
+   :END:
+** TODO Dum Dum Dum
+   :PROPERTIES:
+   :ID: 1220629461
+   :REV: 1
+   :END:
+** TODO Gulabi
+   :PROPERTIES:
+   :ID: 1220574281
+   :REV: 1
+   :END:
+** TODO Aaranya kaandam
+   :PROPERTIES:
+   :ID: 1205883758
+   :REV: 1
+   :END:
+* Chubby list
+  :PROPERTIES:
+  :ID: 147192966
+  :REV: 2452
+  :END:
+** TODO Trial
+   DEADLINE: <2016-04-20 Wed>
+   :PROPERTIES:
+   :ID: 1794961610
+   :REV: 2
+   :END:
+** TODO Org trial
+DEADLINE: <2016-04-21 Thu>
+   :PROPERTIES:
+   :ID: 1794967442
+   :REV: 2
+   :END:
+* Groceries
+  :PROPERTIES:
+  :ID: 147192957
+  :REV: 29
+  :END:
+* Lubby list
+  :PROPERTIES:
+  :ID: 147192967
+  :REV: 34
+  :END:
+** TODO Movie on a projector with ice-cream on a snow day
+   :PROPERTIES:
+   :ID: 1707359670
+   :REV: 1
+   :END:
+* Shopping
+  :PROPERTIES:
+  :ID: 155364568
+  :REV: 27
+  :END:
+* Work
+  :PROPERTIES:
+  :ID: 155996479
+  :REV: 2
+  :END:
+* inbox
+  :PROPERTIES:
+  :ID: 147192945
+  :REV: 219
+  :END:
+* Gubby list
+  :PROPERTIES:
+  :ID: 241660369
+  :REV: 243
+  :END:
+** TODO Mail opt packet
+   DEADLINE: <2016-04-18 Mon>
+   :PROPERTIES:
+   :ID: 1791386199
+   :REV: 2
+   :END:
+** TODO Drop samples for SC Lee
+   DEADLINE: <2016-04-18 Mon>
+   :PROPERTIES:
+   :ID: 1791384586
+   :REV: 2
+   :END:
+** TODO Grading
+   DEADLINE: <2016-04-22 Fri>
+   :PROPERTIES:
+   :ID: 1787288068
+   :REV: 1
+   :END:
+** TODO [#A] CLeanroom workshop check
+   DEADLINE: <2016-05-02 Mon>
+   :PROPERTIES:
+   :ID: 1765726120
+   :REV: 1
+   :END:
+** TODO Buy Ramya's phone
+   DEADLINE: <2016-08-29 Mon>
+   :PROPERTIES:
+   :ID: 1755232784
+   :REV: 2
+   :END:
+** TODO Pill
+   DEADLINE: <2016-04-11 Mon>
+   :PROPERTIES:
+   :ID: 1787288202
+   :REV: 1
+   :END:
+** TODO [#A] Homework 10 - 572
+   DEADLINE: <2016-04-17 Sun>
+   :PROPERTIES:
+   :ID: 1791514876
+   :REV: 1
+   :END:
+* Mail list
+  :PROPERTIES:
+  :ID: 241660673
+  :REV: 73
+  :END:
+* Meetings list
+  :PROPERTIES:
+  :ID: 241660699
+  :REV: 60
+  :END:

@@ -45,14 +45,6 @@ Single Capitals as you type."
   (forward-line -1)
   (indent-according-to-mode))
 
-;; Open line below - vi style
-(defun sk/open-line-below ()
-  "Insert a newline below the current line and put point at beginning."
-  (interactive)
-  (unless (eolp)
-    (end-of-line))
-  (newline-and-indent))
-
 ;; Join line with the below one - vi style
 (defun sk/join-line ()
   "Join the current line with the next line"

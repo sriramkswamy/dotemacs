@@ -25,7 +25,7 @@
 (modalka-define-kbd "(" "M-a")
 (modalka-define-kbd ")" "M-e")
 (modalka-define-kbd "G" "M->")
-(modalka-define-kbd "s" "C-s")
+(modalka-define-kbd "/" "C-s")
 (modalka-define-kbd "d" "C-w")
 (modalka-define-kbd "y" "M-w")
 (modalka-define-kbd "p" "C-y")
@@ -47,6 +47,7 @@
 (modalka-define-kbd "v" "C-SPC")
 (modalka-define-kbd "X" "C-x C-x")
 (modalka-define-kbd "V" "C-c v C-v")
+(modalka-define-kbd "+" "C-x r m")
 (modalka-define-kbd "\\" "C-c C-c")
 
 (modalka-define-kbd "g g" "M-<")
@@ -71,6 +72,8 @@
 (modalka-define-kbd "] m" "C-M-f")
 (modalka-define-kbd "[ f" "C-M-a")
 (modalka-define-kbd "] f" "C-M-e")
+(modalka-define-kbd "] r" "C-x n n")
+(modalka-define-kbd "[ r" "C-x n w")
 
 (modalka-define-kbd ": w" "C-x C-s")
 (modalka-define-kbd ": e" "C-x C-f")
@@ -85,13 +88,17 @@
 (modalka-define-kbd "SPC d" "C-x d")
 (modalka-define-kbd "SPC c" "C-x c")
 (modalka-define-kbd "SPC q" "C-x 0")
+(modalka-define-kbd "SPC SPC" "C-s")
 (modalka-define-kbd "SPC f" "C-x C-f")
 (modalka-define-kbd "SPC w" "C-x C-s")
 (modalka-define-kbd "SPC i" "C-c C-e")
+(modalka-define-kbd "SPC h" "C-c C-k")
+(modalka-define-kbd "SPC o" "C-c C-w")
 
 ;; aux requirements
 (require 'sk-modalka-bindings)
 (require 'sk-modalka-diminish)
+(require 'sk-modalka-which-key)
 
 (provide 'sk-modalka)
 ;;; sk-modalka.el ends here

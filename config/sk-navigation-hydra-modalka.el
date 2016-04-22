@@ -6,8 +6,11 @@
 
 ;;; Code:
 
+;; Window
 (modalka-define-kbd "W" "C-c h w")
-(modalka-define-kbd "+" "C-c h b")
+
+;; Bookmark
+(modalka-define-kbd "`" "C-c h b")
 
 ;; which key for modalka bindings
 (require 'sk-navigation-hydra-modalka-which-key)

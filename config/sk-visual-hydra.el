@@ -10,10 +10,8 @@
 (defhydra sk/hydra-vimish-fold (:color red
                                 :hint nil)
   "
- ^Vimish-Fold^                             ^Fold^
- ^^^^^^^^^--------------------------------------------------------------
- _f_old  _u_ unfold  _r_ refold  _t_ toggle  _d_ delete    _n_ next      _q_ quit
-       _U_ Unfold  _R_ Refold  _T_ Toggle  _D_ Delete    _p_ previous
+ _f_: fold  _u_: unfold  _r_: refold  _t_: toggle  _d_: delete    _n_: next      _q_: quit
+         _U_: Unfold  _R_: Refold  _T_: Toggle  _D_: Delete    _p_: previous
   "
   ("f" vimish-fold)
   ("u" vimish-fold-unfold)

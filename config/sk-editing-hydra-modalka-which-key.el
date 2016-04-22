@@ -7,6 +7,10 @@
 ;;; Code:
 
 (which-key-add-key-based-replacements
+  "E" "edit rectangle"
+
+  "\"" "registers"
+
   "@" "macros")
 
 (provide 'sk-editing-hydra-modalka-which-key)

@@ -26,8 +26,41 @@
 ;; Commenting
 (modalka-define-kbd "g c" "C-c v g c")
 
+;; Smartparens
+(modalka-define-kbd "s j" "C-c s j")
+(modalka-define-kbd "s k" "C-c s k")
+(modalka-define-kbd "s J" "C-c s J")
+(modalka-define-kbd "s K" "C-c s K")
+(modalka-define-kbd "s h" "C-c s h")
+(modalka-define-kbd "s l" "C-c s l")
+(modalka-define-kbd "s H" "C-c s H")
+(modalka-define-kbd "s L" "C-c s L")
+(modalka-define-kbd "s n" "C-c s n")
+(modalka-define-kbd "s p" "C-c s p")
+(modalka-define-kbd "s N" "C-c s N")
+(modalka-define-kbd "s P" "C-c s P")
+(modalka-define-kbd "s f" "C-c s f")
+(modalka-define-kbd "s b" "C-c s b")
+(modalka-define-kbd "s F" "C-c s F")
+(modalka-define-kbd "s B" "C-c s B")
+(modalka-define-kbd "s x" "C-c s x")
+(modalka-define-kbd "s d" "C-c s d")
+(modalka-define-kbd "s y" "C-c s y")
+(modalka-define-kbd "s s" "C-c s s")
+(modalka-define-kbd "s S" "C-c s S")
+(modalka-define-kbd "s (" "C-c s (")
+(modalka-define-kbd "s )" "C-c s )")
+(modalka-define-kbd "s [" "C-c s [")
+(modalka-define-kbd "s ]" "C-c s ]")
+(modalka-define-kbd "s {" "C-c s {")
+(modalka-define-kbd "s }" "C-c s }")
+(modalka-define-kbd "s $" "C-c s $")
+(modalka-define-kbd "s '" "C-c s '")
+(modalka-define-kbd "s \"" "C-c s \"")
+(modalka-define-kbd "s `" "C-c s `")
+
 ;; Snippets
-(modalka-define-kbd "S" "C-c s")
+(modalka-define-kbd "S" "C-c S")
 
 ;; Visual regexp
 (modalka-define-kbd "SPC s" "C-c v s")

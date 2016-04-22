@@ -30,7 +30,7 @@
 (global-set-key (kbd "C-r") 'counsel-imenu)
 (global-set-key (kbd "C-M-r") 'ivy-recentf)
 (global-set-key (kbd "C-x l") 'counsel-locate)
-(global-set-key (kbd "C-c s ,") 'counsel-descbinds)
+(global-set-key (kbd "C-c ,") 'counsel-descbinds)
 ;; Ivy maps
 (define-key ivy-minibuffer-map (kbd "C-t") 'ivy-toggle-fuzzy)
 (define-key ivy-minibuffer-map (kbd "C-j") 'ivy-done)
@@ -65,7 +65,7 @@
 (require 'sk-navigation-modalka)
 
 ;; which key for bindings
-(require 'sk-navigation-which-key)
+(require 'sk-navigation-bindings-which-key)
 
 (provide 'sk-navigation-bindings)
 ;;; sk-navigation-bindings.el ends here

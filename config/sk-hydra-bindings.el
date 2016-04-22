@@ -9,9 +9,6 @@
 ;; Help
 (global-set-key (kbd "C-c h h") 'sk/hydra-of-help/body)
 
-;; Rectangle marks
-(global-set-key (kbd "C-x r R") 'sk/hydra-rectangle/body)
-
 ;; Activation
 (global-set-key (kbd "C-c h a") 'sk/hydra-of-activate/body)
 

@@ -8,7 +8,8 @@
 
 (which-key-add-key-based-replacements
   "W" "window hydra"
-  "+" "bookmark hydra")
+
+  "`" "bookmark hydra")
 
 (provide 'sk-navigation-hydra-modalka-which-key)
 ;;; sk-navigation-hydra-modalka-which-key.el ends here

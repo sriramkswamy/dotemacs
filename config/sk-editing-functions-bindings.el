@@ -11,7 +11,6 @@
 
 ;; Vi style open lines
 (global-set-key (kbd "C-o") 'sk/open-line-above)
-(global-set-key (kbd "C-S-o") 'sk/open-line-below)
 
 ;; Join line
 (global-set-key (kbd "C-S-j") 'sk/join-line)

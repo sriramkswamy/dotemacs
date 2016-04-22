@@ -12,9 +12,9 @@
   "
  ^Move^    ^Size^    ^Change^           ^Split^          ^Frame^                      ^Text^
  ^^^^^^^^^^^----------------------------------------------------------------------------------------
- ^ ^ _k_ ^ ^   ^ ^ _{_ ^ ^   _u_ winner-undo    _v_ ertical      _f_ fullscreen  _m_ maximize   _+_ zoom in
- _h_ ^+^ _l_   _<_ ^+^ _>_   _r_ winner-redo    _s_ horizontal   _d_ delete      _p_ suspend    _-_ zoom out
- ^ ^ _j_ ^ ^   ^ ^ _}_ ^ ^   _c_ close          _z_ zoom         _e_ select      _n_ name       _q_ quit
+ ^ ^ _k_ ^ ^   ^ ^ _{_ ^ ^   _u_: winner-undo    _v_: vertical     _f_: fullscreen  _m_: maximize   _+_: zoom in
+ _h_ ^+^ _l_   _<_ ^+^ _>_   _r_: winner-redo    _s_: horizontal   _d_: delete      _p_: suspend    _-_: zoom out
+ ^ ^ _j_ ^ ^   ^ ^ _}_ ^ ^   _c_: close          _z_: zoom         _e_: select      _n_: name       _q_: quit
 "
   ("h" windmove-left)
   ("j" windmove-down)
@@ -46,9 +46,7 @@
 (defhydra sk/hydra-bookmarks (:color red
                               :hint nil)
   "
- ^Bookmarks^
- ^^^^^^^^^------------------------------------
- _s_et  _b_ookmark   _j_ump   _d_elete   _q_uit
+ _s_:et  _b_:ookmark   _j_:ump   _d_:elete   _q_:uit
   "
   ("s" bookmark-set)
   ("b" bookmark-save)

@@ -16,6 +16,16 @@
 (add-hook 'dired-mode-hook 'diff-hl-dired-mode)
 (add-hook 'diff-hl-mode-hook 'diff-hl-flydiff-mode)
 
+;; Git timemachine
+(sk/require-package 'git-timemachine)
+
+;; Gist stuff!
+(sk/require-package 'yagist)
+(setq yagist-encrypt-risky-config t)
+
+;; Git config mode
+(sk/require-package 'gitconfig-mode)
+
 ;; aux requirements
 (require 'sk-versions-bindings)
 

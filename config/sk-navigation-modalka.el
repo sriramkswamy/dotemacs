@@ -44,8 +44,8 @@
 ;; Projectile
 (modalka-define-kbd "!" "C-c p !")
 (modalka-define-kbd "&" "C-c p &")
-(modalka-define-kbd "g p" "C-c p p")
 (modalka-define-kbd "g t" "C-c p R")
+(modalka-define-kbd "SPC P" "C-c p p")
 (modalka-define-kbd "SPC TAB" "C-c p a")
 ;; Helm projectile
 (modalka-define-kbd "SPC p" "C-c P")

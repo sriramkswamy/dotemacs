@@ -11,6 +11,12 @@
   "g b" "magit blame"
   "SPC e" "magit status"
 
+  "g l" "git timemachine"
+  "g L" "git timemachine switch branch"
+
+  "g p" "gist post"
+  "g P" "gist private post"
+
   "] h" "next hunk"
   "[ h" "previous hunk"
   "i h" "mark hunk"

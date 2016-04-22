@@ -10,6 +10,8 @@
 (which-key-add-key-based-replacements
   "C-c g" "magit prefix"
 
+  "C-c g g" "gist prefix"
+
   "C-c g d" "diff hl prefix")
 
 (provide 'sk-versions-bindings-which-key)

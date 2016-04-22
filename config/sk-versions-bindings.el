@@ -16,6 +16,14 @@
 (global-set-key (kbd "C-c g d m") 'diff-hl-mark-hunk)
 (global-set-key (kbd "C-c g d h") 'diff-hl-revert-hunk)
 
+;; Time machine
+(global-set-key (kbd "C-c g l") 'git-timemachine-toggle)
+(global-set-key (kbd "C-c g L") 'git-timemachine-switch-branch)
+
+;; Yagist
+(global-set-key (kbd "C-c g g p") 'yagist-region-or-buffer)
+(global-set-key (kbd "C-c g g P") 'yagist-region-or-buffer-private)
+
 ;; which key explanations
 (require 'sk-versions-bindings-which-key)
 

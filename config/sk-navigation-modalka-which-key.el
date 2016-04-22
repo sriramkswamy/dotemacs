@@ -39,8 +39,8 @@
 
   "!" "shell command"
   "&" "async shell command"
-  "g p" "switch projects"
   "g t" "regenerate tags"
+  "SPC P" "switch projects"
   "SPC TAB" "alternate file"
 
   "SPC p" "helm projectile"

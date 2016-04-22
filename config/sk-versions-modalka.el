@@ -16,6 +16,14 @@
 (modalka-define-kbd "i h" "C-c g d m")
 (modalka-define-kbd "g h" "C-c g d h")
 
+;; Time machine
+(modalka-define-kbd "g l" "C-c g l")
+(modalka-define-kbd "g L" "C-c g L")
+
+;; Yagist
+(modalka-define-kbd "g p" "C-c g g p")
+(modalka-define-kbd "g P" "C-c g g P")
+
 ;; aux requirements
 (require 'sk-versions-modalka-which-key)
 

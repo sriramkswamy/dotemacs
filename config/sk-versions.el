@@ -11,6 +11,8 @@
 
 ;; Diff hl for visual feedback of changes
 (sk/require-package 'diff-hl)
+(diff-hl-mode)
+(diff-hl-flydiff-mode)
 
 ;; aux requirements
 (require 'sk-versions-bindings)

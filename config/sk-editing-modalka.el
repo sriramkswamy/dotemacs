@@ -65,6 +65,9 @@
 ;; Visual regexp
 (modalka-define-kbd "SPC s" "C-c v s")
 
+;; Iedit mode
+(modalka-define-kbd "M" "C-c M")
+
 ;; which key for bindings
 (require 'sk-editing-modalka-which-key)
 

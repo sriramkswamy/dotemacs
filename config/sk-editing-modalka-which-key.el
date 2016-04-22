@@ -45,7 +45,7 @@
   "s P" "symbol previous"
   "s x" "sexp transpose"
   "s d" "sexp kill"
-  "s d" "sexp copy"
+  "s y" "sexp copy"
   "s s" "sexp unwrap"
   "s S" "sexp backward unwrap"
   "s (" "sexp wrap with parens"
@@ -61,7 +61,9 @@
   
   "S" "snippets"
   
-  "SPC s" "visual replace")
+  "SPC s" "visual replace"
+
+  "M" "iedit mode")
   
 (provide 'sk-editing-modalka-which-key)
 ;;; sk-editing-modalka-which-key.el ends here

@@ -7,6 +7,11 @@
 ;;; Code:
 
 (which-key-add-key-based-replacements
+  "[ w" "transpose word back"
+  "] w" "transpose word forward"
+  "[ c" "transpose char back"
+  "] c" "transpose char forward"
+
   "i l" "expand inside line"
   
   "o" "open line below"

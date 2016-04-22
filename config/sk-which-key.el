@@ -10,6 +10,7 @@
 (global-set-key (kbd "C-x ?") 'which-key-show-top-level)
 (which-key-add-key-based-replacements
   "C-x ?" "top level bindings")
+(add-hook 'after-init-hook 'which-key-mode)
 
 ;; aux requirements
 (require 'sk-which-key-bindings)

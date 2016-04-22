@@ -6,6 +6,12 @@
 
 ;;; Code:
 
+;; Transpose stuff
+(global-set-key (kbd "C-c v [ w") 'transpose-words)
+(global-set-key (kbd "C-c v ] w") 'sk/transpose-words-forward)
+(global-set-key (kbd "C-c v [ c") 'transpose-chars)
+(global-set-key (kbd "C-c v ] c") 'sk/transpose-chars-forward)
+
 ;; Select line
 (global-set-key (kbd "C-c e i l") 'sk/select-current-line)
 

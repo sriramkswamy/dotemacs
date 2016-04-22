@@ -29,7 +29,7 @@
 ;; No welcome screen - opens directly in scratch buffer
 (setq inhibit-startup-message t
       initial-scratch-message ";; Scratch
-;; Press '?' in Modalka mode('MOD' on mode-line if turned on) or 'C-x ?' in Emacs mode for bindings
+;; Press '?' in Modalka mode ('MOD' on mode-line if on) or 'C-x ?' in Emacs mode for bindings
 
 
 "

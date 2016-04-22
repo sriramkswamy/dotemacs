@@ -6,6 +6,21 @@
 
 ;;; Code:
 
+;; Transpose words forward
+(defun sk/transpose-words-forward ()
+  "Transpose words forward"
+  (interactive)
+  (forward-word 1)
+  (forward-char 1)
+  (transpose-words 1))
+
+;; Transpose chars forward
+(defun sk/transpose-chars-forward ()
+  "Transpose chars forward"
+  (interactive)
+  (forward-char 1)
+  (transpose-chars 1))
+
 ;; Correct those DOuble capitals
 (defun sk/dcaps-to-scaps ()
   "Convert word in DOuble CApitals to Single Capitals."

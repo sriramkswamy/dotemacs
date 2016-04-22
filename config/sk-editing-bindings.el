@@ -66,6 +66,9 @@
 ;; Visual regexp
 (global-set-key (kbd "C-c v s") 'vr/query-replace)
 
+;; Iedit mode
+(global-set-key (kbd "C-c M") 'iedit-mode)
+
 ;; Modal bindings
 (require 'sk-editing-modalka)
 

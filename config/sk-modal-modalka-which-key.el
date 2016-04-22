@@ -59,23 +59,16 @@
   "g w" "vertical split"
   "g W" "horizontal split"
   "g S" "electric newline"
+  "g q" "format para"
 
   "i" "expand prefix"
   "i a" "expand entire buffer"
 
-  "[" "backward nav"
-  "[ {" "backward up-list"
-  "[ [" "backward list"
-  "[ m" "backward sexp"
-  "[ f" "start of defun"
-  "[ r" "widen region"
+  "[" "backward nav/edit"
+  "[ [" "widen region"
 
-  "]" "forward nav"
-  "] }" "forward up-list"
-  "] ]" "forward list"
-  "] m" "forward sexp"
-  "] f" "end of defun"
-  "] r" "narrow region"
+  "]" "forward nav/edit"
+  "] ]" "narrow region"
 
   ":" "extended prefix"
   ": w" "save buffer"

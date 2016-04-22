@@ -6,6 +6,12 @@
 
 ;;; Code:
 
+;; Transpose stuff
+(modalka-define-kbd "[ w" "C-c v [ w")
+(modalka-define-kbd "] w" "C-c v ] w")
+(modalka-define-kbd "[ c" "C-c v [ c")
+(modalka-define-kbd "] c" "C-c v ] c")
+
 ;; Select line
 (modalka-define-kbd "i l" "C-c e i l")
 

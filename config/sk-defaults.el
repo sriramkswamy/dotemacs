@@ -13,7 +13,6 @@
 ;; GUI changes
 (defun sk/gui-defaults ()
   (interactive)
-  (load-theme 'leuven t)
   (recentf-mode)
   (tool-bar-mode -1)
   (menu-bar-mode -1)

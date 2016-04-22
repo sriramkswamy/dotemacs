@@ -6,7 +6,7 @@
 
 ;;; Code:
 
-(global-set-key (kbd "C-x c") 'load-theme)
+(global-set-key (kbd "C-c c") 'load-theme)
 (global-set-key (kbd "C-S-d") 'kill-whole-line)
 (global-set-key (kbd "C-c v g m") 'make-frame)
 (global-set-key (kbd "C-c v g f") 'find-file-at-point)

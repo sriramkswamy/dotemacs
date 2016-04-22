@@ -82,7 +82,7 @@
 (modalka-define-kbd "SPC a" "C-x b")
 (modalka-define-kbd "SPC k" "C-x k")
 (modalka-define-kbd "SPC d" "C-x d")
-(modalka-define-kbd "SPC c" "C-x c")
+(modalka-define-kbd "SPC c" "C-c c")
 (modalka-define-kbd "SPC q" "C-x 0")
 (modalka-define-kbd "SPC SPC" "C-s")
 (modalka-define-kbd "SPC f" "C-x C-f")

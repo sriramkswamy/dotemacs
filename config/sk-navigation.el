@@ -74,8 +74,11 @@
 ;; Helm ag
 (sk/require-package 'helm-ag)
 
-;; Helm descbings
+;; Helm descbinds
 (sk/require-package 'helm-descbinds)
+
+;; Helm theme selection
+(sk/require-package 'helm-themes)
 
 ;; Swoop
 (sk/require-package 'helm-swoop)

@@ -12,11 +12,17 @@
   (diminish 'sk/dubcaps-mode ""))
 (add-hook 'sk/dubcaps-mode-hook 'sk/diminish-dubcaps)
 
-;; Wrap region
-(defun sk/diminish-wrap-region ()
+;; Diminish smart parens
+(defun sk/diminish-smartparens ()
   (interactive)
-  (diminish 'wrap-region-mode ""))
-(add-hook 'wrap-region-mode-hook 'sk/diminish-wrap-region)
+  (diminish 'smartparens-mode ""))
+(add-hook 'smartparens-mode-hook 'sk/diminish-smartparens)
+
+;; Diminish smart parens strict mode
+(defun sk/diminish-smartparens-strict ()
+  (interactive)
+  (diminish 'smartparens-strict-mode ""))
+(add-hook 'smartparens-strict-mode-hook 'sk/diminish-smartparens-strict)
 
 ;; YASnippet
 (defun sk/diminish-yas ()

@@ -30,14 +30,18 @@
                             ("meeting" . ?m)
                             ("article" . ?a) ;; temporary
                             ("research" . ?r) ;; temporary
+                            ("courses" . ?c) ;; temporary
+                            ("fall" . ?f) ;; temporary
+                            ("spring" . ?s) ;; temporary
                             ("ledger" . ?l)
                             ("gubby" . ?g)
-                            ("film" . ?f)
+                            ("movies" . ?M)
                             ("online" . ?o)
-                            ("cash" . ?c)
+                            ("cash" . ?$)
                             ("card" . ?d)
                             ("idea" . ?i)
-                            ("project" . ?p)
+                            ("personal" . ?p)
+                            ("project" . ?t)
                             ("job" . ?j)
                             ("work" . ?w)
                             ("home" . ?h)
@@ -123,8 +127,8 @@
          :empty-lines 1    ; properties
          :created t        ; properties
         )
-        ("f"               ; key
-         "Film"            ; name
+        ("M"               ; key
+         "Movies"          ; name
          entry             ; type
          (file+headline "~/Dropbox/org/notes.org" "Movies")  ; target
          "* %^{Movie} %(org-set-tags)  :film: \n:PROPERTIES:\n:Created: %U\n:END:\n%i\nNetflix?: %^{netflix? Yes/No}\nGenre: %^{genre}\nDescription:\n%?"  ; template
@@ -146,6 +150,15 @@
          entry             ; type
          (file+headline "~/Dropbox/org/errands.org" "Errands")  ; target
          "* TODO %^{Todo} %(org-set-tags)  :errands: \n:PROPERTIES:\n:Created: %U\n:END:\n%i\n%?"  ; template
+         :prepend t        ; properties
+         :empty-lines 1    ; properties
+         :created t        ; properties
+        )
+        ("c"               ; key
+         "Courses"         ; name
+         entry             ; type
+         (file+headline "~/Dropbox/org/phd.org" "Courses")  ; target
+         "* %^{Course} %(org-set-tags)  :courses: \n:PROPERTIES:\n:Created: %U\n:END:\n%i\n%?"  ; template
          :prepend t        ; properties
          :empty-lines 1    ; properties
          :created t        ; properties

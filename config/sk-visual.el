@@ -48,6 +48,24 @@
 ;; Vimish-fold mode
 (sk/require-package 'vimish-fold)
 
+;; Colorschemes
+(sk/require-package 'badwolf-theme)
+(sk/require-package 'color-theme-solarized)
+(sk/require-package 'gotham-theme)
+(sk/require-package 'moe-theme)
+(sk/require-package 'monokai-theme)
+(sk/require-package 'zenburn-theme)
+(sk/require-package 'reykjavik-theme)
+(sk/require-package 'railscasts-theme)
+(sk/require-package 'seoul256-theme)
+(sk/require-package 'caroline-theme)
+(sk/require-package 'pastelmac-theme)
+(sk/require-package 'white-sand-theme)
+(sk/require-package 'paper-theme)
+(sk/require-package 'ample-theme)
+(sk/require-package 'anti-zenburn-theme)
+(load-theme 'badwolf t)
+
 ;; aux requirements
 (require 'sk-visual-hydra)
 (require 'sk-visual-diminish)

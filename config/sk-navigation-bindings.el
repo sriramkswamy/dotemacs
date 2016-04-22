@@ -42,6 +42,9 @@
 ;; Helm descbinds
 (global-set-key (kbd "C-c ,") 'helm-descbinds)
 
+;; Helm themes
+(global-set-key (kbd "C-c c") 'helm-themes)
+
 ;; Helm swoop
 (global-set-key (kbd "C-c v *") 'helm-swoop)
 (global-set-key (kbd "C-c v #") 'helm-multi-swoop)

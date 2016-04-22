@@ -42,6 +42,7 @@
   "." "repeat"
   "?" "top level bindings"
   "v" "set mark"
+  "R" "overwrite"
   "V" "set rectangular mark"
   "X" "exchange point and mark"
   "+" "set bookmark"
@@ -57,7 +58,6 @@
   "g o" "eval lisp"
   "g w" "vertical split"
   "g W" "horizontal split"
-  "g r" "overwrite"
   "g S" "electric newline"
 
   "i" "expand prefix"

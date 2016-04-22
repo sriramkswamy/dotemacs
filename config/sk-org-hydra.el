@@ -208,6 +208,135 @@
      (org-agenda-redo)))
   ("q" nil :color blue))
 
+;; Org ref file hydra
+(defhydra sk/org-ref-bibtex-file (:color blue
+                                  :hint nil)
+  "
+_v_: validate     _s_: sort     _r_: reformat     _c_: count     _p_: PDF      _q_: quit
+  "
+  ("v" bibtex-validate)
+  ("s" bibtex-sort-buffer)
+  ("r" bibtex-reformat)
+  ("c" bibtex-count-entries)
+  ("p" org-ref-build-full-bibliography)
+  ("q" nil :color blue))
+
+;; Org ref new entry
+(defhydra sk/org-ref-bibtex-new-entry (:color blue
+                                       :hint nil)
+  "
+_a_: article                 _b_: book      _p_: in proceedings   _m_: Misc     _t_: MS Thesis    _u_: unpublished
+_c_: article in collection   _i_: in book   _P_: proceedings      _M_: Manual   _T_: PhD Thesis   _q_: quit
+_r_: report                  _l_: booklet
+  "
+  ("a" bibtex-Article)
+  ("c" bibtex-InCollection)
+  ("r" bibtex-TechReport)
+  ("b" bibtex-Book)
+  ("i" bibtex-InBook)
+  ("l" bibtex-Booklet)
+  ("p" bibtex-InProceedings)
+  ("P" bibtex-Proceedings)
+  ("m" bibtex-Misc)
+  ("M" bibtex-Manual)
+  ("T" bibtex-PhdThesis)
+  ("t" bibtex-MastersThesis)
+  ("u" bibtex-Unpublished)
+  ("q" nil :color blue))
+
+(defhydra sk/org-ref-cite-hydra (:color blue
+                                 :hint nil)
+  "
+_p_: Open pdf     _w_: WOS                   _g_: Google Scholar   _K_: Copy citation to clipboard
+_u_: Open url     _r_: WOS related           _P_: Pubmed           _k_: Copy key to clipboard
+_n_: Open notes   _c_: WOS citing            _C_: Crossref         _f_: Copy bibtex entry to file
+_o_: Open entry   _e_: Email entry and pdf   _q_: quit
+"
+  ("p" org-ref-open-pdf-at-point)
+  ("u" org-ref-open-url-at-point)
+  ("n" org-ref-open-notes-at-point)
+  ("o" org-ref-open-citation-at-point)
+  ("w" org-ref-wos-at-point)
+  ("r" org-ref-wos-related-at-point)
+  ("c" org-ref-wos-citing-at-point)
+  ("g" org-ref-google-scholar-at-point)
+  ("P" org-ref-pubmed-at-point)
+  ("C" org-ref-crossref-at-point)
+  ("K" org-ref-copy-entry-as-summary)
+  ("k" (progn
+	 (kill-new
+	  (car (org-ref-get-bibtex-key-and-file)))))
+  ("f" org-ref-copy-entry-at-point-to-file)
+  ("e" (save-excursion
+	 (org-ref-open-citation-at-point)
+	 (org-ref-email-bibtex-entry)))
+  ("q" nil :color blue))
+
+;; Hydra of org ref
+(defhydra sk/org-ref-bibtex-hydra (:color blue
+                                   :hint nil)
+  "
+_p_: Open pdf     _y_: Copy key               _n_: New entry     _w_: WOS
+_b_: Open url     _f_: Copy formatted entry   _o_: Copy entry    _c_: WOS citing
+_r_: Refile entry _k_: Add keywords           _d_: delete entry  _a_: WOS related
+_e_: Email entry  _K_: Edit keywords          _L_: clean entry   _P_: Pubmed
+_U_: Update entry _N_: Open notes             _R_: Crossref      _g_: Google Scholar
+_s_: Sort entry   _A_: Remove nonascii        _C_: Cite entry    _q_: quit
+_u_: Update field _F_: file funcs
+"
+  ("p" org-ref-open-bibtex-pdf)
+  ("b" org-ref-open-in-browser)
+  ("r" (lambda () (interactive)
+         (bibtex-beginning-of-entry)
+         (bibtex-kill-entry)
+         (find-file (ido-completing-read
+                     "Bibtex file: "
+                     (f-entries "." (lambda (f) (f-ext? f "bib")))))
+         (goto-char (point-max))
+         (bibtex-yank)
+         (save-buffer)
+         (kill-buffer)))
+  ("e" org-ref-email-bibtex-entry)
+  ("U" (doi-utils-update-bibtex-entry-from-doi (org-ref-bibtex-entry-doi)))
+  ("s" org-ref-sort-bibtex-entry)
+  ("u" doi-utils-update-field)
+  ("y" (kill-new  (bibtex-autokey-get-field "=key=")))
+  ("f" bibtex-copy-summary-as-kill)
+  ("k" helm-tag-bibtex-entry)
+  ("K" (lambda ()
+         (interactive)
+         (org-ref-set-bibtex-keywords
+          (read-string "Keywords: "
+                       (bibtex-autokey-get-field "keywords"))
+          t)))
+  ("N" org-ref-open-bibtex-notes)
+  ("A" org-ref-replace-nonascii)
+  ("F" sk/org-ref-bibtex-file/body)
+  ("n" sk/org-ref-bibtex-new-entry/body)
+  ("o" bibtex-copy-entry-as-kill)
+  ("d" bibtex-kill-entry)
+  ("L" org-ref-clean-bibtex-entry)
+  ("R" org-ref-bibtex-crossref)
+  ("w" org-ref-bibtex-wos)
+  ("c" org-ref-bibtex-wos-citing)
+  ("a" org-ref-bibtex-wos-related)
+  ("P" org-ref-bibtex-pubmed)
+  ("g" org-ref-bibtex-google-scholar)
+  ("C" sk/org-ref-cite-hydra/body)
+  ("q" nil :color blue))
+
+;; Org ref hydra
+(defhydra sk/hydra-org-ref (:color blue
+                            :hint nil)
+  "
+_e_: entry     _f_: file     _c_: cite     _b_: bibtex     _q_: quit
+  "
+  ("e" sk/org-ref-bibtex-new-entry/body)
+  ("f" sk/org-ref-bibtex-file/body)
+  ("c" sk/org-ref-cite-hydra/body)
+  ("b" sk/org-ref-bibtex-hydra/body)
+  ("q" nil :color blue))
+
 ;; bindings
 (require 'sk-org-hydra-bindings)
 

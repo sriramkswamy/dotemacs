@@ -23,7 +23,7 @@
   "s" "swipe"
   "B" "ivy resume"
   "t" "imenu"
-  "R" "recentf"
+  "g R" "regexp build"
   "SPC r" "locate/spotlight"
   "g s s" "counsel ag"
   "SPC j" "counsel M-x"
@@ -35,7 +35,7 @@
   "#" "swoop regexp"
 
   "g s r" "ag wgrep"
-  "g R" "wgrep mode"
+  "g r" "wgrep mode"
 
   "!" "shell command"
   "&" "async shell command"
@@ -43,6 +43,8 @@
   "g t" "regenerate tags"
   "SPC p" "project files"
   "SPC TAB" "alternate file"
+
+  "SPC b" "bibtex entries"
 
   "SPC n" "neotree"
 

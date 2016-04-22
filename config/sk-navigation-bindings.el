@@ -28,7 +28,7 @@
 (global-set-key (kbd "M-y") 'helm-show-kill-ring)
 (global-set-key (kbd "C-x b") 'helm-mini)
 (global-set-key (kbd "C-x C-f") 'helm-find-files)
-(global-set-key (kbd "C-M-r") 'helm-recentf)
+(global-set-key (kbd "C-M-S-r") 'helm-regexp)
 (global-set-key (kbd "C-S-s") 'helm-resume)
 (global-set-key (kbd "C-r") 'helm-semantic-or-imenu)
 (global-set-key (kbd "C-x l") 'helm-locate)
@@ -48,10 +48,13 @@
 
 ;; Ag and Wgrep
 (global-set-key (kbd "C-M-s") 'ag)
-(global-set-key (kbd "C-M-S-r") 'wgrep-change-to-wgrep-mode)
+(global-set-key (kbd "C-M-r") 'wgrep-change-to-wgrep-mode)
 
 ;; Helm projectile
 (global-set-key (kbd "C-c P") 'helm-projectile)
+
+;; Helm bibtex
+(global-set-key (kbd "C-c b") 'helm-bibtex)
 
 ;; Neotree
 (global-set-key (kbd "C-c n") 'neotree-toggle)

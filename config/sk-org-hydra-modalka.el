@@ -33,6 +33,9 @@
 ;; Agenda
 (modalka-define-kbd "o v" "C-c h o v")
 
+;; Org ref
+(modalka-define-kbd "o r" "C-c h o r")
+
 ;; which key explanations
 (require 'sk-org-hydra-modalka-which-key)
 

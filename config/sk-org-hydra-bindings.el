@@ -33,6 +33,9 @@
 ;; Agenda mode binding
 (global-set-key (kbd "C-c h o v") 'sk/hydra-org-agenda-view/body)
 
+;; Org ref
+(global-set-key (kbd "C-c h o r") 'sk/hydra-org-ref/body)
+
 ;; Modal bindings
 (require 'sk-org-hydra-modalka)
 

@@ -27,7 +27,7 @@
 ;; Helm
 (modalka-define-kbd "B" "C-S-s")
 (modalka-define-kbd "t" "C-r")
-(modalka-define-kbd "R" "C-M-r")
+(modalka-define-kbd "g R" "C-M-S-r")
 (modalka-define-kbd "g s s" "M-s")
 (modalka-define-kbd "SPC r" "C-x l")
 (modalka-define-kbd "SPC ," "C-c ,")
@@ -40,7 +40,7 @@
 
 ;; Ag and Wgrep
 (modalka-define-kbd "g s r" "C-M-s")
-(modalka-define-kbd "g R" "C-M-S-r")
+(modalka-define-kbd "g r" "C-M-r")
 
 ;; Projectile
 (modalka-define-kbd "!" "C-c p !")
@@ -50,6 +50,9 @@
 ; (modalka-define-kbd "SPC p" "C-c p f")
 (modalka-define-kbd "SPC p" "C-c P")
 (modalka-define-kbd "SPC TAB" "C-c p a")
+
+;; Helm bibtex
+(modalka-define-kbd "SPC b" "C-c b")
 
 ;; Neotree
 (modalka-define-kbd "SPC n" "C-c n")

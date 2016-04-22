@@ -17,6 +17,7 @@
   "o j" "org jump"
   "o f" "org files"
   "o v" "org agenda view"
+  "o r" "org ref"
   "o o" "org organize")
 
 (provide 'sk-org-hydra-modalka-which-key)

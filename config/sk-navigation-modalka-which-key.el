@@ -29,7 +29,7 @@
   "SPC j" "counsel M-x"
   "SPC ," "counsel descbinds"
   "SPC x" "apropos"
-  "M" "mark rings"
+  "g m" "mark rings"
 
   "*" "swoop"
   "#" "swoop regexp"

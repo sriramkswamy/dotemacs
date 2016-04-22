@@ -31,7 +31,7 @@
 (modalka-define-kbd "SPC r" "C-x l")
 (modalka-define-kbd "SPC ," "C-c ,")
 (modalka-define-kbd "SPC x" "C-x c a")
-(modalka-define-kbd "M" "C-x c C-c SPC")
+(modalka-define-kbd "g m" "C-x c C-c SPC")
 
 ;; Swoop
 (modalka-define-kbd "*" "C-c v *")

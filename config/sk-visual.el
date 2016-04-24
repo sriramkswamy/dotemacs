@@ -58,6 +58,23 @@
 (sk/require-package 'anti-zenburn-theme)
 (load-theme 'ample t)
 
+;; The modeline
+(sk/require-package 'spaceline)
+(require 'spaceline-config)
+(spaceline-spacemacs-theme)
+(setq powerline-default-separator 'wave)
+
+;; Fancy battery
+(sk/require-package 'fancy-battery)
+(add-hook 'after-init-hook 'fancy-battery-mode)
+
+;; Format time string
+(setq display-time-format "%I:%M %p")
+
+;; Fancy weather
+(sk/require-package 'wttrin)
+(setq wttrin-default-cities '("Gainesville" "Albuquerque" "Chennai" "Hyderabad" "Columbus" "Hillsboro"))
+
 ;; aux requirements
 (require 'sk-visual-hydra)
 (require 'sk-visual-diminish)

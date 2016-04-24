@@ -9,6 +9,9 @@
 ;; Error checking
 (sk/require-package 'helm-flycheck)
 
+;; Helm for css/scss selectors
+(sk/require-package 'helm-css-scss)
+
 ;; aux requirements
 (require 'sk-helm-programming-bindings)
 

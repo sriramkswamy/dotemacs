@@ -18,11 +18,11 @@
   (diminish 'undo-tree-mode ""))
 (add-hook 'undo-tree-mode-hook 'sk/diminish-undo-tree)
 
-;; Helm
-(defun sk/diminish-helm ()
+;; Undo tree
+(defun sk/diminish-projectile ()
   (interactive)
-  (diminish 'helm-mode ""))
-(add-hook 'helm-mode-hook 'sk/diminish-helm)
+  (diminish 'projectile-mode "π"))
+(add-hook 'projectile-mode-hook 'sk/diminish-projectile)
 
 ;; Ggtags
 (defun sk/diminish-ggtags ()

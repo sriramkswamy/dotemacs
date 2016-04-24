@@ -85,7 +85,6 @@
 
 ;; aux requirements
 (require 'sk-cpp-hydra)
-(require 'sk-cpp-diminish)
 
 (provide 'sk-cpp)
 ;;; sk-cpp.el ends here

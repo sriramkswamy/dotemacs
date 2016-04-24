@@ -169,6 +169,9 @@
 ;; Helm
 (require 'sk-helm)
 
+;; Fun stuff!
+(require 'sk-fun)
+
 ;; Garbage collector - decrease threshold
 (setq gc-cons-threshold (* 1024 1024 1024))
 ;;; init.el ends here

@@ -10,11 +10,11 @@
 (defhydra sk/hydra-of-activate (:color red
 				       :hint nil)
   "
- _b_: battery   _n_: number     _v_: visual      _c_: company   _i_: indentation   _k_: which-key    _l_: length        _q_: quit
+ _b_: battery   _n_: number     _v_: visual      _c_: climate   _i_: indentation   _k_: which-key    _l_: length        _q_: quit
  _t_: time      _w_: wrap       _y_: yasnippet   _m_: margin    _j_: jabber        _o_: org          _s_: smartparens
- _F_: font      _f_: flyspell   _a_: anaconda    _d_: fold      _g_: ggtags        _p_: paradox      _e_: error check
+ _F_: font      _f_: flyspell   _a_: auto-comp   _d_: fold      _g_: ggtags        _p_: paradox      _e_: error check
 "
-  ("b" display-battery-mode)
+  ("b" fancy-battery-mode)
   ("t" display-time-mode)
   ("F" set-frame-font :color blue)
   ("n" linum-mode)
@@ -22,10 +22,10 @@
   ("f" flyspell-mode :color blue)
   ("v" visual-line-mode :color blue)
   ("p" paradox-list-packages :color blue)
-  ("c" company-mode :color blue)
+  ("c" wttrin :color blue)
   ("l" column-enforce-mode :color blue)
   ("y" yas-minor-mode :color blue)
-  ("a" anaconda-mode :color blue)
+  ("a" company-mode :color blue)
   ("i" highlight-indentation-mode)
   ("m" fci-mode)
   ("j" jabber-connect :color blue)

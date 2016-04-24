@@ -48,9 +48,6 @@
 (setq gdb-many-windows t
       gdb-show-main t)
 
-;; Which function mode
-(add-hook 'prog-mode-hook 'which-function-mode)
-
 ;; Backups at .saves folder in the current folder
 (setq
    backup-by-copying t      ; don't clobber symlinks
@@ -73,9 +70,6 @@
 
 ;; Narrow to region
 (put 'narrow-to-region 'disabled nil)
-
-;; Electric pair mode
-(electric-pair-mode)
 
 ;; Column number mode
 (column-number-mode)

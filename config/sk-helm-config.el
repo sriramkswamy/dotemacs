@@ -213,5 +213,12 @@
 ;; Bind stuff
 (define-key helm-map (kbd "C-w") 'backward-kill-word)
 
+;; Diminish
+(defun sk/diminish-helm ()
+  (interactive)
+  (diminish 'helm-mode "λ"))
+(add-hook 'helm-mode-hook 'sk/diminish-helm)
+(add-hook 'after-init-hook 'sk/diminish-helm)
+
 (provide 'sk-helm-config)
 ;;; sk-helm-config.el ends here

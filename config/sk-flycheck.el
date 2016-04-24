@@ -8,6 +8,11 @@
 
 (sk/require-package 'flycheck)
 (add-hook 'prog-mode-hook 'global-flycheck-mode)
+;; diminish
+(defun sk/diminish-flycheck ()
+  (interactive)
+  (diminish 'flycheck-mode ""))
+(add-hook 'flycheck-mode-hook 'sk/diminish-flycheck)
 
 ;; aux requirements
 (require 'sk-flycheck-modalka)

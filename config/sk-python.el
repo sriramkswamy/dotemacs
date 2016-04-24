@@ -14,6 +14,27 @@
 (sk/require-package 'anaconda-mode)
 (add-hook 'python-mode-hook 'anaconda-mode)
 (add-hook 'python-mode-hook 'anaconda-eldoc-mode)
+;; Diminish anaconda mode
+(defun sk/diminish-anaconda ()
+  (interactive)
+  (diminish 'anaconda-mode "α"))
+(add-hook 'anaconda-mode-hook 'sk/diminish-anaconda)
+
+;; Cython
+(sk/require-package 'cython-mode)
+
+;; Virtual env wrapper
+(sk/require-package 'pyenv-mode)
+
+;; Beautify stuff
+(sk/require-package 'py-yapf)
+
+;; Testing
+(sk/require-package 'pytest)
+(sk/require-package 'nose)
+
+;; aux requirements
+(require 'sk-python-hydra)
 
 (provide 'sk-python)
 ;;; sk-python.el ends here

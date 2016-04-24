@@ -45,5 +45,11 @@
   (diminish 'eldoc-mode ""))
 (add-hook 'eldoc-mode-hook 'sk/diminish-eldoc)
 
+;; Auto-revert mode
+(defun sk/diminish-auto-revert ()
+  (interactive)
+  (diminish 'auto-revert-mode ""))
+(add-hook 'auto-revert-mode-hook 'sk/diminish-auto-revert)
+
 (provide 'sk-diminish)
 ;;; sk-diminish.el ends here

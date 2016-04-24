@@ -12,6 +12,9 @@
 (modalka-define-kbd "[ c" "C-c v [ c")
 (modalka-define-kbd "] c" "C-c v ] c")
 
+;; Copy to the end of line
+(modalka-define-kbd "Y" "C-c v Y")
+
 ;; Select line
 (modalka-define-kbd "i l" "C-c e i l")
 

@@ -9,10 +9,14 @@
 ;; Backward kill word - used mostly while writing
 (global-set-key (kbd "C-w") 'backward-kill-word)
 (global-set-key (kbd "C-S-w") 'kill-region)
+;; Minibuffer too
+(define-key minibuffer-local-map (kbd "C-w") 'backward-kill-word)
 
+;; Unbound important stuff
 (global-set-key (kbd "C-c c") 'load-theme)
 (global-set-key (kbd "C-S-d") 'kill-whole-line)
 (global-set-key (kbd "C-c v g m") 'make-frame)
+(global-set-key (kbd "C-c v =") 'indent-region)
 (global-set-key (kbd "C-c v g f") 'find-file-at-point)
 (global-set-key (kbd "C-c v g u") 'downcase-region)
 (global-set-key (kbd "C-c v g U") 'upcase-region)

@@ -12,6 +12,9 @@
 (global-set-key (kbd "C-c v [ c") 'transpose-chars)
 (global-set-key (kbd "C-c v ] c") 'sk/transpose-chars-forward)
 
+;; Copy to the end of line
+(global-set-key (kbd "C-c v Y") 'sk/copy-to-end-of-line)
+
 ;; Select line
 (global-set-key (kbd "C-c e i l") 'sk/select-current-line)
 

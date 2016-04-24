@@ -124,6 +124,73 @@ point reaches the beginning or end of the buffer, stop there."
   (and (eq (marker-buffer marker) (current-buffer))
        (= (marker-position marker) (point))))
 
+;; reneme current buffer
+(defun sk/rename-current-buffer-file ()
+  "Renames current buffer and file it is visiting."
+  (interactive)
+  (let ((name (buffer-name))
+        (filename (buffer-file-name)))
+    (if (not (and filename (file-exists-p filename)))
+        (error "Buffer '%s' is not visiting a file!" name)
+      (let ((new-name (read-file-name "New name: " filename)))
+        (if (get-buffer new-name)
+            (error "A buffer named '%s' already exists!" new-name)
+          (rename-file filename new-name 1)
+          (rename-buffer new-name)
+          (set-visited-file-name new-name)
+          (set-buffer-modified-p nil)
+          (message "File '%s' successfully renamed to '%s'"
+                   name (file-name-nondirectory new-name)))))))
+
+;; delete current buffer
+(defun sk/delete-current-buffer-file ()
+  "Removes file connected to current buffer and kills buffer."
+  (interactive)
+  (let ((filename (buffer-file-name))
+        (buffer (current-buffer))
+        (name (buffer-name)))
+    (if (not (and filename (file-exists-p filename)))
+        (ido-kill-buffer)
+      (when (yes-or-no-p "Are you sure you want to remove this file? ")
+        (delete-file filename)
+        (kill-buffer buffer)
+        (message "File '%s' successfully removed" filename)))))
+
+;; copy current file path
+(defun sk/copy-current-file-path ()
+  "Add current file path to kill ring. Limits the filename to project root if possible."
+  (interactive)
+  (let ((filename (buffer-file-name)))
+    (kill-new (if eproject-mode
+                  (s-chop-prefix (eproject-root) filename)
+                filename))))
+
+;; Rotate windows
+(defun sk/rotate-windows ()
+  "Rotate your windows"
+  (interactive)
+  (cond ((not (> (count-windows)1))
+         (message "You can't rotate a single window!"))
+        (t
+         (setq i 1)
+         (setq numWindows (count-windows))
+         (while  (< i numWindows)
+           (let* (
+                  (w1 (elt (window-list) i))
+                  (w2 (elt (window-list) (+ (% i numWindows) 1)))
+
+                  (b1 (window-buffer w1))
+                  (b2 (window-buffer w2))
+
+                  (s1 (window-start w1))
+                  (s2 (window-start w2))
+                  )
+             (set-window-buffer w1  b2)
+             (set-window-buffer w2 b1)
+             (set-window-start w1 s2)
+             (set-window-start w2 s1)
+             (setq i (1+ i)))))))
+
 ;; Normal and modalka bindings for these functions
 (require 'sk-navigation-functions-bindings)
 (require 'sk-navigation-functions-modalka)

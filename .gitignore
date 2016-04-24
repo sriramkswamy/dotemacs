@@ -56,7 +56,8 @@
 /tramp
 /semanticdb/*
 /flycheck_init.el
-/GPATH
-/GRTAGS
-/GTAGS
+GPATH
+GRTAGS
+GTAGS
 /image-dired/*
+helm-adaptive-history

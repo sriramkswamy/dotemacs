@@ -20,32 +20,15 @@
   "F" "find line"
   "w" "sneak"
 
-  "s" "swipe"
-  "B" "ivy resume"
-  "t" "imenu"
-  "g R" "regexp build"
-  "SPC r" "locate/spotlight"
-  "g s s" "counsel ag"
-  "SPC j" "counsel M-x"
-  "SPC ," "counsel descbinds"
-  "SPC x" "apropos"
-  "g m" "mark rings"
-
-  "*" "swoop"
-  "#" "swoop regexp"
-
-  "g s r" "ag wgrep"
-  "g r" "wgrep mode"
+  "#" "highlight symbols"
+  "g r" "remove highlight"
 
   "!" "shell command"
   "&" "async shell command"
   "g t" "regenerate tags"
-  "SPC P" "switch projects"
+  "SPC p" "switch projects"
+  "SPC d" "project files"
   "SPC TAB" "alternate file"
-
-  "SPC p" "helm projectile"
-
-  "SPC b" "bibtex entries"
 
   "SPC n" "neotree"
 
@@ -56,11 +39,12 @@
   "<" "global backward"
   ">" "global forward"
 
-  "c" "change perspective"
   "C" "config perspective prefix"
+  "C s" "perspective switch"
   "C a" "perspective add buffer"
   "C A" "perspective set buffer"
   "C b" "perspective switch to buffer"
+  "C c" "perspective close"
   "C r" "perspective rename"
   "C k" "perspective remove buffer"
   "C n" "perspective next"

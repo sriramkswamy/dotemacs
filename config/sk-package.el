@@ -44,5 +44,10 @@
 ;; Restart emacs from emacs
 (sk/require-package 'restart-emacs)
 
+;; Libraries for emacs
+(sk/require-package 'cl-lib)
+(sk/require-package 'dash)
+(sk/require-package 's)
+
 (provide 'sk-package)
 ;;; sk-package.el ends here

@@ -36,6 +36,7 @@
             (back-quote   . "`")))
 (add-hook 'prog-mode-hook 'turn-on-smartparens-strict-mode)
 (add-hook 'markdown-mode-hook 'turn-on-smartparens-strict-mode)
+(show-smartparens-global-mode)
 
 ;; Snippets
 (sk/require-package 'yasnippet)

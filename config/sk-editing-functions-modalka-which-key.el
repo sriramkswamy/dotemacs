@@ -12,6 +12,8 @@
   "[ c" "transpose char back"
   "] c" "transpose char forward"
 
+  "Y" "copy to the end of line"
+
   "i l" "expand inside line"
   
   "o" "open line below"

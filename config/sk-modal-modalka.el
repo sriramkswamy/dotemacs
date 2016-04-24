@@ -41,6 +41,7 @@
 (modalka-define-kbd "." "C-x z")
 (modalka-define-kbd "?" "C-x ?")
 (modalka-define-kbd "v" "C-SPC")
+(modalka-define-kbd "=" "C-c v =")
 (modalka-define-kbd "R" "C-c v R")
 (modalka-define-kbd "X" "C-x C-x")
 (modalka-define-kbd "V" "C-c v C-v")

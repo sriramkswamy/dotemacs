@@ -31,13 +31,6 @@
 (sk/require-package 'region-state)
 (region-state-mode)
 
-;; Aggressive indent
-(sk/require-package 'aggressive-indent)
-(add-hook 'emacs-lisp-mode-hook #'aggressive-indent-mode)
-(add-hook 'clojure-mode-hook #'aggressive-indent-mode)
-(add-hook 'ruby-mode-hook #'aggressive-indent-mode)
-(add-hook 'cc-mode-hook #'aggressive-indent-mode)
-
 ;; Smart tabs
 (sk/require-package 'smart-tab)
 (global-smart-tab-mode)

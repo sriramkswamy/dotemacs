@@ -7,7 +7,7 @@
 ;;; Code:
 
 (which-key-add-key-based-replacements
-  "=" "origami toggle"
+  "^" "origami toggle"
   
   "g a" "activate modes"
 

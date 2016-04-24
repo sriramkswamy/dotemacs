@@ -10,9 +10,9 @@
 (defhydra sk/hydra-rectangle (:color red
                               :hint nil)
   "
- _p_: paste   _c_: clear   _R_: replace   _q_: quit
- _y_: copy    _o_: open    _I_: insert
- _d_: kill               _N_: number
+ _p_: paste   _c_: clear   _r_: replace   _q_: quit
+ _y_: copy    _o_: open    _i_: insert
+ _d_: kill               _n_: number
 "
   ("h" backward-char nil)
   ("l" forward-char nil)
@@ -23,9 +23,9 @@
   ("c" clear-rectangle nil)
   ("o" open-rectangle nil)
   ("p" yank-rectangle)
-  ("R" string-rectangle)
-  ("I" string-insert-rectangle)
-  ("N" rectangle-number-lines)
+  ("r" string-rectangle)
+  ("i" string-insert-rectangle)
+  ("n" rectangle-number-lines)
   ("q" nil :color blue))
 
 ;; Hydra of macros

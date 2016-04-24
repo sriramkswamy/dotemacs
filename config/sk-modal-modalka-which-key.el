@@ -46,6 +46,7 @@
   "V" "set rectangular mark"
   "X" "exchange point and mark"
   "+" "set bookmark"
+  "=" "indent region"
   "\\" "C-c C-c"
 
   "g" "global prefix"

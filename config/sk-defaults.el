@@ -80,6 +80,9 @@
 ;; Column number mode
 (column-number-mode)
 
+;; Persistent history, thank you very much
+(savehist-mode)
+
 ;; default global bindings
 (require 'sk-defaults-bindings)
 

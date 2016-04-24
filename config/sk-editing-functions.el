@@ -6,6 +6,17 @@
 
 ;;; Code:
 
+;; camelcase-region Given a region of text in snake_case format,
+;; changes it to camelCase.
+(defun sk/camelcase-region (start end)
+  "Changes region from snake_case to camelCase"
+  (interactive "r")
+  (save-restriction (narrow-to-region start end)
+                    (goto-char (point-min))
+                    (while (re-search-forward "_\\(.\\)" nil t)
+                      (replace-match (upcase (match-string 1))))))
+
+
 ;; Transpose words forward
 (defun sk/transpose-words-forward ()
   "Transpose words forward"
@@ -20,6 +31,13 @@
   (interactive)
   (forward-char 1)
   (transpose-chars 1))
+
+;; copy to the end of line
+(defun sk/copy-to-end-of-line ()
+  (interactive)
+  (kill-ring-save (point)
+                  (line-end-position))
+  (message "Copied to end of line"))
 
 ;; Correct those DOuble capitals
 (defun sk/dcaps-to-scaps ()

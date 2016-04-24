@@ -23,35 +23,17 @@
 (modalka-define-kbd "F" "M-t")
 (modalka-define-kbd "w" "C-M-t")
 
-;; Helm
-(modalka-define-kbd "B" "C-S-s")
-(modalka-define-kbd "t" "C-r")
-(modalka-define-kbd "g R" "C-M-S-r")
-(modalka-define-kbd "g s s" "M-s")
-(modalka-define-kbd "SPC r" "C-x l")
-(modalka-define-kbd "SPC ," "C-c ,")
-(modalka-define-kbd "SPC x" "C-x c a")
-(modalka-define-kbd "g m" "C-x c C-c SPC")
-
-;; Swoop
-(modalka-define-kbd "*" "C-c v *")
-(modalka-define-kbd "#" "C-c v #")
-
-;; Ag and Wgrep
-(modalka-define-kbd "g s r" "C-M-s")
+;; Highlight symbols
+(modalka-define-kbd "#" "C-M-s")
 (modalka-define-kbd "g r" "C-M-r")
 
 ;; Projectile
 (modalka-define-kbd "!" "C-c p !")
 (modalka-define-kbd "&" "C-c p &")
 (modalka-define-kbd "g t" "C-c p R")
-(modalka-define-kbd "SPC P" "C-c p p")
+(modalka-define-kbd "SPC p" "C-c p p")
+(modalka-define-kbd "SPC d" "C-c p f")
 (modalka-define-kbd "SPC TAB" "C-c p a")
-;; Helm projectile
-(modalka-define-kbd "SPC p" "C-c P")
-
-;; Helm bibtex
-(modalka-define-kbd "SPC b" "C-c b")
 
 ;; Neotree
 (modalka-define-kbd "SPC n" "C-c n")
@@ -66,12 +48,11 @@
 (modalka-define-kbd ">" "C-c v C-S-i")
 
 ;; Perspective mode
-(modalka-define-kbd "c" "C-x x s")
 (modalka-define-kbd "C s" "C-x x s")
 (modalka-define-kbd "C a" "C-x x a")
 (modalka-define-kbd "C A" "C-x x A")
 (modalka-define-kbd "C b" "C-x x b")
-(modalka-define-kbd "C c" "C-x x b")
+(modalka-define-kbd "C c" "C-x x c")
 (modalka-define-kbd "C r" "C-x x r")
 (modalka-define-kbd "C k" "C-x x k")
 (modalka-define-kbd "C n" "C-x x n")

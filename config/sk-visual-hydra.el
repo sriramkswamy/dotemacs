@@ -10,9 +10,9 @@
 (defhydra sk/hydra-of-activate (:color red
 				       :hint nil)
   "
- _b_: battery   _n_: number     _v_: visual      _c_: company   _i_: indentation   _k_: which-key    _l_: length
+ _b_: battery   _n_: number     _v_: visual      _c_: company   _i_: indentation   _k_: which-key    _l_: length        _q_: quit
  _t_: time      _w_: wrap       _y_: yasnippet   _m_: margin    _j_: jabber        _o_: org          _s_: smartparens
- _F_: font      _f_: flyspell   _a_: anaconda    _d_: fold      _g_: ggtags        _p_: paradox      _q_: quit
+ _F_: font      _f_: flyspell   _a_: anaconda    _d_: fold      _g_: ggtags        _p_: paradox      _e_: error check
 "
   ("b" display-battery-mode)
   ("t" display-time-mode)
@@ -34,6 +34,7 @@
   ("d" global-origami-mode :color blue)
   ("k" which-key-mode :color blue)
   ("s" smartparens-strict-mode :color blue)
+  ("e" global-flycheck-mode :color blue)
   ("q" nil :color blue))
 
 ;; Hydra for vimish-fold

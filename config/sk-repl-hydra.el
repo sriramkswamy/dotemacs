@@ -9,8 +9,9 @@
 ;; Hydra for emamux
 (defhydra sk/hydra-for-emamux (:color red
 			       :hint nil)
- " ^Command^        ^Runner^                                        ^Clipboard^
-^^^^^^^^^^----------------------------------------------------------------------------------------
+ "
+ ^Command^    ^Runner^                                                          ^Clipboard^
+^^^^^^^^^^-----------------------------------------------------------------------------------------------------
  _s_: send    _r_: run        _z_: zoom      _c_: close         _h_: clear history    _y_: copy kill    _q_: quit
             _l_: last cmd   _i_: inspect   _C_: close other   _I_: interrupt        _p_: paste tmux
 "

@@ -10,7 +10,7 @@
 (modalka-define-kbd "m t" "C-c h t")
 
 ;; aux requirements
-(require 'sk-repl-modalka-which-key)
+(require 'sk-repl-hydra-modalka-which-key)
 
 (provide 'sk-repl-hydra-modalka)
 ;;; sk-repl-hydra-modalka.el ends here

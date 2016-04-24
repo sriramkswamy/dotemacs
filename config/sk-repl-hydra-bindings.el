@@ -10,7 +10,7 @@
 (global-set-key (kbd "C-c h t") 'sk/hydra-for-emamux/body)
 
 ;; aux requirements
-(require 'sk-repl-modalka)
+(require 'sk-repl-hydra-modalka)
 
 (provide 'sk-repl-hydra-bindings)
 ;;; sk-repl-hydra-bindings.el ends here

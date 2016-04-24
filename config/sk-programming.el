@@ -31,6 +31,9 @@
 ;; Auto completion
 (require 'sk-company)
 
+;; REPL stuff
+(require 'sk-repl)
+
 ;; aux requirements
 (require 'sk-programming-which-key)
 

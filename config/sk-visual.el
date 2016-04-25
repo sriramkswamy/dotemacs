@@ -63,7 +63,7 @@
 (sk/require-package 'spaceline)
 (require 'spaceline-config)
 (spaceline-spacemacs-theme)
-(setq powerline-default-separator 'wave)
+(setq powerline-default-separator 'arrow-fade)
 
 ;; Fancy battery
 (sk/require-package 'fancy-battery)

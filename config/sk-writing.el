@@ -47,6 +47,7 @@
   (other-window 1)
   (pdf-view-previous-page)
   (other-window 1))
+(add-hook 'doc-view-mode-hook 'pdf-tools-install)
 
 ;; aux requirements
 (require 'sk-writing-bindings)

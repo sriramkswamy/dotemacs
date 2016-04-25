@@ -215,9 +215,6 @@
 ;; Blog with org
 (sk/require-package 'org-jekyll)
 
-;; Work with jira files
-(sk/require-package 'org-jira)
-
 ;; Beautify theme
 (load "org-beautify-theme.el")
 

@@ -8,21 +8,21 @@
 
 ;; Activate modes
 (defhydra sk/hydra-of-activate (:color red
-				       :hint nil)
+			        :hint nil)
   "
- _b_: battery   _n_: number     _v_: visual      _c_: climate   _i_: indentation   _k_: which-key    _l_: length        _q_: quit
- _t_: time      _w_: wrap       _y_: yasnippet   _m_: margin    _j_: jabber        _o_: org          _s_: smartparens
- _F_: font      _f_: flyspell   _a_: auto-comp   _d_: fold      _g_: ggtags        _p_: paradox      _e_: error check
+ _b_: battery   _n_: number     _v_: wrap        _c_: column    _i_: indent   _k_: which-key    _l_: length   _q_: quit
+ _t_: time      _w_: weather    _y_: yasnippet   _m_: margin    _j_: jabber   _o_: org-load     _s_: pairs
+ _F_: font      _f_: flyspell   _a_: auto-comp   _d_: fold      _g_: ggtags   _p_: paradox      _e_: error
 "
   ("b" fancy-battery-mode)
   ("t" display-time-mode)
   ("F" set-frame-font :color blue)
   ("n" linum-mode)
-  ("w" toggle-truncate-lines)
+  ("w" wttrin :color blue)
   ("f" flyspell-mode :color blue)
   ("v" visual-line-mode :color blue)
   ("p" paradox-list-packages :color blue)
-  ("c" wttrin :color blue)
+  ("c" column-enforce-mode :color blue)
   ("l" column-enforce-mode :color blue)
   ("y" yas-global-mode :color blue)
   ("a" company-mode :color blue)

@@ -17,7 +17,7 @@
 ;; Diminish anaconda mode
 (defun sk/diminish-anaconda ()
   (interactive)
-  (diminish 'anaconda-mode "α"))
+  (diminish 'anaconda-mode ""))
 (add-hook 'anaconda-mode-hook 'sk/diminish-anaconda)
 
 ;; Cython

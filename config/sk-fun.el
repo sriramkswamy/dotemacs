@@ -27,5 +27,24 @@
 (modalka-define-kbd "g x" "C-c v g x")
 (which-key-add-key-based-replacements "g x" "xkcd")
 
+;; Rainbow delimiters
+(sk/require-package 'rainbow-delimiters)
+(add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
+
+;; IRC chat
+(sk/require-package 'circe)
+
+;; Ledger for managing accounts
+(sk/require-package 'ledger-mode)
+
+;; Stackexchange from org
+(sk/require-package 'sx)
+
+;; Fireplace
+(sk/require-package 'fireplace)
+
+;; RSS feed
+(sk/require-package 'elfeed)
+
 (provide 'sk-fun)
 ;;; sk-fun.el ends here

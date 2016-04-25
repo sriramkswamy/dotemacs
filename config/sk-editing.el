@@ -41,12 +41,13 @@
 ;; Snippets
 (sk/require-package 'yasnippet)
 (setq yas-prompt-functions '(yas-completing-prompt))
-(add-hook 'prog-mode-hook 'yas-global-mode)
-(add-hook 'org-mode-hook 'yas-global-mode)
 
 ;; Visual regexp
 (sk/require-package 'visual-regexp)
 (sk/require-package 'visual-regexp-steroids)
+
+;; Edit really large files
+(sk/require-package 'vlf)
 
 ;; aux requirements
 (require 'sk-editing-functions)

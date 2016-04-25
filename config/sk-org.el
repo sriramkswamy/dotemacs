@@ -9,6 +9,8 @@
 ;; Basic settings
 (setq org-directory "~/Dropbox/org"
       org-completion-use-ido nil
+      ;; Emphasis
+      org-hide-emphasis-markers t
       ;; Indent
       org-startup-indented t
       org-hide-leading-stars t
@@ -23,6 +25,12 @@
       org-export-with-smart-quotes t
       ;; Citations
       org-latex-to-pdf-process '("pdflatex %f" "biber %b" "pdflatex %f" "pdflatex %f"))
+
+;; Refile settings
+(setq org-refile-targets '((nil :maxlevel . 9)
+                           (org-agenda-files :maxlevel . 9)))
+(setq org-refile-use-outline-path t
+      org-outline-path-complete-in-steps nil)
 
 ;; Tags with fast selection keys
 (setq org-tag-alist (quote (("errand" . ?e)
@@ -199,6 +207,19 @@
 (setq org-ref-bibliography-notes "~/Dropbox/references/references.org"
       org-ref-default-bibliography '("~/Dropbox/references/references.bib")
       org-ref-pdf-directory "~/Dropbox/references/pdfs/")
+
+;; Fancy bullets
+(sk/require-package 'org-bullets)
+(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+
+;; Blog with org
+(sk/require-package 'org-jekyll)
+
+;; Work with jira files
+(sk/require-package 'org-jira)
+
+;; Beautify theme
+(load "org-beautify-theme.el")
 
 ;; which key explanations
 (require 'sk-org-hydra)

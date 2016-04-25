@@ -34,14 +34,20 @@
 ;; REPL stuff
 (require 'sk-repl)
 
-;; aux requirements
-(require 'sk-programming-which-key)
-
 ;; start services easily
 (sk/require-package 'prodigy)
 
 ;; Better debugging
 (sk/require-package 'realgud)
+
+;; Arduino mode
+(sk/require-package 'arduino-mode)
+
+;; YAML editing
+(sk/require-package 'yaml-mode)
+
+;; aux requirements
+(require 'sk-programming-which-key)
 
 (provide 'sk-programming)
 ;;; sk-programming.el ends here

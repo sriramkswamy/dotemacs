@@ -27,6 +27,27 @@
 ;; Distraction free writing
 (sk/require-package 'olivetti)
 
+;; Filter out passive voice and weasel words
+(sk/require-package 'writegood-mode)
+(add-hook 'text-mode-hook 'writegood-mode)
+
+;; PDF tools instead of docview
+(sk/require-package 'pdf-tools)
+;; Turns the next page in adjoining pdf-tools pdf
+(defun sk/pdf-tools-pdf-next ()
+  "Turns the next page in adjoining PDF file"
+  (interactive)
+  (other-window 1)
+  (pdf-view-next-page)
+  (other-window 1))
+;; Turns the previous page in adjoining pdf
+(defun sk/pdf-tools-pdf-previous ()
+  "Turns the previous page in adjoining PDF file"
+  (interactive)
+  (other-window 1)
+  (pdf-view-previous-page)
+  (other-window 1))
+
 ;; aux requirements
 (require 'sk-writing-bindings)
 (require 'sk-writing-diminish)

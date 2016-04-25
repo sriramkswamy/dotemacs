@@ -77,6 +77,9 @@
 ;; Persistent history, thank you very much
 (savehist-mode)
 
+;; Truncate those long lines
+(setq-default truncate-lines t)
+
 ;; default global bindings
 (require 'sk-defaults-bindings)
 

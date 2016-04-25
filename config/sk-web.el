@@ -17,12 +17,26 @@
 (sk/require-package 'js2-mode)
 (setq-default js2-basic-offset 2
               js2-indent-level 2)
+(sk/require-package 'tern)
+
+;; Node js repl
+(sk/require-package 'nodejs-repl)
+
+;; Coffeescript support
+(sk/require-package 'coffee-mode)
+
+;; Nginx mode
+(sk/require-package 'nginx-mode)
 
 ;; JSON
+(sk/require-package 'json-mode)
 (sk/require-package 'json-snatcher)
 
 ;; Beautify
 (sk/require-package 'web-beautify)
+
+;; SCSS mode
+(sk/require-package 'scss-mode)
 
 ;; Fast HTML/CSS
 (sk/require-package 'emmet-mode)

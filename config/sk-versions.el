@@ -8,6 +8,7 @@
 
 ;; Magit - Best git wrapper ever
 (sk/require-package 'magit)
+(sk/require-package 'magit-gh-pulls)
 
 ;; Diff hl for visual feedback of changes
 (sk/require-package 'diff-hl)
@@ -25,6 +26,9 @@
 
 ;; Git config mode
 (sk/require-package 'gitconfig-mode)
+
+;; Git ignore mode
+(sk/require-package 'gitignore-mode)
 
 ;; aux requirements
 (require 'sk-versions-bindings)

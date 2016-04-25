@@ -44,6 +44,7 @@
 ;; Colorschemes
 (sk/require-package 'badwolf-theme)
 (sk/require-package 'color-theme-solarized)
+(sk/require-package 'dracula-theme)
 (sk/require-package 'gotham-theme)
 (sk/require-package 'moe-theme)
 (sk/require-package 'monokai-theme)
@@ -66,6 +67,7 @@
 
 ;; Fancy battery
 (sk/require-package 'fancy-battery)
+(setq fancy-battery-show-percentage t)
 (add-hook 'after-init-hook 'fancy-battery-mode)
 
 ;; Format time string
@@ -74,6 +76,12 @@
 ;; Fancy weather
 (sk/require-package 'wttrin)
 (setq wttrin-default-cities '("Gainesville" "Albuquerque" "Chennai" "Hyderabad" "Columbus" "Hillsboro"))
+
+;; Focus mode
+(sk/require-package 'focus)
+(global-set-key (kbd "C-c v g F") 'focus-mode)
+(modalka-define-kbd "g F" "C-c v g F")
+(which-key-add-key-based-replacements "g F" "focus")
 
 ;; aux requirements
 (require 'sk-visual-hydra)

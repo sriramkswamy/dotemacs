@@ -24,7 +24,7 @@
   ("p" paradox-list-packages :color blue)
   ("c" wttrin :color blue)
   ("l" column-enforce-mode :color blue)
-  ("y" yas-minor-mode :color blue)
+  ("y" yas-global-mode :color blue)
   ("a" company-mode :color blue)
   ("i" highlight-indentation-mode)
   ("m" fci-mode)

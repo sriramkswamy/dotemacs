@@ -57,6 +57,9 @@
 ;; Auctex
 (sk/require-package 'company-auctex)
 
+;; Tern
+(sk/require-package 'company-tern)
+
 ;; Maps
 (global-set-key (kbd "M-]") 'company-complete-common-or-cycle)
 

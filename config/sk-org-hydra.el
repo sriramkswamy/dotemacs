@@ -67,9 +67,8 @@
 (defhydra sk/hydra-org-checkbox (:color red
                                  :hint nil)
   "
- _c_: checkbox   _t_: toggle   _s_: stats    _r_: reset    _c_: count    _q_: quit
+ _t_: toggle   _s_: stats    _r_: reset    _c_: count    _q_: quit
 "
-  ("c" org-checkbox)
   ("t" org-toggle-checkbox)
   ("c" org-update-checkbox-count-maybe)
   ("r" org-reset-checkbox-state-subtree)

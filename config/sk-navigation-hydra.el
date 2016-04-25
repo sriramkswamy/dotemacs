@@ -46,7 +46,7 @@
 (defhydra sk/hydra-bookmarks (:color red
                               :hint nil)
   "
- _s_:et  _b_:ookmark   _j_:ump   _d_:elete   _q_:uit
+ _s_: set  _b_: bookmark   _j_: jump   _d_: delete   _q_: quit
   "
   ("s" bookmark-set)
   ("b" bookmark-save)

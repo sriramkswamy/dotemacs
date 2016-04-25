@@ -16,7 +16,7 @@
 
   "i l" "expand inside line"
   
-  "o" "open line below"
+  "O" "open line above"
   
   "g J" "join line"
   

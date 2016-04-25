@@ -24,6 +24,12 @@
 (add-hook 'prog-mode-hook 'sk/diminish-abbrev)
 (add-hook 'text-mode-hook 'sk/diminish-abbrev)
 
+;; Visual wrap mdoe
+(defun sk/diminish-visual-line ()
+  (interactive)
+  (diminish 'visual-line-mode "ω"))
+(add-hook 'visual-line-mode-hook 'sk/diminish-visual-line)
+
 ;; Diminish some stuff
 (defun sk/diminish-auto-fill ()
   (interactive)

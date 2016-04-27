@@ -16,8 +16,7 @@
         helm-grep-default-recurse-command "ag-grep -H --no-group --no-color %e %p %f"))
 
 ;; Window config
-(setq helm-split-window-in-side-p           t  ; open helm buffer inside current window, not occupy whole other window
-      helm-move-to-line-cycle-in-source     t  ; move to end or beginning of source when reaching top or bottom of source.
+(setq helm-move-to-line-cycle-in-source     t  ; move to end or beginning of source when reaching top or bottom of source.
       helm-ff-search-library-in-sexp        t  ; search for library in `require' and `declare-function' sexp.
       helm-scroll-amount                    8  ; scroll 8 lines other window using M-<next>/M-<prior>
       helm-autoresize-max-height            30 ; maximum height
@@ -27,7 +26,8 @@
       helm-recentf-fuzzy-match              t  ; Fuzzy in recentf
       helm-buffers-fuzzy-matching           t  ; fuzzy for buffers
       helm-semantic-fuzzy-matching          t  ; semantic and imenu fuzzy matching
-      helm-imenu-fuzzy-matching             t)
+      helm-imenu-fuzzy-matching             t  ; fuzzy matching in imenu
+      )
 
 ;; Use spotlight on a mac
 (setq helm-locate-command
@@ -38,7 +38,7 @@
         ('darwin "mdfind -name %s %s")
         (t "locate %s")))
 
-;; Make sure helm is always on the bottom
+;; Make sure helm is always on the bottom - like ido/ivy
 (add-to-list 'display-buffer-alist
              '("\\`\\*helm.*\\*\\'"
                (display-buffer-in-side-window)
@@ -195,14 +195,6 @@
   (nconc args '(:fuzzy-match t))
   (apply f args))
 (advice-add 'helm-make-source :around 'my-helm-make-source)
-
-;; Improve performace with smex
-(defun my-minibuffer-setup-hook ()
-  (setq gc-cons-threshold most-positive-fixnum))
-(defun my-minibuffer-exit-hook ()
-  (setq gc-cons-threshold 800000))
-(add-hook 'minibuffer-setup-hook #'my-minibuffer-setup-hook)
-(add-hook 'minibuffer-exit-hook #'my-minibuffer-exit-hook)
 
 ;; Helm swoop configuration
 (setq helm-swoop-split-with-multiple-windows nil

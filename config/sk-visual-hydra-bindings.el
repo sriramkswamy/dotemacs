@@ -14,7 +14,7 @@
 
 ;; Vimish fold
 (global-set-key (kbd "C-c v z a") 'vimish-fold-toggle)
-(global-set-key (kbd "C-c v z f") 'sk/hydra-vimish-fold)
+(global-set-key (kbd "C-c v z f") 'sk/hydra-vimish-fold/body)
 
 ;; Modal bindings
 (require 'sk-visual-hydra-modalka)

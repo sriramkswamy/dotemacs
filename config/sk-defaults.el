@@ -64,6 +64,7 @@
 
 ;; Remote file navigation
 (setq tramp-default-method "ssh")
+(setq tramp-backup-directory-alist backup-directory-alist)
 (setq tramp-ssh-controlmaster-options "ssh")
 
 ;; File size warning - 15 MB
@@ -80,6 +81,13 @@
 
 ;; Truncate those long lines
 (setq-default truncate-lines t)
+
+;; Change the echo message
+(defun display-startup-echo-area-message ()
+  (message "Let the games begin!"))
+
+;; Shorten yes or no prompts
+(fset 'yes-or-no-p 'y-or-n-p)
 
 ;; default global bindings
 (require 'sk-defaults-bindings)

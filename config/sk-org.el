@@ -24,7 +24,8 @@
       ;; Quotes
       org-export-with-smart-quotes t
       ;; Citations
-      org-latex-to-pdf-process '("pdflatex %f" "biber %b" "pdflatex %f" "pdflatex %f"))
+      org-latex-to-pdf-process '("pdflatex %f" "biber %b" "pdflatex %f" "pdflatex %f")
+      org-export-backends '(ascii beamer html latex md))
 
 ;; Refile settings
 (setq org-refile-targets '((nil :maxlevel . 9)
@@ -192,7 +193,7 @@
 (require 'ox-reveal)
 (setq org-reveal-title-slide-template
  "<h1>%t</h1>
-<h2>%a</h2>
+<h3>%a</h3>
 ")
 
 ;; Restructred text and pandoc

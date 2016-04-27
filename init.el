@@ -159,7 +159,6 @@
      company-quickhelp         ; show docs during company completions
      company-c-headers         ; give me c headers
      company-web               ; company mode for web
-     company-jedi              ; company mode for python
      company-anaconda          ; company support for anaconda mode
      company-auctex            ; latex completion for company
      company-tern              ; tern js completion

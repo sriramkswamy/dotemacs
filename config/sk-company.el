@@ -43,12 +43,6 @@
 ;; Company web
 (sk/require-package 'company-web)
 
-;; Company jedi
-(sk/require-package 'company-jedi)
-(defun sk/python-mode-hook ()
-  (add-to-list 'company-backends 'company-jedi))
-(add-hook 'python-mode-hook 'sk/python-mode-hook)
-
 ;; Company anaconda
 (sk/require-package 'company-anaconda)
 (eval-after-load "company"

@@ -6,9 +6,9 @@
 
 ;;; Code:
 
-;; Emacs python helpers
-(setq python-shell-interpreter "ipython"
-       python-shell-interpreter-args "-i")
+;; ;; Emacs python helpers
+;; (setq python-shell-interpreter "ipython"
+;;        python-shell-interpreter-args "-i")
 
 ;; Anaconda mode
 (sk/require-package 'anaconda-mode)

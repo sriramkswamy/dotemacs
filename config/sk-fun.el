@@ -46,5 +46,8 @@
 ;; RSS feed
 (sk/require-package 'elfeed)
 
+;; Typing exercies
+(sk/require-package 'typit)
+
 (provide 'sk-fun)
 ;;; sk-fun.el ends here

@@ -63,6 +63,7 @@
 (setq ediff-split-window-function 'split-window-horizontally)
 
 ;; Remote file navigation
+(setq tramp-default-method "ssh")
 (setq tramp-ssh-controlmaster-options "ssh")
 
 ;; File size warning - 15 MB

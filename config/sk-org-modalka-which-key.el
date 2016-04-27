@@ -27,16 +27,20 @@
   "o e" "org export"
   "o u" "org update current"
   "o U" "org update all"
-  "o f" "org footnote"
+  "o F" "org footnote"
   "o ]" "org narrow subtree"
   "o [" "org widen"
-  "o n" "org note"
+  "o N" "org note"
   "o O" "org open"
   "o F" "org attach"
   "o E" "org set effort"
   "o B" "org table blank field"
+  "o <" "org select from cal"
+  "o >" "org goto cal"
 
-  "o D" "org deft"
+  "o f" "org deft"
+
+  "o n" "interleave notes"
   
   "i *" "org mark subtree")
 

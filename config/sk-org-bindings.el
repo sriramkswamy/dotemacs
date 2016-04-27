@@ -26,18 +26,23 @@
 (global-set-key (kbd "C-c O e") 'org-export-dispatch)
 (global-set-key (kbd "C-c O u") 'org-update-dblock)
 (global-set-key (kbd "C-c O U") 'org-update-all-dblocks)
-(global-set-key (kbd "C-c O f") 'org-footnote)
+(global-set-key (kbd "C-c O F") 'org-footnote)
 (global-set-key (kbd "C-c O ]") 'org-narrow-to-subtree)
 (global-set-key (kbd "C-c O [") 'widen)
-(global-set-key (kbd "C-c O n") 'org-note)
+(global-set-key (kbd "C-c O N") 'org-note)
 (global-set-key (kbd "C-c O O") 'org-open-at-point)
 (global-set-key (kbd "C-c O F") 'org-attach)
 (global-set-key (kbd "C-c O E") 'org-set-effort)
 (global-set-key (kbd "C-c O B") 'org-table-blank-field)
 (global-set-key (kbd "C-c O M") 'org-mark-subtree)
+(global-set-key (kbd "C-c O <") 'org-date-from-calendar)
+(global-set-key (kbd "C-c O >") 'org-goto-calendar)
 
 ;; Deft
-(global-set-key (kbd "C-c O D") 'deft)
+(global-set-key (kbd "C-c O f") 'deft)
+
+;; Interleave
+(global-set-key (kbd "C-c O n") 'interleave)
 
 ;; Modal key bindings
 (require 'sk-org-modalka)

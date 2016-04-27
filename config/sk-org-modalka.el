@@ -26,17 +26,22 @@
 (modalka-define-kbd "o e" "C-c O e")
 (modalka-define-kbd "o u" "C-c O u")
 (modalka-define-kbd "o U" "C-c O U")
-(modalka-define-kbd "o f" "C-c O f")
+(modalka-define-kbd "o F" "C-c O F")
 (modalka-define-kbd "o ]" "C-c O ]")
 (modalka-define-kbd "o [" "C-c O [")
-(modalka-define-kbd "o n" "C-c O n")
+(modalka-define-kbd "o N" "C-c O N")
 (modalka-define-kbd "o O" "C-c O O")
 (modalka-define-kbd "o F" "C-c O F")
 (modalka-define-kbd "o E" "C-c O E")
 (modalka-define-kbd "o B" "C-c O B")
+(modalka-define-kbd "o <" "C-c O <")
+(modalka-define-kbd "o >" "C-c O >")
 
 ;; deft
-(modalka-define-kbd "o D" "C-c O D")
+(modalka-define-kbd "o f" "C-c O f")
+
+;; interleave
+(modalka-define-kbd "o n" "C-c O n")
 
 ;; mark
 (modalka-define-kbd "i *" "C-c O M")

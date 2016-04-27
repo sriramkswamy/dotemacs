@@ -6,6 +6,17 @@
 
 ;;; Code:
 
+(modalka-define-kbd "0" "C-0")
+(modalka-define-kbd "1" "C-1")
+(modalka-define-kbd "2" "C-2")
+(modalka-define-kbd "3" "C-3")
+(modalka-define-kbd "4" "C-4")
+(modalka-define-kbd "5" "C-5")
+(modalka-define-kbd "6" "C-6")
+(modalka-define-kbd "7" "C-7")
+(modalka-define-kbd "8" "C-8")
+(modalka-define-kbd "9" "C-9")
+
 (modalka-define-kbd "h" "C-b")
 (modalka-define-kbd "j" "C-n")
 (modalka-define-kbd "k" "C-p")

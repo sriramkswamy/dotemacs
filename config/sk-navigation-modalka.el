@@ -21,7 +21,7 @@
 ;; Avy
 (modalka-define-kbd "f" "C-t")
 (modalka-define-kbd "F" "M-t")
-(modalka-define-kbd "w" "C-M-t")
+(modalka-define-kbd "w" "C-S-t")
 
 ;; Highlight symbols
 (modalka-define-kbd "#" "C-M-s")

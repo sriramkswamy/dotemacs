@@ -10,13 +10,12 @@
 (defhydra sk/hydra-of-activate (:color red
 			        :hint nil)
   "
- _b_: battery   _n_: number     _v_: wrap        _c_: column    _i_: indent   _k_: which-key    _l_: length   _q_: quit
- _t_: time      _w_: weather    _y_: yasnippet   _m_: margin    _j_: jabber   _o_: org-load     _s_: pairs
- _F_: font      _f_: flyspell   _a_: auto-comp   _d_: fold      _g_: ggtags   _p_: paradox      _e_: error
+ _b_: battery   _n_: number       _v_: wrap        _c_: column    _i_: indent   _k_: which-key   _l_: length
+ _t_: time      _w_: weather      _y_: yasnippet   _m_: margin    _j_: jabber   _o_: org-load    _s_: pairs
+ _f_: flyspell   _a_: auto-comp   _d_: fold        _g_: ggtags    _p_: paradox  _e_: error       _q_: quit
 "
   ("b" fancy-battery-mode)
   ("t" display-time-mode)
-  ("F" set-frame-font :color blue)
   ("n" linum-mode)
   ("w" wttrin :color blue)
   ("f" flyspell-mode :color blue)

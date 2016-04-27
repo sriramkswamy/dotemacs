@@ -106,9 +106,11 @@
      olivetti                  ; distraction free writing
      writegood-mode            ; pick out weasel words
      pdf-tools                 ; better pdf navigation/helpers
+     latex-preview-pane        ; preview latex mate
      ;; org
      cdlatex                   ; latex in org
      babel                     ; code in org
+     interleave                ; for pdf note taking
      ob-ipython                ; ipython support
      ox-reveal                 ; reveal.js support
      ox-impress-js             ; impress.js support
@@ -142,6 +144,7 @@
      web-mode                  ; nicely integrated js/css/html
      web-beautify              ; Beautify web stuff
      skewer-mode               ; javascript immediate evaluation
+     impatient-mode            ; see html instantly
      js2-mode                  ; javascript mode
      tern                      ; tern for javascript
      nodejs-repl               ; node repl

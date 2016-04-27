@@ -14,6 +14,7 @@
   "SPC j" "helm M x"
   "SPC x" "apropos"
   "g M" "mark rings"
+  "SPC v" "select font"
 
   "SPC d" "helm projectile"
 

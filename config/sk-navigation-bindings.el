@@ -21,7 +21,7 @@
 ;; Avy
 (global-set-key (kbd "C-t") 'avy-goto-char-in-line)
 (global-set-key (kbd "M-t") 'avy-goto-line)
-(global-set-key (kbd "C-M-t") 'avy-goto-char-2)
+(global-set-key (kbd "C-S-t") 'avy-goto-char-2)
 
 ;; Highlight stuff
 (global-set-key (kbd "C-M-s") 'highlight-symbol)

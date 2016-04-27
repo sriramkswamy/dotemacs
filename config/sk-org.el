@@ -181,12 +181,19 @@
 (sk/require-package 'babel)
 (setq org-confirm-babel-evaluate nil)
 
+;; For PDF note taking
+(sk/require-package 'interleave)
+
 ;; Python support
 (sk/require-package 'ob-ipython)
 
 ;; Export using reveal and impress-js
 (sk/require-package 'ox-reveal)
-(sk/require-package 'ox-impress-js)
+(require 'ox-reveal)
+(setq org-reveal-title-slide-template
+ "<h1>%t</h1>
+<h2>%a</h2>
+")
 
 ;; Restructred text and pandoc
 (sk/require-package 'ox-rst)

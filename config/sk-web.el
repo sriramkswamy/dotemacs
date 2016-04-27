@@ -42,6 +42,13 @@
 (sk/require-package 'emmet-mode)
 (add-hook 'sgml-mode-hook 'emmet-mode) ;; Auto-start on any markup modes
 (add-hook 'css-mode-hook  'emmet-mode) ;; enable Emmet's css abbreviation.
+(defun sk/diminish-emmet ()
+  (interactive)
+  (diminish 'emmet-mode "ε"))
+(add-hook 'emmet-mode-hook 'sk/diminish-emmet)
+
+;; Immediate HTML rendering
+(sk/require-package 'impatient-mode)
 
 ;; aux requirements
 (require 'sk-web-bindings)

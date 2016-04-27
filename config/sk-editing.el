@@ -38,6 +38,9 @@
 (add-hook 'markdown-mode-hook 'turn-on-smartparens-strict-mode)
 (show-smartparens-global-mode)
 
+;; Iedit mode
+(sk/require-package 'iedit)
+
 ;; Snippets
 (sk/require-package 'yasnippet)
 (setq yas-prompt-functions '(yas-completing-prompt))

@@ -159,7 +159,7 @@
      company-quickhelp         ; show docs during company completions
      company-c-headers         ; give me c headers
      company-web               ; company mode for web
-     company-anaconda          ; company support for anaconda mode
+     company-jedi              ; company support for python
      company-auctex            ; latex completion for company
      company-tern              ; tern js completion
      prodigy                   ; start services
@@ -191,6 +191,7 @@
      sx                        ; stackexchange
      fireplace                 ; Emacs is a fireplace now
      elfeed                    ; RSS reader in Emacs
+     theme-changer             ; Change themes based on day or night
      )
    ))
 

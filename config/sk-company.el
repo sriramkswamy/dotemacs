@@ -8,8 +8,6 @@
 
 ;; Company
 (sk/require-package 'company)
-(eval-after-load 'company
-  '(add-to-list 'company-backends '(company-dabbrev company-files)))
 (setq company-minimum-prefix-length 1
       company-require-match 0
       company-selection-wrap-around t
@@ -19,6 +17,12 @@
       company-idle-delay .2                         ; decrease delay before autocompletion popup shows
       company-begin-commands '(self-insert-command) ; start autocompletion only after typing
 )
+(eval-after-load 'company
+  '(add-to-list 'company-backends '(company-dabbrev
+				    company-files
+				    company-capf
+				    )))
+
 
 ;; Maps
 (defun sk/company-abort ()
@@ -48,16 +52,21 @@
 
 ;; Company C headers
 (sk/require-package 'company-c-headers)
-(eval-after-load 'company
-  '(add-to-list 'company-backends 'company-c-headers))
+(defun sk/c-mode-hook ()
+  (add-to-list 'company-backends 'company-c-headers))
+(add-hook 'c-mode-hook 'sk/c-mode-hook)
 
 ;; Company web
 (sk/require-package 'company-web)
 
 ;; Company anaconda
 (sk/require-package 'company-anaconda)
-(eval-after-load "company"
- '(add-to-list 'company-backends '(company-anaconda :with company-capf)))
+
+;; Company completion for python
+(sk/require-package 'company-jedi)
+(defun sk/python-mode-hook ()
+  (add-to-list 'company-backends 'company-jedi))
+(add-hook 'python-mode-hook 'sk/python-mode-hook)
 
 ;; Auctex
 (sk/require-package 'company-auctex)

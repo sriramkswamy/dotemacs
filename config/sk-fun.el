@@ -49,5 +49,10 @@
 ;; Typing exercies
 (sk/require-package 'typit)
 
+;; Change my theme based on day or night
+(sk/require-package 'theme-changer)
+(require 'theme-changer)
+(change-theme 'leuven 'zenburn)
+
 (provide 'sk-fun)
 ;;; sk-fun.el ends here

@@ -45,6 +45,7 @@
   (diminish 'company-mode " ς"))
 (add-hook 'company-mode-hook 'sk/company-hook)
 (add-hook 'prog-mode-hook 'company-mode)
+(add-hook 'org-mode-hook 'company-mode)
 
 ;; Tooltips
 (sk/require-package 'company-quickhelp)

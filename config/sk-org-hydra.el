@@ -243,34 +243,6 @@ _r_: report                  _l_: booklet   _m_: Misc             _T_: MS thesis
   ("u" bibtex-Unpublished)
   ("q" nil :color blue))
 
-(defhydra sk/org-ref-cite-hydra (:color blue
-                                 :hint nil)
-  "
-_p_: Open pdf     _w_: WOS                   _g_: Google Scholar   _K_: Copy citation to clipboard
-_u_: Open url     _r_: WOS related           _P_: Pubmed           _k_: Copy key to clipboard
-_n_: Open notes   _c_: WOS citing            _C_: Crossref         _f_: Copy bibtex entry to file
-_o_: Open entry   _e_: Email entry and pdf   _q_: quit
-"
-  ("p" org-ref-open-pdf-at-point)
-  ("u" org-ref-open-url-at-point)
-  ("n" org-ref-open-notes-at-point)
-  ("o" org-ref-open-citation-at-point)
-  ("w" org-ref-wos-at-point)
-  ("r" org-ref-wos-related-at-point)
-  ("c" org-ref-wos-citing-at-point)
-  ("g" org-ref-google-scholar-at-point)
-  ("P" org-ref-pubmed-at-point)
-  ("C" org-ref-crossref-at-point)
-  ("K" org-ref-copy-entry-as-summary)
-  ("k" (progn
-	 (kill-new
-	  (car (org-ref-get-bibtex-key-and-file)))))
-  ("f" org-ref-copy-entry-at-point-to-file)
-  ("e" (save-excursion
-	 (org-ref-open-citation-at-point)
-	 (org-ref-email-bibtex-entry)))
-  ("q" nil :color blue))
-
 ;; Hydra of org ref
 (defhydra sk/org-ref-bibtex-hydra (:color blue
                                    :hint nil)
@@ -328,12 +300,18 @@ _u_: Update field _F_: file funcs
 (defhydra sk/hydra-org-ref (:color blue
                             :hint nil)
   "
-_e_: entry     _f_: file     _c_: cite     _b_: bibtex     _q_: quit
+ _e_: bib new entry     _r_: ref link     _b_: bib file options
+ _t_: crossref entry    _l_: label link   _f_: file format
+ _d_: doi entry         _c_: cite link    _q_: quit
   "
   ("e" sk/org-ref-bibtex-new-entry/body)
-  ("f" sk/org-ref-bibtex-file/body)
-  ("c" sk/org-ref-cite-hydra/body)
+  ("t" crossref-add-bibtex-entry)
+  ("d" doi-add-bibtex-entry)
   ("b" sk/org-ref-bibtex-hydra/body)
+  ("r" org-ref-helm-insert-ref-link)
+  ("l" org-ref-helm-insert-label-link)
+  ("c" org-ref-helm-insert-cite-link)
+  ("f" sk/org-ref-bibtex-file/body)
   ("q" nil :color blue))
 
 ;; bindings

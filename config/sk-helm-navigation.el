@@ -32,9 +32,9 @@
 
 ;; Helm bibtex
 (sk/require-package 'helm-bibtex)
-(setq helm-bibtex-bibliography "~/Dropbox/references/references.bib")
-(setq helm-bibtex-library-path "~/Dropbox/references/bibtex-pdfs")
-(setq helm-bibtex-notes-path "~/Dropbox/references/helm-bibtex-notes")
+(setq helm-bibtex-bibliography "~/Dropbox/org/references/articles.bib")
+(setq helm-bibtex-library-path "~/Dropbox/org/references/pdfs")
+(setq helm-bibtex-notes-path "~/Dropbox/org/references/articles.org")
 
 ;; aux requirements
 (require 'sk-helm-navigation-bindings)

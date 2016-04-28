@@ -113,7 +113,7 @@
          "Article"         ; name
          entry             ; type
          (file+headline "~/Dropbox/org/phd.org" "Article")  ; target
-         "* %^{Title} %(org-set-tags)  :article: \n:PROPERTIES:\n:Created: %U\n:Linked: %A\n:END:\n%i\nBrief description:\n%?"  ; template
+         "* %^{Title} %(org-set-tags)  :article: \n:PROPERTIES:\n:Created: %U\n:Linked: %a\n:END:\n%i\nBrief description:\n%?"  ; template
          :prepend t        ; properties
          :empty-lines 1    ; properties
          :created t        ; properties
@@ -212,9 +212,11 @@
 
 ;; Org ref for academic papers
 (sk/require-package 'org-ref)
-(setq org-ref-bibliography-notes "~/Dropbox/references/references.org"
-      org-ref-default-bibliography '("~/Dropbox/references/references.bib")
-      org-ref-pdf-directory "~/Dropbox/references/pdfs/")
+(require 'org-ref)
+(setq org-ref-notes-directory "~/Dropbox/org/references/notes"
+      org-ref-bibliography-notes "~/Dropbox/org/references/articles.org"
+      org-ref-default-bibliography '("~/Dropbox/org/references/articles.bib")
+      org-ref-pdf-directory "~/Dropbox/org/references/pdfs/")
 
 ;; Fancy bullets
 (sk/require-package 'org-bullets)

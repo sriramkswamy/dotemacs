@@ -10,11 +10,11 @@
 (defhydra sk/hydra-of-windows (:color red
                                :hint nil)
   "
- ^Move^    ^Size^    ^Change^           ^Split^          ^Frame^                      ^Text^
- ^^^^^^^^^^^----------------------------------------------------------------------------------------
- ^ ^ _k_ ^ ^   ^ ^ _{_ ^ ^   _u_: winner-undo    _v_: vertical     _f_: fullscreen  _m_: maximize   _+_: zoom in
- _h_ ^+^ _l_   _<_ ^+^ _>_   _r_: winner-redo    _s_: horizontal   _d_: delete      _p_: suspend    _-_: zoom out
- ^ ^ _j_ ^ ^   ^ ^ _}_ ^ ^   _c_: close          _z_: zoom         _e_: select      _n_: name       _q_: quit
+ ^Move^    ^Size^    ^Change^           ^Split^          ^Text^
+ ^^^^^^^^^^^------------------------------------------------------------------
+ ^ ^ _k_ ^ ^   ^ ^ _{_ ^ ^   _u_: winner-undo   _v_: vertical     _+_: zoom in
+ _h_ ^+^ _l_   _<_ ^+^ _>_   _r_: winner-redo   _s_: horizontal   _-_: zoom out
+ ^ ^ _j_ ^ ^   ^ ^ _}_ ^ ^   _c_: close         _z_: zoom         _q_: quit
 "
   ("h" windmove-left)
   ("j" windmove-down)
@@ -33,11 +33,6 @@
          (winner-undo)
          (setq this-command 'winner-undo)))
   ("r" winner-redo)
-  ("m" toggle-frame-maximized :color blue)
-  ("p" suspend-frame :color blue)
-  ("d" delete-frame)
-  ("e" select-frame-by-name :color blue)
-  ("n" set-frame-name :color blue)
   ("+" text-scale-increase)
   ("-" text-scale-decrease)
   ("q" nil :color blue))

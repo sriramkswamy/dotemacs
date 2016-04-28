@@ -49,10 +49,26 @@
 ;; Typing exercies
 (sk/require-package 'typit)
 
-;; Change my theme based on day or night
-(sk/require-package 'theme-changer)
-(require 'theme-changer)
-(change-theme 'leuven 'zenburn)
+;; Google stuff
+(sk/require-package 'google-this)
+;; Hydra google
+(defhydra sk/hydra-google (:color blue
+                           :hint nil)
+  "
+ _w_: word   _r_: region    _v_: symbol   _l_: line
+ _g_: google _c_: cpp       _s_: string   _q_: quit
+ "
+  ("w" google-this-word)
+  ("r" google-this-region)
+  ("v" google-this-symbol)
+  ("s" google-this-clean-error-string)
+  ("l" google-this-line)
+  ("g" google-this-search)
+  ("c" google-this-cpp-reference)
+  ("q" nil :color blue))
+(global-set-key (kbd "C-c v g G") 'sk/hydra-google/body)
+(modalka-define-kbd "g n" "C-c v g G")
+(which-key-add-key-based-replacements "g n" "google now")
 
 (provide 'sk-fun)
 ;;; sk-fun.el ends here

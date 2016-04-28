@@ -191,7 +191,8 @@
      sx                        ; stackexchange
      fireplace                 ; Emacs is a fireplace now
      elfeed                    ; RSS reader in Emacs
-     theme-changer             ; Change themes based on day or night
+     typit                     ; Typing games
+     google-this               ; google stuff
      )
    ))
 
@@ -230,6 +231,9 @@
 
 ;; Fun stuff!
 (require 'sk-fun)
+
+;; Start the server
+(server-start)
 
 ;; Garbage collector - decrease threshold
 (setq gc-cons-threshold (* 1024 1024 1024))

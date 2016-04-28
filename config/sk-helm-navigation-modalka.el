@@ -14,6 +14,7 @@
 (modalka-define-kbd "SPC x" "C-x c a")
 (modalka-define-kbd "g M" "C-x c C-c SPC")
 (modalka-define-kbd "SPC v" "C-x c F")
+(modalka-define-kbd "SPC t" "C-x c t")
 
 ;; Helm ag
 (modalka-define-kbd "g s" "M-s")

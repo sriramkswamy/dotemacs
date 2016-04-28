@@ -10,10 +10,12 @@
 (defhydra sk/hydra-for-emamux (:color red
 			       :hint nil)
  "
- ^Command^    ^Runner^                                                          ^Clipboard^
-^^^^^^^^^^-----------------------------------------------------------------------------------------------------
- _s_: send    _r_: run        _z_: zoom      _c_: close         _h_: clear history    _y_: copy kill    _q_: quit
-            _l_: last cmd   _i_: inspect   _C_: close other   _I_: interrupt        _p_: paste tmux
+ ^Command^    ^Runner^                       ^Clipboard^
+^^^^^^^^^^-----------------------------------------------------------------
+ _s_: send    _r_: run        _c_: close          _y_: copy kill    _q_: quit
+            _l_: last cmd   _C_: close other    _p_: paste tmux
+            _z_: zoom       _h_: clear hist
+            _i_: inspect    _I_: interrupt
 "
  ("s" emamux:send-command)
  ("r" emamux:run-command)

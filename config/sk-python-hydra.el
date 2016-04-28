@@ -10,7 +10,9 @@
 (defhydra sk/hydra-for-py (:color blue
 			   :hint nil)
   "
- _r_: region    _b_: buffer    _f_: func    _s_: start    _S_: switch    _q_: quit
+ _r_: region    _s_: start    _q_: quit
+ _b_: buffer    _S_: switch
+ _f_: func
 "
   ("r" python-shell-send-region)
   ("b" python-shell-send-buffer)

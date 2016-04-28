@@ -15,6 +15,7 @@
   "SPC x" "apropos"
   "g M" "mark rings"
   "SPC v" "select font"
+  "SPC t" "helm top"
 
   "SPC d" "helm projectile"
 

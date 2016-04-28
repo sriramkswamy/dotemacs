@@ -10,9 +10,9 @@
 (defhydra sk/hydra-rectangle (:color red
                               :hint nil)
   "
- _p_: paste   _c_: clear   _r_: replace   _q_: quit
- _y_: copy    _o_: open    _i_: insert
- _d_: kill               _n_: number
+ _p_: paste   _c_: clear    _r_: replace
+ _y_: copy    _o_: open     _i_: insert
+ _d_: kill    _n_: number   _q_: quit
 "
   ("h" backward-char nil)
   ("l" forward-char nil)
@@ -51,8 +51,9 @@
 (defhydra sk/hydra-registers (:color blue
                               :hint nil)
   "
- _a_: append   _i_: insert    _j_: jump       _r_: rectangle-copy   _+_: increment   _q_: quit
- _c_: copy-to  _f_: frameset  _n_: number-to  _w_: window-config    _p_: point-to
+ _a_: append     _c_: copy-to    _j_: jump       _r_: rectangle-copy   _q_: quit
+ _i_: insert     _n_: number-to  _f_: frameset   _w_: window-config
+ _+_: increment  _p_: point-to
   "
   ("a" append-to-register)
   ("c" copy-to-register)

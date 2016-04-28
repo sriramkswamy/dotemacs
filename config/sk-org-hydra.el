@@ -10,7 +10,7 @@
 (defhydra sk/hydra-org-organize (:color red
                                  :hint nil)
   "
- ^Move^                                      ^Item^
+ ^Move^                                       ^Item^
 ^^^^^^^^^^^^^--------------------------------------------------------------------
  ^ ^ _k_ ^ ^   ^ ^ _K_ ^ ^   ^ ^ _p_ ^ ^  ^ ^ _P_ ^ ^   _<_: promote  _u_: up     _q_: quit
  _h_ ^+^ _l_   _H_ ^+^ _L_   _b_ ^+^ _f_  _B_ ^+^ _F_   _>_: demote   _d_: down
@@ -92,7 +92,7 @@
 (defhydra sk/hydra-org-clock (:color red
                               :hint nil)
   "
- ^Clock^                   ^Timer^    ^Stamp^
+ ^Clock^                     ^Timer^     ^Stamp^
 ^^^^^^^^^^-------------------------------------------------
  _i_: in       _z_: resolve    _b_: begin  _t_: stamp       _q_: quit
  _o_: out      _l_: last       _e_: end    _u_: inactive
@@ -119,11 +119,11 @@
 (defhydra sk/hydra-org-tables (:color red
                                :hint nil)
   "
- ^Field^   ^Shift^   ^Insert^     ^Delete^        ^Field^    ^Table^     ^Formula^
+ ^Field^   ^Shift^   ^Insert^      ^Delete^         ^Field^     ^Table^      ^Formula^
 ^^^^^^^^^^^^------------------------------------------------------------------------------
  ^ ^ _k_ ^ ^   ^ ^ _K_ ^ ^   _r_: row      _dr_: del row    _e_: edit   _a_: align   _+_: sum    _q_: quit
  _h_ ^+^ _l_   _H_ ^+^ _L_   _c_: column   _dc_: del col    _b_: blank  _|_: create  _=_: eval
- ^ ^ _j_ ^ ^   ^ ^ _J_ ^ ^   _-_: hline                  _i_: info             _f_: edit
+ ^ ^ _j_ ^ ^   ^ ^ _J_ ^ ^   _-_: hline                   _i_: info             _f_: edit
 "
   ("a" org-table-align)
   ("l" org-table-next-field)
@@ -224,9 +224,9 @@ _v_: validate     _s_: sort     _r_: reformat     _c_: count     _p_: PDF      _
 (defhydra sk/org-ref-bibtex-new-entry (:color blue
                                        :hint nil)
   "
-_a_: article                 _b_: book      _p_: in proceedings   _m_: Misc     _t_: MS Thesis    _u_: unpublished
-_c_: article in collection   _i_: in book   _P_: proceedings      _M_: Manual   _T_: PhD Thesis   _q_: quit
-_r_: report                  _l_: booklet
+_a_: article                 _b_: book      _p_: in proceedings   _M_: Manual      _u_: unpublished
+_c_: article in collection   _i_: in book   _P_: proceedings      _t_: PhD thesis  _q_: quit
+_r_: report                  _l_: booklet   _m_: Misc             _T_: MS thesis
   "
   ("a" bibtex-Article)
   ("c" bibtex-InCollection)
@@ -238,8 +238,8 @@ _r_: report                  _l_: booklet
   ("P" bibtex-Proceedings)
   ("m" bibtex-Misc)
   ("M" bibtex-Manual)
-  ("T" bibtex-PhdThesis)
-  ("t" bibtex-MastersThesis)
+  ("t" bibtex-PhdThesis)
+  ("T" bibtex-MastersThesis)
   ("u" bibtex-Unpublished)
   ("q" nil :color blue))
 

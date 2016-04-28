@@ -18,7 +18,7 @@
       company-begin-commands '(self-insert-command) ; start autocompletion only after typing
 )
 (eval-after-load 'company
-  '(add-to-list 'company-backends '(company-dabbrev
+  '(add-to-list 'company-backends '(
 				    company-files
 				    company-capf
 				    )))

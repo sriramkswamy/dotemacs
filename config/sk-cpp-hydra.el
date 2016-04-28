@@ -10,8 +10,9 @@
 (defhydra sk/hydra-for-cpp (:color blue
 			    :hint nil)
   "
- _b_: build     _o_: omp math      _m_: mpi math       _h_: hybrid math       _c_: compile math     _q_: quit
-              _O_: omp simple    _M_: mpi simple     _H_: hybrid simple     _C_: compile simple
+ _b_: build            _o_: omp math      _O_: omp simple      _q_: quit
+ _c_: compile math     _m_: mpi math      _M_: mpi simple
+ _C_: compile simple   _h_: hybrid math   _H_: hybrid simple
 "
   ("b" compile)
   ("o" sk/compile-cpp-omp-math)
@@ -28,9 +29,9 @@
 (defhydra sk/hydra-for-cpp-jump (:color red
 			         :hint nil)
   "
- _s_: sym-at-pt   _r_: ref-at-pt    _D_: diag    _f_: for-stack    _n_: next    _i_: info    _N_: rename
- _S_: symbol      _R_: references   _F_: fixit   _b_: back-stack   _p_: prev    _t_: type    _q_: quit
- _v_: vir-at-pt                   _P_: preproc                 _d_: depends _e_: enum
+ _s_: sym-at-pt   _r_: ref-at-pt    _D_: diag    _f_: for-stack    _n_: next    _i_: info
+ _S_: symbol      _R_: references   _F_: fixit   _b_: back-stack   _p_: prev    _t_: type
+ _v_: vir-at-pt   _N_: rename       _P_: preproc _d_: depends      _e_: enum    _q_: quit
 "
   ("s" rtags-find-symbol-at-point)
   ("S" rtags-find-symbol)

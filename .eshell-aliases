@@ -58,11 +58,6 @@ alias cdw cd ~/Documents/workspace/
 #  OS X specific stuff  #
 #########################
 
-# youtube downloader
-alias vid="youtube-dl --format=mp4 -o '~/Downloads/MyVideos/%(title)s.%(ext)s'"
-alias play="youtube-dl --format=mp4 -o '~/Downloads/MyVideos/%(playlist)s/%(playlist_index)s - %(title)s.%(ext)s'"
-alias channel="youtube-dl --format=mp4 -o '~/Downloads/MyVideos/%(uploader)s/%(playlist)s/%(playlist_index)s - %(title)s.%(ext)s'"
-
 # Sage
 alias sage /Applications/Sage-6.8.app/Contents/Resources/sage/sage
 

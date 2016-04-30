@@ -42,7 +42,7 @@
 ;; Diminish
 (defun sk/company-hook ()
   (interactive)
-  (diminish 'company-mode " ς"))
+  (diminish 'company-mode " క"))
 (add-hook 'company-mode-hook 'sk/company-hook)
 (add-hook 'prog-mode-hook 'company-mode)
 (add-hook 'org-mode-hook 'company-mode)
@@ -59,9 +59,6 @@
 
 ;; Company web
 (sk/require-package 'company-web)
-
-;; Company anaconda
-(sk/require-package 'company-anaconda)
 
 ;; Company completion for python
 (sk/require-package 'company-jedi)

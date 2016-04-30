@@ -238,9 +238,6 @@
 ;; Blog with org
 (sk/require-package 'org-jekyll)
 
-;; Beautify theme
-;; (load "org-beautify-theme.el")
-
 ;; which key explanations
 (require 'sk-org-hydra)
 (require 'sk-org-bindings)

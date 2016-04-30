@@ -6,6 +6,10 @@
 
 ;;; Code:
 
+;; Counsel bindings
+(global-set-key (kbd "C-r") 'counsel-imenu)
+(global-set-key (kbd "C-x 8") 'counsel-unicode-char)
+
 ;; Counsel locate
 (global-set-key (kbd "C-x l") 'counsel-locate)
 

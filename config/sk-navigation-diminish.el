@@ -21,7 +21,7 @@
 ;; Projectile
 (defun sk/diminish-projectile ()
   (interactive)
-  (diminish 'projectile-mode " π"))
+  (diminish 'projectile-mode ""))
 (add-hook 'projectile-mode-hook 'sk/diminish-projectile)
 
 ;; Ggtags

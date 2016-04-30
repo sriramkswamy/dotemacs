@@ -24,7 +24,7 @@
 ;; Ivy diminish
 (defun sk/diminish-ivy ()
   (interactive)
-  (diminish 'ivy-mode " λ"))
+  (diminish 'ivy-mode " ஐ"))
 (add-hook 'ivy-mode-hook 'sk/diminish-ivy)
 (add-hook 'after-init-hook 'sk/diminish-ivy)
 

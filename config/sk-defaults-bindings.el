@@ -27,6 +27,9 @@
 (global-set-key (kbd "C-c v R") 'overwrite-mode)
 (global-set-key (kbd "C-c v C-v") 'rectangle-mark-mode)
 (global-set-key (kbd "C-c v g q") 'fill-paragraph)
+(global-set-key (kbd "C-c v C-o") 'pop-to-mark-command)
+(global-set-key (kbd "C-c v C-t") 'pop-tag-mark)
+(global-set-key (kbd "C-c v C-S-o") 'pop-global-mark)
 
 (provide 'sk-defaults-bindings)
 ;;; sk-defaults-bindings.el ends here

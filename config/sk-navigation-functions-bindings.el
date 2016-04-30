@@ -20,5 +20,11 @@
 (global-set-key (kbd "C-S-n") 'sk/other-pdf-next)
 (global-set-key (kbd "C-S-p") 'sk/other-pdf-previous)
 
+;; Mark
+(global-set-key (kbd "C-c v C-i") 'sk/unpop-to-mark-command)
+
+;; Modal bindings
+(require 'sk-navigation-functions-modalka)
+
 (provide 'sk-navigation-functions-bindings)
 ;;; sk-navigation-functions-bindings.el ends here

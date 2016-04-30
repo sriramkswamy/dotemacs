@@ -20,7 +20,7 @@
 (sk/require-package 'auctex)
 (sk/require-package 'auctex-latexmk)
 (sk/require-package 'latex-preview-pane)
-(latex-preview-pane-enable)
+(add-hook 'latex-mode-hook 'latex-preview-pane-enable)
 (setq reftex-default-bibliography '("~/Dropbox/references/references.bib"))
 
 ;; Fountain mode for screenwriting

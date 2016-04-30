@@ -57,5 +57,12 @@
   (diminish 'auto-revert-mode ""))
 (add-hook 'auto-revert-mode-hook 'sk/diminish-auto-revert)
 
+;; Flyspell
+(defun sk/diminish-flyspell ()
+  (interactive)
+  (diminish 'flyspell-mode " φ"))
+(add-hook 'flyspell-mode-hook 'sk/diminish-flyspell)
+
+
 (provide 'sk-diminish)
 ;;; sk-diminish.el ends here

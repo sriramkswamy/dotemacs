@@ -191,9 +191,19 @@ point reaches the beginning or end of the buffer, stop there."
              (set-window-start w2 s1)
              (setq i (1+ i)))))))
 
+;; Unpop mark
+(defun sk/unpop-to-mark-command ()
+  "Unpop off mark ring. Does nothing if mark ring is empty."
+  (interactive)
+      (when mark-ring
+        (setq mark-ring (cons (copy-marker (mark-marker)) mark-ring))
+        (set-marker (mark-marker) (car (last mark-ring)) (current-buffer))
+        (when (null (mark t)) (ding))
+        (setq mark-ring (nbutlast mark-ring))
+        (goto-char (marker-position (car (last mark-ring))))))
+
 ;; Normal and modalka bindings for these functions
 (require 'sk-navigation-functions-bindings)
-(require 'sk-navigation-functions-modalka)
 
 (provide 'sk-navigation-functions)
 ;;; sk-navigation-functions.el ends here

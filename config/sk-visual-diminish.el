@@ -17,6 +17,7 @@
   (interactive)
   (diminish 'volatile-highlights-mode ""))
 (add-hook 'volatile-highlights-mode-hook 'sk/diminish-volatile-highlights)
+(add-hook 'after-init-hook 'sk/diminish-volatile-highlights)
 
 ;; ws-butler
 (defun sk/diminish-ws-butler ()

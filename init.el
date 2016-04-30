@@ -19,13 +19,13 @@
 ;; Garbage collector - increase threshold
 (setq gc-cons-threshold (* 1024 1024 1024 1024))
 
-;; Now initiliaze packages
+;; Now initiliaze packages - 0.7 seconds
 (package-initialize)
 
-;; Defaults
+;; Defaults - 0.7 seconds
 (require 'sk-defaults)
 
-;; packages configuration
+;; packages configuration - 0.8 seconds - adds 0.1 seconds
 (require 'sk-package)
 
 ;; Emacs 25 has a nice improvement
@@ -61,7 +61,6 @@
      dired+                    ; improve dired
      neotree                   ; nice sidebar navigation
      ggtags                    ; tag based navigation
-     back-button               ; global and local marks
      perspective               ; organize workspaces
      ;; editing
      expand-region             ; Better marking
@@ -195,40 +194,40 @@
      )
    ))
 
-;; Diminish minor modes
+;; Diminish minor modes - 0.8 seconds
 (require 'sk-diminish)
 
-;; Discover bindings
+;; Discover bindings - 0.8 seconds
 (require 'sk-which-key)
 
-;; Modal editing
+;; Modal editing - 0.9 seconds - adds 0.1 seconds
 (require 'sk-modal)
 
-;; Navigation using search/completion/motion
+;; Navigation using search/completion/motion - 1.1 seconds - adds 0.2 seconds
 (require 'sk-navigation)
 
-;; Editing
+;; Editing - 1.3 seconds - adds 0.2 seconds
 (require 'sk-editing)
 
-;; Visual helpers
+;; Visual helpers - 1.5 seconds - adds 0.2 seconds
 (require 'sk-visual)
 
-;; Writing
+;; Writing - 1.5 seconds
 (require 'sk-writing)
 
-;; Org - you beauty
+;; Org - you beauty - 1.6 seconds - adds 0.1 seconds
 (require 'sk-org)
 
-;; Version control
+;; Version control - 1.6 seconds
 (require 'sk-versions)
 
-;; Programming
+;; Programming - 2.0 seconds - adds 0.4 seconds (don't know why yet)
 (require 'sk-programming)
 
-;; ivy
+;; ivy - 2.1 seconds - adds 0.1 seconds
 (require 'sk-ivy)
 
-;; Fun stuff!
+;; Fun stuff! - 2.1 seconds
 (require 'sk-fun)
 
 ;; Garbage collector - decrease threshold

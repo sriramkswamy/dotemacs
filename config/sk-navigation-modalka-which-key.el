@@ -33,11 +33,6 @@
   "g t" "create tags"
   "T" "global tags"
 
-  ";" "local backward"
-  "," "local forward"
-  "<" "global backward"
-  ">" "global forward"
-
   "C" "config perspective prefix"
   "C s" "perspective switch"
   "C a" "perspective add buffer"

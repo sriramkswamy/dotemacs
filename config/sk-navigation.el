@@ -8,11 +8,11 @@
 
 ;; Don't lose the cursor
 (sk/require-package 'beacon)
-(add-hook 'after-init-hook 'beacon-mode)
+(beacon-mode 1)
 
 ;; Undo tree
 (sk/require-package 'undo-tree)
-(add-hook 'after-init-hook 'undo-tree-mode)
+(global-undo-tree-mode 1)
 
 ;; Avy for on-screen motion
 (sk/require-package 'avy)
@@ -53,13 +53,9 @@
 (add-hook 'prog-mode-hook 'ggtags-mode)
 (setq-local imenu-create-index-function #'ggtags-build-imenu-index)
 
-;; Back button mode
-(sk/require-package 'back-button)
-(add-hook 'after-init-hook 'back-button-mode)
-
 ;; Perspective mode
 (sk/require-package 'perspective)
-(add-hook 'after-init-hook 'persp-mode)
+(persp-mode 1)
 
 ;; aux requirements
 (require 'sk-navigation-bindings)

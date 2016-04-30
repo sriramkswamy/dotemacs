@@ -16,6 +16,9 @@
 (modalka-define-kbd "] d" "C-S-n")
 (modalka-define-kbd "[ d" "C-S-p")
 
+;; Marks
+(modalka-define-kbd ">" "C-c v C-i")
+
 ;; which key explanations for modalka bindings
 (require 'sk-navigation-functions-modalka-which-key)
 

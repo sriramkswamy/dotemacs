@@ -60,6 +60,9 @@
   "\\" "C-c C-c"
   "!" "shell command"
   "&" "async shell command"
+  "<" "pop mark"
+  ";" "pop tag"
+  "," "pop global"
 
   "g" "global prefix"
   "g g" "start of file"

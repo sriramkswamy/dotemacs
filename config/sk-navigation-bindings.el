@@ -37,12 +37,6 @@
 (global-set-key (kbd "C-c v T") 'ggtags-find-tag-regexp)
 (global-set-key (kbd "C-c G") 'ggtags-create-tags)
 
-;; Back button
-(global-set-key (kbd "C-c v C-o") 'back-button-local-backward)
-(global-set-key (kbd "C-c v C-i") 'back-button-local-forward)
-(global-set-key (kbd "C-c v C-S-o") 'back-button-global-backward)
-(global-set-key (kbd "C-c v C-S-i") 'back-button-global-forward)
-
 ;; modal bindings
 (require 'sk-navigation-modalka)
 

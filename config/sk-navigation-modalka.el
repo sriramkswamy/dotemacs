@@ -41,12 +41,6 @@
 (modalka-define-kbd "g t" "C-c G")
 (modalka-define-kbd "T" "C-c v T")
 
-;; Back button
-(modalka-define-kbd ";" "C-c v C-o")
-(modalka-define-kbd "," "C-c v C-i")
-(modalka-define-kbd "<" "C-c v C-S-o")
-(modalka-define-kbd ">" "C-c v C-S-i")
-
 ;; Perspective mode
 (modalka-define-kbd "C s" "C-x x s")
 (modalka-define-kbd "C a" "C-x x a")

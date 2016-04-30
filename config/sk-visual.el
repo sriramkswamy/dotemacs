@@ -8,7 +8,7 @@
 
 ;; Volatile highlights
 (sk/require-package 'volatile-highlights)
-(add-hook 'after-init-hook 'volatile-highlights-mode)
+(volatile-highlights-mode t)
 
 ;; Column force as a lookout for length
 (sk/require-package 'column-enforce-mode)
@@ -68,7 +68,7 @@
 ;; Fancy battery
 (sk/require-package 'fancy-battery)
 (setq fancy-battery-show-percentage t)
-(add-hook 'after-init-hook 'fancy-battery-mode)
+(add-hook 'after-init-hook #'fancy-battery-mode)
 
 ;; Format time string
 (setq display-time-format "%I:%M %p")

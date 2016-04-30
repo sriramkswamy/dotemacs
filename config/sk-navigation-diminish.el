@@ -11,6 +11,7 @@
   (interactive)
   (diminish 'beacon-mode ""))
 (add-hook 'beacon-mode-hook 'sk/diminish-beacon)
+(add-hook 'after-init-hook 'sk/diminish-beacon)
 
 ;; Undo tree
 (defun sk/diminish-undo-tree ()

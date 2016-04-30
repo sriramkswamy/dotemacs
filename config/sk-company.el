@@ -42,7 +42,7 @@
 ;; Diminish
 (defun sk/company-hook ()
   (interactive)
-  (diminish 'company-mode " క"))
+  (diminish 'company-mode " ς"))
 (add-hook 'company-mode-hook 'sk/company-hook)
 (add-hook 'prog-mode-hook 'company-mode)
 (add-hook 'org-mode-hook 'company-mode)

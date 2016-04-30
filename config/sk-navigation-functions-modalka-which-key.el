@@ -13,7 +13,9 @@
   "SPC z" "toggle fullscreen"
 
   "] d" "adjacent pdf next page"
-  "[ d" "adjacent pdf prev page")
+  "[ d" "adjacent pdf prev page"
+  
+  ">" "unpop mark")
 
 (provide 'sk-navigation-functions-modalka-which-key)
 ;;; sk-navigation-functions-modalka-which-key.el ends here

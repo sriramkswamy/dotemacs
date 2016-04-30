@@ -82,6 +82,9 @@
 ;; Truncate those long lines
 (setq-default truncate-lines t)
 
+;; Marks navigation repeat
+(setq set-mark-command-repeat-pop t)
+
 ;; Change the echo message
 (defun display-startup-echo-area-message ()
   (message "Let the games begin!"))

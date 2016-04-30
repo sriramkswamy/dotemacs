@@ -19,8 +19,8 @@
 (setq helm-move-to-line-cycle-in-source     t  ; move to end or beginning of source when reaching top or bottom of source.
       helm-ff-search-library-in-sexp        t  ; search for library in `require' and `declare-function' sexp.
       helm-scroll-amount                    8  ; scroll 8 lines other window using M-<next>/M-<prior>
-      helm-autoresize-max-height            30 ; maximum height
-      helm-autoresize-min-height            30 ; maximum height
+      helm-autoresize-max-height            20 ; maximum height
+      helm-autoresize-min-height            20 ; maximum height
       helm-ff-file-name-history-use-recentf t  ; filename
       helm-M-x-fuzzy-match                  t  ; Fuzzy in M-x
       helm-recentf-fuzzy-match              t  ; Fuzzy in recentf

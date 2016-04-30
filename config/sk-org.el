@@ -40,12 +40,11 @@
                             ("article" . ?a) ;; temporary
                             ("research" . ?r) ;; temporary
                             ("courses" . ?c) ;; temporary
-                            ("fall" . ?f) ;; temporary
-                            ("spring" . ?s) ;; temporary
+                            ("films" . ?f)
+                            ("story" . ?s)
                             ("ledger" . ?l)
                             ("gubby" . ?g)
-                            ("movies" . ?M)
-                            ("online" . ?o)
+			    ("online" . ?o)
                             ("cash" . ?$)
                             ("card" . ?d)
                             ("idea" . ?i)
@@ -64,11 +63,16 @@
         (sequence "|" "CANCELLED(c@)")))
 
 ;; Agenda settings
-(setq org-agenda-files (list "~/Dropbox/org/blog.org"
-                             "~/Dropbox/org/errands.org"
-                             "~/Dropbox/org/phd.org"
-                             "~/Dropbox/org/ledger.org"
-                             "~/Dropbox/org/notes.org"))
+(setq org-agenda-files (list
+			"~/Dropbox/org/blog.org"
+			"~/Dropbox/org/errands.org"
+			"~/Dropbox/org/phd.org"
+			"~/Dropbox/org/references/articles.org"
+			"~/Dropbox/org/ledger.org"
+			"~/Dropbox/org/notes.org"
+			"~/Dropbox/org/fun.org"
+			))
+
 (setq org-deadline-warning-days 2
       org-agenda-span 'fortnight
       org-agenda-skip-scheduled-if-deadline-is-shown t)
@@ -109,11 +113,11 @@
          :empty-lines 1    ; properties
          :created t        ; properties
         )
-        ("a"               ; key
-         "Article"         ; name
+        ("s"               ; key
+         "Story"           ; name
          entry             ; type
-         (file+headline "~/Dropbox/org/phd.org" "Article")  ; target
-         "* %^{Title} %(org-set-tags)  :article: \n:PROPERTIES:\n:Created: %U\n:Linked: %a\n:END:\n%i\nBrief description:\n%?"  ; template
+         (file+headline "~/Dropbox/org/fun.org")  ; target
+         "* %^{Title} %(org-set-tags)  :story: \n:PROPERTIES:\n:Created: %U\n:END:\n%i\n\n%?"  ; template
          :prepend t        ; properties
          :empty-lines 1    ; properties
          :created t        ; properties
@@ -136,10 +140,10 @@
          :empty-lines 1    ; properties
          :created t        ; properties
         )
-        ("M"               ; key
-         "Movies"          ; name
+        ("f"               ; key
+         "films"          ; name
          entry             ; type
-         (file+headline "~/Dropbox/org/notes.org" "Movies")  ; target
+         (file+headline "~/Dropbox/org/fun.org" "Movies")  ; target
          "* %^{Movie} %(org-set-tags)  :film: \n:PROPERTIES:\n:Created: %U\n:END:\n%i\nNetflix?: %^{netflix? Yes/No}\nGenre: %^{genre}\nDescription:\n%?"  ; template
          :prepend t        ; properties
          :empty-lines 1    ; properties
@@ -213,9 +217,12 @@
 ;; Org ref for academic papers
 (sk/require-package 'org-ref)
 (require 'org-ref)
+(require 'org-ref-latex)
+(require 'org-ref-pdf)
+(require 'org-ref-url-utils)
 (setq org-ref-notes-directory "~/Dropbox/org/references/notes"
       org-ref-bibliography-notes "~/Dropbox/org/references/articles.org"
-      org-ref-default-bibliography '("~/Dropbox/org/references/articles.bib")
+      org-ref-default-bibliography '("~/Dropbox/org/references/multiphysics.bib" "~/Dropbox/org/references/chanceconstraints.bib")
       org-ref-pdf-directory "~/Dropbox/org/references/pdfs/")
 
 ;; Fancy bullets

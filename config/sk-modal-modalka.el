@@ -44,7 +44,6 @@
 (modalka-define-kbd "K" "M-v")
 (modalka-define-kbd "L" "C-x <")
 (modalka-define-kbd "H" "C-x >")
-(modalka-define-kbd "I" "C-M-i")
 (modalka-define-kbd "'" "C-c '")
 (modalka-define-kbd "Z" "C-x 1")
 (modalka-define-kbd "q" "C-x (")

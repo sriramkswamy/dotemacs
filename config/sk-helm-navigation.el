@@ -32,7 +32,7 @@
 
 ;; Helm bibtex
 (sk/require-package 'helm-bibtex)
-(setq helm-bibtex-bibliography "~/Dropbox/org/references/articles.bib")
+(setq helm-bibtex-bibliography '("~/Dropbox/org/references/multiphysics.bib" "~/Dropbox/org/references/chanceconstraints.bib"))
 (setq helm-bibtex-library-path "~/Dropbox/org/references/pdfs")
 (setq helm-bibtex-notes-path "~/Dropbox/org/references/articles.org")
 

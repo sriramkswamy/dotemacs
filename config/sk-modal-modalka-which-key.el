@@ -46,7 +46,6 @@
   "J" "scroll down"
   "K" "scroll up"
   "L" "scroll right"
-  "I" "completion at point"
   "'" "org edit special"
   "q" "start macro"
   "Q" "end macro"

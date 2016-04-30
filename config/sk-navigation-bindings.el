@@ -27,11 +27,15 @@
 (global-set-key (kbd "C-M-s") 'highlight-symbol)
 (global-set-key (kbd "C-M-r") 'highlight-symbol-remove-all)
 
+;; Swoop
+(global-set-key (kbd "C-c v *") 'swoop)
+
 ;; Neotree
 (global-set-key (kbd "C-c n") 'neotree-toggle)
 
 ;; Ggtags
 (global-set-key (kbd "C-c v T") 'ggtags-find-tag-regexp)
+(global-set-key (kbd "C-c G") 'ggtags-create-tags)
 
 ;; Back button
 (global-set-key (kbd "C-c v C-o") 'back-button-local-backward)

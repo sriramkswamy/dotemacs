@@ -53,6 +53,11 @@
      avy                       ; jump anywhere on screen
      highlight-symbol          ; highlight selected symbol
      projectile                ; project navigation
+     swoop                     ; swoop word under cursor
+     ag                        ; silver searcher
+     pt                        ; platinum searcher
+     wgrep-ag                  ; silver searcher writeable grep
+     wgrep-pt                  ; platinum searcher writeable grep
      dired+                    ; improve dired
      neotree                   ; nice sidebar navigation
      ggtags                    ; tag based navigation
@@ -169,19 +174,13 @@
      ;; repl
      multi-term                ; multi term support in emacs
      emamux                    ; support for sending stuff to tmux
-     ;; helm
-     helm                      ; the core
-     flx                       ; flx matching algorithm
-     helm-flx                  ; flx integration with helm
-     helm-fuzzier              ; fuzzier matching
-     helm-ag                   ; helm interface to ag
-     helm-descbinds            ; helm to describe bindings
-     helm-themes               ; search and apply themes
-     helm-swoop                ; swoop word under cursor
-     helm-projectile           ; interface for projectile
-     helm-bibtex               ; bibtex entries
-     helm-flycheck             ; flycheck
-     helm-css-scss             ; helm for css selectors
+     ;; ivy et all
+     ivy                       ; the core
+     counsel                   ; the wrapper functions based on ivy
+     swiper                    ; search based on ivy
+     counsel-projectile        ; projectile support
+     spotlight                 ; search mac spotlight
+     ivy-bibtex                ; bibtex entries
      ;; Fun stuff
      jabber                    ; IM in Emacs
      xkcd                      ; read xkcd
@@ -226,14 +225,11 @@
 ;; Programming
 (require 'sk-programming)
 
-;; Helm
-(require 'sk-helm)
+;; ivy
+(require 'sk-ivy)
 
 ;; Fun stuff!
 (require 'sk-fun)
-
-;; Start the server
-(server-start)
 
 ;; Garbage collector - decrease threshold
 (setq gc-cons-threshold (* 1024 1024 1024))

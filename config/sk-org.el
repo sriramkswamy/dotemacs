@@ -194,11 +194,11 @@
 
 ;; Export using reveal and impress-js
 (sk/require-package 'ox-reveal)
-(require 'ox-reveal)
 (setq org-reveal-title-slide-template
- "<h1>%t</h1>
+      "<h1>%t</h1>
 <h3>%a</h3>
-")
+"
+      )
 
 ;; Restructred text and pandoc
 (sk/require-package 'ox-rst)
@@ -216,14 +216,20 @@
 
 ;; Org ref for academic papers
 (sk/require-package 'org-ref)
-(require 'org-ref)
-(require 'org-ref-latex)
-(require 'org-ref-pdf)
-(require 'org-ref-url-utils)
 (setq org-ref-notes-directory "~/Dropbox/org/references/notes"
       org-ref-bibliography-notes "~/Dropbox/org/references/articles.org"
       org-ref-default-bibliography '("~/Dropbox/org/references/multiphysics.bib" "~/Dropbox/org/references/chanceconstraints.bib")
       org-ref-pdf-directory "~/Dropbox/org/references/pdfs/")
+(defun sk/org-ref-bibtex-custom-load ()
+  (interactive)
+  (require 'org-ref)
+  (require 'org-ref-pdf)
+  (require 'org-ref-url-utils))
+(defun sk/org-ref-latex-custom-load ()
+  (interactive)
+  (require 'org-ref-latex))
+(add-hook 'bibtex-mode-hook 'sk/org-ref-bibtex-custom-load)
+(add-hook 'latex-mode-hook 'sk/org-ref-latex-custom-load)
 
 ;; Fancy bullets
 (sk/require-package 'org-bullets)
@@ -233,7 +239,7 @@
 (sk/require-package 'org-jekyll)
 
 ;; Beautify theme
-(load "org-beautify-theme.el")
+;; (load "org-beautify-theme.el")
 
 ;; which key explanations
 (require 'sk-org-hydra)

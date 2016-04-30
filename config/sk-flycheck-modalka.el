@@ -8,6 +8,7 @@
 
 (modalka-define-kbd "] l" "C-c ! n")
 (modalka-define-kbd "[ l" "C-c ! p")
+(modalka-define-kbd "SPC l" "C-c ! l")
 
 ;; aux requirements
 (require 'sk-flycheck-modalka-which-key)

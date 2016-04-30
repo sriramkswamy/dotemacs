@@ -7,7 +7,7 @@
 ;;; Code:
 
 ;; Window
-(modalka-define-kbd "W" "C-c h w")
+(modalka-define-kbd "w" "C-c h w")
 
 ;; Bookmark
 (modalka-define-kbd "`" "C-c h b")

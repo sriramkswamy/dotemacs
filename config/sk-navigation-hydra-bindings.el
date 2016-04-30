@@ -6,7 +6,10 @@
 
 ;;; Code:
 
+;; Bookmarks
 (global-set-key (kbd "C-c h b") 'sk/hydra-bookmarks/body)
+
+;; Window config
 (global-set-key (kbd "C-c h w") 'sk/hydra-of-windows/body)
 
 ;; Modal bindings

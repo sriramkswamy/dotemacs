@@ -27,10 +27,18 @@
 
 ;; Projectile
 (sk/require-package 'projectile)
-(projectile-global-mode)
-(setq projectile-enable-caching t)
+(add-hook 'prog-mode-hook 'projectile-mode)
+(add-hook 'text-mode-hook 'projectile-mode)
 (setq projectile-file-exists-remote-cache-expire (* 10 60))
-(setq projectile-completion-system 'helm)
+
+;; Swoop stuff
+(sk/require-package 'swoop)
+
+;; ag, pt and wgrep
+(sk/require-package 'ag)
+(sk/require-package 'wgrep-ag)
+(sk/require-package 'pt)
+(sk/require-package 'wgrep-pt)
 
 ;; Improve dired
 (sk/require-package 'dired+)

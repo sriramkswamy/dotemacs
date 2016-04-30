@@ -18,10 +18,10 @@
   (diminish 'undo-tree-mode ""))
 (add-hook 'undo-tree-mode-hook 'sk/diminish-undo-tree)
 
-;; Undo tree
+;; Projectile
 (defun sk/diminish-projectile ()
   (interactive)
-  (diminish 'projectile-mode "π"))
+  (diminish 'projectile-mode " π"))
 (add-hook 'projectile-mode-hook 'sk/diminish-projectile)
 
 ;; Ggtags

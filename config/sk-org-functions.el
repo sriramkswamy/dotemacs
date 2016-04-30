@@ -9,6 +9,11 @@
 ;; Org load languages
 (defun sk/org-custom-load ()
   (interactive)
+  (require 'ox-reveal)
+  (require 'org-ref)
+  (require 'org-ref-latex)
+  (require 'org-ref-pdf)
+  (require 'org-ref-url-utils)
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((emacs-lisp . t)

@@ -8,7 +8,8 @@
 
 ;; Cmake ide - for cmake projects
 (sk/require-package 'cmake-ide)
-(cmake-ide-setup)
+(add-hook 'c-mode-hook 'cmake-ide-setup)
+(add-hook 'cpp-mode-hook 'cmake-ide-setup)
 
 ;; Multiple compilation commands
 (defun sk/compile-cpp-omp-math ()

@@ -21,24 +21,24 @@
 ;; Avy
 (modalka-define-kbd "f" "C-t")
 (modalka-define-kbd "F" "M-t")
-(modalka-define-kbd "w" "C-S-t")
+(modalka-define-kbd "W" "C-S-t")
 
 ;; Highlight symbols
 (modalka-define-kbd "#" "C-M-s")
 (modalka-define-kbd "g r" "C-M-r")
 
-;; Projectile
-(modalka-define-kbd "!" "C-c p !")
-(modalka-define-kbd "&" "C-c p &")
-(modalka-define-kbd "g t" "C-c p R")
-(modalka-define-kbd "SPC p" "C-c p p")
+;; FFIP
 (modalka-define-kbd "SPC d" "C-c p f")
 (modalka-define-kbd "SPC TAB" "C-c p a")
 
 ;; Neotree
 (modalka-define-kbd "SPC n" "C-c n")
 
+;; swoop
+(modalka-define-kbd "*" "C-c v *")
+
 ;; Ggtags
+(modalka-define-kbd "g t" "C-c G")
 (modalka-define-kbd "T" "C-c v T")
 
 ;; Back button

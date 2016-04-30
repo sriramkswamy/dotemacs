@@ -18,20 +18,19 @@
 
   "f" "find in line"
   "F" "find line"
-  "w" "sneak"
+  "W" "sneak"
 
   "#" "highlight symbols"
   "g r" "remove highlight"
 
-  "!" "shell command"
-  "&" "async shell command"
-  "g t" "regenerate tags"
-  "SPC p" "switch projects"
   "SPC d" "project files"
   "SPC TAB" "alternate file"
 
   "SPC n" "neotree"
 
+  "*" "swoop"
+
+  "g t" "create tags"
   "T" "global tags"
 
   ";" "local backward"

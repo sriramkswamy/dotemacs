@@ -58,6 +58,8 @@
   "+" "set bookmark"
   "=" "indent region"
   "\\" "C-c C-c"
+  "!" "shell command"
+  "&" "async shell command"
 
   "g" "global prefix"
   "g g" "start of file"

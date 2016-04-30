@@ -7,7 +7,7 @@
 ;;; Code:
 
 (which-key-add-key-based-replacements
-  "W" "window hydra"
+  "w" "window hydra"
 
   "`" "bookmark hydra")
 

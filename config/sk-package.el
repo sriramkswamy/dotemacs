@@ -31,6 +31,7 @@
 ;; Get the proper path
 (sk/require-package 'exec-path-from-shell)
 ;; (exec-path-from-shell-copy-env "PYTHONPATH")
+(setq exec-path-from-shell-check-startup-files nil)
 (when (memq window-system '(mac ns x))
   (exec-path-from-shell-initialize))
 

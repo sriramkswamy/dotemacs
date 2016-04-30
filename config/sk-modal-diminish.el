@@ -9,7 +9,7 @@
 ;; Modalka mode
 (defun sk/diminish-modalka ()
   (interactive)
-  (diminish 'modalka-mode "μ"))
+  (diminish 'modalka-mode " μ"))
 (add-hook 'modalka-mode-hook 'sk/diminish-modalka)
 
 (provide 'sk-modal-diminish)

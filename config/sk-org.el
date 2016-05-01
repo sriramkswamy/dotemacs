@@ -35,11 +35,12 @@
 
 ;; Tags with fast selection keys
 (setq org-tag-alist (quote (("errand" . ?e)
-                            ("blog" . ?b)
+                            ("books" . ?b)
                             ("meeting" . ?m)
                             ("article" . ?a) ;; temporary
-                            ("research" . ?r) ;; temporary
+                            ("reference" . ?r) ;; temporary
                             ("courses" . ?c) ;; temporary
+			    ("coding" . ?C)
                             ("films" . ?f)
                             ("story" . ?s)
                             ("ledger" . ?l)
@@ -48,8 +49,9 @@
                             ("cash" . ?$)
                             ("card" . ?d)
                             ("idea" . ?i)
+			    ("technical" . ?t)
                             ("personal" . ?p)
-                            ("project" . ?t)
+                            ("project" . ?P)
                             ("job" . ?j)
                             ("work" . ?w)
                             ("home" . ?h)
@@ -114,10 +116,10 @@
          :created t        ; properties
         )
         ("s"               ; key
-         "Story"           ; name
+         "story"           ; name
          entry             ; type
-         (file+headline "~/Dropbox/org/fun.org")  ; target
-         "* %^{Title} %(org-set-tags)  :story: \n:PROPERTIES:\n:Created: %U\n:END:\n%i\n\n%?"  ; template
+         (file+headline "~/Dropbox/org/fun.org" "Reading")  ; target
+         "* %^{Title} %(org-set-tags)  \n:PROPERTIES:\n:Created: %U\n:END:\n%i\n\n%?"  ; template
          :prepend t        ; properties
          :empty-lines 1    ; properties
          :created t        ; properties
@@ -153,7 +155,7 @@
          "Blog"            ; name
          entry             ; type
          (file+headline "~/Dropbox/org/blog.org" "Blog")  ; target
-         "* %^{Title} %(org-set-tags)  :blog: \n:PROPERTIES:\n:Created: %U\n:Tags: %^{Tags}p\n:END:\n%i\n%?"  ; template
+         "* %^{Title} %(org-set-tags)  :blog: \n:PROPERTIES:\n:Created: %U\n:END:\n%i\n%?"  ; template
          :prepend t        ; properties
          :empty-lines 1    ; properties
          :created t        ; properties

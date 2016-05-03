@@ -28,7 +28,7 @@
 ;; packages configuration - 0.8 seconds - adds 0.1 seconds
 (require 'sk-package)
 
-;; Emacs 25 has a nice improvement
+;; Emacs 25 has a nice improvement - 0.8 seconds
 (when (>= emacs-major-version 25)
   (setq
    package-selected-packages
@@ -124,7 +124,7 @@
      deft                      ; quick notes navigation
      org-ref                   ; references for org
      org-bullets               ; nice looking bullets
-     org-jekyll                ; blog from org
+     org-page                  ; blog from org
      ;; version control
      magit                     ; best git interface ever
      magit-gh-pulls            ; github pulls
@@ -197,10 +197,10 @@
 ;; Diminish minor modes - 0.8 seconds
 (require 'sk-diminish)
 
-;; Discover bindings - 0.8 seconds
+;; Discover bindings - 0.9 seconds - adds 0.1 seconds
 (require 'sk-which-key)
 
-;; Modal editing - 0.9 seconds - adds 0.1 seconds
+;; Modal editing - 0.9 seconds
 (require 'sk-modal)
 
 ;; Navigation using search/completion/motion - 1.1 seconds - adds 0.2 seconds
@@ -218,10 +218,10 @@
 ;; Org - you beauty - 1.6 seconds - adds 0.1 seconds
 (require 'sk-org)
 
-;; Version control - 1.6 seconds
+;; Version control - 1.7 seconds - adds 0.1 seconds
 (require 'sk-versions)
 
-;; Programming - 2.0 seconds - adds 0.4 seconds (don't know why yet)
+;; Programming - 2.0 seconds - adds 0.3 seconds (don't know why yet)
 (require 'sk-programming)
 
 ;; ivy - 2.1 seconds - adds 0.1 seconds

@@ -38,7 +38,7 @@
   ("q" nil :color blue))
 
 ;; Bookmarks - hydra
-(defhydra sk/hydra-bookmarks (:color red
+(defhydra sk/hydra-bookmarks (:color blue
                               :hint nil)
   "
  _s_: set  _b_: bookmark   _j_: jump   _d_: delete   _q_: quit

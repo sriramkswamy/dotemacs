@@ -238,7 +238,10 @@
 (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 
 ;; Blog with org
-(sk/require-package 'org-jekyll)
+(sk/require-package 'org-page)
+(setq op/repository-directory "/Users/sriramkswamy/Downloads/blog/"
+      op/site-domain "http://blah.blah"
+      op/theme 'mdo)
 
 ;; which key explanations
 (require 'sk-org-hydra)

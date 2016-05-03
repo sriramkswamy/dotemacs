@@ -9,6 +9,7 @@
 ;; Org load languages
 (defun sk/org-custom-load ()
   (interactive)
+  (require 'org-page)
   (require 'ox-reveal)
   (require 'org-ref)
   (require 'org-ref-latex)

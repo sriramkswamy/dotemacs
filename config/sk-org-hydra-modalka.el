@@ -18,8 +18,11 @@
 ;; Checkbox hydra
 (modalka-define-kbd "o b" "C-c h o b")
 
-;; Property hydra
+;; Blog page hydra
 (modalka-define-kbd "o p" "C-c h o p")
+
+;; Property hydra
+(modalka-define-kbd "o P" "C-c h o P")
 
 ;; Clock hydra
 (modalka-define-kbd "o C" "C-c h o C")

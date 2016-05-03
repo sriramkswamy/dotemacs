@@ -314,6 +314,19 @@ _u_: Update field _F_: file funcs
   ("f" sk/org-ref-bibtex-file/body)
   ("q" nil :color blue))
 
+;; Org blog page hydra
+(defhydra sk/hydra-org-page (:color blue
+                             :hint nil)
+  "
+ _p_: publish    _v_: preview    _n_: new post   _r_: new repo    _i_: insert options    _q_: quit
+"
+  ("p" op/do-publication)
+  ("v" op/do-publication-and-preview-site)
+  ("n" op/new-post)
+  ("r" op/new-repository)
+  ("i" op/insert-options-template)
+  ("q" nil :color blue))
+
 ;; bindings
 (require 'sk-org-hydra-bindings)
 

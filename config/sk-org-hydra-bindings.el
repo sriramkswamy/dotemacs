@@ -18,8 +18,11 @@
 ;; Checkbox hydra
 (global-set-key (kbd "C-c h o b") 'sk/hydra-org-checkbox/body)
 
+;; Blog page hydra
+(global-set-key (kbd "C-c h o p") 'sk/hydra-org-page/body)
+
 ;; Property hydra
-(global-set-key (kbd "C-c h o p") 'sk/hydra-org-property/body)
+(global-set-key (kbd "C-c h o P") 'sk/hydra-org-property/body)
 
 ;; clock hydra
 (global-set-key (kbd "C-c h o C") 'sk/hydra-org-clock/body)

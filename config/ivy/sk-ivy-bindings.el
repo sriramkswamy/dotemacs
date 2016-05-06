@@ -10,6 +10,9 @@
 (global-set-key (kbd "C-r") 'counsel-imenu)
 (global-set-key (kbd "C-x 8") 'counsel-unicode-char)
 
+;; recent files
+(global-set-key (kbd "C-c r") 'ivy-recentf)
+
 ;; Counsel locate
 (global-set-key (kbd "C-x l") 'counsel-locate)
 

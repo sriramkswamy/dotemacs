@@ -202,6 +202,16 @@ point reaches the beginning or end of the buffer, stop there."
         (setq mark-ring (nbutlast mark-ring))
         (goto-char (marker-position (car (last mark-ring))))))
 
+;; Browse the html file
+(defun sk/browse-current-file ()
+  "Open the current file as a URL using `browse-url'."
+  (interactive)
+  (let ((file-name (buffer-file-name)))
+    (if (and (fboundp 'tramp-tramp-file-p)
+             (tramp-tramp-file-p file-name))
+        (error "Cannot open tramp file")
+      (browse-url (concat "file://" file-name)))))
+
 ;; Normal and modalka bindings for these functions
 (require 'sk-navigation-functions-bindings)
 

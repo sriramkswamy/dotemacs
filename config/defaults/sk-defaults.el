@@ -10,6 +10,10 @@
 (add-hook 'prog-mode-hook #'winner-mode)
 (add-hook 'text-mode-hook #'winner-mode)
 
+;; Recentf mode changes
+(setq recentf-max-saved-items 1000
+      recentf-exclude '("/tmp/" "/ssh:"))
+
 ;; GUI changes
 (defun sk/gui-defaults ()
   (interactive)

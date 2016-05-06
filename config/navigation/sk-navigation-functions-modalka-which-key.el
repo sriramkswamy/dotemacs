@@ -15,7 +15,9 @@
   "] d" "adjacent pdf next page"
   "[ d" "adjacent pdf prev page"
   
-  ">" "unpop mark")
+  ">" "unpop mark"
+
+  "g B" "browse file in browser")
 
 (provide 'sk-navigation-functions-modalka-which-key)
 ;;; sk-navigation-functions-modalka-which-key.el ends here

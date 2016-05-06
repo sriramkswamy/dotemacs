@@ -9,14 +9,18 @@
 (which-key-add-key-based-replacements
   "B" "ivy resume"
   "t" "imenu"
-  "SPC R" "locate/spotlight"
+
   "SPC j" "helm M x"
   "SPC x" "desc function"
   "SPC v" "desc variable"
 
   "g e" "wgrep mode"
 
-  "SPC r" "spotlight"
+  "SPC r" "recent files"
+
+  "SPC y" "locate"
+
+  "SPC t" "spotlight"
 
   "SPC d" "projectile"
 

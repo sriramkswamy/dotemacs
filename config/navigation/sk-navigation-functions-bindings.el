@@ -23,6 +23,9 @@
 ;; Mark
 (global-set-key (kbd "C-c v C-i") 'sk/unpop-to-mark-command)
 
+;; Browse current file
+(global-set-key (kbd "C-c v g B") 'sk/browse-current-file)
+
 ;; Modal bindings
 (require 'sk-navigation-functions-modalka)
 

@@ -12,8 +12,11 @@
 ;; imenu
 (modalka-define-kbd "t" "C-r")
 
+;; recent files
+(modalka-define-kbd "SPC r" "C-c r")
+
 ;; Locate
-(modalka-define-kbd "SPC R" "C-x l")
+(modalka-define-kbd "SPC y" "C-x l")
 
 ;; change to wgrep mode
 (modalka-define-kbd "g e" "C-M-S-r")
@@ -32,7 +35,7 @@
 (modalka-define-kbd "SPC c" "C-c c")
 
 ;; Spotlight
-(modalka-define-kbd "SPC r" "C-c d")
+(modalka-define-kbd "SPC t" "C-c d")
 
 ;; Projecile
 (modalka-define-kbd "SPC p" "C-c P")

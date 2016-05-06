@@ -65,8 +65,8 @@ Single Capitals as you type."
 (defun sk/select-current-line ()
   "Select the current line"
   (interactive)
-  (end-of-line)
-  (set-mark (line-beginning-position)))
+  (sk/smarter-move-beginning-of-line 1)
+  (set-mark (line-end-position)))
 
 ;; Open line above - vi style
 (defun sk/open-line-above ()

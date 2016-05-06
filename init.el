@@ -118,6 +118,7 @@
      ob-ipython                ; ipython support
      ox-reveal                 ; reveal.js support
      ox-impress-js             ; impress.js support
+     ox-twbs                   ; twitter bootstrap support
      ox-rst                    ; .rst support
      ox-pandoc                 ; pandoc org support
      org-download              ; drag and drop stuff

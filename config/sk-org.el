@@ -86,13 +86,26 @@
         ("google"    . "http://www.google.com/search?q=")
         ("gmaps"      . "http://maps.google.com/maps?q=%s")))
 
+;; Lispy prompt for org
+(defvar oc-capture-prmt-history nil
+  "History of prompt answers for org capture.")
+(defun oc/prmt (prompt variable)
+  "PROMPT for string, save it to VARIABLE and insert it."
+  (make-local-variable variable)
+  (set variable (read-string (concat prompt ": ") nil oc-capture-prmt-history)))
+
 ;; Capture templates
 (setq org-capture-templates
       '(("n"               ; key
          "Note"            ; name
          entry             ; type
          (file+headline "~/Dropbox/org/notes.org" "Notes")  ; target
-         "* %? %(org-set-tags)  :note: \n:PROPERTIES:\n:Created: %U\n:Linked: %A\n:END:\n%i"  ; template
+         "* %? %(org-set-tags)  :note:
+:PROPERTIES:
+:Created: %U
+:Linked: %A
+:END:
+%i"  ; template
          :prepend t        ; properties
          :empty-lines 1    ; properties
          :created t        ; properties
@@ -100,8 +113,19 @@
         ("l"               ; key
          "Ledger"          ; name
          entry             ; type
-         (file+datetree+prompt "~/Dropbox/org/ledger.org" "Ledger")  ; target
-         "* %? %(org-set-tags)  :accounts: \n:PROPERTIES:\n:Created: %U\n:END:\n%i\nAmount: $%^{amount}\n"  ; template
+         (file+datetree "~/Dropbox/org/ledger.org" "Ledger")  ; target
+         "* %(oc/prmt \"Name of expense\" 'expense-name) %(org-set-tags)  :accounts:
+:PROPERTIES:
+:Created: %U
+:END:
+%i
+#+NAME: %(progn expense-name)-%t
+#+BEGIN_SRC ledger :noweb yes
+%^{Date of expense (yyyy/mm/dd)} %^{'*' if cleared, else blank}
+    %^{Account name}                                $%^{Amount}
+    %?
+#+END_SRC
+"  ; template
          :prepend t        ; properties
          :empty-lines 1    ; properties
          :created t        ; properties
@@ -110,7 +134,12 @@
          "Work"            ; name
          entry             ; type
          (file+headline "~/Dropbox/org/phd.org" "Work")  ; target
-         "* TODO %^{Todo} %(org-set-tags)  :work: \n:PROPERTIES:\n:Created: %U\n:END:\n%i\n%?"  ; template
+         "* TODO %^{Todo} %(org-set-tags)  :work:
+:PROPERTIES:
+:Created: %U
+:END:
+%i
+%?"  ; template
          :prepend t        ; properties
          :empty-lines 1    ; properties
          :created t        ; properties
@@ -119,7 +148,12 @@
          "story"           ; name
          entry             ; type
          (file+headline "~/Dropbox/org/fun.org" "Reading")  ; target
-         "* %^{Title} %(org-set-tags)  \n:PROPERTIES:\n:Created: %U\n:END:\n%i\n\n%?"  ; template
+         "* %^{Title} %(org-set-tags)
+:PROPERTIES:
+:Created: %U
+:END:
+%i
+%?"  ; template
          :prepend t        ; properties
          :empty-lines 1    ; properties
          :created t        ; properties
@@ -128,7 +162,13 @@
          "Meeting"         ; name
          entry             ; type
          (file+datetree "~/Dropbox/org/phd.org" "Meeting")  ; target
-         "* %^{Title} %(org-set-tags)  :meeting: \n:PROPERTIES:\n:Created: %U\n:END:\n%i\nMinutes of the meeting:\n%?"  ; template
+         "* %^{Title} %(org-set-tags)  :meeting:
+:PROPERTIES:
+:Created: %U
+:END:
+%i
+Minutes of the meeting:
+%?"  ; template
          :prepend t        ; properties
          :empty-lines 1    ; properties
          :created t        ; properties
@@ -137,7 +177,15 @@
          "Jobs"            ; name
          entry             ; type
          (file+headline "~/Dropbox/org/notes.org" "Jobs")  ; target
-         "* %^{Title, Company} %(org-set-tags)  :job: \n:PROPERTIES:\n:Created: %U\n:END:\n%i\nReferral: %^{referral}\nExperience: %^{experience}\nDescription:\n%?"  ; template
+         "* %^{Title, Company} %(org-set-tags)  :job:
+:PROPERTIES:
+:Created: %U
+:END:
+%i
+Referral: %^{referral}
+Experience: %^{experience}
+Description:
+%?"  ; template
          :prepend t        ; properties
          :empty-lines 1    ; properties
          :created t        ; properties
@@ -146,7 +194,15 @@
          "films"          ; name
          entry             ; type
          (file+headline "~/Dropbox/org/fun.org" "Movies")  ; target
-         "* %^{Movie} %(org-set-tags)  :film: \n:PROPERTIES:\n:Created: %U\n:END:\n%i\nNetflix?: %^{netflix? Yes/No}\nGenre: %^{genre}\nDescription:\n%?"  ; template
+         "* %^{Movie} %(org-set-tags)  :film:
+:PROPERTIES:
+:Created: %U
+:END:
+%i
+Netflix?: %^{netflix? Yes/No}
+Genre: %^{genre}
+Description:
+%?"  ; template
          :prepend t        ; properties
          :empty-lines 1    ; properties
          :created t        ; properties
@@ -155,7 +211,12 @@
          "Blog"            ; name
          entry             ; type
          (file+headline "~/Dropbox/org/blog.org" "Blog")  ; target
-         "* %^{Title} %(org-set-tags)  :blog: \n:PROPERTIES:\n:Created: %U\n:END:\n%i\n%?"  ; template
+         "* %^{Title} %(org-set-tags)  :blog:
+:PROPERTIES:
+:Created: %U
+:END:
+%i
+%?"  ; template
          :prepend t        ; properties
          :empty-lines 1    ; properties
          :created t        ; properties
@@ -164,7 +225,12 @@
          "Errands"         ; name
          entry             ; type
          (file+headline "~/Dropbox/org/errands.org" "Errands")  ; target
-         "* TODO %^{Todo} %(org-set-tags)  :errands: \n:PROPERTIES:\n:Created: %U\n:END:\n%i\n%?"  ; template
+         "* TODO %^{Todo} %(org-set-tags)  :errands:
+:PROPERTIES:
+:Created: %U
+:END:
+%i
+%?"  ; template
          :prepend t        ; properties
          :empty-lines 1    ; properties
          :created t        ; properties
@@ -173,7 +239,12 @@
          "Courses"         ; name
          entry             ; type
          (file+headline "~/Dropbox/org/phd.org" "Courses")  ; target
-         "* %^{Course} %(org-set-tags)  :courses: \n:PROPERTIES:\n:Created: %U\n:END:\n%i\n%?"  ; template
+         "* %^{Course} %(org-set-tags)  :courses:
+:PROPERTIES:
+:Created: %U
+:END:
+%i
+%?"  ; template
          :prepend t        ; properties
          :empty-lines 1    ; properties
          :created t        ; properties
@@ -202,12 +273,18 @@
 "
       )
 
+;; Export using twitter bootstrap
+(sk/require-package 'ox-twbs)
+
 ;; Restructred text and pandoc
 (sk/require-package 'ox-rst)
 (sk/require-package 'ox-pandoc)
 
-;; Drag and drop files into org mode
+;; Drag and drop images into org mode
 (sk/require-package 'org-download)
+
+;; Put a file system tree right into org
+(sk/require-package 'org-fstree)
 
 ;; Deft for quick org notes access
 (sk/require-package 'deft)
@@ -243,10 +320,35 @@
       op/site-domain "http://blah.blah"
       op/theme 'mdo)
 
+;; Org load languages
+(defun sk/org-custom-load ()
+  (interactive)
+  (require 'org-page)
+  (require 'org-fstree)
+  (require 'ox-reveal)
+  (require 'ox-twbs)
+  (require 'org-ref)
+  (require 'org-ref-latex)
+  (require 'org-ref-pdf)
+  (require 'org-ref-url-utils)
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((emacs-lisp . t)
+     ;; (dot . t)
+     ;; (ditaa . t)
+     (latex . t)
+     ;; (gnuplot . t)
+     (sh . t)
+     ;; (C . t)
+     (ledger . t)
+     ;; (R . t)
+     ;; (octave . t)
+     (matlab . t)
+     (python . t))))
+
 ;; which key explanations
 (require 'sk-org-hydra)
 (require 'sk-org-bindings)
-(require 'sk-org-functions)
 (require 'sk-org-diminish)
 
 (provide 'sk-org)

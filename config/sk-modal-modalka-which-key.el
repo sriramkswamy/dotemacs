@@ -7,6 +7,8 @@
 ;;; Code:
 
 (which-key-add-key-based-replacements
+  "ESC" "toggle mode"
+
   "0" "0"
   "1" "1"
   "2" "2"

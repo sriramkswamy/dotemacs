@@ -9,7 +9,7 @@
 (which-key-add-key-based-replacements
   "a" "expand region"
   "A" "contract region"
-  "i" "expand region inside prefix"
+  "i" "expand region prefix"
   "i p" "expand inside para"
   "i f" "expand inside func"
   "i w" "expand inside word"

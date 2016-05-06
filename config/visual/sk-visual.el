@@ -57,7 +57,8 @@
 (sk/require-package 'paper-theme)
 (sk/require-package 'ample-theme)
 (sk/require-package 'anti-zenburn-theme)
-(load-theme 'leuven t)
+(sk/require-package 'color-theme-sanityinc-tomorrow)
+(load-theme 'sanityinc-tomorrow-day t)
 
 ;; The modeline
 (sk/require-package 'spaceline)

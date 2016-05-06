@@ -37,6 +37,8 @@
 (global-set-key (kbd "C-c O M") 'org-mark-subtree)
 (global-set-key (kbd "C-c O <") 'org-date-from-calendar)
 (global-set-key (kbd "C-c O >") 'org-goto-calendar)
+(global-set-key (kbd "C-c O d") 'org-todo)
+(global-set-key (kbd "C-c O t") 'org-set-tags-command)
 
 ;; Deft
 (global-set-key (kbd "C-c O f") 'deft)

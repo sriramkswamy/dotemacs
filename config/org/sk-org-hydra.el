@@ -38,25 +38,12 @@
   ("u" org-move-item-up)
   ("q" nil :color blue))
 
-;; Org tags hydra
-(defhydra sk/hydra-org-tag (:color red
-                            :hint nil)
-  "
- _t_: tags    _v_: view    _m_: match   _s_: sparse-tree    _q_: quit
-"
-  ("t" org-set-tags-command :color blue)
-  ("v" org-tags-view)
-  ("m" org-match-sparse-tree :color blue)
-  ("s" org-sparse-tree :color blue)
-  ("q" nil :color blue))
-
 ;; Org todo hydra
 (defhydra sk/hydra-org-todo (:color red
                              :hint nil)
   "
- _t_: todo     _d_: deadline    _o_: over    _s_: schedule   _c_: check   _q_: quit
+ _d_: deadline    _o_: over    _s_: schedule   _c_: check   _q_: quit
 "
-  ("t" org-todo :color blue)
   ("d" org-deadline :color blue)
   ("o" org-deadline-close :color blue)
   ("s" org-schedule :color blue)

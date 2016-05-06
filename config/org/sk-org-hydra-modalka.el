@@ -9,11 +9,8 @@
 ;; Manipulation hydra
 (modalka-define-kbd "o o" "C-c h o o")
 
-;; Tag hydra
-(modalka-define-kbd "o t" "C-c h o t")
-
 ;; Todo hydra
-(modalka-define-kbd "o d" "C-c h o d")
+(modalka-define-kbd "o D" "C-c h o D")
 
 ;; Checkbox hydra
 (modalka-define-kbd "o b" "C-c h o b")

@@ -9,11 +9,8 @@
 ;; Manipulation hydra
 (global-set-key (kbd "C-c h o o") 'sk/hydra-org-organize/body)
 
-;; Tag hydra
-(global-set-key (kbd "C-c h o t") 'sk/hydra-org-tag/body)
-
 ;; Todo hydra
-(global-set-key (kbd "C-c h o d") 'sk/hydra-org-todo/body)
+(global-set-key (kbd "C-c h o D") 'sk/hydra-org-todo/body)
 
 ;; Checkbox hydra
 (global-set-key (kbd "C-c h o b") 'sk/hydra-org-checkbox/body)

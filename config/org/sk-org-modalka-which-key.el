@@ -37,6 +37,8 @@
   "o B" "org table blank field"
   "o <" "org select from cal"
   "o >" "org goto cal"
+  "o t" "org tag"
+  "o d" "org todo"
 
   "o f" "org deft"
 

@@ -36,6 +36,8 @@
 (modalka-define-kbd "o B" "C-c O B")
 (modalka-define-kbd "o <" "C-c O <")
 (modalka-define-kbd "o >" "C-c O >")
+(modalka-define-kbd "o d" "C-c O d")
+(modalka-define-kbd "o t" "C-c O t")
 
 ;; deft
 (modalka-define-kbd "o f" "C-c O f")

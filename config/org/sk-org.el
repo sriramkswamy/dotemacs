@@ -61,8 +61,9 @@
 
 ;; TODO Keywords
 (setq org-todo-keywords
-      '((sequence "TODO(t)" "HOLD(h@/!)" "|" "DONE(d!)")
-        (sequence "|" "CANCELLED(c@)")))
+      '((sequence "☛ TODO(t)" "○ IN-PROGRESS(i)" "|" "✓ DONE(d!)")
+	(sequence "⚑ WAITING(w@/!)" "|" "✗ CANCELED(c@)")
+	))
 
 ;; Agenda settings
 (setq org-agenda-files (list
@@ -75,7 +76,7 @@
 			"~/Dropbox/org/fun.org"
 			))
 
-(setq org-deadline-warning-days 2
+(setq org-deadline-warning-days 7
       org-agenda-span 'fortnight
       org-agenda-skip-scheduled-if-deadline-is-shown t)
 
@@ -134,7 +135,7 @@
          "Work"            ; name
          entry             ; type
          (file+headline "~/Dropbox/org/phd.org" "Work")  ; target
-         "* TODO %^{Todo} %(org-set-tags)  :work:
+         "* ☛ TODO %^{Todo} %(org-set-tags)  :work:
 :PROPERTIES:
 :Created: %U
 :END:
@@ -225,7 +226,7 @@ Description:
          "Errands"         ; name
          entry             ; type
          (file+headline "~/Dropbox/org/errands.org" "Errands")  ; target
-         "* TODO %^{Todo} %(org-set-tags)  :errands:
+         "* ☛ TODO %^{Todo} %(org-set-tags)  :errands:
 :PROPERTIES:
 :Created: %U
 :END:

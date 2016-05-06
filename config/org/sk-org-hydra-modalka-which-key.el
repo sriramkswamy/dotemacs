@@ -8,8 +8,7 @@
 
 (which-key-add-key-based-replacements
   "o" "org prefix"
-  "o t" "org tag"
-  "o d" "org todo"
+  "o D" "org schedule"
   "o b" "org checkbox"
   "o p" "org page"
   "o P" "org property"

@@ -49,6 +49,18 @@
 ;; Typing exercies
 (sk/require-package 'typit)
 
+;; My key frquency
+(sk/require-package 'keyfreq)
+(setq keyfreq-excluded-commands
+      '(self-insert-command
+        abort-recursive-edit
+        forward-char
+        backward-char
+        previous-line
+        next-line))
+(keyfreq-mode 1)
+(keyfreq-autosave-mode 1)
+
 ;; Google stuff
 (sk/require-package 'google-this)
 ;; Hydra google

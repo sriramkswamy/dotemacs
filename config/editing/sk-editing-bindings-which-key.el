@@ -8,6 +8,8 @@
 
 (which-key-add-key-based-replacements
   "C-c s" "smartparens prefix"
+  "C-c s >" "forward prefix"
+  "C-c s <" "backward prefix"
 
   "C-c e" "expand region prefix"
   "C-c e i" "expand region inside prefix")

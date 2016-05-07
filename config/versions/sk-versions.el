@@ -9,6 +9,7 @@
 ;; Magit - Best git wrapper ever
 (sk/require-package 'magit)
 (sk/require-package 'magit-gh-pulls)
+(add-hook 'magit-status-mode-hook 'magit-gh-pulls-mode)
 
 ;; Diff hl for visual feedback of changes
 (sk/require-package 'diff-hl)

@@ -29,7 +29,7 @@
 (modalka-define-kbd "g s" "M-s")
 
 ;; descbinds
-(modalka-define-kbd "SPC ," "C-c ,")
+(modalka-define-kbd "SPC ?" "C-h b")
 
 ;; theme
 (modalka-define-kbd "SPC c" "C-c c")

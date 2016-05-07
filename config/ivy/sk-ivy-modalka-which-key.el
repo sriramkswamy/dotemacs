@@ -28,8 +28,7 @@
 
   "SPC b" "ivy bibtex"
 
-  "SPC ," "ivy descbinds"
-  )
+  "SPC ?" "search bindings")
 
 (provide 'sk-ivy-modalka-which-key)
 ;;; sk-ivy-modalka-which-key.el ends here

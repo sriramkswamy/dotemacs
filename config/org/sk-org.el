@@ -122,7 +122,7 @@
 %i
 #+NAME: %(progn expense-name)-%t
 #+BEGIN_SRC ledger :noweb yes
-%^{Date of expense (yyyy/mm/dd)} %^{'*' if cleared, else blank}
+%^{Date of expense (yyyy/mm/dd)} %^{'*' if cleared, else blank} %(progn expense-name)
     %^{Account name}                                $%^{Amount}
     %?
 #+END_SRC

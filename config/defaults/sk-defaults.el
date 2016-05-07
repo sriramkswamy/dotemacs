@@ -33,7 +33,21 @@
 ;; No welcome screen - opens directly in scratch buffer
 (setq inhibit-startup-message t
       initial-scratch-message ";; Scratch
-;; Press '?' in Modalka mode ('μ' on mode-line if on) or 'C-x ?' in Emacs mode for bindings
+
+;; Basics:
+;; This configuration makes Emacs a modal editor - with two 'states' - Modalka state and Emacs state.
+;; Pressing <Escape> toggles modal or Modalka state (indicated by 'μ' on mode-line if turned on).
+;; The default state is Emacs state.
+
+;; Help:
+;; Press '?' in Modalka state or 'C-x ?' (i.e., press Control and X together, then press ?) in Emacs state for bindings list.
+;; Press 'SPC ?' (i.e., press space and then ?) in Modalka state or 'C-h b' in Emacs state for searching through bindings.
+;; Press 'SPC j' in Modalka state or 'M-x' in Emacs state to access all the functions/commands.
+;; Press 'C-h C-h' for help regarding how to use help.
+;; Finally, pressing one of the prefix keys (C-x, C-c, C-h, <Space>, g, c, i, m, o, s, [, ], C or :) and waiting for a second will also show hints.
+
+;; Note:
+;; The current buffer is in (fundamental-mode) and it can be used to evaluate Emacs Lisp.
 
 
 "

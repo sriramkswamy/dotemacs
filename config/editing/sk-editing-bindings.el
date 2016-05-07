@@ -70,7 +70,8 @@
 (global-set-key (kbd "C-c I") 'iedit-mode)
 
 ;; Multiple cursors (no modal bindings)
-(global-set-key (kbd "C-,") 'mc/edit-lines)
+(global-set-key (kbd "C-+") 'mc/edit-beginnings-of-lines)
+(global-set-key (kbd "C-,") 'mc/edit-ends-of-lines)
 (global-set-key (kbd "C-.") 'mc/mark-all-like-this-dwim)
 (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
 (global-set-key (kbd "C->") 'mc/mark-next-like-this)
@@ -79,13 +80,14 @@
 (global-set-key (kbd "C-)") 'mc/skip-to-next-like-this)
 
 ;; Region bindings mode (this acts as a modal binding instead)
-(define-key region-bindings-mode-map "a" 'mc/mark-all-like-this-dwim)
-(define-key region-bindings-mode-map "k" 'mc/mark-previous-like-this)
-(define-key region-bindings-mode-map "j" 'mc/mark-next-like-this)
-(define-key region-bindings-mode-map "h" 'mc/skip-to-previous-like-this)
-(define-key region-bindings-mode-map "l" 'mc/skip-to-next-like-this)
-(define-key region-bindings-mode-map "m" 'mc/mark-more-like-this-extended)
-(define-key region-bindings-mode-map "e" 'mc/edit-lines)
+(define-key region-bindings-mode-map "ma" 'mc/mark-all-like-this-dwim)
+(define-key region-bindings-mode-map "mk" 'mc/mark-previous-like-this)
+(define-key region-bindings-mode-map "mj" 'mc/mark-next-like-this)
+(define-key region-bindings-mode-map "mh" 'mc/skip-to-previous-like-this)
+(define-key region-bindings-mode-map "ml" 'mc/skip-to-next-like-this)
+(define-key region-bindings-mode-map "mm" 'mc/mark-more-like-this-extended)
+(define-key region-bindings-mode-map "ms" 'mc/edit-beginnings-of-lines)
+(define-key region-bindings-mode-map "me" 'mc/edit-ends-of-lines)
 
 ;; Modal bindings
 (require 'sk-editing-modalka)

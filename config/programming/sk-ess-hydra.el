@@ -22,8 +22,15 @@
   ("S" ess-switch-to-ESS)
   ("q" nil :color blue))
 
-;; aux requirements
-(require 'sk-ess-hydra-bindings)
+;; Binding
+(global-set-key (kbd "C-c h c s") 'sk/hydra-for-ess/body)
+
+;; Modal binding
+(modalka-define-kbd "c s" "C-c h c s")
+
+;; Which key explanation
+(which-key-add-key-based-replacements
+  "c s" "stats code")
 
 (provide 'sk-ess-hydra)
 ;;; sk-ess-hydra.el ends here

@@ -10,7 +10,7 @@
 (defhydra sk/hydra-for-emamux (:color red
 			       :hint nil)
  "
- ^Command^    ^Runner^                       ^Clipboard^
+ ^Command^    ^Runner^                          ^Clipboard^
 ^^^^^^^^^^-----------------------------------------------------------------
  _s_: send    _r_: run        _c_: close          _y_: copy kill    _q_: quit
             _l_: last cmd   _C_: close other    _p_: paste tmux
@@ -30,8 +30,15 @@
  ("p" emamux:yank-from-list-buffers)
  ("q" nil :color blue))
 
-;; aux requirements
-(require 'sk-repl-hydra-bindings)
+;; Binding
+(global-set-key (kbd "C-c h t") 'sk/hydra-for-emamux/body)
+
+;; modal binding
+(modalka-define-kbd "c t" "C-c h t")
+
+(which-key-add-key-based-replacements
+  "c t" "code tmux")
+
 
 (provide 'sk-repl-hydra)
 ;;; sk-repl-hydra.el ends here

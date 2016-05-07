@@ -63,7 +63,17 @@
   
   "SPC s" "visual replace"
 
-  "I" "iedit mode")
+  "I" "iedit mode"
+
+  "m" "multiple cursor prefix"
+  "m a" "mark all similar selection"
+  "m k" "mark prev similar selection"
+  "m j" "mark next similar selection"
+  "m h" "skip prev similar selection"
+  "m l" "skip next similar selection"
+  "m m" "mark extend similar selection"
+  "m s" "edit start of selected region"
+  "m e" "edit end of selected region")
   
 (provide 'sk-editing-modalka-which-key)
 ;;; sk-editing-modalka-which-key.el ends here

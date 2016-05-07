@@ -68,6 +68,16 @@
 ;; Iedit mode
 (modalka-define-kbd "I" "C-c I")
 
+;; Multiple cursors
+(modalka-define-kbd "m a" "C-.")
+(modalka-define-kbd "m s" "C-+")
+(modalka-define-kbd "m e" "C-,")
+(modalka-define-kbd "m j" "C->")
+(modalka-define-kbd "m k" "C-<")
+(modalka-define-kbd "m h" "C-(")
+(modalka-define-kbd "m l" "C-)")
+(modalka-define-kbd "m m" "C-=")
+
 ;; which key for bindings
 (require 'sk-editing-modalka-which-key)
 

@@ -21,8 +21,15 @@
   ("S" matlab-show-matlab-shell-buffer)
   ("q" nil :color blue))
 
-;; aux requirements
-(require 'sk-matlab-hydra-bindings)
+;; Binding
+(global-set-key (kbd "C-c h c m") 'sk/hydra-for-matlab/body)
+
+;; Modal binding
+(modalka-define-kbd "c m" "C-c h c m")
+
+;; Which key explanation
+(which-key-add-key-based-replacements
+  "c m" "matlab code")
 
 (provide 'sk-matlab-hydra)
 ;;; sk-matlab-hydra.el ends here

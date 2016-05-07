@@ -8,36 +8,36 @@
 
 ;; Send hydra
 (defhydra sk/hydra-for-py (:color blue
-			   :hint nil)
+                           :hint nil)
   "
- _r_: region    _s_: start    _q_: quit
- _b_: buffer    _S_: switch
- _f_: func
+ ^Send^                     ^Navigate^
+^^^^^^^^^^-----------------------------------------------------------------
+ _r_: region    _s_: start    _d_: definition    _F_: file    _q_: quit
+ _b_: buffer    _S_: switch   _a_: assignment    _B_: back
+ _f_: func                  _v_: reference
 "
   ("r" python-shell-send-region)
   ("b" python-shell-send-buffer)
   ("f" python-shell-send-defun)
   ("s" run-python)
   ("S" python-shell-switch-to-shell)
+  ("d" anaconda-mode-find-definitions :color red)
+  ("D" anaconda-mode-show-doc :color red)
+  ("a" anaconda-mode-find-assignments :color red)
+  ("v" anaconda-mode-find-references :color red)
+  ("F" anaconda-mode-find-file :color red)
+  ("B" anaconda-mode-go-back :color red)
   ("q" nil :color blue))
 
-;; Code jump hydra
-(defhydra sk/hydra-for-py-jump (:color red
-			        :hint nil)
-  "
- _d_: definition    _a_: assignment    _f_: file    _q_: quit
- _D_: doc           _r_: reference     _b_: back
-"
-  ("d" anaconda-mode-find-definitions)
-  ("D" anaconda-mode-show-doc)
-  ("a" anaconda-mode-find-assignments)
-  ("r" anaconda-mode-find-references)
-  ("f" anaconda-mode-find-file)
-  ("b" anaconda-mode-go-back)
-  ("q" nil :color blue))
+;; Binding
+(global-set-key (kbd "C-c h c p") 'sk/hydra-for-py/body)
 
-;; aux requirements
-(require 'sk-python-hydra-bindings)
+;; Modal binding
+(modalka-define-kbd "c p" "C-c h c p")
+
+;; Which key explanation
+(which-key-add-key-based-replacements
+  "c p" "python code")
 
 (provide 'sk-python-hydra)
 ;;; sk-python-hydra.el ends here

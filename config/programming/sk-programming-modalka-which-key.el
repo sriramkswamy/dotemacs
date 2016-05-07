@@ -7,9 +7,7 @@
 ;;; Code:
 
 (which-key-add-key-based-replacements
-  "m" "make hydras prefix"
-
-  "c" "code jump prefix")
+  "c" "code prefix")
 
 (provide 'sk-programming-modalka-which-key)
 ;;; sk-programming-modalka-which-key.el ends here

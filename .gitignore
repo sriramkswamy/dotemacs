@@ -24,15 +24,11 @@
 /smex-items
 /jabber-avatar-cache
 /.emacs.desktop.lock
-/.mc-lists.el
 /ac-comphist.dat
 /auto-save-list
 /srecode-map.el
-/.mc-lists.elc
 /.emacs.desktop
 /.emacs.desktop.lock
-/.mc-lists.el
-/.mc-lists.elc
 /.python-environments/default/.Python
 *.csh
 *.fish

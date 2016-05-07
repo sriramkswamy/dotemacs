@@ -42,6 +42,7 @@
   "P" "yank ring"
   "x" "delete char"
   "D" "delete rest of line"
+  "M" "universal arg (modify)"
   "z" "recenter top bottom"
   "Z" "only window"
   "H" "scroll left"

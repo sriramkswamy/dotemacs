@@ -66,7 +66,7 @@
 (modalka-define-kbd "SPC s" "C-c v s")
 
 ;; Iedit mode
-(modalka-define-kbd "M" "C-c M")
+(modalka-define-kbd "I" "C-c I")
 
 ;; which key for bindings
 (require 'sk-editing-modalka-which-key)

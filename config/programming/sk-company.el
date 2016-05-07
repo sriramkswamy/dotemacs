@@ -78,19 +78,5 @@
 (global-set-key (kbd "C-c a w") 'company-dabbrev)
 (global-set-key (kbd "C-c a d") 'company-ispell)
 
-;; Modal maps
-(modalka-define-kbd "I I" "company common")
-(modalka-define-kbd "I f" "company files")
-(modalka-define-kbd "I w" "company words")
-(modalka-define-kbd "I d" "company dictionary")
-
-;; Which key
-(which-key-add-key-based-replacements
-  "I" "completion prefix"
-  "I I" "complete common"
-  "I f" "complete files"
-  "I w" "complete words"
-  "I d" "complete dictionary")
-
 (provide 'sk-company)
 ;;; sk-company.el ends here

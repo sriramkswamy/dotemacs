@@ -55,6 +55,7 @@
       '(self-insert-command
         abort-recursive-edit
         forward-char
+	modalka-mode
         backward-char
         previous-line
         next-line))

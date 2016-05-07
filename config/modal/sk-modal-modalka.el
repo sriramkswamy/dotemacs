@@ -40,6 +40,7 @@
 (modalka-define-kbd "x" "C-d")
 (modalka-define-kbd "D" "C-k")
 (modalka-define-kbd "z" "C-l")
+(modalka-define-kbd "M" "C-u")
 (modalka-define-kbd "!" "M-!")
 (modalka-define-kbd "&" "M-&")
 (modalka-define-kbd "J" "C-v")

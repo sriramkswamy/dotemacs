@@ -27,7 +27,7 @@
 (sk/require-package 'pyenv-mode)
 
 ;; Beautify stuff
-(sk/require-package 'py-yapf)
+(sk/require-package 'py-autopep8)
 
 ;; Testing
 (sk/require-package 'pytest)

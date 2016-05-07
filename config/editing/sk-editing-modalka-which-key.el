@@ -63,7 +63,7 @@
   
   "SPC s" "visual replace"
 
-  "M" "iedit mode")
+  "I" "iedit mode")
   
 (provide 'sk-editing-modalka-which-key)
 ;;; sk-editing-modalka-which-key.el ends here

@@ -49,6 +49,14 @@
 (sk/require-package 'visual-regexp)
 (sk/require-package 'visual-regexp-steroids)
 
+;; Multiple cursors
+(sk/require-package 'multiple-cursors)
+
+;; Region bindings mode
+(sk/require-package 'region-bindings-mode)
+(require 'region-bindings-mode)
+(region-bindings-mode-enable)
+
 ;; Edit really large files
 (sk/require-package 'vlf)
 

@@ -28,43 +28,43 @@
 ;; Defaults - 0.8 seconds
 (require 'sk-defaults)
 
-;; packages configuration - 0.9 seconds - adds 0.1 seconds
+;; packages configuration - 1.0 seconds - adds 0.2 seconds
 (require 'sk-package)
 
-;; Diminish minor modes - 0.9 seconds
+;; Diminish minor modes - 1.0 seconds
 (require 'sk-diminish)
 
-;; Discover bindings - 0.9 seconds
+;; Discover bindings - 1.0 seconds
 (require 'sk-which-key)
 
-;; Modal editing - 1.0 seconds - adds 0.1 seconds
+;; Modal editing - 1.2 seconds - adds 0.2 seconds
 (require 'sk-modal)
 
-;; Navigation using search/completion/motion - 1.2 seconds - adds 0.2 seconds
+;; Navigation using search/completion/motion - 1.4 seconds - adds 0.2 seconds
 (require 'sk-navigation)
 
-;; Editing - 1.5 seconds - adds 0.3 seconds (not sure why)
+;; Editing - 1.7 seconds - adds 0.3 seconds (not sure why)
 (require 'sk-editing)
 
-;; Visual helpers - 1.7 seconds - adds 0.2 seconds
+;; Visual helpers - 2.0 seconds - adds 0.3 seconds
 (require 'sk-visual)
 
-;; Writing - 1.7 seconds
+;; Writing - 2.0 seconds
 (require 'sk-writing)
 
-;; Org - you beauty - 1.8 seconds - adds 0.1 seconds
+;; Org - you beauty - 2.1 seconds - adds 0.1 seconds
 (require 'sk-org)
 
-;; Version control - 1.9 seconds - adds 0.1 seconds
+;; Version control - 2.2 seconds - adds 0.1 seconds
 (require 'sk-versions)
 
-;; Programming - 2.4 seconds - adds 0.5 seconds (not sure why)
+;; Programming - 2.6 seconds - adds 0.4 seconds (not sure why)
 (require 'sk-programming)
 
-;; ivy - 2.5 seconds - adds 0.1 seconds
+;; ivy - 2.9 seconds - adds 0.3 seconds
 (require 'sk-ivy)
 
-;; Fun stuff - 2.6 seconds - adds 0.1 seconds
+;; Fun stuff - 3.0 seconds - adds 0.1 seconds
 (require 'sk-fun)
 
 ;; Garbage collector - decrease threshold

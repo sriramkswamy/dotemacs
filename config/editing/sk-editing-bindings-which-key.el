@@ -10,9 +10,7 @@
   "C-c s" "smartparens prefix"
 
   "C-c e" "expand region prefix"
-  "C-c e i" "expand region inside prefix"
-  
-  "C-c M" "multiple cursor prefix")
+  "C-c e i" "expand region inside prefix")
 
 (provide 'sk-editing-bindings-which-key)
 ;;; sk-editing-bindings-which-key.el ends here

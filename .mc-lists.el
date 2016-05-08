@@ -13,7 +13,8 @@
 (setq mc/cmds-to-run-once
       '(
 	beginning-of-buffer
-	end-of-buffer
 	delete-horizontal-space
+	end-of-buffer
 	iedit-mode
+	org-self-insert-command
 	))

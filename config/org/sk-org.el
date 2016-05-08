@@ -273,6 +273,7 @@ Description:
 <h3>%a</h3>
 "
       )
+(setq org-reveal-root "file:///Users/sriramkswamy/Documents/workspace/github/reveal.js")
 
 ;; Export using twitter bootstrap
 (sk/require-package 'ox-twbs)
@@ -296,6 +297,7 @@ Description:
 
 ;; Org ref for academic papers
 (sk/require-package 'org-ref)
+(setq org-ref-completion-library 'org-ref-ivy-bibtex)
 (setq org-ref-notes-directory "~/Dropbox/org/references/notes"
       org-ref-bibliography-notes "~/Dropbox/org/references/articles.org"
       org-ref-default-bibliography '("~/Dropbox/org/references/multiphysics.bib" "~/Dropbox/org/references/chanceconstraints.bib")
@@ -305,10 +307,10 @@ Description:
   (require 'org-ref)
   (require 'org-ref-pdf)
   (require 'org-ref-url-utils))
+(add-hook 'bibtex-mode-hook 'sk/org-ref-bibtex-custom-load)
 (defun sk/org-ref-latex-custom-load ()
   (interactive)
   (require 'org-ref-latex))
-(add-hook 'bibtex-mode-hook 'sk/org-ref-bibtex-custom-load)
 (add-hook 'latex-mode-hook 'sk/org-ref-latex-custom-load)
 
 ;; Fancy bullets
@@ -346,6 +348,10 @@ Description:
      ;; (octave . t)
      (matlab . t)
      (python . t))))
+
+;; Add obvious org mode hooks
+(add-hook 'org-mode-hook 'visual-line-mode)
+(add-hook 'org-mode-hook 'flyspell-mode)
 
 ;; which key explanations
 (require 'sk-org-hydra)

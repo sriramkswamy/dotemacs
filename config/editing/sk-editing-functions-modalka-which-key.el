@@ -7,6 +7,10 @@
 ;;; Code:
 
 (which-key-add-key-based-replacements
+  "g C" "toggle variable case"
+
+  "g =" "add for auto-correction"
+
   "[ w" "exchange with prev word"
   "] w" "exchange with next word"
   "[ c" "exchange with prev char"

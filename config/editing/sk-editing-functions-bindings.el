@@ -6,6 +6,12 @@
 
 ;;; Code:
 
+;; camelCase region
+(global-set-key (kbd "C-c v g C") 'sk/toggle-camelcase-underscores)
+
+;; Autocorrect word
+(global-set-key (kbd "C-c v g =") #'sk/ispell-word-then-abbrev)
+
 ;; Transpose stuff
 (global-set-key (kbd "C-c v [ w") 'transpose-words)
 (global-set-key (kbd "C-c v ] w") 'sk/transpose-words-forward)

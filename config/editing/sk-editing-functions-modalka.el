@@ -6,6 +6,12 @@
 
 ;;; Code:
 
+;; Toggle camelCase and snake_case
+(modalka-define-kbd "g C" "C-c v g C")
+
+;; Auto correct misspelled words
+(modalka-define-kbd "g =" "C-c v g =")
+
 ;; Transpose stuff
 (modalka-define-kbd "[ w" "C-c v [ w")
 (modalka-define-kbd "] w" "C-c v ] w")

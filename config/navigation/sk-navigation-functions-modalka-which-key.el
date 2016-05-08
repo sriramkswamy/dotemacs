@@ -15,7 +15,7 @@
   "] d" "adjacent pdf next page"
   "[ d" "adjacent pdf prev page"
   
-  ">" "unpop last change"
+  ">" "back from last change"
 
   "g B" "browse file in browser")
 

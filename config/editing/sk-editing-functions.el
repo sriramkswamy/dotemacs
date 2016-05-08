@@ -6,16 +6,61 @@
 
 ;;; Code:
 
-;; camelcase-region Given a region of text in snake_case format,
-;; changes it to camelCase.
-(defun sk/camelcase-region (start end)
-  "Changes region from snake_case to camelCase"
-  (interactive "r")
-  (save-restriction (narrow-to-region start end)
-                    (goto-char (point-min))
-                    (while (re-search-forward "_\\(.\\)" nil t)
-                      (replace-match (upcase (match-string 1))))))
+;; Toggle between camelCase and snake_case
+(defun sk/toggle-camelcase-underscores ()
+  "Toggle between camelcase and underscore notation for the symbol at point."
+  (interactive)
+  (save-excursion
+    (let* ((bounds (bounds-of-thing-at-point 'symbol))
+           (start (car bounds))
+           (end (cdr bounds))
+           (currently-using-underscores-p (progn (goto-char start)
+                                                 (re-search-forward "_" end t))))
+      (if currently-using-underscores-p
+          (progn
+            (upcase-initials-region start end)
+            (replace-string "_" "" nil start end)
+            (downcase-region start (1+ start)))
+        (replace-regexp "\\([A-Z]\\)" "_\\1" nil (1+ start) end)
+        (downcase-region start (cdr (bounds-of-thing-at-point 'symbol)))))))
 
+;; Auto correct word and add to abbrev
+(defun sk/simple-get-word ()
+  (car-safe (save-excursion (ispell-get-word nil))))
+(defun sk/ispell-word-then-abbrev (p)
+  "Call `ispell-word', then create an abbrev for it.
+With prefix P, create local abbrev. Otherwise it will
+be global.
+If there's nothing wrong with the word at point, keep
+looking for a typo until the beginning of buffer. You can
+skip typos you don't want to fix with `SPC', and you can
+abort completely with `C-g'."
+  (interactive "P")
+  (let (bef aft)
+    (save-excursion
+      (while (if (setq bef (sk/simple-get-word))
+                 ;; Word was corrected or used quit.
+                 (if (ispell-word nil 'quiet)
+                     nil ; End the loop.
+                   ;; Also end if we reach `bob'.
+                   (not (bobp)))
+               ;; If there's no word at point, keep looking
+               ;; until `bob'.
+               (not (bobp)))
+        (backward-word)
+        (backward-char))
+      (setq aft (sk/simple-get-word)))
+    (if (and aft bef (not (equal aft bef)))
+        (let ((aft (downcase aft))
+              (bef (downcase bef)))
+          (define-abbrev
+            (if p local-abbrev-table global-abbrev-table)
+            bef aft)
+          (message "\"%s\" now expands to \"%s\" %sally"
+                   bef aft (if p "loc" "glob")))
+      (user-error "No typo at or before point"))))
+(setq save-abbrevs 'silently)
+(setq-default abbrev-mode t)
 
 ;; Transpose words forward
 (defun sk/transpose-words-forward ()

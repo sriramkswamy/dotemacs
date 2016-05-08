@@ -8,6 +8,9 @@
 
 (which-key-add-key-based-replacements
   "ESC" "toggle mode"
+  "DEL" "smart del"
+  "TAB" "smart tab"
+  "RET" "smart enter"
 
   "0" "0"
   "1" "1"
@@ -63,9 +66,9 @@
   "\\" "C-c C-c"
   "!" "shell command"
   "&" "async shell command"
-  "<" "pop to last change"
-  ";" "pop before tag"
-  "," "pop to global change"
+  "<" "goto last change"
+  ";" "back from tag"
+  "," "goto global change"
 
   "g" "global prefix"
   "g g" "start of file"

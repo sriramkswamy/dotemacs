@@ -9,8 +9,8 @@
 (which-key-add-key-based-replacements
   "g a" "activate modes"
 
-  "-" "selection-based fold toggle"
-  "_" "selection-based fold menu")
+  "-" "sel-based fold toggle"
+  "_" "sel-based fold menu")
 
 (provide 'sk-visual-hydra-modalka-which-key)
 ;;; sk-visual-hydra-modalka-which-key.el ends here

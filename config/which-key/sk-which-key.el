@@ -7,6 +7,7 @@
 ;;; Code:
 
 (sk/require-package 'which-key)
+(setq which-key-sort-order 'which-key-key-order-alpha)
 (global-set-key (kbd "C-x ?") 'which-key-show-top-level)
 (which-key-add-key-based-replacements
   "C-x ?" "top level bindings")

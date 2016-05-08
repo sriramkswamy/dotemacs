@@ -26,17 +26,17 @@
   "SPC d" "project files"
   "SPC TAB" "alternate file"
 
-  "g e" "extract word/exp in project"
+  "g e" "extract word in proj"
   "g E" "writable mode on"
 
   "SPC n" "directory tree"
 
-  "*" "search for word-at-point"
+  "*" "search word"
 
   "g t" "create/update tags"
   "T" "global tags/func search"
 
-  "C" "config perspective prefix"
+  "C" "config persp prefix"
   "C s" "perspective switch"
   "C a" "perspective add buffer"
   "C A" "perspective set buffer"

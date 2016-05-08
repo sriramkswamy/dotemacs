@@ -6,6 +6,9 @@
 
 ;;; Code:
 
+;; Ivy resume
+(global-set-key (kbd "C-S-s") 'ivy-resume)
+
 ;; Counsel bindings
 (global-set-key (kbd "C-r") 'counsel-imenu)
 (global-set-key (kbd "C-x 8") 'counsel-unicode-char)

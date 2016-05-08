@@ -17,6 +17,7 @@
 (add-hook 'text-mode-hook 'diff-hl-mode)
 (add-hook 'dired-mode-hook 'diff-hl-dired-mode)
 (add-hook 'diff-hl-mode-hook 'diff-hl-flydiff-mode)
+(add-hook 'diff-hl-mode-hook 'diff-hl-margin-mode)
 
 ;; Git timemachine
 (sk/require-package 'git-timemachine)

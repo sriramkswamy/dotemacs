@@ -101,8 +101,8 @@
 (modalka-define-kbd "SPC f" "C-x C-f")
 (modalka-define-kbd "SPC w" "C-x C-s")
 (modalka-define-kbd "SPC i" "C-c C-e")
-(modalka-define-kbd "SPC h" "C-c C-k")
-(modalka-define-kbd "SPC o" "C-c C-w")
+(modalka-define-kbd "SPC h" "C-c C-w")
+(modalka-define-kbd "SPC o" "C-c C-k")
 (modalka-define-kbd "SPC g" "C-c C-f")
 
 ;; which key explanations

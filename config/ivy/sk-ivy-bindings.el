@@ -37,9 +37,6 @@
 ;; ivy bibtex
 (global-set-key (kbd "C-c b") 'ivy-bibtex)
 
-;; wgrep
-(global-set-key (kbd "C-M-S-r") 'wgrep-change-to-wgrep-mode)
-
 ;; modal bindings
 (require 'sk-ivy-modalka)
 

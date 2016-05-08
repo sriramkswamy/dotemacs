@@ -8,14 +8,14 @@
 
 ;; DocView
 (which-key-add-key-based-replacements
-  "%" "matching paren"
+  "%" "goto matching paren"
 
   "SPC z" "toggle fullscreen"
 
   "] d" "adjacent pdf next page"
   "[ d" "adjacent pdf prev page"
   
-  ">" "unpop mark"
+  ">" "unpop last change"
 
   "g B" "browse file in browser")
 

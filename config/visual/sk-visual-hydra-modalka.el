@@ -9,9 +9,6 @@
 ;; activate modes
 (modalka-define-kbd "g a" "C-c h a")
 
-;; Origami
-(modalka-define-kbd "^" "C-c v z M")
-
 ;; Vimish fold
 (modalka-define-kbd "-" "C-c v z a")
 (modalka-define-kbd "_" "C-c v z f")

@@ -27,9 +27,13 @@
 (modalka-define-kbd "#" "C-M-s")
 (modalka-define-kbd "g r" "C-M-r")
 
-;; FFIP
+;; Project navigation
 (modalka-define-kbd "SPC d" "C-c p f")
 (modalka-define-kbd "SPC TAB" "C-c p a")
+
+;; change to wgrep mode
+(modalka-define-kbd "g e" "C-c C-s")
+(modalka-define-kbd "g E" "C-M-S-r")
 
 ;; Neotree
 (modalka-define-kbd "SPC n" "C-c n")

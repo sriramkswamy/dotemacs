@@ -18,9 +18,6 @@
 ;; Locate
 (modalka-define-kbd "SPC y" "C-x l")
 
-;; change to wgrep mode
-(modalka-define-kbd "g e" "C-M-S-r")
-
 ;; Help
 (modalka-define-kbd "SPC x" "C-h f")
 (modalka-define-kbd "SPC v" "C-h v")

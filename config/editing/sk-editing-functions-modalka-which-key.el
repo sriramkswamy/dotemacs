@@ -7,10 +7,10 @@
 ;;; Code:
 
 (which-key-add-key-based-replacements
-  "[ w" "transpose word back"
-  "] w" "transpose word forward"
-  "[ c" "transpose char back"
-  "] c" "transpose char forward"
+  "[ w" "exchange with prev word"
+  "] w" "exchange with next word"
+  "[ c" "exchange with prev char"
+  "] c" "exchange with next char"
 
   "Y" "copy to the end of line"
 
@@ -20,8 +20,8 @@
   
   "g J" "join line"
   
-  "[ e" "move line up"
-  "] e" "move line down")
+  "[ e" "move line/region up"
+  "] e" "move line/region down")
 
 (provide 'sk-editing-functions-modalka-which-key)
 ;;; sk-editing-functions-modalka-which-key.el ends here

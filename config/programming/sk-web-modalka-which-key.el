@@ -7,8 +7,8 @@
 ;;; Code:
 
 (which-key-add-key-based-replacements
-  "L" "emmet next"
-  "H" "emmet previous")
+  "L" "emmet next cursor exp"
+  "H" "emmet prev cursor exp")
 
 (provide 'sk-web-modalka-which-key)
 ;;; sk-web-modalka-which-key.el ends here

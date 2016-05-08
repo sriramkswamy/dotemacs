@@ -30,12 +30,16 @@
 ;; Swoop
 (global-set-key (kbd "C-c v *") 'swoop)
 
+;; wgrep
+(global-set-key (kbd "C-c C-s") 'pt-regexp)
+(global-set-key (kbd "C-M-S-r") 'wgrep-change-to-wgrep-mode)
+
 ;; Neotree
 (global-set-key (kbd "C-c n") 'neotree-toggle)
 
 ;; Ggtags
 (global-set-key (kbd "C-c v T") 'ggtags-find-tag-regexp)
-(global-set-key (kbd "C-c G") 'ggtags-create-tags)
+(global-set-key (kbd "C-c G") 'ggtags-update-tags)
 
 ;; modal bindings
 (require 'sk-navigation-modalka)

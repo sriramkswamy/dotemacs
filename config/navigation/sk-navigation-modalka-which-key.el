@@ -10,7 +10,7 @@
   "[ s" "prev spell error"
   "] s" "next spell error"
 
-  "g i" "beacon blink"
+  "g i" "show cursor"
 
   "u" "undo"
   "r" "redo"
@@ -18,20 +18,23 @@
 
   "f" "find in line"
   "F" "find line"
-  "W" "sneak"
+  "W" "find two chars"
 
-  "#" "highlight symbols"
+  "#" "highlight symbol"
   "g r" "remove highlight"
 
   "SPC d" "project files"
   "SPC TAB" "alternate file"
 
-  "SPC n" "neotree"
+  "g e" "extract word/exp in project"
+  "g E" "writable mode on"
 
-  "*" "swoop"
+  "SPC n" "directory tree"
 
-  "g t" "create tags"
-  "T" "global tags"
+  "*" "search for word-at-point"
+
+  "g t" "create/update tags"
+  "T" "global tags/func search"
 
   "C" "config perspective prefix"
   "C s" "perspective switch"

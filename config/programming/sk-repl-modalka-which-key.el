@@ -10,8 +10,8 @@
   "SPC u" "vertical eshell"
   "SPC U" "horizontal eshell"
 
-  "SPC m" "vertical multi-term"
-  "SPC M" "horizontal mutli-term")
+  "SPC m" "vertical terminal"
+  "SPC M" "horizontal terminal")
 
 (provide 'sk-repl-modalka-which-key)
 ;;; sk-repl-modalka-which-key.el ends here

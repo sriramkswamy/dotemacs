@@ -28,6 +28,7 @@
 
 ;; Distraction free writing
 (sk/require-package 'olivetti)
+(setq olivetti-set-width 80)
 
 ;; Filter out passive voice and weasel words
 (sk/require-package 'writegood-mode)

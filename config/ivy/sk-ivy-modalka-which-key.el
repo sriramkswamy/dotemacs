@@ -7,14 +7,11 @@
 ;;; Code:
 
 (which-key-add-key-based-replacements
-  "B" "ivy resume"
-  "t" "imenu"
+  "B" "previous ivy"
+  "t" "tags/func in buffer"
 
-  "SPC j" "helm M x"
   "SPC x" "desc function"
   "SPC v" "desc variable"
-
-  "g e" "wgrep mode"
 
   "SPC r" "recent files"
 

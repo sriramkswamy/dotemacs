@@ -47,6 +47,7 @@
 ;; Neotree
 (sk/require-package 'neotree)
 (setq neo-smart-open t)
+(setq projectile-switch-project-action 'neotree-projectile-action)
 
 ;; GTags
 (sk/require-package 'ggtags)

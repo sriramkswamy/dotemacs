@@ -37,6 +37,10 @@
 
 ;; Origami mode
 (sk/require-package 'origami)
+(global-set-key (kbd "C-c v z M") 'origami-toggle-node)
+(modalka-define-kbd "|" "C-c v z M")
+(which-key-add-key-based-replacements
+  "|" "syntax-based fold toggle")
 
 ;; Vimish-fold mode
 (sk/require-package 'vimish-fold)

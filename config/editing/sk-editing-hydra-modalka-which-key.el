@@ -7,11 +7,11 @@
 ;;; Code:
 
 (which-key-add-key-based-replacements
-  "E" "edit rectangle"
+  "E" "edit rectangle selection"
 
-  "\"" "registers"
+  "\"" "registers menu"
 
-  "@" "macros")
+  "@" "macros menu")
 
 (provide 'sk-editing-hydra-modalka-which-key)
 ;;; sk-editing-hydra-modalka-which-key.el ends here

@@ -12,11 +12,11 @@
   "o c" "org capture"
   "o i" "org insert link"
   "o s" "org store link"
-  "o S" "org list make subtree"
+  "o S" "org subtree from list"
   "o A" "org archive subtree"
   "o g" "org goto"
   "o l" "org latex preview"
-  "o L" "org toggle link"
+  "o L" "org toggle link display"
   "o I" "org image preview"
   "o k" "org kill subtree"
   "o V" "org reveal"
@@ -40,7 +40,7 @@
   "o t" "org tag"
   "o d" "org todo"
 
-  "o f" "org deft"
+  "o f" "org search in files"
 
   "o n" "interleave notes"
   

@@ -8,7 +8,7 @@
 
 ;; Magit - Best git wrapper ever
 (which-key-add-key-based-replacements
-  "C-c g" "magit prefix"
+  "C-c g" "git prefix"
 
   "C-c g g" "gist prefix"
 

@@ -107,7 +107,8 @@
   "SPC i" "edit results"
   "SPC h" "org refile"
   "SPC o" "over/abort"
-  "SPC g" "follow")
+  "SPC g" "follow"
+  "SPC SPC" "search")
 
 (provide 'sk-modal-modalka-which-key)
 ;;; sk-modal-modalka-which-key.el ends here

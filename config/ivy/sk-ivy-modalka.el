@@ -37,10 +37,6 @@
 ;; Projecile
 (modalka-define-kbd "SPC p" "C-c P")
 
-;; search
-(modalka-define-kbd "SPC SPC" "C-s")
-(modalka-define-kbd "/" "C-s")
-
 ;; bibtex
 (modalka-define-kbd "SPC b" "C-c b")
 

@@ -295,9 +295,9 @@ _u_: Update field _F_: file funcs
   ("t" crossref-add-bibtex-entry)
   ("d" doi-add-bibtex-entry)
   ("b" sk/org-ref-bibtex-hydra/body)
-  ("r" org-ref-helm-insert-ref-link)
-  ("l" org-ref-helm-insert-label-link)
-  ("c" org-ref-helm-insert-cite-link)
+  ("r" org-ref-ivy-insert-ref-link)
+  ("l" org-ref-ivy-insert-label-link)
+  ("c" org-ref-ivy-insert-cite-link)
   ("f" sk/org-ref-bibtex-file/body)
   ("q" nil :color blue))
 

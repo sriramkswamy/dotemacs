@@ -12,6 +12,12 @@
   (diminish 'sk/dubcaps-mode ""))
 (add-hook 'sk/dubcaps-mode-hook 'sk/diminish-dubcaps)
 
+;; Diminish regions bindings mode
+(defun sk/diminish-region-bindings ()
+  (interactive)
+  (diminish 'region-bindings-mode " ρ"))
+(add-hook 'region-bindings-mode-hook 'sk/diminish-region-bindings)
+
 ;; Diminish smart parens
 (defun sk/diminish-smartparens ()
   (interactive)

@@ -21,8 +21,7 @@
   (interactive)
   (diminish 'abbrev-mode ""))
 (add-hook 'abbrev-mode-hook 'sk/diminish-abbrev)
-(add-hook 'prog-mode-hook 'sk/diminish-abbrev)
-(add-hook 'text-mode-hook 'sk/diminish-abbrev)
+(add-hook 'after-init-hook 'sk/diminish-abbrev)
 
 ;; Visual wrap mdoe
 (defun sk/diminish-visual-line ()

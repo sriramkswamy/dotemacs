@@ -36,6 +36,7 @@
   (define-key company-active-map (kbd "C-p") 'company-select-previous)
   (define-key company-active-map [return] 'company-complete-selection)
   (define-key company-active-map (kbd "C-w") 'backward-kill-word)
+  (define-key company-active-map (kbd "C-u") 'sk/backward-kill-line)
   (define-key company-active-map (kbd "C-c") 'sk/company-abort)
   (define-key company-search-map (kbd "C-c") 'company-search-abort))
 

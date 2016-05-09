@@ -115,14 +115,14 @@
          "Ledger"          ; name
          entry             ; type
          (file+datetree "~/Dropbox/org/ledger.org" "Ledger")  ; target
-         "* %(oc/prmt \"Name of expense\" 'expense-name) %(org-set-tags)  :accounts:
+         "* %^{expense} %(org-set-tags)  :accounts:
 :PROPERTIES:
 :Created: %U
 :END:
 %i
-#+NAME: %(progn expense-name)-%t
+#+NAME: %\\1-%t
 #+BEGIN_SRC ledger :noweb yes
-%^{Date of expense (yyyy/mm/dd)} %^{'*' if cleared, else blank} %(progn expense-name)
+%^{Date of expense (yyyy/mm/dd)} %^{'*' if cleared, else blank} %\\1
     %^{Account name}                                $%^{Amount}
     %?
 #+END_SRC
@@ -296,6 +296,7 @@ Description:
       deft-directory "~/Dropbox/org")
 
 ;; Org ref for academic papers
+(sk/require-package 'helm) ;; because org-ref needs it to be seamless.
 (sk/require-package 'org-ref)
 (setq org-ref-completion-library 'org-ref-ivy-bibtex)
 (setq org-ref-notes-directory "~/Dropbox/org/references/notes"

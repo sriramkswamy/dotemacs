@@ -6,6 +6,11 @@
 
 ;;; Code:
 
+;; Backward kill line
+(global-set-key (kbd "C-u") 'sk/backward-kill-line)
+;; Minibuffer too
+(define-key minibuffer-local-map (kbd "C-u") 'sk/backward-kill-line)
+
 ;; camelCase region
 (global-set-key (kbd "C-c v g C") 'sk/toggle-camelcase-underscores)
 

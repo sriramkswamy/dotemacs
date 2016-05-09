@@ -6,6 +6,12 @@
 
 ;;; Code:
 
+;; Backward kill line
+(defun sk/backward-kill-line (arg)
+  "Kill ARG lines backward."
+  (interactive "p")
+  (kill-line (- 1 arg)))
+
 ;; Toggle between camelCase and snake_case
 (defun sk/toggle-camelcase-underscores ()
   "Toggle between camelcase and underscore notation for the symbol at point."

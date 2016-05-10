@@ -31,9 +31,6 @@
 ;; packages configuration - 1.0 seconds - adds 0.2 seconds
 (require 'sk-package)
 
-;; Diminish minor modes - 1.0 seconds
-(require 'sk-diminish)
-
 ;; Discover bindings - 1.0 seconds
 (require 'sk-which-key)
 

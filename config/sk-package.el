@@ -43,20 +43,46 @@
 (require 'diminish)                ;; if you use :diminish
 (require 'bind-key)                ;; if you use any :bind variant
 
+;; Diminish built-in stuff
+(use-package diminish
+  :ensure t
+  :diminish (visual-line-mode . "ω")
+  :diminish hs-minor-mode
+  :diminish abbrev-mode
+  :diminish auto-fill-mode
+  :diminish subword-mode
+  :diminish eldoc-mode
+  :diminish auto-revert-mode)
+(use-package flyspell
+  :diminish (flyspell-mode . "φ"))
+
 ;; Better package menu
-(sk/require-package 'paradox)
-(setq paradox-github-token t)
+(use-package paradox
+  :ensure t
+  :commands (paradox-list-packages)
+  :defer t
+  :init
+  (setq paradox-github-token t))
 
 ;; Profiler
-(sk/require-package 'esup)
+(use-package esup
+  :ensure t
+  :commands (esup)
+  :defer t)
 
 ;; Restart emacs from emacs
-(sk/require-package 'restart-emacs)
+(use-package restart-emacs
+  :ensure t
+  :commands (restart-emacs)
+  :defer t)
 
 ;; Libraries for emacs
-(sk/require-package 'cl-lib)
-(sk/require-package 'dash)
-(sk/require-package 's)
+(use-package cl-lib
+  :ensure t)
+(use-package dash
+  :ensure t)
+(use-package s
+  :ensure t)
 
 (provide 'sk-package)
 ;;; sk-package.el ends here

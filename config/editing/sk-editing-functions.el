@@ -111,6 +111,11 @@ Single Capitals as you type."
       (add-hook 'post-self-insert-hook #'sk/dcaps-to-scaps nil 'local)
     (remove-hook 'post-self-insert-hook #'sk/dcaps-to-scaps 'local)))
 (add-hook 'org-mode-hook #'sk/dubcaps-mode)
+;; Diminish double capitals mode
+(defun sk/diminish-dubcaps ()
+  (interactive)
+  (diminish 'sk/dubcaps-mode ""))
+(add-hook 'sk/dubcaps-mode-hook 'sk/diminish-dubcaps)
 
 ;; Select current line
 (defun sk/select-current-line ()

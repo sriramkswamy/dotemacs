@@ -62,13 +62,13 @@
 ;; Projectile
 (use-package projectile
   :ensure t
+  :commands (projectile-find-file projectile-find-other-file)
   :defer t
   :init
   (setq projectile-file-exists-remote-cache-expire (* 10 60))
   :diminish projectile-mode
   :config
-  (add-hook 'prog-mode-hook 'projectile-mode)
-  (add-hook 'text-mode-hook 'projectile-mode))
+  (projectile-global-mode))
 
 ;; Swoop stuff
 (use-package swoop

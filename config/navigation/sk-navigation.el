@@ -9,8 +9,7 @@
 ;; Don't lose the cursor
 (use-package beacon
   :ensure t
-  :defer t
-  :commands (beacon-blink)
+  :demand t
   :diminish beacon-mode
   :bind (
 	 ("C-c v g i" . beacon-blink)
@@ -21,8 +20,9 @@
 ;; Undo tree
 (use-package undo-tree
   :ensure t
-  :commands (undo-tree-undo undo-tree-redo undo-tree-visualize)
-  :defer t
+  :commands (undo-tree-undo
+	     undo-tree-redo
+	     undo-tree-visualize)
   :diminish undo-tree-mode
   :bind (
 	 ("C-c v u" . undo-tree-undo)
@@ -35,8 +35,9 @@
 ;; Avy for on-screen motion
 (use-package avy
   :ensure t
-  :commands (avy-goto-char-in-line avy-goto-char-2 avy-goto-line)
-  :defer t
+  :commands (avy-goto-char-in-line
+	     avy-goto-char-2
+	     avy-goto-line)
   :init
   (setq avy-keys-alist
 	`((avy-goto-char-2 . (?j ?k ?l ?f ?s ?d ?e ?r ?u ?i))
@@ -53,7 +54,6 @@
 (use-package highlight-symbol
   :ensure t
   :commands (highlight-symbol)
-  :defer t
   :bind (
 	 ("C-M-s" . highlight-symbol)
 	 ("C-M-r" . highlight-symbol-remove-all)
@@ -62,9 +62,15 @@
 ;; Projectile
 (use-package projectile
   :ensure t
-  :commands (projectile-find-file projectile-find-other-file)
-  :defer t
+  :commands (projectile-find-file
+	     projectile-find-other-file)
+  :defer 2
+  :bind (
+	 ("C-c p f" . projectile-find-file)
+	 ("C-c p a" . projectile-find-other-file)
+	 )
   :init
+  (setq projectile-keymap-prefix (kbd "C-c C-S-p"))
   (setq projectile-file-exists-remote-cache-expire (* 10 60))
   :diminish projectile-mode
   :config
@@ -73,8 +79,8 @@
 ;; Swoop stuff
 (use-package swoop
   :ensure t
-  :commands (swoop swoop-pcre-regexp)
-  :defer t
+  :commands (swoop
+	     swoop-pcre-regexp)
   :bind (
 	 ("C-c v *" . swoop)
 	 ))
@@ -82,16 +88,16 @@
 ;; ag and wgrep
 (use-package ag
   :ensure t
-  :commands (ag ag-project ag-regexp)
+  :commands (ag
+	     ag-project
+	     ag-regexp)
   :bind (
 	 ("C-c C-S-s" . ag-regexp)
 	 )
-  :defer t
   :config
   (use-package wgrep-ag
     :ensure t
     :commands (wgrep-change-to-wgrep-mode)
-    :defer t
     :bind (
 	   ("C-M-S-r" . wgrep-change-to-wgrep-mode)
 	   )))
@@ -99,8 +105,8 @@
 ;; pt and wgrep
 (use-package pt
   :ensure t
-  :commands (pt-regexp pt-regexp-file-pattern)
-  :defer t
+  :commands (pt-regexp
+	     pt-regexp-file-pattern)
   :bind (
 	 ("C-c C-s" . pt-regexp)
 	 )
@@ -108,7 +114,6 @@
   (use-package wgrep-pt
     :ensure t
     :commands (wgrep-change-to-wgrep-mode)
-    :defer t
     :bind (
 	   ("C-M-S-r" . wgrep-change-to-wgrep-mode)
 	   )))
@@ -121,8 +126,9 @@
 ;; Neotree
 (use-package neotree
   :ensure t
-  :commands (neotree-toggle neotree-show neotree)
-  :defer t
+  :commands (neotree-toggle
+	     neotree-show
+	     neotree)
   :bind (
 	 ("C-c n". neotree-toggle)
 	 )
@@ -132,8 +138,9 @@
 ;; GTags
 (use-package ggtags
   :ensure t
-  :commands (ggtags-create-tags ggtags-update-tags ggtags-find-tag-regexp)
-  :defer t
+  :commands (ggtags-create-tags
+	     ggtags-update-tags
+	     ggtags-find-tag-regexp)
   :diminish ggtags-mode
   :bind (
 	 ("C-c v T" . ggtags-find-tag-regexp)
@@ -146,8 +153,30 @@
 ;; Perspective mode
 (use-package perspective
   :ensure t
-  :commands (persp-mode)
-  :defer t
+  :commands (persp-switch
+	     persp-add-buffer
+	     persp-set-buffer
+	     persp-switch-to-buffer
+	     persp-kill
+	     persp-rename
+	     persp-remove-buffer
+	     persp-next
+	     persp-prev
+	     persp-import
+	     persp-last)
+  :bind (
+	 ("C-c C s" . persp-switch)
+	 ("C-c C a" . persp-add-buffer)
+	 ("C-c C A" . persp-set-buffer)
+	 ("C-c C b" . persp-switch-to-buffer)
+	 ("C-c C c" . persp-kill)
+	 ("C-c C r" . persp-rename)
+	 ("C-c C k" . persp-remove-buffer)
+	 ("C-c C n" . persp-next)
+	 ("C-c C p" . persp-prev)
+	 ("C-c C i" . persp-import)
+	 ("C-c C C" . persp-last)
+	 )
   :config
   (persp-mode 1))
 

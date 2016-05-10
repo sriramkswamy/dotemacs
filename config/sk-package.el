@@ -63,21 +63,18 @@
 (use-package paradox
   :ensure t
   :commands (paradox-list-packages)
-  :defer t
   :init
   (setq paradox-github-token t))
 
 ;; Profiler
 (use-package esup
   :ensure t
-  :commands (esup)
-  :defer t)
+  :commands (esup))
 
 ;; Restart emacs from emacs
 (use-package restart-emacs
   :ensure t
-  :commands (restart-emacs)
-  :defer t)
+  :commands (restart-emacs))
 
 ;; Libraries for emacs
 (use-package cl-lib

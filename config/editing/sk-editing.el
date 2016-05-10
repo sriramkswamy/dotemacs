@@ -24,7 +24,6 @@
 	     er/mark-ruby-block-up
 	     er/mark-symbol
 	     er/mark-text-sentence)
-  :defer t
   :bind (
 	 ("C-c e a" . er/expand-region)
 	 ("C-c e A" . er/contract-region)
@@ -51,7 +50,6 @@
 (use-package comment-dwim-2
   :ensure t
   :commands (comment-dwim-2)
-  :defer t
   :bind (
 	 ("M-;" . comment-dwim-2)
 	 ("C-c v g c" . comment-dwim-2)
@@ -60,7 +58,7 @@
 ;; Smartparens
 (use-package smartparens
   :ensure t
-  :defer t
+  :demand t
   :bind (
 	 ("C-c s j" . sp-down-sexp)
 	 ("C-c s k" . sp-backward-up-sexp)
@@ -98,7 +96,6 @@
 (use-package iedit
   :ensure t
   :commands (iedit-mode)
-  :defer t
   :bind (
 	 ("C-c I" . iedit-mode)
 	 ))
@@ -107,7 +104,6 @@
 (use-package yasnippet
   :ensure t
   :commands (yas-insert-snippet yas-new-snippet)
-  :defer t
   :bind (
 	 ("C-c S" . yas-insert-snippet)
 	 )
@@ -121,15 +117,13 @@
 (use-package visual-regexp
   :ensure t
   :commands (vr/query-replace)
-  :defer t
   :bind (
 	 ("C-c v s" . vr/query-replace)
 	 )
   :config
   (use-package visual-regexp-steroids
     :ensure t
-    :commands (vr/select-query-replace)
-    :defer t))
+    :commands (vr/select-query-replace)))
 
 ;; Multiple cursors
 (use-package multiple-cursors
@@ -142,7 +136,6 @@
 	     mc/mark-more-like-this-extended
 	     mc/skip-to-next-like-this
 	     mc/skip-to-previous-like-this)
-  :defer t
   :bind (
 	 ("C-+" . mc/edit-beginnings-of-lines)
 	 ("C-," . mc/edit-ends-of-lines)
@@ -154,18 +147,10 @@
 	 ("C-)" . mc/skip-to-next-like-this)
 	 ))
 
-;; Region bindings mode
+;; Bindings when a region is active
 (use-package region-bindings-mode
   :ensure t
-  :commands (mc/edit-beginnings-of-lines
-	     mc/edit-ends-of-lines
-	     mc/mark-all-like-this-dwim
-	     mc/mark-previous-like-this
-	     mc/mark-next-like-this
-	     mc/mark-more-like-this-extended
-	     mc/skip-to-next-like-this
-	     mc/skip-to-previous-like-this)
-  :defer t
+  :demand t
   :bind (:map region-bindings-mode-map
 	      ("ma" . mc/mark-all-like-this-dwim)
 	      ("mk" . mc/mark-previous-like-this)
@@ -181,7 +166,9 @@
   (region-bindings-mode-enable))
 
 ;; Edit really large files
-(sk/require-package 'vlf)
+(use-package vlf
+  :ensure t
+  :commands (vlf))
 
 ;; aux requirements
 (require 'sk-editing-functions)

@@ -46,17 +46,17 @@
 (modalka-define-kbd "T" "C-c v T")
 
 ;; Perspective mode
-(modalka-define-kbd "C s" "C-x x s")
-(modalka-define-kbd "C a" "C-x x a")
-(modalka-define-kbd "C A" "C-x x A")
-(modalka-define-kbd "C b" "C-x x b")
-(modalka-define-kbd "C c" "C-x x c")
-(modalka-define-kbd "C r" "C-x x r")
-(modalka-define-kbd "C k" "C-x x k")
-(modalka-define-kbd "C n" "C-x x n")
-(modalka-define-kbd "C p" "C-x x p")
-(modalka-define-kbd "C i" "C-x x i")
-(modalka-define-kbd "C C" "C-x x C-x x")
+(modalka-define-kbd "C s" "C-c C s")
+(modalka-define-kbd "C a" "C-c C a")
+(modalka-define-kbd "C A" "C-c C A")
+(modalka-define-kbd "C b" "C-c C b")
+(modalka-define-kbd "C c" "C-c C c")
+(modalka-define-kbd "C r" "C-c C r")
+(modalka-define-kbd "C k" "C-c C k")
+(modalka-define-kbd "C n" "C-c C n")
+(modalka-define-kbd "C p" "C-c C p")
+(modalka-define-kbd "C i" "C-c C i")
+(modalka-define-kbd "C C" "C-c C C")
 
 ;; Back button mode
 (modalka-define-kbd ";" "C-c v C-i")

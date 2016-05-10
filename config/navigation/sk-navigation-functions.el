@@ -191,17 +191,6 @@ point reaches the beginning or end of the buffer, stop there."
              (set-window-start w2 s1)
              (setq i (1+ i)))))))
 
-;; Unpop mark
-(defun sk/unpop-to-mark-command ()
-  "Unpop off mark ring. Does nothing if mark ring is empty."
-  (interactive)
-      (when mark-ring
-        (setq mark-ring (cons (copy-marker (mark-marker)) mark-ring))
-        (set-marker (mark-marker) (car (last mark-ring)) (current-buffer))
-        (when (null (mark t)) (ding))
-        (setq mark-ring (nbutlast mark-ring))
-        (goto-char (marker-position (car (last mark-ring))))))
-
 ;; Browse the html file
 (defun sk/browse-current-file ()
   "Open the current file as a URL using `browse-url'."

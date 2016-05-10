@@ -61,7 +61,6 @@
 (modalka-define-kbd "\\" "C-c C-c")
 (modalka-define-kbd "V" "C-c v C-v")
 (modalka-define-kbd "<" "C-c v C-o")
-(modalka-define-kbd ";" "C-c v C-t")
 (modalka-define-kbd "," "C-c v C-S-o")
 
 (modalka-define-kbd "g g" "M-<")

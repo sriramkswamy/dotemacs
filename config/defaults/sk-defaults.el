@@ -14,6 +14,9 @@
 (setq recentf-max-saved-items 1000
       recentf-exclude '("/tmp/" "/ssh:"))
 
+;; Dired
+(add-hook 'dired-mode-hook 'dired-hide-details-mode)
+
 ;; GUI changes
 (defun sk/gui-defaults ()
   (interactive)
@@ -139,9 +142,6 @@
 (global-set-key (kbd "C-c v R") 'overwrite-mode)
 (global-set-key (kbd "C-c v C-v") 'rectangle-mark-mode)
 (global-set-key (kbd "C-c v g q") 'fill-paragraph)
-(global-set-key (kbd "C-c v C-o") 'pop-to-mark-command)
-(global-set-key (kbd "C-c v C-t") 'pop-tag-mark)
-(global-set-key (kbd "C-c v C-S-o") 'pop-global-mark)
 
 (provide 'sk-defaults)
 ;;; sk-defaults.el ends here

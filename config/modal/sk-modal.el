@@ -22,7 +22,9 @@
   (which-key-add-key-based-replacements
     "C-c h" "hydra prefix"
     "C-c v" "vi prefix"
-    "C-c v g" "vi global prefix"))
+    "C-c v g" "vi global prefix"
+    "C-c v [" "vi previous prefix"
+    "C-c v ]" "vi next prefix"))
 
 ;; aux requirements
 (require 'sk-modal-modalka)

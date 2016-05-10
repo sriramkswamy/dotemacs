@@ -58,6 +58,12 @@
 (modalka-define-kbd "C i" "C-x x i")
 (modalka-define-kbd "C C" "C-x x C-x x")
 
+;; Back button mode
+(modalka-define-kbd ";" "C-c v C-i")
+(modalka-define-kbd "," "C-c v C-o")
+(modalka-define-kbd ">" "C-c v C-S-i")
+(modalka-define-kbd "<" "C-c v C-S-o")
+
 ;; which key for modalka bindings
 (require 'sk-navigation-modalka-which-key)
 

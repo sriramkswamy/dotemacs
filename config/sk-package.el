@@ -54,7 +54,10 @@
   :diminish eldoc-mode
   :diminish auto-revert-mode)
 (use-package flyspell
-  :diminish (flyspell-mode . "φ"))
+  :diminish (flyspell-mode . "φ")
+  :bind (
+	 ("C-c v ] s" . flyspell-goto-next-error)
+	 ))
 
 ;; Better package menu
 (use-package paradox

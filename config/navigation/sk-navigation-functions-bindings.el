@@ -6,6 +6,9 @@
 
 ;;; Code:
 
+;; Flyspell
+(global-set-key (kbd "C-c v [ s") 'sk/flyspell-goto-previous-error)
+
 ;; Matching parenthesis
 (global-set-key (kbd "C-c v %") 'sk/goto-match-paren)
 
@@ -19,9 +22,6 @@
 ;; DocView
 (global-set-key (kbd "C-S-n") 'sk/other-pdf-next)
 (global-set-key (kbd "C-S-p") 'sk/other-pdf-previous)
-
-;; Mark
-(global-set-key (kbd "C-c v C-i") 'sk/unpop-to-mark-command)
 
 ;; Browse current file
 (global-set-key (kbd "C-c v g B") 'sk/browse-current-file)

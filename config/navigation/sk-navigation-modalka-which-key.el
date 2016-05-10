@@ -47,7 +47,12 @@
   "C n" "perspective next"
   "C p" "perspective prev"
   "C i" "perspective import"
-  "C C" "perspective last")
+  "C C" "perspective last"
+
+  ";" "local forward"
+  "," "local backward"
+  ">" "global forward"
+  "<" "global backward")
 
 (provide 'sk-navigation-modalka-which-key)
 ;;; sk-navigation-modalka-which-key.el ends here

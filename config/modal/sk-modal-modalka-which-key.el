@@ -66,9 +66,6 @@
   "\\" "C-c C-c"
   "!" "async shell command"
   "&" "shell command"
-  "<" "goto last change"
-  ";" "back from tag"
-  "," "goto global change"
 
   "g" "global prefix"
   "g g" "start of file"

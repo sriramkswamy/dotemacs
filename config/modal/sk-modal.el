@@ -2,24 +2,30 @@
 
 ;;; Commentary:
 
-;; My custom maps for modal editing based on Modalka and Hydras. This follows a
+;; My custom maps for modal editing based on Modalka and Hydras which follows a
 ;; Vi-style editing
 
 ;;; Code:
 
 ;; Amazing sticky bindings - sort of modal editing
-(sk/require-package 'hydra)
+(use-package hydra
+  :ensure t)
 
 ;; True modal editing
-(sk/require-package 'modalka)
-(setq modalka-cursor-type 'box)
+(use-package modalka
+  :ensure t
+  :diminish (modalka-mode . "μ")
+  :init
+  (setq modalka-cursor-type 'box)
+  :config
+  (global-set-key (kbd "<escape>") #'modalka-mode)
+  (which-key-add-key-based-replacements
+    "C-c h" "hydra prefix"
+    "C-c v" "vi prefix"
+    "C-c v g" "vi global prefix"))
 
 ;; aux requirements
-(require 'sk-modal-diminish)
-(require 'sk-modal-bindings)
-(require 'sk-modal-which-key)
 (require 'sk-modal-modalka)
-(require 'sk-modal-modalka-which-key)
 
 (provide 'sk-modal)
 ;;; sk-modal.el ends here

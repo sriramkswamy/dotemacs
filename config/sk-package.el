@@ -35,6 +35,14 @@
 (when (memq window-system '(mac ns x))
   (exec-path-from-shell-initialize))
 
+;; Use package macro for packages
+(sk/require-package 'use-package)
+(sk/require-package 'diminish)
+(eval-when-compile
+  (require 'use-package))
+(require 'diminish)                ;; if you use :diminish
+(require 'bind-key)                ;; if you use any :bind variant
+
 ;; Better package menu
 (sk/require-package 'paradox)
 (setq paradox-github-token t)

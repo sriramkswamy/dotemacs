@@ -51,7 +51,8 @@
   :diminish abbrev-mode
   :diminish auto-fill-mode
   :diminish subword-mode
-  :diminish eldoc-mode
+  :diminish eldoc-mode)
+(use-package auto-revert
   :diminish auto-revert-mode)
 (use-package flyspell
   :diminish (flyspell-mode . "φ")

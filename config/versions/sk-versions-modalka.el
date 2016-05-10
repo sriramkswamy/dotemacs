@@ -14,7 +14,8 @@
 (modalka-define-kbd "] h" "C-c g d n")
 (modalka-define-kbd "[ h" "C-c g d p")
 (modalka-define-kbd "i h" "C-c g d m")
-(modalka-define-kbd "g h" "C-c g d h")
+(modalka-define-kbd "g h" "C-c g d g")
+(modalka-define-kbd "g H" "C-c g d h")
 
 ;; Time machine
 (modalka-define-kbd "g l" "C-c g l")

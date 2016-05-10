@@ -14,6 +14,7 @@
 (global-set-key (kbd "C-c g d n") 'diff-hl-next-hunk)
 (global-set-key (kbd "C-c g d p") 'diff-hl-previous-hunk)
 (global-set-key (kbd "C-c g d m") 'diff-hl-mark-hunk)
+(global-set-key (kbd "C-c g d g") 'diff-hl-diff-goto-hunk)
 (global-set-key (kbd "C-c g d h") 'diff-hl-revert-hunk)
 
 ;; Time machine

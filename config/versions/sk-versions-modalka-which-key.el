@@ -20,7 +20,8 @@
   "] h" "next git chunk"
   "[ h" "previous git chunk"
   "i h" "mark git chunk"
-  "g h" "revert git chunk")
+  "g H" "revert git chunk"
+  "g h" "goto git chunk")
 
 (provide 'sk-versions-modalka-which-key)
 ;;; sk-versions-modalka-which-key.el ends here

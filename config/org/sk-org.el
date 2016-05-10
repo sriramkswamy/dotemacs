@@ -252,77 +252,128 @@ Description:
         )
         ))
 
+;; Bindings for org mode
+(use-package org
+  :ensure t
+  :bind (
+	 ("C-c O a" . org-agenda)
+	 ("C-c O c" . org-capture)
+	 ("C-c O i" . org-insert-link)
+	 ("C-c O s" . org-store-link)
+	 ("C-c O S" . org-list-make-subtree)
+	 ("C-c O A" . org-archive-subtree)
+	 ("C-c O g" . org-goto)
+	 ("C-c O l" . org-toggle-latex-fragment)
+	 ("C-c O L" . org-toggle-link-display)
+	 ("C-c O I" . org-toggle-inline-images)
+	 ("C-c O k" . org-cut-subtree)
+	 ("C-c O V" . org-reveal)
+	 ("C-c O R" . org-refile)
+	 ("C-c O y" . org-copy-subtree)
+	 ("C-c O h" . org-toggle-heading)
+	 ("C-c O H" . org-insert-heading-respect-content)
+	 ("C-c O e" . org-export-dispatch)
+	 ("C-c O u" . org-update-dblock)
+	 ("C-c O U" . org-update-all-dblocks)
+	 ("C-c O F" . org-footnote)
+	 ("C-c O ]" . org-narrow-to-subtree)
+	 ("C-c O [" . widen)
+	 ("C-c O N" . org-note)
+	 ("C-c O O" . org-open-at-point)
+	 ("C-c O F" . org-attach)
+	 ("C-c O E" . org-set-effort)
+	 ("C-c O B" . org-table-blank-field)
+	 ("C-c O M" . org-mark-subtree)
+	 ("C-c O <" . org-date-from-calendar)
+	 ("C-c O >" . org-goto-calendar)
+	 ("C-c O d" . org-todo)
+	 ("C-c O t" . org-set-tags-command))
+  :config
+  (which-key-add-key-based-replacements
+    "C-c O" "org mode prefix"))
+
 ;; LaTeX
-(sk/require-package 'cdlatex)
-(add-hook 'org-mode-hook 'org-cdlatex-mode)
+(use-package cdlatex
+  :ensure t
+  :mode "\\.org\\'"
+  :diminish org-cdlatex-mode)
 
 ;; Babel for languages
-(sk/require-package 'babel)
-(setq org-confirm-babel-evaluate nil)
+(use-package babel
+  :ensure t
+  :init
+  (setq org-confirm-babel-evaluate nil)
+  :config
+  (use-package ob-ipython
+    :ensure t))
 
 ;; For PDF note taking
-(sk/require-package 'interleave)
+(use-package interleave
+  :ensure t
+  :bind (
+	 ("C-c O n" . interleave)
+	 )
+  :commands (interleave interleave-pdf-mode))
 
-;; Python support
-(sk/require-package 'ob-ipython)
-
-;; Export using reveal and impress-js
-(sk/require-package 'ox-reveal)
-(setq org-reveal-title-slide-template
-      "<h1>%t</h1>
+;; Org export extras
+(use-package sk-org-export-pack
+  :ensure ox-reveal
+  :ensure ox-twbs
+  :ensure ox-rst
+  :ensure ox-pandoc
+  :init
+  (setq org-reveal-title-slide-template
+	"<h1>%t</h1>
 <h3>%a</h3>
 "
-      )
-(setq org-reveal-root "file:///Users/sriramkswamy/Documents/workspace/github/reveal.js")
-
-;; Export using twitter bootstrap
-(sk/require-package 'ox-twbs)
-
-;; Restructred text and pandoc
-(sk/require-package 'ox-rst)
-(sk/require-package 'ox-pandoc)
+	)
+  (setq org-reveal-root "file:///Users/sriramkswamy/Documents/workspace/github/reveal.js"))
 
 ;; Drag and drop images into org mode
-(sk/require-package 'org-download)
+(use-package org-download
+  :ensure t)
 
 ;; Put a file system tree right into org
-(sk/require-package 'org-fstree)
+(use-package org-fstree
+  :ensure t)
 
 ;; Deft for quick org notes access
-(sk/require-package 'deft)
-(setq deft-extensions '("org")
-      deft-recursive t
-      deft-use-filename-as-title t
-      deft-directory "~/Dropbox/org")
+(use-package deft
+  :ensure t
+  :commands (deft)
+  :bind (
+	 ("C-c O f" . deft)
+	 )
+  :init
+  (setq deft-extensions '("org")
+	deft-recursive t
+	deft-use-filename-as-title t
+	deft-directory "~/Dropbox/org"))
 
 ;; Org ref for academic papers
-(sk/require-package 'helm) ;; because org-ref needs it to be seamless.
-(sk/require-package 'org-ref)
-(setq org-ref-completion-library 'org-ref-ivy-bibtex)
-(setq org-ref-notes-directory "~/Dropbox/org/references/notes"
-      org-ref-bibliography-notes "~/Dropbox/org/references/articles.org"
-      org-ref-default-bibliography '("~/Dropbox/org/references/multiphysics.bib" "~/Dropbox/org/references/chanceconstraints.bib")
-      org-ref-pdf-directory "~/Dropbox/org/references/pdfs/")
-(defun sk/org-ref-bibtex-custom-load ()
-  (interactive)
-  (require 'org-ref)
-  (require 'org-ref-pdf)
-  (require 'org-ref-url-utils))
-(add-hook 'bibtex-mode-hook 'sk/org-ref-bibtex-custom-load)
-(defun sk/org-ref-latex-custom-load ()
-  (interactive)
-  (require 'org-ref-latex))
-(add-hook 'latex-mode-hook 'sk/org-ref-latex-custom-load)
+(use-package org-ref
+  :ensure t
+  :mode ("\\.org\\'" "\\.bib\\'" "\\.tex\\'" "\\.xtx\\'")
+  :init
+  (setq org-ref-completion-library 'org-ref-ivy-bibtex)
+  (setq org-ref-notes-directory "~/Dropbox/org/references/notes"
+	org-ref-bibliography-notes "~/Dropbox/org/references/articles.org"
+	org-ref-default-bibliography '("~/Dropbox/org/references/multiphysics.bib" "~/Dropbox/org/references/chanceconstraints.bib")
+	org-ref-pdf-directory "~/Dropbox/org/references/pdfs/")
+  :config
+  (use-package helm
+    :ensure t
+    :config
+    (use-package helm-bibtex
+      :ensure t)))
 
 ;; Fancy bullets
-(sk/require-package 'org-bullets)
-(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
-
-;; Blog with org
-(sk/require-package 'org-page)
-(setq op/repository-directory "/Users/sriramkswamy/Downloads/blog/"
-      op/site-domain "http://blah.blah"
-      op/theme 'mdo)
+(use-package org-bullets
+  :ensure t
+  :diminish org-indent-mode
+  :config
+  (progn
+    (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))))
 
 ;; Org load languages
 (defun sk/org-custom-load ()
@@ -356,8 +407,7 @@ Description:
 
 ;; which key explanations
 (require 'sk-org-hydra)
-(require 'sk-org-bindings)
-(require 'sk-org-diminish)
+(require 'sk-org-modalka)
 
 (provide 'sk-org)
 ;;; sk-org.el ends here

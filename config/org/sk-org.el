@@ -294,7 +294,11 @@ Description:
   :diminish org-cdlatex-mode
   :config
   (progn
-    (add-hook 'org-mode-hook 'org-cdlatex-mode)))
+    (add-hook 'org-mode-hook 'org-cdlatex-mode)
+    (defun sk/diminish-org-cdlatex ()
+      (interactive)
+      (diminish 'org-cdlatex-mode ""))
+    (add-hook 'org-cdlatex-mode-hook 'sk/diminish-org-cdlatex)))
 
 ;; Babel for languages
 (use-package babel

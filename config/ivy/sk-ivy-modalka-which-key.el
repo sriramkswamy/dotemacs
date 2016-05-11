@@ -10,6 +10,8 @@
   "B" "previous ivy"
   "t" "tags/func in buffer"
 
+  "g s" "search project"
+
   "SPC r" "recent files"
 
   "SPC y" "locate"

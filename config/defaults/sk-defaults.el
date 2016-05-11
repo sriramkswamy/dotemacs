@@ -122,8 +122,6 @@
 ;; Backward kill word - used mostly while writing
 (global-set-key (kbd "C-w") 'backward-kill-word)
 (global-set-key (kbd "C-S-w") 'kill-region)
-;; Backward kill line - so used to this in the readline, so C-u is used up
-(global-set-key (kbd "C-c u") 'universal-argument)
 ;; Minibuffer too
 (define-key minibuffer-local-map (kbd "C-w") 'backward-kill-word)
 

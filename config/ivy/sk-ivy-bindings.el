@@ -20,7 +20,7 @@
 (global-set-key (kbd "C-x l") 'counsel-locate)
 
 ;; Counsel pt
-(global-set-key (kbd "M-s") 'counsel-pt)
+(global-set-key (kbd "C-c M-s") 'counsel-pt)
 
 ;; counsel descbinds
 (global-set-key (kbd "C-c ,") 'counsel-descbinds)

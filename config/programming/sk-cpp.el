@@ -6,11 +6,6 @@
 
 ;;; Code:
 
-;; Cmake ide - for cmake projects
-(sk/require-package 'cmake-ide)
-(add-hook 'c-mode-hook 'cmake-ide-setup)
-(add-hook 'cpp-mode-hook 'cmake-ide-setup)
-
 ;; Multiple compilation commands
 (defun sk/compile-cpp-omp-math ()
   "Compiles the file with OpenMP and math libraries"
@@ -62,11 +57,19 @@
    ))
 
 ;; Rtags
-(sk/require-package 'rtags)
-(add-hook 'c-mode-common-hook 'rtags-start-process-unless-running)
-(add-hook 'c++-mode-common-hook 'rtags-start-process-unless-running)
-(setq rtags-autostart-diagnostics t)
-(setq rtags-completions-enabled t)
+(use-package rtags
+  :ensure t
+  :defer 2
+  :init
+  (setq rtags-autostart-diagnostics t)
+  (setq rtags-completions-enabled t))
+
+;; Cmake ide - for cmake projects
+(use-package cmake-ide
+  :ensure t
+  :defer 2
+  :config
+  (cmake-ide-setup))
 
 ;; aux requirements
 (require 'sk-cpp-hydra)

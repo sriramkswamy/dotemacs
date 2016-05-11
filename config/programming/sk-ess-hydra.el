@@ -7,7 +7,7 @@
 ;;; Code:
 
 ;; Send hydra
-(defhydra sk/hydra-for-ess (:color red
+(defhydra sk/hydra-for-ess (:color blue
                             :hint nil)
   "
  _f_: func        _l_: line    _j_: Julia  _S_: switch

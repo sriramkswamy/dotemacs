@@ -23,7 +23,7 @@
 (modalka-define-kbd "SPC v" "C-h v")
 
 ;; Pt
-(modalka-define-kbd "g s" "M-s")
+(modalka-define-kbd "g s" "C-c M-s")
 
 ;; descbinds
 (modalka-define-kbd "SPC ?" "C-h b")

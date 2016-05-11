@@ -49,11 +49,12 @@
   :diminish (visual-line-mode . "ω")
   :diminish hs-minor-mode
   :diminish abbrev-mode
-  :diminish auto-fill-mode
-  :diminish subword-mode
-  :diminish eldoc-mode)
+  :diminish auto-fill-function
+  :diminish subword-mode)
 (use-package auto-revert
   :diminish auto-revert-mode)
+(use-package eldoc
+  :diminish eldoc-mode)
 (use-package flyspell
   :diminish (flyspell-mode . "φ")
   :bind (

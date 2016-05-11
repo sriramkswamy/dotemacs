@@ -7,51 +7,95 @@
 ;;; Code:
 
 ;; Web mode
-(sk/require-package 'web-mode)
-(add-hook 'html-mode-hook 'web-mode)
-
-;; Refresh
-(sk/require-package 'skewer-mode)
+(use-package web-mode
+  :ensure t
+  :mode ("\\.html$" . web-mode))
 
 ;; JavaScript
-(sk/require-package 'js2-mode)
-(setq-default js2-basic-offset 2
-              js2-indent-level 2)
-(sk/require-package 'tern)
+(use-package js3-mode
+  :ensure t
+  :mode ("\\.js$" . js3-mode))
+
+;; JS navigation
+(use-package tern
+  :ensure t
+  :diminish tern-mode
+  :commands (tern-mode
+	     tern-find-definition
+	     tern-find-definition-by-name
+	     tern-get-docs
+	     tern-get-type
+	     tern-use-server
+	     tern-highlight-refs
+	     tern-rename-variable))
 
 ;; Node js repl
-(sk/require-package 'nodejs-repl)
-
-;; Coffeescript support
-(sk/require-package 'coffee-mode)
-
-;; Nginx mode
-(sk/require-package 'nginx-mode)
+(use-package nodejs-repl
+  :ensure t
+  :commands (nodejs-repl
+	     nodejs-repl-send-buffer
+	     nodejs-repl-switch-to-repl
+	     nodejs-repl-send-region
+	     nodejs-repl-send-last-sexp
+	     nodejs-repl-execute
+	     nodejs-repl-load-file))
 
 ;; JSON
-(sk/require-package 'json-mode)
-(sk/require-package 'json-snatcher)
+(use-package json-mode
+  :ensure t
+  :mode "\\.json$")
+
+;; Get JSON path
+(use-package json-snatcher
+  :ensure t
+  :commands (jsons-print-path))
+
+;; Coffeescript support
+(use-package coffee-mode
+  :ensure t
+  :mode "\\.coffee$")
+
+;; Nginx mode
+(use-package nginx-mode
+  :ensure t
+  :commands (nginx-mode))
 
 ;; Beautify
-(sk/require-package 'web-beautify)
+(use-package web-beautify
+  :ensure t
+  :commands (web-beautify-css
+	     web-beautify-css-buffer
+	     web-beautify-html
+	     web-beautify-html-buffer
+	     web-beautify-js
+	     web-beautify-js-buffer))
 
 ;; SCSS mode
-(sk/require-package 'scss-mode)
+(use-package scss-mode
+  :ensure t
+  :mode "\\.scss$")
 
 ;; Fast HTML/CSS
-(sk/require-package 'emmet-mode)
-(add-hook 'sgml-mode-hook 'emmet-mode) ;; Auto-start on any markup modes
-(add-hook 'css-mode-hook  'emmet-mode) ;; enable Emmet's css abbreviation.
-(defun sk/diminish-emmet ()
-  (interactive)
-  (diminish 'emmet-mode "ε"))
-(add-hook 'emmet-mode-hook 'sk/diminish-emmet)
+(use-package emmet-mode
+  :ensure t
+  :diminish (emmet-mode . "ε")
+  :bind (
+	 ("C-c v C-y" . emmet-next-edit-point)
+	 ("C-c v C-S-y" . emmet-prev-edit-point)
+	 )
+  :commands (emmet-mode
+	     emmet-next-edit-point
+	     emmet-prev-edit-point))
 
 ;; Immediate HTML rendering
-(sk/require-package 'impatient-mode)
+(use-package impatient-mode
+  :ensure t
+  :diminish (impatient-mode . "ι")
+  :commands (impatient-mode))
 
 ;; aux requirements
-(require 'sk-web-bindings)
+(require 'sk-web-modalka)
+(require 'sk-web-hydra)
 
 (provide 'sk-web)
 ;;; sk-web.el ends here

@@ -303,9 +303,11 @@ Description:
   :ensure t
   :init
   (setq org-confirm-babel-evaluate nil)
+  :defer t
   :config
   (use-package ob-ipython
-    :ensure t))
+    :ensure t
+    :defer t))
 
 ;; For PDF note taking
 (use-package interleave
@@ -316,11 +318,9 @@ Description:
   :commands (interleave interleave-pdf-mode))
 
 ;; Org export extras
-(use-package sk-org-export-pack
-  :ensure ox-reveal
-  :ensure ox-twbs
-  :ensure ox-rst
-  :ensure ox-pandoc
+(use-package ox-reveal
+  :ensure t
+  :defer t
   :init
   (setq org-reveal-title-slide-template
 	"<h1>%t</h1>
@@ -328,14 +328,19 @@ Description:
 "
 	)
   (setq org-reveal-root "file:///Users/sriramkswamy/Documents/workspace/github/reveal.js"))
+(use-package ox-twbs
+  :ensure t
+  :defer t)
 
 ;; Drag and drop images into org mode
 (use-package org-download
-  :ensure t)
+  :ensure t
+  :defer 2)
 
 ;; Put a file system tree right into org
 (use-package org-fstree
-  :ensure t)
+  :ensure t
+  :defer t)
 
 ;; Deft for quick org notes access
 (use-package deft
@@ -378,7 +383,6 @@ Description:
 ;; Org load languages
 (defun sk/org-custom-load ()
   (interactive)
-  (require 'org-page)
   (require 'org-fstree)
   (require 'ox-reveal)
   (require 'ox-twbs)

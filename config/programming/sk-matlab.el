@@ -7,11 +7,14 @@
 ;;; Code:
 
 ;; MATLAB mode
-(sk/require-package 'matlab-mode)
-(eval-after-load 'matlab
-  '(add-to-list 'matlab-shell-command-switches "-nosplash"))
-(setq matlab-shell-command "/Applications/MATLAB_R2014a.app/bin/matlab"
-      matlab-indent-function t)
+(use-package matlab-mode
+  :ensure t
+  :mode ("\\.m$" . matlab-mode)
+  :init
+  (setq matlab-shell-command "/Applications/MATLAB_R2014a.app/bin/matlab"
+	matlab-indent-function t)
+  (eval-after-load 'matlab
+    '(add-to-list 'matlab-shell-command-switches "-nosplash")))
 
 ;; Vertical split matlab shell
 (defun sk/matlab-shell-here ()
@@ -19,8 +22,7 @@
   (interactive)
   (split-window-right)
   (other-window 1)
-  (matlab-shell)
-  (other-window 1))
+  (matlab-shell))
 
 ;; aux requirements
 (require 'sk-matlab-hydra)

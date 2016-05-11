@@ -22,8 +22,9 @@
 ;; Diff hl for visual feedback of changes
 (use-package diff-hl
   :ensure t
-  :demand t
-  :commands (diff-hl-next-hunk
+  :commands (global-diff-hl-mode
+	     diff-hl-mode
+	     diff-hl-next-hunk
 	     diff-hl-previous-hunk
 	     diff-hl-mark-hunk
 	     diff-hl-diff-goto-hunk
@@ -33,8 +34,10 @@
 	 ("C-c g d p" . diff-hl-previous-hunk)
 	 ("C-c g d m" . diff-hl-mark-hunk)
 	 ("C-c g d g" . diff-hl-diff-goto-hunk)
-	 ("C-c g d h" . diff-hl-revert-hunk))
+	 ("C-c g d h" . diff-hl-revert-hunk)
+	 )
   :config
+  (global-diff-hl-mode)
   (diff-hl-flydiff-mode)
   (diff-hl-margin-mode)
   (diff-hl-dired-mode)

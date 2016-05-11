@@ -76,23 +76,23 @@
 	     vimish-fold))
 
 ;; Colorschemes
-(use-package sk-theme-pack
-  :ensure badwolf-theme
-  :ensure color-theme-solarized
-  :ensure dracula-theme
-  :ensure gotham-theme
-  :ensure moe-theme
-  :ensure monokai-theme
-  :ensure zenburn-theme
-  :ensure reykjavik-theme
-  :ensure railscasts-theme
-  :ensure caroline-theme
-  :ensure pastelmac-theme
-  :ensure white-sand-theme
-  :ensure paper-theme
-  :ensure ample-theme
-  :ensure anti-zenburn-theme
-  :ensure color-theme-sanityinc-tomorrow)
+(sk/require-package 'badwolf-theme)
+(sk/require-package 'color-theme-solarized)
+(sk/require-package 'dracula-theme)
+(sk/require-package 'gotham-theme)
+(sk/require-package 'moe-theme)
+(sk/require-package 'monokai-theme)
+(sk/require-package 'zenburn-theme)
+(sk/require-package 'reykjavik-theme)
+(sk/require-package 'railscasts-theme)
+(sk/require-package 'caroline-theme)
+(sk/require-package 'pastelmac-theme)
+(sk/require-package 'white-sand-theme)
+(sk/require-package 'paper-theme)
+(sk/require-package 'ample-theme)
+(sk/require-package 'anti-zenburn-theme)
+(sk/require-package 'color-theme-sanityinc-tomorrow)
+(load-theme 'sanityinc-tomorrow-eighties t)
 
 ;; The modeline
 (use-package spaceline

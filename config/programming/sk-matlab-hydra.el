@@ -7,7 +7,7 @@
 ;;; Code:
 
 ;; Make hydra
-(defhydra sk/hydra-for-matlab (:color red
+(defhydra sk/hydra-for-matlab (:color blue
                                :hint nil)
   "
  _c_: cell   _r_: region    _s_: start    _q_: quit

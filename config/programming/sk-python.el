@@ -7,31 +7,52 @@
 ;;; Code:
 
 ;; Emacs python helpers
-(setq python-shell-interpreter "ipython"
-       python-shell-interpreter-args "-i")
+(use-package python
+  :ensure t
+  :mode ("\\.py\\'" . python-mode)
+  :config
+  (setq python-shell-interpreter "ipython"
+	python-shell-interpreter-args "-i"))
 
 ;; Anaconda mode
-(sk/require-package 'anaconda-mode)
-(add-hook 'python-mode-hook 'anaconda-mode)
-(add-hook 'python-mode-hook 'anaconda-eldoc-mode)
-;; Diminish anaconda mode
-(defun sk/diminish-anaconda ()
-  (interactive)
-  (diminish 'anaconda-mode ""))
-(add-hook 'anaconda-mode-hook 'sk/diminish-anaconda)
-
-;; Cython
-(sk/require-package 'cython-mode)
+(use-package anaconda-mode
+  :ensure t
+  :diminish anaconda-mode
+  :diminish anaconda-eldoc-mode
+  :commands (anaconda-mode
+	     anaconda-eldoc-mode
+	     anaconda-mode-find-assignments
+	     anaconda-mode-find-definitions
+	     anaconda-mode-find-file
+	     anaconda-mode-find-references
+	     anaconda-mode-show-doc
+	     anaconda-mode-go-back))
 
 ;; Virtual env wrapper
-(sk/require-package 'pyenv-mode)
+(use-package pyenv-mode
+  :ensure t
+  :commands (pyenv-mode
+	     pyenv-mode-set
+	     pyenv-mode-unset))
 
 ;; Beautify stuff
-(sk/require-package 'py-autopep8)
+(use-package py-yapf
+  :ensure t
+  :commands (py-yapf-buffer
+	     py-yapf-enable-on-save))
 
 ;; Testing
-(sk/require-package 'pytest)
-(sk/require-package 'nose)
+(use-package pytest
+  :ensure t
+  :commands (pytest-all
+	     pytest-directory
+	     pytest-failed
+	     pytest-module
+	     pytest-one
+	     pytest-pdb-all
+	     pytest-pdb-directory
+	     pytest-pdb-module
+	     pytest-pdb-one))
 
 ;; aux requirements
 (require 'sk-python-hydra)

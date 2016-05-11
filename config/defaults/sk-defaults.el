@@ -118,6 +118,47 @@
 ;; Shorten yes or no prompts
 (fset 'yes-or-no-p 'y-or-n-p)
 
+;;; Some convenience font functions
+(defun sk/courier-font ()
+  (interactive)
+  (set-face-attribute 'default nil :font "Courier")
+    (set-frame-width (selected-frame) 97))
+(defun sk/georgia-font ()
+  (interactive)
+  (set-face-attribute 'default nil :font "Georgia" :height 160))
+(defun sk/hack-font ()
+  (interactive)
+  (set-face-attribute 'default nil :font "Hack"))
+(defun sk/monaco-font ()
+  (interactive)
+  (set-face-attribute 'default nil :font "Monaco"))
+(defun sk/consolas-font ()
+  (interactive)
+  (set-face-attribute 'default nil :font "Consolas"))
+(defun sk/deja-vu-font ()
+  (interactive)
+  (set-face-attribute 'default nil :font "DejaVu Sans Mono"))
+
+;; Font types
+(defun sk/tiny-type ()
+  (interactive)
+  (set-face-attribute 'default nil  :height 150))
+(defun sk/miniscule-type ()
+  (interactive)
+  (set-face-attribute 'default nil  :height 140))
+(defun sk/small-type ()
+  (interactive)
+  (set-face-attribute 'default nil  :height 190)
+  (set-frame-width (selected-frame) 89))
+(defun sk/medium-type ()
+  (interactive)
+  (set-face-attribute 'default nil  :height 215)
+  (set-frame-width (selected-frame) 89))
+(defun sk/large-type ()
+  (interactive)
+  (set-face-attribute 'default nil  :height 350)
+  (set-frame-width (selected-frame) 68))
+
 ;;; default global bindings
 ;; Backward kill word - used mostly while writing
 (global-set-key (kbd "C-w") 'backward-kill-word)

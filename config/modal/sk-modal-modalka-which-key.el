@@ -94,6 +94,8 @@
 
   ":" "extended prefix"
   ": q" "quit emacs"
+  ": r" "restart emacs"
+  ": p" "profile emacs"
 
   "SPC" "custom prefix"
   "SPC x" "desc function"

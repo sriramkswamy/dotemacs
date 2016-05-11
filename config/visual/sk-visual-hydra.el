@@ -11,7 +11,7 @@
 			        :hint nil)
   "
  _b_: battery   _n_: number       _v_: wrap        _c_: column    _i_: indent        _k_: which-key   _l_: talk       _q_: quit
- _t_: time      _w_: weather      _y_: yasnippet   _m_: margin    _s_: smartparens   _o_: org-load    _j_: jabber
+ _t_: time      _w_: weather      _y_: yasnippet   _m_: margin    _s_: smartparens   _o_: org extras  _j_: jabber
  _f_: flyspell  _a_: auto-comp    _d_: fold        _g_: ggtags    _p_: paradox       _e_: error       _h_: html emmet
 "
   ("b" fancy-battery-mode :color red)

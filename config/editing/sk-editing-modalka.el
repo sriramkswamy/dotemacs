@@ -68,13 +68,18 @@
 
 ;; Multiple cursors
 (modalka-define-kbd "m a" "C-.")
-(modalka-define-kbd "m s" "C-+")
-(modalka-define-kbd "m e" "C-,")
-(modalka-define-kbd "m j" "C->")
+(modalka-define-kbd "m h" "C-+")
+(modalka-define-kbd "m l" "C-,")
 (modalka-define-kbd "m k" "C-<")
-(modalka-define-kbd "m h" "C-(")
-(modalka-define-kbd "m l" "C-)")
+(modalka-define-kbd "m j" "C->")
+(modalka-define-kbd "m K" "C-(")
+(modalka-define-kbd "m J" "C-)")
 (modalka-define-kbd "m m" "C-=")
+(modalka-define-kbd "m e" "C-c M e")
+(modalka-define-kbd "m n" "C-c M n")
+(modalka-define-kbd "m f" "C-c M f")
+(modalka-define-kbd "m b" "C-c M b")
+(modalka-define-kbd "m s" "C-c M s")
 
 ;; which key for bindings
 (require 'sk-editing-modalka-which-key)

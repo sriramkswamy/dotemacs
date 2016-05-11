@@ -83,12 +83,9 @@
 (modalka-define-kbd "] ]" "C-x n n")
 (modalka-define-kbd "[ [" "C-x n w")
 
-(modalka-define-kbd ": w" "C-x C-s")
-(modalka-define-kbd ": e" "C-x C-f")
 (modalka-define-kbd ": q" "C-x C-c")
-(modalka-define-kbd ": b d" "C-x k")
-(modalka-define-kbd ": b u" "C-x b")
-(modalka-define-kbd ": l s" "C-x C-b")
+(modalka-define-kbd ": r" "C-x M-c")
+(modalka-define-kbd ": p" "C-x C-M-c")
 
 (modalka-define-kbd "SPC j" "M-x")
 (modalka-define-kbd "SPC c" "C-c c")

@@ -39,6 +39,7 @@
   "o >" "org goto cal"
   "o t" "org tag"
   "o d" "org todo"
+  "o z" "split and clone"
 
   "o f" "org search in files"
 

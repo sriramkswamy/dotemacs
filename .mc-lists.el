@@ -16,5 +16,6 @@
 	delete-horizontal-space
 	end-of-buffer
 	iedit-mode
+	mc/vertical-align-with-space
 	org-self-insert-command
 	))

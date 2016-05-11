@@ -55,7 +55,7 @@
 (defun sk/diminish-org-indent ()
   (interactive)
   (diminish 'org-indent-mode ""))
-(add-hook 'org-mode-hook 'sk/diminish-org-indent)
+(add-hook 'org-indent-mode-hook 'sk/diminish-org-indent)
 ;; Auto-revert mode
 (defun sk/diminish-auto-revert ()
   (interactive)
@@ -86,12 +86,18 @@
 ;; Profiler
 (use-package esup
   :ensure t
-  :commands (esup))
+  :commands (esup)
+  :bind (
+	 ("C-x C-M-c" . esup)
+	 ))
 
 ;; Restart emacs from emacs
 (use-package restart-emacs
   :ensure t
-  :commands (restart-emacs))
+  :commands (restart-emacs)
+  :bind (
+	 ("C-x M-c" . restart-emacs)
+	 ))
 
 ;; Libraries for emacs
 (use-package cl-lib

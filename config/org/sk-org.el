@@ -282,7 +282,8 @@ Description:
 	 ("C-c O <" . org-date-from-calendar)
 	 ("C-c O >" . org-goto-calendar)
 	 ("C-c O d" . org-todo)
-	 ("C-c O t" . org-set-tags-command))
+	 ("C-c O t" . org-set-tags-command)
+	 ("C-c O z" . clone-indirect-buffer-other-window))
   :config
   (which-key-add-key-based-replacements
     "C-c O" "org mode prefix"))
@@ -290,7 +291,10 @@ Description:
 ;; LaTeX
 (use-package cdlatex
   :ensure t
-  :diminish org-cdlatex-mode)
+  :diminish org-cdlatex-mode
+  :config
+  (progn
+    (add-hook 'org-mode-hook 'org-cdlatex-mode)))
 
 ;; Babel for languages
 (use-package babel
@@ -376,13 +380,43 @@ Description:
 ;; Org load languages
 (defun sk/org-custom-load ()
   (interactive)
-  (require 'org-fstree)
+  (require 'org)
+  ;; Some exports
   (require 'ox-reveal)
   (require 'ox-twbs)
+  ;; References and citation
   (require 'org-ref)
   (require 'org-ref-latex)
   (require 'org-ref-pdf)
   (require 'org-ref-url-utils)
+  ;; File system tree
+  (require 'org-fstree)
+  (add-to-list 'org-structure-template-alist '("A" "#+DATE: ?"))
+  (add-to-list 'org-structure-template-alist '("C" "#+BEGIN_CENTER\n?\n#+END_CENTER\n"))
+  (add-to-list 'org-structure-template-alist '("D" "#+BEGIN_FSTREE ?"))
+  (add-to-list 'org-structure-template-alist '("E" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC"))
+  (add-to-list 'org-structure-template-alist '("H" "#+LATEX_HEADER: ?"))
+  (add-to-list 'org-structure-template-alist '("L" "#+BEGIN_LaTeX\n?\n#+END_LaTeX"))
+  (add-to-list 'org-structure-template-alist '("V" "#+BEGIN_VERSE\n?\n#+END_VERSE"))
+  (add-to-list 'org-structure-template-alist '("a" "#+AUTHOR: ?"))
+  (add-to-list 'org-structure-template-alist '("b" ":reveal_bacground_trans: ?"))
+  (add-to-list 'org-structure-template-alist '("c" "#+CAPTION: ?"))
+  (add-to-list 'org-structure-template-alist '("d" "#+OPTIONS: toc:nil num:nil tags:nil todo:nil p:nil pri:nil stat:nil c:nil d:nil\n#+LATEX_HEADER: \\usepackage[margin=2cm]{geometry}\n#+EXCLUDE_TAGS: noexport\n"))
+  (add-to-list 'org-structure-template-alist '("e" "#+BEGIN_EXAMPLE\n?\n#+END_EXAMPLE\n"))
+  (add-to-list 'org-structure-template-alist '("f" "#+ATTR_REVEAL: :frag ?"))
+  (add-to-list 'org-structure-template-alist '("h" "#+BEGIN_HTML\n?\n#+END_HTML\n"))
+  (add-to-list 'org-structure-template-alist '("l" "#+LABEL: ?"))
+  (add-to-list 'org-structure-template-alist '("m" "#+BEGIN_SRC matlab\n?\n#+END_SRC"))
+  (add-to-list 'org-structure-template-alist '("n" "#+NAME: ?"))
+  (add-to-list 'org-structure-template-alist '("o" "#+OPTIONS: ?"))
+  (add-to-list 'org-structure-template-alist '("p" "#+BEGIN_SRC python\n?\n#+END_SRC"))
+  (add-to-list 'org-structure-template-alist '("q" "#+BEGIN_QUOTE\n?\n#+END_QUOTE"))
+  (add-to-list 'org-structure-template-alist '("r" ":PROPERTIES:\n?\n:END:"))
+  (add-to-list 'org-structure-template-alist '("s" "#+BEGIN_SRC\n?\n#+END_SRC\n"))
+  (add-to-list 'org-structure-template-alist '("t" "#+TITLE: ?"))
+  (add-to-list 'org-structure-template-alist '("v" "#+BEGIN_VERBATIM\n?\n#+END_VERBATIM"))
+  ;; More of those nice templates, please
+  ;; Babel load
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((emacs-lisp . t)

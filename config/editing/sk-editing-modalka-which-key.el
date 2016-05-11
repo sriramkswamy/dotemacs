@@ -69,11 +69,17 @@
   "m a" "mark all similar selection"
   "m k" "mark prev similar selection"
   "m j" "mark next similar selection"
-  "m h" "skip prev similar selection"
-  "m l" "skip next similar selection"
-  "m m" "mark extend similar selection"
-  "m s" "edit start of selection"
-  "m e" "edit end of selection")
+  "m K" "skip prev similar selection"
+  "m J" "skip next similar selection"
+  "m m" "extend similar selection"
+  "m h" "edit start of selection"
+  "m l" "edit end of selection"
+  "m e" "edit selected lines"
+  "m n" "insert numbers"
+  "m f" "cycle forward"
+  "m b" "cycle backward"
+  "m s" "show only cursors"
+  )
   
 (provide 'sk-editing-modalka-which-key)
 ;;; sk-editing-modalka-which-key.el ends here

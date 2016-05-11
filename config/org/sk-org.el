@@ -143,8 +143,8 @@
          :created t        ; properties
 	 :kill-buffer t    ; properties
         )
-        ("s"               ; key
-         "story"           ; name
+        ("r"               ; key
+         "Reading"         ; name
          entry             ; type
          (file+headline "~/Dropbox/org/fun.org" "Reading")  ; target
          "* %^{Title} %(org-set-tags)
@@ -174,7 +174,7 @@ Minutes of the meeting:
          :created t        ; properties
 	 :kill-buffer t    ; properties
 	 )
-	("dd"              ; key
+	("d"               ; key
          "Drill driving"   ; name
          entry             ; type
          (file+headline "~/Dropbox/org/drill.org" "Driving")  ; target
@@ -187,11 +187,11 @@ Minutes of the meeting:
          :created t        ; properties
 	 :kill-buffer t    ; properties
 	 )
-	("dm"              ; key
-         "Drill math"      ; name
+	("s"              ; key
+         "Drill stats/math"      ; name
          entry             ; type
-         (file+headline "~/Dropbox/org/drill.org" "Math/Stats")  ; target
-         "* Question  :drill::math:
+         (file+headline "~/Dropbox/org/drill.org" "Stats/Math")  ; target
+         "* Question  :drill::stats::math:
 %^{Question}
 ** Answer
 %?"  ; template
@@ -200,11 +200,11 @@ Minutes of the meeting:
          :created t        ; properties
 	 :kill-buffer t    ; properties
 	 )
-	("df"              ; key
-         "Drill fluids"    ; name
+	("p"              ; key
+         "Drill physics"    ; name
          entry             ; type
-         (file+headline "~/Dropbox/org/drill.org" "Fluids")  ; target
-         "* Question  :drill::fluids:
+         (file+headline "~/Dropbox/org/drill.org" "Physics")  ; target
+         "* Question  :drill::physics:
 %^{Question}
 ** Answer
 %?"  ; template

@@ -37,7 +37,7 @@
 (modalka-define-kbd "c t" "C-c h t")
 
 (which-key-add-key-based-replacements
-  "c t" "code tmux")
+  "c t" "tmux code")
 
 
 (provide 'sk-repl-hydra)

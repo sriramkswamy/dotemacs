@@ -43,7 +43,15 @@
 (require 'diminish)                ;; if you use :diminish
 (require 'bind-key)                ;; if you use any :bind variant
 
+;; Chords support in use-package macro
+(use-package use-package-chords
+  :ensure t
+  :config
+  (key-chord-mode 1)
+  (key-chord-define-global "JK" 'completion-at-point))
+
 ;; Diminish built-in stuff
+;; (diminish auto-revert-mode "")
 (use-package diminish
   :ensure t
   :diminish (visual-line-mode . "ω")
@@ -51,8 +59,6 @@
   :diminish abbrev-mode
   :diminish auto-fill-function
   :diminish subword-mode)
-(use-package auto-revert
-  :diminish auto-revert-mode)
 (use-package eldoc
   :diminish eldoc-mode)
 (use-package flyspell

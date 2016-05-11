@@ -6,16 +6,6 @@
 
 ;;; Code:
 
-;; Eshell
-(setq eshell-glob-case-insensitive t
-      eshell-scroll-to-bottom-on-input 'this
-      eshell-buffer-shorthand t
-      eshell-history-size 1024
-      eshell-cmpl-ignore-case t
-      eshell-aliases-file (concat user-emacs-directory ".eshell-aliases")
-      eshell-last-dir-ring-size 512)
-(add-hook 'shell-mode-hook 'goto-address-mode)
-
 ;; Vertical split eshell
 (defun sk/eshell-vertical ()
   "opens up a new shell in the directory associated with the current buffer's file."
@@ -44,6 +34,27 @@
     (rename-buffer (concat "*eshell: " name "*"))
     (eshell-send-input)))
 
+;; Eshell
+(use-package eshell
+  :commands (eshell)
+  :bind (
+	 ("C-c t e v" . sk/eshell-vertical)
+	 ("C-c t e h" . sk/eshell-horizontal)
+	 )
+  :init
+  (setq eshell-glob-case-insensitive t
+	eshell-scroll-to-bottom-on-input 'this
+	eshell-buffer-shorthand t
+	eshell-history-size 1024
+	eshell-cmpl-ignore-case t
+	eshell-aliases-file (concat user-emacs-directory ".eshell-aliases")
+	eshell-last-dir-ring-size 512)
+  :config
+  (add-hook 'shell-mode-hook 'goto-address-mode)
+  (which-key-add-key-based-replacements
+    "C-c t" "terminal prefix"
+    "C-c t e" "eshell prefix"))
+
 ;; Make the compilation window automatically disapper from enberg on #emacs
 (setq compilation-finish-functions
       (lambda (buf str)
@@ -55,9 +66,6 @@
                              (select-window (get-buffer-window (get-buffer-create "*compilation*")))
                              (switch-to-buffer nil)))
               (message "No Compilation Errors!")))))
-
-;; Multi-term
-(sk/require-package 'multi-term)
 
 ;; Vertical split multi-term
 (defun sk/multi-term-vertical ()
@@ -75,11 +83,37 @@
   (other-window 1)
   (multi-term))
 
+;; Multi-term
+(use-package multi-term
+  :ensure t
+  :commands (multi-term)
+  :bind (
+	 ("C-c t m v" . sk/multi-term-vertical)
+	 ("C-c t m e". sk/multi-term-horizontal)
+	 )
+  :config
+  (which-key-add-key-based-replacements
+    "C-c t" "terminal prefix"
+    "C-c t e" "eshell prefix"
+    "C-c t m" "multi-term prefix"))
+
 ;; Interact with Tmux
-(sk/require-package 'emamux)
+(use-package emamux
+  :ensure t
+  :commands (emamux:send-command
+	     emamux:run-command
+	     emamux:run-last-command
+	     emamux:zoom-runner
+	     emamux:inspect-runner
+	     emamux:close-runner-pane
+	     emamux:close-panes
+	     emamux:clear-runner-history
+	     emamux:interrupt-runner
+	     emamux:copy-kill-ring
+	     emamux:yank-from-list-buffers))
 
 ;; aux requirements
-(require 'sk-repl-bindings)
+(require 'sk-repl-modalka)
 (require 'sk-repl-hydra)
 
 (provide 'sk-repl)

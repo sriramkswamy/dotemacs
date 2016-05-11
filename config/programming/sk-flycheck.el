@@ -6,13 +6,16 @@
 
 ;;; Code:
 
-(sk/require-package 'flycheck)
-(add-hook 'prog-mode-hook 'global-flycheck-mode)
-;; diminish
-(defun sk/diminish-flycheck ()
-  (interactive)
-  (diminish 'flycheck-mode ""))
-(add-hook 'flycheck-mode-hook 'sk/diminish-flycheck)
+(use-package flycheck
+  :ensure t
+  :diminish flycheck-mode
+  :defer 2
+  :bind (
+	 ("C-c f n" . flycheck-next-error)
+	 ("C-c f p" . flycheck-previous-error)
+	 ("C-c f l" . flycheck-list-errors))
+  :config
+  (global-flycheck-mode))
 
 ;; aux requirements
 (require 'sk-flycheck-modalka)

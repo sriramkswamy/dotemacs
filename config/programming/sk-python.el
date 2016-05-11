@@ -26,7 +26,8 @@
 	     anaconda-mode-find-file
 	     anaconda-mode-find-references
 	     anaconda-mode-show-doc
-	     anaconda-mode-go-back))
+	     anaconda-mode-go-back
+	     anaconda-mode-complete))
 
 ;; Virtual env wrapper
 (use-package pyenv-mode

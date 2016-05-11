@@ -7,8 +7,21 @@
 ;;; Code:
 
 ;; Indentation and stuff
-(sk/require-package 'editorconfig)
-(editorconfig-mode 1)
+(use-package editorconfig
+  :ensure t
+  :demand t
+  :config
+  (editorconfig-mode 1))
+
+;; Arduino mode
+(use-package arduino-mode
+  :ensure t
+  :mode "\\.pde$")
+
+;; YAML editing
+(use-package yaml-mode
+  :ensure t
+  :mode "\\.yaml$")
 
 ;; C++
 (require 'sk-cpp)
@@ -35,19 +48,44 @@
 (require 'sk-repl)
 
 ;; start services easily
-(sk/require-package 'prodigy)
+(use-package prodigy
+  :ensure t
+  :commands (prodigy)
+  :bind (
+	 ("C-c B" . prodigy)
+	 )
+  :init
+  (prodigy-define-tag
+    :name 'blog
+    :ready-message "Serving blog. Ctrl-C to shutdown server")
+  (prodigy-define-service
+    :name "Nikola build"
+    :command "nikola"
+    :args '("build")
+    :cwd "/Users/sriramkswamy/Dropbox/org/blogposts"
+    :tags '(blog)
+    :kill-signal 'sigkill)
+  (prodigy-define-service
+    :name "Nikola blog"
+    :command "nikola"
+    :args '("serve" "--browser")
+    :cwd "/Users/sriramkswamy/Dropbox/org/blogposts"
+    :tags '(blog)
+    :kill-signal 'sigkill
+    :kill-process-buffer-on-stop t))
+;; Modal bindings and explanation
+(modalka-define-kbd "c b" "C-c B")
+(which-key-add-key-based-replacements "c b" "background process")
 
 ;; Better debugging
-(sk/require-package 'realgud)
-
-;; Arduino mode
-(sk/require-package 'arduino-mode)
-
-;; YAML editing
-(sk/require-package 'yaml-mode)
+(use-package realgud
+  :ensure t
+  :commands (realgud:gdb
+	     realgud:ipdb
+	     realgud:pdb))
 
 ;; aux requirements
-(require 'sk-programming-which-key)
+(require 'sk-programming-hydra)
 
 (provide 'sk-programming)
 ;;; sk-programming.el ends here

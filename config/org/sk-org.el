@@ -87,14 +87,6 @@
         ("google"    . "http://www.google.com/search?q=")
         ("gmaps"      . "http://maps.google.com/maps?q=%s")))
 
-;; Lispy prompt for org
-(defvar oc-capture-prmt-history nil
-  "History of prompt answers for org capture.")
-(defun oc/prmt (prompt variable)
-  "PROMPT for string, save it to VARIABLE and insert it."
-  (make-local-variable variable)
-  (set variable (read-string (concat prompt ": ") nil oc-capture-prmt-history)))
-
 ;; Capture templates
 (setq org-capture-templates
       '(("n"               ; key
@@ -110,6 +102,7 @@
          :prepend t        ; properties
          :empty-lines 1    ; properties
          :created t        ; properties
+	 :kill-buffer t    ; properties
         )
         ("l"               ; key
          "Ledger"          ; name
@@ -130,6 +123,7 @@
          :prepend t        ; properties
          :empty-lines 1    ; properties
          :created t        ; properties
+	 :kill-buffer t    ; properties
         )
         ("w"               ; key
          "Work"            ; name
@@ -144,6 +138,7 @@
          :prepend t        ; properties
          :empty-lines 1    ; properties
          :created t        ; properties
+	 :kill-buffer t    ; properties
         )
         ("s"               ; key
          "story"           ; name
@@ -158,6 +153,7 @@
          :prepend t        ; properties
          :empty-lines 1    ; properties
          :created t        ; properties
+	 :kill-buffer t    ; properties
         )
         ("m"               ; key
          "Meeting"         ; name
@@ -173,23 +169,18 @@ Minutes of the meeting:
          :prepend t        ; properties
          :empty-lines 1    ; properties
          :created t        ; properties
+	 :kill-buffer t    ; properties
         )
-        ("j"               ; key
-         "Jobs"            ; name
-         entry             ; type
+        ("j"                      ; key
+         "Jobs"                   ; name
+         table-line               ; type
          (file+headline "~/Dropbox/org/notes.org" "Jobs")  ; target
-         "* %^{Title, Company} %(org-set-tags)  :job:
-:PROPERTIES:
-:Created: %U
-:END:
-%i
-Referral: %^{referral}
-Experience: %^{experience}
-Description:
-%?"  ; template
-         :prepend t        ; properties
-         :empty-lines 1    ; properties
-         :created t        ; properties
+         "| %u | %^{Company} | [[%^{job link}][%^{position}]] | %^{referrals?} | %^{Experience?} | %^t | %^{Status} | %^{Follow up} | %^{Result} |"  ; template
+         :prepend t               ; properties
+	 ;; :table-line-pos "II-3"   ; properties
+         :empty-lines 1           ; properties
+         :created t               ; properties
+	 :kill-buffer t           ; properties
         )
         ("f"               ; key
          "films"          ; name
@@ -207,6 +198,7 @@ Description:
          :prepend t        ; properties
          :empty-lines 1    ; properties
          :created t        ; properties
+	 :kill-buffer t    ; properties
         )
         ("b"               ; key
          "Blog"            ; name
@@ -221,6 +213,7 @@ Description:
          :prepend t        ; properties
          :empty-lines 1    ; properties
          :created t        ; properties
+	 :kill-buffer t    ; properties
         )
         ("e"               ; key
          "Errands"         ; name
@@ -235,6 +228,7 @@ Description:
          :prepend t        ; properties
          :empty-lines 1    ; properties
          :created t        ; properties
+	 :kill-buffer t    ; properties
         )
         ("c"               ; key
          "Courses"         ; name
@@ -249,6 +243,7 @@ Description:
          :prepend t        ; properties
          :empty-lines 1    ; properties
          :created t        ; properties
+	 :kill-buffer t    ; properties
         )
         ))
 
@@ -295,7 +290,6 @@ Description:
 ;; LaTeX
 (use-package cdlatex
   :ensure t
-  :mode "\\.org\\'"
   :diminish org-cdlatex-mode)
 
 ;; Babel for languages
@@ -358,7 +352,7 @@ Description:
 ;; Org ref for academic papers
 (use-package org-ref
   :ensure t
-  :mode ("\\.org\\'" "\\.bib\\'" "\\.tex\\'" "\\.xtx\\'")
+  :defer t
   :init
   (setq org-ref-completion-library 'org-ref-ivy-bibtex)
   (setq org-ref-notes-directory "~/Dropbox/org/references/notes"
@@ -375,7 +369,6 @@ Description:
 ;; Fancy bullets
 (use-package org-bullets
   :ensure t
-  :diminish org-indent-mode
   :config
   (progn
     (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))))

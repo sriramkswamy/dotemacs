@@ -91,6 +91,10 @@
 (modalka-define-kbd ": l s" "C-x C-b")
 
 (modalka-define-kbd "SPC j" "M-x")
+(modalka-define-kbd "SPC c" "C-c c")
+(modalka-define-kbd "SPC x" "C-h f")
+(modalka-define-kbd "SPC v" "C-h v")
+(modalka-define-kbd "SPC ?" "C-h b")
 (modalka-define-kbd "SPC a" "C-x b")
 (modalka-define-kbd "SPC k" "C-x k")
 (modalka-define-kbd "SPC d" "C-x d")

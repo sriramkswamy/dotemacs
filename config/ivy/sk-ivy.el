@@ -7,57 +7,84 @@
 ;;; Code:
 
 ;; Ivy, Counsel and Swiper
-(sk/require-package 'ivy)
-(sk/require-package 'counsel)
-(sk/require-package 'swiper)
-(ivy-mode 1)
-(counsel-mode 1)
-
-;; Ivy and counsel configuration
-(setq ivy-display-style 'fancy
-      ivy-initial-inputs-alist nil)
-(setq ivy-re-builders-alist
-      '((t . ivy--regex-fuzzy)))
-(setq completion-in-region-function 'ivy-completion-in-region)
-(setq counsel-yank-pop-truncate t)
-
-;; Ivy diminish
-(defun sk/diminish-ivy ()
-  (interactive)
-  (diminish 'ivy-mode " λ"))
-(add-hook 'ivy-mode-hook 'sk/diminish-ivy)
-(add-hook 'after-init-hook 'sk/diminish-ivy)
-
-;; Counsel diminish
-(defun sk/diminish-counsel ()
-  (interactive)
-  (diminish 'counsel-mode ""))
-(add-hook 'counsel-mode-hook 'sk/diminish-counsel)
-(add-hook 'after-init-hook 'sk/diminish-counsel)
-
-;; Ivy mode maps
-(define-key ivy-minibuffer-map (kbd "C-t") 'ivy-toggle-fuzzy)
-(define-key ivy-minibuffer-map (kbd "C-j") 'ivy-done)
-(define-key ivy-minibuffer-map (kbd "C-m") 'ivy-alt-done)
-(define-key ivy-minibuffer-map (kbd "C-S-m") 'ivy-immediate-done)
-(define-key ivy-minibuffer-map (kbd "C-i") 'ivy-dispatching-done)
-(define-key ivy-minibuffer-map (kbd "TAB") 'ivy-dispatching-done)
-
-;; ivy bibtex
-(sk/require-package 'ivy-bibtex)
-(setq bibtex-completion-bibliography '("~/Dropbox/org/references/multiphysics.bib" "~/Dropbox/org/references/chanceconstraints.bib"))
-(setq bibtex-completion-library-path "~/Dropbox/org/references/pdfs")
-(setq bibtex-completion-notes-path "~/Dropbox/org/references/articles.org")
-
-;; counsel projectile
-(setq projectile-completion-system 'ivy)
-(sk/require-package 'counsel-projectile)
-
-;; Spotlight search
-(sk/require-package 'spotlight)
+(use-package ivy
+  :ensure t
+  :demand t
+  :init
+  (setq ivy-display-style 'fancy
+	ivy-initial-inputs-alist nil)
+  (setq ivy-re-builders-alist
+	'((t . ivy--regex-fuzzy)))
+  (setq completion-in-region-function 'ivy-completion-in-region)
+  :diminish ivy-mode
+  :bind (
+	 ("C-S-s" . ivy-resume)
+	 ("C-c r" . ivy-recentf)
+	 :map ivy-minibuffer-map
+	      ("C-t" . ivy-toggle-fuzzy)
+	      ("C-j" . ivy-done)
+	      ("C-m" . ivy-alt-done)
+	      ("C-S-m" . ivy-immediate-done)
+	      ("C-i" . ivy-dispatching-done)
+	      ("TAB" . ivy-dispatching-done)
+	      )
+  :config
+  (ivy-mode 1)
+  ;; Add swiper
+  (use-package swiper
+    :ensure t
+    :commands (swiper)
+    :bind (
+	   ("C-s" . swiper)
+	   ))
+  ;; Search using spotlight
+  (use-package spotlight
+    :ensure t
+    :commands (spotlight
+	       spotlight-fast)
+    :bind (
+	   ("C-c d" . spotlight)
+	   ))
+  ;; Add counsel to the mix
+  (use-package counsel
+    :ensure t
+    :demand t
+    :init
+    (setq counsel-yank-pop-truncate t)
+    :bind (
+	   ("C-r" . counsel-imenu)
+	   ("C-x 8" . counsel-unicode-char)
+	   ("C-x l" . counsel-locate)
+	   ("M-s" . counsel-pt)
+	   ("C-s" . counsel-grep-or-swiper)
+	   )
+    :diminish counsel-mode
+    :config
+    (counsel-mode 1))
+  ;; counsel projectile now
+  (use-package counsel-projectile
+    :ensure t
+    :commands (counsel-projectile)
+    :bind (
+	   ("C-c P" . counsel-projectile)
+	   )
+    :init
+    (setq projectile-completion-system 'ivy))
+  ;; Ivy bibtex
+  (use-package ivy-bibtex
+    :ensure t
+    :commands (ivy-bibtex)
+    :bind (
+	   ("C-c b" . ivy-bibtex)
+	   )
+    :init
+    (setq bibtex-completion-bibliography '("~/Dropbox/org/references/multiphysics.bib" "~/Dropbox/org/references/chanceconstraints.bib"))
+    (setq bibtex-completion-library-path "~/Dropbox/org/references/pdfs")
+    (setq bibtex-completion-notes-path "~/Dropbox/org/references/articles.org"))
+  )
 
 ;; aux requirements
-(require 'sk-ivy-bindings)
+(require 'sk-ivy-modalka)
 
 (provide 'sk-ivy)
 ;;; sk-ivy.el ends here

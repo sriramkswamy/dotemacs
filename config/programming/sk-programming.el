@@ -66,7 +66,7 @@
     :tags '(blog)
     :kill-signal 'sigkill)
   (prodigy-define-service
-    :name "Nikola blog"
+    :name "Nikola serve"
     :command "nikola"
     :args '("serve" "--browser")
     :cwd "/Users/sriramkswamy/Dropbox/org/blogposts"

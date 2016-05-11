@@ -96,6 +96,9 @@
   ": q" "quit emacs"
 
   "SPC" "custom prefix"
+  "SPC x" "desc function"
+  "SPC v" "desc variable"
+  "SPC ?" "describe bindings"
   "SPC j" "jump to cmd"
   "SPC f" "find file"
   "SPC a" "switch buffers"

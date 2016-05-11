@@ -18,18 +18,8 @@
 ;; Locate
 (modalka-define-kbd "SPC y" "C-x l")
 
-;; Help
-(modalka-define-kbd "SPC x" "C-h f")
-(modalka-define-kbd "SPC v" "C-h v")
-
 ;; Pt
-(modalka-define-kbd "g s" "C-c M-s")
-
-;; descbinds
-(modalka-define-kbd "SPC ?" "C-h b")
-
-;; theme
-(modalka-define-kbd "SPC c" "C-c c")
+(modalka-define-kbd "g s" "M-s")
 
 ;; Spotlight
 (modalka-define-kbd "SPC t" "C-c d")

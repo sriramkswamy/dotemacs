@@ -10,22 +10,15 @@
   "B" "previous ivy"
   "t" "tags/func in buffer"
 
-  "SPC x" "desc function"
-  "SPC v" "desc variable"
-
   "SPC r" "recent files"
 
   "SPC y" "locate"
 
   "SPC t" "spotlight"
 
-  "SPC d" "projectile"
+  "SPC p" "switch projects"
 
-  "SPC p" "counsel projectile"
-
-  "SPC b" "ivy bibtex"
-
-  "SPC ?" "search bindings")
+  "SPC b" "bibliography")
 
 (provide 'sk-ivy-modalka-which-key)
 ;;; sk-ivy-modalka-which-key.el ends here

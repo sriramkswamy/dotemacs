@@ -51,7 +51,16 @@
   (key-chord-define-global "JK" 'completion-at-point))
 
 ;; Diminish built-in stuff
-;; (diminish auto-revert-mode "")
+;; org-indent mode
+(defun sk/diminish-org-indent ()
+  (interactive)
+  (diminish 'org-indent-mode ""))
+(add-hook 'org-mode-hook 'sk/diminish-org-indent)
+;; Auto-revert mode
+(defun sk/diminish-auto-revert ()
+  (interactive)
+  (diminish 'auto-revert-mode ""))
+(add-hook 'auto-revert-mode-hook 'sk/diminish-auto-revert)
 (use-package diminish
   :ensure t
   :diminish (visual-line-mode . "ω")

@@ -7,63 +7,91 @@
 ;;; Code:
 
 ;; Jabber
-(sk/require-package 'jabber)
-(setq jabber-history-enabled t
-      jabber-activity-mode nil
-      jabber-use-global-history nil
-      jabber-backlog-number 40
-      jabber-backlog-days 30)
-(setq jabber-alert-presence-message-function
-      (lambda (who oldstatus newstatus statustext) nil))
-;; Account settings
-(setq jabber-account-list
-      '(("sriram.krish.92@gmail.com"
-         (:network-server . "talk.google.com")
-         (:connection-type . ssl))))
+(use-package jabber
+  :ensure t
+  :commands (jabber-connect)
+  :init
+  (setq jabber-history-enabled t
+	jabber-activity-mode nil
+	jabber-use-global-history nil
+	jabber-backlog-number 40
+	jabber-backlog-days 30)
+  (setq jabber-alert-presence-message-function
+	(lambda (who oldstatus newstatus statustext) nil))
+  ;; Account settings
+  (setq jabber-account-list
+	'(("sriram.krish.92@gmail.com"
+	   (:network-server . "talk.google.com")
+	   (:connection-type . ssl)))))
 
 ;; XKCD
-(sk/require-package 'xkcd)
-(global-set-key (kbd "C-c v g x") 'xkcd)
+(use-package xkcd
+  :ensure t
+  :commands (xkcd)
+  :bind (
+	 ("C-c v g x" . xkcd)
+	 ))
 (modalka-define-kbd "g x" "C-c v g x")
 (which-key-add-key-based-replacements "g x" "xkcd")
 
 ;; Rainbow delimiters
-(sk/require-package 'rainbow-delimiters)
-(add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
+(use-package rainbow-delimiters
+  :ensure t
+  :defer 2)
 
 ;; IRC chat
-(sk/require-package 'circe)
+(use-package circe
+  :ensure t
+  :commands (circe))
 
 ;; Ledger for managing accounts
-(sk/require-package 'ledger-mode)
+(use-package ledger-mode
+  :ensure t
+  :mode "\\.dat$")
 
 ;; Stackexchange from org
-(sk/require-package 'sx)
-
-;; Fireplace
-(sk/require-package 'fireplace)
-
-;; RSS feed
-(sk/require-package 'elfeed)
+(use-package sx
+  :ensure t
+  :commands (sx-tab-all-questions)
+  :bind (
+	 ("C-c v g X" . sx-tab-all-questions)
+	 ))
+(modalka-define-kbd "g X" "C-c v g X")
+(which-key-add-key-based-replacements "g X" "stack exchange")
 
 ;; Typing exercies
-(sk/require-package 'typit)
+(use-package typit
+  :ensure t
+  :commands (typit))
 
 ;; My key frquency
-(sk/require-package 'keyfreq)
-(setq keyfreq-excluded-commands
-      '(self-insert-command
-        abort-recursive-edit
-        forward-char
-	modalka-mode
-        backward-char
-        previous-line
-        next-line))
-(keyfreq-mode 1)
-(keyfreq-autosave-mode 1)
+(use-package keyfreq
+  :ensure t
+  :init
+  (setq keyfreq-excluded-commands
+	'(self-insert-command
+	  org-self-insert-command
+	  company-ignore
+	  abort-recursive-edit
+	  forward-char
+	  modalka-mode
+	  backward-char
+	  previous-line
+	  next-line))
+  :config
+  (keyfreq-mode 1)
+  (keyfreq-autosave-mode 1))
 
 ;; Google stuff
-(sk/require-package 'google-this)
+(use-package google-this
+  :ensure t
+  :commands (google-this-word
+	     google-this-region
+	     google-this-symbol
+	     google-this-clean-error-string
+	     google-this-line
+	     google-this-search
+	     google-this-cpp-reference))
 ;; Hydra google
 (defhydra sk/hydra-google (:color blue
                            :hint nil)

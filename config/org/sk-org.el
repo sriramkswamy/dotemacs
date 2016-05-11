@@ -173,6 +173,45 @@ Minutes of the meeting:
          :empty-lines 1    ; properties
          :created t        ; properties
 	 :kill-buffer t    ; properties
+	 )
+	("dd"              ; key
+         "Drill driving"   ; name
+         entry             ; type
+         (file+headline "~/Dropbox/org/drill.org" "Driving")  ; target
+         "* Question  :drill::driving:
+%^{Question}
+** Answer
+%?"  ; template
+         :prepend t        ; properties
+         :empty-lines 1    ; properties
+         :created t        ; properties
+	 :kill-buffer t    ; properties
+	 )
+	("dm"              ; key
+         "Drill math"      ; name
+         entry             ; type
+         (file+headline "~/Dropbox/org/drill.org" "Math/Stats")  ; target
+         "* Question  :drill::math:
+%^{Question}
+** Answer
+%?"  ; template
+         :prepend t        ; properties
+         :empty-lines 1    ; properties
+         :created t        ; properties
+	 :kill-buffer t    ; properties
+	 )
+	("df"              ; key
+         "Drill fluids"    ; name
+         entry             ; type
+         (file+headline "~/Dropbox/org/drill.org" "Fluids")  ; target
+         "* Question  :drill::fluids:
+%^{Question}
+** Answer
+%?"  ; template
+         :prepend t        ; properties
+         :empty-lines 1    ; properties
+         :created t        ; properties
+	 :kill-buffer t    ; properties
         )
         ("j"                      ; key
          "Jobs"                   ; name
@@ -392,6 +431,9 @@ Description:
 	     org-drill-tree
 	     org-drill-directory)
   :init
+  (setq org-drill-maximum-items-per-session 30)
+  (setq org-drill-maximum-duration 20)   ; 30 minutes
+  (setq org-drill-use-visible-cloze-face-p t)
   (setq org-drill-add-random-noise-to-intervals-p t)
   (setq org-drill-hint-separator "||")
   (setq org-drill-left-cloze-delimiter "<[")
@@ -422,6 +464,7 @@ Description:
   (add-to-list 'org-structure-template-alist '("D" "#+BEGIN_FSTREE ?"))
   (add-to-list 'org-structure-template-alist '("E" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC"))
   (add-to-list 'org-structure-template-alist '("H" "#+LATEX_HEADER: ?"))
+  (add-to-list 'org-structure-template-alist '("I" ":INTERLEAVE_PDF: ?"))
   (add-to-list 'org-structure-template-alist '("L" "#+BEGIN_LaTeX\n?\n#+END_LaTeX"))
   (add-to-list 'org-structure-template-alist '("T" ":DRILL_CARD_TYPE: twosided"))
   (add-to-list 'org-structure-template-alist '("V" "#+BEGIN_VERSE\n?\n#+END_VERSE"))

@@ -1,4 +1,4 @@
-/abbrev_defs
+abbrev_defs
 /bookmarks
 /anaconda-mode/*
 /custom.el
@@ -60,3 +60,4 @@ GRTAGS
 GTAGS
 /image-dired/*
 helm-adaptive-history
+*abbrev_defs

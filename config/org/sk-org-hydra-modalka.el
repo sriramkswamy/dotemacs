@@ -15,7 +15,7 @@
 ;; Checkbox hydra
 (modalka-define-kbd "o b" "C-c h o b")
 
-;; Blog page hydra
+;; Drill hydra
 (modalka-define-kbd "o p" "C-c h o p")
 
 ;; Property hydra

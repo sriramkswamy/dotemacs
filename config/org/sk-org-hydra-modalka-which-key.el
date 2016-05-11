@@ -10,7 +10,7 @@
   "o" "org prefix"
   "o D" "org schedule"
   "o b" "org checkbox"
-  "o p" "org page"
+  "o p" "org practice"
   "o P" "org property"
   "o C" "org clock"
   "o m" "org manipulate table"

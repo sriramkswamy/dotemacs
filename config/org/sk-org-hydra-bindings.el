@@ -15,8 +15,8 @@
 ;; Checkbox hydra
 (global-set-key (kbd "C-c h o b") 'sk/hydra-org-checkbox/body)
 
-;; Blog page hydra
-(global-set-key (kbd "C-c h o p") 'sk/hydra-org-page/body)
+;; Drill hydra
+(global-set-key (kbd "C-c h o p") 'sk/hydra-org-drill/body)
 
 ;; Property hydra
 (global-set-key (kbd "C-c h o P") 'sk/hydra-org-property/body)

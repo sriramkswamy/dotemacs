@@ -34,30 +34,33 @@
       org-outline-path-complete-in-steps nil)
 
 ;; Tags with fast selection keys
-(setq org-tag-alist (quote (("errand" . ?e)
-                            ("books" . ?b)
-                            ("meeting" . ?m)
+(setq org-tag-alist (quote (
                             ("article" . ?a) ;; temporary
-                            ("reference" . ?r) ;; temporary
+                            ("books" . ?b)
                             ("courses" . ?c) ;; temporary
 			    ("coding" . ?C)
-                            ("films" . ?f)
-                            ("story" . ?s)
-                            ("ledger" . ?l)
-                            ("gubby" . ?g)
-			    ("online" . ?o)
-                            ("cash" . ?$)
                             ("card" . ?d)
+			    ("drill" . ?D)
+			    ("errand" . ?e)
+                            ("films" . ?f)
+                            ("gubby" . ?g)
+                            ("home" . ?h)
                             ("idea" . ?i)
-			    ("technical" . ?t)
+                            ("job" . ?j)
+                            ("ledger" . ?l)
+                            ("meeting" . ?m)
+                            ("note" . ?n)
+			    ("online" . ?o)
                             ("personal" . ?p)
                             ("project" . ?P)
-                            ("job" . ?j)
-                            ("work" . ?w)
-                            ("home" . ?h)
+                            ("reference" . ?r) ;; temporary
+                            ("story" . ?s)
+			    ("technical" . ?t)
                             ("vague" . ?v)
+                            ("work" . ?w)
                             ("noexport" . ?x)
-                            ("note" . ?n))))
+                            ("cash" . ?$)
+			    )))
 
 ;; TODO Keywords
 (setq org-todo-keywords
@@ -381,6 +384,23 @@ Description:
   (progn
     (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))))
 
+;; Flashcards and drilling
+(use-package org-drill
+  :ensure org-plus-contrib
+  :defer t
+  :commands (org-drill
+	     org-drill-tree
+	     org-drill-directory)
+  :init
+  (setq org-drill-add-random-noise-to-intervals-p t)
+  (setq org-drill-hint-separator "||")
+  (setq org-drill-left-cloze-delimiter "<[")
+  (setq org-drill-right-cloze-delimiter "]>")
+  (setq org-drill-learn-fraction 0.25)
+  :config
+  (progn
+    (add-to-list 'org-modules 'org-drill)))
+
 ;; Org load languages
 (defun sk/org-custom-load ()
   (interactive)
@@ -393,6 +413,8 @@ Description:
   (require 'org-ref-latex)
   (require 'org-ref-pdf)
   (require 'org-ref-url-utils)
+  ;; Flash cards
+  (require 'org-drill)
   ;; File system tree
   (require 'org-fstree)
   (add-to-list 'org-structure-template-alist '("A" "#+DATE: ?"))
@@ -401,6 +423,7 @@ Description:
   (add-to-list 'org-structure-template-alist '("E" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC"))
   (add-to-list 'org-structure-template-alist '("H" "#+LATEX_HEADER: ?"))
   (add-to-list 'org-structure-template-alist '("L" "#+BEGIN_LaTeX\n?\n#+END_LaTeX"))
+  (add-to-list 'org-structure-template-alist '("T" ":DRILL_CARD_TYPE: twosided"))
   (add-to-list 'org-structure-template-alist '("V" "#+BEGIN_VERSE\n?\n#+END_VERSE"))
   (add-to-list 'org-structure-template-alist '("a" "#+AUTHOR: ?"))
   (add-to-list 'org-structure-template-alist '("b" ":reveal_bacground_trans: ?"))
@@ -409,6 +432,7 @@ Description:
   (add-to-list 'org-structure-template-alist '("e" "#+BEGIN_EXAMPLE\n?\n#+END_EXAMPLE\n"))
   (add-to-list 'org-structure-template-alist '("f" "#+ATTR_REVEAL: :frag ?"))
   (add-to-list 'org-structure-template-alist '("h" "#+BEGIN_HTML\n?\n#+END_HTML\n"))
+  (add-to-list 'org-structure-template-alist '("i" "#+INTERLEAVE_PDF: ?"))
   (add-to-list 'org-structure-template-alist '("l" "#+LABEL: ?"))
   (add-to-list 'org-structure-template-alist '("m" "#+BEGIN_SRC matlab\n?\n#+END_SRC"))
   (add-to-list 'org-structure-template-alist '("n" "#+NAME: ?"))

@@ -312,6 +312,54 @@ _u_: Update field _F_: file funcs
   ("d" org-drill-directory)
   ("q" nil :color blue))
 
+;; Hydra for org template expansion
+(defun hot-expand (str)
+  "Expand org template."
+  (insert str)
+  (org-try-structure-completion))
+
+(defhydra sk/hydra-org-template (:color blue
+				 :hint nil)
+  "
+ ^One liners^                      ^Blocks^                                        ^Properties^
+------------------------------------------------------------------------------------------------------------------------------------
+ _a_: author        _i_: interleave  _C_: center      _m_: matlab src    _V_: verse      _r_: properties        _<_: insert '<'
+ _A_: date          _l_: label       _D_: dir tree    _p_: python src    _d_: defaults   _I_: interleave        _q_: quit
+ _c_: caption       _n_: name        _e_: example     _Q_: quote         _L_: latex      _T_: drill two-sided
+ _f_: reveal frag   _o_: options     _E_: elisp src   _s_: src                         _b_: reveal trans
+ _H_: latex header  _t_: title       _h_: html        _v_: verbatim
+ "
+  ("a" (hot-expand "<a"))
+  ("A" (hot-expand "<A"))
+  ("c" (hot-expand "<c"))
+  ("f" (hot-expand "<f"))
+  ("H" (hot-expand "<H"))
+  ("i" (hot-expand "<i"))
+  ("I" (hot-expand "<I"))
+  ("l" (hot-expand "<l"))
+  ("n" (hot-expand "<n"))
+  ("o" (hot-expand "<o"))
+  ("t" (hot-expand "<t"))
+  ("C" (hot-expand "<C"))
+  ("D" (hot-expand "<D"))
+  ("e" (hot-expand "<e"))
+  ("E" (hot-expand "<E"))
+  ("h" (hot-expand "<h"))
+  ("m" (hot-expand "<m"))
+  ("p" (hot-expand "<p"))
+  ("Q" (hot-expand "<q"))
+  ("s" (hot-expand "<s"))
+  ("v" (hot-expand "<v"))
+  ("V" (hot-expand "<V"))
+  ("d" (hot-expand "<d"))
+  ("L" (hot-expand "<L"))
+  ("r" (hot-expand "<r"))
+  ("I" (hot-expand "<I"))
+  ("T" (hot-expand "<T"))
+  ("b" (hot-expand "<b"))
+  ("<" self-insert-command)
+  ("q" nil :color blue))
+
 ;; bindings
 (require 'sk-org-hydra-bindings)
 

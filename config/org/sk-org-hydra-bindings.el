@@ -36,6 +36,15 @@
 ;; Org ref
 (global-set-key (kbd "C-c h o r") 'sk/hydra-org-ref/body)
 
+;; Org template expansion hydra
+(defun sk/org-template-hook ()
+  (define-key org-mode-map "<"
+    (lambda () (interactive)
+      (if (looking-back "^")
+	  (sk/hydra-org-template/body)
+	(self-insert-command 1)))))
+(add-hook 'org-mode-hook 'sk/org-template-hook)
+
 ;; Modal bindings
 (require 'sk-org-hydra-modalka)
 

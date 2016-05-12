@@ -72,7 +72,14 @@
     :cwd "/Users/sriramkswamy/Dropbox/org/blogposts"
     :tags '(blog)
     :kill-signal 'sigkill
-    :kill-process-buffer-on-stop t))
+    :kill-process-buffer-on-stop t)
+  (prodigy-define-service
+    :name "Nikola deploy"
+    :command "nikola"
+    :args '("github_deploy")
+    :cwd "/Users/sriramkswamy/Dropbox/org/blogposts"
+    :tags '(blog)
+    :kill-signal 'sigkill))
 ;; Modal bindings and explanation
 (modalka-define-kbd "c b" "C-c B")
 (which-key-add-key-based-replacements "c b" "background process")

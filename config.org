@@ -84,24 +84,20 @@ The =init.el= file in the Emacs directory is the file Emacs looks to load when i
 
 ;;; Code:
 
-;; Increase the garbage collection threshold to 200 MB to ease startup
+;; Increase the garbage collection threshold to 500 MB to ease startup
 (setq gc-cons-threshold (* 200 1024 1024))
-
-;; Initialize the packages but don't enable them at start
-(package-initialize nil)
-(setq package-enable-at-startup nil)
 
 ;; Load config.org - my Emacs configuration
 (org-babel-load-file (concat user-emacs-directory "config.org"))
 
-;; Garbage collector - decrease threshold
-(add-hook 'after-init-hook (lambda () (setq gc-cons-threshold (* 800 1024))))
+;; Garbage collector - decrease threshold to 5 MB
+(add-hook 'after-init-hook (lambda () (setq gc-cons-threshold (* 5 1024 1024))))
 ;;; init.el ends here
 #+END_SRC
 
 I increase and decrease the garbage collection threshold, initialize packages and load this org file.
 
-Emacs has a built-in garbage collection mechanism (read [[https://medium.com/@yonkeltron/explaining-garbage-collection-algorithms-by-keeping-your-fridge-tidy-2636012cfeee#.wrb2o0q7a][this article]] for a good intro to garbage collection in general). However, the memory size for which it fires is set pretty low and for the right reasons. Since I operate on a pretty good machine, I set it high initially (around 200 MB) and later reduce it. Therefore, the only thing in the =init.el= file is the GC increase, loading this org file and reduce the threshold again.
+Emacs has a built-in garbage collection mechanism (read [[https://medium.com/@yonkeltron/explaining-garbage-collection-algorithms-by-keeping-your-fridge-tidy-2636012cfeee#.wrb2o0q7a][this article]] for a good intro to garbage collection in general). However, the memory size for which it fires is set pretty low and for the right reasons. Since I operate on a pretty good machine, I set it high initially (around 500 MB) and later reduce it. Therefore, the only thing in the =init.el= file is the GC increase, loading this org file and reduce the threshold again.
 
 ** Emacs Lisp
 
@@ -125,6 +121,22 @@ Emacs has a built-in [[https://www.gnu.org/software/emacs/manual/html_node/emacs
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (when (file-exists-p custom-file)
   (load custom-file))
+#+END_SRC
+
+** Packages
+
+Packages are managed by [[https://www.emacswiki.org/emacs/ELPA][package.el]] but it has access to only the default ELPA repository by default. Let's add more repositories and initialize it. Note that the =(package-initialize)= operation takes a while and is one of the major factors that increase startup time.
+
+#+BEGIN_SRC emacs-lisp
+(require 'package)
+(when (>= emacs-major-version 24)
+  (require 'package)
+  (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
+  (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t))
+(when (< emacs-major-version 24)
+  ;; For important compatibility libraries like cl-lib
+  (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
+(package-initialize)
 #+END_SRC
 
 ** Startup
@@ -413,22 +425,6 @@ Switching font is something I do quite often. Also, zooming in text isn't the sa
   (interactive)
   (set-face-attribute 'default nil  :height 350)
   (set-frame-width (selected-frame) 68))
-#+END_SRC
-
-** Packages
-
-Packages are managed by [[https://www.emacswiki.org/emacs/ELPA][package.el]] but it has access to only the default ELPA repository by default. Let's add more repositories and initialize it. Note that the =(package-initialize)= operation takes a while and is one of the major factors that increase startup time.
-
-#+BEGIN_SRC emacs-lisp
-(require 'package)
-(when (>= emacs-major-version 24)
-  (require 'package)
-  (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
-  (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t))
-(when (< emacs-major-version 24)
-  ;; For important compatibility libraries like cl-lib
-  (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
-(package-initialize)
 #+END_SRC
 
 * Use package macro

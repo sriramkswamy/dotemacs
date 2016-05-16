@@ -4802,6 +4802,7 @@ Which key modal explanation
 (modalka-define-kbd "[ h" "C-z [ h")
 (modalka-define-kbd "g h" "C-z g h")
 (modalka-define-kbd "g H" "C-z g H")
+(modalka-define-kbd "i h" "C-z i h")
 #+END_SRC
 
 Which key modal explanation
@@ -4811,7 +4812,8 @@ Which key modal explanation
   "] h" "next git hunk"
   "[ h" "previous git hunk"
   "g h" "goto git hunk"
-  "g H" "revert git hunk")
+  "g H" "revert git hunk"
+  "i h" "select git hunk")
 #+END_SRC
 
 ** Git time machine
@@ -5506,6 +5508,29 @@ Let's also define a couple of functions to open it in a vertical or horizontal s
     (eshell-send-input)))
 #+END_SRC
 
+**** Key binding
+
+#+BEGIN_SRC emacs-lisp
+(bind-keys*
+  ("C-z SPC u" . sk/eshell-vertical)
+  ("C-z SPC U" . sk/eshell-horizontal))
+#+END_SRC
+
+***** Modal binding
+
+#+BEGIN_SRC emacs-lisp
+(modalka-define-kbd "SPC u" "C-z SPC u")
+(modalka-define-kbd "SPC U" "C-z SPC U")
+#+END_SRC
+
+Which key modal explanation
+
+#+BEGIN_SRC emacs-lisp
+(which-key-add-key-based-replacements
+  "SPC u" "eshell vertical split"
+  "SPC U" "eshell horizontal split")
+#+END_SRC
+
 *** Multi term
 
 [[https://www.emacswiki.org/emacs/MultiTerm][Multi term]] doesn't provide any additional commands to built-in Emacs ~term~ and ~ansi-term~ but helps in managing multiple terminal buffers.
@@ -5536,6 +5561,29 @@ Let's also define a couple of wrapper functions to open this in splits.
   (split-window-below)
   (other-window 1)
   (multi-term))
+#+END_SRC
+
+**** Key binding
+
+#+BEGIN_SRC emacs-lisp
+(bind-keys*
+  ("C-z SPC m" . sk/multi-term-vertical)
+  ("C-z SPC M" . sk/multi-term-horizontal))
+#+END_SRC
+
+***** Modal binding
+
+#+BEGIN_SRC emacs-lisp
+(modalka-define-kbd "SPC m" "C-z SPC m")
+(modalka-define-kbd "SPC M" "C-z SPC M")
+#+END_SRC
+
+Which key modal explanation
+
+#+BEGIN_SRC emacs-lisp
+(which-key-add-key-based-replacements
+  "SPC m" "multi-term vertical split"
+  "SPC M" "multi-term horizontal split")
 #+END_SRC
 
 *** Interacting with Tmux
@@ -6485,6 +6533,7 @@ This section documents the key bindings that help to find other key-bindings. No
 | i s                   | C-z i s             | select org subtree                   |
 | i m                   | C-z i m             | select python method                 |
 | i j                   | C-z i j             | select julia/ruby block              |
+| i h                   | C-z i h             | [[*Highlight diffs][select git hunk]]                      |
 | s a                   | C-z s a             | [[*Smartparens][Smartparens]] beginning of block       |
 | s b                   | C-z s b             | smartparens backward expression      |
 | s c                   | C-z s c             | smartparens change surroundings      |

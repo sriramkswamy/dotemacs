@@ -8,6 +8,7 @@
 	sk/smarter-move-beginning-of-line
 	sp-backward-delete-char
 	sp-backward-kill-word
+	org-self-insert-command
 	))
 
 (setq mc/cmds-to-run-once
@@ -17,5 +18,4 @@
 	end-of-buffer
 	iedit-mode
 	mc/vertical-align-with-space
-	org-self-insert-command
 	))

@@ -1,7 +1,9 @@
+/*.elc
 /.Rhistory
 /.emacs.desktop
 /.emacs.desktop.lock
 /.juliahistory
+/.org-id-locations
 /.python-environments/*
 /.sx/*
 /.trello
@@ -39,4 +41,9 @@
 GPATH
 GRTAGS
 GTAGS
-/.org-id-locations
+/*.toc
+/*.tex
+/*.out
+/*.log
+/*.aux
+/config.el

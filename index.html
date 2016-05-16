@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <title>Emacs configuration file</title>
-<!-- 2016-05-16 Mon 02:28 -->
+<!-- 2016-05-16 Mon 02:43 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="generator" content="Org-mode">
@@ -6922,6 +6922,7 @@ Which key modal explanation
 (modalka-define-kbd <span style="color: #66cccc;">"[ h"</span> <span style="color: #66cccc;">"C-z [ h"</span>)
 (modalka-define-kbd <span style="color: #66cccc;">"g h"</span> <span style="color: #66cccc;">"C-z g h"</span>)
 (modalka-define-kbd <span style="color: #66cccc;">"g H"</span> <span style="color: #66cccc;">"C-z g H"</span>)
+(modalka-define-kbd <span style="color: #66cccc;">"i h"</span> <span style="color: #66cccc;">"C-z i h"</span>)
 </pre>
 </div>
 
@@ -6935,7 +6936,8 @@ Which key modal explanation
   <span style="color: #66cccc;">"] h"</span> <span style="color: #66cccc;">"next git hunk"</span>
   <span style="color: #66cccc;">"[ h"</span> <span style="color: #66cccc;">"previous git hunk"</span>
   <span style="color: #66cccc;">"g h"</span> <span style="color: #66cccc;">"goto git hunk"</span>
-  <span style="color: #66cccc;">"g H"</span> <span style="color: #66cccc;">"revert git hunk"</span>)
+  <span style="color: #66cccc;">"g H"</span> <span style="color: #66cccc;">"revert git hunk"</span>
+  <span style="color: #66cccc;">"i h"</span> <span style="color: #66cccc;">"select git hunk"</span>)
 </pre>
 </div>
 </div>
@@ -7930,6 +7932,39 @@ Let&rsquo;s also define a couple of functions to open it in a vertical or horizo
 </pre>
 </div>
 </div>
+
+<ul class="org-ul"><li><a id="sec-" name="sec-"></a>Key binding<br ><div class="outline-text-5" id="text-">
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp">(bind-keys*
+  (<span style="color: #66cccc;">"C-z SPC u"</span> . sk/eshell-vertical)
+  (<span style="color: #66cccc;">"C-z SPC U"</span> . sk/eshell-horizontal))
+</pre>
+</div>
+</div>
+
+<ul class="org-ul"><li><a id="sec-" name="sec-"></a>Modal binding<br ><div class="outline-text-6" id="text-">
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #66cccc;">"SPC u"</span> <span style="color: #66cccc;">"C-z SPC u"</span>)
+(modalka-define-kbd <span style="color: #66cccc;">"SPC U"</span> <span style="color: #66cccc;">"C-z SPC U"</span>)
+</pre>
+</div>
+
+<p>
+Which key modal explanation
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp">(which-key-add-key-based-replacements
+  <span style="color: #66cccc;">"SPC u"</span> <span style="color: #66cccc;">"eshell vertical split"</span>
+  <span style="color: #66cccc;">"SPC U"</span> <span style="color: #66cccc;">"eshell horizontal split"</span>)
+</pre>
+</div>
+</div>
+</li></ul>
+</li></ul>
 </div>
 
 <div id="outline-container-sec-" class="outline-4">
@@ -7973,6 +8008,39 @@ Let&rsquo;s also define a couple of wrapper functions to open this in splits.
 </pre>
 </div>
 </div>
+
+<ul class="org-ul"><li><a id="sec-" name="sec-"></a>Key binding<br ><div class="outline-text-5" id="text-">
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp">(bind-keys*
+  (<span style="color: #66cccc;">"C-z SPC m"</span> . sk/multi-term-vertical)
+  (<span style="color: #66cccc;">"C-z SPC M"</span> . sk/multi-term-horizontal))
+</pre>
+</div>
+</div>
+
+<ul class="org-ul"><li><a id="sec-" name="sec-"></a>Modal binding<br ><div class="outline-text-6" id="text-">
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #66cccc;">"SPC m"</span> <span style="color: #66cccc;">"C-z SPC m"</span>)
+(modalka-define-kbd <span style="color: #66cccc;">"SPC M"</span> <span style="color: #66cccc;">"C-z SPC M"</span>)
+</pre>
+</div>
+
+<p>
+Which key modal explanation
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp">(which-key-add-key-based-replacements
+  <span style="color: #66cccc;">"SPC m"</span> <span style="color: #66cccc;">"multi-term vertical split"</span>
+  <span style="color: #66cccc;">"SPC M"</span> <span style="color: #66cccc;">"multi-term horizontal split"</span>)
+</pre>
+</div>
+</div>
+</li></ul>
+</li></ul>
 </div>
 
 <div id="outline-container-sec-" class="outline-4">
@@ -8865,7 +8933,6 @@ You can use the <a href="https://www.emacswiki.org/emacs/JabberEl">jabber protoc
   <span style="color: #999999; font-style: italic;">;; </span><span style="color: #999999; font-style: italic;">Account settings</span>
   (setq jabber-account-list
         '((<span style="color: #66cccc;">"sriram.krish.92@gmail.com"</span>
-           (<span style="color: #cc99cc;">:password</span> . <span style="color: #66cccc;">"chceuskratogxjzs"</span>)
            (<span style="color: #cc99cc;">:network-server</span> . <span style="color: #66cccc;">"talk.google.com"</span>)
            (<span style="color: #cc99cc;">:connection-type</span> . ssl)))))
 </pre>
@@ -9931,6 +9998,12 @@ This section documents the key bindings that help to find other key-bindings. No
 <td class="left">i j</td>
 <td class="left">C-z i j</td>
 <td class="left">select julia/ruby block</td>
+</tr>
+
+<tr>
+<td class="left">i h</td>
+<td class="left">C-z i h</td>
+<td class="left"><a href="#sec-">select git hunk</a></td>
 </tr>
 
 <tr>
@@ -11068,7 +11141,7 @@ This section documents the key bindings that help to find other key-bindings. No
 </div></div></div>
 <footer id="postamble" class="">
 <div><p class="author">Author: Sriram Krishnaswamy</p>
-<p class="date">Created: 2016-05-16 Mon 02:28</p>
+<p class="date">Created: 2016-05-16 Mon 02:43</p>
 <p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.5.1 (<a href="http://orgmode.org">Org-mode</a> 8.3.4)</p>
 </div>
 </footer>

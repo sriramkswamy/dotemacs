@@ -24,7 +24,7 @@ To get the complete list of key-bindings, [[*Key bindings][check out the relevan
 On OS X, the best way to install Emacs is to use the [[https://github.com/railwaycat/emacs-mac-port][Emacs Mac Port]]. It can easily be done via the command line after installing [[http://brew.sh][Homebrew]] like so:
 
 #+NAME: Installing Emacs via Shell script
-#+BEGIN_SRC sh
+#+BEGIN_SRC sh :tangle no
 brew tap railwaycat/emacsmacport
 brew install emacs-mac --with-gnutls --with-imagemagick --with-xml2 --with-d-bus --with-modern-icon
 brew linkapps emacs-mac
@@ -39,7 +39,7 @@ Note that, in this port, the "Meta" key is actually the OS X =Command= key. I pr
 
 To install GNU Emacs,
 
-#+BEGIN_SRC sh
+#+BEGIN_SRC sh :tangle no
 brew install emacs --with-imagemagick --with-d-bud --with-cocoa
 #+END_SRC
 
@@ -49,31 +49,31 @@ This configuration resides on [[https://github.com][GitHub]] in [[https://github
 
 If you have an already existing configuration, it is better to back it up.
 
-#+BEGIN_SRC sh
+#+BEGIN_SRC sh :tangle no
 mv ~/.emacs.d ~/.emacs.d.bak
 #+END_SRC
 
 Else, you can just delete it.
 
-#+BEGIN_SRC sh
+#+BEGIN_SRC sh :tangle no
 rm -rf ~/.emacs.d
 #+END_SRC
 
 Then, clone this repository in ~.emacs.d~
 
-#+BEGIN_SRC sh
+#+BEGIN_SRC sh :tangle no
 git clone https://github.com/sriramkswamy/dotemacs.git ~/.emacs.d
 #+END_SRC
 
 If you are just updating the configuration, you can just pull the latest changes
 
-#+BEGIN_SRC sh
+#+BEGIN_SRC sh :tangle no
 cd ~/.emacs.d && git pull
 #+END_SRC
 
 ** Init file
 
-The =init.el= file in the Emacs directory is the file Emacs looks to load when it starts up. Since I'm planning to have THIS org file as my configuration file, The actual =init.el= file is very simple.
+The =init.el= file in the Emacs directory is the file Emacs looks to load when it starts up. Since I'm planning to have THIS org file as my configuration file, The actual =init.el= file is very simple. I first increase the garbage collection to around 500 MB so that Emacs doesn't pause much during the load. Then, I add a few repositories for us to download [[*Packages][packages]] from. Finally, I make sure Org and [[*Org contributed packages][Org contributed packages]] are installed before telling [[*Org babel][Org babel]] to load this file. Finally, I reduce the threshold for garbage collection once again so that Emacs functions smoothly.
 
 #+BEGIN_SRC emacs-lisp :tangle no
 ;;; init.el --- Global settings -*- lexical-binding: t; -*-
@@ -85,7 +85,28 @@ The =init.el= file in the Emacs directory is the file Emacs looks to load when i
 ;;; Code:
 
 ;; Increase the garbage collection threshold to 500 MB to ease startup
-(setq gc-cons-threshold (* 200 1024 1024))
+(setq gc-cons-threshold (* 500 1024 1024))
+
+;; List package archives and initialize them
+(require 'package)
+(when (>= emacs-major-version 24)
+  (require 'package)
+  (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
+  (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t))
+(when (< emacs-major-version 24)
+  ;; For important compatibility libraries like cl-lib
+  (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
+(package-initialize)
+
+;; Make sure Org is installed
+(unless (package-installed-p 'org)
+  (package-refresh-contents)
+  (package-install 'org))
+
+;; Org plus contrib needs to be loaded before any org related functionality is called
+(unless (package-installed-p 'org-plus-contrib)
+  (package-refresh-contents)
+  (package-install 'org-plus-contrib))
 
 ;; Load config.org - my Emacs configuration
 (org-babel-load-file (concat user-emacs-directory "config.org"))
@@ -94,8 +115,6 @@ The =init.el= file in the Emacs directory is the file Emacs looks to load when i
 (add-hook 'after-init-hook (lambda () (setq gc-cons-threshold (* 5 1024 1024))))
 ;;; init.el ends here
 #+END_SRC
-
-I increase and decrease the garbage collection threshold, initialize packages and load this org file.
 
 Emacs has a built-in garbage collection mechanism (read [[https://medium.com/@yonkeltron/explaining-garbage-collection-algorithms-by-keeping-your-fridge-tidy-2636012cfeee#.wrb2o0q7a][this article]] for a good intro to garbage collection in general). However, the memory size for which it fires is set pretty low and for the right reasons. Since I operate on a pretty good machine, I set it high initially (around 500 MB) and later reduce it. Therefore, the only thing in the =init.el= file is the GC increase, loading this org file and reduce the threshold again.
 
@@ -125,19 +144,7 @@ Emacs has a built-in [[https://www.gnu.org/software/emacs/manual/html_node/emacs
 
 ** Packages
 
-Packages are managed by [[https://www.emacswiki.org/emacs/ELPA][package.el]] but it has access to only the default ELPA repository by default. Let's add more repositories and initialize it. Note that the =(package-initialize)= operation takes a while and is one of the major factors that increase startup time.
-
-#+BEGIN_SRC emacs-lisp
-(require 'package)
-(when (>= emacs-major-version 24)
-  (require 'package)
-  (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
-  (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t))
-(when (< emacs-major-version 24)
-  ;; For important compatibility libraries like cl-lib
-  (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
-(package-initialize)
-#+END_SRC
+Packages are managed by [[https://www.emacswiki.org/emacs/ELPA][package.el]] but it has access to only the default ELPA repository by default. Let's add more repositories and initialize it. Note that the =(package-initialize)= operation takes a while and is one of the major factors that increase startup time. The packages are loaded and initialized in the [[*Init file][Init file]].
 
 ** Startup
 
@@ -223,6 +230,15 @@ Emacs takes regular backups of once you switch on auto-saving and, by default, p
       kept-new-versions 6
       kept-old-versions 2
       version-control t)       ; use versioned backups
+#+END_SRC
+
+** File encoding system
+
+UTF-8 works for most of the files I tend to use
+
+#+BEGIN_SRC emacs-lisp
+(prefer-coding-system 'utf-8)
+(setq-default buffer-file-coding-system 'utf-8-auto-unix)
 #+END_SRC
 
 ** Error message
@@ -427,9 +443,9 @@ Switching font is something I do quite often. Also, zooming in text isn't the sa
   (set-frame-width (selected-frame) 68))
 #+END_SRC
 
-* Use package macro
+* TODO Use package macro
 
-[[https://github.com/jwiegley/use-package][use-package]] is a macro that helps in downloading and managing package a breeze. It has lots of options for lazy loading and configurations and this configuration relies on it completely for all package management. This is a requirement. The following piece of code checks if it is already installed and installs it if it is not and also loads it and bind-key
+[[https://github.com/jwiegley/use-package][use-package]] is a macro that helps in downloading and managing package a breeze. It has lots of options for lazy loading and configurations and this configuration relies on it completely for all package management. This is a requirement. The following piece of code checks if it is already installed and installs it if it is not and also loads it and bind-key. I should extend this to add key words for =:modalka= and =:which-key=.
 
 #+BEGIN_SRC emacs-lisp
 (unless (package-installed-p 'use-package)
@@ -541,13 +557,19 @@ Sometimes when opening the Mac Emacs.app via GUI, by clicking the button, it doe
 
 ** Add some useful libraries
 
-[[https://github.com/magnars/s.el][s]], [[https://github.com/magnars/dash.el][dash]], and [[http://elpa.gnu.org/packages/cl-lib.html][cl-lib]] are libraries for string manipulation, list manipulation and backward compatibility respectively.
+[[https://github.com/jwiegley/emacs-async][async]], [[https://github.com/magnars/s.el][s]], [[https://github.com/magnars/dash.el][dash]], and [[http://elpa.gnu.org/packages/cl-lib.html][cl-lib]] are libraries for asynchronous processing, string manipulation, list manipulation and backward compatibility respectively.
 
 #+BEGIN_SRC emacs-lisp
+(use-package async
+  :ensure t
+  :commands (async-start))
+
 (use-package cl-lib
   :ensure t)
+
 (use-package dash
   :ensure t)
+
 (use-package s
   :ensure t)
 #+END_SRC
@@ -586,6 +608,43 @@ There are some pretty nice default functions that are unbound. I use the =bind-k
   ("C-z V"   . rectangle-mark-mode)
   ("C-z : t" . emacs-init-time)
   ("C-z g q" . fill-paragraph))
+#+END_SRC
+
+* Tangle on save
+
+This was taken from [[https://github.com/alanpearce/dotfiles/blob/master/tag-emacs/emacs.d/init.org#tangling][Alan Pearce's dotfiles]] so as to tangle it on save instead of tangling it every time I open it again.
+
+#+BEGIN_SRC emacs-lisp
+(defun tangle-if-init ()
+  "If the current buffer is 'init.org' the code-blocks are
+    tangled, and the tangled file is compiled."
+
+  (when (string-suffix-p "config.org" (buffer-file-name))
+    (tangle-init)))
+
+(defun tangle-init-sync ()
+  (interactive)
+  (message "Tangling init")
+  ;; Avoid running hooks when tangling.
+  (let ((prog-mode-hook nil)
+        (src  (expand-file-name "config.org" user-emacs-directory))
+        (dest (expand-file-name "config.el"  user-emacs-directory)))
+    (require 'ob-tangle)
+    (org-babel-tangle-file src dest)
+    (if (byte-compile-file dest)
+        (byte-compile-dest-file dest)
+      (with-current-buffer byte-compile-log-buffer
+        (buffer-string)))))
+
+(defun tangle-init ()
+  "Tangle init.org asynchronously."
+
+  (interactive)
+  (message "Tangling init")
+  (async-start
+   (symbol-function #'tangle-init-sync)
+   (lambda (result)
+     (message "Init tangling completed: %s" result))))
 #+END_SRC
 
 * Key hints
@@ -3730,72 +3789,72 @@ Then, we have to choose where to [[http://orgmode.org/manual/Capture-_002d-Refil
 Finally, we make sure we bind some keys and add some [[http://orgmode.org/manual/Easy-Templates.html][easy template expansion]].
 
 #+BEGIN_SRC emacs-lisp
-  (use-package org
-    :ensure t
-    :bind* (("C-z o a" . org-agenda)
-            ("C-z o c" . org-capture)
-            ("C-z o i" . org-insert-link)
-            ("C-z o s" . org-store-link)
-            ("C-z o S" . org-list-make-subtree)
-            ("C-z o A" . org-archive-subtree)
-            ("C-z o g" . org-goto)
-            ("C-z o l" . org-toggle-latex-fragment)
-            ("C-z o L" . org-toggle-link-display)
-            ("C-z o I" . org-toggle-inline-images)
-            ("C-z o k" . org-cut-subtree)
-            ("C-z o V" . org-reveal)
-            ("C-z o R" . org-refile)
-            ("C-z o y" . org-copy-subtree)
-            ("C-z o h" . org-toggle-heading)
-            ("C-z o H" . org-insert-heading-respect-content)
-            ("C-z o e" . org-export-dispatch)
-            ("C-z o u" . org-update-dblock)
-            ("C-z o U" . org-update-all-dblocks)
-            ("C-z o F" . org-footnote)
-            ("C-z o ]" . org-narrow-to-subtree)
-            ("C-z o [" . widen)
-            ("C-z o N" . org-note)
-            ("C-z o F" . org-attach)
-            ("C-z o E" . org-set-effort)
-            ("C-z o B" . org-table-blank-field)
-            ("C-z o <" . org-date-from-calendar)
-            ("C-z o >" . org-goto-calendar)
-            ("C-z o d" . org-todo)
-            ("C-z o t" . org-set-tags-command)
-            ("C-z o w" . org-edit-special)
-            ("C-z o q" . org-edit-src-exit)
-            ("C-z o z" . clone-indirect-buffer-other-window)
-            ("C-z i s" . org-mark-subtree))
-    :config
-    ;; More of those nice template expansion
-    (add-to-list 'org-structure-template-alist '("A" "#+DATE: ?"))
-    (add-to-list 'org-structure-template-alist '("C" "#+BEGIN_CENTER\n?\n#+END_CENTER\n"))
-    (add-to-list 'org-structure-template-alist '("D" "#+BEGIN_FSTREE ?"))
-    (add-to-list 'org-structure-template-alist '("E" "#+BEGIN_EXAMPLE\n?\n#+END_EXAMPLE\n"))
-    (add-to-list 'org-structure-template-alist '("H" "#+LATEX_HEADER: ?"))
-    (add-to-list 'org-structure-template-alist '("I" ":INTERLEAVE_PDF: ?"))
-    (add-to-list 'org-structure-template-alist '("L" "#+BEGIN_LaTeX\n?\n#+END_LaTeX"))
-    (add-to-list 'org-structure-template-alist '("N" "#+BEGIN_NOTES\n?\n#+END_NOTES"))
-    (add-to-list 'org-structure-template-alist '("T" ":DRILL_CARD_TYPE: twosided"))
-    (add-to-list 'org-structure-template-alist '("V" "#+BEGIN_VERSE\n?\n#+END_VERSE"))
-    (add-to-list 'org-structure-template-alist '("a" "#+AUTHOR: ?"))
-    (add-to-list 'org-structure-template-alist '("b" ":reveal_background_trans: ?"))
-    (add-to-list 'org-structure-template-alist '("c" "#+CAPTION: ?"))
-    (add-to-list 'org-structure-template-alist '("d" "#+OPTIONS: toc:nil num:nil tags:nil todo:nil p:nil pri:nil stat:nil c:nil d:nil\n#+LATEX_HEADER: \\usepackage[margin=2cm]{geometry}\n#+EXCLUDE_TAGS: noexport\n"))
-    (add-to-list 'org-structure-template-alist '("e" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC"))
-    (add-to-list 'org-structure-template-alist '("f" "#+ATTR_REVEAL: :frag ?"))
-    (add-to-list 'org-structure-template-alist '("h" "#+BEGIN_HTML\n?\n#+END_HTML\n"))
-    (add-to-list 'org-structure-template-alist '("i" "#+INTERLEAVE_PDF: ?"))
-    (add-to-list 'org-structure-template-alist '("l" "#+LABEL: ?"))
-    (add-to-list 'org-structure-template-alist '("m" "#+BEGIN_SRC matlab\n?\n#+END_SRC"))
-    (add-to-list 'org-structure-template-alist '("n" "#+NAME: ?"))
-    (add-to-list 'org-structure-template-alist '("o" "#+OPTIONS: ?"))
-    (add-to-list 'org-structure-template-alist '("p" "#+BEGIN_SRC python\n?\n#+END_SRC"))
-    (add-to-list 'org-structure-template-alist '("q" "#+BEGIN_QUOTE\n?\n#+END_QUOTE"))
-    (add-to-list 'org-structure-template-alist '("r" ":PROPERTIES:\n?\n:END:"))
-    (add-to-list 'org-structure-template-alist '("s" "#+BEGIN_SRC ?\n#+END_SRC\n"))
-    (add-to-list 'org-structure-template-alist '("t" "#+TITLE: ?"))
-    (add-to-list 'org-structure-template-alist '("v" "#+BEGIN_VERBATIM\n?\n#+END_VERBATIM")))
+(use-package org
+  :ensure org
+  :bind* (("C-z o a" . org-agenda)
+          ("C-z o c" . org-capture)
+          ("C-z o i" . org-insert-link)
+          ("C-z o s" . org-store-link)
+          ("C-z o S" . org-list-make-subtree)
+          ("C-z o A" . org-archive-subtree)
+          ("C-z o g" . org-goto)
+          ("C-z o l" . org-toggle-latex-fragment)
+          ("C-z o L" . org-toggle-link-display)
+          ("C-z o I" . org-toggle-inline-images)
+          ("C-z o k" . org-cut-subtree)
+          ("C-z o V" . org-reveal)
+          ("C-z o R" . org-refile)
+          ("C-z o y" . org-copy-subtree)
+          ("C-z o h" . org-toggle-heading)
+          ("C-z o H" . org-insert-heading-respect-content)
+          ("C-z o e" . org-export-dispatch)
+          ("C-z o u" . org-update-dblock)
+          ("C-z o U" . org-update-all-dblocks)
+          ("C-z o F" . org-footnote)
+          ("C-z o ]" . org-narrow-to-subtree)
+          ("C-z o [" . widen)
+          ("C-z o N" . org-note)
+          ("C-z o F" . org-attach)
+          ("C-z o E" . org-set-effort)
+          ("C-z o B" . org-table-blank-field)
+          ("C-z o <" . org-date-from-calendar)
+          ("C-z o >" . org-goto-calendar)
+          ("C-z o d" . org-todo)
+          ("C-z o t" . org-set-tags-command)
+          ("C-z o w" . org-edit-special)
+          ("C-z o q" . org-edit-src-exit)
+          ("C-z o z" . clone-indirect-buffer-other-window)
+          ("C-z i s" . org-mark-subtree))
+  :config
+  ;; More of those nice template expansion
+  (add-to-list 'org-structure-template-alist '("A" "#+DATE: ?"))
+  (add-to-list 'org-structure-template-alist '("C" "#+BEGIN_CENTER\n?\n#+END_CENTER\n"))
+  (add-to-list 'org-structure-template-alist '("D" "#+BEGIN_FSTREE ?"))
+  (add-to-list 'org-structure-template-alist '("E" "#+BEGIN_EXAMPLE\n?\n#+END_EXAMPLE\n"))
+  (add-to-list 'org-structure-template-alist '("H" "#+LATEX_HEADER: ?"))
+  (add-to-list 'org-structure-template-alist '("I" ":INTERLEAVE_PDF: ?"))
+  (add-to-list 'org-structure-template-alist '("L" "#+BEGIN_LaTeX\n?\n#+END_LaTeX"))
+  (add-to-list 'org-structure-template-alist '("N" "#+BEGIN_NOTES\n?\n#+END_NOTES"))
+  (add-to-list 'org-structure-template-alist '("T" ":DRILL_CARD_TYPE: twosided"))
+  (add-to-list 'org-structure-template-alist '("V" "#+BEGIN_VERSE\n?\n#+END_VERSE"))
+  (add-to-list 'org-structure-template-alist '("a" "#+AUTHOR: ?"))
+  (add-to-list 'org-structure-template-alist '("b" ":reveal_background_trans: ?"))
+  (add-to-list 'org-structure-template-alist '("c" "#+CAPTION: ?"))
+  (add-to-list 'org-structure-template-alist '("d" "#+OPTIONS: toc:nil num:nil tags:nil todo:nil p:nil pri:nil stat:nil c:nil d:nil\n#+LATEX_HEADER: \\usepackage[margin=2cm]{geometry}\n#+EXCLUDE_TAGS: noexport\n"))
+  (add-to-list 'org-structure-template-alist '("e" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC"))
+  (add-to-list 'org-structure-template-alist '("f" "#+ATTR_REVEAL: :frag ?"))
+  (add-to-list 'org-structure-template-alist '("h" "#+BEGIN_HTML\n?\n#+END_HTML\n"))
+  (add-to-list 'org-structure-template-alist '("i" "#+INTERLEAVE_PDF: ?"))
+  (add-to-list 'org-structure-template-alist '("l" "#+LABEL: ?"))
+  (add-to-list 'org-structure-template-alist '("m" "#+BEGIN_SRC matlab\n?\n#+END_SRC"))
+  (add-to-list 'org-structure-template-alist '("n" "#+NAME: ?"))
+  (add-to-list 'org-structure-template-alist '("o" "#+OPTIONS: ?"))
+  (add-to-list 'org-structure-template-alist '("p" "#+BEGIN_SRC python\n?\n#+END_SRC"))
+  (add-to-list 'org-structure-template-alist '("q" "#+BEGIN_QUOTE\n?\n#+END_QUOTE"))
+  (add-to-list 'org-structure-template-alist '("r" ":PROPERTIES:\n?\n:END:"))
+  (add-to-list 'org-structure-template-alist '("s" "#+BEGIN_SRC ?\n#+END_SRC\n"))
+  (add-to-list 'org-structure-template-alist '("t" "#+TITLE: ?"))
+  (add-to-list 'org-structure-template-alist '("v" "#+BEGIN_VERBATIM\n?\n#+END_VERBATIM")))
 #+END_SRC
 
 *** Which key binding explanation
@@ -3891,7 +3950,6 @@ Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (use-package org-drill
-  :ensure org-plus-contrib
   :defer t
   :commands (org-drill
              org-drill-tree
@@ -4064,7 +4122,7 @@ We can make Org mode a little more pretty by having [[https://github.com/sabof/o
 
 ** Functions
 
-Org mode and packages take a while to load. This command, when invoked, loads a bunch of extra stuff. So, I use it whenever I'm doing serious work in Org mode.
+Org mode and packages take a while to load. This command, when invoked, loads a bunch of extra stuff. So, I use it whenever I'm doing serious work in Org mode. Note that the first time you invoke this function, it will install the [[http://orgmode.org/elpa.html][org-plus-contrib]] package if it is not installed already.
 
 #+BEGIN_SRC emacs-lisp
 (defun sk/org-custom-load ()
@@ -4080,8 +4138,6 @@ Org mode and packages take a while to load. This command, when invoked, loads a 
   (require 'org-ref-url-utils)
   ;; Flash cards
   (require 'org-drill)
-  ;; File system tree
-  (require 'org-fstree)
   ;; Babel load
   (org-babel-do-load-languages
    'org-babel-load-languages
@@ -4097,7 +4153,6 @@ Org mode and packages take a while to load. This command, when invoked, loads a 
      ;; (octave . t)
      (matlab . t)
      (python . t))))
-
 ;; Add obvious org mode hooks
 (add-hook 'org-mode-hook 'visual-line-mode)
 (add-hook 'org-mode-hook 'flyspell-mode)
@@ -4166,7 +4221,7 @@ Which key modal explanation
 
 *** Hydra for task management
 
-As mentioned [[*Task management][before]], Org is amazing for TODO lists and this helps easy tagging.
+As mentioned [[*Task management][before]], Org is amazing for TODO lists and has the ability to schedule deadlines too.
 
 #+BEGIN_SRC emacs-lisp
 (defhydra sk/hydra-org-todo (:color red
@@ -4185,20 +4240,20 @@ As mentioned [[*Task management][before]], Org is amazing for TODO lists and thi
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z o d" . sk/hydra-org-todo/body))
+  ("C-z o D" . sk/hydra-org-todo/body))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "o d" "C-z o d")
+(modalka-define-kbd "o D" "C-z o D")
 #+END_SRC
 
 Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "o d" "todo")
+  "o D" "deadline menu")
 #+END_SRC
 
 *** Check boxes
@@ -6691,8 +6746,16 @@ This section documents the key bindings that help to find other key-bindings. No
 | g x                   | C-z g x             | [[*XKCD][XKCD]]           |
 | g X                   | C-z g X             | [[*Stack exchange][Stack exchange]] |
 | g G                   | C-z g G             | [[*Google stuff][Google stuff]]   |
+* Automatically invoke tangle on save
 
-* TODO
+This portion of comments let Emacs know that it has to [[*Tangle%20on%20save][invoke tangle on save]]. Since the actual code is in comment form, I have included the code to be included in verbatim form. Also, note that Emacs might prompt you if you are OK with the local variables being executed. Press "!" to tell Emacs that is OK and to ask it to save it to the [[*Custom%20file][Custom file]].
 
-** Extending use-package
-** Reduce load time
+#+BEGIN_VERBATIM
+# Local Variables:
+# eval: (when (fboundp #'tangle-if-init) (add-hook 'after-save-hook #'tangle-if-init))
+# End:
+#+END_VERBATIM
+
+# Local Variables:
+# eval: (when (fboundp #'tangle-if-init) (add-hook 'after-save-hook #'tangle-if-init))
+# End:

@@ -47,3 +47,4 @@ GTAGS
 /*.log
 /*.aux
 /config.el
+/config.html

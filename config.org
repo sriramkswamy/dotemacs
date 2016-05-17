@@ -6189,7 +6189,18 @@ All of these are a part of [[https://github.com/abo-abo/swiper][the excellent sw
     (setq bibtex-completion-notes-path "~/Dropbox/org/references/articles.org")))
 #+END_SRC
 
-*** Modal binding
+** Smex
+
+[[https://github.com/nonsequitur/smex][smex]] is an amazing program that helps order the =M-x= commands based on usage and recent items. =counsel-M-x= has the option of using it internally when it finds this package. Let's install it.
+
+#+BEGIN_SRC emacs-lisp
+(use-package smex
+  :ensure t
+  :config
+  (smex-initialize))
+#+END_SRC
+
+** Modal binding
 
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "B" "C-z B")

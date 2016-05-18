@@ -232,6 +232,15 @@ Emacs takes regular backups of once you switch on auto-saving and, by default, p
       version-control t)       ; use versioned backups
 #+END_SRC
 
+** Auto saving
+
+I make sure Emacs auto-saves often but the result is that it messes up my file tree. So, let's ask Emacs to store its backups in some temporary directory.
+
+#+BEGIN_SRC emacs-lisp
+(setq auto-save-file-name-transforms `((".*" ,temporary-file-directory t))
+      create-lockfiles nil)
+#+END_SRC
+
 ** File encoding system
 
 UTF-8 works for most of the files I tend to use
@@ -306,6 +315,10 @@ While we are in the topic of prompting, a lot of the default prompts ask for a =
 
 #+BEGIN_SRC emacs-lisp
 (add-hook 'dired-mode-hook 'dired-hide-details-mode)
+(setq dired-dwim-target t
+                  dired-recursive-copies 'top
+                  dired-recursive-deletes 'top
+                  dired-listing-switches "-alh")
 #+END_SRC
 
 ** =tramp=
@@ -649,6 +662,8 @@ This was taken from [[https://github.com/alanpearce/dotfiles/blob/master/tag-ema
 
 * Key hints
 
+** Which key
+
 Emacs has 100s of bindings and it is impossible to remember them all. Sometimes I can remember the start of a key chord but not the entire one. [[https://github.com/justbur/emacs-which-key][Which-key]] is a package that gives you key hints on delay or if prompted. I really like it and use it extensively to setup the modal state.
 
 #+BEGIN_SRC emacs-lisp
@@ -663,6 +678,17 @@ Emacs has 100s of bindings and it is impossible to remember them all. Sometimes 
   (which-key-mode)
   (which-key-add-key-based-replacements
   "C-z ?" "top level bindings"))
+#+END_SRC
+
+** Discover my major
+
+[[https://github.com/steckerhalter/discover-my-major][This package]] helps to discover the major mode bindings. I use it very occasionally and hence not binding it to any modal binding.
+
+#+BEGIN_SRC emacs-lisp
+(use-package discover-my-major
+  :ensure t
+  :bind (("C-h C-m" . discover-my-major)
+         ("C-h M-m" . discover-my-mode)))
 #+END_SRC
 
 * Modal states
@@ -1216,6 +1242,34 @@ Which key modal explanation
 (which-key-add-key-based-replacements
   "g e" "extract word in proj"
   "g E" "writable mode on")
+#+END_SRC
+
+** Ztree
+
+[[https://github.com/fourier/ztree][ztree]] and its function =ztree-diff= is super useful when comparing directory trees.
+
+#+BEGIN_SRC emacs-lisp
+(use-package ztree
+  :ensure t
+  :bind* (("C-z g v" . ztree-dir)
+          ("C-z g V" . ztree-diff))
+  :init
+  (setq ztree-dir-move-focus t))
+#+END_SRC
+
+*** Modal binding
+
+#+BEGIN_SRC emacs-lisp
+(modalka-define-kbd "g v" "C-z g v")
+(modalka-define-kbd "g V" "C-z g V")
+#+END_SRC
+
+Which key modal explanation
+
+#+BEGIN_SRC emacs-lisp
+(which-key-add-key-based-replacements
+  "g v" "tree directory"
+  "g V" "diff directories")
 #+END_SRC
 
 ** Neotree
@@ -1928,8 +1982,15 @@ Which key modal explanation
           ("C-z s x" . sp-transpose-sexp)
           ("C-z s d" . sp-kill-sexp)
           ("C-z s y" . sp-copy-sexp)
-          ("C-z s s" . sp-unwrap-sexp)
-          ("C-z s S" . sp-backward-unwrap-sexp))
+          ("C-z s u" . sp-unwrap-sexp)
+          ("C-z s U" . sp-backward-unwrap-sexp)
+          ("C-z s C" . sp-convolute-sexp)
+          ("C-z s r" . sp-raise-sexp)
+          ("C-z s s" . sp-split-sexp)
+          ("C-z s S" . sp-splice-sexp)
+          ("C-z s F" . sp-splice-sexp-killing-forward)
+          ("C-z s B" . sp-splice-sexp-killing-backward)
+          ("C-z s A" . sp-splice-sexp-killing-around))
   :diminish smartparens-mode
   :diminish smartparens-strict-mode
   :config
@@ -1961,8 +2022,17 @@ Which key modal explanation
 (modalka-define-kbd "s x" "C-z s x")
 (modalka-define-kbd "s d" "C-z s d")
 (modalka-define-kbd "s y" "C-z s y")
+(modalka-define-kbd "s u" "C-z s u")
+(modalka-define-kbd "s U" "C-z s U")
+(modalka-define-kbd "s U" "C-z s U")
+(modalka-define-kbd "s U" "C-z s U")
+(modalka-define-kbd "s C" "C-z s C")
+(modalka-define-kbd "s r" "C-z s r")
 (modalka-define-kbd "s s" "C-z s s")
 (modalka-define-kbd "s S" "C-z s S")
+(modalka-define-kbd "s F" "C-z s F")
+(modalka-define-kbd "s B" "C-z s B")
+(modalka-define-kbd "s A" "C-z s A")
 #+END_SRC
 
 Which key modal explanation
@@ -1989,8 +2059,15 @@ Which key modal explanation
   "s x" "smart transpose"
   "s d" "smart delete"
   "s y" "smart copy"
-  "s s" "selection unwrap"
-  "s S" "backward unwrap")
+  "s u" "selection unwrap"
+  "s U" "backward unwrap"
+  "s C" "convolute sexp"
+  "s r" "raise sexp"
+  "s s" "split sexp"
+  "s S" "splice sexp"
+  "s F" "splice forward"
+  "s B" "splice backward"
+  "s A" "splice around")
 #+END_SRC
 
 ** Interactive edit
@@ -2166,6 +2243,30 @@ Which key modal explanation
 #+END_SRC
 
 ** Custom functions
+
+*** Insert date or date and time
+
+This function is to easily insert date or datetime in the current buffer.
+
+#+BEGIN_SRC emacs-lisp
+(defun sk/insert-date (prefix)
+  "Insert the current date. With prefix-argument, use British format. With
+   two prefix arguments, write out the day and month name."
+  (interactive "P")
+  (let ((format (cond
+                 ((not prefix) "%Y-%m-%d")
+                 ((equal prefix '(4)) "%d/%m/%Y")
+                 ((equal prefix '(16)) "%A, %d %B %Y"))))
+    (insert (format-time-string format))))
+
+(defun sk/insert-datetime (prefix)
+  "Insert the current date and time."
+  (interactive "P")
+  (let ((format (cond
+                 ((not prefix) "%Y-%m-%d %H:%M:%S")
+                 ((equal prefix '(4)) "%Y-%m-%dT%H:%M:%SZ"))))
+    (insert (format-time-string format))))
+#+END_SRC
 
 *** Rename the current buffer and the file associated with it
 
@@ -3205,6 +3306,18 @@ Of course we need color themes. I like the [[https://github.com/purcell/color-th
   :config
   (require 'spaceline-config)
   (spaceline-spacemacs-theme))
+#+END_SRC
+
+** Better buffer name
+
+[[https://github.com/proofit404/relative-buffers][Relative buffers]] is a package that displays a better path for the buffer in the modeline
+
+#+BEGIN_SRC emacs-lisp
+(use-package relative-buffers
+  :ensure t
+  :demand t
+  :config
+  (global-relative-buffers-mode))
 #+END_SRC
 
 ** Fancy battery status
@@ -5014,6 +5127,15 @@ Emacs has provisions for a macro and [[https://github.com/joddie/macrostep][this
              macrostep-mode))
 #+END_SRC
 
+*** Auto compile
+
+[[https://github.com/tarsius/auto-compile][Auto compile]] byte /recompiles/ files if they are byte-compiled already.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package auto-compile
+    :ensure t)
+#+END_SRC
+
 ** C/C++
 
 I use C++ a lot while programming and this section tries to convert Emacs into a good environment for coding in C++. For a good introduction, [[https://www.youtube.com/watch?v=5FQwQ0QWBTU][take a look at this video]].
@@ -5365,6 +5487,15 @@ Bring [[https://nodejs.org/en/][node js]] to [[https://github.com/abicky/nodejs-
              nodejs-repl-load-file))
 #+END_SRC
 
+Managing node versions with [[https://github.com/rejeep/nvm.el][nvm.el]].
+
+#+BEGIN_SRC emacs-lisp
+(use-package nvm
+  :ensure t
+  :commands (nvm-use
+             nvm-use-for))
+#+END_SRC
+
 *** Snatch JSON
 
 Get the path to JSON element [[https://github.com/Sterlingg/json-snatcher][in Emacs]].
@@ -5672,6 +5803,21 @@ Whenever I run ~compile~, the buffer stays even after a successful compilation. 
                              (select-window (get-buffer-window (get-buffer-create "*compilation*")))
                              (switch-to-buffer nil)))
               (message "No Compilation Errors!")))))
+#+END_SRC
+
+*** Quickrun
+
+[[https://github.com/syohex/emacs-quickrun][This package]] helps you quickly run little pieces of code.
+
+#+BEGIN_SRC emacs-lisp
+(use-package quickrun
+  :ensure t
+  :commands (quickrun
+             quickrun-region
+             quickrun-with-arg
+             quickrun-shell
+             quickrun-compile-only
+             quickrun-replace-region))
 #+END_SRC
 
 ** Debugging
@@ -6076,6 +6222,46 @@ Which key modal explanation
 (which-key-add-key-based-replacements
   "c j" "javscript code"
   "c w" "web code")
+#+END_SRC
+
+*** Quickrun
+
+This is for [[*Quickrun][Quickrun]] functionality.
+
+#+BEGIN_SRC emacs-lisp
+(defhydra sk/hydra-quickrun (:color blue
+                             :hint nil)
+  "
+ _s_: quickrun     _a_: with arg    _c_: compile only       _q_: quit
+ _r_: run region   _S_: shell       _R_: replace region
+"
+  ("s" quickrun)
+  ("r" quickrun-region)
+  ("a" quickrun-with-arg)
+  ("S" quickrun-shell)
+  ("c" quickrun-compile-only)
+  ("R" quickrun-replace-region)
+  ("q" nil :color blue))
+#+END_SRC
+
+**** Key binding
+
+#+BEGIN_SRC emacs-lisp
+(bind-keys*
+  ("C-z c q" . sk/hydra-quickrun/body))
+#+END_SRC
+
+***** Modal binding
+
+#+BEGIN_SRC emacs-lisp
+(modalka-define-kbd "c q" "C-z c q")
+#+END_SRC
+
+Which key modal explanation
+
+#+BEGIN_SRC emacs-lisp
+(which-key-add-key-based-replacements
+  "c q" "quickrun code")
 #+END_SRC
 
 *** Debugging

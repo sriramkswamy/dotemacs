@@ -6699,7 +6699,7 @@ This section documents the key bindings that help to find other key-bindings. No
 | g r                   | C-z g r             | remove all highlighted symbols            |
 | g j                   | C-z g j             | find next like this                       |
 | g k                   | C-z g k             | find previous like this                   |
-| *                     | C-z *               | [[*Swoop][search for all words in cursor]]            |
+| *                     | C-z *               | [[*Highlight symbol][search for word under cursor]]              |
 | w                     | C-z w               | [[*Window navigation][Window navigation hydra]]                   |
 | g w                   | C-x 3               | split window vertically                   |
 | g W                   | C-x 2               | split window horizontally                 |

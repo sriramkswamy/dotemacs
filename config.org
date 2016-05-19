@@ -616,9 +616,12 @@ There are some pretty nice default functions that are unbound. I use the =bind-k
   ("C-z g u" . downcase-region)
   ("C-z g U" . upcase-region)
   ("C-z g C" . capitalize-region)
+  ("C-z g O" . occur-edit-mode)
   ("C-z R"   . overwrite-mode)
   ("C-z ."   . repeat)
   ("C-z V"   . rectangle-mark-mode)
+  ("C-z g j" . doc-view-next-page)
+  ("C-z g k" . doc-view-previous-page)
   ("C-z : t" . emacs-init-time)
   ("C-z g q" . fill-paragraph))
 #+END_SRC
@@ -793,6 +796,7 @@ This is based on Vi-style but only slightly and uses the default movement keys i
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "g g" "M-<")
 (modalka-define-kbd "g o" "C-x C-e")
+(modalka-define-kbd "g O" "C-z g O")
 (modalka-define-kbd "g m" "C-z g m")
 (modalka-define-kbd "g M" "C-z g M")
 (modalka-define-kbd "g n" "C-z g n")
@@ -801,6 +805,8 @@ This is based on Vi-style but only slightly and uses the default movement keys i
 (modalka-define-kbd "g u" "C-z g u")
 (modalka-define-kbd "g U" "C-z g U")
 (modalka-define-kbd "g C" "C-z g C")
+(modalka-define-kbd "g j" "C-z g j")
+(modalka-define-kbd "g k" "C-z g k")
 (modalka-define-kbd "g q" "C-z g q")
 (modalka-define-kbd "g w" "C-x 3")
 (modalka-define-kbd "g W" "C-x 2")
@@ -848,7 +854,6 @@ This is based on Vi-style but only slightly and uses the default movement keys i
 (modalka-define-kbd "SPC SPC" "C-s")
 (modalka-define-kbd "SPC f" "C-x C-f")
 (modalka-define-kbd "SPC w" "C-x C-s")
-(modalka-define-kbd "SPC i" "C-c C-e")
 (modalka-define-kbd "SPC h" "C-c C-w")
 (modalka-define-kbd "SPC o" "C-c C-k")
 (modalka-define-kbd "SPC g" "C-c C-f")
@@ -942,7 +947,10 @@ I have added the which key explanations for everything at once because it is eas
   "g M" "delete frame"
   "g n" "select frame by name"
   "g N" "name frame"
+  "g j" "next pdf page"
+  "g k" "previous pdf page"
   "g f" "file/url at cursor"
+  "g O" "edit all instances"
   "g o" "eval elisp"
   "g w" "vertical split win"
   "g W" "horizontal split win"
@@ -1001,7 +1009,6 @@ I have added the which key explanations for everything at once because it is eas
   "SPC w" "save buffer"
   "SPC c" "load theme"
   "SPC q" "quit window"
-  "SPC i" "edit results"
   "SPC h" "org refile"
   "SPC o" "over/abort"
   "SPC g" "follow"
@@ -1122,10 +1129,9 @@ Which key modal explanation
 #+BEGIN_SRC emacs-lisp
 (use-package highlight-symbol
   :ensure t
-  :bind* (("C-z #" . highlight-symbol)
-          ("C-z g r" . highlight-symbol-remove-all)
-          ("C-z g j" . highlight-symbol-next)
-          ("C-z g k" . highlight-symbol-prev))
+  :bind* (("C-z *" . highlight-symbol)
+          ("C-z #" . highlight-symbol-occur)
+          ("C-z g r" . highlight-symbol-remove-all))
   :config
   (highlight-symbol-nav-mode))
 #+END_SRC
@@ -1133,20 +1139,18 @@ Which key modal explanation
 *** Modal binding
 
 #+BEGIN_SRC emacs-lisp
+(modalka-define-kbd "*" "C-z *")
 (modalka-define-kbd "#" "C-z #")
 (modalka-define-kbd "g r" "C-z g r")
-(modalka-define-kbd "g j" "C-z g j")
-(modalka-define-kbd "g k" "C-z g k")
 #+END_SRC
 
 Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "#" "highlight symbol"
-  "g r" "remove highlight"
-  "g j" "next highlight"
-  "g k" "previous highlight")
+  "*" "highlight symbol"
+  "#" "list all highlights"
+  "g r" "remove highlight")
 #+END_SRC
 
 ** Projectile
@@ -1178,29 +1182,6 @@ Which key modal explanation
 (which-key-add-key-based-replacements
   "SPC d" "project files"
   "SPC TAB" "alternate file")
-#+END_SRC
-
-** Swoop
-
-[[https://github.com/ShingoFukuyama/emacs-swoop][Swoop]] describes itself as a "peculiar navigation in Emacs". But it is similar, on the outset, to the Vim functionality of the '*' command. It takes the word or symbol at point and searches for matches across the buffer for the some. However, swoop goes one step higher and allows you to edit all of those at once. It's a pretty useful package.
-
-#+BEGIN_SRC emacs-lisp
-(use-package swoop
-  :ensure t
-  :bind* (("C-z *" . swoop)))
-#+END_SRC
-
-*** Modal binding
-
-#+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "*" "C-z *")
-#+END_SRC
-
-Which key modal explanation
-
-#+BEGIN_SRC emacs-lisp
-(which-key-add-key-based-replacements
-  "*" "search current word")
 #+END_SRC
 
 ** Project wide search and replace
@@ -2553,13 +2534,6 @@ The built-in command for open-line (triggered by =C-o=) is weird. I prefer Vi st
   (newline)
   (forward-line -1)
   (indent-according-to-mode))
-;; Open line below
-(defun sk/open-line-below ()
-  "Insert a newline below the current line and put point at beginning."
-  (interactive)
-  (end-of-line)
-  (newline)
-  (indent-for-tab-command))
 #+END_SRC
 
 **** Key binding
@@ -2568,23 +2542,20 @@ This is also one of the few cases where I bind a function to the defaults. I fee
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys
-  ("C-o" . sk/open-line-above)
-  ("C-S-o" . sk/open-line-below))
+  ("C-o" . sk/open-line-above))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "O" "C-o")
-(modalka-define-kbd "g O" "C-S-o")
 #+END_SRC
 
 Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "O" "open line above"
-  "g O" "open line below")
+  "O" "open line above")
 #+END_SRC
 
 *** Join line
@@ -6342,7 +6313,7 @@ All of these are a part of [[https://github.com/abo-abo/swiper][the excellent sw
     :ensure t
     :commands (spotlight
                spotlight-fast)
-    :bind* (("C-z SPC t" . spotlight)))
+    :bind* (("C-z SPC i" . spotlight)))
   ;; Add counsel to the mix
   (use-package counsel
     :ensure t
@@ -6352,7 +6323,7 @@ All of these are a part of [[https://github.com/abo-abo/swiper][the excellent sw
     :bind (("C-x 8" . counsel-unicode-char)
            ("C-s" . counsel-grep-or-swiper))
     :bind* (("C-z t" . counsel-imenu)
-            ("C-z SPC y" . counsel-locate)
+            ("C-z SPC I" . counsel-locate)
             ("C-z g s" . counsel-pt))
     :diminish counsel-mode
     :config
@@ -6393,8 +6364,8 @@ All of these are a part of [[https://github.com/abo-abo/swiper][the excellent sw
 (modalka-define-kbd "t" "C-z t")
 (modalka-define-kbd "g s" "C-z g s")
 (modalka-define-kbd "SPC r" "C-z SPC r")
-(modalka-define-kbd "SPC y" "C-z SPC y")
-(modalka-define-kbd "SPC t" "C-z SPC t")
+(modalka-define-kbd "SPC I" "C-z SPC I")
+(modalka-define-kbd "SPC i" "C-z SPC i")
 (modalka-define-kbd "SPC b" "C-z SPC b")
 #+END_SRC
 
@@ -6406,8 +6377,8 @@ Which key modal explanation
   "t" "tags/func in buffer"
   "g s" "search project"
   "SPC r" "recent files"
-  "SPC y" "locate"
-  "SPC t" "spotlight"
+  "SPC I" "locate"
+  "SPC i" "spotlight"
   "SPC p" "switch projects"
   "SPC b" "bibliography")
 #+END_SRC

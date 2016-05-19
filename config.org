@@ -3277,18 +3277,6 @@ Of course we need color themes. I like the [[https://github.com/purcell/color-th
   (spaceline-spacemacs-theme))
 #+END_SRC
 
-** Better buffer name
-
-[[https://github.com/proofit404/relative-buffers][Relative buffers]] is a package that displays a better path for the buffer in the modeline
-
-#+BEGIN_SRC emacs-lisp
-(use-package relative-buffers
-  :ensure t
-  :demand t
-  :config
-  (global-relative-buffers-mode))
-#+END_SRC
-
 ** Fancy battery status
 
 I'm on Emacs full screen most of the day and battery status would sure be helpful. While, Emacs has a built-in =display-battery-mode= but why not go [[https://github.com/lunaryorn/fancy-battery.el][fancy]].
@@ -5150,6 +5138,14 @@ Emacs has provisions for a macro and [[https://github.com/joddie/macrostep][this
 
 I use C++ a lot while programming and this section tries to convert Emacs into a good environment for coding in C++. For a good introduction, [[https://www.youtube.com/watch?v=5FQwQ0QWBTU][take a look at this video]].
 
+*** Consider header files to be C++
+
+I usually don't code in C that much. Therefore, let's make sure Emacs considers ".h" files as C++ header files.
+
+#+BEGIN_SRC emacs-lisp
+(add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
+#+END_SRC
+
 *** Compile commands
 
 The [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Compilation.html][compile command]] bundled with Emacs is super useful. I have defined a few functions that help me compile things quickly.
@@ -6405,6 +6401,7 @@ All of these are a part of [[https://github.com/abo-abo/swiper][the excellent sw
 (modalka-define-kbd "SPC r" "C-z SPC r")
 (modalka-define-kbd "SPC I" "C-z SPC I")
 (modalka-define-kbd "SPC i" "C-z SPC i")
+(modalka-define-kbd "SPC p" "C-z SPC p")
 (modalka-define-kbd "SPC b" "C-z SPC b")
 #+END_SRC
 

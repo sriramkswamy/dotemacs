@@ -3641,7 +3641,7 @@ Org mode has a [[http://orgmode.org/manual/Tags.html][tagging system]] that is v
 (setq org-tag-alist (quote (("article" . ?a) ;; temporary
                             ("books" . ?b)
                             ("courses" . ?c) ;; temporary
-                            ("coding" . ?C)
+                            ("code" . ?C)
                             ("card" . ?d)
                             ("drill" . ?D)
                             ("errand" . ?e)
@@ -3704,6 +3704,17 @@ Capture is an [[https://www.youtube.com/watch?v=KdcXu_RdKI0][amazing tool]]. It 
 
 #+BEGIN_SRC emacs-lisp
 (setq org-capture-templates '(
+
+        ;; For code snippets
+        ("a"               ; key
+         "Algo/Code"       ; name
+         entry             ; type
+         (file+headline "~/Dropbox/org/notes.org" "Code")  ; target
+         "* %^{TITLE} %(org-set-tags)  :code:\n:PROPERTIES:\n:Created: %U\n:END:\n%i\#+BEGIN_SRC %^{language}\n%?\n\#END_SRC"  ; template
+         :prepend t        ; properties
+         :empty-lines 1    ; properties
+         :created t        ; properties
+         :kill-buffer t)   ; properties
 
         ;; For taking notes on random things
         ("n"               ; key
@@ -3894,11 +3905,10 @@ Finally, we make sure we bind some keys and add some [[http://orgmode.org/manual
           ("C-z o e" . org-export-dispatch)
           ("C-z o u" . org-update-dblock)
           ("C-z o U" . org-update-all-dblocks)
-          ("C-z o F" . org-footnote)
+          ("C-z o O" . org-footnote)
           ("C-z o ]" . org-narrow-to-subtree)
           ("C-z o [" . widen)
           ("C-z o N" . org-note)
-          ("C-z o F" . org-attach)
           ("C-z o E" . org-set-effort)
           ("C-z o B" . org-table-blank-field)
           ("C-z o <" . org-date-from-calendar)
@@ -3970,11 +3980,10 @@ Finally, we make sure we bind some keys and add some [[http://orgmode.org/manual
 (modalka-define-kbd "o e" "C-z o e")
 (modalka-define-kbd "o u" "C-z o u")
 (modalka-define-kbd "o U" "C-z o U")
-(modalka-define-kbd "o F" "C-z o F")
+(modalka-define-kbd "o O" "C-z o O")
 (modalka-define-kbd "o ]" "C-z o ]")
 (modalka-define-kbd "o [" "C-z o [")
 (modalka-define-kbd "o N" "C-z o N")
-(modalka-define-kbd "o F" "C-z o F")
 (modalka-define-kbd "o E" "C-z o E")
 (modalka-define-kbd "o B" "C-z o B")
 (modalka-define-kbd "o <" "C-z o <")
@@ -4011,7 +4020,7 @@ Which key modal explanation
   "o e" "org export"
   "o u" "org update current"
   "o U" "org update all"
-  "o F" "org footnote"
+  "o O" "org footnote"
   "o ]" "org narrow subtree"
   "o [" "org widen"
   "o N" "org note"
@@ -4076,25 +4085,57 @@ Which key modal explanation
 (use-package deft
   :ensure t
   :commands (deft)
-  :bind* (("C-z o f" . deft))
   :init
   (setq deft-extensions '("org")
         deft-recursive nil
-        deft-use-filename-as-title t
-        deft-directory "~/Dropbox/org"))
+        deft-use-filename-as-title t))
 #+END_SRC
 
-*** Modal binding
+If you notice, there is no directory specified. This is because I usually want deft to search different directories when invoked differently. So, let's add a wrapper function [[http://pragmaticemacs.com/emacs/deft-as-a-file-search-tool/][similar to the post in pragmatic emacs blog]]. The function below wraps around deft and sets the directory when called with an argument.
+
+#+BEGIN_SRC emacs-lisp
+(defun sk/deft (dir)
+  "Run deft in directory DIR"
+  (setq deft-directory dir)
+  (switch-to-buffer "*Deft*")
+  (kill-this-buffer)
+  (deft))
+#+END_SRC
+
+Let's define a couple of functions that use this wrapper function.
+
+#+BEGIN_SRC emacs-lisp
+(defun sk/deft-org ()
+  "Uses the sk/deft function to search in the default org directory"
+  (interactive)
+  (sk/deft "~/Dropbox/org"))
+(defun sk/deft-blog ()
+  "Uses the sk/deft function to search in the blog posts directory"
+  (interactive)
+  (sk/deft "~/Dropbox/org/blogposts/posts"))
+#+END_SRC
+
+*** Key binding
+
+#+BEGIN_SRC emacs-lisp
+(bind-keys*
+  ("C-z o f" . sk/deft-org)
+  ("C-z o F" . sk/deft-blog))
+#+END_SRC
+
+**** Modal binding
 
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "o f" "C-z o f")
+(modalka-define-kbd "o F" "C-z o F")
 #+END_SRC
 
 Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "o f" "filter org files")
+  "o f" "filter org files"
+  "o F" "filter blog posts")
 #+END_SRC
 
 ** Interleave

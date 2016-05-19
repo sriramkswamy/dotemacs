@@ -5,8 +5,6 @@
 #+LATEX_HEADER: \usepackage[margin=2cm]{geometry}
 #+EXCLUDE_TAGS: noexport
 
-This is my [[https://www.gnu.org/software/emacs/][Emacs]] configuration file. My entire Emacs configuration file is actually just an org file. At first, I was against this idea but it felt like the easiest way to document all the packages and the features was to just use an Org file and with more people using it successfully ([[http://pages.sachachua.com/.emacs.d/Sacha.html][1]], [[https://ogbe.net/emacsconfig.html][2]], [[https://github.com/wasamasa/dotemacs][3]], [[https://github.com/hrs/dotfiles/tree/master/emacs.d][4]]), I have been thinking about it for a while. The final push was a couple of videos ([[https://www.youtube.com/watch?v=VIuOwIBL-ZU][1]] and [[https://www.youtube.com/watch?v=gRb3bq0NiXY][2]]). I realized that by doing this, I can have easy documentation for me to understand later. Note that this is a pretty big file and I'm an amateur at Emacs Lisp (for now). Here goes...
-
 * Basics
 
 My configuration is modal in nature. The best example of a modal editor is [[https://en.wikipedia.org/wiki/Vim_(text_editor)][Vim]]. In fact, I use Vim every now and then and was a Vim user for almost 4 years before I switched to Emacs (primarily because of [[http://orgmode.org][Org mode]]). I like modal editing as a concept and have set it up that way. That's probably the most important thing about this configuration. This is better explained under the section - [[*Modal states][Modal states]].

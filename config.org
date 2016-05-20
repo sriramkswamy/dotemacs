@@ -152,9 +152,9 @@ Emacs has a different GUI implementation to that of its terminal implementation 
 
 #+BEGIN_SRC emacs-lisp
   (when window-system
-    (tool-bar-mode -1)
-    (scroll-bar-mode -1)
-    (tooltip-mode -1))
+    (tool-bar-mode 0)
+    (scroll-bar-mode 0)
+    (tooltip-mode 0))
 #+END_SRC
 
 *** Set the initial frame size
@@ -2222,6 +2222,76 @@ Which key modal explanation
 #+END_SRC
 
 ** Custom functions
+
+*** Align blocks
+
+Emacs has the built-in command =align-regexp= to align via regular expression. However, [[http://pragmaticemacs.com/emacs/aligning-text/][it is not very straightforward]], especially since I don't know Emacs regular expressions. Hence, let's use some wrapper functions
+
+#+BEGIN_SRC emacs-lisp
+(defun sk/align-whitespace (start end)
+  "Align columns by whitespace"
+  (interactive "r")
+  (align-regexp start end
+                "\\(\\s-*\\)\\s-" 1 0 t))
+
+(defun sk/align-ampersand (start end)
+  "Align columns by ampersand"
+  (interactive "r")
+  (align-regexp start end
+                "\\(\\s-*\\)&" 1 1 t))
+
+(defun sk/align-equals (start end)
+  "Align columns by equals sign"
+  (interactive "r")
+  (align-regexp start end
+                "\\(\\s-*\\)=" 1 0 t))
+
+(defun sk/align-colon (start end)
+  "Align columns by equals sign"
+  (interactive "r")
+  (align-regexp start end
+                "\\(\\s-*\\):" 1 0 t))
+#+END_SRC
+
+**** Key binding
+
+#+BEGIN_SRC emacs-lisp
+(bind-keys*
+  ("C-z g A SPC" . sk/align-whitespace)
+  ("C-z g A &" . sk/align-ampersand)
+  ("C-z g A =" . sk/align-equals)
+  ("C-z g A :" . sk/align-colon)
+  ("C-z g A A" . align-regexp))
+#+END_SRC
+
+Which key binding explanation
+
+#+BEGIN_SRC emacs-lisp
+(which-key-add-key-based-replacements
+  "C-z g A" "align prefix")
+#+END_SRC
+
+***** Modal binding
+
+#+BEGIN_SRC emacs-lisp
+(modalka-define-kbd "g A SPC" "C-z g A SPC")
+(modalka-define-kbd "g A &" "C-z g A &")
+(modalka-define-kbd "g A =" "C-z g A =")
+(modalka-define-kbd "g A :" "C-z g A :")
+(modalka-define-kbd "g A A" "C-z g A A")
+#+END_SRC
+
+Which key modal explanation
+
+#+BEGIN_SRC emacs-lisp
+(which-key-add-key-based-replacements
+  "g A" "align prefix"
+  "g A SPC" "align based on spaces"
+  "g A &" "align based on &"
+  "g A =" "align based on ="
+  "g A :" "align based on :"
+  "g A A" "align based on regex")
+#+END_SRC
 
 *** Insert date or date and time
 

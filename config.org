@@ -118,7 +118,7 @@ Emacs has a built-in garbage collection mechanism (read [[https://medium.com/@yo
 
 ** Emacs Lisp
 
-Emacs Lisp is the name of the language Emacs we use to configure Emacs. Start with [[http://tonyballantyne.com/tech/1-beginning-emacs-lisp/][this article]] for a good introduction to the language and [[https://github.com/bbatsov/emacs-lisp-style-guide][this one]] for the style of Emacs Lisp.
+Emacs Lisp is the name of the language Emacs we use to configure Emacs. Start with [[http://tonyballantyne.com/tech/1-beginning-emacs-lisp/][this article]] for a good introduction to the language and [[https://github.com/bbatsov/emacs-lisp-style-guide][this one]] for the style of Emacs Lisp. [[http://emacs-doctor.com/learn-emacs-lisp-in-15-minutes.html][Learning Emacs Lisp in 15 minutes]] is a good introduction too. This can be further complemented by the [[https://www.gnu.org/software/emacs/manual/eintr.html][Introduction to Emacs Lisp]] and the [[https://www.gnu.org/software/emacs/manual/elisp.html][Emacs Lisp manual]].
 
 * Defaults
 
@@ -771,6 +771,8 @@ This is based on Vi-style but only slightly and uses the default movement keys i
 (modalka-define-kbd "J" "C-v")
 (modalka-define-kbd "K" "M-v")
 (modalka-define-kbd "M" "C-u")
+(modalka-define-kbd "(" "M-a")
+(modalka-define-kbd ")" "M-e")
 (modalka-define-kbd "I" "C-M-i")
 (modalka-define-kbd "d" "C-S-w")
 (modalka-define-kbd "H" "C-x <")
@@ -1742,7 +1744,7 @@ Not sure where I got this from. Most likely Magnar Sveen.
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "g B" "C-c v g B")
+(modalka-define-kbd "g B" "C-z g B")
 #+END_SRC
 
 Which key modal explanation
@@ -2134,24 +2136,47 @@ Which key modal explanation
 This a special mode, sort of modal state, that is triggered ONLY when some region is selected. To use these bindings, move OUT of modalka state and press them in Emacs state. I use it primarily for [[*Multiple cursors][multiple cursors]] but it can be configured to be used for anything. In the future, I'm planning to set up a little more Vim-ish setup by faking operators, etc in the normal mode while they can have separate meanings in =region-bindings= mode. Let's see.
 
 #+BEGIN_SRC emacs-lisp
-  (use-package region-bindings-mode
-    :ensure t
-    :demand t
-    :bind (:map region-bindings-mode-map
-                ("ma" . mc/mark-all-like-this)
-                ("mb" . mc/mark-previous-like-this)
-                ("mf" . mc/mark-next-like-this)
-                ("mS" . mc/skip-to-previous-like-this)
-                ("ms" . mc/skip-to-next-like-this)
-                ("mm" . mc/mark-more-like-this-extended)
-                ("me" . mc/edit-beginnings-of-lines)
-                ("mE" . mc/edit-ends-of-lines)
-                ("mn" . mc/insert-numbers)
-                ("ml" . mc/insert-letters)
-                ("md" . mc/mark-all-like-this-in-defun))
-    :diminish (region-bindings-mode . "ρ")
-    :config
-    (region-bindings-mode-enable))
+(use-package region-bindings-mode
+  :ensure t
+  :demand t
+  :bind (:map region-bindings-mode-map
+              ("ma" . mc/mark-all-like-this)
+              ("mb" . mc/mark-previous-like-this)
+              ("mf" . mc/mark-next-like-this)
+              ("mS" . mc/skip-to-previous-like-this)
+              ("ms" . mc/skip-to-next-like-this)
+              ("mm" . mc/mark-more-like-this-extended)
+              ("me" . mc/edit-beginnings-of-lines)
+              ("mE" . mc/edit-ends-of-lines)
+              ("mn" . mc/insert-numbers)
+              ("ml" . mc/insert-letters)
+              ("md" . mc/mark-all-like-this-in-defun))
+  :diminish (region-bindings-mode . "ρ")
+  :config
+  (region-bindings-mode-enable))
+#+END_SRC
+
+** Shrink white space
+
+[[https://github.com/jcpetkovich/shrink-whitespace.el][This package]] helps to reduce the number of blank lines/whitespace between words easily. Useful when deleting chunks of text and just want to make it neat.
+
+#+BEGIN_SRC emacs-lisp
+(use-package shrink-whitespace
+  :ensure t
+  :bind* (("C-z g SPC" . shrink-whitespace)))
+#+END_SRC
+
+*** Modal binding
+
+#+BEGIN_SRC emacs-lisp
+(modalka-define-kbd "g SPC" "C-z g SPC")
+#+END_SRC
+
+Which key modal explanation
+
+#+BEGIN_SRC emacs-lisp
+(which-key-add-key-based-replacements
+  "g SPC" "shrink space")
 #+END_SRC
 
 ** Visual replace
@@ -3385,20 +3410,20 @@ Emacs has a built-in =hide-show= mode but it isn't great. [[https://github.com/g
 (use-package origami
   :ensure t
   :commands (origami-toggle-node)
-  :bind* (("C-z |" . orgiami-toggle-node)))
+  :bind* (("C-z -" . orgiami-toggle-node)))
 #+END_SRC
 
 *** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "|" "C-z |")
+(modalka-define-kbd "-" "C-z -")
 #+END_SRC
 
 Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-    "|" "syntax-based fold toggle")
+    "-" "syntax-based fold toggle")
 #+END_SRC
 
 ** Vimish fold - Fold regions based on selection
@@ -3500,23 +3525,23 @@ Vimish fold has all these fancy features and I use it much more than Origami. Le
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z -" . vimish-fold-toggle)
-  ("C-z _" . sk/hydra-vimish-fold/body))
+  ("C-z _" . vimish-fold-toggle)
+  ("C-z |" . sk/hydra-vimish-fold/body))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "-" "C-z -")
 (modalka-define-kbd "_" "C-z _")
+(modalka-define-kbd "|" "C-z _")
 #+END_SRC
 
 Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "-" "sel-based fold toggle"
-  "_" "sel-based fold menu")
+  "_" "sel-based fold toggle"
+  "|" "sel-based fold menu")
 #+END_SRC
 
 * Writing
@@ -5496,26 +5521,11 @@ I haven't used [[https://www.nginx.com][nginx]] much but useful to have it.
 (use-package emmet-mode
   :ensure t
   :diminish (emmet-mode . "ε")
-  :bind* (("C-z )" . emmet-next-edit-point)
-          ("C-z (" . emmet-prev-edit-point))
+  :bind* (("C-)" . emmet-next-edit-point)
+          ("C-(" . emmet-prev-edit-point))
   :commands (emmet-mode
              emmet-next-edit-point
              emmet-prev-edit-point))
-#+END_SRC
-
-**** Modal binding
-
-#+BEGIN_SRC emacs-lisp
-(modalka-define-kbd ")" "C-z )")
-(modalka-define-kbd "(" "C-z (")
-#+END_SRC
-
-Which key modal explanation
-
-#+BEGIN_SRC emacs-lisp
-(which-key-add-key-based-replacements
-  ")" "emmet next cursor exp"
-  "(" "emmet prev cursor exp")
 #+END_SRC
 
 *** Render HTML pages real time

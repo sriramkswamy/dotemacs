@@ -5,10 +5,13 @@
       '(
 	ivy-alt-done
 	modalka-mode
+	org-cdlatex-underscore-caret
+	org-force-self-insert
+	org-self-insert-command
 	sk/smarter-move-beginning-of-line
 	sp-backward-delete-char
 	sp-backward-kill-word
-	org-self-insert-command
+	sp-delete-char
 	))
 
 (setq mc/cmds-to-run-once

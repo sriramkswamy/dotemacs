@@ -3,7 +3,6 @@
 
 #+OPTIONS: num:nil tags:nil todo:nil p:nil pri:nil stat:nil c:nil d:nil
 #+LATEX_HEADER: \usepackage[margin=2cm]{geometry}
-#+EXCLUDE_TAGS: noexport
 
 * Basics
 
@@ -2153,7 +2152,8 @@ This a special mode, sort of modal state, that is triggered ONLY when some regio
               ("md" . mc/mark-all-like-this-in-defun))
   :diminish (region-bindings-mode . "ρ")
   :config
-  (region-bindings-mode-enable))
+  (progn
+    (add-hook 'after-init-hook 'region-bindings-mode-enable)))
 #+END_SRC
 
 ** Shrink white space
@@ -3738,6 +3738,7 @@ Org mode has a [[http://orgmode.org/manual/Tags.html][tagging system]] that is v
                             ("personal" . ?p)
                             ("project" . ?P)
                             ("reference" . ?r) ;; temporary
+                            ("reveal" . ?R)
                             ("story" . ?s)
                             ("technical" . ?t)
                             ("vague" . ?v)
@@ -4012,10 +4013,11 @@ Finally, we make sure we bind some keys and add some [[http://orgmode.org/manual
   (add-to-list 'org-structure-template-alist '("N" "#+BEGIN_NOTES\n?\n#+END_NOTES"))
   (add-to-list 'org-structure-template-alist '("T" ":DRILL_CARD_TYPE: twosided"))
   (add-to-list 'org-structure-template-alist '("V" "#+BEGIN_VERSE\n?\n#+END_VERSE"))
+  (add-to-list 'org-structure-template-alist '("X" "#+EXCLUDE_TAGS: reveal?"))
   (add-to-list 'org-structure-template-alist '("a" "#+AUTHOR: ?"))
   (add-to-list 'org-structure-template-alist '("b" ":reveal_background_trans: ?"))
   (add-to-list 'org-structure-template-alist '("c" "#+CAPTION: ?"))
-  (add-to-list 'org-structure-template-alist '("d" "#+OPTIONS: toc:nil num:nil tags:nil todo:nil p:nil pri:nil stat:nil c:nil d:nil\n#+LATEX_HEADER: \\usepackage[margin=2cm]{geometry}\n#+EXCLUDE_TAGS: noexport\n"))
+  (add-to-list 'org-structure-template-alist '("d" "#+OPTIONS: toc:nil num:nil tags:nil todo:nil p:nil pri:nil stat:nil c:nil d:nil\n#+LATEX_HEADER: \\usepackage[margin=2cm]{geometry}\n"))
   (add-to-list 'org-structure-template-alist '("e" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC"))
   (add-to-list 'org-structure-template-alist '("f" "#+ATTR_REVEAL: :frag ?"))
   (add-to-list 'org-structure-template-alist '("h" "#+BEGIN_HTML\n?\n#+END_HTML\n"))
@@ -4030,6 +4032,7 @@ Finally, we make sure we bind some keys and add some [[http://orgmode.org/manual
   (add-to-list 'org-structure-template-alist '("s" "#+BEGIN_SRC ?\n#+END_SRC\n"))
   (add-to-list 'org-structure-template-alist '("t" "#+TITLE: ?"))
   (add-to-list 'org-structure-template-alist '("v" "#+BEGIN_VERBATIM\n?\n#+END_VERBATIM")))
+  (add-to-list 'org-structure-template-alist '("x" "#+SELECT_TAGS: reveal?"))
 #+END_SRC
 
 *** Which key binding explanation
@@ -4267,7 +4270,7 @@ I also want to diminish it so that it doesn't show up on the modeline.
 
 ** Org extra exports
 
-Org already has a pretty good [[*Exporting][exporting system]] but we can make it better. It can export to a [[https://github.com/yjwen/org-reveal][a reveal.js presentation]] or a HTML page with [[https://github.com/marsmining/ox-twbs][bootstrap]].
+Org already has a pretty good [[*Exporting][exporting system]] but we can make it better. It can export to a [[https://github.com/yjwen/org-reveal][a reveal.js presentation]] or a HTML page with [[https://github.com/marsmining/ox-twbs][bootstrap]]. I write my Org file as a notes file most of the time and hence exporting it directly into a presentation would look horrible. Therefore, I have created a couple of template expansions =<x= and =<X= which export only headlines tagged as "reveal" and ignore all headlines tagged as "reveal" respectively. When none of the template expansions are used, the use of tags mean nothing as they won't interfere with anything. However, when one of them is used, you can export the headlines tailor made to be a PPT or export the ones tailor made to be a notes file. Sweet!
 
 #+BEGIN_SRC emacs-lisp
 (use-package ox-reveal
@@ -4814,8 +4817,8 @@ Then, we have the actual hydra.
  _a_: author        _i_: interleave  _C_: center      _m_: matlab src    _V_: verse      _r_: properties        _<_: insert '<'
  _A_: date          _l_: label       _D_: dir tree    _p_: python src    _d_: defaults   _I_: interleave        _q_: quit
  _c_: caption       _n_: name        _e_: elisp src   _Q_: quote         _L_: latex      _T_: drill two-sided
- _f_: reveal frag   _o_: options     _E_: example     _s_: src                         _b_: reveal trans
- _H_: latex header  _t_: title       _h_: html        _v_: verbatim
+ _f_: reveal frag   _o_: options     _E_: example     _s_: src           _x_: export     _b_: reveal trans
+ _H_: latex header  _t_: title       _h_: html        _v_: verbatim      _X_: noexport
  "
   ("a" (hot-expand "<a"))
   ("A" (hot-expand "<A"))
@@ -4839,6 +4842,8 @@ Then, we have the actual hydra.
   ("s" (hot-expand "<s"))
   ("v" (hot-expand "<v"))
   ("V" (hot-expand "<V"))
+  ("x" (hot-expand "<x"))
+  ("X" (hot-expand "<X"))
   ("d" (hot-expand "<d"))
   ("L" (hot-expand "<L"))
   ("r" (hot-expand "<r"))

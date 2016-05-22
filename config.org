@@ -5211,7 +5211,8 @@ Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "c b" "background process")
+  "c" "code prefix"
+  "c b" "background code")
 #+END_SRC
 
 ** Emacs Lisp

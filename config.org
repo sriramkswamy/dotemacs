@@ -7157,8 +7157,7 @@ This section documents the key bindings that help to find other key-bindings. No
 | SPC p                 | C-z SPC p           | switch between projects                   |
 | SPC d                 | C-z SPC d           | find files in project based on [[*Projectile][Projectile]] |
 | SPC r                 | C-z SPC r           | [[*Ivy, Counsel and Swiper][recent files]]                              |
-| SPC t                 | C-z SPC t           | [[*Ivy, Counsel and Swiper][spotlight search]]                          |
-| SPC y                 | C-z SPC y           | [[*Ivy, Counsel and Swiper][locate]]                                    |
+| SPC i                 | C-z SPC t           | [[*Ivy, Counsel and Swiper][spotlight search]]                          |
 | SPC n                 | C-z SPC n           | [[*Neotree][directory navigation]]                      |
 | Z                     | C-z Z               | zoom in to the current window             |
 | SPC q                 | C-x 0               | close current window                      |

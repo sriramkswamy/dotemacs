@@ -615,7 +615,6 @@ There are some pretty nice default functions that are unbound. I use the =bind-k
   ("C-z g u" . downcase-region)
   ("C-z g U" . upcase-region)
   ("C-z g C" . capitalize-region)
-  ("C-z g O" . occur-edit-mode)
   ("C-z R"   . overwrite-mode)
   ("C-z ."   . repeat)
   ("C-z V"   . rectangle-mark-mode)
@@ -798,7 +797,6 @@ This is based on Vi-style but only slightly and uses the default movement keys i
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "g g" "M-<")
 (modalka-define-kbd "g o" "C-x C-e")
-(modalka-define-kbd "g O" "C-z g O")
 (modalka-define-kbd "g m" "C-z g m")
 (modalka-define-kbd "g M" "C-z g M")
 (modalka-define-kbd "g n" "C-z g n")
@@ -855,7 +853,6 @@ This is based on Vi-style but only slightly and uses the default movement keys i
 (modalka-define-kbd "SPC SPC" "C-s")
 (modalka-define-kbd "SPC f" "C-x C-f")
 (modalka-define-kbd "SPC w" "C-x C-s")
-(modalka-define-kbd "SPC h" "C-c C-w")
 (modalka-define-kbd "SPC o" "C-c C-k")
 (modalka-define-kbd "SPC c" "C-z SPC c")
 (modalka-define-kbd "SPC ?" "C-z SPC ?")
@@ -951,7 +948,6 @@ I have added the which key explanations for everything at once because it is eas
   "g j" "next pdf page"
   "g k" "previous pdf page"
   "g f" "file/url at cursor"
-  "g O" "edit all instances"
   "g o" "eval elisp"
   "g w" "vertical split win"
   "g W" "horizontal split win"
@@ -1010,7 +1006,6 @@ I have added the which key explanations for everything at once because it is eas
   "SPC w" "save buffer"
   "SPC c" "load theme"
   "SPC q" "quit window"
-  "SPC h" "org refile"
   "SPC o" "org abort"
   "SPC SPC" "search")
 #+END_SRC
@@ -1200,47 +1195,6 @@ Which key modal explanation
 (which-key-add-key-based-replacements
   "SPC d" "project files"
   "SPC TAB" "alternate file")
-#+END_SRC
-
-** Project wide search and replace
-
-[[http://www.gnu.org/software/grep/manual/grep.html][grep]] and [[https://github.com/mhayashi1120/Emacs-wgrep][wgrep]] are the two standard programs to do a project wide search and replace. However, grep is pretty slow. I utilize faster alternatives like [[https://github.com/ggreer/the_silver_searcher][the silver searcher]] or [[https://github.com/monochromegane/the_platinum_searcher][the platinum searcher]] and therefore use their corresponding write-able grep versions.
-
-#+BEGIN_SRC emacs-lisp
-;; the silver searcher
-(use-package ag
-  :ensure t
-  :bind* (("C-z g e" . ag-regexp))
-  :config
-  (use-package wgrep-ag
-    :ensure t
-    :bind* (("C-z g E" . wgrep-change-to-wgrep-mode))))
-
-;; the platinum searcher
-(use-package pt
-  :ensure t
-  :commands (pt-regexp)
-  :bind* (("C-z g e" . pt-regexp))
-  :config
-  (use-package wgrep-pt
-    :ensure t
-    :commands (wgrep-change-to-wgrep-mode)
-    :bind* (("C-z g E" . wgrep-change-to-wgrep-mode))))
-#+END_SRC
-
-*** Modal binding
-
-#+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "g e" "C-z g e")
-(modalka-define-kbd "g E" "C-z g E")
-#+END_SRC
-
-Which key modal explanation
-
-#+BEGIN_SRC emacs-lisp
-(which-key-add-key-based-replacements
-  "g e" "extract word in proj"
-  "g E" "writable mode on")
 #+END_SRC
 
 ** Ztree
@@ -6450,7 +6404,7 @@ Which key modal explanation
 
 I am still on the fence about helm and [[http://oremacs.com/2015/04/16/ivy-mode/][ivy]] but [[*Org reference][org-ref]] requires this package. Since I have to install it anyway, I might as well make it a little better to suit my needs. Also, helm, for now, has many more features such as multiple sources, multiple selection, etc. It also has many plugins that take advantage of these features. I find ivy much simpler and I like it. Here, I have taken the help of [[https://github.com/hatschipuh/helm-better-defaults][this article]] to make it a little more usable (for me). Note that helm already has nice integration with [[*Mode line][spaceline]] and this configuration adds (and requires) support for [[*Flx][Flx]] and [[*Smex][Smex]].
 
-For now, I have made it look and act the way I want it too. The additional packages also help significantly. Therefore, I'm going to stick with Helm for now. This is a huge configuration.
+For now, I have made it look and act the way I want it too. The additional packages also help significantly. Therefore, I'm going to stick with Helm for now. This is a huge configuration. It has tons of additional packages [[https://github.com/EphramPerdition/helm-fuzzier][that make helm act fuzzier]], [[https://github.com/PythonNut/helm-flx][improves Flx support]], [[https://github.com/syohex/emacs-helm-ag][adds project wide search and replace]], [[https://github.com/ShingoFukuyama/helm-swoop][adds buffer wide search and replace]], [[https://github.com/bbatsov/helm-projectile][integrates with projectile]], [[https://github.com/emacs-helm/helm-descbinds][searches through bindings]], [[https://github.com/istib/helm-aws][manages AWS instances]], [[https://github.com/lesharris/helm-circe][adds IRC support]], [[https://github.com/yasuyk/helm-flycheck][integrates with error checking]], [[https://github.com/pronobis/helm-flyspell][helps in correcting spelling mistakes]] and [[https://github.com/abo-abo/helm-make][selecting a Makefile target]].
 
 #+BEGIN_SRC emacs-lisp
 (use-package helm
@@ -6544,14 +6498,12 @@ For now, I have made it look and act the way I want it too. The additional packa
                    collect (with-current-buffer (window-buffer w)
                              (cons (buffer-name) mode-line-format)))))
 
-
   (defun bottom-buffers-hide-mode-line ()
     (setq-default cursor-in-non-selected-windows nil)
     (mapc (lambda (elt)
             (with-current-buffer (car elt)
               (setq-local mode-line-format nil)))
           bottom-buffers))
-
 
   (defun bottom-buffers-show-mode-line ()
     (setq-default cursor-in-non-selected-windows t)
@@ -6565,7 +6517,6 @@ For now, I have made it look and act the way I want it too. The additional packa
   (defun helm-keyboard-quit-advice (orig-func &rest args)
     (bottom-buffers-show-mode-line)
     (apply orig-func args))
-
 
   (add-hook 'helm-before-initialize-hook #'bottom-buffers-init)
   (add-hook 'helm-after-initialize-hook #'bottom-buffers-hide-mode-line)
@@ -6595,7 +6546,6 @@ For now, I have made it look and act the way I want it too. The additional packa
                           :box nil
                           :height 0.1)))
 
-
   (add-hook 'helm-before-initialize-hook 'helm-toggle-header-line)
 
   ;; hide the minibuffer when helm is active
@@ -6624,26 +6574,6 @@ For now, I have made it look and act the way I want it too. The additional packa
 
   (advice-add 'helm-execute-persistent-action :around #'dwim-helm-find-files-navigate-forward)
 
-  ;; remove the dots in the file navigation
-  (require 'cl-lib)
-
-  (with-eval-after-load 'helm-files
-    (advice-add 'helm-ff-filter-candidate-one-by-one
-                :before-while 'no-dots-display-file-p))
-
-  (defvar no-dots-whitelist nil
-    "List of helm buffers in which to show dots.")
-
-  (defun no-dots-in-white-listed-helm-buffer-p ()
-    (member helm-buffer no-dots-whitelist))
-
-  (defun no-dots-display-file-p (file)
-    ;; in a whitelisted buffer display the file regardless of its name
-    (or (no-dots-in-white-listed-helm-buffer-p)
-        ;; not in a whitelisted buffer display all files
-        ;; which does not end with /. /..
-        (not (string-match "\\(?:/\\|\\`\\)\\.\\{1,2\\}\\'" file))))
-
   ;; Improve support for smex and flx
   (require 'smex)
   (require 'flx)
@@ -6653,12 +6583,10 @@ For now, I have made it look and act the way I want it too. The additional packa
   (defun helm-smex-items ()
     (smex-convert-for-ido smex-cache))
 
-
   (defun helm-smex-execute-command (command-name)
     (unwind-protect
         (execute-extended-command helm-current-prefix-arg command-name)
       (smex-rank (intern command-name))))
-
 
   (defvar helm-smex-source
     '((name . "smex")
@@ -6668,7 +6596,6 @@ For now, I have made it look and act the way I want it too. The additional packa
       (candidate-transformer . flx-helm-candidate-transformer)
       (action . (("execute command" . helm-smex-execute-command)
                  ("execute command with prefix" . helm-smex-execute-command-with-prefix)))))
-
 
   (defun flx-helm-candidate-transformer (candidates)
     "hairy but works"
@@ -6703,8 +6630,6 @@ For now, I have made it look and act the way I want it too. The additional packa
         (helm-smex-flx-highlight-and-format res)
         res)))
 
-
-
   (defun helm-smex-flx-highlight-and-format (res)
     (cl-loop for item in res
              for score = (cddr item)
@@ -6721,8 +6646,6 @@ For now, I have made it look and act the way I want it too. The additional packa
                  (setcar item (flx-propertize (car item) score)))
                (setcdr item (cadr item)))))
 
-
-
   (defun helm-smex/run (arg)
     (interactive "P")
     (if arg
@@ -6730,8 +6653,6 @@ For now, I have made it look and act the way I want it too. The additional packa
     (let ((helm--mode-line-display-prefarg t))
       (helm :sources 'helm-smex-source
             :buffer "*helm-smex*")))
-
-
 
   (defun helm-smex-execute-command-with-prefix (command-name)
     (unwind-protect
@@ -6763,13 +6684,16 @@ For now, I have made it look and act the way I want it too. The additional packa
   ;; to search in projects - the silver searcher
   (use-package helm-ag
     :ensure t
-    :bind* (("C-z g s" . helm-do-ag-project-root)))
+    :bind* (("C-z g s" . helm-do-ag-project-root)
+            ("C-z g e" . helm-do-ag)))
 
   ;; to search in files
   (use-package helm-swoop
     :ensure t
     :bind (("C-s" . helm-swoop-without-pre-input))
-    :bind* (("C-z #" . helm-swoop))
+    :bind* (("C-z #" . helm-swoop)
+            ("C-z g E" . helm-multi-swoop-all)
+            ("C-z g O" . helm-multi-swoop-org))
     :init
     (setq helm-swoop-split-with-multiple-windows nil
           helm-swoop-split-direction 'split-window-vertically
@@ -6785,7 +6709,42 @@ For now, I have made it look and act the way I want it too. The additional packa
   ;; to describe bindings
   (use-package helm-descbinds
     :ensure t
-    :bind* (("C-z SPC ?" . helm-descbinds))))
+    :bind* (("C-z SPC ?" . helm-descbinds)))
+
+  ;; Control AWS via helm
+  (use-package helm-aws
+    :ensure t
+    :bind* (("C-z SPC h w" . helm-aws)))
+
+  ;; Control circe with helm
+  (use-package helm-circe
+    :ensure t
+    :bind* (("C-z SPC h i" . helm-circe)
+            ("C-z SPC h I" . helm-circe-new-activity)))
+
+  ;; List errors with helm
+  (use-package helm-flycheck
+    :ensure t
+    :bind* (("C-z SPC l" . helm-flycheck)))
+
+  ;; Flyspell errors with helm
+  (use-package helm-flyspell
+    :ensure t
+    :bind* (("C-z SPC h s" . sk/helm-correct-word))
+    :config
+    (defun sk/helm-correct-word ()
+      (interactive)
+      (save-excursion
+        (sk/flyspell-goto-previous-error 1)
+        (helm-flyspell-correct))))
+
+  ;; Helm integration with ispell
+  (use-package helm-make
+    :ensure t
+    :init
+    (setq helm-make-build-directory "build")
+    :bind* (("C-z SPC h m" . helm-make-projectile)
+            ("C-z SPC h M" . helm-make))))
 #+END_SRC
 
 ** Modal binding
@@ -6794,7 +6753,10 @@ For now, I have made it look and act the way I want it too. The additional packa
 (modalka-define-kbd "B" "C-z B")
 (modalka-define-kbd "t" "C-z t")
 (modalka-define-kbd "#" "C-z #")
+(modalka-define-kbd "g E" "C-z g E")
+(modalka-define-kbd "g O" "C-z g O")
 (modalka-define-kbd "g s" "C-z g s")
+(modalka-define-kbd "g e" "C-z g e")
 (modalka-define-kbd "SPC t" "C-c C-e")
 (modalka-define-kbd "SPC g" "C-c C-f")
 (modalka-define-kbd "SPC r" "C-z SPC r")
@@ -6802,6 +6764,12 @@ For now, I have made it look and act the way I want it too. The additional packa
 (modalka-define-kbd "SPC i" "C-z SPC i")
 (modalka-define-kbd "SPC p" "C-z SPC p")
 (modalka-define-kbd "SPC b" "C-z SPC b")
+(modalka-define-kbd "SPC h w" "C-z SPC h w")
+(modalka-define-kbd "SPC h i" "C-z SPC h i")
+(modalka-define-kbd "SPC h I" "C-z SPC h I")
+(modalka-define-kbd "SPC h s" "C-z SPC h s")
+(modalka-define-kbd "SPC h m" "C-z SPC h m")
+(modalka-define-kbd "SPC h M" "C-z SPC h M")
 #+END_SRC
 
 Which key modal explanation
@@ -6811,14 +6779,24 @@ Which key modal explanation
   "B" "previous helm"
   "t" "tags/func in buffer"
   "#" "swoop at point"
+  "g E" "extract word from buffers"
+  "g O" "search all open org files"
   "g s" "search project"
+  "g e" "extract word from dir"
   "SPC r" "recent files"
   "SPC I" "information at point"
   "SPC i" "spotlight"
   "SPC p" "switch projects"
-  "SPC t" "swoop edit mode"
+  "SPC t" "helm edit mode"
   "SPC g" "helm follow"
-  "SPC b" "bibliography")
+  "SPC b" "bibliography"
+  "SPC h" "helm prefix"
+  "SPC h w" "AWS instances"
+  "SPC h i" "circe with helm"
+  "SPC h I" "circe new activity"
+  "SPC h s" "helm spelling"
+  "SPC h m" "make in project"
+  "SPC h M" "make in current dir")
 #+END_SRC
 
 ** Hydras
@@ -7266,7 +7244,6 @@ This section documents the key bindings that help to find other key-bindings. No
 | m S (region binding)  | C-z m S             | skip previous like this              |
 | \                     | C-c C-c             | simulate C-c C-c                     |
 | SPC w                 | C-x C-s             | save                                 |
-| SPC h                 | C-c C-w             | refile org                           |
 | SPC o                 | C-c C-k             | org abort                            |
 | SPC s                 | C-z SPC s           | [[*Visual replace][visual replace word in buffer/region]] |
 | S                     | C-z S               | [[*Snippets][snippet select]]                       |
@@ -7388,17 +7365,21 @@ This section documents the key bindings that help to find other key-bindings. No
 ** Helm
 
 #+NAME: helm
-| Modalka state binding | Emacs state binding | Function              |
-|-----------------------+---------------------+-----------------------|
-| B                     | C-z B               | helm resume           |
-| SPC i                 | C-z SPC i           | [[*Helm][spotlight search]]      |
-| SPC g                 | C-c C-f             | helm follow selection |
-| SPC t                 | C-c C-e             | helm swoop edit mode  |
-| SPC b                 | C-z SPC b           | helm bibtex           |
-| SPC y                 | C-z SPC y           | [[*Hydras][helm extra commands]]   |
-| SPC r                 | C-z SPC r           | recent files          |
-|                       |                     |                       |
-
+| Modalka state binding | Emacs state binding | Function                                |
+|-----------------------+---------------------+-----------------------------------------|
+| B                     | C-z B               | helm resume                             |
+| SPC i                 | C-z SPC i           | [[*Helm][spotlight search]]                        |
+| SPC g                 | C-c C-f             | helm follow selection                   |
+| SPC t                 | C-c C-e             | helm swoop edit mode                    |
+| SPC b                 | C-z SPC b           | helm bibtex                             |
+| SPC y                 | C-z SPC y           | [[*Hydras][helm extra commands]]                     |
+| SPC r                 | C-z SPC r           | recent files                            |
+| SPC h s               | C-z SPC h s         | helm correct spelling                   |
+| SPC h w               | C-z SPC h w         | manage [[https://aws.amazon.com/cli/][AWS via aws cli]]                  |
+| SPC h i               | C-z SPC h i         | manage [[*IRC][IRC]] buffers                      |
+| SPC h I               | C-z SPC h I         | checkout new IRC activity               |
+| SPC h m               | C-z SPC h m         | select a [[https://en.wikipedia.org/wiki/Makefile][Makefile]] target                |
+| SPC h M               | C-z SPC h M         | select a Makefile target in current dir |
 
 ** Fun
 

@@ -925,7 +925,7 @@ I have added the which key explanations for everything at once because it is eas
     "?" "top level bindings"
     "v" "start selection"
     "R" "overwrite mode"
-    "V" "start rectangle selection"
+    "V" "rectangle selection"
     "X" "exchange point and mark"
     "+" "set bookmark"
     "=" "indent region"

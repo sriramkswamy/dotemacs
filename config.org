@@ -6444,85 +6444,326 @@ Which key modal explanation
   "c d" "debug code")
 #+END_SRC
 
-* Ivy, Counsel and Swiper
+* Helm
 
-All of these are a part of [[https://github.com/abo-abo/swiper][the excellent swiper]] package. It changes the interface of Emacs and I love it.
+I am still on the fence about helm and [[*Ivy, Counsel and Swiper][ivy]] but [[*Org reference][org-ref]] requires this package. Since I have to install it anyway, I might as well make it a little better to suit my needs. Also, helm, for now, has many more features such as multiple sources, multiple selection, etc. It also has many plugins that take advantage of these features. I find ivy much simpler and I like it. Here, I have taken the help of [[https://github.com/hatschipuh/helm-better-defaults][this article]] to make it a little more usable (for me). Note that helm already has nice integration with [[*Mode line][spaceline]] and this configuration adds (and requires) support for [[*Flx][Flx]] and [[*Smex][Smex]].
+
+To use this instead of [[*Ivy][Ivy]], un-comment the ~:demand t~ line in the code below and ~:disable t~ line in the Ivy configuration. The transformation /should/ be seamless but I didn't test it much.
 
 #+BEGIN_SRC emacs-lisp
-(use-package ivy
+(use-package helm
   :ensure t
   :demand t
-  :init
-  (setq ivy-display-style 'fancy
-        ivy-initial-inputs-alist nil)
-  (setq ivy-re-builders-alist
-        '((t . ivy--regex-fuzzy)))
-  (setq completion-in-region-function 'ivy-completion-in-region)
-  :diminish ivy-mode
-  :bind (:map ivy-minibuffer-map
-              ("C-t" . ivy-toggle-fuzzy)
-              ("C-j" . ivy-done)
-              ("C-m" . ivy-alt-done)
-              ("C-S-m" . ivy-immediate-done)
-              ("C-i" . ivy-dispatching-done)
-              ("TAB" . ivy-dispatching-done))
-  :bind* (("C-z B" . ivy-resume)
-          ("C-z SPC r" . ivy-recentf))
+  :diminish helm-mode
+  :bind (("M-x" . helm-M-x)
+         ("M-y" . helm-show-kill-ring)
+         ("C-x C-f" . helm-find-files)
+         ("C-x 8" . helm-ucs))
+  :bind* (("C-z B" . helm-resume)
+          ("C-z SPC r" . helm-recentf)
+          ("C-z SPC i" . helm-locate)
+          ("C-z SPC I" . helm-info-at-point)
+          ("C-z t" . helm-semantic-or-imenu))
+  :bind (:map helm-map
+              ("<return>" . helm-maybe-exit-minibuffer)
+              ("RET" . helm-maybe-exit-minibuffer)
+              ("<tab>" . helm-select-action)
+              ("C-i" . helm-select-action)
+              ("S-<return>" . helm-maybe-exit-minibuffer)
+              ("S-RET" . helm-maybe-exit-minibuffer)
+              ("C-S-m" . helm-maybe-exit-minibuffer))
+  :bind (:map helm-find-files-map
+              ("<return>" . helm-execute-persistent-action)
+              ("RET" . helm-execute-persistent-action)
+              ("<backspace>" . dwim-helm-find-files-up-one-level-maybe)
+              ("DEL" . dwim-helm-find-files-up-one-level-maybe)
+              ("<tab>" . helm-select-action)
+              ("C-i" . helm-select-action)
+              ("S-<return>" . helm-maybe-exit-minibuffer)
+              ("S-RET" . helm-maybe-exit-minibuffer)
+              ("C-S-m" . helm-maybe-exit-minibuffer))
+  :bind (:map helm-read-file-map
+              ("<return>" . helm-execute-persistent-action)
+              ("RET" . helm-execute-persistent-action)
+              ("<backspace>" . dwim-helm-find-files-up-one-level-maybe)
+              ("DEL" . dwim-helm-find-files-up-one-level-maybe)
+              ("<tab>" . helm-select-action)
+              ("C-i" . helm-select-action)
+              ("S-<return>" . helm-maybe-exit-minibuffer)
+              ("S-RET" . helm-maybe-exit-minibuffer)
+              ("C-S-m" . helm-maybe-exit-minibuffer))
+  :commands (helm-mode
+             helm-M-x
+             helm-smex/run
+             helm-find-files
+             helm-buffers
+             helm-recentf)
   :config
-  (ivy-mode 1)
-  ;; Add swiper
-  (use-package swiper
+  ;; require basic config
+  (require 'helm-config)
+  (helm-mode 1)
+
+  ;; Fuzzy matching for everything
+  (setq helm-M-x-fuzzy-match t
+        helm-recentf-fuzzy-match t
+        helm-buffers-fuzzy-matching t
+        helm-locate-fuzzy-match nil
+        helm-mode-fuzzy-match t)
+
+  ;; set height and stuff
+  (helm-autoresize-mode 1)
+  (setq helm-autoresize-max-height 20
+        helm-autoresize-min-height 20)
+
+  ;; Work with Spotlight on OS X instead of the regular locate
+  (setq helm-locate-command "mdfind -name -onlyin ~ %s %s")
+
+  ;; Make sure helm always pops up in bottom
+  (setq helm-split-window-in-side-p t)
+
+  (add-to-list 'display-buffer-alist
+               '("\\`\\*helm.*\\*\\'"
+                 (display-buffer-in-side-window)
+                 (inhibit-same-window . t)
+                 (window-height . 0.2)))
+
+  ;; provide input in the header line and hide the mode lines above
+  (setq helm-echo-input-in-header-line t)
+
+  (defvar bottom-buffers nil
+    "List of bottom buffers before helm session.
+    Its element is a pair of `buffer-name' and `mode-line-format'.")
+
+  (defun bottom-buffers-init ()
+    (setq-local mode-line-format (default-value 'mode-line-format))
+    (setq bottom-buffers
+          (cl-loop for w in (window-list)
+                   when (window-at-side-p w 'bottom)
+                   collect (with-current-buffer (window-buffer w)
+                             (cons (buffer-name) mode-line-format)))))
+
+
+  (defun bottom-buffers-hide-mode-line ()
+    (setq-default cursor-in-non-selected-windows nil)
+    (mapc (lambda (elt)
+            (with-current-buffer (car elt)
+              (setq-local mode-line-format nil)))
+          bottom-buffers))
+
+
+  (defun bottom-buffers-show-mode-line ()
+    (setq-default cursor-in-non-selected-windows t)
+    (when bottom-buffers
+      (mapc (lambda (elt)
+              (with-current-buffer (car elt)
+                (setq-local mode-line-format (cdr elt))))
+            bottom-buffers)
+      (setq bottom-buffers nil)))
+
+  (defun helm-keyboard-quit-advice (orig-func &rest args)
+    (bottom-buffers-show-mode-line)
+    (apply orig-func args))
+
+
+  (add-hook 'helm-before-initialize-hook #'bottom-buffers-init)
+  (add-hook 'helm-after-initialize-hook #'bottom-buffers-hide-mode-line)
+  (add-hook 'helm-exit-minibuffer-hook #'bottom-buffers-show-mode-line)
+  (add-hook 'helm-cleanup-hook #'bottom-buffers-show-mode-line)
+  (advice-add 'helm-keyboard-quit :around #'helm-keyboard-quit-advice)
+
+  ;; remove header lines if only a single source
+  (setq helm-display-header-line nil)
+
+  (defvar helm-source-header-default-background (face-attribute 'helm-source-header :background))
+  (defvar helm-source-header-default-foreground (face-attribute 'helm-source-header :foreground))
+  (defvar helm-source-header-default-box (face-attribute 'helm-source-header :box))
+
+  (defun helm-toggle-header-line ()
+    (if (> (length helm-sources) 1)
+        (set-face-attribute 'helm-source-header
+                            nil
+                            :foreground helm-source-header-default-foreground
+                            :background helm-source-header-default-background
+                            :box helm-source-header-default-box
+                            :height 1.0)
+      (set-face-attribute 'helm-source-header
+                          nil
+                          :foreground (face-attribute 'helm-selection :background)
+                          :background (face-attribute 'helm-selection :background)
+                          :box nil
+                          :height 0.1)))
+
+
+  (add-hook 'helm-before-initialize-hook 'helm-toggle-header-line)
+
+  ;; hide the minibuffer when helm is active
+  (defun helm-hide-minibuffer-maybe ()
+    (when (with-helm-buffer helm-echo-input-in-header-line)
+      (let ((ov (make-overlay (point-min) (point-max) nil nil t)))
+        (overlay-put ov 'window (selected-window))
+        (overlay-put ov 'face (let ((bg-color (face-background 'default nil)))
+                                `(:background ,bg-color :foreground ,bg-color)))
+        (setq-local cursor-type nil))))
+
+  (add-hook 'helm-minibuffer-set-up-hook 'helm-hide-minibuffer-maybe)
+
+  ;; Proper find file behavior
+  (defun dwim-helm-find-files-up-one-level-maybe ()
+    (interactive)
+    (if (looking-back "/" 1)
+        (call-interactively 'helm-find-files-up-one-level)
+      (delete-backward-char 1)))
+
+  (defun dwim-helm-find-files-navigate-forward (orig-fun &rest args)
+    "Adjust how helm-execute-persistent actions behaves, depending on context"
+    (if (file-directory-p (helm-get-selection))
+        (apply orig-fun args)
+      (helm-maybe-exit-minibuffer)))
+
+  (advice-add 'helm-execute-persistent-action :around #'dwim-helm-find-files-navigate-forward)
+
+  ;; Improve support for smex and flx
+  (require 'smex)
+  (require 'flx)
+
+  (add-hook 'after-init-hook (lambda () (smex-initialize)) t)
+
+  (defun helm-smex-items ()
+    (smex-convert-for-ido smex-cache))
+
+
+  (defun helm-smex-execute-command (command-name)
+    (unwind-protect
+        (execute-extended-command helm-current-prefix-arg command-name)
+      (smex-rank (intern command-name))))
+
+
+  (defvar helm-smex-source
+    '((name . "smex")
+      (candidates . helm-smex-items)
+      (volatile)
+      (match-strict identity)
+      (candidate-transformer . flx-helm-candidate-transformer)
+      (action . (("execute command" . helm-smex-execute-command)
+                 ("execute command with prefix" . helm-smex-execute-command-with-prefix)))))
+
+
+  (defun flx-helm-candidate-transformer (candidates)
+    "hairy but works"
+    (if (zerop (length helm-pattern))
+        candidates
+      (let* ((mp-3-patterns (helm-mm-3-get-patterns helm-pattern))
+             (flx-pattern (cdar mp-3-patterns))
+             (patterns (cons (cons 'identity
+                                   (mapconcat
+                                    #'regexp-quote
+                                    (split-string flx-pattern "" t)
+                                    ".*"))
+                             (cdr mp-3-patterns)))
+             res)
+
+        (setq res (loop for candidate in candidates
+                        for matched = (loop for (predicate . regexp) in patterns
+                                            always (funcall
+                                                    predicate
+                                                    (string-match regexp
+                                                                  (helm-candidate-get-display
+                                                                   candidate))))
+                        if matched
+                        collect (let ((score (flx-score candidate flx-pattern helm-flx-cache)))
+                                  (cons (copy-sequence candidate)
+                                        (cons candidate
+                                              score)))))
+
+        (setq res (sort res
+                        (lambda (a b)
+                          (> (caddr a) (caddr b)))))
+        (helm-smex-flx-highlight-and-format res)
+        res)))
+
+
+
+  (defun helm-smex-flx-highlight-and-format (res)
+    (cl-loop for item in res
+             for score = (cddr item)
+             do
+             (progn
+               (if (string-match-p " " helm-pattern)
+                   (cl-loop with pattern = (split-string helm-pattern)
+                            for p in pattern
+                            do (when (string-match (substring-no-properties p)
+                                                   (substring-no-properties (car item)))
+                                 (put-text-property
+                                  (match-beginning 0) (match-end 0) 'face 'helm-match
+                                  (car item))))
+                 (setcar item (flx-propertize (car item) score)))
+               (setcdr item (cadr item)))))
+
+
+
+  (defun helm-smex/run (arg)
+    (interactive "P")
+    (if arg
+        (smex-rebuild-cache))
+    (let ((helm--mode-line-display-prefarg t))
+      (helm :sources 'helm-smex-source
+            :buffer "*helm-smex*")))
+
+
+
+  (defun helm-smex-execute-command-with-prefix (command-name)
+    (unwind-protect
+        (let ((helm-current-prefix-arg (list 4)))
+          (execute-extended-command helm-current-prefix-arg command-name))
+      (smex-rank (intern command-name))))
+
+  ;; Make helm fuzzier
+  (use-package helm-fuzzier
     :ensure t
-    :demand t
-    :commands (swiper)
-    :bind (("C-s" . swiper)))
-  ;; Search using spotlight
-  (use-package spotlight
-    :ensure t
-    :commands (spotlight
-               spotlight-fast)
-    :bind* (("C-z SPC i" . spotlight)))
-  ;; Add counsel to the mix
-  (use-package counsel
-    :ensure t
-    :demand t
-    :init
-    (setq counsel-yank-pop-truncate t)
-    :bind (("C-x 8" . counsel-unicode-char)
-           ("C-s" . counsel-grep-or-swiper))
-    :bind* (("C-z t" . counsel-imenu)
-            ("C-z SPC I" . counsel-locate)
-            ("C-z g s" . counsel-pt))
-    :diminish counsel-mode
     :config
-    (counsel-mode 1))
-  ;; counsel projectile now
-  (use-package counsel-projectile
+    (helm-fuzzier-mode 1))
+
+  ;; Add support for flx
+  (use-package helm-flx
     :ensure t
-    :commands (counsel-projectile)
-    :bind* (("C-z SPC p" . counsel-projectile))
-    :init
-    (setq projectile-completion-system 'ivy))
-  ;; Ivy bibtex
-  (use-package ivy-bibtex
+    :config
+    (helm-flx-mode 1))
+
+  ;; Add helm-bibtex
+  (use-package helm-bibtex
     :ensure t
-    :commands (ivy-bibtex)
-    :bind* (("C-z SPC b" . ivy-bibtex))
+    :bind* (("C-z SPC b" . helm-bibtex))
     :init
     (setq bibtex-completion-bibliography '("~/Dropbox/org/references/multiphysics.bib" "~/Dropbox/org/references/chanceconstraints.bib"))
     (setq bibtex-completion-library-path "~/Dropbox/org/references/pdfs")
-    (setq bibtex-completion-notes-path "~/Dropbox/org/references/articles.org")))
-#+END_SRC
+    (setq bibtex-completion-notes-path "~/Dropbox/org/references/articles.org"))
 
-** Smex
+  ;; to search in projects - the silver searcher
+  (use-package helm-ag
+    :ensure t
+    :bind* (("C-z g s" . helm-do-ag-project-root)))
 
-[[https://github.com/nonsequitur/smex][smex]] is an amazing program that helps order the =M-x= commands based on usage and recent items. =counsel-M-x= has the option of using it internally when it finds this package. Let's install it.
+  ;; to search in files
+  (use-package helm-swoop
+    :ensure t
+    :bind (("C-s" . helm-swoop-without-pre-input))
+    :bind* (("C-z #" . helm-swoop))
+    :init
+    (setq helm-swoop-split-with-multiple-windows nil
+          helm-swoop-split-direction 'split-window-vertically
+          helm-swoop-split-window-function 'helm-default-display-buffer))
 
-#+BEGIN_SRC emacs-lisp
-(use-package smex
-  :ensure t
-  :config
-  (smex-initialize))
+  ;; to help with projectile
+  (use-package helm-projectile
+    :ensure t
+    :bind* (("C-z SPC p" . helm-projectile))
+    :init
+    (setq projectile-completion-system 'helm))
+
+  ;; to describe bindings
+  (use-package helm-descbinds
+    :ensure t
+    :bind* (("C-z SPC ?" . helm-descbinds))))
 #+END_SRC
 
 ** Modal binding
@@ -6530,7 +6771,10 @@ All of these are a part of [[https://github.com/abo-abo/swiper][the excellent sw
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "B" "C-z B")
 (modalka-define-kbd "t" "C-z t")
+(modalka-define-kbd "#" "C-z #")
 (modalka-define-kbd "g s" "C-z g s")
+(modalka-define-kbd "SPC t" "C-c C-e")
+(modalka-define-kbd "SPC g" "C-c C-f")
 (modalka-define-kbd "SPC r" "C-z SPC r")
 (modalka-define-kbd "SPC I" "C-z SPC I")
 (modalka-define-kbd "SPC i" "C-z SPC i")
@@ -6542,14 +6786,65 @@ Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "B" "previous ivy"
+  "B" "previous helm"
   "t" "tags/func in buffer"
+  "#" "swoop at point"
   "g s" "search project"
   "SPC r" "recent files"
-  "SPC I" "locate"
+  "SPC I" "information at point"
   "SPC i" "spotlight"
   "SPC p" "switch projects"
+  "SPC t" "swoop edit mode"
+  "SPC g" "helm follow"
   "SPC b" "bibliography")
+#+END_SRC
+
+** Hydras
+
+These are some additional helm functionality as a hydra
+
+#+BEGIN_SRC emacs-lisp
+(defhydra sk/hydra-helm (:color blue
+                         :hint nil)
+  "
+ _c_: colors    _t_: top           _f_: find    _b_: marks       _e_: ext process
+ _r_: regexp    _a_: apropos       _x_: xfont   _m_: man pages   _q_: quit
+ _s_: surfraw   _p_: emacs proc    _y_: calc    _h_: helm docs
+  "
+  ("c" helm-colors)
+  ("r" helm-regexp)
+  ("s" helm-surfraw)
+  ("t" helm-top)
+  ("a" helm-apropos)
+  ("p" helm-list-emacs-process)
+  ("f" helm-find)
+  ("x" helm-select-xfont)
+  ("y" helm-calcul-expression)
+  ("b" helm-all-mark-rings)
+  ("m" helm-man-woman)
+  ("h" helm-documentation)
+  ("e" helm-run-external-command)
+  ("q" nil :color blue))
+#+END_SRC
+
+*** Key binding
+
+#+BEGIN_SRC emacs-lisp
+(bind-keys*
+  ("C-z SPC y" . sk/hydra-helm/body))
+#+END_SRC
+
+**** Modal binding
+
+#+BEGIN_SRC emacs-lisp
+(modalka-define-kbd "SPC y" "C-z SPC y")
+#+END_SRC
+
+Which key modal explanation
+
+#+BEGIN_SRC emacs-lisp
+(which-key-add-key-based-replacements
+  "SPC y" "helm extras")
 #+END_SRC
 
 * Fun

@@ -3624,7 +3624,8 @@ I use \LaTeX extensively compared to Markdown (although Org is still preferred f
   :ensure auctex
   :ensure auctex-latexmk
   :ensure latex-preview-pane
-  :mode ("\\.tex\\'" "\\.xtx\\'")
+  :mode (("\\.tex\\'" . LaTeX-mode)
+         ("\\.xtx\\'" . LaTeX-mode))
   :init
   (setq reftex-default-bibliography '("~/Dropbox/references/references.bib"))
   :config
@@ -6533,7 +6534,7 @@ For now, I have made it look and act the way I want it too. The additional packa
 
   (defvar bottom-buffers nil
     "List of bottom buffers before helm session.
-    Its element is a pair of `buffer-name' and `mode-line-format'.")
+      Its element is a pair of `buffer-name' and `mode-line-format'.")
 
   (defun bottom-buffers-init ()
     (setq-local mode-line-format (default-value 'mode-line-format))
@@ -6622,6 +6623,26 @@ For now, I have made it look and act the way I want it too. The additional packa
       (helm-maybe-exit-minibuffer)))
 
   (advice-add 'helm-execute-persistent-action :around #'dwim-helm-find-files-navigate-forward)
+
+  ;; remove the dots in the file navigation
+  (require 'cl-lib)
+
+  (with-eval-after-load 'helm-files
+    (advice-add 'helm-ff-filter-candidate-one-by-one
+                :before-while 'no-dots-display-file-p))
+
+  (defvar no-dots-whitelist nil
+    "List of helm buffers in which to show dots.")
+
+  (defun no-dots-in-white-listed-helm-buffer-p ()
+    (member helm-buffer no-dots-whitelist))
+
+  (defun no-dots-display-file-p (file)
+    ;; in a whitelisted buffer display the file regardless of its name
+    (or (no-dots-in-white-listed-helm-buffer-p)
+        ;; not in a whitelisted buffer display all files
+        ;; which does not end with /. /..
+        (not (string-match "\\(?:/\\|\\`\\)\\.\\{1,2\\}\\'" file))))
 
   ;; Improve support for smex and flx
   (require 'smex)

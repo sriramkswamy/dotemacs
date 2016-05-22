@@ -3,6 +3,8 @@
 
 (setq mc/cmds-to-run-for-all
       '(
+	delete-horizontal-space
+	electric-newline-and-maybe-indent
 	ivy-alt-done
 	org-cdlatex-underscore-caret
 	org-force-self-insert
@@ -11,14 +13,13 @@
 	sp-backward-delete-char
 	sp-backward-kill-word
 	sp-delete-char
-	delete-horizontal-space
 	))
 
 (setq mc/cmds-to-run-once
       '(
-	modalka-mode
 	beginning-of-buffer
 	end-of-buffer
 	iedit-mode
 	mc/vertical-align-with-space
+	modalka-mode
 	))

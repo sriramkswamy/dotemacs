@@ -48,3 +48,4 @@ GTAGS
 /*.aux
 /config.el
 /config.html
+/helm-doc.org

@@ -249,10 +249,11 @@ UTF-8 works for most of the files I tend to use
 
 ** Error message
 
-Mac has an [[http://stuff-things.net/2015/10/05/emacs-visible-bell-work-around-on-os-x-el-capitan/][annoying bug]] when visibly warning you about errors. I hate it but I'm okay with it ringing a bell when it encounters an error.
+Mac has an [[http://stuff-things.net/2015/10/05/emacs-visible-bell-work-around-on-os-x-el-capitan/][annoying bug]] when visibly warning you about errors. I hate it. And while we're at it, let's ask Emacs to ignore the audible warning too.
 
 #+BEGIN_SRC emacs-lisp
 (setq visible-bell nil)
+(setq ring-bell-function 'ignore)
 #+END_SRC
 
 ** Truncating lines
@@ -620,7 +621,8 @@ There are some pretty nice default functions that are unbound. I use the =bind-k
   ("C-z g j" . doc-view-next-page)
   ("C-z g k" . doc-view-previous-page)
   ("C-z : t" . emacs-init-time)
-  ("C-z g q" . fill-paragraph))
+  ("C-z g q" . fill-paragraph)
+  ("C-z SPC ?" . describe-bindings))
 #+END_SRC
 
 * Tangle on save
@@ -845,7 +847,6 @@ This is based on Vi-style but only slightly and uses the default movement keys i
 (modalka-define-kbd "SPC j" "M-x")
 (modalka-define-kbd "SPC x" "C-h f")
 (modalka-define-kbd "SPC X" "C-h v")
-(modalka-define-kbd "SPC ?" "C-h b")
 (modalka-define-kbd "SPC a" "C-x b")
 (modalka-define-kbd "SPC k" "C-x k")
 (modalka-define-kbd "SPC d" "C-x d")
@@ -855,8 +856,8 @@ This is based on Vi-style but only slightly and uses the default movement keys i
 (modalka-define-kbd "SPC w" "C-x C-s")
 (modalka-define-kbd "SPC h" "C-c C-w")
 (modalka-define-kbd "SPC o" "C-c C-k")
-(modalka-define-kbd "SPC g" "C-c C-f")
 (modalka-define-kbd "SPC c" "C-z SPC c")
+(modalka-define-kbd "SPC ?" "C-z SPC ?")
 #+END_SRC
 
 *** Which key explanations for everything
@@ -1009,8 +1010,7 @@ I have added the which key explanations for everything at once because it is eas
   "SPC c" "load theme"
   "SPC q" "quit window"
   "SPC h" "org refile"
-  "SPC o" "over/abort"
-  "SPC g" "follow"
+  "SPC o" "org abort"
   "SPC SPC" "search")
 #+END_SRC
 
@@ -1026,6 +1026,27 @@ I have added the which key explanations for everything at once because it is eas
 * Navigation
 
 This section contains all the packages and custom functions I use for navigating within the buffer, within a project, in Emacs, etc. This is organized based on packages. Deleting the section of a package deletes the entire configuration surrounding it.
+
+** Flx
+
+[[https://github.com/lewang/flx][Flx]] is a package that helps in fuzzy file narrowing like [[http://www.sublimetext.com][Sublime Text]]. The most prominent package that uses this is =flx-ido= found in the same repository. I find =ivy='s built-in fuzzy matching more than good enough. However, this is in case I need something different/more and when this is installed, Ivy automatically uses this for fuzzy finding. This is particularly useful if I decide to use [[*Helm][Helm]] full time instead of ivy.
+
+#+BEGIN_SRC emacs-lisp
+(use-package flx-ido
+  :ensure t
+  :defer t)
+#+END_SRC
+
+** Smex
+
+[[https://github.com/nonsequitur/smex][smex]] is an amazing program that helps order the =M-x= commands based on usage and recent items. [[*Ivy][Ivy]] has the option of using it internally when it finds this package. Let's install it.
+
+#+BEGIN_SRC emacs-lisp
+(use-package smex
+  :ensure t
+  :config
+  (smex-initialize))
+#+END_SRC
 
 ** Beacon mode
 
@@ -1129,7 +1150,6 @@ Which key modal explanation
 (use-package highlight-symbol
   :ensure t
   :bind* (("C-z *" . highlight-symbol)
-          ("C-z #" . highlight-symbol-occur)
           ("C-z g r" . highlight-symbol-remove-all))
   :config
   (highlight-symbol-nav-mode))
@@ -1139,7 +1159,6 @@ Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "*" "C-z *")
-(modalka-define-kbd "#" "C-z #")
 (modalka-define-kbd "g r" "C-z g r")
 #+END_SRC
 
@@ -1148,7 +1167,6 @@ Which key modal explanation
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
   "*" "highlight symbol"
-  "#" "list all highlights"
   "g r" "remove highlight")
 #+END_SRC
 
@@ -2181,8 +2199,9 @@ With the new configuration of [[./.mc-lists.el][.mc-lists.el]] file, it's possib
               ("mm" . mc/mark-more-like-this-extended)
               ("me" . mc/edit-beginnings-of-lines)
               ("mE" . mc/edit-ends-of-lines)
+              ("ml" . mc/edit-lines)
               ("mn" . mc/insert-numbers)
-              ("ml" . mc/insert-letters)
+              ("mN" . mc/insert-letters)
               ("md" . mc/mark-all-like-this-in-defun))
   :diminish (region-bindings-mode . "ρ")
   :config
@@ -3403,7 +3422,8 @@ Of course we need color themes. I like the [[https://github.com/purcell/color-th
   (setq powerline-default-separator 'arrow-fade)
   :config
   (require 'spaceline-config)
-  (spaceline-spacemacs-theme))
+  (spaceline-spacemacs-theme)
+  (spaceline-helm-mode))
 #+END_SRC
 
 ** Fancy battery status
@@ -4354,13 +4374,7 @@ We can make Org mode a little more pretty by having [[https://github.com/sabof/o
   (setq org-ref-notes-directory "~/Dropbox/org/references/notes"
         org-ref-bibliography-notes "~/Dropbox/org/references/articles.org"
         org-ref-default-bibliography '("~/Dropbox/org/references/multiphysics.bib" "~/Dropbox/org/references/chanceconstraints.bib")
-        org-ref-pdf-directory "~/Dropbox/org/references/pdfs/")
-  :config
-  (use-package helm
-    :ensure t
-    :config
-    (use-package helm-bibtex
-      :ensure t)))
+        org-ref-pdf-directory "~/Dropbox/org/references/pdfs/"))
 #+END_SRC
 
 ** Functions

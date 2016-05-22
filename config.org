@@ -7157,8 +7157,6 @@ This section documents the key bindings that help to find other key-bindings. No
 | SPC f                 | C-x C-f             | find file browsing by directory           |
 | SPC p                 | C-z SPC p           | switch between projects                   |
 | SPC d                 | C-z SPC d           | find files in project based on [[*Projectile][Projectile]] |
-| SPC r                 | C-z SPC r           | [[*Ivy, Counsel and Swiper][recent files]]                              |
-| SPC i                 | C-z SPC t           | [[*Ivy, Counsel and Swiper][spotlight search]]                          |
 | SPC n                 | C-z SPC n           | [[*Neotree][directory navigation]]                      |
 | Z                     | C-z Z               | zoom in to the current window             |
 | SPC q                 | C-x 0               | close current window                      |
@@ -7247,10 +7245,8 @@ This section documents the key bindings that help to find other key-bindings. No
 | m S (region binding)  | C-z m S             | skip previous like this              |
 | \                     | C-c C-c             | simulate C-c C-c                     |
 | SPC w                 | C-x C-s             | save                                 |
-| SPC i                 | C-c C-e             | edit the result inline               |
-| SPC h                 | C-c C-w             | refile work                          |
-| SPC o                 | C-c C-k             | abort                                |
-| SPC g                 | C-c C-f             | follow mode                          |
+| SPC h                 | C-c C-w             | refile org                           |
+| SPC o                 | C-c C-k             | org abort                            |
 | SPC s                 | C-z SPC s           | [[*Visual replace][visual replace word in buffer/region]] |
 | S                     | C-z S               | [[*Snippets][snippet select]]                       |
 | g R                   | C-z g R             | [[*Rename the current buffer and the file associated with it][rename current file]]                  |
@@ -7367,8 +7363,21 @@ This section documents the key bindings that help to find other key-bindings. No
 | SPC U                 | C-z SPC U           | Eshell horizontal split     |
 | SPC m                 | C-z SPC m           | [[*Multi term][Multi term vertical split]]   |
 | SPC M                 | C-z SPC M           | Multi term horizontal split |
-| B                     | C-z B               | [[*Ivy, Counsel and Swiper][ivy resume]]                  |
-| SPC b                 | C-z SPC b           | ivy bibtex                  |
+
+** Helm
+
+#+NAME: helm
+| Modalka state binding | Emacs state binding | Function              |
+|-----------------------+---------------------+-----------------------|
+| B                     | C-z B               | helm resume           |
+| SPC i                 | C-z SPC i           | [[*Helm][spotlight search]]      |
+| SPC g                 | C-c C-f             | helm follow selection |
+| SPC t                 | C-c C-e             | helm swoop edit mode  |
+| SPC b                 | C-z SPC b           | helm bibtex           |
+| SPC y                 | C-z SPC y           | [[*Hydras][helm extra commands]]   |
+| SPC r                 | C-z SPC r           | recent files          |
+|                       |                     |                       |
+
 
 ** Fun
 

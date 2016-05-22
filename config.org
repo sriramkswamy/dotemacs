@@ -196,6 +196,7 @@ The default screen of Emacs is just so useless and cluttered with links and text
 ;; Press 'SPC ?' in Modalka state or 'C-h b' in Emacs state for searching through bindings.
 ;; Press 'SPC j' in Modalka state or 'M-x' in Emacs state to access all the functions/commands.
 ;; Press 'C-h C-h' for help regarding how to use help.
+;; Press 'SPC v' or 'C-z SPC v' to open the configuration file.
 ;; Finally, pressing one of the prefix keys and waiting for a second will also show hints.
 
 

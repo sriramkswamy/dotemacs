@@ -6405,7 +6405,7 @@ Which key modal explanation
 
 I am still on the fence about helm and [[http://oremacs.com/2015/04/16/ivy-mode/][ivy]] but [[*Org reference][org-ref]] requires this package. Since I have to install it anyway, I might as well make it a little better to suit my needs. Also, helm, for now, has many more features such as multiple sources, multiple selection, etc. It also has many plugins that take advantage of these features. I find ivy much simpler and I like it. Here, I have taken the help of [[https://github.com/hatschipuh/helm-better-defaults][this article]] to make it a little more usable (for me). Note that helm already has nice integration with [[*Mode line][spaceline]] and this configuration adds (and requires) support for [[*Flx][Flx]] and [[*Smex][Smex]].
 
-For now, I have made it look and act the way I want it too. The additional packages also help significantly. Therefore, I'm going to stick with Helm for now. This is a huge configuration. It has tons of additional packages [[https://github.com/EphramPerdition/helm-fuzzier][that make helm act fuzzier]], [[https://github.com/PythonNut/helm-flx][improves Flx support]], [[https://github.com/syohex/emacs-helm-ag][adds project wide search and replace]], [[https://github.com/ShingoFukuyama/helm-swoop][adds buffer wide search and replace]], [[https://github.com/bbatsov/helm-projectile][integrates with projectile]], [[https://github.com/emacs-helm/helm-descbinds][searches through bindings]], [[https://github.com/istib/helm-aws][manages AWS instances]], [[https://github.com/lesharris/helm-circe][adds IRC support]], [[https://github.com/yasuyk/helm-flycheck][integrates with error checking]], [[https://github.com/pronobis/helm-flyspell][helps in correcting spelling mistakes]] and [[https://github.com/abo-abo/helm-make][selecting a Makefile target]].
+For now, I have made it look and act the way I want it too. The additional packages also help significantly. Therefore, I'm going to stick with Helm for now. This is a huge configuration. It has tons of additional packages [[https://github.com/EphramPerdition/helm-fuzzier][that make helm act fuzzier]], [[https://github.com/PythonNut/helm-flx][improves Flx support]], [[https://github.com/syohex/emacs-helm-ag][adds project wide search and replace]], [[https://github.com/ShingoFukuyama/helm-swoop][adds buffer wide search and replace]], [[https://github.com/bbatsov/helm-projectile][integrates with projectile]], [[https://github.com/emacs-helm/helm-descbinds][searches through bindings]], [[https://github.com/istib/helm-aws][manages AWS instances]], [[https://github.com/lesharris/helm-circe][adds IRC support]], [[https://github.com/yasuyk/helm-flycheck][integrates with error checking]], [[https://github.com/pronobis/helm-flyspell][helps in correcting spelling mistakes]] and [[https://github.com/abo-abo/helm-make][selecting a Makefile target]]. I am experimenting [[https://github.com/areina/helm-dash][with its ability to browse documentation]].
 
 #+BEGIN_SRC emacs-lisp
 (use-package helm
@@ -6745,7 +6745,20 @@ For now, I have made it look and act the way I want it too. The additional packa
     :init
     (setq helm-make-build-directory "build")
     :bind* (("C-z SPC h m" . helm-make-projectile)
-            ("C-z SPC h M" . helm-make))))
+            ("C-z SPC h M" . helm-make)))
+
+  ;; Helm dash browse documentation
+  (use-package helm-dash
+    :ensure t
+    :commands (helm-dash
+               helm-dash-install-docset
+               helm-dash-update-docset
+               helm-dash-activate-docset)
+    :bind* (("C-z SPC h d" . helm-dash))
+    :init
+    (setq helm-dash-min-length 2
+          helm-dash-docsets-path "~/docsets"
+          helm-dash-browser-func 'eww)))
 #+END_SRC
 
 ** Modal binding
@@ -6771,6 +6784,7 @@ For now, I have made it look and act the way I want it too. The additional packa
 (modalka-define-kbd "SPC h s" "C-z SPC h s")
 (modalka-define-kbd "SPC h m" "C-z SPC h m")
 (modalka-define-kbd "SPC h M" "C-z SPC h M")
+(modalka-define-kbd "SPC h d" "C-z SPC h d")
 #+END_SRC
 
 Which key modal explanation
@@ -6797,10 +6811,13 @@ Which key modal explanation
   "SPC h I" "circe new activity"
   "SPC h s" "helm spelling"
   "SPC h m" "make in project"
-  "SPC h M" "make in current dir")
+  "SPC h M" "make in current dir"
+  "SPC h d" "helm docset search")
 #+END_SRC
 
 ** Hydras
+
+*** Default helm functionality
 
 These are some additional helm functionality as a hydra
 
@@ -6828,14 +6845,14 @@ These are some additional helm functionality as a hydra
   ("q" nil :color blue))
 #+END_SRC
 
-*** Key binding
+**** Key binding
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
   ("C-z SPC y" . sk/hydra-helm/body))
 #+END_SRC
 
-**** Modal binding
+***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "SPC y" "C-z SPC y")
@@ -6846,6 +6863,153 @@ Which key modal explanation
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
   "SPC y" "helm extras")
+#+END_SRC
+
+*** Helm dash
+
+This is a hydra to use =helm-dash= effectively. Before defining the actual hydra, we need to define some helper functions.
+
+#+BEGIN_SRC emacs-lisp
+(defun sk/cpp-docset ()
+  "Activates the C++ docset for helm-dash"
+  (interactive)
+  (setq-local helm-dash-docsets '("Boost" "C++" "CMake")))
+(defun sk/c-docset ()
+  "Activates the C docset for helm-dash"
+  (interactive)
+  (setq-local helm-dash-docsets '("C" "CMake")))
+(defun sk/python3-data-docset ()
+  "Activates the python data science docset for helm-dash"
+  (interactive)
+  (setq-local helm-dash-docsets '("Python 3" "NumPy" "SciPy" "Matplotlib" "Pandas")))
+(defun sk/python3-web-docset ()
+  "Activates the python web docset for helm-dash"
+  (interactive)
+  (setq-local helm-dash-docsets '("Python 3" "Django" "Flask")))
+(defun sk/python2-data-docset ()
+  "Activates the python data science docset for helm-dash"
+  (interactive)
+  (setq-local helm-dash-docsets '("Python 2" "NumPy" "SciPy" "Matplotlib" "Pandas")))
+(defun sk/python2-web-docset ()
+  "Activates the python web docset for helm-dash"
+  (interactive)
+  (setq-local helm-dash-docsets '("Python 2" "Django" "Flask")))
+(defun sk/js-core-docset ()
+  "Activates the javscript core docsets for helm-dash"
+  (interactive)
+  (setq-local helm-dash-docsets '("JavaScript" "NodeJS" "React" "D3JS" "jQuery")))
+(defun sk/js-extras-docset ()
+  "Activates the javascript extras docsets for helm-dash"
+  (interactive)
+  (setq-local helm-dash-docsets '("AngularJS" "AWS_JavaScript" "Grunt" "TypeScript")))
+(defun sk/html-core-docset ()
+  "Activates the html/css core docsets for helm-dash"
+  (interactive)
+  (setq-local helm-dash-docsets '("HTML" "CSS" "Bootstrap 4" "Font_Awesome")))
+(defun sk/html-extras-docset ()
+  "Activates the html/css extras docsets for helm-dash"
+  (interactive)
+  (setq-local helm-dash-docsets '("Sass" "Haml" "SVG" "Less")))
+(defun sk/databases-docset ()
+  "Activates the databases docsets for helm-dash"
+  (interactive)
+  (setq-local helm-dash-docsets '("MongoDB" "Redis" "PostgreSQL" "SQLite" "MySQL")))
+(defun sk/servers-docset ()
+  "Activates the servers docsets for helm-dash"
+  (interactive)
+  (setq-local helm-dash-docsets '("Nginx" "Apache_HTTP_Server")))
+(defun sk/stats-docset ()
+  "Activates the stats docsets for helm-dash"
+  (interactive)
+  (setq-local helm-dash-docsets '("R" "Julia")))
+(defun sk/writing-docset ()
+  "Activates the writing docsets for helm-dash"
+  (interactive)
+  (setq-local helm-dash-docsets '("LaTeX" "Markdown")))
+(defun sk/matlab-docset ()
+  "Activates the matlab docsets for helm-dash"
+  (interactive)
+  (setq-local helm-dash-docsets '("MATLAB")))
+(defun sk/go-docset ()
+  "Activates the go docsets for helm-dash"
+  (interactive)
+  (setq-local helm-dash-docsets '("Go")))
+(defun sk/perl-docset ()
+  "Activates the perl docsets for helm-dash"
+  (interactive)
+  (setq-local helm-dash-docsets '("Perl")))
+(defun sk/lua-docset ()
+  "Activates the lua docsets for helm-dash"
+  (interactive)
+  (setq-local helm-dash-docsets '("Lua")))
+(defun sk/coffee-docset ()
+  "Activates the coffee docsets for helm-dash"
+  (interactive)
+  (setq-local helm-dash-docsets '("CoffeScript")))
+(defun sk/virtual-docset ()
+  "Activates the virtual docsets for helm-dash"
+  (interactive)
+  (setq-local helm-dash-docsets '("Vagrant" "Docker")))
+#+END_SRC
+
+Now, for the actual hydra
+
+#+BEGIN_SRC emacs-lisp
+(defhydra sk/hydra-of-dash (:color blue
+                            :hint nil)
+  "
+ ^Dash^             ^Language specific packs^
+ ^^^^^^^^^^^------------------------------------------------------------------------------------------------------------
+ _i_: install       _c_: C++       _p3_: python 3 data    _j_: js-core        _S_: stats      _r_: perl      _q_: quit
+ _u_: update        _C_: C         _P3_: python 3 web     _J_: js-extras      _w_: writing    _l_: lua
+ _a_: activate      _d_: DB        _p2_: python 2 data    _h_: html-core      _m_: matlab     _f_: coffee
+ _D_: deactivate    _s_: server    _P3_: python 2 web     _H_: html-extras    _g_: go         _v_: virtual
+"
+  ("i" helm-dash-install-docset)
+  ("u" helm-dash-update-docset)
+  ("a" helm-dash-activate-docset)
+  ("D" helm-dash-deactivate-docset)
+  ("c" sk/cpp-docset)
+  ("C" sk/c-docset)
+  ("d" sk/databases-docset)
+  ("s" sk/servers-docset)
+  ("p3" sk/python3-data-docset)
+  ("P3" sk/python3-web-docset)
+  ("p2" sk/python2-data-docset)
+  ("P2" sk/python2-web-docset)
+  ("j" sk/js-core-docset)
+  ("J" sk/js-extras-docset)
+  ("h" sk/html-core-docset)
+  ("H" sk/html-extras-docset)
+  ("S" sk/stats-docset)
+  ("w" sk/writing-docset)
+  ("m" sk/matlab-docset)
+  ("g" sk/go-docset)
+  ("r" sk/perl-docset)
+  ("l" sk/lua-docset)
+  ("f" sk/coffee-docset)
+  ("v" sk/virtual-docset)
+  ("q" nil :color blue))
+#+END_SRC
+
+**** Key binding
+
+#+BEGIN_SRC emacs-lisp
+(bind-keys*
+  ("C-z SPC h a" . sk/hydra-of-dash/body))
+#+END_SRC
+
+***** Modal binding
+
+#+BEGIN_SRC emacs-lisp
+(modalka-define-kbd "SPC h a" "C-z SPC h a")
+#+END_SRC
+
+Which key modal explanation
+
+#+BEGIN_SRC emacs-lisp
+(which-key-add-key-based-replacements
+  "SPC h a" "activate dash functionality")
 #+END_SRC
 
 * Fun
@@ -7381,6 +7545,8 @@ This section documents the key bindings that help to find other key-bindings. No
 | SPC h I               | C-z SPC h I         | checkout new IRC activity               |
 | SPC h m               | C-z SPC h m         | select a [[https://en.wikipedia.org/wiki/Makefile][Makefile]] target                |
 | SPC h M               | C-z SPC h M         | select a Makefile target in current dir |
+| SPC h d               | C-z SPC h d         | search a code documentation             |
+| SPC h a               | C-z SPC h a         | [[*Helm dash][Helm dash functionality]]                 |
 
 ** Fun
 

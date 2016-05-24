@@ -195,6 +195,7 @@ The default screen of Emacs is just so useless and cluttered with links and text
 ;; Press '?' in Modalka state or 'C-x ?' in Emacs state for bindings list.
 ;; Press 'SPC ?' in Modalka state or 'C-h b' in Emacs state for searching through bindings.
 ;; Press 'SPC j' in Modalka state or 'M-x' in Emacs state to access all the functions/commands.
+;; Press 'SPC v' in Modalka state or 'C-z SPC v' in Emacs state to open the configuration file.
 ;; Press 'C-h C-h' for help regarding how to use help.
 ;; Finally, pressing one of the prefix keys and waiting for a second will also show hints.
 
@@ -609,12 +610,12 @@ There are some pretty nice default functions that are unbound. I use the =bind-k
   ("C-z g M" . delete-frame)
   ("C-z g n" . select-frame-by-name)
   ("C-z g N" . set-frame-name)
+  ("C-z B"   . mode-line-other-buffer)
   ("C-z ="   . indent-region)
   ("C-z g f" . find-file-at-point)
   ("C-z g u" . downcase-region)
   ("C-z g U" . upcase-region)
   ("C-z g C" . capitalize-region)
-  ("C-z g O" . occur-edit-mode)
   ("C-z R"   . overwrite-mode)
   ("C-z ."   . repeat)
   ("C-z V"   . rectangle-mark-mode)
@@ -774,7 +775,8 @@ This is based on Vi-style but only slightly and uses the default movement keys i
 (modalka-define-kbd "M" "C-u")
 (modalka-define-kbd "(" "M-a")
 (modalka-define-kbd ")" "M-e")
-(modalka-define-kbd "I" "C-M-i")
+(modalka-define-kbd "E" "C-g")
+(modalka-define-kbd "B" "C-z B")
 (modalka-define-kbd "d" "C-S-w")
 (modalka-define-kbd "H" "C-x <")
 (modalka-define-kbd "L" "C-x >")
@@ -784,12 +786,12 @@ This is based on Vi-style but only slightly and uses the default movement keys i
 (modalka-define-kbd "." "C-z .")
 (modalka-define-kbd "?" "C-z ?")
 (modalka-define-kbd "v" "C-SPC")
+(modalka-define-kbd "V" "C-z V")
 (modalka-define-kbd "=" "C-z =")
 (modalka-define-kbd "R" "C-z R")
 (modalka-define-kbd "X" "C-x C-x")
 (modalka-define-kbd "+" "C-x r m")
 (modalka-define-kbd "\\" "C-c C-c")
-(modalka-define-kbd "V" "C-z V")
 #+END_SRC
 
 **** Global prefixed keys
@@ -797,7 +799,6 @@ This is based on Vi-style but only slightly and uses the default movement keys i
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "g g" "M-<")
 (modalka-define-kbd "g o" "C-x C-e")
-(modalka-define-kbd "g O" "C-z g O")
 (modalka-define-kbd "g m" "C-z g m")
 (modalka-define-kbd "g M" "C-z g M")
 (modalka-define-kbd "g n" "C-z g n")
@@ -854,7 +855,6 @@ This is based on Vi-style but only slightly and uses the default movement keys i
 (modalka-define-kbd "SPC SPC" "C-s")
 (modalka-define-kbd "SPC f" "C-x C-f")
 (modalka-define-kbd "SPC w" "C-x C-s")
-(modalka-define-kbd "SPC h" "C-c C-w")
 (modalka-define-kbd "SPC o" "C-c C-k")
 (modalka-define-kbd "SPC c" "C-z SPC c")
 (modalka-define-kbd "SPC ?" "C-z SPC ?")
@@ -902,6 +902,8 @@ I have added the which key explanations for everything at once because it is eas
     "$" "end of line"
     "(" "start of sentence"
     ")" "end of sentence"
+    "E" "exit anything"
+    "B" "previous buffer"
     "G" "end of file"
     "/" "search"
     "d" "delete selection"
@@ -910,7 +912,6 @@ I have added the which key explanations for everything at once because it is eas
     "P" "paste history"
     "x" "delete char"
     "D" "delete rest of line"
-    "I" "insert completion"
     "M" "modify argument"
     "z" "scroll center/top/bot"
     "Z" "zoom into window"
@@ -925,7 +926,7 @@ I have added the which key explanations for everything at once because it is eas
     "?" "top level bindings"
     "v" "start selection"
     "R" "overwrite mode"
-    "V" "start rectangle selection"
+    "V" "rectangle selection"
     "X" "exchange point and mark"
     "+" "set bookmark"
     "=" "indent region"
@@ -950,7 +951,6 @@ I have added the which key explanations for everything at once because it is eas
   "g j" "next pdf page"
   "g k" "previous pdf page"
   "g f" "file/url at cursor"
-  "g O" "edit all instances"
   "g o" "eval elisp"
   "g w" "vertical split win"
   "g W" "horizontal split win"
@@ -1009,7 +1009,6 @@ I have added the which key explanations for everything at once because it is eas
   "SPC w" "save buffer"
   "SPC c" "load theme"
   "SPC q" "quit window"
-  "SPC h" "org refile"
   "SPC o" "org abort"
   "SPC SPC" "search")
 #+END_SRC
@@ -1039,7 +1038,7 @@ This section contains all the packages and custom functions I use for navigating
 
 ** Smex
 
-[[https://github.com/nonsequitur/smex][smex]] is an amazing program that helps order the =M-x= commands based on usage and recent items. [[*Ivy][Ivy]] has the option of using it internally when it finds this package. Let's install it.
+[[https://github.com/nonsequitur/smex][smex]] is an amazing program that helps order the =M-x= commands based on usage and recent items. Let's install it.
 
 #+BEGIN_SRC emacs-lisp
 (use-package smex
@@ -1201,47 +1200,6 @@ Which key modal explanation
   "SPC TAB" "alternate file")
 #+END_SRC
 
-** Project wide search and replace
-
-[[http://www.gnu.org/software/grep/manual/grep.html][grep]] and [[https://github.com/mhayashi1120/Emacs-wgrep][wgrep]] are the two standard programs to do a project wide search and replace. However, grep is pretty slow. I utilize faster alternatives like [[https://github.com/ggreer/the_silver_searcher][the silver searcher]] or [[https://github.com/monochromegane/the_platinum_searcher][the platinum searcher]] and therefore use their corresponding write-able grep versions.
-
-#+BEGIN_SRC emacs-lisp
-;; the silver searcher
-(use-package ag
-  :ensure t
-  :bind* (("C-z g e" . ag-regexp))
-  :config
-  (use-package wgrep-ag
-    :ensure t
-    :bind* (("C-z g E" . wgrep-change-to-wgrep-mode))))
-
-;; the platinum searcher
-(use-package pt
-  :ensure t
-  :commands (pt-regexp)
-  :bind* (("C-z g e" . pt-regexp))
-  :config
-  (use-package wgrep-pt
-    :ensure t
-    :commands (wgrep-change-to-wgrep-mode)
-    :bind* (("C-z g E" . wgrep-change-to-wgrep-mode))))
-#+END_SRC
-
-*** Modal binding
-
-#+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "g e" "C-z g e")
-(modalka-define-kbd "g E" "C-z g E")
-#+END_SRC
-
-Which key modal explanation
-
-#+BEGIN_SRC emacs-lisp
-(which-key-add-key-based-replacements
-  "g e" "extract word in proj"
-  "g E" "writable mode on")
-#+END_SRC
-
 ** Ztree
 
 [[https://github.com/fourier/ztree][ztree]] and its function =ztree-diff= is super useful when comparing directory trees.
@@ -1391,6 +1349,32 @@ Which key modal explanation
   "C p" "perspective prev"
   "C i" "perspective import"
   "C C" "perspective last")
+#+END_SRC
+
+** Code documentation
+
+[[https://kapeli.com/dash][Dash]] is a nice little app that stores documents offline for reference. Let's [[https://github.com/stanaka/dash-at-point][bring that to Emacs]].
+
+#+BEGIN_SRC emacs-lisp
+(use-package dash-at-point
+  :ensure t
+  :bind* (("C-z SPC h d" . dash-at-point-with-docset)
+          ("C-z SPC h D" . dash-at-point)))
+#+END_SRC
+
+*** Modal binding
+
+#+BEGIN_SRC emacs-lisp
+(modalka-define-kbd "SPC h d" "C-z SPC h d")
+(modalka-define-kbd "SPC h D" "C-z SPC h D")
+#+END_SRC
+
+Which key modal explanation
+
+#+BEGIN_SRC emacs-lisp
+(which-key-add-key-based-replacements
+  "SPC h d" "documentation prompt"
+  "SPC h D" "documentation at point")
 #+END_SRC
 
 ** Back button
@@ -2262,18 +2246,25 @@ Which key modal explanation
 
 ** Snippets
 
-[[https://github.com/capitaomorte/yasnippet][Yasnippets]] gives you the snippets functionality. It also comes bundled with a lot of pre-configured snippets and is extensible via Emacs Lisp.
+[[https://github.com/capitaomorte/yasnippet][Yasnippets]] gives you the snippets functionality. It also comes bundled with a lot of pre-configured snippets and is extensible via Emacs Lisp. This following code also includes [[https://github.com/abo-abo/auto-yasnippet][auto-yasnippet]] to create temporary snippets and save them later if need be. It acts as a good compliment to the Yasnippets package. Also, this is the only package where many of the bindings have no equivalent in modal mode because it makes no sense. Just press the "trigger" (by visiting the snippet file using =C-<escape>=) and "TAB" to expand and jump. If you don't use snippets all that much, then seeing the list of all snippets by pressing "S" in modal mode should be good enough. Furthermore, I have set =C-o= to list all snippets in Emacs state but this maybe changed by mode specific keybindings.
 
 #+BEGIN_SRC emacs-lisp
 (use-package yasnippet
   :ensure t
   :commands (yas-insert-snippet yas-new-snippet)
-  :bind* (("C-z S" . yas-insert-snippet))
-  :init
-  (setq yas-prompt-functions '(yas-completing-prompt))
+  :bind (("C-o" . yas-insert-snippet))
+  :bind* (("C-," . yas-new-snippet)
+          ("C-<escape>" . yas-visit-snippet-file))
   :diminish (yas-minor-mode . "γ")
   :config
-  (yas-global-mode))
+  (setq yas/triggers-in-field t); Enable nested triggering of snippets
+  (setq yas-prompt-functions '(yas-completing-prompt))
+  (yas-global-mode)
+  (use-package auto-yasnippet
+    :ensure t
+    :bind* (("C-<return>" . aya-create)
+            ("C-." . aya-persist-snippet)
+            ("C-=" . aya-expand))))
 #+END_SRC
 
 Also, I don't want to trigger snippets when I'm in shell. So, let's turn it off.
@@ -2284,19 +2275,6 @@ Also, I don't want to trigger snippets when I'm in shell. So, let's turn it off.
   (setq yas-dont-activate t))
 (add-hook 'term-mode-hook 'sk/force-yasnippet-off)
 (add-hook 'shell-mode-hook 'sk/force-yasnippet-off)
-#+END_SRC
-
-*** Modal binding
-
-#+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "S" "C-z S")
-#+END_SRC
-
-Which key modal explanation
-
-#+BEGIN_SRC emacs-lisp
-(which-key-add-key-based-replacements
-  "S" "snippets")
 #+END_SRC
 
 ** Custom functions
@@ -2668,7 +2646,7 @@ Which key modal explanation
 
 *** Open line
 
-The built-in command for open-line (triggered by =C-o=) is weird. I prefer Vi style opening of lines. This creates a new line either above or below accordingly and puts you there. I open lines above more than below and hence, prefer that to be a single-key binding.
+The built-in command for open-line (triggered by =C-o=) is weird. I prefer Vi style opening of lines. This creates a new line either above or below accordingly and puts you there. I open lines above more than below and hence, prefer that to be a single-key binding. I feel that this kind of opening lines is sensible enough that it has to be the default ([[*Split window and move][like window splitting]]).
 
 #+BEGIN_SRC emacs-lisp
 ;; Open line above
@@ -2684,17 +2662,15 @@ The built-in command for open-line (triggered by =C-o=) is weird. I prefer Vi st
 
 **** Key binding
 
-This is also one of the few cases where I bind a function to the defaults. I feel this is sensible enough that it has to be the default ([[*Split window and move][like window splitting]]).
-
 #+BEGIN_SRC emacs-lisp
-(bind-keys
-  ("C-o" . sk/open-line-above))
+(bind-keys*
+  ("M-o" . sk/open-line-above))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "O" "C-o")
+(modalka-define-kbd "O" "M-o")
 #+END_SRC
 
 Which key modal explanation
@@ -3189,11 +3165,12 @@ Which key modal explanation
 [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Rectangles.html][Rectangle edit mode]] is one of the unique features of Emacs (and Vim) and this hydra makes it easier to interact with it.
 
 #+BEGIN_SRC emacs-lisp
-(defhydra sk/hydra-rectangle (:color red
+(defhydra sk/hydra-rectangle (:pre (rectangle-mark-mode 1)
+                              :color pink
                               :hint nil)
   "
- _p_: paste   _c_: clear    _r_: replace
- _y_: copy    _o_: open     _i_: insert
+ _p_: paste   _r_: replace  _I_: insert
+ _y_: copy    _o_: open     _R_: reset
  _d_: kill    _n_: number   _q_: quit
 "
   ("h" backward-char nil)
@@ -3202,33 +3179,36 @@ Which key modal explanation
   ("j" next-line nil)
   ("y" copy-rectangle-as-kill)
   ("d" kill-rectangle nil)
-  ("c" clear-rectangle nil)
+  ("x" clear-rectangle nil)
   ("o" open-rectangle nil)
   ("p" yank-rectangle)
   ("r" string-rectangle)
-  ("i" string-insert-rectangle)
   ("n" rectangle-number-lines)
-  ("q" nil :color blue))
+  ("I" string-insert-rectangle)
+  ("R" (if (region-active-p)
+           (deactivate-mark)
+         (rectangle-mark-mode 1)) nil)
+  ("q" keyboard-quit :color blue))
 #+END_SRC
 
 **** Key binding
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z E" . sk/hydra-rectangle/body))
+  ("C-z V" . sk/hydra-rectangle/body))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "E" "C-z E")
+(modalka-define-kbd "V" "C-z V")
 #+END_SRC
 
 Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "E" "edit rectangle region")
+  "V" "edit rectangle region")
 #+END_SRC
 
 *** Macros
@@ -3623,7 +3603,8 @@ I use \LaTeX extensively compared to Markdown (although Org is still preferred f
   :ensure auctex
   :ensure auctex-latexmk
   :ensure latex-preview-pane
-  :mode ("\\.tex\\'" "\\.xtx\\'")
+  :mode (("\\.tex\\'" . LaTeX-mode)
+         ("\\.xtx\\'" . LaTeX-mode))
   :init
   (setq reftex-default-bibliography '("~/Dropbox/references/references.bib"))
   :config
@@ -4059,23 +4040,24 @@ Finally, we make sure we bind some keys and add some [[http://orgmode.org/manual
   ;; More of those nice template expansion
   (add-to-list 'org-structure-template-alist '("A" "#+DATE: ?"))
   (add-to-list 'org-structure-template-alist '("C" "#+BEGIN_CENTER\n?\n#+END_CENTER\n"))
-  (add-to-list 'org-structure-template-alist '("D" "#+BEGIN_FSTREE ?"))
+  (add-to-list 'org-structure-template-alist '("D" "#+DESCRIPTION: ?"))
   (add-to-list 'org-structure-template-alist '("E" "#+BEGIN_EXAMPLE\n?\n#+END_EXAMPLE\n"))
   (add-to-list 'org-structure-template-alist '("H" "#+LATEX_HEADER: ?"))
   (add-to-list 'org-structure-template-alist '("I" ":INTERLEAVE_PDF: ?"))
   (add-to-list 'org-structure-template-alist '("L" "#+BEGIN_LaTeX\n?\n#+END_LaTeX"))
   (add-to-list 'org-structure-template-alist '("N" "#+BEGIN_NOTES\n?\n#+END_NOTES"))
+  (add-to-list 'org-structure-template-alist '("S" "#+SUBTITLE: ?"))
   (add-to-list 'org-structure-template-alist '("T" ":DRILL_CARD_TYPE: twosided"))
   (add-to-list 'org-structure-template-alist '("V" "#+BEGIN_VERSE\n?\n#+END_VERSE"))
   (add-to-list 'org-structure-template-alist '("X" "#+EXCLUDE_TAGS: reveal?"))
   (add-to-list 'org-structure-template-alist '("a" "#+AUTHOR: ?"))
-  (add-to-list 'org-structure-template-alist '("b" ":reveal_background_trans: ?"))
   (add-to-list 'org-structure-template-alist '("c" "#+CAPTION: ?"))
-  (add-to-list 'org-structure-template-alist '("d" "#+OPTIONS: toc:nil num:nil tags:nil todo:nil p:nil pri:nil stat:nil c:nil d:nil\n#+LATEX_HEADER: \\usepackage[margin=2cm]{geometry}\n"))
+  (add-to-list 'org-structure-template-alist '("d" "#+OPTIONS: ':nil *:t -:t ::t <:t H:3 \\n:nil ^:t arch:headline\n#+OPTIONS: author:t email:nil e:t f:t inline:t creator:comment d:nil date:t\n#+OPTIONS: toc:nil num:nil tags:nil todo:nil p:nil pri:nil stat:nil c:nil d:nil\n#+LATEX_HEADER: \\usepackage[margin=2cm]{geometry}\n#+LANGUAGE: en\n\n#+REVEAL_TRANS: slide\n#+REVEAL_THEME: white\n#+REVEAL_ROOT: file:///Users/sriramkswamy/Documents/workspace/github/reveal.js\n\n?"))
   (add-to-list 'org-structure-template-alist '("e" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC"))
-  (add-to-list 'org-structure-template-alist '("f" "#+ATTR_REVEAL: :frag ?"))
+  (add-to-list 'org-structure-template-alist '("f" "#+FILETAGS: ?"))
   (add-to-list 'org-structure-template-alist '("h" "#+BEGIN_HTML\n?\n#+END_HTML\n"))
   (add-to-list 'org-structure-template-alist '("i" "#+INTERLEAVE_PDF: ?"))
+  (add-to-list 'org-structure-template-alist '("k" "#+KEYWORDS: ?"))
   (add-to-list 'org-structure-template-alist '("l" "#+LABEL: ?"))
   (add-to-list 'org-structure-template-alist '("m" "#+BEGIN_SRC matlab\n?\n#+END_SRC"))
   (add-to-list 'org-structure-template-alist '("n" "#+NAME: ?"))
@@ -4324,17 +4306,26 @@ I also want to diminish it so that it doesn't show up on the modeline.
 
 ** Org extra exports
 
-Org already has a pretty good [[*Exporting][exporting system]] but we can make it better. It can export to a [[https://github.com/yjwen/org-reveal][a reveal.js presentation]] or a HTML page with [[https://github.com/marsmining/ox-twbs][bootstrap]]. I write my Org file as a notes file most of the time and hence exporting it directly into a presentation would look horrible. Therefore, I have created a couple of template expansions =<x= and =<X= which export only headlines tagged as "reveal" and ignore all headlines tagged as "reveal" respectively. When none of the template expansions are used, the use of tags mean nothing as they won't interfere with anything. However, when one of them is used, you can export the headlines tailor made to be a PPT or export the ones tailor made to be a notes file. Sweet!
+Org already has a pretty good [[*Exporting][exporting system]] but we can make it better. It can export to a [[https://github.com/yjwen/org-reveal][a reveal.js presentation]] or a HTML page with [[https://github.com/marsmining/ox-twbs][bootstrap]]. I write my Org file as a notes file most of the time and hence exporting it directly into a presentation would look horrible. Therefore, I have created a couple of template expansions =<x= and =<X= which export only headlines tagged as "reveal" and ignore all headlines tagged as "[[http://lab.hakim.se/reveal-js/#/][reveal]]" respectively. When none of the template expansions are used, the use of tags mean nothing as they won't interfere with anything. However, when one of them is used, you can export the headlines tailor made to be a PPT or export the ones tailor made to be a notes file. Sweet!
+
+I also have support to export org files to [[https://github.com/larstvei/ox-gfm][Github Flavored Markdown]] (now part of the [[*Org contributed packages][org contributed packages]]), [[https://github.com/masayuko/ox-nikola][nikola rst]] (which is the [[https://getnikola.com/blog/][static site generator]] I use for my [[http://sriramkswamy.github.io/chuffedtobits/][blog]]), [[https://github.com/masayuko/ox-rst][restructured text]] (mainly for writing Python documentation with [[http://www.sphinx-doc.org/en/stable/rest.html][sphinx]]) and [[https://github.com/marsmining/ox-twbs][twitter bootstrap format]]. All these extra export engines can be loaded by [[*Functions][invoking the custom loading function]] using the [[*Activate minor modes][menu to activate minor modes]]. Why do I do this? I have no interest in learning the hundreds of fragmented syntax out there. I use Org for everything.
 
 #+BEGIN_SRC emacs-lisp
 (use-package ox-reveal
   :ensure t
   :defer t
   :init
-  (setq org-reveal-title-slide-template
-        "<h1>%t</h1>\n<h3>%a</h3>")
-  (setq org-reveal-root "file:///Users/sriramkswamy/Documents/workspace/github/reveal.js"))
+  (setq org-reveal-title-slide-template "<h1>%t</h1>\n<h3>%a</h3>")
+  (setq org-reveal-root "file:///Users/sriramkswamy/Documents/workspace/github/reveal.js")
+  (use-package htmlize
+    :ensure t))
 (use-package ox-twbs
+  :ensure t
+  :defer t)
+(use-package ox-nikola
+  :ensure t
+  :defer t)
+(use-package ox-rst
   :ensure t
   :defer t)
 #+END_SRC
@@ -4363,7 +4354,7 @@ We can make Org mode a little more pretty by having [[https://github.com/sabof/o
 
 ** Org reference
 
-[[https://github.com/jkitchin/org-ref][Org ref]] is an amazing package. The best introduction to this package is a [[https://www.youtube.com/watch?v=2t925KRBbFc][video by the author himself]].
+[[https://github.com/jkitchin/org-ref][Org ref]] is an amazing package. The best introduction to this package is a [[https://www.youtube.com/watch?v=2t925KRBbFc][video by the author himself]]. Note that this is not loaded in the beginning and has to be manually loaded  by [[*Functions][invoking the custom loading function]] using the [[*Activate minor modes][menu to activate minor modes]].
 
 #+BEGIN_SRC emacs-lisp
 (use-package org-ref
@@ -4385,9 +4376,12 @@ Org mode and packages take a while to load. This command, when invoked, loads a 
 (defun sk/org-custom-load ()
   (interactive)
   (require 'org)
-  ;; Some exports
+  ;; Some extra exports
   (require 'ox-reveal)
   (require 'ox-twbs)
+  (require 'ox-rst)
+  (require 'ox-nikola)
+  (require 'ox-gfm)
   ;; References and citation
   (require 'org-ref)
   (require 'org-ref-latex)
@@ -4860,13 +4854,13 @@ Then, we have the actual hydra.
 (defhydra sk/hydra-org-template (:color blue
                                  :hint nil)
   "
- ^One liners^                      ^Blocks^                                        ^Properties^
-------------------------------------------------------------------------------------------------------------------------------------
- _a_: author        _i_: interleave  _C_: center      _m_: matlab src    _V_: verse      _r_: properties        _<_: insert '<'
- _A_: date          _l_: label       _D_: dir tree    _p_: python src    _d_: defaults   _I_: interleave        _q_: quit
- _c_: caption       _n_: name        _e_: elisp src   _Q_: quote         _L_: latex      _T_: drill two-sided
- _f_: reveal frag   _o_: options     _E_: example     _s_: src           _x_: export     _b_: reveal trans
- _H_: latex header  _t_: title       _h_: html        _v_: verbatim      _X_: noexport
+ ^One liners^                                        ^Blocks^                                        ^Properties^
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+ _a_: author        _i_: interleave  _D_: description    _C_: center      _p_: python src    _d_: defaults   _r_: properties        _<_: insert '<'
+ _A_: date          _l_: label       _S_: subtitle       _e_: elisp src   _Q_: quote         _L_: latex      _I_: interleave        _q_: quit
+ _c_: caption       _n_: name        _k_: keywords       _E_: example     _s_: src           _x_: export     _T_: drill two-sided
+ _f_: filetags      _o_: options                       _h_: html        _v_: verbatim      _X_: noexport
+ _H_: latex header  _t_: title                         _m_: matlab src  _V_: verse
  "
   ("a" (hot-expand "<a"))
   ("A" (hot-expand "<A"))
@@ -4884,10 +4878,12 @@ Then, we have the actual hydra.
   ("e" (hot-expand "<e"))
   ("E" (hot-expand "<E"))
   ("h" (hot-expand "<h"))
+  ("k" (hot-expand "<k"))
   ("m" (hot-expand "<m"))
   ("p" (hot-expand "<p"))
   ("Q" (hot-expand "<q"))
   ("s" (hot-expand "<s"))
+  ("S" (hot-expand "<S"))
   ("v" (hot-expand "<v"))
   ("V" (hot-expand "<V"))
   ("x" (hot-expand "<x"))
@@ -5255,7 +5251,8 @@ Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "c b" "background process")
+  "c" "code prefix"
+  "c b" "background code")
 #+END_SRC
 
 ** Emacs Lisp
@@ -6448,7 +6445,7 @@ Which key modal explanation
 
 I am still on the fence about helm and [[http://oremacs.com/2015/04/16/ivy-mode/][ivy]] but [[*Org reference][org-ref]] requires this package. Since I have to install it anyway, I might as well make it a little better to suit my needs. Also, helm, for now, has many more features such as multiple sources, multiple selection, etc. It also has many plugins that take advantage of these features. I find ivy much simpler and I like it. Here, I have taken the help of [[https://github.com/hatschipuh/helm-better-defaults][this article]] to make it a little more usable (for me). Note that helm already has nice integration with [[*Mode line][spaceline]] and this configuration adds (and requires) support for [[*Flx][Flx]] and [[*Smex][Smex]].
 
-For now, I have made it look and act the way I want it too. The additional packages also help significantly. Therefore, I'm going to stick with Helm for now. This is a huge configuration.
+For now, I have made it look and act the way I want it too. The additional packages also help significantly. Therefore, I'm going to stick with Helm for now. This is a huge configuration. It has tons of additional packages [[https://github.com/EphramPerdition/helm-fuzzier][that make helm act fuzzier]], [[https://github.com/PythonNut/helm-flx][improves Flx support]], [[https://github.com/syohex/emacs-helm-ag][adds project wide search and replace]], [[https://github.com/ShingoFukuyama/helm-swoop][adds buffer wide search and replace]], [[https://github.com/bbatsov/helm-projectile][integrates with projectile]], [[https://github.com/emacs-helm/helm-descbinds][searches through bindings]], [[*Snippets][selecting snippets]], [[https://github.com/istib/helm-aws][manages AWS instances]], [[https://github.com/lesharris/helm-circe][adds IRC support]], [[https://github.com/yasuyk/helm-flycheck][integrates with error checking]], [[https://github.com/pronobis/helm-flyspell][helps in correcting spelling mistakes]] and [[https://github.com/abo-abo/helm-make][selecting a Makefile target]].
 
 #+BEGIN_SRC emacs-lisp
 (use-package helm
@@ -6459,8 +6456,9 @@ For now, I have made it look and act the way I want it too. The additional packa
          ("M-y" . helm-show-kill-ring)
          ("C-x C-f" . helm-find-files)
          ("C-x 8" . helm-ucs))
-  :bind* (("C-z B" . helm-resume)
+  :bind* (("C-z SPC h r" . helm-resume)
           ("C-z SPC r" . helm-recentf)
+          ("C-z I" . helm-apropos)
           ("C-z SPC i" . helm-locate)
           ("C-z SPC I" . helm-info-at-point)
           ("C-z t" . helm-semantic-or-imenu))
@@ -6532,7 +6530,7 @@ For now, I have made it look and act the way I want it too. The additional packa
 
   (defvar bottom-buffers nil
     "List of bottom buffers before helm session.
-    Its element is a pair of `buffer-name' and `mode-line-format'.")
+      Its element is a pair of `buffer-name' and `mode-line-format'.")
 
   (defun bottom-buffers-init ()
     (setq-local mode-line-format (default-value 'mode-line-format))
@@ -6542,14 +6540,12 @@ For now, I have made it look and act the way I want it too. The additional packa
                    collect (with-current-buffer (window-buffer w)
                              (cons (buffer-name) mode-line-format)))))
 
-
   (defun bottom-buffers-hide-mode-line ()
     (setq-default cursor-in-non-selected-windows nil)
     (mapc (lambda (elt)
             (with-current-buffer (car elt)
               (setq-local mode-line-format nil)))
           bottom-buffers))
-
 
   (defun bottom-buffers-show-mode-line ()
     (setq-default cursor-in-non-selected-windows t)
@@ -6563,7 +6559,6 @@ For now, I have made it look and act the way I want it too. The additional packa
   (defun helm-keyboard-quit-advice (orig-func &rest args)
     (bottom-buffers-show-mode-line)
     (apply orig-func args))
-
 
   (add-hook 'helm-before-initialize-hook #'bottom-buffers-init)
   (add-hook 'helm-after-initialize-hook #'bottom-buffers-hide-mode-line)
@@ -6592,7 +6587,6 @@ For now, I have made it look and act the way I want it too. The additional packa
                           :background (face-attribute 'helm-selection :background)
                           :box nil
                           :height 0.1)))
-
 
   (add-hook 'helm-before-initialize-hook 'helm-toggle-header-line)
 
@@ -6631,12 +6625,10 @@ For now, I have made it look and act the way I want it too. The additional packa
   (defun helm-smex-items ()
     (smex-convert-for-ido smex-cache))
 
-
   (defun helm-smex-execute-command (command-name)
     (unwind-protect
         (execute-extended-command helm-current-prefix-arg command-name)
       (smex-rank (intern command-name))))
-
 
   (defvar helm-smex-source
     '((name . "smex")
@@ -6646,7 +6638,6 @@ For now, I have made it look and act the way I want it too. The additional packa
       (candidate-transformer . flx-helm-candidate-transformer)
       (action . (("execute command" . helm-smex-execute-command)
                  ("execute command with prefix" . helm-smex-execute-command-with-prefix)))))
-
 
   (defun flx-helm-candidate-transformer (candidates)
     "hairy but works"
@@ -6681,8 +6672,6 @@ For now, I have made it look and act the way I want it too. The additional packa
         (helm-smex-flx-highlight-and-format res)
         res)))
 
-
-
   (defun helm-smex-flx-highlight-and-format (res)
     (cl-loop for item in res
              for score = (cddr item)
@@ -6699,8 +6688,6 @@ For now, I have made it look and act the way I want it too. The additional packa
                  (setcar item (flx-propertize (car item) score)))
                (setcdr item (cadr item)))))
 
-
-
   (defun helm-smex/run (arg)
     (interactive "P")
     (if arg
@@ -6708,8 +6695,6 @@ For now, I have made it look and act the way I want it too. The additional packa
     (let ((helm--mode-line-display-prefarg t))
       (helm :sources 'helm-smex-source
             :buffer "*helm-smex*")))
-
-
 
   (defun helm-smex-execute-command-with-prefix (command-name)
     (unwind-protect
@@ -6741,13 +6726,16 @@ For now, I have made it look and act the way I want it too. The additional packa
   ;; to search in projects - the silver searcher
   (use-package helm-ag
     :ensure t
-    :bind* (("C-z g s" . helm-do-ag-project-root)))
+    :bind* (("C-z g s" . helm-do-ag-project-root)
+            ("C-z g e" . helm-do-ag)))
 
   ;; to search in files
   (use-package helm-swoop
     :ensure t
     :bind (("C-s" . helm-swoop-without-pre-input))
-    :bind* (("C-z #" . helm-swoop))
+    :bind* (("C-z #" . helm-swoop)
+            ("C-z g E" . helm-multi-swoop-all)
+            ("C-z g O" . helm-multi-swoop-org))
     :init
     (setq helm-swoop-split-with-multiple-windows nil
           helm-swoop-split-direction 'split-window-vertically
@@ -6763,16 +6751,61 @@ For now, I have made it look and act the way I want it too. The additional packa
   ;; to describe bindings
   (use-package helm-descbinds
     :ensure t
-    :bind* (("C-z SPC ?" . helm-descbinds))))
+    :bind* (("C-z SPC ?" . helm-descbinds)))
+
+  ;; Control AWS via helm
+  (use-package helm-aws
+    :ensure t
+    :bind* (("C-z SPC h w" . helm-aws)))
+
+  ;; Control circe with helm
+  (use-package helm-circe
+    :ensure t
+    :bind* (("C-z SPC h i" . helm-circe)
+            ("C-z SPC h I" . helm-circe-new-activity)))
+
+  ;; List errors with helm
+  (use-package helm-flycheck
+    :ensure t
+    :bind* (("C-z SPC l" . helm-flycheck)))
+
+  ;; Flyspell errors with helm
+  (use-package helm-flyspell
+    :ensure t
+    :bind* (("C-z SPC h s" . sk/helm-correct-word))
+    :config
+    (defun sk/helm-correct-word ()
+      (interactive)
+      (save-excursion
+        (sk/flyspell-goto-previous-error 1)
+        (helm-flyspell-correct))))
+
+  ;; Select snippets with helm
+  (use-package helm-c-yasnippet
+    :ensure t
+    :bind (("C-o" . helm-yas-complete))
+    :bind* (("C-," . helm-yas-create-snippet-on-region)
+            ("C-<escape>" . helm-yas-visit-snippet-file)))
+
+  ;; Helm integration with ispell
+  (use-package helm-make
+    :ensure t
+    :init
+    (setq helm-make-build-directory "build")
+    :bind* (("C-z SPC h m" . helm-make-projectile)
+            ("C-z SPC h M" . helm-make))))
 #+END_SRC
 
 ** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "B" "C-z B")
 (modalka-define-kbd "t" "C-z t")
+(modalka-define-kbd "I" "C-z I")
 (modalka-define-kbd "#" "C-z #")
+(modalka-define-kbd "g E" "C-z g E")
+(modalka-define-kbd "g O" "C-z g O")
 (modalka-define-kbd "g s" "C-z g s")
+(modalka-define-kbd "g e" "C-z g e")
 (modalka-define-kbd "SPC t" "C-c C-e")
 (modalka-define-kbd "SPC g" "C-c C-f")
 (modalka-define-kbd "SPC r" "C-z SPC r")
@@ -6780,26 +6813,47 @@ For now, I have made it look and act the way I want it too. The additional packa
 (modalka-define-kbd "SPC i" "C-z SPC i")
 (modalka-define-kbd "SPC p" "C-z SPC p")
 (modalka-define-kbd "SPC b" "C-z SPC b")
+(modalka-define-kbd "SPC h r" "C-z SPC h r")
+(modalka-define-kbd "SPC h w" "C-z SPC h w")
+(modalka-define-kbd "SPC h i" "C-z SPC h i")
+(modalka-define-kbd "SPC h I" "C-z SPC h I")
+(modalka-define-kbd "SPC h s" "C-z SPC h s")
+(modalka-define-kbd "SPC h m" "C-z SPC h m")
+(modalka-define-kbd "SPC h M" "C-z SPC h M")
+(modalka-define-kbd "SPC h d" "C-z SPC h d")
 #+END_SRC
 
 Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "B" "previous helm"
+  "SPC h r" "resume last helm "
   "t" "tags/func in buffer"
   "#" "swoop at point"
+  "g E" "extract word from buffers"
+  "g O" "search all open org files"
   "g s" "search project"
+  "g e" "extract word from dir"
   "SPC r" "recent files"
   "SPC I" "information at point"
   "SPC i" "spotlight"
   "SPC p" "switch projects"
-  "SPC t" "swoop edit mode"
+  "SPC t" "helm edit mode"
   "SPC g" "helm follow"
-  "SPC b" "bibliography")
+  "SPC b" "bibliography"
+  "SPC h" "helm prefix"
+  "SPC h w" "AWS instances"
+  "SPC h i" "circe with helm"
+  "SPC h I" "circe new activity"
+  "SPC h s" "helm spelling"
+  "SPC h m" "make in project"
+  "SPC h M" "make in current dir"
+  "SPC h d" "helm docset search")
 #+END_SRC
 
 ** Hydras
+
+*** Default helm functionality
 
 These are some additional helm functionality as a hydra
 
@@ -6827,14 +6881,14 @@ These are some additional helm functionality as a hydra
   ("q" nil :color blue))
 #+END_SRC
 
-*** Key binding
+**** Key binding
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
   ("C-z SPC y" . sk/hydra-helm/body))
 #+END_SRC
 
-**** Modal binding
+***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "SPC y" "C-z SPC y")
@@ -6859,7 +6913,7 @@ Read [[http://xkcd.com][xkcd]] in Emacs.
 (use-package xkcd
   :ensure t
   :commands (xkcd)
-  :bind* (("C-c v g x" . xkcd)))
+  :bind* (("C-z g x" . xkcd)))
 #+END_SRC
 
 *** Modal binding
@@ -7061,7 +7115,7 @@ Also, note that you can redefine any of the functions that have been defined her
 
 * Key bindings
 
-This section documents the key bindings that help to find other key-bindings. Note that when you search the keybindings, the Emacs ones are shown by default. These tend to be of the form =C-z g g=. The corresponding Modalka mode binding is just =g g=. So Pressing =C-z= or pressing =Esc= to toggle Modalka mode produces similar results (except, of course, you need not press =Esc= every time you want to use a binding in Modalka mode)
+This section documents the key bindings that help to find other key-bindings. Note that when you search the keybindings, the Emacs ones are shown by default. These tend to be of the form =C-z g g=. The corresponding Modalka mode binding is just =g g=. So Pressing =C-z= or pressing =Esc= to toggle Modalka mode produces similar results (except, of course, you need not press =Esc= every time you want to use a binding in Modalka mode). Also note that [[*Snippets][Snippets]] is one place where modal bindings are not enforced because I want to write fast and not switch often when I'm writing.
 
 ** Meta
 
@@ -7071,6 +7125,7 @@ This section documents the key bindings that help to find other key-bindings. No
 | ?                     | C-z ?               | Show top level bindings |
 | SPC ?                 | C-h b               | search bindings         |
 | M                     | C-u                 | universal argument      |
+| E                     | C-g                 | exit anything in Emacs  |
 
 ** Quitting and restarting Emacs
 
@@ -7117,6 +7172,7 @@ This section documents the key bindings that help to find other key-bindings. No
 | <                     | C-z <               | backward global change                    |
 | %                     | C-z %               | [[*Go to matching parenthesis, like Vi][matching parenthesis]]                      |
 | +                     | C-z +               | [[*Bookmark navigation][Bookmark navigation]]                       |
+| B                     | C-z B               | switch to the buffer edited last          |
 | z                     | C-l                 | recenter screen                           |
 | #                     | C-z #               | [[*Highlight symbol][highlight symbol]] like this                |
 | g r                   | C-z g r             | remove all highlighted symbols            |
@@ -7126,7 +7182,7 @@ This section documents the key bindings that help to find other key-bindings. No
 | w                     | C-z w               | [[*Window navigation][Window navigation hydra]]                   |
 | g w                   | C-x 3               | split window vertically                   |
 | g W                   | C-x 2               | split window horizontally                 |
-| t                     | C-z t               | [[*Ivy, Counsel and Swiper][tags in buffer]]                            |
+| t                     | C-z t               | [[*Helm][tags in buffer]]                            |
 | T                     | C-x T               | [[*Tags based navigation][tags based navigation in project]]          |
 | g t                   | C-z g t             | create tags for code                      |
 | g T                   | C-z g T             | update tags for code                      |
@@ -7156,9 +7212,6 @@ This section documents the key bindings that help to find other key-bindings. No
 | SPC f                 | C-x C-f             | find file browsing by directory           |
 | SPC p                 | C-z SPC p           | switch between projects                   |
 | SPC d                 | C-z SPC d           | find files in project based on [[*Projectile][Projectile]] |
-| SPC r                 | C-z SPC r           | [[*Ivy, Counsel and Swiper][recent files]]                              |
-| SPC t                 | C-z SPC t           | [[*Ivy, Counsel and Swiper][spotlight search]]                          |
-| SPC y                 | C-z SPC y           | [[*Ivy, Counsel and Swiper][locate]]                                    |
 | SPC n                 | C-z SPC n           | [[*Neotree][directory navigation]]                      |
 | Z                     | C-z Z               | zoom in to the current window             |
 | SPC q                 | C-x 0               | close current window                      |
@@ -7247,12 +7300,8 @@ This section documents the key bindings that help to find other key-bindings. No
 | m S (region binding)  | C-z m S             | skip previous like this              |
 | \                     | C-c C-c             | simulate C-c C-c                     |
 | SPC w                 | C-x C-s             | save                                 |
-| SPC i                 | C-c C-e             | edit the result inline               |
-| SPC h                 | C-c C-w             | refile work                          |
-| SPC o                 | C-c C-k             | abort                                |
-| SPC g                 | C-c C-f             | follow mode                          |
+| SPC o                 | C-c C-k             | org abort                            |
 | SPC s                 | C-z SPC s           | [[*Visual replace][visual replace word in buffer/region]] |
-| S                     | C-z S               | [[*Snippets][snippet select]]                       |
 | g R                   | C-z g R             | [[*Rename the current buffer and the file associated with it][rename current file]]                  |
 | g K                   | C-z g K             | [[*Delete the current buffer and the file associated with it][delete current file]]                  |
 | g y                   | C-z g y             | [[*Copy the current file path][copy current file path]]               |
@@ -7367,8 +7416,28 @@ This section documents the key bindings that help to find other key-bindings. No
 | SPC U                 | C-z SPC U           | Eshell horizontal split     |
 | SPC m                 | C-z SPC m           | [[*Multi term][Multi term vertical split]]   |
 | SPC M                 | C-z SPC M           | Multi term horizontal split |
-| B                     | C-z B               | [[*Ivy, Counsel and Swiper][ivy resume]]                  |
-| SPC b                 | C-z SPC b           | ivy bibtex                  |
+
+** Helm
+
+#+NAME: helm
+| Modalka state binding | Emacs state binding | Function                                |
+|-----------------------+---------------------+-----------------------------------------|
+| I                     | C-z I               | helm apropos                            |
+| SPC i                 | C-z SPC i           | [[*Helm][spotlight search]]                        |
+| SPC g                 | C-c C-f             | helm follow selection                   |
+| SPC t                 | C-c C-e             | helm swoop edit mode                    |
+| SPC b                 | C-z SPC b           | helm bibtex                             |
+| SPC y                 | C-z SPC y           | [[*Hydras][helm extra commands]]                     |
+| SPC r                 | C-z SPC r           | recent files                            |
+| SPC h r               | C-z SPC h r         | helm resume                             |
+| SPC h s               | C-z SPC h s         | helm correct spelling                   |
+| SPC h w               | C-z SPC h w         | manage [[https://aws.amazon.com/cli/][AWS via aws cli]]                  |
+| SPC h i               | C-z SPC h i         | manage [[*IRC][IRC]] buffers                      |
+| SPC h I               | C-z SPC h I         | checkout new IRC activity               |
+| SPC h m               | C-z SPC h m         | select a [[https://en.wikipedia.org/wiki/Makefile][Makefile]] target                |
+| SPC h M               | C-z SPC h M         | select a Makefile target in current dir |
+| SPC h d               | C-z SPC h d         | [[*Code documentation][search a code documentation]]             |
+| SPC h D               | C-z SPC h D         | code documentation at point             |
 
 ** Fun
 

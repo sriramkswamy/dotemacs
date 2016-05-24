@@ -7292,6 +7292,8 @@ This section documents the key bindings that help to find other key-bindings. No
 | SPC X                 | C-h v               | find help regarding variable              |
 | SPC v                 | C-z SPC v           | view configuration file                   |
 | SPC j                 | M-x                 | find command                              |
+| SPC y                 | C-z SPC y           | [[*Code documentation][browse code documentation]] with docset     |
+| SPC Y                 | C-z SPC Y           | browse code docs immediately              |
 
 ** Editing
 
@@ -7495,22 +7497,33 @@ This section documents the key bindings that help to find other key-bindings. No
 #+NAME: helm
 | Modalka state binding | Emacs state binding | Function                                |
 |-----------------------+---------------------+-----------------------------------------|
-| I                     | C-z I               | helm apropos                            |
 | SPC i                 | C-z SPC i           | [[*Helm][spotlight search]]                        |
 | SPC g                 | C-c C-f             | helm follow selection                   |
 | SPC t                 | C-c C-e             | helm swoop edit mode                    |
 | SPC b                 | C-z SPC b           | helm bibtex                             |
 | SPC y                 | C-z SPC y           | [[*Hydras][helm extra commands]]                     |
 | SPC r                 | C-z SPC r           | recent files                            |
+| SPC h a               | C-z SPC h a         | helm apropos                            |
 | SPC h r               | C-z SPC h r         | helm resume                             |
 | SPC h s               | C-z SPC h s         | helm correct spelling                   |
 | SPC h w               | C-z SPC h w         | manage [[https://aws.amazon.com/cli/][AWS via aws cli]]                  |
-| SPC h i               | C-z SPC h i         | manage [[*IRC][IRC]] buffers                      |
-| SPC h I               | C-z SPC h I         | checkout new IRC activity               |
+| SPC h j               | C-z SPC h j         | manage [[*IRC][IRC]] buffers                      |
+| SPC h J               | C-z SPC h J         | checkout new IRC activity               |
 | SPC h m               | C-z SPC h m         | select a [[https://en.wikipedia.org/wiki/Makefile][Makefile]] target                |
 | SPC h M               | C-z SPC h M         | select a Makefile target in current dir |
-| SPC h d               | C-z SPC h d         | [[*Code documentation][search a code documentation]]             |
-| SPC h D               | C-z SPC h D         | code documentation at point             |
+| SPC h c               | C-z SPC h c         | color picker                            |
+| SPC h d               | C-z SPC h d         | man pages                               |
+| SPC h e               | C-z SPC h e         | run external command                    |
+| SPC h f               | C-z SPC h f         | use the 'find' utility                  |
+| SPC h h               | C-z SPC h h         | read the helm documentation             |
+| SPC h i               | C-z SPC h i         | information at point                    |
+| SPC h k               | C-z SPC h k         | calculate expression                    |
+| SPC h l               | C-z SPC h l         | all marks                               |
+| SPC h p               | C-z SPC h p         | emacs processes                         |
+| SPC h R               | C-z SPC h R         | build regexp interactively              |
+| SPC h t               | C-z SPC h t         | system 'top' utility                    |
+| SPC h u               | C-z SPC h u         | use the surfraw utility                 |
+| SPC h x               | C-z SPC h x         | select the xfont                        |
 
 ** Fun
 

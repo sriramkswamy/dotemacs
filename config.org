@@ -610,6 +610,7 @@ There are some pretty nice default functions that are unbound. I use the =bind-k
   ("C-z g M" . delete-frame)
   ("C-z g n" . select-frame-by-name)
   ("C-z g N" . set-frame-name)
+  ("C-z B"   . mode-line-other-buffer)
   ("C-z ="   . indent-region)
   ("C-z g f" . find-file-at-point)
   ("C-z g u" . downcase-region)
@@ -774,7 +775,8 @@ This is based on Vi-style but only slightly and uses the default movement keys i
 (modalka-define-kbd "M" "C-u")
 (modalka-define-kbd "(" "M-a")
 (modalka-define-kbd ")" "M-e")
-(modalka-define-kbd "I" "C-M-i")
+(modalka-define-kbd "E" "C-g")
+(modalka-define-kbd "B" "C-z B")
 (modalka-define-kbd "d" "C-S-w")
 (modalka-define-kbd "H" "C-x <")
 (modalka-define-kbd "L" "C-x >")
@@ -784,12 +786,12 @@ This is based on Vi-style but only slightly and uses the default movement keys i
 (modalka-define-kbd "." "C-z .")
 (modalka-define-kbd "?" "C-z ?")
 (modalka-define-kbd "v" "C-SPC")
+(modalka-define-kbd "V" "C-z V")
 (modalka-define-kbd "=" "C-z =")
 (modalka-define-kbd "R" "C-z R")
 (modalka-define-kbd "X" "C-x C-x")
 (modalka-define-kbd "+" "C-x r m")
 (modalka-define-kbd "\\" "C-c C-c")
-(modalka-define-kbd "V" "C-z V")
 #+END_SRC
 
 **** Global prefixed keys
@@ -900,6 +902,8 @@ I have added the which key explanations for everything at once because it is eas
     "$" "end of line"
     "(" "start of sentence"
     ")" "end of sentence"
+    "E" "exit anything"
+    "B" "previous buffer"
     "G" "end of file"
     "/" "search"
     "d" "delete selection"
@@ -908,7 +912,6 @@ I have added the which key explanations for everything at once because it is eas
     "P" "paste history"
     "x" "delete char"
     "D" "delete rest of line"
-    "I" "insert completion"
     "M" "modify argument"
     "z" "scroll center/top/bot"
     "Z" "zoom into window"
@@ -2250,14 +2253,12 @@ Which key modal explanation
   :ensure t
   :commands (yas-insert-snippet yas-new-snippet)
   :bind (("C-o" . yas-insert-snippet))
-  :bind* (("C-z S" . yas-insert-snippet)
-          ("C-," . yas-new-snippet)
+  :bind* (("C-," . yas-new-snippet)
           ("C-<escape>" . yas-visit-snippet-file))
-  :init
-  (setq yas/triggers-in-field t); Enable nested triggering of snippets
-  (setq yas-prompt-functions '(yas-completing-prompt))
   :diminish (yas-minor-mode . "γ")
   :config
+  (setq yas/triggers-in-field t); Enable nested triggering of snippets
+  (setq yas-prompt-functions '(yas-completing-prompt))
   (yas-global-mode)
   (use-package auto-yasnippet
     :ensure t
@@ -2274,19 +2275,6 @@ Also, I don't want to trigger snippets when I'm in shell. So, let's turn it off.
   (setq yas-dont-activate t))
 (add-hook 'term-mode-hook 'sk/force-yasnippet-off)
 (add-hook 'shell-mode-hook 'sk/force-yasnippet-off)
-#+END_SRC
-
-*** Modal binding
-
-#+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "S" "C-z S")
-#+END_SRC
-
-Which key modal explanation
-
-#+BEGIN_SRC emacs-lisp
-(which-key-add-key-based-replacements
-  "S" "snippets")
 #+END_SRC
 
 ** Custom functions
@@ -3177,11 +3165,12 @@ Which key modal explanation
 [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Rectangles.html][Rectangle edit mode]] is one of the unique features of Emacs (and Vim) and this hydra makes it easier to interact with it.
 
 #+BEGIN_SRC emacs-lisp
-(defhydra sk/hydra-rectangle (:color red
+(defhydra sk/hydra-rectangle (:pre (rectangle-mark-mode 1)
+                              :color pink
                               :hint nil)
   "
- _p_: paste   _c_: clear    _r_: replace
- _y_: copy    _o_: open     _i_: insert
+ _p_: paste   _r_: replace  _I_: insert
+ _y_: copy    _o_: open     _R_: reset
  _d_: kill    _n_: number   _q_: quit
 "
   ("h" backward-char nil)
@@ -3190,33 +3179,36 @@ Which key modal explanation
   ("j" next-line nil)
   ("y" copy-rectangle-as-kill)
   ("d" kill-rectangle nil)
-  ("c" clear-rectangle nil)
+  ("x" clear-rectangle nil)
   ("o" open-rectangle nil)
   ("p" yank-rectangle)
   ("r" string-rectangle)
-  ("i" string-insert-rectangle)
   ("n" rectangle-number-lines)
-  ("q" nil :color blue))
+  ("I" string-insert-rectangle)
+  ("R" (if (region-active-p)
+           (deactivate-mark)
+         (rectangle-mark-mode 1)) nil)
+  ("q" keyboard-quit :color blue))
 #+END_SRC
 
 **** Key binding
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z E" . sk/hydra-rectangle/body))
+  ("C-z V" . sk/hydra-rectangle/body))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "E" "C-z E")
+(modalka-define-kbd "V" "C-z V")
 #+END_SRC
 
 Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "E" "edit rectangle region")
+  "V" "edit rectangle region")
 #+END_SRC
 
 *** Macros
@@ -4060,7 +4052,7 @@ Finally, we make sure we bind some keys and add some [[http://orgmode.org/manual
   (add-to-list 'org-structure-template-alist '("X" "#+EXCLUDE_TAGS: reveal?"))
   (add-to-list 'org-structure-template-alist '("a" "#+AUTHOR: ?"))
   (add-to-list 'org-structure-template-alist '("c" "#+CAPTION: ?"))
-  (add-to-list 'org-structure-template-alist '("d" "#+OPTIONS: ':nil *:t -:t ::t <:t H:3 \\n:nil ^:t arch:headline\n#+OPTIONS: author:t email:nil e:t f:t inline:t creator:comment d:nil date:t\n#+OPTIONS: toc:nil num:nil tags:nil todo:nil p:nil pri:nil stat:nil c:nil d:nil\n#+LATEX_HEADER: \\usepackage[margin=2cm]{geometry}\n#+LANGUAGE: en\n\n#+REVEAL: split\n#+ATTR_REVEAL: :frag (appear)\n#+REVEAL_TRANS: slide\n#+REVEAL_THEME: serif\n#+REVEAL_HLEVEL: 3\n#+REVEAL_ROOT: file:///Users/sriramkswamy/Documents/workspace/github/reveal.js\n\n?"))
+  (add-to-list 'org-structure-template-alist '("d" "#+OPTIONS: ':nil *:t -:t ::t <:t H:3 \\n:nil ^:t arch:headline\n#+OPTIONS: author:t email:nil e:t f:t inline:t creator:comment d:nil date:t\n#+OPTIONS: toc:nil num:nil tags:nil todo:nil p:nil pri:nil stat:nil c:nil d:nil\n#+LATEX_HEADER: \\usepackage[margin=2cm]{geometry}\n#+LANGUAGE: en\n\n#+REVEAL_TRANS: slide\n#+REVEAL_THEME: white\n#+REVEAL_ROOT: file:///Users/sriramkswamy/Documents/workspace/github/reveal.js\n\n?"))
   (add-to-list 'org-structure-template-alist '("e" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC"))
   (add-to-list 'org-structure-template-alist '("f" "#+FILETAGS: ?"))
   (add-to-list 'org-structure-template-alist '("h" "#+BEGIN_HTML\n?\n#+END_HTML\n"))
@@ -4389,6 +4381,7 @@ Org mode and packages take a while to load. This command, when invoked, loads a 
   (require 'ox-twbs)
   (require 'ox-rst)
   (require 'ox-nikola)
+  (require 'ox-gfm)
   ;; References and citation
   (require 'org-ref)
   (require 'org-ref-latex)
@@ -6463,8 +6456,9 @@ For now, I have made it look and act the way I want it too. The additional packa
          ("M-y" . helm-show-kill-ring)
          ("C-x C-f" . helm-find-files)
          ("C-x 8" . helm-ucs))
-  :bind* (("C-z B" . helm-resume)
+  :bind* (("C-z SPC h r" . helm-resume)
           ("C-z SPC r" . helm-recentf)
+          ("C-z I" . helm-apropos)
           ("C-z SPC i" . helm-locate)
           ("C-z SPC I" . helm-info-at-point)
           ("C-z t" . helm-semantic-or-imenu))
@@ -6790,8 +6784,7 @@ For now, I have made it look and act the way I want it too. The additional packa
   (use-package helm-c-yasnippet
     :ensure t
     :bind (("C-o" . helm-yas-complete))
-    :bind* (("C-z S" . helm-yas-complete)
-            ("C-," . helm-yas-create-snippet-on-region)
+    :bind* (("C-," . helm-yas-create-snippet-on-region)
             ("C-<escape>" . helm-yas-visit-snippet-file)))
 
   ;; Helm integration with ispell
@@ -6806,8 +6799,8 @@ For now, I have made it look and act the way I want it too. The additional packa
 ** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "B" "C-z B")
 (modalka-define-kbd "t" "C-z t")
+(modalka-define-kbd "I" "C-z I")
 (modalka-define-kbd "#" "C-z #")
 (modalka-define-kbd "g E" "C-z g E")
 (modalka-define-kbd "g O" "C-z g O")
@@ -6820,6 +6813,7 @@ For now, I have made it look and act the way I want it too. The additional packa
 (modalka-define-kbd "SPC i" "C-z SPC i")
 (modalka-define-kbd "SPC p" "C-z SPC p")
 (modalka-define-kbd "SPC b" "C-z SPC b")
+(modalka-define-kbd "SPC h r" "C-z SPC h r")
 (modalka-define-kbd "SPC h w" "C-z SPC h w")
 (modalka-define-kbd "SPC h i" "C-z SPC h i")
 (modalka-define-kbd "SPC h I" "C-z SPC h I")
@@ -6833,7 +6827,7 @@ Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "B" "previous helm"
+  "SPC h r" "resume last helm "
   "t" "tags/func in buffer"
   "#" "swoop at point"
   "g E" "extract word from buffers"
@@ -7131,6 +7125,7 @@ This section documents the key bindings that help to find other key-bindings. No
 | ?                     | C-z ?               | Show top level bindings |
 | SPC ?                 | C-h b               | search bindings         |
 | M                     | C-u                 | universal argument      |
+| E                     | C-g                 | exit anything in Emacs  |
 
 ** Quitting and restarting Emacs
 
@@ -7177,6 +7172,7 @@ This section documents the key bindings that help to find other key-bindings. No
 | <                     | C-z <               | backward global change                    |
 | %                     | C-z %               | [[*Go to matching parenthesis, like Vi][matching parenthesis]]                      |
 | +                     | C-z +               | [[*Bookmark navigation][Bookmark navigation]]                       |
+| B                     | C-z B               | switch to the buffer edited last          |
 | z                     | C-l                 | recenter screen                           |
 | #                     | C-z #               | [[*Highlight symbol][highlight symbol]] like this                |
 | g r                   | C-z g r             | remove all highlighted symbols            |
@@ -7306,7 +7302,6 @@ This section documents the key bindings that help to find other key-bindings. No
 | SPC w                 | C-x C-s             | save                                 |
 | SPC o                 | C-c C-k             | org abort                            |
 | SPC s                 | C-z SPC s           | [[*Visual replace][visual replace word in buffer/region]] |
-| S                     | C-z S               | [[*Snippets][snippet select]]                       |
 | g R                   | C-z g R             | [[*Rename the current buffer and the file associated with it][rename current file]]                  |
 | g K                   | C-z g K             | [[*Delete the current buffer and the file associated with it][delete current file]]                  |
 | g y                   | C-z g y             | [[*Copy the current file path][copy current file path]]               |
@@ -7427,13 +7422,14 @@ This section documents the key bindings that help to find other key-bindings. No
 #+NAME: helm
 | Modalka state binding | Emacs state binding | Function                                |
 |-----------------------+---------------------+-----------------------------------------|
-| B                     | C-z B               | helm resume                             |
+| I                     | C-z I               | helm apropos                            |
 | SPC i                 | C-z SPC i           | [[*Helm][spotlight search]]                        |
 | SPC g                 | C-c C-f             | helm follow selection                   |
 | SPC t                 | C-c C-e             | helm swoop edit mode                    |
 | SPC b                 | C-z SPC b           | helm bibtex                             |
 | SPC y                 | C-z SPC y           | [[*Hydras][helm extra commands]]                     |
 | SPC r                 | C-z SPC r           | recent files                            |
+| SPC h r               | C-z SPC h r         | helm resume                             |
 | SPC h s               | C-z SPC h s         | helm correct spelling                   |
 | SPC h w               | C-z SPC h w         | manage [[https://aws.amazon.com/cli/][AWS via aws cli]]                  |
 | SPC h i               | C-z SPC h i         | manage [[*IRC][IRC]] buffers                      |

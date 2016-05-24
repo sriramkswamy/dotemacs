@@ -1358,23 +1358,23 @@ Which key modal explanation
 #+BEGIN_SRC emacs-lisp
 (use-package dash-at-point
   :ensure t
-  :bind* (("C-z SPC h d" . dash-at-point-with-docset)
-          ("C-z SPC h D" . dash-at-point)))
+  :bind* (("C-z SPC y" . dash-at-point-with-docset)
+          ("C-z SPC Y" . dash-at-point)))
 #+END_SRC
 
 *** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "SPC h d" "C-z SPC h d")
-(modalka-define-kbd "SPC h D" "C-z SPC h D")
+(modalka-define-kbd "SPC y" "C-z SPC y")
+(modalka-define-kbd "SPC Y" "C-z SPC Y")
 #+END_SRC
 
 Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "SPC h d" "documentation prompt"
-  "SPC h D" "documentation at point")
+  "SPC y" "documentation prompt"
+  "SPC Y" "documentation at point")
 #+END_SRC
 
 ** Back button
@@ -6538,8 +6538,20 @@ For now, I have made it look and act the way I want it too. The additional packa
   :bind* (("C-z SPC h r" . helm-resume)
           ("C-z SPC r" . helm-recentf)
           ("C-z SPC h a" . helm-apropos)
+          ("C-z SPC h c" . helm-colors)
+          ("C-z SPC h R" . helm-regexp)
+          ("C-z SPC h u" . helm-surfraw)
+          ("C-z SPC h t" . helm-top)
+          ("C-z SPC h p" . helm-list-emacs-process)
+          ("C-z SPC h f" . helm-find)
+          ("C-z SPC h k" . helm-calcul-expression)
+          ("C-z SPC h i" . helm-info-at-point)
+          ("C-z SPC h d" . helm-man-woman)
+          ("C-z SPC h h" . helm-documentation)
+          ("C-z SPC h e" . helm-run-external-command)
+          ("C-z SPC h l" . helm-all-mark-rings)
+          ("C-z SPC h x" . helm-select-xfont)
           ("C-z SPC i" . helm-locate)
-          ("C-z SPC I" . helm-info-at-point)
           ("C-z t" . helm-semantic-or-imenu))
   :bind (:map helm-map
               ("<return>" . helm-maybe-exit-minibuffer)
@@ -6579,6 +6591,11 @@ For now, I have made it look and act the way I want it too. The additional packa
   ;; require basic config
   (require 'helm-config)
   (helm-mode 1)
+
+  ;; use silver searcher when available
+  (when (executable-find "ag-grep")
+    (setq helm-grep-default-command "ag-grep -Hn --no-group --no-color %e %p %f"
+          helm-grep-default-recurse-command "ag-grep -H --no-group --no-color %e %p %f"))
 
   ;; Fuzzy matching for everything
   (setq helm-M-x-fuzzy-match t
@@ -6840,8 +6857,8 @@ For now, I have made it look and act the way I want it too. The additional packa
   ;; Control circe with helm
   (use-package helm-circe
     :ensure t
-    :bind* (("C-z SPC h i" . helm-circe)
-            ("C-z SPC h I" . helm-circe-new-activity)))
+    :bind* (("C-z SPC h j" . helm-circe)
+            ("C-z SPC h J" . helm-circe-new-activity)))
 
   ;; List errors with helm
   (use-package helm-flycheck
@@ -6895,11 +6912,23 @@ For now, I have made it look and act the way I want it too. The additional packa
 (modalka-define-kbd "SPC h r" "C-z SPC h r")
 (modalka-define-kbd "SPC h w" "C-z SPC h w")
 (modalka-define-kbd "SPC h i" "C-z SPC h i")
-(modalka-define-kbd "SPC h I" "C-z SPC h I")
+(modalka-define-kbd "SPC h c" "C-z SPC h c")
+(modalka-define-kbd "SPC h R" "C-z SPC h R")
+(modalka-define-kbd "SPC h u" "C-z SPC h u")
+(modalka-define-kbd "SPC h t" "C-z SPC h t")
+(modalka-define-kbd "SPC h p" "C-z SPC h p")
+(modalka-define-kbd "SPC h f" "C-z SPC h f")
+(modalka-define-kbd "SPC h k" "C-z SPC h k")
+(modalka-define-kbd "SPC h d" "C-z SPC h d")
+(modalka-define-kbd "SPC h h" "C-z SPC h h")
+(modalka-define-kbd "SPC h e" "C-z SPC h e")
+(modalka-define-kbd "SPC h l" "C-z SPC h l")
+(modalka-define-kbd "SPC h x" "C-z SPC h x")
+(modalka-define-kbd "SPC h j" "C-z SPC h j")
+(modalka-define-kbd "SPC h J" "C-z SPC h J")
 (modalka-define-kbd "SPC h s" "C-z SPC h s")
 (modalka-define-kbd "SPC h m" "C-z SPC h m")
 (modalka-define-kbd "SPC h M" "C-z SPC h M")
-(modalka-define-kbd "SPC h d" "C-z SPC h d")
 #+END_SRC
 
 Which key modal explanation
@@ -6913,7 +6942,6 @@ Which key modal explanation
   "g s" "search project"
   "g e" "extract word from dir"
   "SPC r" "recent files"
-  "SPC I" "information at point"
   "SPC i" "spotlight"
   "SPC p" "switch projects"
   "SPC t" "helm edit mode"
@@ -6923,61 +6951,24 @@ Which key modal explanation
   "SPC h r" "resume last helm "
   "SPC h a" "helm apropos"
   "SPC h w" "AWS instances"
-  "SPC h i" "circe with helm"
-  "SPC h I" "circe new activity"
+  "SPC h i" "information at point"
+  "SPC h c" "color picker"
+  "SPC h R" "build regexp"
+  "SPC h u" "surfraw"
+  "SPC h t" "system processes"
+  "SPC h p" "emacs processes"
+  "SPC h f" "find file"
+  "SPC h k" "calc expression"
+  "SPC h d" "manual docs"
+  "SPC h h" "helm docs"
+  "SPC h e" "external command"
+  "SPC h l" "mark rings"
+  "SPC h x" "select font"
+  "SPC h j" "circe chat"
+  "SPC h J" "circe new activity"
   "SPC h s" "helm spelling"
   "SPC h m" "make in project"
-  "SPC h M" "make in current dir"
-  "SPC h d" "helm docset search")
-#+END_SRC
-
-** Hydras
-
-*** Default helm functionality
-
-These are some additional helm functionality as a hydra
-
-#+BEGIN_SRC emacs-lisp
-(defhydra sk/hydra-helm (:color blue
-                         :hint nil)
-  "
- _c_: colors    _t_: top           _f_: find    _b_: marks       _q_: quit
- _r_: regexp    _e_: ext process   _x_: xfont   _m_: man pages
- _s_: surfraw   _p_: emacs proc    _y_: calc    _h_: helm docs
-  "
-  ("c" helm-colors)
-  ("r" helm-regexp)
-  ("s" helm-surfraw)
-  ("t" helm-top)
-  ("p" helm-list-emacs-process)
-  ("f" helm-find)
-  ("x" helm-select-xfont)
-  ("y" helm-calcul-expression)
-  ("b" helm-all-mark-rings)
-  ("m" helm-man-woman)
-  ("h" helm-documentation)
-  ("e" helm-run-external-command)
-  ("q" nil :color blue))
-#+END_SRC
-
-**** Key binding
-
-#+BEGIN_SRC emacs-lisp
-(bind-keys*
-  ("C-z SPC y" . sk/hydra-helm/body))
-#+END_SRC
-
-***** Modal binding
-
-#+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "SPC y" "C-z SPC y")
-#+END_SRC
-
-Which key modal explanation
-
-#+BEGIN_SRC emacs-lisp
-(which-key-add-key-based-replacements
-  "SPC y" "helm extras")
+  "SPC h M" "make in current dir")
 #+END_SRC
 
 * Fun

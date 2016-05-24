@@ -1,6 +1,0 @@
-# -*- mode: snippet; require-final-newline: nil -*-
-# name: Exclude tags
-# key: extags
-# binding: direct-keybinding
-# --
-#+EXCLUDE_TAGS: $0

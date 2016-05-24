@@ -2,4 +2,4 @@
 # name: subscript
 # key: sub
 # --
-_{$1}$0
+{ $1 }_{ $2 }

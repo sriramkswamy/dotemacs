@@ -49,3 +49,8 @@ GTAGS
 /config.el
 /config.html
 /helm-doc.org
+/images/*
+/js/hammer.js
+js/*
+/slide_config.js
+/theme/*

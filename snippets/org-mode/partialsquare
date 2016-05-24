@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: partial square
+# key: p2
+# --
+\partial{ $1 }^2

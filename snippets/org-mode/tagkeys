@@ -1,6 +1,6 @@
 # -*- mode: snippet; require-final-newline: nil -*-
 # name: Tags keys
-# key: tagkeys
+# key: otak
 # binding: direct-keybinding
 # --
 ${1:Tag name}(${2:key})

@@ -1035,7 +1035,7 @@ This section contains all the packages and custom functions I use for navigating
 
 ** Smex
 
-[[https://github.com/nonsequitur/smex][smex]] is an amazing program that helps order the =M-x= commands based on usage and recent items. [[*Ivy][Ivy]] has the option of using it internally when it finds this package. Let's install it.
+[[https://github.com/nonsequitur/smex][smex]] is an amazing program that helps order the =M-x= commands based on usage and recent items. Let's install it.
 
 #+BEGIN_SRC emacs-lisp
 (use-package smex
@@ -1346,6 +1346,32 @@ Which key modal explanation
   "C p" "perspective prev"
   "C i" "perspective import"
   "C C" "perspective last")
+#+END_SRC
+
+** Code documentation
+
+[[https://kapeli.com/dash][Dash]] is a nice little app that stores documents offline for reference. Let's [[https://github.com/stanaka/dash-at-point][bring that to Emacs]].
+
+#+BEGIN_SRC emacs-lisp
+(use-package dash-at-point
+  :ensure t
+  :bind* (("C-z SPC h d" . dash-at-point-with-docset)
+          ("C-z SPC h D" . dash-at-point)))
+#+END_SRC
+
+*** Modal binding
+
+#+BEGIN_SRC emacs-lisp
+(modalka-define-kbd "SPC h d" "C-z SPC h d")
+(modalka-define-kbd "SPC h D" "C-z SPC h D")
+#+END_SRC
+
+Which key modal explanation
+
+#+BEGIN_SRC emacs-lisp
+(which-key-add-key-based-replacements
+  "SPC h d" "documentation prompt"
+  "SPC h D" "documentation at point")
 #+END_SRC
 
 ** Back button
@@ -2217,18 +2243,27 @@ Which key modal explanation
 
 ** Snippets
 
-[[https://github.com/capitaomorte/yasnippet][Yasnippets]] gives you the snippets functionality. It also comes bundled with a lot of pre-configured snippets and is extensible via Emacs Lisp.
+[[https://github.com/capitaomorte/yasnippet][Yasnippets]] gives you the snippets functionality. It also comes bundled with a lot of pre-configured snippets and is extensible via Emacs Lisp. This following code also includes [[https://github.com/abo-abo/auto-yasnippet][auto-yasnippet]] to create temporary snippets and save them later if need be. It acts as a good compliment to the Yasnippets package. Also, this is the only package where many of the bindings have no equivalent in modal mode because it makes no sense. Just press the "trigger" (by visiting the snippet file using =C-<escape>=) and "TAB" to expand and jump. If you don't use snippets all that much, then seeing the list of all snippets by pressing "S" in modal mode should be good enough. Furthermore, I have set =C-o= to list all snippets in Emacs state but this maybe changed by mode specific keybindings.
 
 #+BEGIN_SRC emacs-lisp
 (use-package yasnippet
   :ensure t
   :commands (yas-insert-snippet yas-new-snippet)
-  :bind* (("C-z S" . yas-insert-snippet))
+  :bind (("C-o" . yas-insert-snippet))
+  :bind* (("C-z S" . yas-insert-snippet)
+          ("C-," . yas-new-snippet)
+          ("C-<escape>" . yas-visit-snippet-file))
   :init
+  (setq yas/triggers-in-field t); Enable nested triggering of snippets
   (setq yas-prompt-functions '(yas-completing-prompt))
   :diminish (yas-minor-mode . "γ")
   :config
-  (yas-global-mode))
+  (yas-global-mode)
+  (use-package auto-yasnippet
+    :ensure t
+    :bind* (("C-<return>" . aya-create)
+            ("C-." . aya-persist-snippet)
+            ("C-=" . aya-expand))))
 #+END_SRC
 
 Also, I don't want to trigger snippets when I'm in shell. So, let's turn it off.
@@ -2623,7 +2658,7 @@ Which key modal explanation
 
 *** Open line
 
-The built-in command for open-line (triggered by =C-o=) is weird. I prefer Vi style opening of lines. This creates a new line either above or below accordingly and puts you there. I open lines above more than below and hence, prefer that to be a single-key binding.
+The built-in command for open-line (triggered by =C-o=) is weird. I prefer Vi style opening of lines. This creates a new line either above or below accordingly and puts you there. I open lines above more than below and hence, prefer that to be a single-key binding. I feel that this kind of opening lines is sensible enough that it has to be the default ([[*Split window and move][like window splitting]]).
 
 #+BEGIN_SRC emacs-lisp
 ;; Open line above
@@ -2639,17 +2674,15 @@ The built-in command for open-line (triggered by =C-o=) is weird. I prefer Vi st
 
 **** Key binding
 
-This is also one of the few cases where I bind a function to the defaults. I feel this is sensible enough that it has to be the default ([[*Split window and move][like window splitting]]).
-
 #+BEGIN_SRC emacs-lisp
-(bind-keys
-  ("C-o" . sk/open-line-above))
+(bind-keys*
+  ("M-o" . sk/open-line-above))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "O" "C-o")
+(modalka-define-kbd "O" "M-o")
 #+END_SRC
 
 Which key modal explanation
@@ -4015,23 +4048,24 @@ Finally, we make sure we bind some keys and add some [[http://orgmode.org/manual
   ;; More of those nice template expansion
   (add-to-list 'org-structure-template-alist '("A" "#+DATE: ?"))
   (add-to-list 'org-structure-template-alist '("C" "#+BEGIN_CENTER\n?\n#+END_CENTER\n"))
-  (add-to-list 'org-structure-template-alist '("D" "#+BEGIN_FSTREE ?"))
+  (add-to-list 'org-structure-template-alist '("D" "#+DESCRIPTION: ?"))
   (add-to-list 'org-structure-template-alist '("E" "#+BEGIN_EXAMPLE\n?\n#+END_EXAMPLE\n"))
   (add-to-list 'org-structure-template-alist '("H" "#+LATEX_HEADER: ?"))
   (add-to-list 'org-structure-template-alist '("I" ":INTERLEAVE_PDF: ?"))
   (add-to-list 'org-structure-template-alist '("L" "#+BEGIN_LaTeX\n?\n#+END_LaTeX"))
   (add-to-list 'org-structure-template-alist '("N" "#+BEGIN_NOTES\n?\n#+END_NOTES"))
+  (add-to-list 'org-structure-template-alist '("S" "#+SUBTITLE: ?"))
   (add-to-list 'org-structure-template-alist '("T" ":DRILL_CARD_TYPE: twosided"))
   (add-to-list 'org-structure-template-alist '("V" "#+BEGIN_VERSE\n?\n#+END_VERSE"))
   (add-to-list 'org-structure-template-alist '("X" "#+EXCLUDE_TAGS: reveal?"))
   (add-to-list 'org-structure-template-alist '("a" "#+AUTHOR: ?"))
-  (add-to-list 'org-structure-template-alist '("b" ":reveal_background_trans: ?"))
   (add-to-list 'org-structure-template-alist '("c" "#+CAPTION: ?"))
-  (add-to-list 'org-structure-template-alist '("d" "#+OPTIONS: toc:nil num:nil tags:nil todo:nil p:nil pri:nil stat:nil c:nil d:nil\n#+LATEX_HEADER: \\usepackage[margin=2cm]{geometry}\n"))
+  (add-to-list 'org-structure-template-alist '("d" "#+OPTIONS: ':nil *:t -:t ::t <:t H:3 \\n:nil ^:t arch:headline\n#+OPTIONS: author:t email:nil e:t f:t inline:t creator:comment d:nil date:t\n#+OPTIONS: toc:nil num:nil tags:nil todo:nil p:nil pri:nil stat:nil c:nil d:nil\n#+LATEX_HEADER: \\usepackage[margin=2cm]{geometry}\n#+LANGUAGE: en\n\n#+REVEAL: split\n#+ATTR_REVEAL: :frag (appear)\n#+REVEAL_TRANS: slide\n#+REVEAL_THEME: serif\n#+REVEAL_HLEVEL: 3\n#+REVEAL_ROOT: file:///Users/sriramkswamy/Documents/workspace/github/reveal.js\n\n?"))
   (add-to-list 'org-structure-template-alist '("e" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC"))
-  (add-to-list 'org-structure-template-alist '("f" "#+ATTR_REVEAL: :frag ?"))
+  (add-to-list 'org-structure-template-alist '("f" "#+FILETAGS: ?"))
   (add-to-list 'org-structure-template-alist '("h" "#+BEGIN_HTML\n?\n#+END_HTML\n"))
   (add-to-list 'org-structure-template-alist '("i" "#+INTERLEAVE_PDF: ?"))
+  (add-to-list 'org-structure-template-alist '("k" "#+KEYWORDS: ?"))
   (add-to-list 'org-structure-template-alist '("l" "#+LABEL: ?"))
   (add-to-list 'org-structure-template-alist '("m" "#+BEGIN_SRC matlab\n?\n#+END_SRC"))
   (add-to-list 'org-structure-template-alist '("n" "#+NAME: ?"))
@@ -4280,17 +4314,26 @@ I also want to diminish it so that it doesn't show up on the modeline.
 
 ** Org extra exports
 
-Org already has a pretty good [[*Exporting][exporting system]] but we can make it better. It can export to a [[https://github.com/yjwen/org-reveal][a reveal.js presentation]] or a HTML page with [[https://github.com/marsmining/ox-twbs][bootstrap]]. I write my Org file as a notes file most of the time and hence exporting it directly into a presentation would look horrible. Therefore, I have created a couple of template expansions =<x= and =<X= which export only headlines tagged as "reveal" and ignore all headlines tagged as "reveal" respectively. When none of the template expansions are used, the use of tags mean nothing as they won't interfere with anything. However, when one of them is used, you can export the headlines tailor made to be a PPT or export the ones tailor made to be a notes file. Sweet!
+Org already has a pretty good [[*Exporting][exporting system]] but we can make it better. It can export to a [[https://github.com/yjwen/org-reveal][a reveal.js presentation]] or a HTML page with [[https://github.com/marsmining/ox-twbs][bootstrap]]. I write my Org file as a notes file most of the time and hence exporting it directly into a presentation would look horrible. Therefore, I have created a couple of template expansions =<x= and =<X= which export only headlines tagged as "reveal" and ignore all headlines tagged as "[[http://lab.hakim.se/reveal-js/#/][reveal]]" respectively. When none of the template expansions are used, the use of tags mean nothing as they won't interfere with anything. However, when one of them is used, you can export the headlines tailor made to be a PPT or export the ones tailor made to be a notes file. Sweet!
+
+I also have support to export org files to [[https://github.com/larstvei/ox-gfm][Github Flavored Markdown]] (now part of the [[*Org contributed packages][org contributed packages]]), [[https://github.com/masayuko/ox-nikola][nikola rst]] (which is the [[https://getnikola.com/blog/][static site generator]] I use for my [[http://sriramkswamy.github.io/chuffedtobits/][blog]]), [[https://github.com/masayuko/ox-rst][restructured text]] (mainly for writing Python documentation with [[http://www.sphinx-doc.org/en/stable/rest.html][sphinx]]) and [[https://github.com/marsmining/ox-twbs][twitter bootstrap format]]. All these extra export engines can be loaded by [[*Functions][invoking the custom loading function]] using the [[*Activate minor modes][menu to activate minor modes]]. Why do I do this? I have no interest in learning the hundreds of fragmented syntax out there. I use Org for everything.
 
 #+BEGIN_SRC emacs-lisp
 (use-package ox-reveal
   :ensure t
   :defer t
   :init
-  (setq org-reveal-title-slide-template
-        "<h1>%t</h1>\n<h3>%a</h3>")
-  (setq org-reveal-root "file:///Users/sriramkswamy/Documents/workspace/github/reveal.js"))
+  (setq org-reveal-title-slide-template "<h1>%t</h1>\n<h3>%a</h3>")
+  (setq org-reveal-root "file:///Users/sriramkswamy/Documents/workspace/github/reveal.js")
+  (use-package htmlize
+    :ensure t))
 (use-package ox-twbs
+  :ensure t
+  :defer t)
+(use-package ox-nikola
+  :ensure t
+  :defer t)
+(use-package ox-rst
   :ensure t
   :defer t)
 #+END_SRC
@@ -4319,7 +4362,7 @@ We can make Org mode a little more pretty by having [[https://github.com/sabof/o
 
 ** Org reference
 
-[[https://github.com/jkitchin/org-ref][Org ref]] is an amazing package. The best introduction to this package is a [[https://www.youtube.com/watch?v=2t925KRBbFc][video by the author himself]].
+[[https://github.com/jkitchin/org-ref][Org ref]] is an amazing package. The best introduction to this package is a [[https://www.youtube.com/watch?v=2t925KRBbFc][video by the author himself]]. Note that this is not loaded in the beginning and has to be manually loaded  by [[*Functions][invoking the custom loading function]] using the [[*Activate minor modes][menu to activate minor modes]].
 
 #+BEGIN_SRC emacs-lisp
 (use-package org-ref
@@ -4341,9 +4384,11 @@ Org mode and packages take a while to load. This command, when invoked, loads a 
 (defun sk/org-custom-load ()
   (interactive)
   (require 'org)
-  ;; Some exports
+  ;; Some extra exports
   (require 'ox-reveal)
   (require 'ox-twbs)
+  (require 'ox-rst)
+  (require 'ox-nikola)
   ;; References and citation
   (require 'org-ref)
   (require 'org-ref-latex)
@@ -4816,13 +4861,13 @@ Then, we have the actual hydra.
 (defhydra sk/hydra-org-template (:color blue
                                  :hint nil)
   "
- ^One liners^                      ^Blocks^                                        ^Properties^
-------------------------------------------------------------------------------------------------------------------------------------
- _a_: author        _i_: interleave  _C_: center      _m_: matlab src    _V_: verse      _r_: properties        _<_: insert '<'
- _A_: date          _l_: label       _D_: dir tree    _p_: python src    _d_: defaults   _I_: interleave        _q_: quit
- _c_: caption       _n_: name        _e_: elisp src   _Q_: quote         _L_: latex      _T_: drill two-sided
- _f_: reveal frag   _o_: options     _E_: example     _s_: src           _x_: export     _b_: reveal trans
- _H_: latex header  _t_: title       _h_: html        _v_: verbatim      _X_: noexport
+ ^One liners^                                        ^Blocks^                                        ^Properties^
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+ _a_: author        _i_: interleave  _D_: description    _C_: center      _p_: python src    _d_: defaults   _r_: properties        _<_: insert '<'
+ _A_: date          _l_: label       _S_: subtitle       _e_: elisp src   _Q_: quote         _L_: latex      _I_: interleave        _q_: quit
+ _c_: caption       _n_: name        _k_: keywords       _E_: example     _s_: src           _x_: export     _T_: drill two-sided
+ _f_: filetags      _o_: options                       _h_: html        _v_: verbatim      _X_: noexport
+ _H_: latex header  _t_: title                         _m_: matlab src  _V_: verse
  "
   ("a" (hot-expand "<a"))
   ("A" (hot-expand "<A"))
@@ -4840,10 +4885,12 @@ Then, we have the actual hydra.
   ("e" (hot-expand "<e"))
   ("E" (hot-expand "<E"))
   ("h" (hot-expand "<h"))
+  ("k" (hot-expand "<k"))
   ("m" (hot-expand "<m"))
   ("p" (hot-expand "<p"))
   ("Q" (hot-expand "<q"))
   ("s" (hot-expand "<s"))
+  ("S" (hot-expand "<S"))
   ("v" (hot-expand "<v"))
   ("V" (hot-expand "<V"))
   ("x" (hot-expand "<x"))
@@ -6405,7 +6452,7 @@ Which key modal explanation
 
 I am still on the fence about helm and [[http://oremacs.com/2015/04/16/ivy-mode/][ivy]] but [[*Org reference][org-ref]] requires this package. Since I have to install it anyway, I might as well make it a little better to suit my needs. Also, helm, for now, has many more features such as multiple sources, multiple selection, etc. It also has many plugins that take advantage of these features. I find ivy much simpler and I like it. Here, I have taken the help of [[https://github.com/hatschipuh/helm-better-defaults][this article]] to make it a little more usable (for me). Note that helm already has nice integration with [[*Mode line][spaceline]] and this configuration adds (and requires) support for [[*Flx][Flx]] and [[*Smex][Smex]].
 
-For now, I have made it look and act the way I want it too. The additional packages also help significantly. Therefore, I'm going to stick with Helm for now. This is a huge configuration. It has tons of additional packages [[https://github.com/EphramPerdition/helm-fuzzier][that make helm act fuzzier]], [[https://github.com/PythonNut/helm-flx][improves Flx support]], [[https://github.com/syohex/emacs-helm-ag][adds project wide search and replace]], [[https://github.com/ShingoFukuyama/helm-swoop][adds buffer wide search and replace]], [[https://github.com/bbatsov/helm-projectile][integrates with projectile]], [[https://github.com/emacs-helm/helm-descbinds][searches through bindings]], [[https://github.com/istib/helm-aws][manages AWS instances]], [[https://github.com/lesharris/helm-circe][adds IRC support]], [[https://github.com/yasuyk/helm-flycheck][integrates with error checking]], [[https://github.com/pronobis/helm-flyspell][helps in correcting spelling mistakes]] and [[https://github.com/abo-abo/helm-make][selecting a Makefile target]]. I am experimenting [[https://github.com/areina/helm-dash][with its ability to browse documentation]].
+For now, I have made it look and act the way I want it too. The additional packages also help significantly. Therefore, I'm going to stick with Helm for now. This is a huge configuration. It has tons of additional packages [[https://github.com/EphramPerdition/helm-fuzzier][that make helm act fuzzier]], [[https://github.com/PythonNut/helm-flx][improves Flx support]], [[https://github.com/syohex/emacs-helm-ag][adds project wide search and replace]], [[https://github.com/ShingoFukuyama/helm-swoop][adds buffer wide search and replace]], [[https://github.com/bbatsov/helm-projectile][integrates with projectile]], [[https://github.com/emacs-helm/helm-descbinds][searches through bindings]], [[*Snippets][selecting snippets]], [[https://github.com/istib/helm-aws][manages AWS instances]], [[https://github.com/lesharris/helm-circe][adds IRC support]], [[https://github.com/yasuyk/helm-flycheck][integrates with error checking]], [[https://github.com/pronobis/helm-flyspell][helps in correcting spelling mistakes]] and [[https://github.com/abo-abo/helm-make][selecting a Makefile target]].
 
 #+BEGIN_SRC emacs-lisp
 (use-package helm
@@ -6739,26 +6786,21 @@ For now, I have made it look and act the way I want it too. The additional packa
         (sk/flyspell-goto-previous-error 1)
         (helm-flyspell-correct))))
 
+  ;; Select snippets with helm
+  (use-package helm-c-yasnippet
+    :ensure t
+    :bind (("C-o" . helm-yas-complete))
+    :bind* (("C-z S" . helm-yas-complete)
+            ("C-," . helm-yas-create-snippet-on-region)
+            ("C-<escape>" . helm-yas-visit-snippet-file)))
+
   ;; Helm integration with ispell
   (use-package helm-make
     :ensure t
     :init
     (setq helm-make-build-directory "build")
     :bind* (("C-z SPC h m" . helm-make-projectile)
-            ("C-z SPC h M" . helm-make)))
-
-  ;; Helm dash browse documentation
-  (use-package helm-dash
-    :ensure t
-    :commands (helm-dash
-               helm-dash-install-docset
-               helm-dash-update-docset
-               helm-dash-activate-docset)
-    :bind* (("C-z SPC h d" . helm-dash))
-    :init
-    (setq helm-dash-min-length 2
-          helm-dash-docsets-path "~/docsets"
-          helm-dash-browser-func 'eww)))
+            ("C-z SPC h M" . helm-make))))
 #+END_SRC
 
 ** Modal binding
@@ -6865,153 +6907,6 @@ Which key modal explanation
   "SPC y" "helm extras")
 #+END_SRC
 
-*** Helm dash
-
-This is a hydra to use =helm-dash= effectively. Before defining the actual hydra, we need to define some helper functions.
-
-#+BEGIN_SRC emacs-lisp
-(defun sk/cpp-docset ()
-  "Activates the C++ docset for helm-dash"
-  (interactive)
-  (setq-local helm-dash-docsets '("Boost" "C++" "CMake")))
-(defun sk/c-docset ()
-  "Activates the C docset for helm-dash"
-  (interactive)
-  (setq-local helm-dash-docsets '("C" "CMake")))
-(defun sk/python3-data-docset ()
-  "Activates the python data science docset for helm-dash"
-  (interactive)
-  (setq-local helm-dash-docsets '("Python 3" "NumPy" "SciPy" "Matplotlib" "Pandas")))
-(defun sk/python3-web-docset ()
-  "Activates the python web docset for helm-dash"
-  (interactive)
-  (setq-local helm-dash-docsets '("Python 3" "Django" "Flask")))
-(defun sk/python2-data-docset ()
-  "Activates the python data science docset for helm-dash"
-  (interactive)
-  (setq-local helm-dash-docsets '("Python 2" "NumPy" "SciPy" "Matplotlib" "Pandas")))
-(defun sk/python2-web-docset ()
-  "Activates the python web docset for helm-dash"
-  (interactive)
-  (setq-local helm-dash-docsets '("Python 2" "Django" "Flask")))
-(defun sk/js-core-docset ()
-  "Activates the javscript core docsets for helm-dash"
-  (interactive)
-  (setq-local helm-dash-docsets '("JavaScript" "NodeJS" "React" "D3JS" "jQuery")))
-(defun sk/js-extras-docset ()
-  "Activates the javascript extras docsets for helm-dash"
-  (interactive)
-  (setq-local helm-dash-docsets '("AngularJS" "AWS_JavaScript" "Grunt" "TypeScript")))
-(defun sk/html-core-docset ()
-  "Activates the html/css core docsets for helm-dash"
-  (interactive)
-  (setq-local helm-dash-docsets '("HTML" "CSS" "Bootstrap 4" "Font_Awesome")))
-(defun sk/html-extras-docset ()
-  "Activates the html/css extras docsets for helm-dash"
-  (interactive)
-  (setq-local helm-dash-docsets '("Sass" "Haml" "SVG" "Less")))
-(defun sk/databases-docset ()
-  "Activates the databases docsets for helm-dash"
-  (interactive)
-  (setq-local helm-dash-docsets '("MongoDB" "Redis" "PostgreSQL" "SQLite" "MySQL")))
-(defun sk/servers-docset ()
-  "Activates the servers docsets for helm-dash"
-  (interactive)
-  (setq-local helm-dash-docsets '("Nginx" "Apache_HTTP_Server")))
-(defun sk/stats-docset ()
-  "Activates the stats docsets for helm-dash"
-  (interactive)
-  (setq-local helm-dash-docsets '("R" "Julia")))
-(defun sk/writing-docset ()
-  "Activates the writing docsets for helm-dash"
-  (interactive)
-  (setq-local helm-dash-docsets '("LaTeX" "Markdown")))
-(defun sk/matlab-docset ()
-  "Activates the matlab docsets for helm-dash"
-  (interactive)
-  (setq-local helm-dash-docsets '("MATLAB")))
-(defun sk/go-docset ()
-  "Activates the go docsets for helm-dash"
-  (interactive)
-  (setq-local helm-dash-docsets '("Go")))
-(defun sk/perl-docset ()
-  "Activates the perl docsets for helm-dash"
-  (interactive)
-  (setq-local helm-dash-docsets '("Perl")))
-(defun sk/lua-docset ()
-  "Activates the lua docsets for helm-dash"
-  (interactive)
-  (setq-local helm-dash-docsets '("Lua")))
-(defun sk/coffee-docset ()
-  "Activates the coffee docsets for helm-dash"
-  (interactive)
-  (setq-local helm-dash-docsets '("CoffeScript")))
-(defun sk/virtual-docset ()
-  "Activates the virtual docsets for helm-dash"
-  (interactive)
-  (setq-local helm-dash-docsets '("Vagrant" "Docker")))
-#+END_SRC
-
-Now, for the actual hydra
-
-#+BEGIN_SRC emacs-lisp
-(defhydra sk/hydra-of-dash (:color blue
-                            :hint nil)
-  "
- ^Dash^             ^Language specific packs^
- ^^^^^^^^^^^------------------------------------------------------------------------------------------------------------
- _i_: install       _c_: C++       _p3_: python 3 data    _j_: js-core        _S_: stats      _r_: perl      _q_: quit
- _u_: update        _C_: C         _P3_: python 3 web     _J_: js-extras      _w_: writing    _l_: lua
- _a_: activate      _d_: DB        _p2_: python 2 data    _h_: html-core      _m_: matlab     _f_: coffee
- _D_: deactivate    _s_: server    _P3_: python 2 web     _H_: html-extras    _g_: go         _v_: virtual
-"
-  ("i" helm-dash-install-docset)
-  ("u" helm-dash-update-docset)
-  ("a" helm-dash-activate-docset)
-  ("D" helm-dash-deactivate-docset)
-  ("c" sk/cpp-docset)
-  ("C" sk/c-docset)
-  ("d" sk/databases-docset)
-  ("s" sk/servers-docset)
-  ("p3" sk/python3-data-docset)
-  ("P3" sk/python3-web-docset)
-  ("p2" sk/python2-data-docset)
-  ("P2" sk/python2-web-docset)
-  ("j" sk/js-core-docset)
-  ("J" sk/js-extras-docset)
-  ("h" sk/html-core-docset)
-  ("H" sk/html-extras-docset)
-  ("S" sk/stats-docset)
-  ("w" sk/writing-docset)
-  ("m" sk/matlab-docset)
-  ("g" sk/go-docset)
-  ("r" sk/perl-docset)
-  ("l" sk/lua-docset)
-  ("f" sk/coffee-docset)
-  ("v" sk/virtual-docset)
-  ("q" nil :color blue))
-#+END_SRC
-
-**** Key binding
-
-#+BEGIN_SRC emacs-lisp
-(bind-keys*
-  ("C-z SPC h a" . sk/hydra-of-dash/body))
-#+END_SRC
-
-***** Modal binding
-
-#+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "SPC h a" "C-z SPC h a")
-#+END_SRC
-
-Which key modal explanation
-
-#+BEGIN_SRC emacs-lisp
-(which-key-add-key-based-replacements
-  "SPC h a" "activate dash functionality")
-#+END_SRC
-
 * Fun
 
 Emacs is fun!
@@ -7024,7 +6919,7 @@ Read [[http://xkcd.com][xkcd]] in Emacs.
 (use-package xkcd
   :ensure t
   :commands (xkcd)
-  :bind* (("C-c v g x" . xkcd)))
+  :bind* (("C-z g x" . xkcd)))
 #+END_SRC
 
 *** Modal binding
@@ -7226,7 +7121,7 @@ Also, note that you can redefine any of the functions that have been defined her
 
 * Key bindings
 
-This section documents the key bindings that help to find other key-bindings. Note that when you search the keybindings, the Emacs ones are shown by default. These tend to be of the form =C-z g g=. The corresponding Modalka mode binding is just =g g=. So Pressing =C-z= or pressing =Esc= to toggle Modalka mode produces similar results (except, of course, you need not press =Esc= every time you want to use a binding in Modalka mode)
+This section documents the key bindings that help to find other key-bindings. Note that when you search the keybindings, the Emacs ones are shown by default. These tend to be of the form =C-z g g=. The corresponding Modalka mode binding is just =g g=. So Pressing =C-z= or pressing =Esc= to toggle Modalka mode produces similar results (except, of course, you need not press =Esc= every time you want to use a binding in Modalka mode). Also note that [[*Snippets][Snippets]] is one place where modal bindings are not enforced because I want to write fast and not switch often when I'm writing.
 
 ** Meta
 
@@ -7291,7 +7186,7 @@ This section documents the key bindings that help to find other key-bindings. No
 | w                     | C-z w               | [[*Window navigation][Window navigation hydra]]                   |
 | g w                   | C-x 3               | split window vertically                   |
 | g W                   | C-x 2               | split window horizontally                 |
-| t                     | C-z t               | [[*Ivy, Counsel and Swiper][tags in buffer]]                            |
+| t                     | C-z t               | [[*Helm][tags in buffer]]                            |
 | T                     | C-x T               | [[*Tags based navigation][tags based navigation in project]]          |
 | g t                   | C-z g t             | create tags for code                      |
 | g T                   | C-z g T             | update tags for code                      |
@@ -7545,8 +7440,8 @@ This section documents the key bindings that help to find other key-bindings. No
 | SPC h I               | C-z SPC h I         | checkout new IRC activity               |
 | SPC h m               | C-z SPC h m         | select a [[https://en.wikipedia.org/wiki/Makefile][Makefile]] target                |
 | SPC h M               | C-z SPC h M         | select a Makefile target in current dir |
-| SPC h d               | C-z SPC h d         | search a code documentation             |
-| SPC h a               | C-z SPC h a         | [[*Helm dash][Helm dash functionality]]                 |
+| SPC h d               | C-z SPC h d         | [[*Code documentation][search a code documentation]]             |
+| SPC h D               | C-z SPC h D         | code documentation at point             |
 
 ** Fun
 

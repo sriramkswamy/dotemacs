@@ -3,4 +3,4 @@
 # key: sum
 # binding: direct-keybinding
 # --
-\sum_{$1}^{$2}
+\sum\limits_{ $1 }^{ $2 } { $3 }

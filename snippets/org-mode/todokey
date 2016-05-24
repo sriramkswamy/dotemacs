@@ -1,6 +1,6 @@
 # -*- mode: snippet; require-final-newline: nil -*-
 # name: TODO keys
-# key: todokeys
+# key: otok
 # binding: direct-keybinding
 # --
 ${1:TODO}(${2:key})

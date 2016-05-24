@@ -3,4 +3,4 @@
 # key: prod
 # binding: direct-keybinding
 # --
-\prod 
+\prod\limits_{ $1 }^{ $2 } { $3 }

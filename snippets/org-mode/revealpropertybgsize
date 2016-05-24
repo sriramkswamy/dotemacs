@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: reveal background size property
+# key: rbps
+# --
+:reveal_background_size: ${1:200}px

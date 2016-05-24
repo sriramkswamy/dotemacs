@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: rst title
+# key: stit
+# --
+#+ATTR_RST: :title ${1:title name}

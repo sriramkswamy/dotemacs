@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: tan square
+# key: tans
+# --
+\tan^2{ $1 }

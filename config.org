@@ -338,6 +338,14 @@ While we are in the topic of prompting, a lot of the default prompts ask for a =
 (subword-mode)
 #+END_SRC
 
+** Recenter screen
+
+Emacs lets you move the current line to the top, middle or bottom of the screen to get appropriate context. The default goes to the middle first. I prefer that the default goes to the top first. Let's change this.
+
+#+BEGIN_SRC emacs-lisp
+(setq recenter-positions '(top middle bottom))
+#+END_SRC
+
 ** Better wild cards in search
 
 The built-in incremental search is pretty good but the most common regex I type is =.*= which stands for anything. This makes sure space between words acts the same way. It's much better for me to use it now.
@@ -539,6 +547,20 @@ Eldoc mode is a mode to display documentation for languages in Emacs
   :bind* (("C-z ] s" . flyspell-goto-next-error)))
 #+END_SRC
 
+** Manage the built-in browser =eww=
+
+#+BEGIN_SRC emacs-lisp
+(use-package eww
+  :bind* (("C-z g ;" . eww)
+          ("C-z g :" . eww-browse-with-external-browser)
+          ("C-z g #" . eww-list-histories)
+          ("C-z g {" . eww-back-url)
+          ("C-z g }" . eww-forward-url))
+  :config
+  (progn
+    (add-hook 'eww-mode-hook 'visual-line-mode)))
+#+END_SRC
+
 ** Add a package to set the correct path
 
 Sometimes when opening the Mac Emacs.app via GUI, by clicking the button, it doesn't load all the proper utilities from the OS. This package fixes that.
@@ -618,11 +640,11 @@ There are some pretty nice default functions that are unbound. I use the =bind-k
   ("C-z g C" . capitalize-region)
   ("C-z R"   . overwrite-mode)
   ("C-z ."   . repeat)
-  ("C-z V"   . rectangle-mark-mode)
   ("C-z g j" . doc-view-next-page)
   ("C-z g k" . doc-view-previous-page)
   ("C-z : t" . emacs-init-time)
   ("C-z g q" . fill-paragraph)
+  ("C-z g @" . compose-mail)
   ("C-z SPC ?" . describe-bindings))
 #+END_SRC
 
@@ -709,6 +731,9 @@ As mentioned before, I like and prefer modal editing. I feel pressing modifier k
   (setq modalka-cursor-type 'box)
   :config
   (global-set-key (kbd "<escape>") #'modalka-mode)
+  (modalka-global-mode 1)
+  (add-to-list 'modalka-excluded-modes 'magit-status-mode)
+  (add-to-list 'modalka-excluded-modes 'magit-popup-mode)
   (which-key-add-key-based-replacements
     "C-z" "Modalka prefix"
     "C-z :" "extended prefix"
@@ -786,7 +811,6 @@ This is based on Vi-style but only slightly and uses the default movement keys i
 (modalka-define-kbd "." "C-z .")
 (modalka-define-kbd "?" "C-z ?")
 (modalka-define-kbd "v" "C-SPC")
-(modalka-define-kbd "V" "C-z V")
 (modalka-define-kbd "=" "C-z =")
 (modalka-define-kbd "R" "C-z R")
 (modalka-define-kbd "X" "C-x C-x")
@@ -812,6 +836,12 @@ This is based on Vi-style but only slightly and uses the default movement keys i
 (modalka-define-kbd "g q" "C-z g q")
 (modalka-define-kbd "g w" "C-x 3")
 (modalka-define-kbd "g W" "C-x 2")
+(modalka-define-kbd "g @" "C-z g @")
+(modalka-define-kbd "g ;" "C-z g ;")
+(modalka-define-kbd "g :" "C-z g :")
+(modalka-define-kbd "g #" "C-z g #")
+(modalka-define-kbd "g {" "C-z g {")
+(modalka-define-kbd "g }" "C-z g }")
 (modalka-define-kbd "g S" "C-j")
 #+END_SRC
 
@@ -846,8 +876,6 @@ This is based on Vi-style but only slightly and uses the default movement keys i
 
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "SPC j" "M-x")
-(modalka-define-kbd "SPC x" "C-h f")
-(modalka-define-kbd "SPC X" "C-h v")
 (modalka-define-kbd "SPC a" "C-x b")
 (modalka-define-kbd "SPC k" "C-x k")
 (modalka-define-kbd "SPC d" "C-x d")
@@ -926,7 +954,6 @@ I have added the which key explanations for everything at once because it is eas
     "?" "top level bindings"
     "v" "start selection"
     "R" "overwrite mode"
-    "V" "rectangle selection"
     "X" "exchange point and mark"
     "+" "set bookmark"
     "=" "indent region"
@@ -955,6 +982,12 @@ I have added the which key explanations for everything at once because it is eas
   "g w" "vertical split win"
   "g W" "horizontal split win"
   "g S" "split line"
+  "g @" "compose mail"
+  "g #" "list eww histories"
+  "g ;" "browse with eww"
+  "g :" "browse with external browser"
+  "g {" "eww back"
+  "g }" "eww forward"
   "g q" "format para")
 #+END_SRC
 
@@ -998,8 +1031,6 @@ I have added the which key explanations for everything at once because it is eas
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
   "SPC" "custom prefix"
-  "SPC x" "desc function"
-  "SPC X" "desc variable"
   "SPC ?" "describe bindings"
   "SPC j" "jump to cmd"
   "SPC f" "find file"
@@ -1295,10 +1326,10 @@ Which key modal explanation
 #+BEGIN_SRC emacs-lisp
 (use-package perspective
   :ensure t
-  :bind* (("C-z C s" . persp-switch)
+  :bind* (("C-z SPC p" . persp-switch)
           ("C-z C a" . persp-add-buffer)
           ("C-z C A" . persp-set-buffer)
-          ("C-z C b" . persp-switch-to-buffer)
+          ("C-z SPC s" . persp-switch-to-buffer)
           ("C-z C c" . persp-kill)
           ("C-z C r" . persp-rename)
           ("C-z C k" . persp-remove-buffer)
@@ -1320,10 +1351,10 @@ Which key modal explanation
 *** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "C s" "C-z C s")
+(modalka-define-kbd "SPC p" "C-z SPC p")
 (modalka-define-kbd "C a" "C-z C a")
 (modalka-define-kbd "C A" "C-z C A")
-(modalka-define-kbd "C b" "C-z C b")
+(modalka-define-kbd "SPC s" "C-z SPC s")
 (modalka-define-kbd "C c" "C-z C c")
 (modalka-define-kbd "C r" "C-z C r")
 (modalka-define-kbd "C k" "C-z C k")
@@ -1338,10 +1369,10 @@ Which key modal explanation
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
   "C" "config persp prefix"
-  "C s" "perspective switch"
+  "SPC p" "perspective switch"
   "C a" "perspective add buffer"
   "C A" "perspective set buffer"
-  "C b" "perspective switch to buffer"
+  "SPC s" "perspective switch to buffer"
   "C c" "perspective close"
   "C r" "perspective rename"
   "C k" "perspective remove buffer"
@@ -1616,7 +1647,7 @@ This is one of the few occasions I just replace it with my custom function becau
   ("C-x 3" . sk/split-right-and-move))
 #+END_SRC
 
-*** Turn the adjoining PDF
+*** Turn the adjoining PDF (only with 2 windows)
 
 #+BEGIN_SRC emacs-lisp
 (defun sk/other-pdf-next ()
@@ -1654,6 +1685,46 @@ Which key modal explanation
 (which-key-add-key-based-replacements
   "] d" "adjacent pdf next page"
   "[ d" "adjacent pdf prev page")
+#+END_SRC
+
+*** Turn the adjoining window (only with 2 windows)
+
+#+BEGIN_SRC emacs-lisp
+(defun sk/other-window-down ()
+  "Scrolls down in adjoining window"
+  (interactive)
+  (other-window 1)
+  (scroll-up-command)
+  (other-window 1))
+(defun sk/other-window-up ()
+  "Scrolls up in adjoining window"
+  (interactive)
+  (other-window 1)
+  (scroll-down-command)
+  (other-window 1))
+#+END_SRC
+
+**** Key binding
+
+#+BEGIN_SRC emacs-lisp
+(bind-keys*
+  ("C-z g ]" . sk/other-window-down)
+  ("C-z g [" . sk/other-window-up))
+#+END_SRC
+
+***** Modal binding
+
+#+BEGIN_SRC emacs-lisp
+(modalka-define-kbd "g ]" "C-z g ]")
+(modalka-define-kbd "g [" "C-z g [")
+#+END_SRC
+
+Which key modal explanation
+
+#+BEGIN_SRC emacs-lisp
+(which-key-add-key-based-replacements
+  "g ]" "adjacent pdf next page"
+  "g [" "adjacent pdf prev page")
 #+END_SRC
 
 *** Smarter start of line
@@ -2224,7 +2295,7 @@ This is the [[https://github.com/benma/visual-regexp.el][good old search and rep
 (use-package visual-regexp
   :ensure t
   :commands (vr/query-replace)
-  :bind* (("C-z SPC s" . vr/query-replace))
+  :bind* (("C-z SPC x" . vr/query-replace))
   :config
   (use-package visual-regexp-steroids
     :ensure t
@@ -2234,14 +2305,14 @@ This is the [[https://github.com/benma/visual-regexp.el][good old search and rep
 *** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "SPC s" "C-z SPC s")
+(modalka-define-kbd "SPC x" "C-z SPC x")
 #+END_SRC
 
 Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "SPC s" "replace word/expression")
+  "SPC x" "replace word/expression")
 #+END_SRC
 
 ** Snippets
@@ -5282,45 +5353,9 @@ Which key modal explanation
 
 These are a set of programming major mode specific bindings. This will check for documentation/information about the symbol/variable/function at point and try to get information if possible. Else, it will default to a Google search. This depends on all the specific packages used for [[*Emacs lisp][Emacs lisp]], [[*C/C++][C/C++]], [[*Python][Python]], [[*Statistics][Statistics]], [[*MATLAB][MATLAB]], [[*Web][Web]] and [[*Google stuff][Google package]]. Also, [[*Auto completion][just like auto-completion]], I bind this functionality to =C-c= and not =C-z=. For more functionality, use the respective language specific [[*Hydras][Hydras]].
 
-#+BEGIN_SRC emacs-lisp
-(bind-keys
- ("C-c I" . google-this-symbol))
-#+END_SRC
-
-*** Modal binding
-
-#+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "I" "C-c I")
-#+END_SRC
-
-Which key modal explanation
-
-#+BEGIN_SRC emacs-lisp
-(which-key-add-key-based-replacements
-  "I" "info at point")
-#+END_SRC
-
 ** Source/symbol at point
 
 These are a set of programming major mode specific bindings that will check for the definition/source of the function/variable at point and try to go to it. It will default to a project wide search for other unsupported programming languages. This depends on all the specific packages used for [[*Emacs Lisp][Emacs Lisp]], [[*C/C++][C/C++]], [[*Python][Python]], [[*Statistics][Statistics]], [[*MATLAB][MATLAB]], [[*Web][Web]] and [[*Helm][Helm projectile]]. For more functionality, use the respective language specific [[*Hydras][Hydras]].
-
-#+BEGIN_SRC emacs-lisp
-(bind-keys
- ("C-c S" . helm-projectile-grep))
-#+END_SRC
-
-*** Modal binding
-
-#+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "S" "C-c S")
-#+END_SRC
-
-Which key modal explanation
-
-#+BEGIN_SRC emacs-lisp
-(which-key-add-key-based-replacements
-  "S" "src at point")
-#+END_SRC
 
 ** Emacs Lisp
 
@@ -6840,7 +6875,8 @@ For now, I have made it look and act the way I want it too. The additional packa
   ;; to help with projectile
   (use-package helm-projectile
     :ensure t
-    :bind* (("C-z SPC p" . helm-projectile))
+    :bind (("C-c S" . helm-projectile-grep))
+    :bind* (("C-z SPC d" . helm-projectile))
     :init
     (setq projectile-completion-system 'helm))
 
@@ -6895,6 +6931,7 @@ For now, I have made it look and act the way I want it too. The additional packa
 ** Modal binding
 
 #+BEGIN_SRC emacs-lisp
+(modalka-define-kbd "S" "C-c S")
 (modalka-define-kbd "t" "C-z t")
 (modalka-define-kbd "#" "C-z #")
 (modalka-define-kbd "g E" "C-z g E")
@@ -6906,7 +6943,6 @@ For now, I have made it look and act the way I want it too. The additional packa
 (modalka-define-kbd "SPC r" "C-z SPC r")
 (modalka-define-kbd "SPC I" "C-z SPC I")
 (modalka-define-kbd "SPC i" "C-z SPC i")
-(modalka-define-kbd "SPC p" "C-z SPC p")
 (modalka-define-kbd "SPC b" "C-z SPC b")
 (modalka-define-kbd "SPC h a" "C-z SPC h a")
 (modalka-define-kbd "SPC h r" "C-z SPC h r")
@@ -6935,6 +6971,7 @@ Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
+  "S" "src at point"
   "t" "tags/func in buffer"
   "#" "swoop at point"
   "g E" "extract word from buffers"
@@ -6943,7 +6980,6 @@ Which key modal explanation
   "g e" "extract word from dir"
   "SPC r" "recent files"
   "SPC i" "spotlight"
-  "SPC p" "switch projects"
   "SPC t" "helm edit mode"
   "SPC g" "helm follow"
   "SPC b" "bibliography"
@@ -7107,6 +7143,7 @@ To track habits, maybe?
 #+BEGIN_SRC emacs-lisp
 (use-package google-this
   :ensure t
+  :bind (("C-c I" . google-this-symbol))
   :commands (google-this-word
              google-this-region
              google-this-symbol
@@ -7114,6 +7151,19 @@ To track habits, maybe?
              google-this-line
              google-this-search
              google-this-cpp-reference))
+#+END_SRC
+
+*** Modal binding
+
+#+BEGIN_SRC emacs-lisp
+(modalka-define-kbd "I" "C-c I")
+#+END_SRC
+
+Which key modal explanation
+
+#+BEGIN_SRC emacs-lisp
+(which-key-add-key-based-replacements
+  "I" "info at point")
 #+END_SRC
 
 *** Hydra
@@ -7209,91 +7259,88 @@ This section documents the key bindings that help to find other key-bindings. No
 ** Navigation
 
 #+NAME: navigation
-| Modalka state binding | Emacs state binding | Function                                  |
-|-----------------------+---------------------+-------------------------------------------|
-| j                     | C-n                 | next line                                 |
-| k                     | C-p                 | previous line                             |
-| h                     | C-b                 | previous character                        |
-| l                     | C-f                 | next character                            |
-| g g                   | M-<                 | top of buffer                             |
-| G                     | M->                 | bottom of buffer                          |
-| }                     | M-}                 | next para/org element                     |
-| {                     | M-{                 | previous para/org element                 |
-| J                     | C-v                 | scroll down                               |
-| K                     | M-v                 | scroll up                                 |
-| H                     | C-x <               | scroll left                               |
-| L                     | C-x >               | scroll right                              |
-| e                     | M-f                 | next word                                 |
-| b                     | M-b                 | previous word                             |
-| 0                     | C-a                 | [[*Smarter start of line][start of line]]                             |
-| $                     | C-e                 | end of line                               |
-| f                     | C-z f               | find character in line via [[*Avy][Avy]]            |
-| F                     | C-z F               | goto line                                 |
-| W                     | C-z W               | find two characters in file               |
-| /                     | C-s                 | search in buffer                          |
-| SPC SPC               | C-s                 | search in buffer                          |
-| g s                   | C-z g s             | search in project                         |
-| g e                   | C-z g e             | extract word from project                 |
-| n                     | M-n                 | next item/history                         |
-| N                     | M-p                 | previous item/history                     |
-| ;                     | C-z ;               | [[*Back button][forward local change]]                      |
-| ,                     | C-z ,               | backward local change                     |
-| >                     | C-z >               | forward global change                     |
-| <                     | C-z <               | backward global change                    |
-| %                     | C-z %               | [[*Go to matching parenthesis, like Vi][matching parenthesis]]                      |
-| +                     | C-z +               | [[*Bookmark navigation][Bookmark navigation]]                       |
-| B                     | C-z B               | switch to the buffer edited last          |
-| z                     | C-l                 | recenter screen                           |
-| #                     | C-z #               | [[*Highlight symbol][highlight symbol]] like this                |
-| g r                   | C-z g r             | remove all highlighted symbols            |
-| g j                   | C-z g j             | find next like this                       |
-| g k                   | C-z g k             | find previous like this                   |
-| *                     | C-z *               | [[*Highlight symbol][search for word under cursor]]              |
-| w                     | C-z w               | [[*Window navigation][Window navigation hydra]]                   |
-| g w                   | C-x 3               | split window vertically                   |
-| g W                   | C-x 2               | split window horizontally                 |
-| t                     | C-z t               | [[*Helm][tags in buffer]]                            |
-| T                     | C-x T               | [[*Tags based navigation][tags based navigation in project]]          |
-| g t                   | C-z g t             | create tags for code                      |
-| g T                   | C-z g T             | update tags for code                      |
-| g z                   | C-z g z             | [[*Beacon mode][blink cursor]]                              |
-| C s                   | C-z C s             | [[*Perspective][switch perspective]]                        |
-| C a                   | C-z C a             | add buffer to perspective                 |
-| C A                   | C-z C A             | set buffer in perspective                 |
-| C b                   | C-z C b             | switch to buffer in perspective           |
-| C c                   | C-z C c             | close perspective                         |
-| C C                   | C-z C C             | last perspective                          |
-| C i                   | C-z C i             | import perspective                        |
-| C k                   | C-z C k             | kill buffer in perspective                |
-| C n                   | C-z C n             | next perspective                          |
-| C p                   | C-z C p             | previous perspective                      |
-| C r                   | C-z C r             | rename perspective                        |
-| ] ]                   | C-x n n             | narrow to region                          |
-| [ [                   | C-x n w             | widen narrowed region                     |
-| [ s                   | C-z [ s             | [[*Flyspell go to the previous spell error][previous spelling error]]                   |
-| ] s                   | C-z ] s             | next spelling error                       |
-| [ d                   | C-z [ d             | turn the PDF previous page                |
-| ] d                   | C-z ] d             | [[*Turn the adjoining PDF][Turn the adjoining PDF]] next page          |
-| g m                   | C-z g m             | make frame                                |
-| g M                   | C-z g M             | close frame                               |
-| g n                   | C-z g n             | select frame by name                      |
-| g N                   | C-z g N             | name frame                                |
-| g f                   | C-z g f             | find file/url under cursor                |
-| SPC f                 | C-x C-f             | find file browsing by directory           |
-| SPC p                 | C-z SPC p           | switch between projects                   |
-| SPC d                 | C-z SPC d           | find files in project based on [[*Projectile][Projectile]] |
-| SPC n                 | C-z SPC n           | [[*Neotree][directory navigation]]                      |
-| Z                     | C-z Z               | zoom in to the current window             |
-| SPC q                 | C-x 0               | close current window                      |
-| SPC z                 | C-z SPC z           | [[*Non native full screen][Non native full screen]]                    |
-| SPC a                 | C-x b               | switch to open buffer                     |
-| SPC k                 | C-x k               | kill buffer                               |
-| SPC x                 | C-h f               | find help regarding function              |
-| SPC X                 | C-h v               | find help regarding variable              |
-| SPC v                 | C-z SPC v           | view configuration file                   |
-| SPC j                 | M-x                 | find command                              |
-| SPC y                 | C-z SPC y           | [[*Code documentation][browse code documentation]] with docset     |
-| SPC Y                 | C-z SPC Y           | browse code docs immediately              |
+| Modalka state binding | Emacs state binding | Function                                          |
+|-----------------------+---------------------+---------------------------------------------------|
+| j                     | C-n                 | next line                                         |
+| k                     | C-p                 | previous line                                     |
+| h                     | C-b                 | previous character                                |
+| l                     | C-f                 | next character                                    |
+| g g                   | M-<                 | top of buffer                                     |
+| G                     | M->                 | bottom of buffer                                  |
+| }                     | M-}                 | next para/org element                             |
+| {                     | M-{                 | previous para/org element                         |
+| J                     | C-v                 | scroll down                                       |
+| K                     | M-v                 | scroll up                                         |
+| H                     | C-x <               | scroll left                                       |
+| L                     | C-x >               | scroll right                                      |
+| e                     | M-f                 | next word                                         |
+| b                     | M-b                 | previous word                                     |
+| 0                     | C-a                 | [[*Smarter start of line][start of line]]                                     |
+| $                     | C-e                 | end of line                                       |
+| f                     | C-z f               | find character in line via [[*Avy][Avy]]                    |
+| F                     | C-z F               | goto line                                         |
+| W                     | C-z W               | find two characters in file                       |
+| /                     | C-s                 | search in buffer                                  |
+| SPC SPC               | C-s                 | search in buffer                                  |
+| g s                   | C-z g s             | search in project                                 |
+| g e                   | C-z g e             | extract word from project                         |
+| n                     | M-n                 | next item/history                                 |
+| N                     | M-p                 | previous item/history                             |
+| ;                     | C-z ;               | [[*Back button][forward local change]]                              |
+| ,                     | C-z ,               | backward local change                             |
+| >                     | C-z >               | forward global change                             |
+| <                     | C-z <               | backward global change                            |
+| %                     | C-z %               | [[*Go to matching parenthesis, like Vi][matching parenthesis]]                              |
+| +                     | C-z +               | [[*Bookmark navigation][Bookmark navigation]]                               |
+| B                     | C-z B               | switch to the buffer edited last                  |
+| z                     | C-l                 | recenter screen                                   |
+| #                     | C-z #               | [[*Highlight symbol][highlight symbol]] like this                        |
+| g r                   | C-z g r             | remove all highlighted symbols                    |
+| g j                   | C-z g j             | find next like this                               |
+| g k                   | C-z g k             | find previous like this                           |
+| *                     | C-z *               | [[*Highlight symbol][search for word under cursor]]                      |
+| w                     | C-z w               | [[*Window navigation][Window navigation hydra]]                           |
+| g w                   | C-x 3               | split window vertically                           |
+| g W                   | C-x 2               | split window horizontally                         |
+| t                     | C-z t               | [[*Helm][tags in buffer]]                                    |
+| T                     | C-x T               | [[*Tags based navigation][tags based navigation in project]]                  |
+| g t                   | C-z g t             | create tags for code                              |
+| g T                   | C-z g T             | update tags for code                              |
+| g z                   | C-z g z             | [[*Beacon mode][blink cursor]]                                      |
+| SPC p                 | C-z SPC p           | [[*Perspective][switch perspective]]                                |
+| C a                   | C-z C a             | add buffer to perspective                         |
+| C A                   | C-z C A             | set buffer in perspective                         |
+| SPC s                 | C-z SPC s           | switch to buffer in perspective                   |
+| C c                   | C-z C c             | close perspective                                 |
+| C C                   | C-z C C             | last perspective                                  |
+| C i                   | C-z C i             | import perspective                                |
+| C k                   | C-z C k             | kill buffer in perspective                        |
+| C n                   | C-z C n             | next perspective                                  |
+| C p                   | C-z C p             | previous perspective                              |
+| C r                   | C-z C r             | rename perspective                                |
+| ] ]                   | C-x n n             | narrow to region                                  |
+| [ [                   | C-x n w             | widen narrowed region                             |
+| [ s                   | C-z [ s             | [[*Flyspell go to the previous spell error][previous spelling error]]                           |
+| ] s                   | C-z ] s             | next spelling error                               |
+| [ d                   | C-z [ d             | turn the PDF previous page                        |
+| ] d                   | C-z ] d             | [[*Turn the adjoining PDF][Turn the adjoining PDF]] next page                  |
+| g m                   | C-z g m             | make frame                                        |
+| g M                   | C-z g M             | close frame                                       |
+| g n                   | C-z g n             | select frame by name                              |
+| g N                   | C-z g N             | name frame                                        |
+| g f                   | C-z g f             | find file/url under cursor                        |
+| SPC f                 | C-x C-f             | find file browsing by directory                   |
+| SPC d                 | C-z SPC d           | find files based on [[*Projectile][Projectile]] or helm-projectile |
+| SPC n                 | C-z SPC n           | [[*Neotree][directory navigation]]                              |
+| Z                     | C-z Z               | zoom in to the current window                     |
+| SPC q                 | C-x 0               | close current window                              |
+| SPC z                 | C-z SPC z           | [[*Non native full screen][Non native full screen]]                            |
+| SPC a                 | C-x b               | switch to open buffer                             |
+| SPC k                 | C-x k               | kill buffer                                       |
+| SPC v                 | C-z SPC v           | view configuration file                           |
+| SPC j                 | M-x                 | find command                                      |
+| SPC y                 | C-z SPC y           | [[*Code documentation][browse code documentation]] with docset             |
+| SPC Y                 | C-z SPC Y           | browse code docs immediately                      |
 
 ** Editing
 
@@ -7373,7 +7420,7 @@ This section documents the key bindings that help to find other key-bindings. No
 | \                     | C-c C-c             | simulate C-c C-c                     |
 | SPC w                 | C-x C-s             | save                                 |
 | SPC o                 | C-c C-k             | org abort                            |
-| SPC s                 | C-z SPC s           | [[*Visual replace][visual replace word in buffer/region]] |
+| SPC x                 | C-z SPC x           | [[*Visual replace][visual replace word in buffer/region]] |
 | g R                   | C-z g R             | [[*Rename the current buffer and the file associated with it][rename current file]]                  |
 | g K                   | C-z g K             | [[*Delete the current buffer and the file associated with it][delete current file]]                  |
 | g y                   | C-z g y             | [[*Copy the current file path][copy current file path]]               |

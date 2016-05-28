@@ -801,6 +801,7 @@ This is based on Vi-style but only slightly and uses the default movement keys i
 (modalka-define-kbd "(" "M-a")
 (modalka-define-kbd ")" "M-e")
 (modalka-define-kbd "E" "C-g")
+(modalka-define-kbd "W" "C-x o")
 (modalka-define-kbd "B" "C-z B")
 (modalka-define-kbd "d" "C-S-w")
 (modalka-define-kbd "H" "C-x <")
@@ -932,6 +933,7 @@ I have added the which key explanations for everything at once because it is eas
     ")" "end of sentence"
     "E" "exit anything"
     "B" "previous buffer"
+    "W" "other window"
     "G" "end of file"
     "/" "search"
     "d" "delete selection"
@@ -1146,13 +1148,11 @@ Which key modal explanation
   :ensure t
   :init
   (setq avy-keys-alist
-        `((avy-goto-char-2 . (?j ?k ?l ?f ?s ?d ?e ?r ?u ?i))
-          (avy-goto-char-in-line . (?j ?k ?l ?f ?s ?d))
+        `((avy-goto-char-timer . (?j ?k ?l ?f ?s ?d ?e ?r ?u ?i))
           (avy-goto-line . (?j ?k ?l ?f ?s ?d ?e ?r ?u ?i))))
   (setq avy-style 'pre)
-  :bind* (("C-z f" . avy-goto-char-in-line)
-          ("C-z F" . avy-goto-line)
-          ("C-z W" . avy-goto-char-2)))
+  :bind* (("C-z f" . avy-goto-char-timer)
+          ("C-z F" . avy-goto-line)))
 #+END_SRC
 
 *** Modal binding
@@ -1160,16 +1160,14 @@ Which key modal explanation
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "f" "C-z f")
 (modalka-define-kbd "F" "C-z F")
-(modalka-define-kbd "W" "C-z W")
 #+END_SRC
 
 Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "f" "find in line"
-  "F" "find line"
-  "W" "find two chars")
+  "f" "find on-screen"
+  "F" "find line")
 #+END_SRC
 
 ** Highlight symbol
@@ -1389,6 +1387,7 @@ Which key modal explanation
 #+BEGIN_SRC emacs-lisp
 (use-package dash-at-point
   :ensure t
+  :bind (("C-c I" . dash-at-point))
   :bind* (("C-z SPC y" . dash-at-point-with-docset)
           ("C-z SPC Y" . dash-at-point)))
 #+END_SRC
@@ -1398,12 +1397,14 @@ Which key modal explanation
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "SPC y" "C-z SPC y")
 (modalka-define-kbd "SPC Y" "C-z SPC Y")
+(modalka-define-kbd "I" "C-c I")
 #+END_SRC
 
 Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
+  "I" "info at point"
   "SPC y" "documentation prompt"
   "SPC Y" "documentation at point")
 #+END_SRC
@@ -2794,7 +2795,8 @@ Which key modal explanation
   "Select the current line"
   (interactive)
   (sk/smarter-move-beginning-of-line 1)
-  (set-mark (line-end-position)))
+  (set-mark (line-end-position))
+  (exchange-point-and-mark))
 #+END_SRC
 
 **** Key binding
@@ -4353,28 +4355,6 @@ Which key modal explanation
   "o n" "org notes")
 #+END_SRC
 
-** Org cdlatex
-
-Of course, you can [[https://www.gnu.org/software/emacs/manual/html_node/org/CDLaTeX-mode.html][write \LaTeX in Org]].
-
-#+BEGIN_SRC emacs-lisp
-(use-package cdlatex
-  :ensure t
-  :diminish org-cdlatex-mode
-  :config
-  (progn
-    (add-hook 'org-mode-hook 'org-cdlatex-mode)))
-#+END_SRC
-
-I also want to diminish it so that it doesn't show up on the modeline.
-
-#+BEGIN_SRC emacs-lisp
-(defun sk/diminish-org-cdlatex ()
-  (interactive)
-  (diminish 'org-cdlatex-mode ""))
-(add-hook 'org-cdlatex-mode-hook 'sk/diminish-org-cdlatex)
-#+END_SRC
-
 ** Org extra exports
 
 Org already has a pretty good [[*Exporting][exporting system]] but we can make it better. It can export to a [[https://github.com/yjwen/org-reveal][a reveal.js presentation]] or a HTML page with [[https://github.com/marsmining/ox-twbs][bootstrap]]. I write my Org file as a notes file most of the time and hence exporting it directly into a presentation would look horrible. Therefore, I have created a couple of template expansions =<x= and =<X= which export only headlines tagged as "reveal" and ignore all headlines tagged as "[[http://lab.hakim.se/reveal-js/#/][reveal]]" respectively. When none of the template expansions are used, the use of tags mean nothing as they won't interfere with anything. However, when one of them is used, you can export the headlines tailor made to be a PPT or export the ones tailor made to be a notes file. Sweet!
@@ -5351,7 +5331,7 @@ Which key modal explanation
 
 ** Information/documentation at point
 
-These are a set of programming major mode specific bindings. This will check for documentation/information about the symbol/variable/function at point and try to get information if possible. Else, it will default to a Google search. This depends on all the specific packages used for [[*Emacs lisp][Emacs lisp]], [[*C/C++][C/C++]], [[*Python][Python]], [[*Statistics][Statistics]], [[*MATLAB][MATLAB]], [[*Web][Web]] and [[*Google stuff][Google package]]. Also, [[*Auto completion][just like auto-completion]], I bind this functionality to =C-c= and not =C-z=. For more functionality, use the respective language specific [[*Hydras][Hydras]].
+These are a set of programming major mode specific bindings. This will check for documentation/information about the symbol/variable/function at point and try to get information if possible. Else, it will default to a Google search. This depends on all the specific packages used for [[*Emacs lisp][Emacs lisp]], [[*C/C++][C/C++]], [[*Python][Python]], [[*Statistics][Statistics]], [[*MATLAB][MATLAB]], [[*Web][Web]] and [[*Code documentation][Dash]]. Also, [[*Auto completion][just like auto-completion]], I bind this functionality to =C-c= and not =C-z=. For more functionality, use the respective language specific [[*Hydras][Hydras]].
 
 ** Source/symbol at point
 
@@ -5557,26 +5537,26 @@ I rarely use [[https://www.r-project.org/about.html][R]] and occasionally [[http
 #+BEGIN_SRC emacs-lisp
 (use-package ess
   :ensure t
-  :mode (("\\.R$" . R-mode)
-         ("\\.r$" . R-mode)
-         ("\\.jl$'" . julia-mode)))
+  :mode (("\\.r$" . R-mode)
+         ("\\.R$" . R-mode))
+  :commands (R-mode
+             sk/r-shell-here
+             ess-eval-function
+             ess-eval-line
+             ess-eval-buffer
+             ess-switch-to-ESS)
+  :config
+  (require 'ess))
 #+END_SRC
 
 The following are a couple of helper functions to open R and Julia shells in a vertical split.
 
 #+BEGIN_SRC emacs-lisp
-;; Vertical split julia REPL
-(defun sk/julia-shell-here ()
-  "opens up a new julia REPL in the directory associated with the current buffer's file."
-  (interactive)
-  (split-window-right)
-  (other-window 1)
-  (julia))
-
 ;; Vertical split r REPL
 (defun sk/r-shell-here ()
   "opens up a new r REPL in the directory associated with the current buffer's file."
   (interactive)
+  (require 'ess)
   (split-window-right)
   (other-window 1)
   (R))
@@ -6322,18 +6302,18 @@ Which key modal explanation
 Since both R and Julia are supported by ESS, one hydra is enough.
 
 #+BEGIN_SRC emacs-lisp
-(defhydra sk/hydra-for-ess (:color blue
+(defhydra sk/hydra-for-ess (:pre (require 'ess)
+                            :color blue
                             :hint nil)
   "
- _f_: func        _l_: line    _j_: Julia  _S_: switch
- _s_: selection   _b_: buffer  _r_: R      _q_: quit
+ _f_: func     _l_: line    _s_: start    _q_: quit
+ _r_: region   _b_: buffer  _S_: switch
 "
   ("f" ess-eval-function)
   ("l" ess-eval-line)
-  ("s" ess-eval-region)
+  ("r" ess-eval-region)
   ("b" ess-eval-buffer)
-  ("j" sk/julia-shell-here)
-  ("r" sk/r-shell-here)
+  ("s" sk/r-shell-here)
   ("S" ess-switch-to-ESS)
   ("q" nil :color blue))
 #+END_SRC
@@ -6456,14 +6436,14 @@ There are two hydras we use for Web editing - one for JavaScript specifically an
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
   ("C-z c j" . sk/hydra-for-js/body)
-  ("C-z c w" . sk/hydra-for-web/body))
+  ("C-z c h" . sk/hydra-for-web/body))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "c j" "C-z c j")
-(modalka-define-kbd "c w" "C-z c w")
+(modalka-define-kbd "c h" "C-z c h")
 #+END_SRC
 
 Which key modal explanation
@@ -6471,7 +6451,7 @@ Which key modal explanation
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
   "c j" "javscript code"
-  "c w" "web code")
+  "c h" "html and web format")
 #+END_SRC
 
 *** Quickrun
@@ -7011,6 +6991,35 @@ Which key modal explanation
 
 Emacs is fun!
 
+** How do I do something?
+
+[[https://github.com/atykhonov/emacs-howdoi][Interface]] to the awesome [[https://github.com/gleitz/howdoi][command line utility]].
+
+#+BEGIN_SRC emacs-lisp
+(use-package howdoi
+  :ensure t
+  :bind* (("C-z g I" . howdoi-query)
+          ("C-z g Y" . howdoi-query-line-at-point)
+          ("C-z g Q" . howdoi-query-insert-code-snippet-at-point)))
+#+END_SRC
+
+*** Modal binding
+
+#+BEGIN_SRC emacs-lisp
+(modalka-define-kbd "g I" "C-z g I")
+(modalka-define-kbd "g Y" "C-z g Y")
+(modalka-define-kbd "g Q" "C-z g Q")
+#+END_SRC
+
+Which key modal explanation
+
+#+BEGIN_SRC emacs-lisp
+(which-key-add-key-based-replacements
+  "g I" "howdoi query"
+  "g Y" "howdoi query line"
+  "g Q" "howdoi query insert code")
+#+END_SRC
+
 ** XKCD
 
 Read [[http://xkcd.com][xkcd]] in Emacs.
@@ -7143,7 +7152,6 @@ To track habits, maybe?
 #+BEGIN_SRC emacs-lisp
 (use-package google-this
   :ensure t
-  :bind (("C-c I" . google-this-symbol))
   :commands (google-this-word
              google-this-region
              google-this-symbol
@@ -7151,19 +7159,6 @@ To track habits, maybe?
              google-this-line
              google-this-search
              google-this-cpp-reference))
-#+END_SRC
-
-*** Modal binding
-
-#+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "I" "C-c I")
-#+END_SRC
-
-Which key modal explanation
-
-#+BEGIN_SRC emacs-lisp
-(which-key-add-key-based-replacements
-  "I" "info at point")
 #+END_SRC
 
 *** Hydra
@@ -7277,9 +7272,8 @@ This section documents the key bindings that help to find other key-bindings. No
 | b                     | M-b                 | previous word                                     |
 | 0                     | C-a                 | [[*Smarter start of line][start of line]]                                     |
 | $                     | C-e                 | end of line                                       |
-| f                     | C-z f               | find character in line via [[*Avy][Avy]]                    |
+| f                     | C-z f               | find anything on screen with timer [[*Avy][Avy]]            |
 | F                     | C-z F               | goto line                                         |
-| W                     | C-z W               | find two characters in file                       |
 | /                     | C-s                 | search in buffer                                  |
 | SPC SPC               | C-s                 | search in buffer                                  |
 | g s                   | C-z g s             | search in project                                 |
@@ -7575,11 +7569,15 @@ This section documents the key bindings that help to find other key-bindings. No
 ** Fun
 
 #+NAME: fun
-| Modalka state binding | Emacs state binding | Function       |
-|-----------------------+---------------------+----------------|
-| g x                   | C-z g x             | [[*XKCD][XKCD]]           |
-| g X                   | C-z g X             | [[*Stack exchange][Stack exchange]] |
-| g G                   | C-z g G             | [[*Google stuff][Google stuff]]   |
+| Modalka state binding | Emacs state binding | Function                 |
+|-----------------------+---------------------+--------------------------|
+| g x                   | C-z g x             | [[*XKCD][XKCD]]                     |
+| g X                   | C-z g X             | [[*Stack exchange][Stack exchange]]           |
+| g G                   | C-z g G             | [[*Google stuff][Google stuff]]             |
+| g I                   | C-z g I             | [[*How do I do something?][howdoi query]]             |
+| g Y                   | C-z g Y             | howdoi query line        |
+| g Q                   | C-z g Q             | howdoi query insert code |
+
 * Automatically invoke tangle on save
 
 This portion of comments let Emacs know that it has to [[*Tangle%20on%20save][invoke tangle on save]]. Since the actual code is in comment form, I have included the code to be included in verbatim form. Also, note that Emacs might prompt you if you are OK with the local variables being executed. Press "!" to tell Emacs that is OK and to ask it to save it to the [[*Custom%20file][Custom file]].

@@ -3528,6 +3528,32 @@ And while we are it, why not go ahead and [[https://github.com/bcbcarl/emacs-wtt
                                 "Hillsboro")))
 #+END_SRC
 
+[[http://pragmaticemacs.com/emacs/weather-in-emacs/][The author of Pragmatic Emacs noticed and improved it a bit]] (achievement unlocked!). This improvement saves and restores the window configuration while calling the wttrin.
+
+#+BEGIN_SRC emacs-lisp
+;;advise wttrin to save frame arrangement
+;;requires frame-cmds package
+(defun sk/wttrin-save-frame ()
+  "Save frame and window configuration and then expand frame for wttrin."
+  ;;save window arrangement to a register
+  (window-configuration-to-register :pre-wttrin)
+  (delete-other-windows)
+  ;;save frame setup and resize
+  (save-frame-config)
+  (set-frame-width (selected-frame) 130)
+  (set-frame-height (selected-frame) 48))
+(advice-add 'wttrin :before #'sk/wttrin-save-frame)
+
+(defun sk/wttrin-restore-frame ()
+  "Restore frame and window configuration saved prior to launching wttrin."
+  (interactive)
+  (jump-to-frame-config-register)
+  (jump-to-register :pre-wttrin))
+(advice-add 'wttrin-exit :after #'sk/wttrin-restore-frame)
+#+END_SRC
+
+
+
 ** Origami - folding based on indentation/syntax
 
 Emacs has a built-in =hide-show= mode but it isn't great. [[https://github.com/gregsexton/origami.el][Origami]] improves it a bit.
@@ -7339,7 +7365,9 @@ This section documents the key bindings that help to find other key-bindings. No
 | [ s                   | C-z [ s             | [[*Flyspell go to the previous spell error][previous spelling error]]                           |
 | ] s                   | C-z ] s             | next spelling error                               |
 | [ d                   | C-z [ d             | turn the PDF previous page                        |
-| ] d                   | C-z ] d             | [[*Turn the adjoining PDF][Turn the adjoining PDF]] next page                  |
+| ] d                   | C-z ] d             | [[*Turn the adjoining PDF (only with 2 windows)][Turn the adjoining PDF]] next page                  |
+| g [                   | C-z g [             | [[*Turn the adjoining window (only with 2 windows)][Scroll the adjoining window up]]                    |
+| g ]                   | C-z g ]             | Scroll the adjoining window down                  |
 | g m                   | C-z g m             | make frame                                        |
 | g M                   | C-z g M             | close frame                                       |
 | g n                   | C-z g n             | select frame by name                              |
@@ -7604,11 +7632,11 @@ This section documents the key bindings that help to find other key-bindings. No
 
 This portion of comments let Emacs know that it has to [[*Tangle%20on%20save][invoke tangle on save]]. Since the actual code is in comment form, I have included the code to be included in verbatim form. Also, note that Emacs might prompt you if you are OK with the local variables being executed. Press "!" to tell Emacs that is OK and to ask it to save it to the [[*Custom%20file][Custom file]].
 
-#+BEGIN_VERBATIM
+#+BEGIN_SRC emacs-lisp :tangle no
 # Local Variables:
 # eval: (when (fboundp #'tangle-if-init) (add-hook 'after-save-hook #'tangle-if-init))
 # End:
-#+END_VERBATIM
+#+END_SRC
 
 # Local Variables:
 # eval: (when (fboundp #'tangle-if-init) (add-hook 'after-save-hook #'tangle-if-init))

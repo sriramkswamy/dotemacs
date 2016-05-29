@@ -801,7 +801,7 @@ This is based on Vi-style but only slightly and uses the default movement keys i
 (modalka-define-kbd "(" "M-a")
 (modalka-define-kbd ")" "M-e")
 (modalka-define-kbd "E" "C-g")
-(modalka-define-kbd "W" "C-x o")
+(modalka-define-kbd "w" "C-x o")
 (modalka-define-kbd "B" "C-z B")
 (modalka-define-kbd "d" "C-S-w")
 (modalka-define-kbd "H" "C-x <")
@@ -933,7 +933,7 @@ I have added the which key explanations for everything at once because it is eas
     ")" "end of sentence"
     "E" "exit anything"
     "B" "previous buffer"
-    "W" "other window"
+    "w" "other window"
     "G" "end of file"
     "/" "search"
     "d" "delete selection"
@@ -1870,20 +1870,20 @@ Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z w" . sk/hydra-of-windows/body))
+  ("C-z W" . sk/hydra-of-windows/body))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "w" "C-z w")
+(modalka-define-kbd "W" "C-z W")
 #+END_SRC
 
 Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "w" "window menu")
+  "W" "window menu")
 #+END_SRC
 
 *** Bookmark navigation
@@ -2331,6 +2331,7 @@ Which key modal explanation
   :config
   (setq yas/triggers-in-field t); Enable nested triggering of snippets
   (setq yas-prompt-functions '(yas-completing-prompt))
+  (add-hook 'snippet-mode-hook '(lambda () (setq-local require-final-newline nil)))
   (yas-global-mode)
   (use-package auto-yasnippet
     :ensure t
@@ -2374,6 +2375,18 @@ Emacs has the built-in command =align-regexp= to align via regular expression. H
   (align-regexp start end
                 "\\(\\s-*\\)=" 1 0 t))
 
+(defun sk/align-comma (start end)
+  "Align columns by comma"
+  (interactive "r")
+  (align-regexp start end
+                "\\(\\s-*\\)," 1 1 t))
+
+(defun sk/align-dot (start end)
+  "Align columns by dot"
+  (interactive "r")
+  (align-regexp start end
+                "\\(\\s-*\\)\\\." 1 1 t))
+
 (defun sk/align-colon (start end)
   "Align columns by equals sign"
   (interactive "r")
@@ -2386,10 +2399,12 @@ Emacs has the built-in command =align-regexp= to align via regular expression. H
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
   ("C-z g A SPC" . sk/align-whitespace)
-  ("C-z g A &" . sk/align-ampersand)
-  ("C-z g A =" . sk/align-equals)
-  ("C-z g A :" . sk/align-colon)
-  ("C-z g A A" . align-regexp))
+  ("C-z g A &"   . sk/align-ampersand)
+  ("C-z g A ,"   . sk/align-comma)
+  ("C-z g A ."   . sk/align-dot)
+  ("C-z g A ="   . sk/align-equals)
+  ("C-z g A :"   . sk/align-colon)
+  ("C-z g A A"   . align-regexp))
 #+END_SRC
 
 Which key binding explanation
@@ -2403,10 +2418,12 @@ Which key binding explanation
 
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "g A SPC" "C-z g A SPC")
-(modalka-define-kbd "g A &" "C-z g A &")
-(modalka-define-kbd "g A =" "C-z g A =")
-(modalka-define-kbd "g A :" "C-z g A :")
-(modalka-define-kbd "g A A" "C-z g A A")
+(modalka-define-kbd "g A &"   "C-z g A &")
+(modalka-define-kbd "g A ,"   "C-z g A ,")
+(modalka-define-kbd "g A ."   "C-z g A .")
+(modalka-define-kbd "g A ="   "C-z g A =")
+(modalka-define-kbd "g A :"   "C-z g A :")
+(modalka-define-kbd "g A A"   "C-z g A A")
 #+END_SRC
 
 Which key modal explanation
@@ -2416,6 +2433,8 @@ Which key modal explanation
   "g A" "align prefix"
   "g A SPC" "align based on spaces"
   "g A &" "align based on &"
+  "g A ," "align based on ,"
+  "g A ." "align based on ."
   "g A =" "align based on ="
   "g A :" "align based on :"
   "g A A" "align based on regex")
@@ -4860,11 +4879,12 @@ As [[*Org contributed packages][previously mentioned]], I use the drill package 
 (defhydra sk/hydra-org-drill (:color blue
                               :hint nil)
   "
- _f_: file    _h_: heading    _d_: directory   _q_: quit
+ _f_: file    _h_: heading    _d_: directory    _r_: resume   _q_: quit
 "
   ("f" org-drill)
   ("h" org-drill-tree)
   ("d" org-drill-directory)
+  ("r" org-drill-resume)
   ("q" nil :color blue))
 #+END_SRC
 
@@ -5532,34 +5552,36 @@ I haven't started using this package but [[https://github.com/ionrock/pytest-el]
 
 ** Statistics
 
-I rarely use [[https://www.r-project.org/about.html][R]] and occasionally [[http://julialang.org][julia]] but since this is just one package, I might as well install it. It might come in handy.
+I rarely use [[https://www.r-project.org/about.html][R]] and occasionally [[http://julialang.org][julia]] but since this is just one package, I might as well install it. It might come in handy. For now, I have set it up only for Julia.
 
 #+BEGIN_SRC emacs-lisp
 (use-package ess
   :ensure t
   :mode (("\\.r$" . R-mode)
-         ("\\.R$" . R-mode))
+         ("\\.R$" . R-mode)
+         ("\\.jl$" . julia-mode))
   :commands (R-mode
-             sk/r-shell-here
+             julia-mode
+             sk/julia-shell-here
              ess-eval-function
              ess-eval-line
              ess-eval-buffer
              ess-switch-to-ESS)
   :config
-  (require 'ess))
+  (require 'ess-site))
 #+END_SRC
 
-The following are a couple of helper functions to open R and Julia shells in a vertical split.
+The following is a helper function to open Julia shell in a vertical split.
 
 #+BEGIN_SRC emacs-lisp
-;; Vertical split r REPL
-(defun sk/r-shell-here ()
-  "opens up a new r REPL in the directory associated with the current buffer's file."
+;; Vertical split julia REPL
+(defun sk/julia-shell-here ()
+  "opens up a new julia REPL in the directory associated with the current buffer's file."
   (interactive)
-  (require 'ess)
+  (require 'ess-site)
   (split-window-right)
-  (other-window 1)
-  (R))
+  (run-julia)
+  (other-window 1))
 #+END_SRC
 
 ** MATLAB
@@ -6302,7 +6324,7 @@ Which key modal explanation
 Since both R and Julia are supported by ESS, one hydra is enough.
 
 #+BEGIN_SRC emacs-lisp
-(defhydra sk/hydra-for-ess (:pre (require 'ess)
+(defhydra sk/hydra-for-ess (:pre (require 'ess-site)
                             :color blue
                             :hint nil)
   "
@@ -6313,7 +6335,7 @@ Since both R and Julia are supported by ESS, one hydra is enough.
   ("l" ess-eval-line)
   ("r" ess-eval-region)
   ("b" ess-eval-buffer)
-  ("s" sk/r-shell-here)
+  ("s" sk/julia-shell-here)
   ("S" ess-switch-to-ESS)
   ("q" nil :color blue))
 #+END_SRC

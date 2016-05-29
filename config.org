@@ -315,9 +315,9 @@ While we are in the topic of prompting, a lot of the default prompts ask for a =
 #+BEGIN_SRC emacs-lisp
 (add-hook 'dired-mode-hook 'dired-hide-details-mode)
 (setq dired-dwim-target t
-                  dired-recursive-copies 'top
-                  dired-recursive-deletes 'top
-                  dired-listing-switches "-alh")
+      dired-recursive-copies 'top
+      dired-recursive-deletes 'top
+      dired-listing-switches "-alh")
 #+END_SRC
 
 ** =tramp=
@@ -385,7 +385,7 @@ Emacs has the built-in [[https://www.gnu.org/software/emacs/manual/html_node/ema
 
 #+BEGIN_SRC emacs-lisp
 (when (fboundp 'winner-mode)
-      (winner-mode 1))
+  (winner-mode 1))
 #+END_SRC
 
 ** Recent files
@@ -409,7 +409,7 @@ In Mac, the default fullscreen goes to a new workspace. Change this behavior so 
 
 ** Fonts
 
-Switching font is something I do quite often. Also, zooming in text isn't the same as just increasing the font size. So, these are some convenience functions taken from [[https://github.com/incandescentman/Emacs-Settings][Jay Dixit's emacs configuration]].
+Switching font is something I do quite often. Also, zooming in text isn't the same as just increasing the font size. So, these are some convenience functions taken from [[https://github.com/incandescentman/Emacs-Settings][Jay Dixit's emacs configuration]] and [[https://github.com/abo-abo/oremacs/][Oleh Krehel's configuration]].
 
 #+BEGIN_SRC emacs-lisp
 (cond ((eq system-type 'gnu/linux)
@@ -702,7 +702,7 @@ Emacs has 100s of bindings and it is impossible to remember them all. Sometimes 
   :config
   (which-key-mode)
   (which-key-add-key-based-replacements
-  "C-z ?" "top level bindings"))
+    "C-z ?" "top level bindings"))
 #+END_SRC
 
 ** Discover my major

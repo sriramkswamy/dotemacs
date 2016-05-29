@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: reveal minimum scale
+# key: rmin
+# --
+#+REVEAL_MIN_SCALE: ${1:number}

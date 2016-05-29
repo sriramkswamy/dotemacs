@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: latex boldface font
+# key: lbf
+# --
+\textbf{ $1 }

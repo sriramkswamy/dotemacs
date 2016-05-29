@@ -3,4 +3,4 @@
 # key: bar
 # binding: direct-keybinding
 # --
-\bar{$1}
+\bar{ $1 }

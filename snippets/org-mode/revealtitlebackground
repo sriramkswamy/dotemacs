@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: reveal title slide background
+# key: rtb
+# --
+#+REVEAL_TITLE_SLIDE_BACKGROUND: ${1:image/url}

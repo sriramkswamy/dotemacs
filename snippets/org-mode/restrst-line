@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: rst line in org
+# key: srsl
+# --
+#+RST:

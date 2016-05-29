@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: latex example
+# key: lex
+# --
+\begin{exampleblock} { $1 }
+$2
+\end{exampleblock}

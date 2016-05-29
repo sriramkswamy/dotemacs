@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: surround scaled angles
+# key: ssa
+# --
+\langle $1 \rangle

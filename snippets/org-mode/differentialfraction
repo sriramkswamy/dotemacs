@@ -3,4 +3,4 @@
 # key: df
 # binding: direct-keybinding
 # --
-\frac{\mathrm{d}$1}{\mathrm{d}$2}
+\frac{ \mathrm{d} { $1 } }{ \mathrm{d} { $2 } }

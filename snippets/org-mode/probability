@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: probability
+# key: prob
+# --
+Prob{\left[ $1 \right]} ${2:\leq} $3

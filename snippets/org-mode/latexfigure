@@ -1,11 +1,11 @@
 # -*- mode: snippet; require-final-newline: nil -*-
 # name: LaTeX figure
-# key: tex_fig
+# key: lfig
 # binding: direct-keybinding
 # --
-\begin{figure}[$1]
+\begin{figure}[ $1 ]
 ${5:\centering}
 $4
-\caption{$2}
+\caption{ $2 }
 \label{fig:$3}
 \end{figure}

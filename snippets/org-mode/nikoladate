@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: nikola date
+# key: nda
+# --
+#+NIKOLA_DATE: ${1:2016}/${2:01}/${3:31} ${4:21}:${5:10}

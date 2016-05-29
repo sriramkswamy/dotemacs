@@ -115,7 +115,7 @@ The =init.el= file in the Emacs directory is the file Emacs looks to load when i
 
 Emacs has a built-in garbage collection mechanism (read [[https://medium.com/@yonkeltron/explaining-garbage-collection-algorithms-by-keeping-your-fridge-tidy-2636012cfeee#.wrb2o0q7a][this article]] for a good intro to garbage collection in general). However, the memory size for which it fires is set pretty low and for the right reasons. Since I operate on a pretty good machine, I set it high initially (around 500 MB) and later reduce it. Therefore, the only thing in the =init.el= file is the GC increase, loading this org file and reduce the threshold again.
 
-** Emacs Lisp
+** Learning Emacs Lisp
 
 Emacs Lisp is the name of the language Emacs we use to configure Emacs. Start with [[http://tonyballantyne.com/tech/1-beginning-emacs-lisp/][this article]] for a good introduction to the language and [[https://github.com/bbatsov/emacs-lisp-style-guide][this one]] for the style of Emacs Lisp. [[http://emacs-doctor.com/learn-emacs-lisp-in-15-minutes.html][Learning Emacs Lisp in 15 minutes]] is a good introduction too. This can be further complemented by the [[https://www.gnu.org/software/emacs/manual/eintr.html][Introduction to Emacs Lisp]] and the [[https://www.gnu.org/software/emacs/manual/elisp.html][Emacs Lisp manual]].
 
@@ -338,6 +338,14 @@ While we are in the topic of prompting, a lot of the default prompts ask for a =
 (subword-mode)
 #+END_SRC
 
+** Recenter screen
+
+Emacs lets you move the current line to the top, middle or bottom of the screen to get appropriate context. The default goes to the middle first. I prefer that the default goes to the top first. Let's change this.
+
+#+BEGIN_SRC emacs-lisp
+(setq recenter-positions '(top middle bottom))
+#+END_SRC
+
 ** Better wild cards in search
 
 The built-in incremental search is pretty good but the most common regex I type is =.*= which stands for anything. This makes sure space between words acts the same way. It's much better for me to use it now.
@@ -539,6 +547,20 @@ Eldoc mode is a mode to display documentation for languages in Emacs
   :bind* (("C-z ] s" . flyspell-goto-next-error)))
 #+END_SRC
 
+** Manage the built-in browser =eww=
+
+#+BEGIN_SRC emacs-lisp
+(use-package eww
+  :bind* (("C-z g ;" . eww)
+          ("C-z g :" . eww-browse-with-external-browser)
+          ("C-z g #" . eww-list-histories)
+          ("C-z g {" . eww-back-url)
+          ("C-z g }" . eww-forward-url))
+  :config
+  (progn
+    (add-hook 'eww-mode-hook 'visual-line-mode)))
+#+END_SRC
+
 ** Add a package to set the correct path
 
 Sometimes when opening the Mac Emacs.app via GUI, by clicking the button, it doesn't load all the proper utilities from the OS. This package fixes that.
@@ -618,11 +640,11 @@ There are some pretty nice default functions that are unbound. I use the =bind-k
   ("C-z g C" . capitalize-region)
   ("C-z R"   . overwrite-mode)
   ("C-z ."   . repeat)
-  ("C-z V"   . rectangle-mark-mode)
   ("C-z g j" . doc-view-next-page)
   ("C-z g k" . doc-view-previous-page)
   ("C-z : t" . emacs-init-time)
   ("C-z g q" . fill-paragraph)
+  ("C-z g @" . compose-mail)
   ("C-z SPC ?" . describe-bindings))
 #+END_SRC
 
@@ -709,6 +731,9 @@ As mentioned before, I like and prefer modal editing. I feel pressing modifier k
   (setq modalka-cursor-type 'box)
   :config
   (global-set-key (kbd "<escape>") #'modalka-mode)
+  (modalka-global-mode 1)
+  (add-to-list 'modalka-excluded-modes 'magit-status-mode)
+  (add-to-list 'modalka-excluded-modes 'magit-popup-mode)
   (which-key-add-key-based-replacements
     "C-z" "Modalka prefix"
     "C-z :" "extended prefix"
@@ -776,6 +801,7 @@ This is based on Vi-style but only slightly and uses the default movement keys i
 (modalka-define-kbd "(" "M-a")
 (modalka-define-kbd ")" "M-e")
 (modalka-define-kbd "E" "C-g")
+(modalka-define-kbd "w" "C-x o")
 (modalka-define-kbd "B" "C-z B")
 (modalka-define-kbd "d" "C-S-w")
 (modalka-define-kbd "H" "C-x <")
@@ -812,6 +838,12 @@ This is based on Vi-style but only slightly and uses the default movement keys i
 (modalka-define-kbd "g q" "C-z g q")
 (modalka-define-kbd "g w" "C-x 3")
 (modalka-define-kbd "g W" "C-x 2")
+(modalka-define-kbd "g @" "C-z g @")
+(modalka-define-kbd "g ;" "C-z g ;")
+(modalka-define-kbd "g :" "C-z g :")
+(modalka-define-kbd "g #" "C-z g #")
+(modalka-define-kbd "g {" "C-z g {")
+(modalka-define-kbd "g }" "C-z g }")
 (modalka-define-kbd "g S" "C-j")
 #+END_SRC
 
@@ -846,8 +878,6 @@ This is based on Vi-style but only slightly and uses the default movement keys i
 
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "SPC j" "M-x")
-(modalka-define-kbd "SPC x" "C-h f")
-(modalka-define-kbd "SPC X" "C-h v")
 (modalka-define-kbd "SPC a" "C-x b")
 (modalka-define-kbd "SPC k" "C-x k")
 (modalka-define-kbd "SPC d" "C-x d")
@@ -904,6 +934,7 @@ I have added the which key explanations for everything at once because it is eas
     ")" "end of sentence"
     "E" "exit anything"
     "B" "previous buffer"
+    "w" "other window"
     "G" "end of file"
     "/" "search"
     "d" "delete selection"
@@ -926,7 +957,6 @@ I have added the which key explanations for everything at once because it is eas
     "?" "top level bindings"
     "v" "start selection"
     "R" "overwrite mode"
-    "V" "rectangle selection"
     "X" "exchange point and mark"
     "+" "set bookmark"
     "=" "indent region"
@@ -955,6 +985,12 @@ I have added the which key explanations for everything at once because it is eas
   "g w" "vertical split win"
   "g W" "horizontal split win"
   "g S" "split line"
+  "g @" "compose mail"
+  "g #" "list eww histories"
+  "g ;" "browse with eww"
+  "g :" "browse with external browser"
+  "g {" "eww back"
+  "g }" "eww forward"
   "g q" "format para")
 #+END_SRC
 
@@ -998,8 +1034,6 @@ I have added the which key explanations for everything at once because it is eas
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
   "SPC" "custom prefix"
-  "SPC x" "desc function"
-  "SPC X" "desc variable"
   "SPC ?" "describe bindings"
   "SPC j" "jump to cmd"
   "SPC f" "find file"
@@ -1056,7 +1090,7 @@ This section contains all the packages and custom functions I use for navigating
   :ensure t
   :demand t
   :diminish beacon-mode
-  :bind* (("C-z g i" . beacon-blink))
+  :bind* (("C-z g z" . beacon-blink))
   :config
   (beacon-mode 1))
 #+END_SRC
@@ -1064,14 +1098,14 @@ This section contains all the packages and custom functions I use for navigating
 *** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "g i" "C-z g i")
+(modalka-define-kbd "g z" "C-z g z")
 #+END_SRC
 
 Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "g i" "blink cursor")
+  "g z" "blink cursor")
 #+END_SRC
 
 ** Undo tree
@@ -1115,13 +1149,11 @@ Which key modal explanation
   :ensure t
   :init
   (setq avy-keys-alist
-        `((avy-goto-char-2 . (?j ?k ?l ?f ?s ?d ?e ?r ?u ?i))
-          (avy-goto-char-in-line . (?j ?k ?l ?f ?s ?d))
+        `((avy-goto-char-timer . (?j ?k ?l ?f ?s ?d ?e ?r ?u ?i))
           (avy-goto-line . (?j ?k ?l ?f ?s ?d ?e ?r ?u ?i))))
   (setq avy-style 'pre)
-  :bind* (("C-z f" . avy-goto-char-in-line)
-          ("C-z F" . avy-goto-line)
-          ("C-z W" . avy-goto-char-2)))
+  :bind* (("C-z f" . avy-goto-char-timer)
+          ("C-z F" . avy-goto-line)))
 #+END_SRC
 
 *** Modal binding
@@ -1129,16 +1161,14 @@ Which key modal explanation
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "f" "C-z f")
 (modalka-define-kbd "F" "C-z F")
-(modalka-define-kbd "W" "C-z W")
 #+END_SRC
 
 Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "f" "find in line"
-  "F" "find line"
-  "W" "find two chars")
+  "f" "find on-screen"
+  "F" "find line")
 #+END_SRC
 
 ** Highlight symbol
@@ -1295,10 +1325,10 @@ Which key modal explanation
 #+BEGIN_SRC emacs-lisp
 (use-package perspective
   :ensure t
-  :bind* (("C-z C s" . persp-switch)
+  :bind* (("C-z SPC p" . persp-switch)
           ("C-z C a" . persp-add-buffer)
           ("C-z C A" . persp-set-buffer)
-          ("C-z C b" . persp-switch-to-buffer)
+          ("C-z SPC s" . persp-switch-to-buffer)
           ("C-z C c" . persp-kill)
           ("C-z C r" . persp-rename)
           ("C-z C k" . persp-remove-buffer)
@@ -1320,10 +1350,10 @@ Which key modal explanation
 *** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "C s" "C-z C s")
+(modalka-define-kbd "SPC p" "C-z SPC p")
 (modalka-define-kbd "C a" "C-z C a")
 (modalka-define-kbd "C A" "C-z C A")
-(modalka-define-kbd "C b" "C-z C b")
+(modalka-define-kbd "SPC s" "C-z SPC s")
 (modalka-define-kbd "C c" "C-z C c")
 (modalka-define-kbd "C r" "C-z C r")
 (modalka-define-kbd "C k" "C-z C k")
@@ -1338,10 +1368,10 @@ Which key modal explanation
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
   "C" "config persp prefix"
-  "C s" "perspective switch"
+  "SPC p" "perspective switch"
   "C a" "perspective add buffer"
   "C A" "perspective set buffer"
-  "C b" "perspective switch to buffer"
+  "SPC s" "perspective switch to buffer"
   "C c" "perspective close"
   "C r" "perspective rename"
   "C k" "perspective remove buffer"
@@ -1358,23 +1388,26 @@ Which key modal explanation
 #+BEGIN_SRC emacs-lisp
 (use-package dash-at-point
   :ensure t
-  :bind* (("C-z SPC h d" . dash-at-point-with-docset)
-          ("C-z SPC h D" . dash-at-point)))
+  :bind (("C-c I" . dash-at-point))
+  :bind* (("C-z SPC y" . dash-at-point-with-docset)
+          ("C-z SPC Y" . dash-at-point)))
 #+END_SRC
 
 *** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "SPC h d" "C-z SPC h d")
-(modalka-define-kbd "SPC h D" "C-z SPC h D")
+(modalka-define-kbd "SPC y" "C-z SPC y")
+(modalka-define-kbd "SPC Y" "C-z SPC Y")
+(modalka-define-kbd "I" "C-c I")
 #+END_SRC
 
 Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "SPC h d" "documentation prompt"
-  "SPC h D" "documentation at point")
+  "I" "info at point"
+  "SPC y" "documentation prompt"
+  "SPC Y" "documentation at point")
 #+END_SRC
 
 ** Back button
@@ -1616,7 +1649,7 @@ This is one of the few occasions I just replace it with my custom function becau
   ("C-x 3" . sk/split-right-and-move))
 #+END_SRC
 
-*** Turn the adjoining PDF
+*** Turn the adjoining PDF (only with 2 windows)
 
 #+BEGIN_SRC emacs-lisp
 (defun sk/other-pdf-next ()
@@ -1654,6 +1687,46 @@ Which key modal explanation
 (which-key-add-key-based-replacements
   "] d" "adjacent pdf next page"
   "[ d" "adjacent pdf prev page")
+#+END_SRC
+
+*** Turn the adjoining window (only with 2 windows)
+
+#+BEGIN_SRC emacs-lisp
+(defun sk/other-window-down ()
+  "Scrolls down in adjoining window"
+  (interactive)
+  (other-window 1)
+  (scroll-up-command)
+  (other-window 1))
+(defun sk/other-window-up ()
+  "Scrolls up in adjoining window"
+  (interactive)
+  (other-window 1)
+  (scroll-down-command)
+  (other-window 1))
+#+END_SRC
+
+**** Key binding
+
+#+BEGIN_SRC emacs-lisp
+(bind-keys*
+  ("C-z g ]" . sk/other-window-down)
+  ("C-z g [" . sk/other-window-up))
+#+END_SRC
+
+***** Modal binding
+
+#+BEGIN_SRC emacs-lisp
+(modalka-define-kbd "g ]" "C-z g ]")
+(modalka-define-kbd "g [" "C-z g [")
+#+END_SRC
+
+Which key modal explanation
+
+#+BEGIN_SRC emacs-lisp
+(which-key-add-key-based-replacements
+  "g ]" "adjacent pdf next page"
+  "g [" "adjacent pdf prev page")
 #+END_SRC
 
 *** Smarter start of line
@@ -1798,20 +1871,20 @@ Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z w" . sk/hydra-of-windows/body))
+  ("C-z W" . sk/hydra-of-windows/body))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "w" "C-z w")
+(modalka-define-kbd "W" "C-z W")
 #+END_SRC
 
 Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "w" "window menu")
+  "W" "window menu")
 #+END_SRC
 
 *** Bookmark navigation
@@ -2224,7 +2297,7 @@ This is the [[https://github.com/benma/visual-regexp.el][good old search and rep
 (use-package visual-regexp
   :ensure t
   :commands (vr/query-replace)
-  :bind* (("C-z SPC s" . vr/query-replace))
+  :bind* (("C-z SPC x" . vr/query-replace))
   :config
   (use-package visual-regexp-steroids
     :ensure t
@@ -2234,14 +2307,14 @@ This is the [[https://github.com/benma/visual-regexp.el][good old search and rep
 *** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "SPC s" "C-z SPC s")
+(modalka-define-kbd "SPC x" "C-z SPC x")
 #+END_SRC
 
 Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "SPC s" "replace word/expression")
+  "SPC x" "replace word/expression")
 #+END_SRC
 
 ** Snippets
@@ -2259,6 +2332,7 @@ Which key modal explanation
   :config
   (setq yas/triggers-in-field t); Enable nested triggering of snippets
   (setq yas-prompt-functions '(yas-completing-prompt))
+  (add-hook 'snippet-mode-hook '(lambda () (setq-local require-final-newline nil)))
   (yas-global-mode)
   (use-package auto-yasnippet
     :ensure t
@@ -2302,6 +2376,18 @@ Emacs has the built-in command =align-regexp= to align via regular expression. H
   (align-regexp start end
                 "\\(\\s-*\\)=" 1 0 t))
 
+(defun sk/align-comma (start end)
+  "Align columns by comma"
+  (interactive "r")
+  (align-regexp start end
+                "\\(\\s-*\\)," 1 1 t))
+
+(defun sk/align-dot (start end)
+  "Align columns by dot"
+  (interactive "r")
+  (align-regexp start end
+                "\\(\\s-*\\)\\\." 1 1 t))
+
 (defun sk/align-colon (start end)
   "Align columns by equals sign"
   (interactive "r")
@@ -2314,10 +2400,12 @@ Emacs has the built-in command =align-regexp= to align via regular expression. H
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
   ("C-z g A SPC" . sk/align-whitespace)
-  ("C-z g A &" . sk/align-ampersand)
-  ("C-z g A =" . sk/align-equals)
-  ("C-z g A :" . sk/align-colon)
-  ("C-z g A A" . align-regexp))
+  ("C-z g A &"   . sk/align-ampersand)
+  ("C-z g A ,"   . sk/align-comma)
+  ("C-z g A ."   . sk/align-dot)
+  ("C-z g A ="   . sk/align-equals)
+  ("C-z g A :"   . sk/align-colon)
+  ("C-z g A A"   . align-regexp))
 #+END_SRC
 
 Which key binding explanation
@@ -2331,10 +2419,12 @@ Which key binding explanation
 
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "g A SPC" "C-z g A SPC")
-(modalka-define-kbd "g A &" "C-z g A &")
-(modalka-define-kbd "g A =" "C-z g A =")
-(modalka-define-kbd "g A :" "C-z g A :")
-(modalka-define-kbd "g A A" "C-z g A A")
+(modalka-define-kbd "g A &"   "C-z g A &")
+(modalka-define-kbd "g A ,"   "C-z g A ,")
+(modalka-define-kbd "g A ."   "C-z g A .")
+(modalka-define-kbd "g A ="   "C-z g A =")
+(modalka-define-kbd "g A :"   "C-z g A :")
+(modalka-define-kbd "g A A"   "C-z g A A")
 #+END_SRC
 
 Which key modal explanation
@@ -2344,6 +2434,8 @@ Which key modal explanation
   "g A" "align prefix"
   "g A SPC" "align based on spaces"
   "g A &" "align based on &"
+  "g A ," "align based on ,"
+  "g A ." "align based on ."
   "g A =" "align based on ="
   "g A :" "align based on :"
   "g A A" "align based on regex")
@@ -2723,7 +2815,8 @@ Which key modal explanation
   "Select the current line"
   (interactive)
   (sk/smarter-move-beginning-of-line 1)
-  (set-mark (line-end-position)))
+  (set-mark (line-end-position))
+  (exchange-point-and-mark))
 #+END_SRC
 
 **** Key binding
@@ -3435,6 +3528,32 @@ And while we are it, why not go ahead and [[https://github.com/bcbcarl/emacs-wtt
                                 "Columbus"
                                 "Hillsboro")))
 #+END_SRC
+
+[[http://pragmaticemacs.com/emacs/weather-in-emacs/][The author of Pragmatic Emacs noticed and improved it a bit]] (achievement unlocked!). This improvement saves and restores the window configuration while calling the wttrin.
+
+#+BEGIN_SRC emacs-lisp
+;;advise wttrin to save frame arrangement
+;;requires frame-cmds package
+(defun sk/wttrin-save-frame ()
+  "Save frame and window configuration and then expand frame for wttrin."
+  ;;save window arrangement to a register
+  (window-configuration-to-register :pre-wttrin)
+  (delete-other-windows)
+  ;;save frame setup and resize
+  (save-frame-config)
+  (set-frame-width (selected-frame) 130)
+  (set-frame-height (selected-frame) 48))
+(advice-add 'wttrin :before #'sk/wttrin-save-frame)
+
+(defun sk/wttrin-restore-frame ()
+  "Restore frame and window configuration saved prior to launching wttrin."
+  (interactive)
+  (jump-to-frame-config-register)
+  (jump-to-register :pre-wttrin))
+(advice-add 'wttrin-exit :after #'sk/wttrin-restore-frame)
+#+END_SRC
+
+
 
 ** Origami - folding based on indentation/syntax
 
@@ -4282,28 +4401,6 @@ Which key modal explanation
   "o n" "org notes")
 #+END_SRC
 
-** Org cdlatex
-
-Of course, you can [[https://www.gnu.org/software/emacs/manual/html_node/org/CDLaTeX-mode.html][write \LaTeX in Org]].
-
-#+BEGIN_SRC emacs-lisp
-(use-package cdlatex
-  :ensure t
-  :diminish org-cdlatex-mode
-  :config
-  (progn
-    (add-hook 'org-mode-hook 'org-cdlatex-mode)))
-#+END_SRC
-
-I also want to diminish it so that it doesn't show up on the modeline.
-
-#+BEGIN_SRC emacs-lisp
-(defun sk/diminish-org-cdlatex ()
-  (interactive)
-  (diminish 'org-cdlatex-mode ""))
-(add-hook 'org-cdlatex-mode-hook 'sk/diminish-org-cdlatex)
-#+END_SRC
-
 ** Org extra exports
 
 Org already has a pretty good [[*Exporting][exporting system]] but we can make it better. It can export to a [[https://github.com/yjwen/org-reveal][a reveal.js presentation]] or a HTML page with [[https://github.com/marsmining/ox-twbs][bootstrap]]. I write my Org file as a notes file most of the time and hence exporting it directly into a presentation would look horrible. Therefore, I have created a couple of template expansions =<x= and =<X= which export only headlines tagged as "reveal" and ignore all headlines tagged as "[[http://lab.hakim.se/reveal-js/#/][reveal]]" respectively. When none of the template expansions are used, the use of tags mean nothing as they won't interfere with anything. However, when one of them is used, you can export the headlines tailor made to be a PPT or export the ones tailor made to be a notes file. Sweet!
@@ -4809,11 +4906,12 @@ As [[*Org contributed packages][previously mentioned]], I use the drill package 
 (defhydra sk/hydra-org-drill (:color blue
                               :hint nil)
   "
- _f_: file    _h_: heading    _d_: directory   _q_: quit
+ _f_: file    _h_: heading    _d_: directory    _r_: resume   _q_: quit
 "
   ("f" org-drill)
   ("h" org-drill-tree)
   ("d" org-drill-directory)
+  ("r" org-drill-resume)
   ("q" nil :color blue))
 #+END_SRC
 
@@ -5180,6 +5278,29 @@ Which key modal explanation
   "g P" "gist private")
 #+END_SRC
 
+** Browse remote files
+
+[[https://github.com/rmuslimov/browse-at-remote][browse-at-remote]] is a very handy package to view the file/region on the actual Github/Gitlab/Bitbucket page.
+
+#+BEGIN_SRC emacs-lisp
+(use-package browse-at-remote
+  :ensure t
+  :bind* (("C-z g i" . browse-at-remote)))
+#+END_SRC
+
+*** Modal binding
+
+#+BEGIN_SRC emacs-lisp
+(modalka-define-kbd "g i" "C-z g i")
+#+END_SRC
+
+Which key modal explanation
+
+#+BEGIN_SRC emacs-lisp
+  (which-key-add-key-based-replacements
+    "g i" "browse file/region remote")
+#+END_SRC
+
 * Programming
 
 ** Editorconfig
@@ -5255,9 +5376,25 @@ Which key modal explanation
   "c b" "background code")
 #+END_SRC
 
+** Information/documentation at point
+
+These are a set of programming major mode specific bindings. This will check for documentation/information about the symbol/variable/function at point and try to get information if possible. Else, it will default to a Google search. This depends on all the specific packages used for [[*Emacs lisp][Emacs lisp]], [[*C/C++][C/C++]], [[*Python][Python]], [[*Statistics][Statistics]], [[*MATLAB][MATLAB]], [[*Web][Web]] and [[*Code documentation][Dash]]. Also, [[*Auto completion][just like auto-completion]], I bind this functionality to =C-c= and not =C-z=. For more functionality, use the respective language specific [[*Hydras][Hydras]].
+
+** Source/symbol at point
+
+These are a set of programming major mode specific bindings that will check for the definition/source of the function/variable at point and try to go to it. It will default to a project wide search for other unsupported programming languages. This depends on all the specific packages used for [[*Emacs Lisp][Emacs Lisp]], [[*C/C++][C/C++]], [[*Python][Python]], [[*Statistics][Statistics]], [[*MATLAB][MATLAB]], [[*Web][Web]] and [[*Helm][Helm projectile]]. For more functionality, use the respective language specific [[*Hydras][Hydras]].
+
 ** Emacs Lisp
 
-I haven't started programming seriously in Emacs Lisp to know the ways around yet but this is what I have at present.
+I haven't started programming seriously in Emacs Lisp to know the ways around yet but this is what I have at present. First let's configure the Emacs Lisp mode to give us the auto-loaded bindings for =I= and =S= as mentioned the previous two sections about [[*Source/symbol at point][Source/symbol at point]] and [[*Information/documentation at point][Information/documentation at point]].
+
+#+BEGIN_SRC emacs-lisp
+(use-package emacs-lisp-mode
+  :mode ("\\.el$" . emacs-lisp-mode)
+  :bind (:map emacs-lisp-mode-map
+              ("C-c I" . describe-function)
+              ("C-c S" . find-function-at-point)))
+#+END_SRC
 
 *** Macro step
 
@@ -5281,7 +5418,15 @@ Emacs has provisions for a macro and [[https://github.com/joddie/macrostep][this
 
 ** C/C++
 
-I use C++ a lot while programming and this section tries to convert Emacs into a good environment for coding in C++. For a good introduction, [[https://www.youtube.com/watch?v=5FQwQ0QWBTU][take a look at this video]].
+I use C++ a lot while programming and this section tries to convert Emacs into a good environment for coding in C++. For a good introduction, [[https://www.youtube.com/watch?v=5FQwQ0QWBTU][take a look at this video]]. Let's make sure we have some default bindings before we start. Note that these bindings depend on [[*Rtags][Rtags]] package.
+
+*** Consider header files to be C++
+
+I usually don't code in C that much. Therefore, let's make sure Emacs considers ".h" files as C++ header files.
+
+#+BEGIN_SRC emacs-lisp
+(add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
+#+END_SRC
 
 *** Consider header files to be C++
 
@@ -5346,6 +5491,9 @@ The [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Compilation.html
 (use-package rtags
   :ensure t
   :defer 2
+  :bind (:map c++-mode-map
+              ("C-c I" . rtags-print-symbol-info)
+              ("C-c S" . rtags-find-symbol-at-point))
   :init
   (setq rtags-autostart-diagnostics t)
   (setq rtags-completions-enabled t))
@@ -5365,9 +5513,7 @@ The [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Compilation.html
 
 ** Python
 
-This is my python configuration.
-
-*** Manage python
+This is my python configuration. Similar to Emacs Lisp and C++, let's create some nice bindings that depend on [[*Anaconda mode][Anaconda mode]].
 
 Let's use use-package to first manage python mode itself.
 
@@ -5387,17 +5533,15 @@ Let's use use-package to first manage python mode itself.
 #+BEGIN_SRC emacs-lisp
 (use-package anaconda-mode
   :ensure t
+  :defer 2
   :diminish anaconda-mode
   :diminish anaconda-eldoc-mode
-  :commands (anaconda-mode
-             anaconda-eldoc-mode
-             anaconda-mode-find-assignments
-             anaconda-mode-find-definitions
-             anaconda-mode-find-file
-             anaconda-mode-find-references
-             anaconda-mode-show-doc
-             anaconda-mode-go-back
-             anaconda-mode-complete))
+  :bind (:map python-mode-map
+              ("C-c I" . anaconda-mode-show-doc)
+              ("C-c S" . anaconda-mode-find-definitions))
+  :config
+  (progn
+    (add-hook 'python-mode-hook 'anaconda-mode)))
 #+END_SRC
 
 *** Virtual environment support
@@ -5443,34 +5587,36 @@ I haven't started using this package but [[https://github.com/ionrock/pytest-el]
 
 ** Statistics
 
-I rarely use [[https://www.r-project.org/about.html][R]] and occasionally [[http://julialang.org][julia]] but since this is just one package, I might as well install it. It might come in handy.
+I rarely use [[https://www.r-project.org/about.html][R]] and occasionally [[http://julialang.org][julia]] but since this is just one package, I might as well install it. It might come in handy. For now, I have set it up only for Julia.
 
 #+BEGIN_SRC emacs-lisp
 (use-package ess
   :ensure t
-  :mode (("\\.R$" . R-mode)
-         ("\\.r$" . R-mode)
-         ("\\.jl$'" . julia-mode)))
+  :mode (("\\.r$" . R-mode)
+         ("\\.R$" . R-mode)
+         ("\\.jl$" . julia-mode))
+  :commands (R-mode
+             julia-mode
+             sk/julia-shell-here
+             ess-eval-function
+             ess-eval-line
+             ess-eval-buffer
+             ess-switch-to-ESS)
+  :config
+  (require 'ess-site))
 #+END_SRC
 
-The following are a couple of helper functions to open R and Julia shells in a vertical split.
+The following is a helper function to open Julia shell in a vertical split.
 
 #+BEGIN_SRC emacs-lisp
 ;; Vertical split julia REPL
 (defun sk/julia-shell-here ()
   "opens up a new julia REPL in the directory associated with the current buffer's file."
   (interactive)
+  (require 'ess-site)
   (split-window-right)
-  (other-window 1)
-  (julia))
-
-;; Vertical split r REPL
-(defun sk/r-shell-here ()
-  "opens up a new r REPL in the directory associated with the current buffer's file."
-  (interactive)
-  (split-window-right)
-  (other-window 1)
-  (R))
+  (run-julia)
+  (other-window 1))
 #+END_SRC
 
 ** MATLAB
@@ -5501,7 +5647,7 @@ The following is a helper function to open a MATLAB command line in a vertical s
 
 ** Web
 
-I have just recently started dabbling in HTML/CSS and JavaScript. So, this is an initial configuration I have come up with.
+I have just recently started dabbling in HTML/CSS and JavaScript. So, this is an initial configuration I have come up with. The keybindings for [[*Information/documentation at point][Information/documentation at point]] and [[*Source/symbol at point][Source/symbol at point]] are left untouched for this mode as of now. If it has to be added in the future, it will depend on [[*JavaScript navigation][Tern]] for navigation.
 
 *** Web mode
 
@@ -5597,14 +5743,9 @@ I haven't used [[https://www.nginx.com][nginx]] much but useful to have it.
 (use-package tern
   :ensure t
   :diminish tern-mode
-  :commands (tern-mode
-             tern-find-definition
-             tern-find-definition-by-name
-             tern-get-docs
-             tern-get-type
-             tern-use-server
-             tern-highlight-refs
-             tern-rename-variable))
+  :config
+  (progn
+    (add-hook 'js-mode-hook '(lambda () (tern-mode t)))))
 #+END_SRC
 
 *** Node JS REPL
@@ -5692,7 +5833,7 @@ Which key modal explanation
 
 ** Auto completion
 
-[[http://company-mode.github.io][Company mode]] standing for "complete any" is an auto-completion framework with a lot of third part packages and backends. Although I usually trigger manual completion, this is useful to have sometimes. This is a huge definition. Also, this is the only package I bind to =C-c=.
+[[http://company-mode.github.io][Company mode]] standing for "complete any" is an auto-completion framework with a lot of third part packages and backends. Although I usually trigger manual completion, this is useful to have sometimes. This is a huge definition. Also, this is the one of the functionality I bind to =C-c= and not =C-z=.
 
 #+BEGIN_SRC emacs-lisp
 (use-package company
@@ -6027,7 +6168,7 @@ We define two hydras for Elisp. One for the [[*Macro step][macro step package]] 
 (defhydra sk/hydra-macro-step (:pre (macrostep-expand)
                                :color red
                                :hint nil)
-  "
+"
  _e_: expand    _j_: next macro    _C_: collapse all
  _c_: collapse  _k_: prev macro    _q_: quit
 "
@@ -6045,17 +6186,27 @@ Then, the hydra for helping with Emacs Lisp code.
 (defhydra sk/hydra-for-elisp (:color red
                               :hint nil)
   "
- _r_: region    _e_: expression   _s_: ielm    _q_: quit
- _f_: func      _l_: last sexp
- _b_: buffer    _m_: macro step
+ ^Send^                         ^Navigate^                       ^Documentation^
+^^^^^^^^^^-----------------------------------------------------------------------------------
+ _r_: region    _e_: expression   _i_: library    _m_: macrostep     _D_: defun     _q_: quit
+ _f_: func      _l_: last sexp    _d_: defun      _n_: find dired    _V_: variable
+ _b_: buffer    _s_: ielm         _v_: variable   _g_: grep          _I_: library
 "
   ("r" eval-region)
   ("f" eval-defun)
   ("b" eval-buffer)
   ("e" eval-expression :color blue)
   ("l" eval-last-sexp)
-  ("m" sk/hydra-macro-step/body :exit t)
   ("s" ielm :color blue)
+  ("i" find-library)
+  ("d" find-function-at-point)
+  ("v" find-variable)
+  ("m" sk/hydra-macro-step/body :exit t)
+  ("n" find-dired)
+  ("g" find-grep-dired)
+  ("D" describe-function)
+  ("V" describe-variable)
+  ("I" describe-library)
   ("q" nil :color blue))
 #+END_SRC
 
@@ -6208,18 +6359,18 @@ Which key modal explanation
 Since both R and Julia are supported by ESS, one hydra is enough.
 
 #+BEGIN_SRC emacs-lisp
-(defhydra sk/hydra-for-ess (:color blue
+(defhydra sk/hydra-for-ess (:pre (require 'ess-site)
+                            :color blue
                             :hint nil)
   "
- _f_: func        _l_: line    _j_: Julia  _S_: switch
- _s_: selection   _b_: buffer  _r_: R      _q_: quit
+ _f_: func     _l_: line    _s_: start    _q_: quit
+ _r_: region   _b_: buffer  _S_: switch
 "
   ("f" ess-eval-function)
   ("l" ess-eval-line)
-  ("s" ess-eval-region)
+  ("r" ess-eval-region)
   ("b" ess-eval-buffer)
-  ("j" sk/julia-shell-here)
-  ("r" sk/r-shell-here)
+  ("s" sk/julia-shell-here)
   ("S" ess-switch-to-ESS)
   ("q" nil :color blue))
 #+END_SRC
@@ -6342,14 +6493,14 @@ There are two hydras we use for Web editing - one for JavaScript specifically an
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
   ("C-z c j" . sk/hydra-for-js/body)
-  ("C-z c w" . sk/hydra-for-web/body))
+  ("C-z c h" . sk/hydra-for-web/body))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "c j" "C-z c j")
-(modalka-define-kbd "c w" "C-z c w")
+(modalka-define-kbd "c h" "C-z c h")
 #+END_SRC
 
 Which key modal explanation
@@ -6357,7 +6508,7 @@ Which key modal explanation
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
   "c j" "javscript code"
-  "c w" "web code")
+  "c h" "html and web format")
 #+END_SRC
 
 *** Quickrun
@@ -6458,9 +6609,21 @@ For now, I have made it look and act the way I want it too. The additional packa
          ("C-x 8" . helm-ucs))
   :bind* (("C-z SPC h r" . helm-resume)
           ("C-z SPC r" . helm-recentf)
-          ("C-z I" . helm-apropos)
+          ("C-z SPC h a" . helm-apropos)
+          ("C-z SPC h c" . helm-colors)
+          ("C-z SPC h R" . helm-regexp)
+          ("C-z SPC h u" . helm-surfraw)
+          ("C-z SPC h t" . helm-top)
+          ("C-z SPC h p" . helm-list-emacs-process)
+          ("C-z SPC h f" . helm-find)
+          ("C-z SPC h k" . helm-calcul-expression)
+          ("C-z SPC h i" . helm-info-at-point)
+          ("C-z SPC h d" . helm-man-woman)
+          ("C-z SPC h h" . helm-documentation)
+          ("C-z SPC h e" . helm-run-external-command)
+          ("C-z SPC h l" . helm-all-mark-rings)
+          ("C-z SPC h x" . helm-select-xfont)
           ("C-z SPC i" . helm-locate)
-          ("C-z SPC I" . helm-info-at-point)
           ("C-z t" . helm-semantic-or-imenu))
   :bind (:map helm-map
               ("<return>" . helm-maybe-exit-minibuffer)
@@ -6500,6 +6663,11 @@ For now, I have made it look and act the way I want it too. The additional packa
   ;; require basic config
   (require 'helm-config)
   (helm-mode 1)
+
+  ;; use silver searcher when available
+  (when (executable-find "ag-grep")
+    (setq helm-grep-default-command "ag-grep -Hn --no-group --no-color %e %p %f"
+          helm-grep-default-recurse-command "ag-grep -H --no-group --no-color %e %p %f"))
 
   ;; Fuzzy matching for everything
   (setq helm-M-x-fuzzy-match t
@@ -6744,7 +6912,8 @@ For now, I have made it look and act the way I want it too. The additional packa
   ;; to help with projectile
   (use-package helm-projectile
     :ensure t
-    :bind* (("C-z SPC p" . helm-projectile))
+    :bind (("C-c S" . helm-projectile-grep))
+    :bind* (("C-z SPC d" . helm-projectile))
     :init
     (setq projectile-completion-system 'helm))
 
@@ -6761,8 +6930,8 @@ For now, I have made it look and act the way I want it too. The additional packa
   ;; Control circe with helm
   (use-package helm-circe
     :ensure t
-    :bind* (("C-z SPC h i" . helm-circe)
-            ("C-z SPC h I" . helm-circe-new-activity)))
+    :bind* (("C-z SPC h j" . helm-circe)
+            ("C-z SPC h J" . helm-circe-new-activity)))
 
   ;; List errors with helm
   (use-package helm-flycheck
@@ -6799,8 +6968,8 @@ For now, I have made it look and act the way I want it too. The additional packa
 ** Modal binding
 
 #+BEGIN_SRC emacs-lisp
+(modalka-define-kbd "S" "C-c S")
 (modalka-define-kbd "t" "C-z t")
-(modalka-define-kbd "I" "C-z I")
 (modalka-define-kbd "#" "C-z #")
 (modalka-define-kbd "g E" "C-z g E")
 (modalka-define-kbd "g O" "C-z g O")
@@ -6811,23 +6980,35 @@ For now, I have made it look and act the way I want it too. The additional packa
 (modalka-define-kbd "SPC r" "C-z SPC r")
 (modalka-define-kbd "SPC I" "C-z SPC I")
 (modalka-define-kbd "SPC i" "C-z SPC i")
-(modalka-define-kbd "SPC p" "C-z SPC p")
 (modalka-define-kbd "SPC b" "C-z SPC b")
+(modalka-define-kbd "SPC h a" "C-z SPC h a")
 (modalka-define-kbd "SPC h r" "C-z SPC h r")
 (modalka-define-kbd "SPC h w" "C-z SPC h w")
 (modalka-define-kbd "SPC h i" "C-z SPC h i")
-(modalka-define-kbd "SPC h I" "C-z SPC h I")
+(modalka-define-kbd "SPC h c" "C-z SPC h c")
+(modalka-define-kbd "SPC h R" "C-z SPC h R")
+(modalka-define-kbd "SPC h u" "C-z SPC h u")
+(modalka-define-kbd "SPC h t" "C-z SPC h t")
+(modalka-define-kbd "SPC h p" "C-z SPC h p")
+(modalka-define-kbd "SPC h f" "C-z SPC h f")
+(modalka-define-kbd "SPC h k" "C-z SPC h k")
+(modalka-define-kbd "SPC h d" "C-z SPC h d")
+(modalka-define-kbd "SPC h h" "C-z SPC h h")
+(modalka-define-kbd "SPC h e" "C-z SPC h e")
+(modalka-define-kbd "SPC h l" "C-z SPC h l")
+(modalka-define-kbd "SPC h x" "C-z SPC h x")
+(modalka-define-kbd "SPC h j" "C-z SPC h j")
+(modalka-define-kbd "SPC h J" "C-z SPC h J")
 (modalka-define-kbd "SPC h s" "C-z SPC h s")
 (modalka-define-kbd "SPC h m" "C-z SPC h m")
 (modalka-define-kbd "SPC h M" "C-z SPC h M")
-(modalka-define-kbd "SPC h d" "C-z SPC h d")
 #+END_SRC
 
 Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "SPC h r" "resume last helm "
+  "S" "src at point"
   "t" "tags/func in buffer"
   "#" "swoop at point"
   "g E" "extract word from buffers"
@@ -6835,75 +7016,66 @@ Which key modal explanation
   "g s" "search project"
   "g e" "extract word from dir"
   "SPC r" "recent files"
-  "SPC I" "information at point"
   "SPC i" "spotlight"
-  "SPC p" "switch projects"
   "SPC t" "helm edit mode"
   "SPC g" "helm follow"
   "SPC b" "bibliography"
   "SPC h" "helm prefix"
+  "SPC h r" "resume last helm "
+  "SPC h a" "helm apropos"
   "SPC h w" "AWS instances"
-  "SPC h i" "circe with helm"
-  "SPC h I" "circe new activity"
+  "SPC h i" "information at point"
+  "SPC h c" "color picker"
+  "SPC h R" "build regexp"
+  "SPC h u" "surfraw"
+  "SPC h t" "system processes"
+  "SPC h p" "emacs processes"
+  "SPC h f" "find file"
+  "SPC h k" "calc expression"
+  "SPC h d" "manual docs"
+  "SPC h h" "helm docs"
+  "SPC h e" "external command"
+  "SPC h l" "mark rings"
+  "SPC h x" "select font"
+  "SPC h j" "circe chat"
+  "SPC h J" "circe new activity"
   "SPC h s" "helm spelling"
   "SPC h m" "make in project"
-  "SPC h M" "make in current dir"
-  "SPC h d" "helm docset search")
+  "SPC h M" "make in current dir")
 #+END_SRC
 
-** Hydras
+* Fun
 
-*** Default helm functionality
+Emacs is fun!
 
-These are some additional helm functionality as a hydra
+** How do I do something?
+
+[[https://github.com/atykhonov/emacs-howdoi][Interface]] to the awesome [[https://github.com/gleitz/howdoi][command line utility]].
 
 #+BEGIN_SRC emacs-lisp
-(defhydra sk/hydra-helm (:color blue
-                         :hint nil)
-  "
- _c_: colors    _t_: top           _f_: find    _b_: marks       _e_: ext process
- _r_: regexp    _a_: apropos       _x_: xfont   _m_: man pages   _q_: quit
- _s_: surfraw   _p_: emacs proc    _y_: calc    _h_: helm docs
-  "
-  ("c" helm-colors)
-  ("r" helm-regexp)
-  ("s" helm-surfraw)
-  ("t" helm-top)
-  ("a" helm-apropos)
-  ("p" helm-list-emacs-process)
-  ("f" helm-find)
-  ("x" helm-select-xfont)
-  ("y" helm-calcul-expression)
-  ("b" helm-all-mark-rings)
-  ("m" helm-man-woman)
-  ("h" helm-documentation)
-  ("e" helm-run-external-command)
-  ("q" nil :color blue))
+(use-package howdoi
+  :ensure t
+  :bind* (("C-z g I" . howdoi-query)
+          ("C-z g Y" . howdoi-query-line-at-point)
+          ("C-z g Q" . howdoi-query-insert-code-snippet-at-point)))
 #+END_SRC
 
-**** Key binding
+*** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(bind-keys*
-  ("C-z SPC y" . sk/hydra-helm/body))
-#+END_SRC
-
-***** Modal binding
-
-#+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "SPC y" "C-z SPC y")
+(modalka-define-kbd "g I" "C-z g I")
+(modalka-define-kbd "g Y" "C-z g Y")
+(modalka-define-kbd "g Q" "C-z g Q")
 #+END_SRC
 
 Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "SPC y" "helm extras")
+  "g I" "howdoi query"
+  "g Y" "howdoi query line"
+  "g Q" "howdoi query insert code")
 #+END_SRC
-
-* Fun
-
-Emacs is fun!
 
 ** XKCD
 
@@ -7120,12 +7292,12 @@ This section documents the key bindings that help to find other key-bindings. No
 ** Meta
 
 #+NAME: meta_bindings
-| Modalka state binding | Emacs state binding | Function                |
-|-----------------------+---------------------+-------------------------|
-| ?                     | C-z ?               | Show top level bindings |
-| SPC ?                 | C-h b               | search bindings         |
-| M                     | C-u                 | universal argument      |
-| E                     | C-g                 | exit anything in Emacs  |
+| Modalka state binding | Emacs state binding | Function                        |
+|-----------------------+---------------------+---------------------------------|
+| ?                     | C-z ?               | Show top level bindings         |
+| SPC ?                 | C-h b               | search bindings                 |
+| M                     | C-u                 | universal argument              |
+| E                     | C-g                 | exit anything in Emacs          |
 
 ** Quitting and restarting Emacs
 
@@ -7139,89 +7311,89 @@ This section documents the key bindings that help to find other key-bindings. No
 ** Navigation
 
 #+NAME: navigation
-| Modalka state binding | Emacs state binding | Function                                  |
-|-----------------------+---------------------+-------------------------------------------|
-| j                     | C-n                 | next line                                 |
-| k                     | C-p                 | previous line                             |
-| h                     | C-b                 | previous character                        |
-| l                     | C-f                 | next character                            |
-| g g                   | M-<                 | top of buffer                             |
-| G                     | M->                 | bottom of buffer                          |
-| }                     | M-}                 | next para/org element                     |
-| {                     | M-{                 | previous para/org element                 |
-| J                     | C-v                 | scroll down                               |
-| K                     | M-v                 | scroll up                                 |
-| H                     | C-x <               | scroll left                               |
-| L                     | C-x >               | scroll right                              |
-| e                     | M-f                 | next word                                 |
-| b                     | M-b                 | previous word                             |
-| 0                     | C-a                 | [[*Smarter start of line][start of line]]                             |
-| $                     | C-e                 | end of line                               |
-| f                     | C-z f               | find character in line via [[*Avy][Avy]]            |
-| F                     | C-z F               | goto line                                 |
-| W                     | C-z W               | find two characters in file               |
-| /                     | C-s                 | search in buffer                          |
-| SPC SPC               | C-s                 | search in buffer                          |
-| g s                   | C-z g s             | search in project                         |
-| g e                   | C-z g e             | extract word from project                 |
-| n                     | M-n                 | next item/history                         |
-| N                     | M-p                 | previous item/history                     |
-| ;                     | C-z ;               | [[*Back button][forward local change]]                      |
-| ,                     | C-z ,               | backward local change                     |
-| >                     | C-z >               | forward global change                     |
-| <                     | C-z <               | backward global change                    |
-| %                     | C-z %               | [[*Go to matching parenthesis, like Vi][matching parenthesis]]                      |
-| +                     | C-z +               | [[*Bookmark navigation][Bookmark navigation]]                       |
-| B                     | C-z B               | switch to the buffer edited last          |
-| z                     | C-l                 | recenter screen                           |
-| #                     | C-z #               | [[*Highlight symbol][highlight symbol]] like this                |
-| g r                   | C-z g r             | remove all highlighted symbols            |
-| g j                   | C-z g j             | find next like this                       |
-| g k                   | C-z g k             | find previous like this                   |
-| *                     | C-z *               | [[*Highlight symbol][search for word under cursor]]              |
-| w                     | C-z w               | [[*Window navigation][Window navigation hydra]]                   |
-| g w                   | C-x 3               | split window vertically                   |
-| g W                   | C-x 2               | split window horizontally                 |
-| t                     | C-z t               | [[*Helm][tags in buffer]]                            |
-| T                     | C-x T               | [[*Tags based navigation][tags based navigation in project]]          |
-| g t                   | C-z g t             | create tags for code                      |
-| g T                   | C-z g T             | update tags for code                      |
-| g i                   | C-z g i             | [[*Beacon mode][blink cursor]]                              |
-| C s                   | C-z C s             | [[*Perspective][switch perspective]]                        |
-| C a                   | C-z C a             | add buffer to perspective                 |
-| C A                   | C-z C A             | set buffer in perspective                 |
-| C b                   | C-z C b             | switch to buffer in perspective           |
-| C c                   | C-z C c             | close perspective                         |
-| C C                   | C-z C C             | last perspective                          |
-| C i                   | C-z C i             | import perspective                        |
-| C k                   | C-z C k             | kill buffer in perspective                |
-| C n                   | C-z C n             | next perspective                          |
-| C p                   | C-z C p             | previous perspective                      |
-| C r                   | C-z C r             | rename perspective                        |
-| ] ]                   | C-x n n             | narrow to region                          |
-| [ [                   | C-x n w             | widen narrowed region                     |
-| [ s                   | C-z [ s             | [[*Flyspell go to the previous spell error][previous spelling error]]                   |
-| ] s                   | C-z ] s             | next spelling error                       |
-| [ d                   | C-z [ d             | turn the PDF previous page                |
-| ] d                   | C-z ] d             | [[*Turn the adjoining PDF][Turn the adjoining PDF]] next page          |
-| g m                   | C-z g m             | make frame                                |
-| g M                   | C-z g M             | close frame                               |
-| g n                   | C-z g n             | select frame by name                      |
-| g N                   | C-z g N             | name frame                                |
-| g f                   | C-z g f             | find file/url under cursor                |
-| SPC f                 | C-x C-f             | find file browsing by directory           |
-| SPC p                 | C-z SPC p           | switch between projects                   |
-| SPC d                 | C-z SPC d           | find files in project based on [[*Projectile][Projectile]] |
-| SPC n                 | C-z SPC n           | [[*Neotree][directory navigation]]                      |
-| Z                     | C-z Z               | zoom in to the current window             |
-| SPC q                 | C-x 0               | close current window                      |
-| SPC z                 | C-z SPC z           | [[*Non native full screen][Non native full screen]]                    |
-| SPC a                 | C-x b               | switch to open buffer                     |
-| SPC k                 | C-x k               | kill buffer                               |
-| SPC x                 | C-h f               | find help regarding function              |
-| SPC X                 | C-h v               | find help regarding variable              |
-| SPC v                 | C-z SPC v           | view configuration file                   |
-| SPC j                 | M-x                 | find command                              |
+| Modalka state binding | Emacs state binding | Function                                          |
+|-----------------------+---------------------+---------------------------------------------------|
+| j                     | C-n                 | next line                                         |
+| k                     | C-p                 | previous line                                     |
+| h                     | C-b                 | previous character                                |
+| l                     | C-f                 | next character                                    |
+| g g                   | M-<                 | top of buffer                                     |
+| G                     | M->                 | bottom of buffer                                  |
+| }                     | M-}                 | next para/org element                             |
+| {                     | M-{                 | previous para/org element                         |
+| J                     | C-v                 | scroll down                                       |
+| K                     | M-v                 | scroll up                                         |
+| H                     | C-x <               | scroll left                                       |
+| L                     | C-x >               | scroll right                                      |
+| e                     | M-f                 | next word                                         |
+| b                     | M-b                 | previous word                                     |
+| 0                     | C-a                 | [[*Smarter start of line][start of line]]                                     |
+| $                     | C-e                 | end of line                                       |
+| f                     | C-z f               | find anything on screen with timer [[*Avy][Avy]]            |
+| F                     | C-z F               | goto line                                         |
+| /                     | C-s                 | search in buffer                                  |
+| SPC SPC               | C-s                 | search in buffer                                  |
+| g s                   | C-z g s             | search in project                                 |
+| g e                   | C-z g e             | extract word from project                         |
+| n                     | M-n                 | next item/history                                 |
+| N                     | M-p                 | previous item/history                             |
+| ;                     | C-z ;               | [[*Back button][forward local change]]                              |
+| ,                     | C-z ,               | backward local change                             |
+| >                     | C-z >               | forward global change                             |
+| <                     | C-z <               | backward global change                            |
+| %                     | C-z %               | [[*Go to matching parenthesis, like Vi][matching parenthesis]]                              |
+| +                     | C-z +               | [[*Bookmark navigation][Bookmark navigation]]                               |
+| B                     | C-z B               | switch to the buffer edited last                  |
+| z                     | C-l                 | recenter screen                                   |
+| #                     | C-z #               | [[*Highlight symbol][highlight symbol]] like this                        |
+| g r                   | C-z g r             | remove all highlighted symbols                    |
+| g j                   | C-z g j             | find next like this                               |
+| g k                   | C-z g k             | find previous like this                           |
+| *                     | C-z *               | [[*Highlight symbol][search for word under cursor]]                      |
+| w                     | C-z w               | [[*Window navigation][Window navigation hydra]]                           |
+| g w                   | C-x 3               | split window vertically                           |
+| g W                   | C-x 2               | split window horizontally                         |
+| t                     | C-z t               | [[*Helm][tags in buffer]]                                    |
+| T                     | C-x T               | [[*Tags based navigation][tags based navigation in project]]                  |
+| g t                   | C-z g t             | create tags for code                              |
+| g T                   | C-z g T             | update tags for code                              |
+| g z                   | C-z g z             | [[*Beacon mode][blink cursor]]                                      |
+| SPC p                 | C-z SPC p           | [[*Perspective][switch perspective]]                                |
+| C a                   | C-z C a             | add buffer to perspective                         |
+| C A                   | C-z C A             | set buffer in perspective                         |
+| SPC s                 | C-z SPC s           | switch to buffer in perspective                   |
+| C c                   | C-z C c             | close perspective                                 |
+| C C                   | C-z C C             | last perspective                                  |
+| C i                   | C-z C i             | import perspective                                |
+| C k                   | C-z C k             | kill buffer in perspective                        |
+| C n                   | C-z C n             | next perspective                                  |
+| C p                   | C-z C p             | previous perspective                              |
+| C r                   | C-z C r             | rename perspective                                |
+| ] ]                   | C-x n n             | narrow to region                                  |
+| [ [                   | C-x n w             | widen narrowed region                             |
+| [ s                   | C-z [ s             | [[*Flyspell go to the previous spell error][previous spelling error]]                           |
+| ] s                   | C-z ] s             | next spelling error                               |
+| [ d                   | C-z [ d             | turn the PDF previous page                        |
+| ] d                   | C-z ] d             | [[*Turn the adjoining PDF (only with 2 windows)][Turn the adjoining PDF]] next page                  |
+| g [                   | C-z g [             | [[*Turn the adjoining window (only with 2 windows)][Scroll the adjoining window up]]                    |
+| g ]                   | C-z g ]             | Scroll the adjoining window down                  |
+| g m                   | C-z g m             | make frame                                        |
+| g M                   | C-z g M             | close frame                                       |
+| g n                   | C-z g n             | select frame by name                              |
+| g N                   | C-z g N             | name frame                                        |
+| g f                   | C-z g f             | find file/url under cursor                        |
+| SPC f                 | C-x C-f             | find file browsing by directory                   |
+| SPC d                 | C-z SPC d           | find files based on [[*Projectile][Projectile]] or helm-projectile |
+| SPC n                 | C-z SPC n           | [[*Neotree][directory navigation]]                              |
+| Z                     | C-z Z               | zoom in to the current window                     |
+| SPC q                 | C-x 0               | close current window                              |
+| SPC z                 | C-z SPC z           | [[*Non native full screen][Non native full screen]]                            |
+| SPC a                 | C-x b               | switch to open buffer                             |
+| SPC k                 | C-x k               | kill buffer                                       |
+| SPC v                 | C-z SPC v           | view configuration file                           |
+| SPC j                 | M-x                 | find command                                      |
+| SPC y                 | C-z SPC y           | [[*Code documentation][browse code documentation]] with docset             |
+| SPC Y                 | C-z SPC Y           | browse code docs immediately                      |
 
 ** Editing
 
@@ -7301,7 +7473,7 @@ This section documents the key bindings that help to find other key-bindings. No
 | \                     | C-c C-c             | simulate C-c C-c                     |
 | SPC w                 | C-x C-s             | save                                 |
 | SPC o                 | C-c C-k             | org abort                            |
-| SPC s                 | C-z SPC s           | [[*Visual replace][visual replace word in buffer/region]] |
+| SPC x                 | C-z SPC x           | [[*Visual replace][visual replace word in buffer/region]] |
 | g R                   | C-z g R             | [[*Rename the current buffer and the file associated with it][rename current file]]                  |
 | g K                   | C-z g K             | [[*Delete the current buffer and the file associated with it][delete current file]]                  |
 | g y                   | C-z g y             | [[*Copy the current file path][copy current file path]]               |
@@ -7386,76 +7558,94 @@ This section documents the key bindings that help to find other key-bindings. No
 ** Programming
 
 #+NAME: programming
-| Modalka state binding | Emacs state binding | Function                    |
-|-----------------------+---------------------+-----------------------------|
-| SPC e                 | C-z SPC e           | [[*Magit][explore git repository]]      |
-| g b                   | C-z g b             | git blame                   |
-| ] h                   | C-z ] h             | [[*Highlight diffs][next git hunk]]               |
-| [ h                   | C-z [ h             | previous git hunk           |
-| g h                   | C-z g h             | goto git hunk               |
-| g H                   | C-z g H             | revert git hunk             |
-| g l                   | C-z g l             | [[*Git time machine][git log time machine]]        |
-| g L                   | C-z g L             | git log switch branch       |
-| g p                   | C-z g p             | [[*Gists][gist post public]]            |
-| g P                   | C-z g P             | gist post private           |
-| g o                   | C-x C-e             | emacs lisp evaluate         |
-| c b                   | C-z c b             | [[*Start services][start background processes]]  |
-| c e                   | C-z c e             | [[*Emacs lisp][emacs lisp code menu]]        |
-| c c                   | C-z c c             | [[*C/C++][c/c++ code menu]]             |
-| c p                   | C-z c p             | [[*Python][python code menu]]            |
-| c s                   | C-z c s             | [[*Statistics][statistics code menu]]        |
-| c m                   | C-z c m             | [[*MATLAB][MATLAB code menu]]            |
-| c j                   | C-z c j             | [[*Web][JavaScript code menu]]        |
-| c w                   | C-z c w             | web mode code menu          |
-| c d                   | C-z c d             | [[*Debugging][Debugging code menu]]         |
-| c t                   | C-z c t             | [[*Tmux integration][Tmux code menu]]              |
-| ] l                   | C-z ] l             | [[*Error checking][next error]]                  |
-| [ l                   | C-z [ l             | previous error              |
-| SPC l                 | C-z SPC l           | list errors                 |
-| SPC u                 | C-z SPC u           | [[*Eshell][Eshell vertical split]]       |
-| SPC U                 | C-z SPC U           | Eshell horizontal split     |
-| SPC m                 | C-z SPC m           | [[*Multi term][Multi term vertical split]]   |
-| SPC M                 | C-z SPC M           | Multi term horizontal split |
+| Modalka state binding | Emacs state binding | Function                        |
+|-----------------------+---------------------+---------------------------------|
+| SPC e                 | C-z SPC e           | [[*Magit][explore git repository]]          |
+| g i                   | C-z g i             | [[*Browse remote files][Browse remote files]]             |
+| g b                   | C-z g b             | git blame                       |
+| ] h                   | C-z ] h             | [[*Highlight diffs][next git hunk]]                   |
+| [ h                   | C-z [ h             | previous git hunk               |
+| g h                   | C-z g h             | goto git hunk                   |
+| g H                   | C-z g H             | revert git hunk                 |
+| g l                   | C-z g l             | [[*Git time machine][git log time machine]]            |
+| g L                   | C-z g L             | git log switch branch           |
+| g p                   | C-z g p             | [[*Gists][gist post public]]                |
+| g P                   | C-z g P             | gist post private               |
+| g o                   | C-x C-e             | emacs lisp evaluate             |
+| I                     | C-c I               | get info about thing at point   |
+| S                     | C-c S               | get source about thing at point |
+| c b                   | C-z c b             | [[*Start services][start background processes]]      |
+| c e                   | C-z c e             | [[*Emacs lisp][emacs lisp code menu]]            |
+| c c                   | C-z c c             | [[*C/C++][c/c++ code menu]]                 |
+| c p                   | C-z c p             | [[*Python][python code menu]]                |
+| c s                   | C-z c s             | [[*Statistics][statistics code menu]]            |
+| c m                   | C-z c m             | [[*MATLAB][MATLAB code menu]]                |
+| c j                   | C-z c j             | [[*Web][JavaScript code menu]]            |
+| c w                   | C-z c w             | web mode code menu              |
+| c d                   | C-z c d             | [[*Debugging][Debugging code menu]]             |
+| c t                   | C-z c t             | [[*Tmux integration][Tmux code menu]]                  |
+| ] l                   | C-z ] l             | [[*Error checking][next error]]                      |
+| [ l                   | C-z [ l             | previous error                  |
+| SPC l                 | C-z SPC l           | list errors                     |
+| SPC u                 | C-z SPC u           | [[*Eshell][Eshell vertical split]]           |
+| SPC U                 | C-z SPC U           | Eshell horizontal split         |
+| SPC m                 | C-z SPC m           | [[*Multi term][Multi term vertical split]]       |
+| SPC M                 | C-z SPC M           | Multi term horizontal split     |
 
 ** Helm
 
 #+NAME: helm
 | Modalka state binding | Emacs state binding | Function                                |
 |-----------------------+---------------------+-----------------------------------------|
-| I                     | C-z I               | helm apropos                            |
 | SPC i                 | C-z SPC i           | [[*Helm][spotlight search]]                        |
 | SPC g                 | C-c C-f             | helm follow selection                   |
 | SPC t                 | C-c C-e             | helm swoop edit mode                    |
 | SPC b                 | C-z SPC b           | helm bibtex                             |
 | SPC y                 | C-z SPC y           | [[*Hydras][helm extra commands]]                     |
 | SPC r                 | C-z SPC r           | recent files                            |
+| SPC h a               | C-z SPC h a         | helm apropos                            |
 | SPC h r               | C-z SPC h r         | helm resume                             |
 | SPC h s               | C-z SPC h s         | helm correct spelling                   |
 | SPC h w               | C-z SPC h w         | manage [[https://aws.amazon.com/cli/][AWS via aws cli]]                  |
-| SPC h i               | C-z SPC h i         | manage [[*IRC][IRC]] buffers                      |
-| SPC h I               | C-z SPC h I         | checkout new IRC activity               |
+| SPC h j               | C-z SPC h j         | manage [[*IRC][IRC]] buffers                      |
+| SPC h J               | C-z SPC h J         | checkout new IRC activity               |
 | SPC h m               | C-z SPC h m         | select a [[https://en.wikipedia.org/wiki/Makefile][Makefile]] target                |
 | SPC h M               | C-z SPC h M         | select a Makefile target in current dir |
-| SPC h d               | C-z SPC h d         | [[*Code documentation][search a code documentation]]             |
-| SPC h D               | C-z SPC h D         | code documentation at point             |
+| SPC h c               | C-z SPC h c         | color picker                            |
+| SPC h d               | C-z SPC h d         | man pages                               |
+| SPC h e               | C-z SPC h e         | run external command                    |
+| SPC h f               | C-z SPC h f         | use the 'find' utility                  |
+| SPC h h               | C-z SPC h h         | read the helm documentation             |
+| SPC h i               | C-z SPC h i         | information at point                    |
+| SPC h k               | C-z SPC h k         | calculate expression                    |
+| SPC h l               | C-z SPC h l         | all marks                               |
+| SPC h p               | C-z SPC h p         | emacs processes                         |
+| SPC h R               | C-z SPC h R         | build regexp interactively              |
+| SPC h t               | C-z SPC h t         | system 'top' utility                    |
+| SPC h u               | C-z SPC h u         | use the surfraw utility                 |
+| SPC h x               | C-z SPC h x         | select the xfont                        |
 
 ** Fun
 
 #+NAME: fun
-| Modalka state binding | Emacs state binding | Function       |
-|-----------------------+---------------------+----------------|
-| g x                   | C-z g x             | [[*XKCD][XKCD]]           |
-| g X                   | C-z g X             | [[*Stack exchange][Stack exchange]] |
-| g G                   | C-z g G             | [[*Google stuff][Google stuff]]   |
+| Modalka state binding | Emacs state binding | Function                 |
+|-----------------------+---------------------+--------------------------|
+| g x                   | C-z g x             | [[*XKCD][XKCD]]                     |
+| g X                   | C-z g X             | [[*Stack exchange][Stack exchange]]           |
+| g G                   | C-z g G             | [[*Google stuff][Google stuff]]             |
+| g I                   | C-z g I             | [[*How do I do something?][howdoi query]]             |
+| g Y                   | C-z g Y             | howdoi query line        |
+| g Q                   | C-z g Q             | howdoi query insert code |
+
 * Automatically invoke tangle on save
 
 This portion of comments let Emacs know that it has to [[*Tangle%20on%20save][invoke tangle on save]]. Since the actual code is in comment form, I have included the code to be included in verbatim form. Also, note that Emacs might prompt you if you are OK with the local variables being executed. Press "!" to tell Emacs that is OK and to ask it to save it to the [[*Custom%20file][Custom file]].
 
-#+BEGIN_VERBATIM
+#+BEGIN_SRC emacs-lisp :tangle no
 # Local Variables:
 # eval: (when (fboundp #'tangle-if-init) (add-hook 'after-save-hook #'tangle-if-init))
 # End:
-#+END_VERBATIM
+#+END_SRC
 
 # Local Variables:
 # eval: (when (fboundp #'tangle-if-init) (add-hook 'after-save-hook #'tangle-if-init))

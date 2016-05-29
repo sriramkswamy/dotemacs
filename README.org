@@ -1,0 +1,10 @@
+#+TITLE: Emacs configuration file
+#+AUTHOR: Sriram Krishnaswamy
+
+#+OPTIONS: num:nil tags:nil todo:nil p:nil pri:nil stat:nil c:nil d:nil
+#+LATEX_HEADER: \usepackage[margin=2cm]{geometry}
+#+EXCLUDE_TAGS: noexport
+
+This is my [[https://www.gnu.org/software/emacs/][Emacs]] configuration file. My entire Emacs configuration file is actually just an org file - [[./config.org][config.org]]. At first, I was against this idea but it felt like the easiest way to document all the packages and the features was to just use an Org file and with more people using it successfully ([[http://pages.sachachua.com/.emacs.d/Sacha.html][1]], [[https://ogbe.net/emacsconfig.html][2]], [[https://github.com/wasamasa/dotemacs][3]], [[https://github.com/hrs/dotfiles/tree/master/emacs.d][4]]), I have been thinking about it for a while. The final push was a couple of videos ([[https://www.youtube.com/watch?v=VIuOwIBL-ZU][1]] and [[https://www.youtube.com/watch?v=gRb3bq0NiXY][2]]). I realized that by doing this, I can have easy documentation for me to understand later. Note that this is a pretty big file and I'm an amateur at Emacs Lisp (for now).
+
+I also have a separate branch for =gh-pages= and so, the online version of the configuration can be found [[http://sriramkswamy.github.io/dotemacs/][here]].

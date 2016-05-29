@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: latex new column
+# key: lnc
+# --
+p{${1:4}cm}${2:|}

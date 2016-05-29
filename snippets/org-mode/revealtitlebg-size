@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: reveal title slide background size
+# key: rtbs
+# --
+#+REVEAL_TITLE_SLIDE_BACKGROUND_SIZE: ${1:200}px

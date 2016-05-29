@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: nikola no email
+# key: nmail
+# --
+#+OPTIONS: email:${1:nil/t}

@@ -1,6 +1,6 @@
 # -*- mode: snippet; require-final-newline: nil -*-
 # name: Iota
-# key: io
+# key: iot
 # binding: direct-keybinding
 # --
 \iota

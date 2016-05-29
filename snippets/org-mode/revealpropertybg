@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: reveal background property
+# key: rbp
+# --
+:reveal_background: ${1:image/hexcode/color}

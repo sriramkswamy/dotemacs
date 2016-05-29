@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: reveal slide header
+# key: rhead
+# --
+#+REVEAL_SLIDE_HEADER: ${1:header}

@@ -1,6 +1,0 @@
-# -*- mode: snippet -*-
-# name: interleave
-# key: interleave
-# --
-
-#+INTERLEAVE_PDF: $1

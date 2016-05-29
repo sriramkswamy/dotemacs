@@ -49,9 +49,9 @@ GTAGS
 /config.el
 /config.html
 /helm-doc.org
-*.png
 /images/*
 /js/hammer.js
 js/*
 /slide_config.js
 /theme/*
+/#%2Aediff-merge%2A#23721TdU#

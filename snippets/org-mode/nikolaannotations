@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: nikola annotations
+# key: nann
+# --
+${1:#+NIKOLA_ANNOTATIONS: True}${2:#+NIKOLA_NOANNOTATIONS: True}

@@ -3,4 +3,4 @@
 # key: pf
 # binding: direct-keybinding
 # --
-\frac{\partial{$1}}{\partial{$2}}
+\frac{\partial{ $1 }}{\partial{ $2 }}

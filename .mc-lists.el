@@ -6,6 +6,8 @@
 	delete-horizontal-space
 	electric-newline-and-maybe-indent
 	ivy-alt-done
+	kill-region
+	modalka-translation
 	org-cdlatex-underscore-caret
 	org-force-self-insert
 	org-self-insert-command

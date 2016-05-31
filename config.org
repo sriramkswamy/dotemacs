@@ -640,7 +640,6 @@ There are some pretty nice default functions that are unbound. I use the =bind-k
   ("C-z g U" . upcase-region)
   ("C-z g C" . capitalize-region)
   ("C-z R"   . overwrite-mode)
-  ("C-z ."   . repeat)
   ("C-z g j" . doc-view-next-page)
   ("C-z g k" . doc-view-previous-page)
   ("C-z : t" . emacs-init-time)
@@ -789,7 +788,6 @@ This is based on Vi-style but only slightly and uses the default movement keys i
 (modalka-define-kbd "0" "C-a")
 (modalka-define-kbd "$" "C-e")
 (modalka-define-kbd "G" "M->")
-(modalka-define-kbd "/" "C-s")
 (modalka-define-kbd "y" "M-w")
 (modalka-define-kbd "p" "C-y")
 (modalka-define-kbd "P" "M-y")
@@ -806,8 +804,8 @@ This is based on Vi-style but only slightly and uses the default movement keys i
 (modalka-define-kbd "w" "C-x o")
 (modalka-define-kbd "B" "C-z B")
 (modalka-define-kbd "d" "C-S-w")
-(modalka-define-kbd "H" "C-x <")
-(modalka-define-kbd "L" "C-x >")
+(modalka-define-kbd "H" "C-x >")
+(modalka-define-kbd "L" "C-x <")
 (modalka-define-kbd "Z" "C-x 1")
 (modalka-define-kbd "q" "C-x (")
 (modalka-define-kbd "Q" "C-x )")
@@ -933,13 +931,12 @@ I have added the which key explanations for everything at once because it is eas
     "}" "prev para"
     "0" "start of line"
     "$" "end of line"
-    ;; "(" "start of sentence"
-    ;; ")" "end of sentence"
+    "(" "start of sentence"
+    ")" "end of sentence"
     "E" "exit anything"
     "B" "previous buffer"
     "w" "other window"
     "G" "end of file"
-    "/" "search"
     "d" "delete selection"
     "y" "copy selection"
     "p" "paste"
@@ -956,7 +953,6 @@ I have added the which key explanations for everything at once because it is eas
     "'" "org edit separately"
     "q" "start macro"
     "Q" "end macro"
-    "." "repeat prev command"
     "?" "top level bindings"
     "v" "start selection"
     "R" "overwrite mode"
@@ -1412,44 +1408,6 @@ Which key modal explanation
   "I" "info at point"
   "SPC y" "documentation prompt"
   "SPC Y" "documentation at point")
-#+END_SRC
-
-** Back button
-
-The one thing I missed from Vim when I switched to Emacs was Vim's jump list. [[https://www.emacswiki.org/emacs/BackButton][Back button mode]] provides a similar navigation in Emacs where you navigate to the points where you made changes previously. Comes in really handy at times.
-
-#+BEGIN_SRC emacs-lisp
-(use-package back-button
-  :ensure t
-  :diminish back-button-mode
-  :defer 2
-  :init
-  (setq back-button-show-toolbar-buttons nil)
-  :bind* (("C-z ," . back-button-local-backward)
-          ("C-z ;" . back-button-local-forward)
-          ("C-z <" . back-button-global-backward)
-          ("C-z >" . back-button-global-forward))
-  :config
-  (back-button-mode 1))
-#+END_SRC
-
-*** Modal binding
-
-#+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "," "C-z ,")
-(modalka-define-kbd ";" "C-z ;")
-(modalka-define-kbd ">" "C-z >")
-(modalka-define-kbd "<" "C-z <")
-#+END_SRC
-
-Which key modal explanation
-
-#+BEGIN_SRC emacs-lisp
-(which-key-add-key-based-replacements
-  "," "local backward"
-  ";" "local forward"
-  ">" "global forward"
-  "<" "global backward")
 #+END_SRC
 
 ** Custom functions
@@ -2137,137 +2095,32 @@ Which key modal explanation
 (use-package iedit
   :ensure t
   :commands (iedit-mode)
-  :bind* (("C-z m i" . iedit-mode)))
+  :bind* (("C-z m" . iedit-mode)
+          ("C-z >" . iedit-expand-down-a-line)
+          ("C-z <" . iedit-expand-up-a-line)
+          ("C-z ." . iedit-restrict-current-line)
+          ("C-z ," . iedit-toggle-selection)))
 #+END_SRC
 
 *** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "m i" "C-z m i")
+(modalka-define-kbd "m" "C-z m")
+(modalka-define-kbd ">" "C-z >")
+(modalka-define-kbd "<" "C-z <")
+(modalka-define-kbd "." "C-z .")
+(modalka-define-kbd "," "C-z ,")
 #+END_SRC
 
 Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "m i" "multi interactive edit ")
-#+END_SRC
-
-** Multiple cursors
-
-This is one of those packages which is great when it works and frustrating when it is not because [[https://github.com/magnars/multiple-cursors.el][it is essentially crazy functionality]]. Note that, this also has the same caveat as that of Smartparens wrapping - invoke the keys once you are OUT of modalka state, in normal emacs region state. To aid this, [[*Region bindings mode][Region bindings mode]] bindings are setup.
-
-#+BEGIN_SRC emacs-lisp
-  (use-package multiple-cursors
-    :ensure t
-    :bind* (("C-z m e" . mc/edit-beginnings-of-lines)
-            ("C-z m E" . mc/edit-ends-of-lines)
-            ("C-z m l" . mc/edit-lines)
-            ("C-z m a" . mc/mark-all-like-this)
-            ("C-z m f" . mc/mark-next-like-this)
-            ("C-z m F" . mc/mark-previous-like-this)
-            ("C-z m m" . mc/mark-more-like-this-extended)
-            ("C-z m s" . mc/skip-to-next-like-this)
-            ("C-z m S" . mc/skip-to-previous-like-this)
-            ("C-z m n" . mc/insert-numbers)
-            ("C-z m N" . mc/insert-letters)
-            ("C-z m d" . mc/mark-all-like-this-in-defun)))
-#+END_SRC
-
-An important thing to remember here is to put the =modalka-mode= function in the proper list in the automatically generated file - [[./.mc-lists.el][.mc-lists.el]]. An example is shown below. This has set me up to avoid some common snags in this package.
-
-#+BEGIN_SRC emacs-lisp :tangle no
-;; This file is automatically generated by the multiple-cursors extension.
-;; It keeps track of your preferences for running commands with multiple cursors.
-
-(setq mc/cmds-to-run-for-all
-      '(
-        ivy-alt-done
-        org-cdlatex-underscore-caret
-        org-force-self-insert
-        org-self-insert-command
-        sk/smarter-move-beginning-of-line
-        sp-backward-delete-char
-        sp-backward-kill-word
-        sp-delete-char
-        delete-horizontal-space
-        ))
-
-(setq mc/cmds-to-run-once
-      '(
-        modalka-mode
-        beginning-of-buffer
-        end-of-buffer
-        iedit-mode
-        mc/vertical-align-with-space
-        ))
-#+END_SRC
-
-*** Modal binding
-
-Note that triggering multiple cursors when in modalka state is most likely to break it. This is just for reference. The bindings need to be invoked as indicated in [[*Region bindings mode][region bindings mode]].
-
-#+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "m e" "C-z m e")
-(modalka-define-kbd "m E" "C-z m E")
-(modalka-define-kbd "m l" "C-z m l")
-(modalka-define-kbd "m a" "C-z m a")
-(modalka-define-kbd "m f" "C-z m f")
-(modalka-define-kbd "m F" "C-z m F")
-(modalka-define-kbd "m m" "C-z m m")
-(modalka-define-kbd "m s" "C-z m s")
-(modalka-define-kbd "m S" "C-z m S")
-(modalka-define-kbd "m n" "C-z m n")
-(modalka-define-kbd "m N" "C-z m N")
-(modalka-define-kbd "m d" "C-z m d")
-#+END_SRC
-
-Which key modal explanation
-
-#+BEGIN_SRC emacs-lisp
-(which-key-add-key-based-replacements
-  "m" "multiple cursor prefix"
-  "m a" "mark all similar selection"
-  "m F" "mark prev similar selection"
-  "m f" "mark next similar selection"
-  "m S" "skip prev similar selection"
-  "m s" "skip next similar selection"
-  "m m" "extend similar selection"
-  "m e" "edit start of selection"
-  "m E" "edit end of selection"
-  "m n" "insert numbers"
-  "m N" "insert letters"
-  "m l" "edit lines"
-  "m d" "mark all in function")
-#+END_SRC
-
-** TODO Region bindings mode
-
-This a special mode, sort of modal state, that is triggered ONLY when some region is selected. To use these bindings, move OUT of modalka state and press them in Emacs state. I use it primarily for [[*Multiple cursors][multiple cursors]] but it can be configured to be used for anything. In the future, I'm planning to set up a little more Vim-ish setup by faking operators, etc in the normal mode while they can have separate meanings in =region-bindings= mode. Let's see.
-
-With the new configuration of [[./.mc-lists.el][.mc-lists.el]] file, it's possible to invoke multiple cursors with the same bindings when a region is active. However, it is important to note that this is possible ONLY because of this =region-bindings= package. Otherwise, it's close to impossible to make this happen.
-
-#+BEGIN_SRC emacs-lisp
-(use-package region-bindings-mode
-  :ensure t
-  :demand t
-  :bind (:map region-bindings-mode-map
-              ("ma" . mc/mark-all-like-this)
-              ("mb" . mc/mark-previous-like-this)
-              ("mf" . mc/mark-next-like-this)
-              ("mS" . mc/skip-to-previous-like-this)
-              ("ms" . mc/skip-to-next-like-this)
-              ("mm" . mc/mark-more-like-this-extended)
-              ("me" . mc/edit-beginnings-of-lines)
-              ("mE" . mc/edit-ends-of-lines)
-              ("ml" . mc/edit-lines)
-              ("mn" . mc/insert-numbers)
-              ("mN" . mc/insert-letters)
-              ("md" . mc/mark-all-like-this-in-defun))
-  :diminish (region-bindings-mode . "ρ")
-  :config
-  (progn
-    (add-hook 'after-init-hook 'region-bindings-mode-enable)))
+  "m" "multi edit all"
+  ">" "multi edit expand down"
+  "<" "multi edit expand up"
+  "." "multi edit current line"
+  "," "multi edit toggle selection")
 #+END_SRC
 
 ** Shrink white space
@@ -2301,7 +2154,7 @@ This is the [[https://github.com/benma/visual-regexp.el][good old search and rep
 (use-package visual-regexp
   :ensure t
   :commands (vr/query-replace)
-  :bind* (("C-z SPC x" . vr/query-replace))
+  :bind* (("C-z /" . vr/query-replace))
   :config
   (use-package visual-regexp-steroids
     :ensure t
@@ -2311,14 +2164,14 @@ This is the [[https://github.com/benma/visual-regexp.el][good old search and rep
 *** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "SPC x" "C-z SPC x")
+(modalka-define-kbd "/" "C-z /")
 #+END_SRC
 
 Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "SPC x" "replace word/expression")
+  "/" "replace word/expression")
 #+END_SRC
 
 ** Snippets
@@ -6583,7 +6436,7 @@ For now, I have made it look and act the way I want it too. The additional packa
          ("C-x 8" . helm-ucs))
   :bind* (("C-z SPC h r" . helm-resume)
           ("C-z SPC r" . helm-recentf)
-          ("C-z SPC h a" . helm-apropos)
+          ("C-z SPC x" . helm-apropos)
           ("C-z SPC h c" . helm-colors)
           ("C-z SPC h R" . helm-regexp)
           ("C-z SPC h u" . helm-surfraw)
@@ -6595,7 +6448,7 @@ For now, I have made it look and act the way I want it too. The additional packa
           ("C-z SPC h d" . helm-man-woman)
           ("C-z SPC h h" . helm-documentation)
           ("C-z SPC h e" . helm-run-external-command)
-          ("C-z SPC h l" . helm-all-mark-rings)
+          ("C-z ;" . helm-all-mark-rings)
           ("C-z SPC h x" . helm-select-xfont)
           ("C-z SPC i" . helm-locate)
           ("C-z t" . helm-semantic-or-imenu))
@@ -6945,6 +6798,7 @@ For now, I have made it look and act the way I want it too. The additional packa
 (modalka-define-kbd "S" "C-c S")
 (modalka-define-kbd "t" "C-z t")
 (modalka-define-kbd "#" "C-z #")
+(modalka-define-kbd ";" "C-z ;")
 (modalka-define-kbd "g E" "C-z g E")
 (modalka-define-kbd "g O" "C-z g O")
 (modalka-define-kbd "g s" "C-z g s")
@@ -6955,7 +6809,7 @@ For now, I have made it look and act the way I want it too. The additional packa
 (modalka-define-kbd "SPC I" "C-z SPC I")
 (modalka-define-kbd "SPC i" "C-z SPC i")
 (modalka-define-kbd "SPC b" "C-z SPC b")
-(modalka-define-kbd "SPC h a" "C-z SPC h a")
+(modalka-define-kbd "SPC x" "C-z SPC x")
 (modalka-define-kbd "SPC h r" "C-z SPC h r")
 (modalka-define-kbd "SPC h w" "C-z SPC h w")
 (modalka-define-kbd "SPC h i" "C-z SPC h i")
@@ -6969,7 +6823,6 @@ For now, I have made it look and act the way I want it too. The additional packa
 (modalka-define-kbd "SPC h d" "C-z SPC h d")
 (modalka-define-kbd "SPC h h" "C-z SPC h h")
 (modalka-define-kbd "SPC h e" "C-z SPC h e")
-(modalka-define-kbd "SPC h l" "C-z SPC h l")
 (modalka-define-kbd "SPC h x" "C-z SPC h x")
 (modalka-define-kbd "SPC h j" "C-z SPC h j")
 (modalka-define-kbd "SPC h J" "C-z SPC h J")
@@ -6985,6 +6838,7 @@ Which key modal explanation
   "S" "src at point"
   "t" "tags/func in buffer"
   "#" "swoop at point"
+  ";" "previous edit points"
   "g E" "extract word from buffers"
   "g O" "search all open org files"
   "g s" "search project"
@@ -6994,9 +6848,9 @@ Which key modal explanation
   "SPC t" "helm edit mode"
   "SPC g" "helm follow"
   "SPC b" "bibliography"
+  "SPC x" "helm apropos"
   "SPC h" "helm prefix"
   "SPC h r" "resume last helm "
-  "SPC h a" "helm apropos"
   "SPC h w" "AWS instances"
   "SPC h i" "information at point"
   "SPC h c" "color picker"
@@ -7009,7 +6863,6 @@ Which key modal explanation
   "SPC h d" "manual docs"
   "SPC h h" "helm docs"
   "SPC h e" "external command"
-  "SPC h l" "mark rings"
   "SPC h x" "select font"
   "SPC h j" "circe chat"
   "SPC h J" "circe new activity"
@@ -7312,10 +7165,7 @@ This section documents the key bindings that help to find other key-bindings. No
 | g e                   | C-z g e             | extract word from project                         |
 | n                     | M-n                 | next item/history                                 |
 | N                     | M-p                 | previous item/history                             |
-| ;                     | C-z ;               | [[*Back button][forward local change]]                              |
-| ,                     | C-z ,               | backward local change                             |
-| >                     | C-z >               | forward global change                             |
-| <                     | C-z <               | backward global change                            |
+| ;                     | C-z ;               | see previous changes                              |
 | %                     | C-z %               | [[*Go to matching parenthesis, like Vi][matching parenthesis]]                              |
 | +                     | C-z +               | [[*Bookmark navigation][Bookmark navigation]]                               |
 | B                     | C-z B               | switch to the buffer edited last                  |
@@ -7385,7 +7235,6 @@ This section documents the key bindings that help to find other key-bindings. No
 | q                     | C-x (               | start macro                          |
 | Q                     | C-x )               | end macro                            |
 | @                     | C-z @               | [[*Macros][macros play menu]]                     |
-| .                     | C-z .               | repeat previous command              |
 | =                     | C-z =               | indent region                        |
 | O                     | C-o                 | [[*Open line][Open line above]]                      |
 | g O                   | C-z g O             | open line below                      |
@@ -7434,21 +7283,15 @@ This section documents the key bindings that help to find other key-bindings. No
 | s S                   | C-z s S             | surroundings backward unwrap         |
 | s x                   | C-z s x             | smartparens transpose expressions    |
 | s y                   | C-z s y             | smartparens copy expression          |
-| m i                   | C-z m i             | multiple interactive edits           |
-| m a ([[*Region bindings mode][region binding]])  | C-z m a             | mark all similar selection           |
-| m d (region binding)  | C-z m d             | mark all in function definition      |
-| m e (region binding)  | C-z m e             | edit start of lines                  |
-| m E (region binding)  | C-z m E             | edit end of lines                    |
-| m f (region binding)  | C-z m f             | edit next like this                  |
-| m F (region binding)  | C-z m F             | edit previous like this              |
-| m l (region binding)  | C-z m l             | insert letters                       |
-| m n (region binding)  | C-z m n             | insert numbers                       |
-| m s (region binding)  | C-z m s             | skip next like this                  |
-| m S (region binding)  | C-z m S             | skip previous like this              |
+| .                     | C-z .               | [[*Interactive edit][multi edit restrict to line]]          |
+| ,                     | C-z ,               | multi edit toggle selection          |
+| >                     | C-z >               | multi edit expand down               |
+| <                     | C-z <               | multi edit expand up                 |
+| m                     | C-z m               | multiple interactive edits           |
 | \                     | C-c C-c             | simulate C-c C-c                     |
 | SPC w                 | C-x C-s             | save                                 |
 | SPC o                 | C-c C-k             | org abort                            |
-| SPC x                 | C-z SPC x           | [[*Visual replace][visual replace word in buffer/region]] |
+| /                     | C-z /               | [[*Visual replace][visual replace word in buffer/region]] |
 | g R                   | C-z g R             | [[*Rename the current buffer and the file associated with it][rename current file]]                  |
 | g K                   | C-z g K             | [[*Delete the current buffer and the file associated with it][delete current file]]                  |
 | g y                   | C-z g y             | [[*Copy the current file path][copy current file path]]               |
@@ -7577,7 +7420,7 @@ This section documents the key bindings that help to find other key-bindings. No
 | SPC b                 | C-z SPC b           | helm bibtex                             |
 | SPC y                 | C-z SPC y           | [[*Hydras][helm extra commands]]                     |
 | SPC r                 | C-z SPC r           | recent files                            |
-| SPC h a               | C-z SPC h a         | helm apropos                            |
+| SPC x                 | C-z SPC x           | helm apropos                            |
 | SPC h r               | C-z SPC h r         | helm resume                             |
 | SPC h s               | C-z SPC h s         | helm correct spelling                   |
 | SPC h w               | C-z SPC h w         | manage [[https://aws.amazon.com/cli/][AWS via aws cli]]                  |

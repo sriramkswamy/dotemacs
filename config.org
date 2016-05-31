@@ -2089,7 +2089,7 @@ Which key modal explanation
 
 ** Interactive edit
 
-[[https://www.masteringemacs.org/article/iedit-interactive-multi-occurrence-editing-in-your-buffer][Iedit-mode]] is the bomb. Quick, fast edits of every symbol selected. Although [[*Multiple cursors][multiple cursors]] has some more features, this is the best choice for quick renaming of variables/words.
+[[https://www.masteringemacs.org/article/iedit-interactive-multi-occurrence-editing-in-your-buffer][Iedit-mode]] is the bomb. Quick, fast edits of every symbol selected. Although [[https://github.com/magnars/multiple-cursors.el][Multiple cursors]] has some more features, this is the best choice for quick renaming of variables/words.
 
 #+BEGIN_SRC emacs-lisp
 (use-package iedit
@@ -2148,7 +2148,7 @@ Which key modal explanation
 
 ** Visual replace
 
-This is the [[https://github.com/benma/visual-regexp.el][good old search and replace]] as opposed to the fancy alternatives such as [[*Interactive edit][iedit]] and [[*Multiple cursors][multiple cursors]]. You search for a word in the buffer/region, type in the replacement and confirm each one by pressing =y= or =n= or just press =!= to apply this to everything.
+This is the [[https://github.com/benma/visual-regexp.el][good old search and replace]] as opposed to the fancy alternatives such as [[*Interactive edit][iedit]]. You search for a word in the buffer/region, type in the replacement and confirm each one by pressing =y= or =n= or just press =!= to apply this to everything.
 
 #+BEGIN_SRC emacs-lisp
 (use-package visual-regexp

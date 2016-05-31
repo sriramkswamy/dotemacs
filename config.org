@@ -734,6 +734,7 @@ As mentioned before, I like and prefer modal editing. I feel pressing modifier k
   (modalka-global-mode 1)
   (add-to-list 'modalka-excluded-modes 'magit-status-mode)
   (add-to-list 'modalka-excluded-modes 'magit-popup-mode)
+  (add-to-list 'modalka-excluded-modes 'eshell-mode)
   (which-key-add-key-based-replacements
     "C-z" "Modalka prefix"
     "C-z :" "extended prefix"
@@ -3833,14 +3834,6 @@ If you have read [[http://orgmode.org/org.html#Headlines][how headlines are writ
       org-hide-leading-stars t)
 #+END_SRC
 
-*** Links
-
-Org has the capacity to create links to another headline or document (which is used many times in this document) and the default command for it is bound to =C-c C-o=. Let's make sure pressing enter on the link opens it.
-
-#+BEGIN_SRC emacs-lisp
-(setq org-return-follows-link t)
-#+END_SRC
-
 *** Images
 
 The GUI Emacs has the ability to display images. But if the image is pretty large, it displays the whole thing. Let's restrict it from doing that.
@@ -4154,7 +4147,8 @@ Finally, we make sure we bind some keys and add some [[http://orgmode.org/manual
           ("C-z o w" . org-edit-special)
           ("C-z o q" . org-edit-src-exit)
           ("C-z o z" . clone-indirect-buffer-other-window)
-          ("C-z i s" . org-mark-subtree))
+          ("C-z i s" . org-mark-subtree)
+          ("C-z o RET" . org-open-at-point))
   :config
   ;; More of those nice template expansion
   (add-to-list 'org-structure-template-alist '("A" "#+DATE: ?"))
@@ -4186,8 +4180,8 @@ Finally, we make sure we bind some keys and add some [[http://orgmode.org/manual
   (add-to-list 'org-structure-template-alist '("r" ":PROPERTIES:\n?\n:END:"))
   (add-to-list 'org-structure-template-alist '("s" "#+BEGIN_SRC ?\n#+END_SRC\n"))
   (add-to-list 'org-structure-template-alist '("t" "#+TITLE: ?"))
-  (add-to-list 'org-structure-template-alist '("v" "#+BEGIN_VERBATIM\n?\n#+END_VERBATIM")))
-  (add-to-list 'org-structure-template-alist '("x" "#+SELECT_TAGS: reveal?"))
+  (add-to-list 'org-structure-template-alist '("v" "#+BEGIN_VERBATIM\n?\n#+END_VERBATIM"))
+  (add-to-list 'org-structure-template-alist '("x" "#+SELECT_TAGS: reveal?")))
 #+END_SRC
 
 *** Which key binding explanation
@@ -4233,13 +4227,14 @@ Finally, we make sure we bind some keys and add some [[http://orgmode.org/manual
 (modalka-define-kbd "o w" "C-z o w")
 (modalka-define-kbd "o q" "C-z o q")
 (modalka-define-kbd "i s" "C-z i s")
+(modalka-define-kbd "o RET" "C-z o RET")
 #+END_SRC
 
 Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
- "o" "org prefix"
+  "o" "org prefix"
   "o a" "org agenda"
   "o c" "org capture"
   "o i" "org insert link"
@@ -4273,7 +4268,8 @@ Which key modal explanation
   "o z" "split and clone"
   "o w" "org special edit"
   "o q" "org special edit quit"
-  "i s" "mark org subtree")
+  "i s" "mark org subtree"
+  "o RET" "org open link")
 #+END_SRC
 
 ** Org contributed packages

@@ -193,6 +193,7 @@ The default screen of Emacs is just so useless and cluttered with links and text
       initial-scratch-message ";; Scratch
 
 ;; Press '?' in Modalka state or 'C-x ?' in Emacs state for bindings list.
+;; Press 'g ?' in Modalka state or 'C-h k' in Emacs state to find which command is bound to the key entered.
 ;; Press 'SPC ?' in Modalka state or 'C-h b' in Emacs state for searching through bindings.
 ;; Press 'SPC j' in Modalka state or 'M-x' in Emacs state to access all the functions/commands.
 ;; Press 'SPC v' in Modalka state or 'C-z SPC v' in Emacs state to open the configuration file.
@@ -846,6 +847,7 @@ This is based on Vi-style but only slightly and uses the default movement keys i
 (modalka-define-kbd "g {" "C-z g {")
 (modalka-define-kbd "g }" "C-z g }")
 (modalka-define-kbd "g S" "C-j")
+(modalka-define-kbd "g ?" "C-h k")
 #+END_SRC
 
 **** Select region prefixed keys
@@ -931,8 +933,8 @@ I have added the which key explanations for everything at once because it is eas
     "}" "prev para"
     "0" "start of line"
     "$" "end of line"
-    "(" "start of sentence"
-    ")" "end of sentence"
+    ;; "(" "start of sentence"
+    ;; ")" "end of sentence"
     "E" "exit anything"
     "B" "previous buffer"
     "w" "other window"
@@ -992,7 +994,8 @@ I have added the which key explanations for everything at once because it is eas
   "g :" "browse with external browser"
   "g {" "eww back"
   "g }" "eww forward"
-  "g q" "format para")
+  "g q" "format para"
+  "g ?" "find command bound to key")
 #+END_SRC
 
 **** Select region prefixed keys
@@ -3742,31 +3745,6 @@ I use \LaTeX extensively compared to Markdown (although Org is still preferred f
   :config
   (progn
     (add-hook 'text-mode-hook 'writegood-mode)))
-#+END_SRC
-
-** Check out the definition of the word
-
-Note that [[https://github.com/abo-abo/define-word][this]] might take a while to get a result.
-
-#+BEGIN_SRC emacs-lisp
-(use-package define-word
-  :ensure t
-  :commands (define-word-at-point
-              define-word)
-  :bind* (("C-z g ?" . define-word-at-point)))
-#+END_SRC
-
-*** Modal binding
-
-#+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "g ?" "C-z g ?")
-#+END_SRC
-
-Which key modal explanation
-
-#+BEGIN_SRC emacs-lisp
-(which-key-add-key-based-replacements
-  "g ?" "define word")
 #+END_SRC
 
 ** Distraction free mode

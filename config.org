@@ -7266,12 +7266,13 @@ This section documents the key bindings that help to find other key-bindings. No
 ** Meta
 
 #+NAME: meta_bindings
-| Modalka state binding | Emacs state binding | Function                        |
-|-----------------------+---------------------+---------------------------------|
-| ?                     | C-z ?               | Show top level bindings         |
-| SPC ?                 | C-h b               | search bindings                 |
-| M                     | C-u                 | universal argument              |
-| E                     | C-g                 | exit anything in Emacs          |
+| Modalka state binding | Emacs state binding | Function                            |
+|-----------------------+---------------------+-------------------------------------|
+| ?                     | C-z ?               | Show top level bindings             |
+| g ?                   | C-h k               | Check the command for the given key |
+| SPC ?                 | C-h b               | search bindings                     |
+| M                     | C-u                 | universal argument                  |
+| E                     | C-g                 | exit anything in Emacs              |
 
 ** Quitting and restarting Emacs
 
@@ -7477,7 +7478,6 @@ This section documents the key bindings that help to find other key-bindings. No
 | g a                   | C-z g a             | [[*Activate minor modes][Activate minor modes]]     |
 | g d                   | C-z g d             | [[*Distraction free mode][Distraction free mode]]    |
 | g F                   | C-z g F             | Distraction free focus   |
-| g ?                   | C-z g ?             | [[*Check out the definition of the word][Check definition of word]] |
 
 ** Org
 

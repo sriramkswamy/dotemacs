@@ -115,9 +115,28 @@ The =init.el= file in the Emacs directory is the file Emacs looks to load when i
 
 Emacs has a built-in garbage collection mechanism (read [[https://medium.com/@yonkeltron/explaining-garbage-collection-algorithms-by-keeping-your-fridge-tidy-2636012cfeee#.wrb2o0q7a][this article]] for a good intro to garbage collection in general). However, the memory size for which it fires is set pretty low and for the right reasons. Since I operate on a pretty good machine, I set it high initially (around 500 MB) and later reduce it. Therefore, the only thing in the =init.el= file is the GC increase, loading this org file and reduce the threshold again.
 
+** This configuration
+
+My current configuration is the actual file you are reading. All the intertwined pieces of code are collected and put in to a separate file thanks to [[*Org][Org]] and [[*Org babel][Org babel]]. So, if this file is named =config.org=, a corresponding =config.el= file will be produced and loaded. By default, all the Emacs Lisp codes are collected. However, there might be some cases where I want to document how to do something but don't particularly want to do it. There are few portions like this - [[*Init file][Init file]] being one of them. We can tell ~babel~ to ignore a code by giving the option ~:tangle no~ to the source code. The following is an example. You can view the actual code by opening this file in Emacs.
+
+#+BEGIN_SRC emacs-lisp :tangle no
+#+BEGIN_SRC emacs-lisp :tangle no
+(message "I don't exist!")
+#+END_SRC
+#+END_SRC
+
 ** Learning Emacs Lisp
 
 Emacs Lisp is the name of the language Emacs we use to configure Emacs. Start with [[http://tonyballantyne.com/tech/1-beginning-emacs-lisp/][this article]] for a good introduction to the language and [[https://github.com/bbatsov/emacs-lisp-style-guide][this one]] for the style of Emacs Lisp. [[http://emacs-doctor.com/learn-emacs-lisp-in-15-minutes.html][Learning Emacs Lisp in 15 minutes]] is a good introduction too. This can be further complemented by the [[https://www.gnu.org/software/emacs/manual/eintr.html][Introduction to Emacs Lisp]] and the [[https://www.gnu.org/software/emacs/manual/elisp.html][Emacs Lisp manual]].
+
+** Profiling
+
+Profiling is a way to track and minimize the startup time of Emacs. The current config takes about 3 seconds to load in my computer. I use the [[https://www.emacswiki.org/emacs/ProfileDotEmacs][profile-dotemacs file]] for all the profiling. Since my [[*Init file][Init file]] already takes care of initializing packages, I need not do it here. However, while profiling, I profile my =init.el= separately and the =config.el= this Org file creates separately. In order for the =config.el= file to be profiled separately, the packages need to be initialized again. For now, I tell Emacs to not include the code below into the =config.el= file by explicitly giving the option ~:tangle no~. This option can be viewed by clicking the =Raw= view file option on GitHub or just opening the Org file in Emacs. When I want to profile it, I just change the =no= to =yes= and call the aliases I have set up in my [[https://github.com/sriramkswamy/dotfiles][dotfiles]] from the terminal.
+
+#+BEGIN_SRC emacs-lisp :tangle no
+(require 'package)
+(package-initialize)
+#+END_SRC
 
 * Defaults
 
@@ -720,12 +739,13 @@ Emacs has 100s of bindings and it is impossible to remember them all. Sometimes 
 
 ** Modalka mode
 
-As mentioned before, I like and prefer modal editing. I feel pressing modifier keys all the time just leads to wrist pain and repetitive stress injuries. [[https://github.com/mrkkrp/modalka][Modalka]] is a package that is pretty simple and gives a platform for anyone to implement a modal mode. Let's call this state Modalka state and the normal Emacs way as Emacs state. This is also one of the core packages that I rely on. First, to load and configure some defaults.
+As mentioned before, I like and prefer modal editing. I feel pressing modifier keys all the time just leads to wrist pain and repetitive stress injuries. [[https://github.com/mrkkrp/modalka][Modalka]] is a package that is pretty simple and gives a platform for anyone to implement a modal mode. Let's call this state Modalka state and the normal Emacs way as Emacs state. This is also one of the core packages that I rely on. First, to load and configure some defaults. Note that when using in terminals, the default toggle (pressing =escape= key) might not work because of how terminals operate. I have added another key to toggle it in that case - =M-m= (which is either =command + m= or =alt +m= depending on how you [[*Installing Emacs][configure it]])which is bound to going to the first non-whitespace character in line but our [[*Smarter start of line][smarter start of line]] already takes care of this for us.
 
 #+BEGIN_SRC emacs-lisp
 (use-package modalka
   :ensure t
   :demand t
+  :bind* (("M-m" . modalka-mode))
   :diminish (modalka-mode . "μ")
   :init
   (setq modalka-cursor-type 'box)
@@ -3166,22 +3186,22 @@ Which key modal explanation
 [[https://www.emacswiki.org/emacs/KeyboardMacros][Macros]] are awesome too! It's a little complicated to wrap your head around first but I'm very used to it from my Vim days and cannot live without it.
 
 #+BEGIN_SRC emacs-lisp
-(defhydra sk/hydra-of-macros (:color red
+(defhydra sk/hydra-of-macros (:color pink
                               :hint nil)
   "
- _m_: macro  _l_: lossage  _v_: view      _f_: forward    _d_: delete   _q_: quit
- _p_: prev   _e_: edit     _r_: register  _b_: backward   _k_: key
+ _m_: macro  _L_: lossage  _v_: view      _n_: forward    _D_: delete   _q_: quit
+ _M_: prev   _E_: edit     _r_: register  _p_: backward   _K_: key
   "
   ("m" kmacro-call-macro)
-  ("p" kmacro-call-ring-2nd)
-  ("l" kmacro-edit-lossage :color blue)
-  ("e" kmacro-edit-macro :color blue)
+  ("M" kmacro-call-ring-2nd)
+  ("L" kmacro-edit-lossage :color blue)
+  ("E" kmacro-edit-macro :color blue)
   ("v" kmacro-view-macro :color blue)
   ("r" kmacro-to-register :color blue)
-  ("f" kmacro-cycle-ring-next)
-  ("b" kmacro-cycle-ring-previous)
-  ("d" kmacro-delete-ring-head :color blue)
-  ("k" kmacro-bind-to-key :color blue)
+  ("n" kmacro-cycle-ring-next)
+  ("p" kmacro-cycle-ring-previous)
+  ("D" kmacro-delete-ring-head :color blue)
+  ("K" kmacro-bind-to-key :color blue)
   ("q" nil :color blue))
 #+END_SRC
 
@@ -3386,31 +3406,7 @@ And while we are it, why not go ahead and [[https://github.com/bcbcarl/emacs-wtt
                                 "Hillsboro")))
 #+END_SRC
 
-[[http://pragmaticemacs.com/emacs/weather-in-emacs/][The author of Pragmatic Emacs noticed and improved it a bit]] (achievement unlocked!). This improvement saves and restores the window configuration while calling the wttrin.
-
-#+BEGIN_SRC emacs-lisp
-;;advise wttrin to save frame arrangement
-;;requires frame-cmds package
-(defun sk/wttrin-save-frame ()
-  "Save frame and window configuration and then expand frame for wttrin."
-  ;;save window arrangement to a register
-  (window-configuration-to-register :pre-wttrin)
-  (delete-other-windows)
-  ;;save frame setup and resize
-  (save-frame-config)
-  (set-frame-width (selected-frame) 130)
-  (set-frame-height (selected-frame) 48))
-(advice-add 'wttrin :before #'sk/wttrin-save-frame)
-
-(defun sk/wttrin-restore-frame ()
-  "Restore frame and window configuration saved prior to launching wttrin."
-  (interactive)
-  (jump-to-frame-config-register)
-  (jump-to-register :pre-wttrin))
-(advice-add 'wttrin-exit :after #'sk/wttrin-restore-frame)
-#+END_SRC
-
-
+[[http://pragmaticemacs.com/emacs/weather-in-emacs/][The author of Pragmatic Emacs noticed and improved it a bit]] (achievement unlocked!).
 
 ** Origami - folding based on indentation/syntax
 
@@ -3632,6 +3628,26 @@ Which key modal explanation
 (which-key-add-key-based-replacements
   "g d" "distraction free"
   "g F" "focus on sections")
+#+END_SRC
+
+** Custom functions
+
+*** Hard line wrap
+
+I usually just use the built-in [[https://www.emacswiki.org/emacs/VisualLineMode][visual line mode]] which acts like a soft-wrap that is seen in most modern prose editors. However, there are situations where a hard line break is preferable. This function taken from [[http://endlessparentheses.com/fill-and-unfill-paragraphs-with-a-single-key.html][the endless paranthesis blog]] enables toggling it with a function.
+
+#+BEGIN_SRC emacs-lisp
+(defun sk/fill-or-unfill ()
+  "Like `fill-paragraph', but unfill if used twice."
+  (interactive)
+  (let ((fill-column
+         (if (eq last-command 'sk/fill-or-unfill)
+             (progn (setq this-command nil)
+                    (point-max))
+           fill-column)))
+    (call-interactively #'fill-paragraph)))
+
+(global-set-key [remap fill-paragraph] #'sk/fill-or-unfill)
 #+END_SRC
 
 * Org
@@ -4114,14 +4130,16 @@ Which key modal explanation
              org-drill-tree
              org-drill-directory)
   :init
-  (setq org-drill-maximum-items-per-session 30)
-  (setq org-drill-maximum-duration 20)   ; 30 minutes
-  (setq org-drill-use-visible-cloze-face-p t)
-  (setq org-drill-add-random-noise-to-intervals-p t)
-  (setq org-drill-hint-separator "||")
-  (setq org-drill-left-cloze-delimiter "<[")
-  (setq org-drill-right-cloze-delimiter "]>")
-  (setq org-drill-learn-fraction 0.25)
+  (setq org-drill-maximum-items-per-session 50
+        org-drill-maximum-duration 20   ; 20 minutes
+        org-drill-use-visible-cloze-face-p t
+        org-drill-add-random-noise-to-intervals-p t
+        org-drill-hint-separator "||"
+        org-drill-left-cloze-delimiter "<["
+        org-drill-right-cloze-delimiter "]>"
+        org-drill-learn-fraction 0.25
+        org-drill-cram-hours 2
+        org-drill-leech-method 'warn)
   :config
   (progn
     (add-to-list 'org-modules 'org-drill)))
@@ -4733,12 +4751,16 @@ As [[*Org contributed packages][previously mentioned]], I use the drill package 
 (defhydra sk/hydra-org-drill (:color blue
                               :hint nil)
   "
- _f_: file    _h_: heading    _d_: directory    _r_: resume   _q_: quit
+ _f_: file        _r_: resume   _q_: quit
+ _h_: heading     _a_: again
+ _d_: directory   _c_: cram
 "
   ("f" org-drill)
   ("h" org-drill-tree)
   ("d" org-drill-directory)
   ("r" org-drill-resume)
+  ("a" org-drill-again)
+  ("c" org-drill-cram)
   ("q" nil :color blue))
 #+END_SRC
 
@@ -5570,6 +5592,7 @@ I haven't used [[https://www.nginx.com][nginx]] much but useful to have it.
 (use-package tern
   :ensure t
   :diminish tern-mode
+  :defer 2
   :config
   (progn
     (add-hook 'js-mode-hook '(lambda () (tern-mode t)))))

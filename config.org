@@ -7149,6 +7149,8 @@ This section documents the key bindings that help to find other key-bindings. No
 | SPC ?                 | C-h b               | search bindings                     |
 | M                     | C-u                 | universal argument                  |
 | E                     | C-g                 | exit anything in Emacs              |
+| ESC                   | ESC                 | Toggle [[*Modalka mode][Modalka mode]]                 |
+| M-m                   | M-m                 | Toggle Modalka mode                 |
 
 ** Quitting and restarting Emacs
 

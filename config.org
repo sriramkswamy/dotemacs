@@ -2203,19 +2203,14 @@ Which key modal explanation
   :ensure t
   :commands (yas-insert-snippet yas-new-snippet)
   :bind (("C-o" . yas-insert-snippet))
-  :bind* (("C-," . yas-new-snippet)
+  :bind* (("C-=" . yas-new-snippet)
           ("C-<escape>" . yas-visit-snippet-file))
   :diminish (yas-minor-mode . "γ")
   :config
   (setq yas/triggers-in-field t); Enable nested triggering of snippets
   (setq yas-prompt-functions '(yas-completing-prompt))
   (add-hook 'snippet-mode-hook '(lambda () (setq-local require-final-newline nil)))
-  (yas-global-mode)
-  (use-package auto-yasnippet
-    :ensure t
-    :bind* (("C-<return>" . aya-create)
-            ("C-." . aya-persist-snippet)
-            ("C-=" . aya-expand))))
+  (yas-global-mode))
 #+END_SRC
 
 Also, I don't want to trigger snippets when I'm in shell. So, let's turn it off.
@@ -3705,8 +3700,46 @@ Org has a [[http://orgmode.org/org.html#Exporting][powerful]] exporting feature.
 #+BEGIN_SRC emacs-lisp
 (setq org-export-with-smart-quotes t
       org-latex-to-pdf-process '("pdflatex %f" "biber %b" "pdflatex %f" "pdflatex %f")
-      org-export-backens '(beamer html latex md))
+      org-export-backends '(beamer html latex md))
 #+END_SRC
+
+*** Extra LaTeX classes
+
+The default export engine doesn't treat the headings the way I want it. Also, sometimes I need it export differently - like a report instead of an article. Let's add some more structure to this.
+
+#+BEGIN_SRC emacs-lisp
+;; Exporting like a book
+(add-to-list 'org-export-latex-classes
+             `("book"
+               "\\documentclass{book}"
+               ("\\part{%s}" . "\\part*{%s}")
+               ("\\chapter{%s}" . "\\chapter*{%s}")
+               ("\\section{%s}" . "\\section*{%s}")
+               ("\\subsection{%s}" . "\\subsection*{%s}")
+               ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))
+
+;; Exporting like a report
+(add-to-list 'org-export-latex-classes
+             `("report"
+               "\\documentclass{report}"
+               ("\\chapter{%s}" . "\\chapter*{%s}")
+               ("\\section{%s}" . "\\section*{%s}")
+               ("\\subsection{%s}" . "\\subsection*{%s}")
+               ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+               ("\\paragraph{%s}" . "\\paragraph*{%s}")))
+
+;; Exporting like an article
+(add-to-list 'org-export-latex-classes
+             '("article"
+               "\\documentclass{article}"
+               ("\\section{%s}" . "\\section*{%s}")
+               ("\\subsection{%s}" . "\\subsection*{%s}")
+               ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+               ("\\paragraph{%s}" . "\\paragraph*{%s}")
+               ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+#+END_SRC
+
+To use any of these classes add a statement like =#+LaTeX_CLASS: book= at the start of the org document.
 
 ** Tagging
 
@@ -5477,7 +5510,7 @@ I use [[http://www.mathworks.com/products/matlab/][MATLAB]] pretty often when I 
   :ensure t
   :mode ("\\.m$" . matlab-mode)
   :init
-  (setq matlab-shell-command "/Applications/MATLAB_R2014a.app/bin/matlab"
+  (setq matlab-shell-command "/Applications/MATLAB_R2016a.app/bin/matlab"
         matlab-indent-function t)
   (eval-after-load 'matlab
     '(add-to-list 'matlab-shell-command-switches "-nosplash")))

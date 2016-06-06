@@ -1,8 +1,6 @@
 # -*- mode: snippet; require-final-newline: nil -*-
-# name: begin
-# key: beg
+# name: Surround curly braces
+# key: ssb
 # binding: direct-keybinding
 # --
-\begin{$1}
-
-\end{$1}
+\left\\{ $1 \right\\}

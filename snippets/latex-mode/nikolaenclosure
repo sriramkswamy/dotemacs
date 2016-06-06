@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: nikola enclosure
+# key: nenc
+# --
+#+NIKOLA_ENCOLSURE: ${1:image}

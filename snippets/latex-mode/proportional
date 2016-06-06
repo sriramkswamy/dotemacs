@@ -1,8 +1,6 @@
 # -*- mode: snippet; require-final-newline: nil -*-
-# name: begin
-# key: beg
+# name: proportional
+# key: prop
 # binding: direct-keybinding
 # --
-\begin{$1}
-
-\end{$1}
+\propto

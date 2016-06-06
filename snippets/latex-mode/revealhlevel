@@ -1,8 +1,6 @@
 # -*- mode: snippet; require-final-newline: nil -*-
-# name: begin
-# key: beg
+# name: reveal header level
+# key: rhl
 # binding: direct-keybinding
 # --
-\begin{$1}
-
-\end{$1}
+#+REVEAL_HLEVEL: ${1:1/2/3/4}

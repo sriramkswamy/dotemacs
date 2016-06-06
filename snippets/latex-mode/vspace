@@ -1,8 +1,7 @@
 # -*- mode: snippet; require-final-newline: nil -*-
-# name: begin
-# key: beg
+# name: vspace
+# key: vs
 # binding: direct-keybinding
 # --
-\begin{$1}
+\vspace{0.25cm}
 
-\end{$1}

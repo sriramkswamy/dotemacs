@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: reveal maximum scale
+# key: rmax
+# --
+#+REVEAL_MAX_SCALE: ${1:number}

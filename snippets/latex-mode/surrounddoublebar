@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: scaled double bar
+# key: ssd
+# --
+\left| $1 \right|

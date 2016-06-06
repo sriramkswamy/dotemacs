@@ -1,0 +1,15 @@
+# -*- mode: snippet -*-
+# name: multi-part function
+# key: mf
+# --
+\begin{equation${1:*}}
+$2 =
+\left\{
+\begin{array}{ll}
+${3:x}  & \mbox{if } ${4:x \geq 0} \\
+${5:-x} & \mbox{if } ${6:x < 0}
+\end{array}
+\right}
+=
+$7
+\end{equation$1}

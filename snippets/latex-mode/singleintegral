@@ -1,8 +1,6 @@
 # -*- mode: snippet; require-final-newline: nil -*-
-# name: begin
-# key: beg
+# name: integral single
+# key: in
 # binding: direct-keybinding
 # --
-\begin{$1}
-
-\end{$1}
+\int_{ $1 }^{ $2 } $3 \mathrm{d}

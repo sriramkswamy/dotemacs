@@ -1,5 +1,6 @@
 # -*- mode: snippet; require-final-newline: nil -*-
-# name: subscript
-# key: sub
+# name: Phi
+# key: phii
+# binding: direct-keybinding
 # --
-{ $1 }_{ $2 }
+\phi

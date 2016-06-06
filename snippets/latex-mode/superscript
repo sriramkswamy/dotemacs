@@ -3,4 +3,4 @@
 # key: sup
 # binding: direct-keybinding
 # --
-^{$1}$0
+{ $1 }^{ $2 }

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: reveal default fragmentation
+# key: rfrag
+# --
+#+ATTR_REVEAL: :frag (${1:t/grow/shrink/roll-in/fade-out/highlight-red/highlight-blue/appear/none}) ${2:frag_idx} ${3:(numbers)}

@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: latex section
+# key: lsec
+# --
+\section${1:*}{ $2 }
+\label{sec:$3}

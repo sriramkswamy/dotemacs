@@ -1,5 +1,6 @@
 # -*- mode: snippet; require-final-newline: nil -*-
-# name: subscript
-# key: sub
+# name: Nu
+# key: nuu
+# binding: direct-keybinding
 # --
-{ $1 }_{ $2 }
+\nu

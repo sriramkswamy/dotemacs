@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: latex title
+# key: ltit
+# --
+\title{$1}
+\date{${3:\today}}
+\author{${2:Sriram Krishnaswamy}}
+\maketitle

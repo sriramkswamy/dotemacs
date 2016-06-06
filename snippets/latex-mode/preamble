@@ -1,0 +1,61 @@
+# -*- mode: snippet -*-
+# name: preamble
+# key: prea
+# --
+\documentclass[${2:12}pt,a4paper]{${1:article}}
+
+\usepackage[utf8]{inputenc}
+\usepackage[left=2cm, right=2cm, top=2cm, bottom=2cm]{geometry}
+\usepackage{booktabs}
+\usepackage{cancel}
+\usepackage{caption}
+\usepackage{cleveref}
+\usepackage{colortbl}
+\usepackage{csquotes}
+\usepackage{mathpazo}
+\usepackage{multirow}
+\usepackage{listings}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.10}
+\usepackage{helvet}
+\usepackage{grffile}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{cite}
+\usepackage{array}
+\usepackage{setspace}
+\usepackage{tikz}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{siunitx}
+\usepackage{chemmacros}
+\usepackage{esint}
+\usepackage{subcaption}
+\usepackage{titlesec}
+
+\definecolor{dark-red}{rgb}{0.4,0.15,0.15}
+\definecolor{dark-blue}{rgb}{0.15,0.15,0.4}
+\definecolor{medium-blue}{rgb}{0,0,0.5}
+\definecolor{mygreen}{RGB}{28,172,0} % color values Red, Green, Blue
+\definecolor{mylilas}{RGB}{170,55,241}
+
+\hypersetup{colorlinks,linkcolor={dark-red},citecolor={dark-blue},urlcolor={medium-blue}}
+
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\\\arraybackslash\hspace{0pt}}m{#1}}
+
+\titleformat{\chapter}[block]
+{\normalfont\huge\bfseries}{\thechapter.}{1em}{\Huge}
+\titlespacing*{\chapter}{0pt}{-19pt}{0pt}
+
+\pagenumbering{${3:gobble}}
+
+\begin{document}
+
+
+
+\end{document}

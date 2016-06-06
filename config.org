@@ -1198,8 +1198,8 @@ Which key modal explanation
 #+BEGIN_SRC emacs-lisp
 (use-package highlight-symbol
   :ensure t
-  :bind* (("C-z *" . highlight-symbol)
-          ("C-z g r" . highlight-symbol-remove-all))
+  :bind (("M-n" . highlight-symbol-next)
+         ("M-p" . highlight-symbol-prev))
   :config
   (highlight-symbol-nav-mode))
 #+END_SRC
@@ -1207,16 +1207,16 @@ Which key modal explanation
 *** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "*" "C-z *")
-(modalka-define-kbd "g r" "C-z g r")
+(modalka-define-kbd "n" "M-n")
+(modalka-define-kbd "N" "M-p")
 #+END_SRC
 
 Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "*" "highlight symbol"
-  "g r" "remove highlight")
+  "n" "smart next item"
+  "N" "smart prev item")
 #+END_SRC
 
 ** Projectile
@@ -1346,59 +1346,27 @@ Which key modal explanation
 (use-package perspective
   :ensure t
   :bind* (("C-z SPC p" . persp-switch)
-          ("C-z C a" . persp-add-buffer)
-          ("C-z C A" . persp-set-buffer)
           ("C-z SPC s" . persp-switch-to-buffer)
-          ("C-z C c" . persp-kill)
-          ("C-z C r" . persp-rename)
-          ("C-z C k" . persp-remove-buffer)
-          ("C-z C n" . persp-next)
-          ("C-z C p" . persp-prev)
-          ("C-z C i" . persp-import)
-          ("C-z C C" . persp-last))
+          ("C-z g r" . persp-rename))
   :config
   (persp-mode 1))
-#+END_SRC
-
-*** Which key binding explanation
-
-#+BEGIN_SRC emacs-lisp
-(which-key-add-key-based-replacements
-  "C-z C" "config perspective prefix")
 #+END_SRC
 
 *** Modal binding
 
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "SPC p" "C-z SPC p")
-(modalka-define-kbd "C a" "C-z C a")
-(modalka-define-kbd "C A" "C-z C A")
 (modalka-define-kbd "SPC s" "C-z SPC s")
-(modalka-define-kbd "C c" "C-z C c")
-(modalka-define-kbd "C r" "C-z C r")
-(modalka-define-kbd "C k" "C-z C k")
-(modalka-define-kbd "C n" "C-z C n")
-(modalka-define-kbd "C p" "C-z C p")
-(modalka-define-kbd "C i" "C-z C i")
-(modalka-define-kbd "C C" "C-z C C")
+(modalka-define-kbd "g r" "C-z g r")
 #+END_SRC
 
 Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "C" "config persp prefix"
   "SPC p" "perspective switch"
-  "C a" "perspective add buffer"
-  "C A" "perspective set buffer"
   "SPC s" "perspective switch to buffer"
-  "C c" "perspective close"
-  "C r" "perspective rename"
-  "C k" "perspective remove buffer"
-  "C n" "perspective next"
-  "C p" "perspective prev"
-  "C i" "perspective import"
-  "C C" "perspective last")
+  "g r" "perspective rename")
 #+END_SRC
 
 ** Code documentation
@@ -2212,7 +2180,7 @@ Which key modal explanation
 (use-package iedit
   :ensure t
   :commands (iedit-mode)
-  :bind* (("C-z m" . iedit-mode)
+  :bind* (("C-z *" . iedit-mode)
           ("C-z >" . iedit-expand-down-a-line)
           ("C-z <" . iedit-expand-up-a-line)
           ("C-z ." . iedit-restrict-current-line)
@@ -2222,7 +2190,7 @@ Which key modal explanation
 *** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "m" "C-z m")
+(modalka-define-kbd "*" "C-z *")
 (modalka-define-kbd ">" "C-z >")
 (modalka-define-kbd "<" "C-z <")
 (modalka-define-kbd "." "C-z .")
@@ -2233,7 +2201,7 @@ Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "m" "multi edit all"
+  "*" "multi edit all"
   ">" "multi edit expand down"
   "<" "multi edit expand up"
   "." "multi edit current line"
@@ -2321,6 +2289,50 @@ Also, I don't want to trigger snippets when I'm in shell. So, let's turn it off.
 #+END_SRC
 
 ** Custom functions
+
+*** Change region/till end of line
+
+Being almost always in [[*Modalka mode][Modalka mode]] implies I have to toggle it after deleting a region if I want to overwrite it. These functions, similar to the Vi style commands, let me delete and start typing in one swoop.
+
+#+BEGIN_SRC emacs-lisp
+(defun sk/change-region ()
+  "delete and put me in Emacs state in one swoop"
+  (interactive)
+  (if (region-active-p)
+      (let ((beg (region-beginning))
+            (end (region-end)))
+        (kill-region beg end)))
+  (modalka-mode 0))
+
+(defun sk/change-rest-of-line ()
+  "delete till the end of line and put me in Emacs state in one swoop"
+  (interactive)
+  (kill-line)
+  (modalka-mode 0))
+#+END_SRC
+
+**** Key binding
+
+#+BEGIN_SRC emacs-lisp
+(bind-keys*
+  ("C-z c" . sk/change-region)
+  ("C-z C" . sk/change-rest-of-line))
+#+END_SRC
+
+***** Modal binding
+
+#+BEGIN_SRC emacs-lisp
+(modalka-define-kbd "c" "C-z c")
+(modalka-define-kbd "C" "C-z C")
+#+END_SRC
+
+Which key modal explanation
+
+#+BEGIN_SRC emacs-lisp
+(which-key-add-key-based-replacements
+  "c" "change region"
+  "C" "change rest of line")
+#+END_SRC
 
 *** Deactivate region
 
@@ -5389,7 +5401,7 @@ I often need to start some service/program in the background and instead of drop
 (use-package prodigy
   :ensure t
   :commands (prodigy)
-  :bind* (("C-z c b" . prodigy))
+  :bind* (("C-z m b" . prodigy))
   :init
   (prodigy-define-tag
     :name 'blog
@@ -5421,15 +5433,15 @@ I often need to start some service/program in the background and instead of drop
 *** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "c b" "C-z c b")
+(modalka-define-kbd "m b" "C-z m b")
 #+END_SRC
 
 Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "c" "code prefix"
-  "c b" "background code")
+  "m" "code prefix"
+  "m b" "background code")
 #+END_SRC
 
 ** Information/documentation at point
@@ -6201,20 +6213,20 @@ This menu helps in sending code and commands [[*Interacting with Tmux][to tmux]]
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z c t" . sk/hydra-for-emamux/body))
+  ("C-z m t" . sk/hydra-for-emamux/body))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "c t" "C-z c t")
+(modalka-define-kbd "m t" "C-z m t")
 #+END_SRC
 
 Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "c t" "tmux code")
+  "m t" "tmux code")
 #+END_SRC
 
 *** Emacs lisp
@@ -6271,20 +6283,20 @@ Then, the hydra for helping with Emacs Lisp code.
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z c e" . sk/hydra-for-elisp/body))
+  ("C-z m e" . sk/hydra-for-elisp/body))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "c e" "C-z c e")
+(modalka-define-kbd "m e" "C-z m e")
 #+END_SRC
 
 Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-    "c e" "elisp code")
+    "m e" "elisp code")
 #+END_SRC
 
 *** C/C++
@@ -6334,20 +6346,20 @@ C/C++ code navigation and compilation demands a hydra.
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z c c" . sk/hydra-for-cpp/body))
+  ("C-z m c" . sk/hydra-for-cpp/body))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "c c" "C-z c c")
+(modalka-define-kbd "m c" "C-z m c")
 #+END_SRC
 
 Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "c c" "c/cpp code")
+  "m c" "c/cpp code")
 #+END_SRC
 
 *** Python
@@ -6395,20 +6407,20 @@ Hydra for Python code navigation, REPL evaluation, testing and formatting.
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z c p" . sk/hydra-for-py/body))
+  ("C-z m p" . sk/hydra-for-py/body))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "c p" "C-z c p")
+(modalka-define-kbd "m p" "C-z m p")
 #+END_SRC
 
 Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "c p" "python code")
+  "m p" "python code")
 #+END_SRC
 
 *** Statistics
@@ -6436,20 +6448,20 @@ Since both R and Julia are supported by ESS, one hydra is enough.
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z c s" . sk/hydra-for-ess/body))
+  ("C-z m s" . sk/hydra-for-ess/body))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "c s" "C-z c s")
+(modalka-define-kbd "m s" "C-z m s")
 #+END_SRC
 
 Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "c s" "stats code")
+  "m s" "stats code")
 #+END_SRC
 
 *** MATLAB
@@ -6476,20 +6488,20 @@ There is no facility for code navigation in MATLAB, and so this is just sending 
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z c m" . sk/hydra-for-matlab/body))
+  ("C-z m m" . sk/hydra-for-matlab/body))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "c m" "C-z c m")
+(modalka-define-kbd "m m" "C-z m m")
 #+END_SRC
 
 Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "c m" "matlab code")
+  "m m" "matlab code")
 #+END_SRC
 
 *** Web
@@ -6549,23 +6561,23 @@ There are two hydras we use for Web editing - one for JavaScript specifically an
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z c j" . sk/hydra-for-js/body)
-  ("C-z c h" . sk/hydra-for-web/body))
+  ("C-z m j" . sk/hydra-for-js/body)
+  ("C-z m h" . sk/hydra-for-web/body))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "c j" "C-z c j")
-(modalka-define-kbd "c h" "C-z c h")
+(modalka-define-kbd "m j" "C-z m j")
+(modalka-define-kbd "m h" "C-z m h")
 #+END_SRC
 
 Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "c j" "javscript code"
-  "c h" "html and web format")
+  "m j" "javscript code"
+  "m h" "html and web format")
 #+END_SRC
 
 *** Quickrun
@@ -6592,20 +6604,20 @@ This is for [[*Quickrun][Quickrun]] functionality.
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z c q" . sk/hydra-quickrun/body))
+  ("C-z m q" . sk/hydra-quickrun/body))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "c q" "C-z c q")
+(modalka-define-kbd "m q" "C-z m q")
 #+END_SRC
 
 Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "c q" "quickrun code")
+  "m q" "quickrun code")
 #+END_SRC
 
 *** Debugging
@@ -6633,20 +6645,20 @@ A small hydra to start appropriate debuggers
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z c d" . sk/hydra-debug/body))
+  ("C-z m d" . sk/hydra-debug/body))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "c d" "C-z c d")
+(modalka-define-kbd "m d" "C-z m d")
 #+END_SRC
 
 Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "c d" "debug code")
+  "m d" "debug code")
 #+END_SRC
 
 * Helm
@@ -7428,18 +7440,16 @@ This section documents the key bindings that help to find other key-bindings. No
 | SPC SPC               | C-s                 | search in buffer                                  |
 | g s                   | C-z g s             | search in project                                 |
 | g e                   | C-z g e             | extract word from project                         |
-| n                     | M-n                 | next item/history                                 |
-| N                     | M-p                 | previous item/history                             |
+| n                     | M-n                 | [[*Highlight symbol][smart next item]]                                   |
+| N                     | M-p                 | smart previous item                               |
 | ;                     | C-z ;               | see previous changes                              |
 | %                     | C-z %               | [[*Go to matching parenthesis, like Vi][matching parenthesis]]                              |
 | +                     | C-z +               | [[*Bookmark navigation][Bookmark navigation]]                               |
 | B                     | C-z B               | switch to the buffer edited last                  |
 | z                     | C-l                 | recenter screen                                   |
 | #                     | C-z #               | [[*Highlight symbol][highlight symbol]] like this                        |
-| g r                   | C-z g r             | remove all highlighted symbols                    |
-| g j                   | C-z g j             | find next like this                               |
-| g k                   | C-z g k             | find previous like this                           |
-| *                     | C-z *               | [[*Highlight symbol][search for word under cursor]]                      |
+| g j                   | C-z g j             | next PDF page                                     |
+| g k                   | C-z g k             | previous PDF page                                 |
 | w                     | C-z w               | [[*Window navigation][Window navigation hydra]]                           |
 | g w                   | C-x 3               | split window vertically                           |
 | g W                   | C-x 2               | split window horizontally                         |
@@ -7449,16 +7459,8 @@ This section documents the key bindings that help to find other key-bindings. No
 | g T                   | C-z g T             | update tags for code                              |
 | g z                   | C-z g z             | [[*Beacon mode][blink cursor]]                                      |
 | SPC p                 | C-z SPC p           | [[*Perspective][switch perspective]]                                |
-| C a                   | C-z C a             | add buffer to perspective                         |
-| C A                   | C-z C A             | set buffer in perspective                         |
 | SPC s                 | C-z SPC s           | switch to buffer in perspective                   |
-| C c                   | C-z C c             | close perspective                                 |
-| C C                   | C-z C C             | last perspective                                  |
-| C i                   | C-z C i             | import perspective                                |
-| C k                   | C-z C k             | kill buffer in perspective                        |
-| C n                   | C-z C n             | next perspective                                  |
-| C p                   | C-z C p             | previous perspective                              |
-| C r                   | C-z C r             | rename perspective                                |
+| g r                   | C-z g r             | rename perspective                                |
 | ] ]                   | C-x n n             | narrow to region                                  |
 | [ [                   | C-x n w             | widen narrowed region                             |
 | [ s                   | C-z [ s             | [[*Flyspell go to the previous spell error][previous spelling error]]                           |
@@ -7566,7 +7568,7 @@ This section documents the key bindings that help to find other key-bindings. No
 | ,                     | C-z ,               | multi edit toggle selection          |
 | >                     | C-z >               | multi edit expand down               |
 | <                     | C-z <               | multi edit expand up                 |
-| m                     | C-z m               | multiple interactive edits           |
+| *                     | C-z *               | multiple interactive edits           |
 | \                     | C-c C-c             | simulate C-c C-c                     |
 | SPC w                 | C-x C-s             | save                                 |
 | SPC o                 | C-c C-k             | org abort                            |

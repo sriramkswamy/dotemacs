@@ -4161,7 +4161,7 @@ Finally, we make sure we bind some keys and add some [[http://orgmode.org/manual
           ("C-z o w" . org-edit-special)
           ("C-z o q" . org-edit-src-exit)
           ("C-z o z" . clone-indirect-buffer-other-window)
-          ("C-z i s" . org-mark-subtree)
+          ("C-z a s" . org-mark-subtree)
           ("C-z o RET" . org-open-at-point))
   :config
   ;; More of those nice template expansion
@@ -4239,7 +4239,7 @@ Finally, we make sure we bind some keys and add some [[http://orgmode.org/manual
 (modalka-define-kbd "o z" "C-z o z")
 (modalka-define-kbd "o w" "C-z o w")
 (modalka-define-kbd "o q" "C-z o q")
-(modalka-define-kbd "i s" "C-z i s")
+(modalka-define-kbd "a s" "C-z a s")
 (modalka-define-kbd "o RET" "C-z o RET")
 #+END_SRC
 
@@ -4281,7 +4281,7 @@ Which key modal explanation
   "o z" "split and clone"
   "o w" "org special edit"
   "o q" "org special edit quit"
-  "i s" "mark org subtree"
+  "a s" "mark org subtree"
   "o RET" "org open link")
 #+END_SRC
 
@@ -4478,6 +4478,8 @@ We can make Org mode a little more pretty by having [[https://github.com/sabof/o
 
 ** Functions
 
+*** Load extra org goodies
+
 Org mode and packages take a while to load. This command, when invoked, loads a bunch of extra stuff. So, I use it whenever I'm doing serious work in Org mode. Note that the first time you invoke this function, it will install the [[http://orgmode.org/elpa.html][org-plus-contrib]] package if it is not installed already.
 
 #+BEGIN_SRC emacs-lisp
@@ -4520,6 +4522,37 @@ Org mode and packages take a while to load. This command, when invoked, loads a 
 ;; Add obvious org mode hooks
 (add-hook 'org-mode-hook 'visual-line-mode)
 (add-hook 'org-mode-hook 'flyspell-mode)
+#+END_SRC
+
+*** Select inside the subtree
+
+We have a way to select the entire subtree with heading but sometimes I want to select only the stuff inside a subtree and this function takes care of that.
+
+#+BEGIN_SRC emacs-lisp
+(defun sk/mark-inside-subtree ()
+  (interactive)
+  (org-mark-subtree)
+  (next-line 1))
+#+END_SRC
+
+**** Key bindings
+
+#+BEGIN_SRC emacs-lisp
+(bind-keys*
+  ("C-z i s" . sk/mark-inside-subtree))
+#+END_SRC
+
+***** Modal binding
+
+#+BEGIN_SRC emacs-lisp
+(modalka-define-kbd "i s" "C-z i s")
+#+END_SRC
+
+Which key modal explanation
+
+#+BEGIN_SRC emacs-lisp
+(which-key-add-key-based-replacements
+  "i s" "mark inside subtree")
 #+END_SRC
 
 ** Hydras
@@ -5210,6 +5243,7 @@ Which key modal explanation
   :bind* (("C-z ] h" . diff-hl-next-hunk)
           ("C-z [ h" . diff-hl-previous-hunk)
           ("C-z i h" . diff-hl-mark-hunk)
+          ("C-z a h" . diff-hl-mark-hunk)
           ("C-z g h" . diff-hl-diff-goto-hunk)
           ("C-z g H" . diff-hl-revert-hunk))
   :config
@@ -5227,6 +5261,7 @@ Which key modal explanation
 (modalka-define-kbd "g h" "C-z g h")
 (modalka-define-kbd "g H" "C-z g H")
 (modalka-define-kbd "i h" "C-z i h")
+(modalka-define-kbd "a h" "C-z a h")
 #+END_SRC
 
 Which key modal explanation
@@ -5237,7 +5272,8 @@ Which key modal explanation
   "[ h" "previous git hunk"
   "g h" "goto git hunk"
   "g H" "revert git hunk"
-  "i h" "select git hunk")
+  "i h" "select git hunk"
+  "a h" "select a git hunk")
 #+END_SRC
 
 ** Git time machine
@@ -7352,7 +7388,7 @@ This section documents the key bindings that help to find other key-bindings. No
 | g ?                   | C-h k               | Check the command for the given key |
 | SPC ?                 | C-h b               | search bindings                     |
 | M                     | C-u                 | universal argument                  |
-| E                     | C-g                 | exit anything in Emacs              |
+| E                     | C-z E               | [[*Deactivate region][Deactivate region]]                   |
 | ESC                   | ESC                 | Toggle [[*Modalka mode][Modalka mode]]                 |
 | M-m                   | M-m                 | Toggle Modalka mode                 |
 
@@ -7477,23 +7513,37 @@ This section documents the key bindings that help to find other key-bindings. No
 | v                     | C-SPC               | start selecting region               |
 | V                     | C-z V               | start selecting rectangle region     |
 | X                     | C-x C-x             | exchange cursor and end of selection |
-| a                     | C-z a               | expand region                        |
-| A                     | C-z A               | contract region                      |
+| a a                   | C-z a a             | [[*Expand region hydra][expand region hydra]]                  |
+| a l                   | C-z a l             | [[*Select the current line][select around the current line]]       |
+| a p                   | C-z a p             | [[*Expand region][select around the para]]               |
+| a f                   | C-z a f             | select around function               |
+| a w                   | C-z a w             | select around word                   |
+| a v                   | C-z a v             | select around variable               |
+| a u                   | C-z a u             | select around url                    |
+| a t                   | C-z a t             | select around latex math             |
+| a b                   | C-z a b             | select around pairs ()               |
+| a q                   | C-z a q             | select around quotes                 |
+| a c                   | C-z a c             | select around comment                |
+| a o                   | C-z a o             | select around org code block         |
+| a s                   | C-z a s             | select around org subtree            |
+| a m                   | C-z a m             | select around python method          |
+| a j                   | C-z a j             | select around julia/ruby block       |
+| a h                   | C-z a h             | [[*Highlight diffs][select a git hunk]]                    |
 | i a                   | C-x h               | select whole buffer                  |
 | i l                   | C-z i l             | [[*Select the current line][select the current line]]              |
 | i p                   | C-z i p             | [[*Expand region][select the para]]                      |
-| i f                   | C-z i f             | select function                      |
-| i w                   | C-z i w             | select word                          |
-| i v                   | C-z i v             | select variable                      |
-| i u                   | C-z i u             | select url                           |
-| i t                   | C-z i t             | select latex math                    |
+| i f                   | C-z i f             | select inside function               |
+| i w                   | C-z i w             | select inside word                   |
+| i v                   | C-z i v             | select inside variable               |
+| i u                   | C-z i u             | select inside url                    |
+| i t                   | C-z i t             | select inside latex math             |
 | i b                   | C-z i b             | select inside pairs ()               |
 | i q                   | C-z i q             | select inside quotes                 |
-| i c                   | C-z i c             | select comment                       |
-| i o                   | C-z i o             | select org code block                |
-| i s                   | C-z i s             | select org subtree                   |
-| i m                   | C-z i m             | select python method                 |
-| i j                   | C-z i j             | select julia/ruby block              |
+| i c                   | C-z i c             | select inside comment                |
+| i o                   | C-z i o             | select inside org code block         |
+| i s                   | C-z i s             | [[*Select inside the subtree][select inside org subtree]]            |
+| i m                   | C-z i m             | select around python method          |
+| i j                   | C-z i j             | select around julia/ruby block       |
 | i h                   | C-z i h             | [[*Highlight diffs][select git hunk]]                      |
 | s a                   | C-z s a             | [[*Smartparens][Smartparens]] beginning of block       |
 | s b                   | C-z s b             | smartparens backward expression      |
@@ -7676,6 +7726,7 @@ This section documents the key bindings that help to find other key-bindings. No
 #+NAME: fun
 | Modalka state binding | Emacs state binding | Function                 |
 |-----------------------+---------------------+--------------------------|
+| A                     | C-z A               | Google appropriately     |
 | g x                   | C-z g x             | [[*XKCD][XKCD]]                     |
 | g X                   | C-z g X             | [[*Stack exchange][Stack exchange]]           |
 | g G                   | C-z g G             | [[*Google stuff][Google stuff]]             |

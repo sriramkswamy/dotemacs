@@ -1912,30 +1912,116 @@ This section lists all the custom functions and packages that help during any ge
 
 [[https://github.com/magnars/expand-region.el][This]] is one of those packages I cannot imagine being without. Quickly expand semantically or directly to text/code with precision and change/delete/replace them.
 
+Some functions/regions have complimenting expansions - you can expand inside the brackets or around the brackets. The small case letters after pressing the prefix =i= will select the inner blocks most of the time while the upper case letters after pressing prefix =i= will select the complete blocks. To do this, we need to define a few functions.
+
+#+BEGIN_SRC emacs-lisp
+(defun sk/mark-inside-org-code ()
+  "Select inside an Org code block without the org specific syntax"
+  (interactive)
+  (er/mark-org-code-block)
+  (next-line 1)
+  (exchange-point-and-mark)
+  (previous-line 1)
+  (end-of-line 1))
+
+(defun sk/mark-around-word ()
+  "Mark the word and the adjacent whitespace"
+  (interactive)
+  (er/mark-word)
+  (backward-char 1))
+
+(defun sk/mark-around-text-paragraph ()
+  "Mark the paragraph and the newline"
+  (interactive)
+  (er/mark-text-paragraph)
+  (exchange-point-and-mark)
+  (next-line 1))
+
+(defun sk/mark-inside-LaTeX-math ()
+  "Mark inside the latex math"
+  (interactive)
+  (er/mark-LaTeX-math)
+  (forward-char 1)
+  (exchange-point-and-mark)
+  (backward-char 1))
+
+(defun sk/mark-inside-python-block ()
+  "Mark inside a python block"
+  (interactive)
+  (er/mark-python-block)
+  (next-line 1))
+
+(defun sk/mark-inside-ruby-block ()
+  "Mark inside a ruby/julia block"
+  (interactive)
+  (er/mark-ruby-block-up)
+  (next-line 1)
+  (exchange-point-and-mark)
+  (previous-line 1))
+
+(defun sk/mark-around-symbol ()
+  "Mark around a symbol including the nearby whitespace"
+  (interactive)
+  (er/mark-symbol)
+  (exchange-point-and-mark)
+  (forward-char 1))
+#+END_SRC
+
+We also add some helpful additional expand regions depending on the mode.
+
+#+BEGIN_SRC emacs-lisp
+(defun er/add-org-mode-expansions ()
+  (make-variable-buffer-local 'er/try-expand-list)
+  (setq er/try-expand-list (append
+                            er/try-expand-list
+                            '(mark-LaTeX-math))))
+(add-hook 'org-mode-hook 'er/add-org-mode-expansions)
+#+END_SRC
+
 #+BEGIN_SRC emacs-lisp
 (use-package expand-region
   :ensure t
-  :bind* (("C-z a" . er/expand-region)
-          ("C-z A" . er/contract-region)
+  :bind* (("C-z a o" . er/mark-org-code-block)
+          ("C-z a w" . sk/mark-around-word)
+          ("C-z a p" . sk/mark-around-text-paragraph)
+          ("C-z a f" . er/mark-defun)
+          ("C-z a t" . er/mark-LaTeX-math)
+          ("C-z a m" . er/mark-python-block)
+          ("C-z a j" . er/mark-ruby-block-up)
+          ("C-z a q" . er/mark-outside-quotes)
+          ("C-z a b" . er/mark-outside-pairs)
+          ("C-z a u" . er/mark-url)
+          ("C-z a c" . er/mark-comment)
+          ("C-z a v" . sk/mark-around-symbol)
           ("C-z i p" . er/mark-text-paragraph)
           ("C-z i f" . er/mark-defun)
           ("C-z i w" . er/mark-word)
+          ("C-z i t" . sk/mark-inside-LaTeX-math)
           ("C-z i u" . er/mark-url)
-          ("C-z i t" . er/mark-LaTeX-math)
           ("C-z i c" . er/mark-comment)
           ("C-z i b" . er/mark-inside-pairs)
           ("C-z i q" . er/mark-inside-quotes)
-          ("C-z i o" . er/mark-org-code-block)
-          ("C-z i m" . er/mark-python-block)
-          ("C-z i j" . er/mark-ruby-block-up)
+          ("C-z i o" . sk/mark-inside-org-code)
+          ("C-z i m" . sk/mark-inside-python-block)
+          ("C-z i j" . sk/mark-inside-ruby-block)
           ("C-z i v" . er/mark-symbol)))
 #+END_SRC
 
 *** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "a" "C-z a")
-(modalka-define-kbd "A" "C-z A")
+(modalka-define-kbd "a o" "C-z a o")
+(modalka-define-kbd "a w" "C-z a w")
+(modalka-define-kbd "a p" "C-z a p")
+(modalka-define-kbd "a f" "C-z a f")
+(modalka-define-kbd "a t" "C-z a t")
+(modalka-define-kbd "a m" "C-z a m")
+(modalka-define-kbd "a j" "C-z a j")
+(modalka-define-kbd "a q" "C-z a q")
+(modalka-define-kbd "a b" "C-z a b")
+(modalka-define-kbd "a u" "C-z a u")
+(modalka-define-kbd "a c" "C-z a c")
+(modalka-define-kbd "a v" "C-z a v")
 (modalka-define-kbd "i p" "C-z i p")
 (modalka-define-kbd "i f" "C-z i f")
 (modalka-define-kbd "i w" "C-z i w")
@@ -1954,9 +2040,20 @@ Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "a" "expand region"
-  "A" "contract region"
-  "i" "expand region prefix"
+  "a" "expand around prefix"
+  "a o" "expand an org block"
+  "a w" "expand a word"
+  "a p" "expand a para"
+  "a f" "expand a func"
+  "a t" "expand a latex math"
+  "a m" "expand a python block"
+  "a j" "expand a julia block"
+  "a q" "expand a quote"
+  "a b" "expand a pair"
+  "a u" "expand a url"
+  "a c" "expand a comment"
+  "a v" "expand a variable"
+  "i" "expand inside prefix"
   "i p" "expand in para"
   "i f" "expand in func"
   "i w" "expand in word"
@@ -1966,8 +2063,8 @@ Which key modal explanation
   "i b" "expand in pair"
   "i q" "expand in quote"
   "i o" "expand in org code"
-  "i m" "expand in python"
-  "i j" "expand in julia"
+  "i m" "expand in python block"
+  "i j" "expand in julia block"
   "i v" "expand in symbol")
 #+END_SRC
 
@@ -2224,6 +2321,38 @@ Also, I don't want to trigger snippets when I'm in shell. So, let's turn it off.
 #+END_SRC
 
 ** Custom functions
+
+*** Deactivate region
+
+By default there is no way to deactivate mark/region once you start selecting some region without pressing =keyboard-quit=. If we press this during a macro, it would stop the macro. So, I prefer to have a function that deactivates mark instead.
+
+#+BEGIN_SRC emacs-lisp
+(defun sk/remove-mark ()
+  "Deactivate the region"
+  (interactive)
+  (if (region-active-p)
+      (deactivate-mark)))
+#+END_SRC
+
+**** Key binding
+
+#+BEGIN_SRC emacs-lisp
+(bind-keys*
+  ("C-z E" . sk/remove-mark))
+#+END_SRC
+
+***** Modal binding
+
+#+BEGIN_SRC emacs-lisp
+(modalka-define-kbd "E" "C-z E")
+#+END_SRC
+
+Which key modal explanation
+
+#+BEGIN_SRC emacs-lisp
+(which-key-add-key-based-replacements
+  "E" "deactivate mark")
+#+END_SRC
 
 *** Align blocks
 
@@ -2680,35 +2809,45 @@ Which key modal explanation
 
 *** Select the current line
 
-[[*Expand region][Expand region]] is pretty good but sometimes, I want to select the current line and this function takes care of that. Also note that this depends on [[*Smarter start of line][smarter start of line]] to select the line.
+[[*Expand region][Expand region]] is pretty good but sometimes, I want to select the current line and this function takes care of that. Also note that this depends on [[*Smarter start of line][smarter start of line]] to select the line. Also, sometimes we need to select the current line with the newline character and for this we define another function which uses this function.
 
 #+BEGIN_SRC emacs-lisp
-(defun sk/select-current-line ()
+(defun sk/select-inside-line ()
   "Select the current line"
   (interactive)
   (sk/smarter-move-beginning-of-line 1)
   (set-mark (line-end-position))
   (exchange-point-and-mark))
+
+(defun sk/select-around-line ()
+  "Select line including the newline character"
+  (interactive)
+  (sk/select-inside-line)
+  (next-line 1)
+  (sk/smarter-move-beginning-of-line 1))
 #+END_SRC
 
 **** Key binding
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z i l" . sk/select-current-line))
+  ("C-z i l" . sk/select-inside-line)
+  ("C-z a l" . sk/select-around-line))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "i l" "C-z i l")
+(modalka-define-kbd "a l" "C-z a l")
 #+END_SRC
 
 Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "i l" "select current line")
+  "i l" "select inside line"
+  "a l" "select around line")
 #+END_SRC
 
 *** Correct those annoying DOuble capitals
@@ -3124,6 +3263,39 @@ Which key modal explanation
 #+END_SRC
 
 ** Hydras
+
+*** Expand region hydra
+
+#+BEGIN_SRC emacs-lisp
+(defhydra sk/hydra-expand (:color red
+                           :hint nil)
+  "
+ _a_: add    _r_: reduce   _q_: quit
+ "
+  ("a" er/expand-region)
+  ("r" er/contract-region)
+  ("q" nil :color blue))
+#+END_SRC
+
+**** Key bindings
+
+#+BEGIN_SRC emacs-lisp
+(bind-keys*
+  ("C-z a a" . sk/hydra-expand/body))
+#+END_SRC
+
+***** Modal binding
+
+#+BEGIN_SRC emacs-lisp
+(modalka-define-kbd "a a" "C-z a a")
+#+END_SRC
+
+Which key modal explanation
+
+#+BEGIN_SRC emacs-lisp
+(which-key-add-key-based-replacements
+  "a a" "expand region hydra")
+#+END_SRC
 
 *** Rectangle edit mode
 
@@ -3703,44 +3875,6 @@ Org has a [[http://orgmode.org/org.html#Exporting][powerful]] exporting feature.
       org-export-backends '(beamer html latex md))
 #+END_SRC
 
-*** Extra LaTeX classes
-
-The default export engine doesn't treat the headings the way I want it. Also, sometimes I need it export differently - like a report instead of an article. Let's add some more structure to this.
-
-#+BEGIN_SRC emacs-lisp
-;; Exporting like a book
-(add-to-list 'org-export-latex-classes
-             `("book"
-               "\\documentclass{book}"
-               ("\\part{%s}" . "\\part*{%s}")
-               ("\\chapter{%s}" . "\\chapter*{%s}")
-               ("\\section{%s}" . "\\section*{%s}")
-               ("\\subsection{%s}" . "\\subsection*{%s}")
-               ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))
-
-;; Exporting like a report
-(add-to-list 'org-export-latex-classes
-             `("report"
-               "\\documentclass{report}"
-               ("\\chapter{%s}" . "\\chapter*{%s}")
-               ("\\section{%s}" . "\\section*{%s}")
-               ("\\subsection{%s}" . "\\subsection*{%s}")
-               ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-               ("\\paragraph{%s}" . "\\paragraph*{%s}")))
-
-;; Exporting like an article
-(add-to-list 'org-export-latex-classes
-             '("article"
-               "\\documentclass{article}"
-               ("\\section{%s}" . "\\section*{%s}")
-               ("\\subsection{%s}" . "\\subsection*{%s}")
-               ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-               ("\\paragraph{%s}" . "\\paragraph*{%s}")
-               ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
-#+END_SRC
-
-To use any of these classes add a statement like =#+LaTeX_CLASS: book= at the start of the org document.
-
 ** Tagging
 
 Org mode has a [[http://orgmode.org/manual/Tags.html][tagging system]] that is very useful to organize the contents and notes. You can select the tags with a single letter (the letter after "?" in the following code).
@@ -3752,7 +3886,7 @@ Org mode has a [[http://orgmode.org/manual/Tags.html][tagging system]] that is v
                             ("code" . ?C)
                             ("card" . ?d)
                             ("drill" . ?D)
-                            ("errand" . ?e)
+                            ("errands" . ?e)
                             ("films" . ?f)
                             ("gubby" . ?g)
                             ("home" . ?h)
@@ -4060,8 +4194,7 @@ Finally, we make sure we bind some keys and add some [[http://orgmode.org/manual
   (add-to-list 'org-structure-template-alist '("r" ":PROPERTIES:\n?\n:END:"))
   (add-to-list 'org-structure-template-alist '("s" "#+BEGIN_SRC ?\n#+END_SRC\n"))
   (add-to-list 'org-structure-template-alist '("t" "#+TITLE: ?"))
-  (add-to-list 'org-structure-template-alist '("v" "#+BEGIN_VERBATIM\n?\n#+END_VERBATIM"))
-  (add-to-list 'org-structure-template-alist '("x" "#+SELECT_TAGS: reveal?")))
+  (add-to-list 'org-structure-template-alist '("v" "#+BEGIN_VERBATIM\n?\n#+END_VERBATIM")))
 #+END_SRC
 
 *** Which key binding explanation
@@ -4351,6 +4484,8 @@ Org mode and packages take a while to load. This command, when invoked, loads a 
 (defun sk/org-custom-load ()
   (interactive)
   (require 'org)
+  (require 'ob)
+  (require 'ox)
   ;; Some extra exports
   (require 'ox-reveal)
   (require 'ox-twbs)
@@ -4364,6 +4499,8 @@ Org mode and packages take a while to load. This command, when invoked, loads a 
   (require 'org-ref-url-utils)
   ;; Flash cards
   (require 'org-drill)
+  ;; JavaScript repl support
+  (require 'ob-js)
   ;; Babel load
   (org-babel-do-load-languages
    'org-babel-load-languages
@@ -4373,6 +4510,7 @@ Org mode and packages take a while to load. This command, when invoked, loads a 
      (latex . t)
      ;; (gnuplot . t)
      (sh . t)
+     (js. t)
      ;; (C . t)
      (ledger . t)
      ;; (R . t)
@@ -7099,6 +7237,39 @@ To track habits, maybe?
              google-this-line
              google-this-search
              google-this-cpp-reference))
+#+END_SRC
+
+*** Functions
+
+This function googles the current symbol or the region if the region is active and the line when called with a prefix argument.
+
+#+BEGIN_SRC emacs-lisp
+(defun sk/google-this ()
+  "Google efficiently"
+  (interactive)
+  (if (region-active-p)
+      (google-this-region 1)
+    (google-this-symbol 1)))
+#+END_SRC
+
+**** Key bindings
+
+#+BEGIN_SRC emacs-lisp
+(bind-keys*
+  ("C-z A" . sk/google-this))
+#+END_SRC
+
+***** Modal binding
+
+#+BEGIN_SRC emacs-lisp
+(modalka-define-kbd "A" "C-z A")
+#+END_SRC
+
+Which key modal explanation
+
+#+BEGIN_SRC emacs-lisp
+(which-key-add-key-based-replacements
+  "A" "google this")
 #+END_SRC
 
 *** Hydra

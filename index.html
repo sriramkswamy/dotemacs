@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2016-06-06 Mon 01:08 -->
+<!-- 2016-06-06 Mon 01:13 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>Emacs configuration file</title>
@@ -5275,22 +5275,22 @@ Which key modal explanation
                               <span style="color: #cc99cc;">:hint</span> nil)
   <span style="color: #66cccc;">"</span>
 <span style="color: #66cccc;"> _p_: paste   _r_: replace  _I_: insert</span>
-<span style="color: #66cccc;"> _y_: copy    _o_: open     _R_: reset</span>
+<span style="color: #66cccc;"> _y_: copy    _o_: open     _V_: reset</span>
 <span style="color: #66cccc;"> _d_: kill    _n_: number   _q_: quit</span>
 <span style="color: #66cccc;">"</span>
   (<span style="color: #66cccc;">"h"</span> backward-char nil)
   (<span style="color: #66cccc;">"l"</span> forward-char nil)
   (<span style="color: #66cccc;">"k"</span> previous-line nil)
   (<span style="color: #66cccc;">"j"</span> next-line nil)
-  (<span style="color: #66cccc;">"y"</span> copy-rectangle-as-kill <span style="color: #cc99cc;">:color</span> blue)
-  (<span style="color: #66cccc;">"d"</span> kill-rectangle <span style="color: #cc99cc;">:color</span> blue)
-  (<span style="color: #66cccc;">"x"</span> clear-rectangle <span style="color: #cc99cc;">:color</span> blue)
-  (<span style="color: #66cccc;">"o"</span> open-rectangle <span style="color: #cc99cc;">:color</span> blue)
-  (<span style="color: #66cccc;">"p"</span> yank-rectangle <span style="color: #cc99cc;">:color</span> blue)
+  (<span style="color: #66cccc;">"y"</span> copy-rectangle-as-kill)
+  (<span style="color: #66cccc;">"d"</span> kill-rectangle)
+  (<span style="color: #66cccc;">"x"</span> clear-rectangle)
+  (<span style="color: #66cccc;">"o"</span> open-rectangle)
+  (<span style="color: #66cccc;">"p"</span> yank-rectangle)
   (<span style="color: #66cccc;">"r"</span> string-rectangle)
   (<span style="color: #66cccc;">"n"</span> rectangle-number-lines)
   (<span style="color: #66cccc;">"I"</span> string-insert-rectangle)
-  (<span style="color: #66cccc;">"R"</span> (<span style="color: #99cc99;">if</span> (region-active-p)
+  (<span style="color: #66cccc;">"V"</span> (<span style="color: #99cc99;">if</span> (region-active-p)
            (deactivate-mark)
          (rectangle-mark-mode 1)) <span style="color: #f2777a; font-weight: bold;">nil)</span>
   (<span style="color: #66cccc;">"q"</span> keyboard-quit <span style="color: #cc99cc;">:color</span> blue))
@@ -12672,7 +12672,7 @@ This portion of comments let Emacs know that it has to <a href="#orgheadline59">
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Sriram Krishnaswamy</p>
-<p class="date">Created: 2016-06-06 Mon 01:08</p>
+<p class="date">Created: 2016-06-06 Mon 01:13</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

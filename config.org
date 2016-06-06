@@ -3321,22 +3321,22 @@ Which key modal explanation
                               :hint nil)
   "
  _p_: paste   _r_: replace  _I_: insert
- _y_: copy    _o_: open     _R_: reset
+ _y_: copy    _o_: open     _V_: reset
  _d_: kill    _n_: number   _q_: quit
 "
   ("h" backward-char nil)
   ("l" forward-char nil)
   ("k" previous-line nil)
   ("j" next-line nil)
-  ("y" copy-rectangle-as-kill :color blue)
-  ("d" kill-rectangle :color blue)
-  ("x" clear-rectangle :color blue)
-  ("o" open-rectangle :color blue)
-  ("p" yank-rectangle :color blue)
+  ("y" copy-rectangle-as-kill)
+  ("d" kill-rectangle)
+  ("x" clear-rectangle)
+  ("o" open-rectangle)
+  ("p" yank-rectangle)
   ("r" string-rectangle)
   ("n" rectangle-number-lines)
   ("I" string-insert-rectangle)
-  ("R" (if (region-active-p)
+  ("V" (if (region-active-p)
            (deactivate-mark)
          (rectangle-mark-mode 1)) nil)
   ("q" keyboard-quit :color blue))

@@ -3881,12 +3881,46 @@ Org mode has the ability to syntax highlight source code blocks that are embedde
 
 *** Exporting
 
-Org has a [[http://orgmode.org/org.html#Exporting][powerful]] exporting feature. Let's select the various formats to export and also mention how exactly we need it to export to \LaTeX.
+Org has a [[http://orgmode.org/org.html#Exporting][powerful]] exporting feature. Let's select the various formats to export and also mention how exactly we need it to export to LaTeX with syntax highlighting.
 
 #+BEGIN_SRC emacs-lisp
 (setq org-export-with-smart-quotes t
-      org-latex-to-pdf-process '("pdflatex %f" "biber %b" "pdflatex %f" "pdflatex %f")
+      org-latex-to-pdf-process '("pdflatex -shell-excape %f" "biber %b" "pdflatex %f" "pdflatex %f")
       org-export-backends '(beamer html latex md))
+#+END_SRC
+
+*** Syntax highlighting in LaTeX exports
+
+This comes from the [[https://github.com/xiaohanyu/oh-my-emacs/blob/master/core/ome-org.org#org-latex][oh-my-emacs]] configuration. Note that this needs the [[http://pygments.org][pygments]] package. So let's install that first.
+
+#+BEGIN_SRC sh :tangle no
+pip3 install --user pygments
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+;; code snippet comes from
+;; http://joat-programmer.blogspot.com/2013/07/org-mode-version-8-and-pdf-export-with.html
+;; Include the latex-exporter
+;; check whether org-mode 8.x is available
+(when (require 'ox-latex nil 'noerror)
+  ;; You need to install pygments to use minted
+  (when (executable-find "pygmentize")
+    ;; Add minted to the defaults packages to include when exporting.
+    (add-to-list 'org-latex-packages-alist '("" "minted"))
+    ;; Tell the latex export to use the minted package for source
+    ;; code coloration.
+    (setq org-latex-listings 'minted)
+    ;; Let the exporter use the -shell-escape option to let latex
+    ;; execute external programs.
+    ;; This obviously and can be dangerous to activate!
+    (setq org-latex-minted-options
+              '(("mathescape" "true")
+                ("linenos" "true")
+                ("numbersep" "5pt")
+                ("frame" "lines")
+                ("framesep" "2mm")))
+    (setq org-latex-pdf-process
+          '("xelatex -shell-escape -interaction nonstopmode -output-directory %o %f"))))
 #+END_SRC
 
 ** Tagging
@@ -5685,7 +5719,7 @@ The following is a helper function to open Julia shell in a vertical split.
   (interactive)
   (require 'ess-site)
   (split-window-right)
-  (run-julia)
+  (julia)
   (other-window 1))
 #+END_SRC
 
@@ -5697,6 +5731,8 @@ I use [[http://www.mathworks.com/products/matlab/][MATLAB]] pretty often when I 
 (use-package matlab-mode
   :ensure t
   :mode ("\\.m$" . matlab-mode)
+  :bind (:map matlab-shell-mode-map
+              ("C-c C-c" . term-interrupt-subjob))
   :init
   (setq matlab-shell-command "/Applications/MATLAB_R2016a.app/bin/matlab"
         matlab-indent-function t)
@@ -6474,8 +6510,8 @@ There is no facility for code navigation in MATLAB, and so this is just sending 
 (defhydra sk/hydra-for-matlab (:color blue
                                :hint nil)
   "
- _c_: cell   _r_: region    _s_: start    _q_: quit
- _l_: line   _C_: command   _S_: switch
+ _c_: cell   _r_: region    _s_: start    _m_: interrupt
+ _l_: line   _C_: command   _S_: switch   _q_: quit
 "
   ("c" matlab-shell-run-cell)
   ("l" matlab-shell-run-region-or-line)
@@ -6483,6 +6519,7 @@ There is no facility for code navigation in MATLAB, and so this is just sending 
   ("C" matlab-shell-run-command)
   ("s" sk/matlab-shell-here)
   ("S" matlab-show-matlab-shell-buffer)
+  ("m" term-interrupt-subjob)
   ("q" nil :color blue))
 #+END_SRC
 

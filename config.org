@@ -3280,7 +3280,8 @@ Which key modal explanation
 *** Expand region hydra
 
 #+BEGIN_SRC emacs-lisp
-(defhydra sk/hydra-expand (:color red
+(defhydra sk/hydra-expand (:pre (er/mark-word)
+                           :color red
                            :hint nil)
   "
  _a_: add    _r_: reduce   _q_: quit
@@ -3327,11 +3328,11 @@ Which key modal explanation
   ("l" forward-char nil)
   ("k" previous-line nil)
   ("j" next-line nil)
-  ("y" copy-rectangle-as-kill)
-  ("d" kill-rectangle nil)
-  ("x" clear-rectangle nil)
-  ("o" open-rectangle nil)
-  ("p" yank-rectangle)
+  ("y" copy-rectangle-as-kill :color blue)
+  ("d" kill-rectangle :color blue)
+  ("x" clear-rectangle :color blue)
+  ("o" open-rectangle :color blue)
+  ("p" yank-rectangle :color blue)
   ("r" string-rectangle)
   ("n" rectangle-number-lines)
   ("I" string-insert-rectangle)

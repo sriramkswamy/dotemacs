@@ -1896,7 +1896,8 @@ Some functions/regions have complimenting expansions - you can expand inside the
   "Mark the word and the adjacent whitespace"
   (interactive)
   (er/mark-word)
-  (backward-char 1))
+  (exchange-point-and-mark)
+  (forward-char 1))
 
 (defun sk/mark-around-text-paragraph ()
   "Mark the paragraph and the newline"

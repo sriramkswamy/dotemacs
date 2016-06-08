@@ -395,8 +395,7 @@ This is such a an amazing feature but is disabled by default. Let's re-enable it
 Emacs has the built-in [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Document-View.html][DocView]] mode which lets me view PDFs. Since I use Org and note taking extensively, I actually prefer reading PDFs in Emacs. Not to mention, this is one of the few PDF readers that lets me view the PDF in split-views which is immensely useful while reading research papers.
 
 #+BEGIN_SRC emacs-lisp
-(setq doc-view-continuous t
-      doc-view-resolution 300)
+(setq doc-view-continuous t)
 #+END_SRC
 
 ** Window management
@@ -3538,7 +3537,7 @@ Of course we need color themes. I like the [[https://github.com/purcell/color-th
   :ensure t
   :config
   (progn
-    (load-theme 'sanityinc-tomorrow-eighties t)))
+    (load-theme 'sanityinc-tomorrow-day t)))
 #+END_SRC
 
 ** Mode line
@@ -3891,7 +3890,7 @@ Org has a [[http://orgmode.org/org.html#Exporting][powerful]] exporting feature.
 
 *** Syntax highlighting in LaTeX exports
 
-This comes from the [[https://github.com/xiaohanyu/oh-my-emacs/blob/master/core/ome-org.org#org-latex][oh-my-emacs]] configuration. Note that this needs the [[http://pygments.org][pygments]] package. So let's install that first.
+This comes from the [[https://github.com/xiaohanyu/oh-my-emacs/blob/master/core/ome-org.org#org-latex][oh-my-emacs]] configuration. Note that this needs the [[http://pygments.org][pygments]] package. So let's install that first. Note that uncommenting the line - ~(add-to-list 'org-latex-packages-alist '("" "minted"))~ will result in Org using that package for every LaTeX conversion and the =org-toggle-latex-element= might get affected in the process.
 
 #+BEGIN_SRC sh :tangle no
 pip3 install --user pygments
@@ -3902,25 +3901,23 @@ pip3 install --user pygments
 ;; http://joat-programmer.blogspot.com/2013/07/org-mode-version-8-and-pdf-export-with.html
 ;; Include the latex-exporter
 ;; check whether org-mode 8.x is available
-(when (require 'ox-latex nil 'noerror)
-  ;; You need to install pygments to use minted
-  (when (executable-find "pygmentize")
-    ;; Add minted to the defaults packages to include when exporting.
-    (add-to-list 'org-latex-packages-alist '("" "minted"))
-    ;; Tell the latex export to use the minted package for source
-    ;; code coloration.
-    (setq org-latex-listings 'minted)
-    ;; Let the exporter use the -shell-escape option to let latex
-    ;; execute external programs.
-    ;; This obviously and can be dangerous to activate!
-    (setq org-latex-minted-options
-              '(("mathescape" "true")
-                ("linenos" "true")
-                ("numbersep" "5pt")
-                ("frame" "lines")
-                ("framesep" "2mm")))
-    (setq org-latex-pdf-process
-          '("xelatex -shell-escape -interaction nonstopmode -output-directory %o %f"))))
+(require 'ox-latex)
+;; Add minted to the defaults packages to include when exporting.
+;; (add-to-list 'org-latex-packages-alist '("" "minted"))
+;; Tell the latex export to use the minted package for source
+;; code coloration.
+(setq org-latex-listings 'minted)
+;; Let the exporter use the -shell-escape option to let latex
+;; execute external programs.
+;; This obviously and can be dangerous to activate!
+(setq org-latex-minted-options
+      '(("mathescape" "true")
+        ("linenos" "true")
+        ("numbersep" "5pt")
+        ("frame" "lines")
+        ("framesep" "2mm")))
+(setq org-latex-pdf-process
+      '("xelatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
 #+END_SRC
 
 ** Tagging
@@ -4227,7 +4224,7 @@ Finally, we make sure we bind some keys and add some [[http://orgmode.org/manual
   (add-to-list 'org-structure-template-alist '("X" "#+EXCLUDE_TAGS: reveal?"))
   (add-to-list 'org-structure-template-alist '("a" "#+AUTHOR: ?"))
   (add-to-list 'org-structure-template-alist '("c" "#+CAPTION: ?"))
-  (add-to-list 'org-structure-template-alist '("d" "#+OPTIONS: ':nil *:t -:t ::t <:t H:3 \\n:nil ^:t arch:headline\n#+OPTIONS: author:t email:nil e:t f:t inline:t creator:comment d:nil date:t\n#+OPTIONS: toc:nil num:nil tags:nil todo:nil p:nil pri:nil stat:nil c:nil d:nil\n#+LATEX_HEADER: \\usepackage[margin=2cm]{geometry}\n#+LANGUAGE: en\n\n#+REVEAL_TRANS: slide\n#+REVEAL_THEME: white\n#+REVEAL_ROOT: file:///Users/sriramkswamy/Documents/workspace/github/reveal.js\n\n?"))
+  (add-to-list 'org-structure-template-alist '("d" "#+OPTIONS: ':nil *:t -:t ::t <:t H:3 \\n:nil ^:t arch:headline\n#+OPTIONS: author:t email:nil e:t f:t inline:t creator:comment d:nil date:t\n#+OPTIONS: toc:nil num:nil tags:nil todo:nil p:nil pri:nil stat:nil c:nil d:nil\n#+LATEX_HEADER: \\usepackage[margin=2cm]{geometry}\n#+LATEX_HEADER: \\usepackage{minted}\n#+LANGUAGE: en\n\n#+REVEAL_TRANS: slide\n#+REVEAL_THEME: white\n#+REVEAL_ROOT: file:///Users/sriramkswamy/Documents/workspace/github/reveal.js\n\n?"))
   (add-to-list 'org-structure-template-alist '("e" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC"))
   (add-to-list 'org-structure-template-alist '("f" "#+FILETAGS: ?"))
   (add-to-list 'org-structure-template-alist '("h" "#+BEGIN_HTML\n?\n#+END_HTML\n"))
@@ -7259,12 +7256,7 @@ You can use the [[https://www.emacswiki.org/emacs/JabberEl][jabber protocol]] to
         jabber-backlog-number 40
         jabber-backlog-days 30)
   (setq jabber-alert-presence-message-function
-        (lambda (who oldstatus newstatus statustext) nil))
-  ;; Account settings
-  (setq jabber-account-list
-        '(("sriram.krish.92@gmail.com"
-           (:network-server . "talk.google.com")
-           (:connection-type . ssl)))))
+        (lambda (who oldstatus newstatus statustext) nil)))
 #+END_SRC
 
 ** IRC
@@ -7404,8 +7396,8 @@ Which key modal explanation
 There is provision to put and load a local configuration. For example, account and password details for [[*Gtalk][Gtalk]] can be stored here. Here is the code that provides that support.
 
 #+BEGIN_SRC emacs-lisp
-(when (file-exists-p (concat user-emacs-directory "local.org"))
-  (org-babel-load-file (concat user-emacs-directory "local.org")))
+(when (file-exists-p (concat user-emacs-directory "local.el"))
+  (load-file (concat user-emacs-directory "local.el")))
 #+END_SRC
 
 Also, note that you can redefine any of the functions that have been defined here. For example, if you use the following code for [[*Capture][Org capture]], it will overwrite the one that is already supplied with this configuration. This changes the name of the capture template and the directory in which it's stored. Similarly, the [[*Default directory][directory in which org stores files]] or the [[*Agenda][agenda files]] can also be changed.

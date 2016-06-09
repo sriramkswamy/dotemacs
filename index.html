@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2016-06-09 Thu 00:19 -->
+<!-- 2016-06-09 Thu 00:28 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>Emacs configuration file</title>
@@ -6066,7 +6066,6 @@ Org has a <a href="http://orgmode.org/org.html#Exporting">powerful</a> exporting
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(<span style="color: #718c00;">setq</span> org-export-with-smart-quotes t
-      org-latex-to-pdf-process '(<span style="color: #3e999f;">"pdflatex -shell-excape %f"</span> <span style="color: #3e999f;">"biber %b"</span> <span style="color: #3e999f;">"pdflatex %f"</span> <span style="color: #3e999f;">"pdflatex %f"</span>)
       org-export-backends '(beamer html latex md))
 </pre>
 </div>
@@ -6107,8 +6106,8 @@ This comes from the <a href="https://github.com/xiaohanyu/oh-my-emacs/blob/maste
         (<span style="color: #3e999f;">"numbersep"</span> <span style="color: #3e999f;">"5pt"</span>)
         (<span style="color: #3e999f;">"frame"</span> <span style="color: #3e999f;">"lines"</span>)
         (<span style="color: #3e999f;">"framesep"</span> <span style="color: #3e999f;">"2mm"</span>)))
-(<span style="color: #718c00;">setq</span> org-latex-pdf-process
-      '(<span style="color: #3e999f;">"xelatex -shell-escape -interaction nonstopmode -output-directory %o %f"</span>))
+<span style="color: #8e908c; font-style: italic;">;; </span><span style="color: #8e908c; font-style: italic;">(setq org-latex-pdf-process</span>
+<span style="color: #8e908c; font-style: italic;">;;       </span><span style="color: #8e908c; font-style: italic;">'("xelatex -shell-escape -interaction nonstopmode -output-directory %o %f"))</span>
 </pre>
 </div>
 </div>
@@ -12601,7 +12600,7 @@ This portion of comments let Emacs know that it has to <a href="#orgheadline59">
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Sriram Krishnaswamy</p>
-<p class="date">Created: 2016-06-09 Thu 00:19</p>
+<p class="date">Created: 2016-06-09 Thu 00:28</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

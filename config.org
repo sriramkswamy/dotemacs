@@ -3843,7 +3843,6 @@ Org has a [[http://orgmode.org/org.html#Exporting][powerful]] exporting feature.
 
 #+BEGIN_SRC emacs-lisp
 (setq org-export-with-smart-quotes t
-      org-latex-to-pdf-process '("pdflatex -shell-excape %f" "biber %b" "pdflatex %f" "pdflatex %f")
       org-export-backends '(beamer html latex md))
 #+END_SRC
 
@@ -3875,8 +3874,8 @@ pip3 install --user pygments
         ("numbersep" "5pt")
         ("frame" "lines")
         ("framesep" "2mm")))
-(setq org-latex-pdf-process
-      '("xelatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
+;; (setq org-latex-pdf-process
+;;       '("xelatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
 #+END_SRC
 
 ** Tagging

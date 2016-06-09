@@ -2,4 +2,4 @@
 # name: sub and superscripts
 # key: ss
 # --
-{ $1 }^{ $2 }_{ $3 }
+{ $1 }_{ $2 }^{ $3 }

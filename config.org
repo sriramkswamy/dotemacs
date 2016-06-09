@@ -2288,6 +2288,29 @@ Also, I don't want to trigger snippets when I'm in shell. So, let's turn it off.
 (add-hook 'shell-mode-hook 'sk/force-yasnippet-off)
 #+END_SRC
 
+** Cycle quotes
+
+[[https://elpa.gnu.org/packages/cycle-quotes.html][This package]] helps to cycle quotes when in strings.
+
+#+BEGIN_SRC emacs-lisp
+(use-package cycle-quotes
+  :ensure t
+  :bind* (("C-z s q" . cycle-quotes)))
+#+END_SRC
+
+*** Modal binding
+
+#+BEGIN_SRC emacs-lisp
+(modalka-define-kbd "s q" "C-z s q")
+#+END_SRC
+
+Which key modal explanation
+
+#+BEGIN_SRC emacs-lisp
+(which-key-add-key-based-replacements
+  "s q" "switch quotes")
+#+END_SRC
+
 ** Custom functions
 
 *** Change region/till end of line
@@ -3147,70 +3170,6 @@ Which key modal explanation
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
   "s c" "change surroundings")
-#+END_SRC
-
-*** Toggle quotes
-
-Some languages are finicky about single quotes or double quotes. This helps me toggle between the two. Also, thanks to Magnar. First, to define some helper functions.
-
-#+BEGIN_SRC emacs-lisp
-(defun sk/current-quotes-char ()
-  (nth 3 (syntax-ppss)))
-
-(defalias 'point-is-in-string-p 'sk/current-quotes-char)
-
-(defun sk/move-point-forward-out-of-string ()
-  (while (point-is-in-string-p) (forward-char)))
-
-(defun sk/move-point-backward-out-of-string ()
-  (while (point-is-in-string-p) (backward-char)))
-
-(defun sk/alternate-quotes-char ()
-  (if (eq ?' (sk/current-quotes-char)) ?\" ?'))
-#+END_SRC
-
-Now, for the function that wraps all these and gives the actual functionality.
-
-#+BEGIN_SRC emacs-lisp
-(defun sk/toggle-quotes ()
-  (interactive)
-  (if (point-is-in-string-p)
-      (let ((old-quotes (char-to-string (sk/current-quotes-char)))
-            (new-quotes (char-to-string (sk/alternate-quotes-char)))
-            (start (make-marker))
-            (end (make-marker)))
-        (save-excursion
-          (sk/move-point-forward-out-of-string)
-          (backward-delete-char 1)
-          (set-marker end (point))
-          (insert new-quotes)
-          (sk/move-point-backward-out-of-string)
-          (delete-char 1)
-          (insert new-quotes)
-          (set-marker start (point))
-          (replace-string new-quotes (concat "\\" new-quotes) nil start end)
-          (replace-string (concat "\\" old-quotes) old-quotes nil start end)))
-    (error "Point isn't in a string")))
-#+END_SRC
-
-**** Key binding
-
-#+BEGIN_SRC emacs-lisp
-(bind-keys*
-  ("C-z s q" . sk/toggle-quotes))
-#+END_SRC
-
-***** Modal binding
-
-#+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "s q" "C-z s q")
-#+END_SRC
-
-Which key modal explanation
-
-#+BEGIN_SRC emacs-lisp
-(which-key-add-key-based-replacements
-  "s q" "switch quotes")
 #+END_SRC
 
 *** Add for auto correction
@@ -4217,6 +4176,7 @@ Finally, we make sure we bind some keys and add some [[http://orgmode.org/manual
   (add-to-list 'org-structure-template-alist '("H" "#+LATEX_HEADER: ?"))
   (add-to-list 'org-structure-template-alist '("I" ":INTERLEAVE_PDF: ?"))
   (add-to-list 'org-structure-template-alist '("L" "#+BEGIN_LaTeX\n?\n#+END_LaTeX"))
+  (add-to-list 'org-structure-template-alist '("M" "#+LATEX_HEADER: \\usepackage{minted}\n"))
   (add-to-list 'org-structure-template-alist '("N" "#+BEGIN_NOTES\n?\n#+END_NOTES"))
   (add-to-list 'org-structure-template-alist '("S" "#+SUBTITLE: ?"))
   (add-to-list 'org-structure-template-alist '("T" ":DRILL_CARD_TYPE: twosided"))
@@ -4224,7 +4184,7 @@ Finally, we make sure we bind some keys and add some [[http://orgmode.org/manual
   (add-to-list 'org-structure-template-alist '("X" "#+EXCLUDE_TAGS: reveal?"))
   (add-to-list 'org-structure-template-alist '("a" "#+AUTHOR: ?"))
   (add-to-list 'org-structure-template-alist '("c" "#+CAPTION: ?"))
-  (add-to-list 'org-structure-template-alist '("d" "#+OPTIONS: ':nil *:t -:t ::t <:t H:3 \\n:nil ^:t arch:headline\n#+OPTIONS: author:t email:nil e:t f:t inline:t creator:comment d:nil date:t\n#+OPTIONS: toc:nil num:nil tags:nil todo:nil p:nil pri:nil stat:nil c:nil d:nil\n#+LATEX_HEADER: \\usepackage[margin=2cm]{geometry}\n#+LATEX_HEADER: \\usepackage{minted}\n#+LANGUAGE: en\n\n#+REVEAL_TRANS: slide\n#+REVEAL_THEME: white\n#+REVEAL_ROOT: file:///Users/sriramkswamy/Documents/workspace/github/reveal.js\n\n?"))
+  (add-to-list 'org-structure-template-alist '("d" "#+OPTIONS: ':nil *:t -:t ::t <:t H:3 \\n:nil ^:t arch:headline\n#+OPTIONS: author:t email:nil e:t f:t inline:t creator:comment d:nil date:t\n#+OPTIONS: toc:nil num:nil tags:nil todo:nil p:nil pri:nil stat:nil c:nil d:nil\n#+LATEX_HEADER: \\usepackage[margin=2cm]{geometry}\n#+LANGUAGE: en\n\n#+REVEAL_TRANS: slide\n#+REVEAL_THEME: white\n#+REVEAL_ROOT: file:///Users/sriramkswamy/Documents/workspace/github/reveal.js\n\n?"))
   (add-to-list 'org-structure-template-alist '("e" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC"))
   (add-to-list 'org-structure-template-alist '("f" "#+FILETAGS: ?"))
   (add-to-list 'org-structure-template-alist '("h" "#+BEGIN_HTML\n?\n#+END_HTML\n"))
@@ -5055,7 +5015,7 @@ Then, we have the actual hydra.
  _a_: author        _i_: interleave  _D_: description    _C_: center      _p_: python src    _d_: defaults   _r_: properties        _<_: insert '<'
  _A_: date          _l_: label       _S_: subtitle       _e_: elisp src   _Q_: quote         _L_: latex      _I_: interleave        _q_: quit
  _c_: caption       _n_: name        _k_: keywords       _E_: example     _s_: src           _x_: export     _T_: drill two-sided
- _f_: filetags      _o_: options                       _h_: html        _v_: verbatim      _X_: noexport
+ _f_: filetags      _o_: options     _M_: minted         _h_: html        _v_: verbatim      _X_: noexport
  _H_: latex header  _t_: title                         _m_: matlab src  _V_: verse
  "
   ("a" (hot-expand "<a"))
@@ -5075,6 +5035,7 @@ Then, we have the actual hydra.
   ("E" (hot-expand "<E"))
   ("h" (hot-expand "<h"))
   ("k" (hot-expand "<k"))
+  ("M" (hot-expand "<M"))
   ("m" (hot-expand "<m"))
   ("p" (hot-expand "<p"))
   ("Q" (hot-expand "<q"))
@@ -6598,14 +6559,14 @@ There are two hydras we use for Web editing - one for JavaScript specifically an
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
   ("C-z m j" . sk/hydra-for-js/body)
-  ("C-z m h" . sk/hydra-for-web/body))
+  ("C-z m f" . sk/hydra-for-web/body))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "m j" "C-z m j")
-(modalka-define-kbd "m h" "C-z m h")
+(modalka-define-kbd "m f" "C-z m f")
 #+END_SRC
 
 Which key modal explanation
@@ -6613,7 +6574,7 @@ Which key modal explanation
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
   "m j" "javscript code"
-  "m h" "html and web format")
+  "m f" "format code")
 #+END_SRC
 
 *** Quickrun
@@ -6760,7 +6721,7 @@ For now, I have made it look and act the way I want it too. The additional packa
               ("C-S-m" . helm-maybe-exit-minibuffer))
   :commands (helm-mode
              helm-M-x
-             helm-smex/run
+             helm-smex
              helm-find-files
              helm-buffers
              helm-recentf)
@@ -6889,91 +6850,11 @@ For now, I have made it look and act the way I want it too. The additional packa
 
   (advice-add 'helm-execute-persistent-action :around #'dwim-helm-find-files-navigate-forward)
 
-  ;; Improve support for smex and flx
-  (require 'smex)
-  (require 'flx)
-
-  (add-hook 'after-init-hook (lambda () (smex-initialize)) t)
-
-  (defun helm-smex-items ()
-    (smex-convert-for-ido smex-cache))
-
-  (defun helm-smex-execute-command (command-name)
-    (unwind-protect
-        (execute-extended-command helm-current-prefix-arg command-name)
-      (smex-rank (intern command-name))))
-
-  (defvar helm-smex-source
-    '((name . "smex")
-      (candidates . helm-smex-items)
-      (volatile)
-      (match-strict identity)
-      (candidate-transformer . flx-helm-candidate-transformer)
-      (action . (("execute command" . helm-smex-execute-command)
-                 ("execute command with prefix" . helm-smex-execute-command-with-prefix)))))
-
-  (defun flx-helm-candidate-transformer (candidates)
-    "hairy but works"
-    (if (zerop (length helm-pattern))
-        candidates
-      (let* ((mp-3-patterns (helm-mm-3-get-patterns helm-pattern))
-             (flx-pattern (cdar mp-3-patterns))
-             (patterns (cons (cons 'identity
-                                   (mapconcat
-                                    #'regexp-quote
-                                    (split-string flx-pattern "" t)
-                                    ".*"))
-                             (cdr mp-3-patterns)))
-             res)
-
-        (setq res (loop for candidate in candidates
-                        for matched = (loop for (predicate . regexp) in patterns
-                                            always (funcall
-                                                    predicate
-                                                    (string-match regexp
-                                                                  (helm-candidate-get-display
-                                                                   candidate))))
-                        if matched
-                        collect (let ((score (flx-score candidate flx-pattern helm-flx-cache)))
-                                  (cons (copy-sequence candidate)
-                                        (cons candidate
-                                              score)))))
-
-        (setq res (sort res
-                        (lambda (a b)
-                          (> (caddr a) (caddr b)))))
-        (helm-smex-flx-highlight-and-format res)
-        res)))
-
-  (defun helm-smex-flx-highlight-and-format (res)
-    (cl-loop for item in res
-             for score = (cddr item)
-             do
-             (progn
-               (if (string-match-p " " helm-pattern)
-                   (cl-loop with pattern = (split-string helm-pattern)
-                            for p in pattern
-                            do (when (string-match (substring-no-properties p)
-                                                   (substring-no-properties (car item)))
-                                 (put-text-property
-                                  (match-beginning 0) (match-end 0) 'face 'helm-match
-                                  (car item))))
-                 (setcar item (flx-propertize (car item) score)))
-               (setcdr item (cadr item)))))
-
-  (defun helm-smex/run (arg)
-    (interactive "P")
-    (if arg
-        (smex-rebuild-cache))
-    (let ((helm--mode-line-display-prefarg t))
-      (helm :sources 'helm-smex-source
-            :buffer "*helm-smex*")))
-
-  (defun helm-smex-execute-command-with-prefix (command-name)
-    (unwind-protect
-        (let ((helm-current-prefix-arg (list 4)))
-          (execute-extended-command helm-current-prefix-arg command-name))
-      (smex-rank (intern command-name))))
+  ;; better smex integration
+  (use-package helm-smex
+      :ensure t
+      :bind* (("M-x" . helm-smex)
+              ("M-X" . helm-smex-major-mode-commands)))
 
   ;; Make helm fuzzier
   (use-package helm-fuzzier
@@ -7077,16 +6958,17 @@ For now, I have made it look and act the way I want it too. The additional packa
 (modalka-define-kbd "t" "C-z t")
 (modalka-define-kbd "#" "C-z #")
 (modalka-define-kbd ";" "C-z ;")
+(modalka-define-kbd "SPC J" "M-X")
 (modalka-define-kbd "g E" "C-z g E")
 (modalka-define-kbd "g O" "C-z g O")
 (modalka-define-kbd "g s" "C-z g s")
 (modalka-define-kbd "g e" "C-z g e")
 (modalka-define-kbd "SPC t" "C-c C-e")
-(modalka-define-kbd "SPC g" "C-c C-f")
-(modalka-define-kbd "SPC r" "C-z SPC r")
 (modalka-define-kbd "SPC I" "C-z SPC I")
-(modalka-define-kbd "SPC i" "C-z SPC i")
+(modalka-define-kbd "SPC r" "C-z SPC r")
 (modalka-define-kbd "SPC b" "C-z SPC b")
+(modalka-define-kbd "SPC i" "C-z SPC i")
+(modalka-define-kbd "SPC g" "C-c C-f")
 (modalka-define-kbd "SPC x" "C-z SPC x")
 (modalka-define-kbd "SPC h r" "C-z SPC h r")
 (modalka-define-kbd "SPC h w" "C-z SPC h w")
@@ -7127,6 +7009,7 @@ Which key modal explanation
   "SPC g" "helm follow"
   "SPC b" "bibliography"
   "SPC x" "helm apropos"
+  "SPC J" "helm major mode cmds"
   "SPC h" "helm prefix"
   "SPC h r" "resume last helm "
   "SPC h w" "AWS instances"
@@ -7590,7 +7473,7 @@ This section documents the key bindings that help to find other key-bindings. No
 | s l                   | C-z s l             | smartparens up expression            |
 | s n                   | C-z s n             | smartparens next block               |
 | s p                   | C-z s p             | smartparens previous block           |
-| s q                   | C-z s q             | switch quotes                        |
+| s q                   | C-z s q             | [[*Cycle quotes][cycle quotes]]                         |
 | s s                   | C-z s s             | surroundings unwrap                  |
 | s S                   | C-z s S             | surroundings backward unwrap         |
 | s x                   | C-z s x             | smartparens transpose expressions    |
@@ -7733,6 +7616,7 @@ This section documents the key bindings that help to find other key-bindings. No
 | SPC y                 | C-z SPC y           | [[*Hydras][helm extra commands]]                     |
 | SPC r                 | C-z SPC r           | recent files                            |
 | SPC x                 | C-z SPC x           | helm apropos                            |
+| SPC J                 | C-z SPC J           | helm smex major mode commands           |
 | SPC h r               | C-z SPC h r         | helm resume                             |
 | SPC h s               | C-z SPC h s         | helm correct spelling                   |
 | SPC h w               | C-z SPC h w         | manage [[https://aws.amazon.com/cli/][AWS via aws cli]]                  |

@@ -570,7 +570,7 @@ Eldoc mode is a mode to display documentation for languages in Emacs
 
 #+BEGIN_SRC emacs-lisp
 (use-package eww
-  :bind* (("C-z g ;" . eww)
+  :bind* (("C-z g x" . eww)
           ("C-z g :" . eww-browse-with-external-browser)
           ("C-z g #" . eww-list-histories)
           ("C-z g {" . eww-back-url)
@@ -643,25 +643,24 @@ There are some pretty nice default functions that are unbound. I use the =bind-k
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-w" . backward-kill-word)
-  ("C-S-d" . kill-whole-line)
-  ("C-z SPC c"   . load-theme)
-  ("C-z g m" . make-frame)
-  ("C-z g M" . delete-frame)
-  ("C-z g n" . select-frame-by-name)
-  ("C-z g N" . set-frame-name)
-  ("C-z B"   . mode-line-other-buffer)
-  ("C-z ="   . indent-region)
-  ("C-z g f" . find-file-at-point)
-  ("C-z g u" . downcase-region)
-  ("C-z g U" . upcase-region)
-  ("C-z g C" . capitalize-region)
-  ("C-z R"   . overwrite-mode)
-  ("C-z g j" . doc-view-next-page)
-  ("C-z g k" . doc-view-previous-page)
-  ("C-z : t" . emacs-init-time)
-  ("C-z g q" . fill-paragraph)
-  ("C-z g @" . compose-mail)
+  ("C-S-d"     . kill-whole-line)
+  ("C-z SPC c" . load-theme)
+  ("C-z g m"   . make-frame)
+  ("C-z g M"   . delete-frame)
+  ("C-z g n"   . select-frame-by-name)
+  ("C-z g N"   . set-frame-name)
+  ("C-z B"     . mode-line-other-buffer)
+  ("C-z ="     . indent-region)
+  ("C-z g f"   . find-file-at-point)
+  ("C-z g u"   . downcase-region)
+  ("C-z g U"   . upcase-region)
+  ("C-z g C"   . capitalize-region)
+  ("C-z R"     . overwrite-mode)
+  ("C-z g j"   . doc-view-next-page)
+  ("C-z g k"   . doc-view-previous-page)
+  ("C-z : t"   . emacs-init-time)
+  ("C-z g q"   . fill-paragraph)
+  ("C-z g @"   . compose-mail)
   ("C-z SPC ?" . describe-bindings))
 #+END_SRC
 
@@ -843,6 +842,7 @@ This is based on Vi-style but only slightly and uses the default movement keys i
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "g g" "M-<")
 (modalka-define-kbd "g o" "C-x C-e")
+(modalka-define-kbd "g O" "C-M-x")
 (modalka-define-kbd "g m" "C-z g m")
 (modalka-define-kbd "g M" "C-z g M")
 (modalka-define-kbd "g n" "C-z g n")
@@ -999,12 +999,13 @@ I have added the which key explanations for everything at once because it is eas
   "g k" "previous pdf page"
   "g f" "file/url at cursor"
   "g o" "eval elisp"
+  "g O" "eval defun"
   "g w" "vertical split win"
   "g W" "horizontal split win"
   "g S" "split line"
   "g @" "compose mail"
   "g #" "list eww histories"
-  "g ;" "browse with eww"
+  "g x" "browse with eww"
   "g :" "browse with external browser"
   "g {" "eww back"
   "g }" "eww forward"
@@ -1156,6 +1157,29 @@ Which key modal explanation
   "u" "undo"
   "r" "redo"
   "U" "undo tree")
+#+END_SRC
+
+** Goto the last change
+
+[[https://github.com/camdez/goto-last-change.el][This package]] goes to the last place I made a change in the file, and compliments marks.
+
+#+BEGIN_SRC emacs-lisp
+(use-package goto-last-change
+  :ensure t
+  :bind* (("C-z g ;" . goto-last-change)))
+#+END_SRC
+
+*** Modal binding
+
+#+BEGIN_SRC emacs-lisp
+(modalka-define-kbd "g ;" "C-z g ;")
+#+END_SRC
+
+Which key modal explanation
+
+#+BEGIN_SRC emacs-lisp
+(which-key-add-key-based-replacements
+  "g ;" "goto last change")
 #+END_SRC
 
 ** Avy
@@ -1334,6 +1358,31 @@ Which key modal explanation
   "g T" "update tags"
   "T" "global tags search")
 
+#+END_SRC
+
+** Dumb jump
+
+[[https://github.com/jacktasia/dumb-jump][Dumb jump]] is a simple package that uses the =grep= or =ag= to jump to the source of the symbol at point. This is the fallback when language specific navigation is not possible
+
+#+BEGIN_SRC emacs-lisp
+(use-package dumb-jump
+  :ensure t
+  :bind (("C-c S" . dumb-jump-go))
+  :config
+  (dumb-jump-mode))
+#+END_SRC
+
+*** Modal binding
+
+#+BEGIN_SRC emacs-lisp
+(modalka-define-kbd "S" "C-c S")
+#+END_SRC
+
+Which key modal explanation
+
+#+BEGIN_SRC emacs-lisp
+(which-key-add-key-based-replacements
+  "S" "src at point")
 #+END_SRC
 
 ** Perspective
@@ -3524,6 +3573,30 @@ I particularly like this [[https://github.com/k-talo/volatile-highlights.el][pac
   (volatile-highlights-mode t))
 #+END_SRC
 
+** Highlight thing at point
+
+[[https://github.com/fgeller/highlight-thing.el][This package]] highlights the thing at point. That's it. This can be nice to use when combined with [[*Highlight symbol][Highlight symbol]] package.
+
+#+BEGIN_SRC emacs-lisp
+(use-package highlight-thing
+  :ensure t
+  :diminish highlight-thing-mode
+  :bind* (("C-z g *" . highlight-thing-mode)))
+#+END_SRC
+
+*** Modal binding
+
+#+BEGIN_SRC emacs-lisp
+(modalka-define-kbd "g *" "C-z g *")
+#+END_SRC
+
+Which key modal explanation
+
+#+BEGIN_SRC emacs-lisp
+(which-key-add-key-based-replacements
+  "g *" "highlight symbol")
+#+END_SRC
+
 ** Column enforce mode
 
 Just like the previous package, [[https://github.com/jordonbiondo/column-enforce-mode][this one]] is also subtle. It highlights characters that exceed a particular column margin. Very useful while coding.
@@ -3625,25 +3698,6 @@ I'm on Emacs full screen most of the day and battery status would sure be helpfu
   :config
   (fancy-battery-mode))
 #+END_SRC
-
-** Weather
-
-And while we are it, why not go ahead and [[https://github.com/bcbcarl/emacs-wttrin][get some weather status too]].
-
-#+BEGIN_SRC emacs-lisp
-(use-package wttrin
-  :ensure t
-  :commands (wttrin)
-  :init
-  (setq wttrin-default-cities '("Gainesville"
-                                "Albuquerque"
-                                "Chennai"
-                                "Hyderabad"
-                                "Columbus"
-                                "Hillsboro")))
-#+END_SRC
-
-[[http://pragmaticemacs.com/emacs/weather-in-emacs/][The author of Pragmatic Emacs noticed and improved it a bit]] (achievement unlocked!).
 
 ** Origami - folding based on indentation/syntax
 
@@ -5910,6 +5964,17 @@ I haven't used [[https://www.nginx.com][nginx]] much but useful to have it.
     (add-hook 'js-mode-hook '(lambda () (tern-mode t)))))
 #+END_SRC
 
+*** Skewer JS REPL
+
+[[https://github.com/skeeto/skewer-mode][Skewer]] is a JS REPL for JavaScript evaluation.
+
+#+BEGIN_SRC emacs-lisp
+(use-package skewer-mode
+  :ensure t
+  :diminish skewer-mode
+)
+#+END_SRC
+
 *** Node JS REPL
 
 Bring [[https://nodejs.org/en/][node js]] to [[https://github.com/abicky/nodejs-repl.el][Emacs]].
@@ -6634,10 +6699,40 @@ There are two hydras we use for Web editing - one for JavaScript specifically an
 (defhydra sk/hydra-for-web (:color red
                             :hint nil)
   "
- ^Beautify^                                 ^Server^
-^^^^^^^^^^-------------------------------------------------------------------
- _h_: html        _c_: css       _j_: js        _s_: httpd start   _i_: html real-time
- _H_: html buf    _C_: css buf   _J_: js buf    _S_: httpd stop    _q_: quit
+ ^Server^           ^HTML^                ^Skewer^
+^^^^^^^^^^------------------------------------------------------------------------------------------------------------------------------
+ _w_: httpd start   _i_: html real-time   _j_: js eval     _r_: run            _f_: eval func              _l_: load buffer      _p_: phantomjs
+ _W_: httpd stop                        _h_: html eval   _s_: start          _e_: eval last exp          _b_: bower load       _P_: phantomjs kill
+                                      _c_: css eval    _S_: list clients   _E_: eval print last exp    _B_: bower refresh    _q_: quit
+"
+  ("w" httpd-start :color blue)
+  ("W" httpd-stop :color blue)
+  ("i" impatient-mode :color blue)
+  ("j" skewer-mode)
+  ("h" skewer-html-mode)
+  ("c" skewer-css-mode)
+  ("r" run-skewer)
+  ("s" skewer-repl :color blue)
+  ("S" list-skewer-clients :color blue)
+  ("f" skewer-eval-defun :color blue)
+  ("e" skewer-eval-last-expression :color blue)
+  ("E" skewer-eval-print-last-expression :color blue)
+  ("l" skewer-load-buffer :color blue)
+  ("b" skewer-bower-load :color blue)
+  ("B" skewer-bower-refresh)
+  ("p" skewer-run-phantomjs :color blue)
+  ("P" skewer-phantomjs-kill)
+  ("q" nil :color blue))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+(defhydra sk/hydra-for-format (:color red
+                               :hint nil)
+  "
+ ^Beautify^
+^^^^^^^^^^--------------------------------------
+ _h_: html        _c_: css       _j_: js        _q_: quit
+ _H_: html buf    _C_: css buf   _J_: js buf
 "
   ("h" web-beautify-html)
   ("H" web-beautify-html-buffer)
@@ -6645,9 +6740,6 @@ There are two hydras we use for Web editing - one for JavaScript specifically an
   ("C" web-beautify-css-buffer)
   ("j" web-beautify-js)
   ("J" web-beautify-js-buffer)
-  ("s" httpd-start :color blue)
-  ("S" httpd-stop :color blue)
-  ("i" impatient-mode :color blue)
   ("q" nil :color blue))
 #+END_SRC
 
@@ -6656,13 +6748,15 @@ There are two hydras we use for Web editing - one for JavaScript specifically an
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
   ("C-z m j" . sk/hydra-for-js/body)
-  ("C-z m f" . sk/hydra-for-web/body))
+  ("C-z m w" . sk/hydra-for-web/body)
+  ("C-z m f" . sk/hydra-for-format/body))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "m j" "C-z m j")
+(modalka-define-kbd "m w" "C-z m w")
 (modalka-define-kbd "m f" "C-z m f")
 #+END_SRC
 
@@ -6671,6 +6765,7 @@ Which key modal explanation
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
   "m j" "javscript code"
+  "m w" "web code"
   "m f" "format code")
 #+END_SRC
 
@@ -6716,6 +6811,8 @@ Which key modal explanation
 
 *** Debugging
 
+Emacs has a built-in debugger in =edebug= and, apparently, it's pretty good. Let's make a small hydra for that.
+
 A small hydra to start appropriate debuggers
 
 #+BEGIN_SRC emacs-lisp
@@ -6723,15 +6820,15 @@ A small hydra to start appropriate debuggers
                           :color blue
                           :hint nil)
   "
- _G_: c-gdb         _P_: py-pdb        _I_: py-ipdb        _q_: quit
- _g_: realgud-gdb   _p_: realgud-pdb   _i_: realgud-ipdb
+ _g_: c-gdb         _p_: py-pdb        _i_: py-ipdb        _q_: quit
+ _G_: realgud-gdb   _P_: realgud-pdb   _I_: realgud-ipdb
 "
-  ("G" gdb)
-  ("g" realgud:gdb)
-  ("P" pdb)
-  ("p" realgud:pdb)
-  ("I" ipdb)
-  ("i" realgud:ipdb)
+  ("g" gdb)
+  ("G" realgud:gdb)
+  ("p" pdb)
+  ("P" realgud:pdb)
+  ("i" ipdb)
+  ("I" realgud:ipdb)
   ("q" nil :color blue))
 #+END_SRC
 
@@ -6985,8 +7082,7 @@ For now, I have made it look and act the way I want it too. The additional packa
     :ensure t
     :bind (("C-s" . helm-swoop-without-pre-input))
     :bind* (("C-z #" . helm-swoop)
-            ("C-z g E" . helm-multi-swoop-all)
-            ("C-z g O" . helm-multi-swoop-org))
+            ("C-z g E" . helm-multi-swoop-all))
     :init
     (setq helm-swoop-split-with-multiple-windows nil
           helm-swoop-split-direction 'split-window-vertically
@@ -6995,7 +7091,6 @@ For now, I have made it look and act the way I want it too. The additional packa
   ;; to help with projectile
   (use-package helm-projectile
     :ensure t
-    :bind (("C-c S" . helm-projectile-grep))
     :bind* (("C-z SPC d" . helm-projectile))
     :init
     (setq projectile-completion-system 'helm))
@@ -7051,13 +7146,11 @@ For now, I have made it look and act the way I want it too. The additional packa
 ** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "S" "C-c S")
 (modalka-define-kbd "t" "C-z t")
 (modalka-define-kbd "#" "C-z #")
 (modalka-define-kbd ";" "C-z ;")
 (modalka-define-kbd "SPC J" "M-X")
 (modalka-define-kbd "g E" "C-z g E")
-(modalka-define-kbd "g O" "C-z g O")
 (modalka-define-kbd "g s" "C-z g s")
 (modalka-define-kbd "g e" "C-z g e")
 (modalka-define-kbd "SPC t" "C-c C-e")
@@ -7092,12 +7185,10 @@ Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "S" "src at point"
   "t" "tags/func in buffer"
   "#" "swoop at point"
   ";" "previous edit points"
   "g E" "extract word from buffers"
-  "g O" "search all open org files"
   "g s" "search project"
   "g e" "extract word from dir"
   "SPC r" "recent files"
@@ -7132,6 +7223,25 @@ Which key modal explanation
 * Fun
 
 Emacs is fun!
+
+** Weather
+
+And while we are it, why not go ahead and [[https://github.com/bcbcarl/emacs-wttrin][get some weather status too]].
+
+#+BEGIN_SRC emacs-lisp
+(use-package wttrin
+  :ensure t
+  :commands (wttrin)
+  :init
+  (setq wttrin-default-cities '("Gainesville"
+                                "Albuquerque"
+                                "Chennai"
+                                "Hyderabad"
+                                "Columbus"
+                                "Hillsboro")))
+#+END_SRC
+
+[[http://pragmaticemacs.com/emacs/weather-in-emacs/][The author of Pragmatic Emacs noticed and improved it a bit]] (achievement unlocked!).
 
 ** How do I do something?
 
@@ -7170,31 +7280,7 @@ Read [[http://xkcd.com][xkcd]] in Emacs.
 (use-package xkcd
   :ensure t
   :commands (xkcd)
-  :bind* (("C-z g x" . xkcd)))
-#+END_SRC
-
-*** Modal binding
-
-#+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "g x" "C-z g x")
-#+END_SRC
-
-Which key modal explanation
-
-#+BEGIN_SRC emacs-lisp
-(which-key-add-key-based-replacements
-  "g x" "xkcd")
-#+END_SRC
-
-** Stack exchange
-
-Browse [[http://stackexchange.com][stackexchange]] within Emacs.
-
-#+BEGIN_SRC emacs-lisp
-(use-package sx
-  :ensure t
-  :commands (sx-tab-all-questions)
-  :bind* (("C-z g X" . sx-tab-all-questions)))
+  :bind* (("C-z g X" . xkcd)))
 #+END_SRC
 
 *** Modal binding
@@ -7207,7 +7293,7 @@ Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "g X" "stack exchange")
+  "g X" "xkcd")
 #+END_SRC
 
 ** Keep track of accounts
@@ -7604,15 +7690,16 @@ This section documents the key bindings that help to find other key-bindings. No
 ** Visual aids
 
 #+NAME: visual_aids
-| Modalka state binding | Emacs state binding | Function                 |
-|-----------------------+---------------------+--------------------------|
-| SPC c                 | C-z SPC c           | load color themes        |
-| <Bar>                 | C-z <Bar>           | [[*Origami - folding based on indentation/syntax][syntax based fold]]        |
-| -                     | C-z -               | [[*Vimish fold - Fold regions based on selection][fold toggle]]              |
-| _                     | C-z _               | [[*Vimish fold][fold menu]]                |
-| g a                   | C-z g a             | [[*Activate minor modes][Activate minor modes]]     |
-| g d                   | C-z g d             | [[*Distraction free mode][Distraction free mode]]    |
-| g F                   | C-z g F             | Distraction free focus   |
+| Modalka state binding | Emacs state binding | Function               |
+|-----------------------+---------------------+------------------------|
+| SPC c                 | C-z SPC c           | load color themes      |
+| <Bar>                 | C-z <Bar>           | [[*Origami - folding based on indentation/syntax][syntax based fold]]      |
+| -                     | C-z -               | [[*Vimish fold - Fold regions based on selection][fold toggle]]            |
+| _                     | C-z _               | [[*Vimish fold][fold menu]]              |
+| g a                   | C-z g a             | [[*Activate minor modes][Activate minor modes]]   |
+| g d                   | C-z g d             | [[*Distraction free mode][Distraction free mode]]  |
+| g F                   | C-z g F             | Distraction free focus |
+| g *                   | C-z g *             |                        |
 
 ** Org
 
@@ -7667,39 +7754,40 @@ This section documents the key bindings that help to find other key-bindings. No
 ** Programming
 
 #+NAME: programming
-| Modalka state binding | Emacs state binding | Function                        |
-|-----------------------+---------------------+---------------------------------|
-| SPC e                 | C-z SPC e           | [[*Magit][explore git repository]]          |
-| g i                   | C-z g i             | [[*Browse remote files][Browse remote files]]             |
-| g b                   | C-z g b             | git blame                       |
-| ] h                   | C-z ] h             | [[*Highlight diffs][next git hunk]]                   |
-| [ h                   | C-z [ h             | previous git hunk               |
-| g h                   | C-z g h             | goto git hunk                   |
-| g H                   | C-z g H             | revert git hunk                 |
-| g l                   | C-z g l             | [[*Git time machine][git log time machine]]            |
-| g L                   | C-z g L             | git log switch branch           |
-| g p                   | C-z g p             | [[*Gists][gist post public]]                |
-| g P                   | C-z g P             | gist post private               |
-| g o                   | C-x C-e             | emacs lisp evaluate             |
-| I                     | C-c I               | get info about thing at point   |
-| S                     | C-c S               | get source about thing at point |
-| c b                   | C-z c b             | [[*Start services][start background processes]]      |
-| c e                   | C-z c e             | [[*Emacs lisp][emacs lisp code menu]]            |
-| c c                   | C-z c c             | [[*C/C++][c/c++ code menu]]                 |
-| c p                   | C-z c p             | [[*Python][python code menu]]                |
-| c s                   | C-z c s             | [[*Statistics][statistics code menu]]            |
-| c m                   | C-z c m             | [[*MATLAB][MATLAB code menu]]                |
-| c j                   | C-z c j             | [[*Web][JavaScript code menu]]            |
-| c w                   | C-z c w             | web mode code menu              |
-| c d                   | C-z c d             | [[*Debugging][Debugging code menu]]             |
-| c t                   | C-z c t             | [[*Tmux integration][Tmux code menu]]                  |
-| ] l                   | C-z ] l             | [[*Error checking][next error]]                      |
-| [ l                   | C-z [ l             | previous error                  |
-| SPC l                 | C-z SPC l           | list errors                     |
-| SPC u                 | C-z SPC u           | [[*Eshell][Eshell vertical split]]           |
-| SPC U                 | C-z SPC U           | Eshell horizontal split         |
-| SPC m                 | C-z SPC m           | [[*Multi term][Multi term vertical split]]       |
-| SPC M                 | C-z SPC M           | Multi term horizontal split     |
+| Modalka state binding | Emacs state binding | Function                                          |
+|-----------------------+---------------------+---------------------------------------------------|
+| SPC e                 | C-z SPC e           | [[*Magit][explore git repository]]                            |
+| g i                   | C-z g i             | [[*Browse remote files][Browse remote files]]                               |
+| g b                   | C-z g b             | git blame                                         |
+| ] h                   | C-z ] h             | [[*Highlight diffs][next git hunk]]                                     |
+| [ h                   | C-z [ h             | previous git hunk                                 |
+| g h                   | C-z g h             | goto git hunk                                     |
+| g H                   | C-z g H             | revert git hunk                                   |
+| g l                   | C-z g l             | [[*Git time machine][git log time machine]]                              |
+| g L                   | C-z g L             | git log switch branch                             |
+| g p                   | C-z g p             | [[*Gists][gist post public]]                                  |
+| g P                   | C-z g P             | gist post private                                 |
+| g o                   | C-x C-e             | emacs lisp evaluate                               |
+| I                     | C-c I               | get info about thing at point ([[*Code documentation][Dash]] fallback)     |
+| S                     | C-c S               | get source of thing at point ([[*Dumb jump][Dumb jump]] fallback) |
+| m b                   | C-z m b             | [[*Start services][start background processes]]                        |
+| m e                   | C-z m e             | [[*Emacs lisp][emacs lisp code menu]]                              |
+| m c                   | C-z m c             | [[*C/C++][c/c++ code menu]]                                   |
+| m p                   | C-z m p             | [[*Python][python code menu]]                                  |
+| m s                   | C-z m s             | [[*Statistics][statistics code menu]]                              |
+| m m                   | C-z m m             | [[*MATLAB][MATLAB code menu]]                                  |
+| m j                   | C-z m j             | [[*Web][JavaScript code menu]]                              |
+| m w                   | C-z m w             | web mode code menu                                |
+| m f                   | C-z m f             | format code menu                                  |
+| m d                   | C-z m d             | [[*Debugging][Debugging code menu]]                               |
+| m t                   | C-z m t             | [[*Tmux integration][Tmux code menu]]                                    |
+| ] l                   | C-z ] l             | [[*Error checking][next error]]                                        |
+| [ l                   | C-z [ l             | previous error                                    |
+| SPC l                 | C-z SPC l           | list errors                                       |
+| SPC u                 | C-z SPC u           | [[*Eshell][Eshell vertical split]]                             |
+| SPC U                 | C-z SPC U           | Eshell horizontal split                           |
+| SPC m                 | C-z SPC m           | [[*Multi term][Multi term vertical split]]                         |
+| SPC M                 | C-z SPC M           | Multi term horizontal split                       |
 
 ** Helm
 
@@ -7738,15 +7826,19 @@ This section documents the key bindings that help to find other key-bindings. No
 ** Fun
 
 #+NAME: fun
-| Modalka state binding | Emacs state binding | Function                 |
-|-----------------------+---------------------+--------------------------|
-| A                     | C-z A               | Google appropriately     |
-| g x                   | C-z g x             | [[*XKCD][XKCD]]                     |
-| g X                   | C-z g X             | [[*Stack exchange][Stack exchange]]           |
-| g G                   | C-z g G             | [[*Google stuff][Google stuff]]             |
-| g I                   | C-z g I             | [[*How do I do something?][howdoi query]]             |
-| g Y                   | C-z g Y             | howdoi query line        |
-| g Q                   | C-z g Q             | howdoi query insert code |
+| Modalka state binding | Emacs state binding | Function                       |
+|-----------------------+---------------------+--------------------------------|
+| A                     | C-z A               | Google appropriately           |
+| g X                   | C-z g X             | [[*XKCD][XKCD]]                           |
+| g G                   | C-z g G             | [[*Google stuff][Google stuff]]                   |
+| g I                   | C-z g I             | [[*How do I do something?][howdoi query]]                   |
+| g Y                   | C-z g Y             | howdoi query line              |
+| g Q                   | C-z g Q             | howdoi query insert code       |
+| g x                   | C-z g x             | [[*Manage the built-in browser =eww=][open with the built-in browser]] |
+| g :                   | C-z g :             | open in external browser       |
+| g #                   | C-z g #             | eww history                    |
+| g {                   | C-z g {             | browser back url               |
+| g }                   | C-z g }             | browser forward url            |
 
 * Automatically invoke tangle on save
 

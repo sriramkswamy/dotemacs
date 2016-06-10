@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2016-06-09 Thu 20:13 -->
+<!-- 2016-06-10 Fri 17:09 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>Emacs configuration file</title>
@@ -1720,6 +1720,10 @@ There are some pretty nice default functions that are unbound. I use the <code>b
   (<span style="color: #3e999f;">"C-z g N"</span>   . set-frame-name)
   (<span style="color: #3e999f;">"C-z B"</span>     . mode-line-other-buffer)
   (<span style="color: #3e999f;">"C-z ="</span>     . indent-region)
+  (<span style="color: #3e999f;">"C-z g ("</span>   . Info-prev)
+  (<span style="color: #3e999f;">"C-z g )"</span>   . Info-next)
+  (<span style="color: #3e999f;">"C-z ^"</span>   . Info-up)
+  (<span style="color: #3e999f;">"C-z &amp;"</span>   . Info-goto-node)
   (<span style="color: #3e999f;">"C-z g f"</span>   . find-file-at-point)
   (<span style="color: #3e999f;">"C-z g u"</span>   . downcase-region)
   (<span style="color: #3e999f;">"C-z g U"</span>   . upcase-region)
@@ -1947,6 +1951,7 @@ This is based on Vi-style but only slightly and uses the default movement keys i
 (modalka-define-kbd <span style="color: #3e999f;">"R"</span> <span style="color: #3e999f;">"C-z R"</span>)
 (modalka-define-kbd <span style="color: #3e999f;">"X"</span> <span style="color: #3e999f;">"C-x C-x"</span>)
 (modalka-define-kbd <span style="color: #3e999f;">"+"</span> <span style="color: #3e999f;">"C-x r m"</span>)
+(modalka-define-kbd <span style="color: #3e999f;">"'"</span> <span style="color: #3e999f;">"C-x r b"</span>)
 (modalka-define-kbd <span style="color: #3e999f;">"\\"</span> <span style="color: #3e999f;">"C-c C-c"</span>)
 </pre>
 </div>
@@ -1977,6 +1982,10 @@ This is based on Vi-style but only slightly and uses the default movement keys i
 (modalka-define-kbd <span style="color: #3e999f;">"g #"</span> <span style="color: #3e999f;">"C-z g #"</span>)
 (modalka-define-kbd <span style="color: #3e999f;">"g {"</span> <span style="color: #3e999f;">"C-z g {"</span>)
 (modalka-define-kbd <span style="color: #3e999f;">"g }"</span> <span style="color: #3e999f;">"C-z g }"</span>)
+(modalka-define-kbd <span style="color: #3e999f;">"g ("</span> <span style="color: #3e999f;">"C-z g ("</span>)
+(modalka-define-kbd <span style="color: #3e999f;">"g )"</span> <span style="color: #3e999f;">"C-z g )"</span>)
+(modalka-define-kbd <span style="color: #3e999f;">"^"</span> <span style="color: #3e999f;">"C-z ^"</span>)
+(modalka-define-kbd <span style="color: #3e999f;">"&amp;"</span> <span style="color: #3e999f;">"C-z &amp;"</span>)
 (modalka-define-kbd <span style="color: #3e999f;">"g S"</span> <span style="color: #3e999f;">"C-j"</span>)
 (modalka-define-kbd <span style="color: #3e999f;">"g ?"</span> <span style="color: #3e999f;">"C-h k"</span>)
 </pre>
@@ -2110,6 +2119,7 @@ I have added the which key explanations for everything at once because it is eas
   <span style="color: #3e999f;">"R"</span> <span style="color: #3e999f;">"overwrite mode"</span>
   <span style="color: #3e999f;">"X"</span> <span style="color: #3e999f;">"exchange point and mark"</span>
   <span style="color: #3e999f;">"+"</span> <span style="color: #3e999f;">"set bookmark"</span>
+  <span style="color: #3e999f;">"'"</span> <span style="color: #3e999f;">"jump to bookmark"</span>
   <span style="color: #3e999f;">"="</span> <span style="color: #3e999f;">"indent region"</span>
   <span style="color: #3e999f;">"\\"</span> <span style="color: #3e999f;">"C-c C-c"</span>
   <span style="color: #3e999f;">"!"</span> <span style="color: #3e999f;">"async shell command"</span>
@@ -2145,6 +2155,10 @@ I have added the which key explanations for everything at once because it is eas
   <span style="color: #3e999f;">"g :"</span> <span style="color: #3e999f;">"browse with external browser"</span>
   <span style="color: #3e999f;">"g {"</span> <span style="color: #3e999f;">"eww back"</span>
   <span style="color: #3e999f;">"g }"</span> <span style="color: #3e999f;">"eww forward"</span>
+  <span style="color: #3e999f;">"g ("</span> <span style="color: #3e999f;">"info previous"</span>
+  <span style="color: #3e999f;">"g )"</span> <span style="color: #3e999f;">"info next"</span>
+  <span style="color: #3e999f;">"^"</span> <span style="color: #3e999f;">"info up"</span>
+  <span style="color: #3e999f;">"&amp;"</span> <span style="color: #3e999f;">"info goto"</span>
   <span style="color: #3e999f;">"g q"</span> <span style="color: #3e999f;">"format para"</span>
   <span style="color: #3e999f;">"g ?"</span> <span style="color: #3e999f;">"find command bound to key"</span>)
 </pre>
@@ -3421,7 +3435,7 @@ Which key modal explanation
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(<span style="color: #718c00;">bind-keys*</span>
-  (<span style="color: #3e999f;">"C-z '"</span> . sk/hydra-bookmarks/body))
+  (<span style="color: #3e999f;">"C-z `"</span> . sk/hydra-bookmarks/body))
 </pre>
 </div>
 </div>
@@ -3429,7 +3443,7 @@ Which key modal explanation
 <ul class="org-ul"><li><a id="orgheadline144"></a>Modal binding<br  /><div class="outline-text-6" id="text-orgheadline144">
 <div class="org-src-container">
 
-<pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"'"</span> <span style="color: #3e999f;">"C-z '"</span>)
+<pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"`"</span> <span style="color: #3e999f;">"C-z `"</span>)
 </pre>
 </div>
 
@@ -3440,7 +3454,7 @@ Which key modal explanation
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(which-key-add-key-based-replacements
-  <span style="color: #3e999f;">"'"</span> <span style="color: #3e999f;">"bookmark menu"</span>)
+  <span style="color: #3e999f;">"`"</span> <span style="color: #3e999f;">"bookmark menu"</span>)
 </pre>
 </div>
 </div></li></ul></li></ul>
@@ -12927,7 +12941,7 @@ This portion of comments let Emacs know that it has to <a href="#orgheadline59">
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Sriram Krishnaswamy</p>
-<p class="date">Created: 2016-06-09 Thu 20:13</p>
+<p class="date">Created: 2016-06-10 Fri 17:09</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

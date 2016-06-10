@@ -36,4 +36,5 @@
 	sk/hydra-multiple-cursors/mc/skip-to-previous-like-this
 	sk/hydra-multiple-cursors/mc/unmark-previous-like-this
 	sk/hydra-multiple-cursors/nil
+	sk/hydra-of-activate/smartparens-strict-mode-and-exit
 	))

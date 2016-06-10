@@ -651,6 +651,10 @@ There are some pretty nice default functions that are unbound. I use the =bind-k
   ("C-z g N"   . set-frame-name)
   ("C-z B"     . mode-line-other-buffer)
   ("C-z ="     . indent-region)
+  ("C-z g ("   . Info-prev)
+  ("C-z g )"   . Info-next)
+  ("C-z ^"   . Info-up)
+  ("C-z &"   . Info-goto-node)
   ("C-z g f"   . find-file-at-point)
   ("C-z g u"   . downcase-region)
   ("C-z g U"   . upcase-region)
@@ -834,6 +838,7 @@ This is based on Vi-style but only slightly and uses the default movement keys i
 (modalka-define-kbd "R" "C-z R")
 (modalka-define-kbd "X" "C-x C-x")
 (modalka-define-kbd "+" "C-x r m")
+(modalka-define-kbd "'" "C-x r b")
 (modalka-define-kbd "\\" "C-c C-c")
 #+END_SRC
 
@@ -862,6 +867,10 @@ This is based on Vi-style but only slightly and uses the default movement keys i
 (modalka-define-kbd "g #" "C-z g #")
 (modalka-define-kbd "g {" "C-z g {")
 (modalka-define-kbd "g }" "C-z g }")
+(modalka-define-kbd "g (" "C-z g (")
+(modalka-define-kbd "g )" "C-z g )")
+(modalka-define-kbd "^" "C-z ^")
+(modalka-define-kbd "&" "C-z &")
 (modalka-define-kbd "g S" "C-j")
 (modalka-define-kbd "g ?" "C-h k")
 #+END_SRC
@@ -976,6 +985,7 @@ I have added the which key explanations for everything at once because it is eas
     "R" "overwrite mode"
     "X" "exchange point and mark"
     "+" "set bookmark"
+    "'" "jump to bookmark"
     "=" "indent region"
     "\\" "C-c C-c"
     "!" "async shell command"
@@ -1009,6 +1019,10 @@ I have added the which key explanations for everything at once because it is eas
   "g :" "browse with external browser"
   "g {" "eww back"
   "g }" "eww forward"
+  "g (" "info previous"
+  "g )" "info next"
+  "^" "info up"
+  "&" "info goto"
   "g q" "format para"
   "g ?" "find command bound to key")
 #+END_SRC
@@ -1903,20 +1917,20 @@ Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z '" . sk/hydra-bookmarks/body))
+  ("C-z `" . sk/hydra-bookmarks/body))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "'" "C-z '")
+(modalka-define-kbd "`" "C-z `")
 #+END_SRC
 
 Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "'" "bookmark menu")
+  "`" "bookmark menu")
 #+END_SRC
 
 * Editing

@@ -1,5 +1,6 @@
 # -*- mode: snippet -*-
-# name: dash
-# key: -
+#name : else
 # --
----
+else {
+  $0
+}

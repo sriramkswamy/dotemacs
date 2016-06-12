@@ -1,5 +1,4 @@
 # -*- mode: snippet -*-
-# name: dash
-# key: -
+#name : alert
 # --
----
+alert($0);

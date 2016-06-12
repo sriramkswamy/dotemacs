@@ -328,18 +328,6 @@ While we are in the topic of prompting, a lot of the default prompts ask for a =
       ediff-split-window-function 'split-window-horizontally)
 #+END_SRC
 
-** =dired=
-
-[[https://www.gnu.org/software/emacs/manual/html_node/emacs/Dired.html][Dired]] is an amazing file/directory browser that comes bundled with Emacs but I don't like it displaying all the details regarding the files when I open it. I prefer it minimal.
-
-#+BEGIN_SRC emacs-lisp
-(add-hook 'dired-mode-hook 'dired-hide-details-mode)
-(setq dired-dwim-target t
-      dired-recursive-copies 'top
-      dired-recursive-deletes 'top
-      dired-listing-switches "-alh")
-#+END_SRC
-
 ** =tramp=
 
 [[https://www.emacswiki.org/emacs/TrampMode][Tramp]] lets you edit files remotely from your local Emacs which is useful because it lets you have all the default configuration. Let's make sure the default protocol is =ssh=.
@@ -495,6 +483,23 @@ Switching font is something I do quite often. Also, zooming in text isn't the sa
 (require 'bind-key)                ;; if you use any :bind variant
 #+END_SRC
 
+** =dired=
+
+[[https://www.gnu.org/software/emacs/manual/html_node/emacs/Dired.html][Dired]] is an amazing file/directory browser that comes bundled with Emacs but I don't like it displaying all the details regarding the files when I open it. I prefer it minimal.
+
+#+BEGIN_SRC emacs-lisp
+(use-package dired
+  :bind (:map dired-mode-map
+              ("C-c C-e" . wdired-change-to-wdired-mode))
+  :init
+  (setq dired-dwim-target t
+        dired-recursive-copies 'top
+        dired-recursive-deletes 'top
+        dired-listing-switches "-alh")
+  :config
+  (add-hook 'dired-mode-hook 'dired-hide-details-mode))
+#+END_SRC
+
 ** Diminish minor modes from the mode line
 
 Now that we have made sure we have installed use-package, we will make sure another nice package to change the [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Mode-Line-Variables.html][mode-line minor mode list]]. For this, we can use use-package itself and also go ahead and diminish some built-in minor modes.
@@ -596,18 +601,6 @@ Sometimes when opening the Mac Emacs.app via GUI, by clicking the button, it doe
     (exec-path-from-shell-initialize)))
 #+END_SRC
 
-** Improve the built-in package menu
-
-[[https://github.com/Malabarba/paradox][Paradox]] improves the built-in menu with github stars and a better regex filter and search. The default key bindings of =i= to install, =U= to update and =x= to execute is still preserved. However, pressing =f= to filter, starts up a hydra to search via regular expressions and more.
-
-#+BEGIN_SRC emacs-lisp
-(use-package paradox
-  :ensure t
-  :commands (paradox-list-packages)
-  :init
-  (setq paradox-github-token t))
-#+END_SRC
-
 ** Add some useful libraries
 
 [[https://github.com/jwiegley/emacs-async][async]], [[https://github.com/magnars/s.el][s]], [[https://github.com/magnars/dash.el][dash]], and [[http://elpa.gnu.org/packages/cl-lib.html][cl-lib]] are libraries for asynchronous processing, string manipulation, list manipulation and backward compatibility respectively.
@@ -653,8 +646,8 @@ There are some pretty nice default functions that are unbound. I use the =bind-k
   ("C-z ="     . indent-region)
   ("C-z g ("   . Info-prev)
   ("C-z g )"   . Info-next)
-  ("C-z ^"   . Info-up)
-  ("C-z &"   . Info-goto-node)
+  ("C-z ^"     . Info-up)
+  ("C-z &"     . Info-goto-node)
   ("C-z g f"   . find-file-at-point)
   ("C-z g u"   . downcase-region)
   ("C-z g U"   . upcase-region)
@@ -757,16 +750,16 @@ As mentioned before, I like and prefer modal editing. I feel pressing modifier k
   (add-to-list 'modalka-excluded-modes 'magit-popup-mode)
   (add-to-list 'modalka-excluded-modes 'eshell-mode)
   (which-key-add-key-based-replacements
-    "C-z" "Modalka prefix"
-    "C-z :" "extended prefix"
-    "C-z c" "code prefix"
-    "C-z m" "multi-edit prefix"
-    "C-z s" "smart nav prefix"
+    "C-z"     "Modalka prefix"
+    "C-z :"   "extended prefix"
+    "C-z c"   "code prefix"
+    "C-z m"   "multi-edit prefix"
+    "C-z s"   "smart nav prefix"
     "C-z SPC" "user prefix"
-    "C-z g" "global prefix"
-    "C-z i" "expand prefix"
-    "C-z [" "prev nav prefix"
-    "C-z ]" "next nav prefix"))
+    "C-z g"   "global prefix"
+    "C-z i"   "expand prefix"
+    "C-z ["   "prev nav prefix"
+    "C-z ]"   "next nav prefix"))
 #+END_SRC
 
 *** Default modal keybindings
@@ -946,57 +939,57 @@ I have added the which key explanations for everything at once because it is eas
     "DEL" "smart del"
     "TAB" "smart tab"
     "RET" "smart enter"
-    "h" "prev char"
-    "j" "next line"
-    "k" "prev line"
-    "l" "next char"
-    "e" "next word"
-    "b" "prev word"
-    "n" "next history item"
-    "N" "prev history item"
-    "{" "next para"
-    "}" "prev para"
-    "0" "start of line"
-    "$" "end of line"
-    "(" "start of sentence"
-    ")" "end of sentence"
-    "E" "exit anything"
-    "B" "previous buffer"
-    "w" "other window"
-    "G" "end of file"
-    "d" "delete selection"
-    "y" "copy selection"
-    "p" "paste"
-    "P" "paste history"
-    "x" "delete char"
-    "D" "delete rest of line"
-    "M" "modify argument"
-    "z" "scroll center/top/bot"
-    "Z" "zoom into window"
-    "H" "scroll left"
-    "J" "scroll down"
-    "K" "scroll up"
-    "L" "scroll right"
-    "'" "org edit separately"
-    "q" "start macro"
-    "Q" "end macro"
-    "?" "top level bindings"
-    "v" "start selection"
-    "R" "overwrite mode"
-    "X" "exchange point and mark"
-    "+" "set bookmark"
-    "'" "jump to bookmark"
-    "=" "indent region"
-    "\\" "C-c C-c"
-    "!" "async shell command"
-    "&" "shell command")
+    "h"   "prev char"
+    "j"   "next line"
+    "k"   "prev line"
+    "l"   "next char"
+    "e"   "next word"
+    "b"   "prev word"
+    "n"   "next history item"
+    "N"   "prev history item"
+    "{"   "next para"
+    "}"   "prev para"
+    "0"   "start of line"
+    "$"   "end of line"
+    "("   "start of sentence"
+    ")"   "end of sentence"
+    "E"   "exit anything"
+    "B"   "previous buffer"
+    "w"   "other window"
+    "G"   "end of file"
+    "d"   "delete selection"
+    "y"   "copy selection"
+    "p"   "paste"
+    "P"   "paste history"
+    "x"   "delete char"
+    "D"   "delete rest of line"
+    "M"   "modify argument"
+    "z"   "scroll center/top/bot"
+    "Z"   "zoom into window"
+    "H"   "scroll left"
+    "J"   "scroll down"
+    "K"   "scroll up"
+    "L"   "scroll right"
+    "'"   "org edit separately"
+    "q"   "start macro"
+    "Q"   "end macro"
+    "?"   "top level bindings"
+    "v"   "start selection"
+    "R"   "overwrite mode"
+    "X"   "exchange point and mark"
+    "+"   "set bookmark"
+    "'"   "jump to bookmark"
+    "="   "indent region"
+    "\\"  "C-c C-c"
+    "!"   "async shell command"
+    "&"   "shell command")
 #+END_SRC
 
 **** Global prefixed keys
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "g" "global prefix"
+  "g"   "global prefix"
   "g g" "start of file"
   "g u" "downcase region"
   "g U" "upcase region"
@@ -1021,8 +1014,8 @@ I have added the which key explanations for everything at once because it is eas
   "g }" "eww forward"
   "g (" "info previous"
   "g )" "info next"
-  "^" "info up"
-  "&" "info goto"
+  "^"   "info up"
+  "&"   "info goto"
   "g q" "format para"
   "g ?" "find command bound to key")
 #+END_SRC
@@ -1031,7 +1024,7 @@ I have added the which key explanations for everything at once because it is eas
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "i" "expand prefix"
+  "i"   "expand prefix"
   "i a" "expand entire buffer")
 #+END_SRC
 
@@ -1039,7 +1032,7 @@ I have added the which key explanations for everything at once because it is eas
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "]" "forward nav/edit"
+  "]"   "forward nav/edit"
   "] ]" "narrow region"
   "] s" "next spell error")
 #+END_SRC
@@ -1048,7 +1041,7 @@ I have added the which key explanations for everything at once because it is eas
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "[" "backward nav/edit"
+  "["   "backward nav/edit"
   "[ [" "widen region")
 #+END_SRC
 
@@ -1056,7 +1049,7 @@ I have added the which key explanations for everything at once because it is eas
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  ":" "extended prefix"
+  ":"   "extended prefix"
   ": q" "quit emacs"
   ": r" "restart emacs"
   ": t" "initiliazation time")
@@ -1066,7 +1059,7 @@ I have added the which key explanations for everything at once because it is eas
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "SPC" "custom prefix"
+  "SPC"   "custom prefix"
   "SPC ?" "describe bindings"
   "SPC j" "jump to cmd"
   "SPC f" "find file"
@@ -1262,7 +1255,7 @@ Which key modal explanation
 #+BEGIN_SRC emacs-lisp
 (use-package projectile
   :ensure t
-  :bind* (("C-z SPC d" . projectile-find-file)
+  :bind* (("C-z SPC d"   . projectile-find-file)
           ("C-z SPC TAB" . projectile-find-other-file))
   :init
   (setq projectile-file-exists-remote-cache-expire (* 10 60))
@@ -1274,7 +1267,7 @@ Which key modal explanation
 *** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "SPC d" "C-z SPC d")
+(modalka-define-kbd "SPC d"   "C-z SPC d")
 (modalka-define-kbd "SPC TAB" "C-z SPC TAB")
 #+END_SRC
 
@@ -1282,7 +1275,7 @@ Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "SPC d" "project files"
+  "SPC d"   "project files"
   "SPC TAB" "alternate file")
 #+END_SRC
 
@@ -1347,7 +1340,7 @@ Which key modal explanation
 (use-package ggtags
   :ensure t
   :diminish ggtags-mode
-  :bind* (("C-z T" . ggtags-find-tag-regexp)
+  :bind* (("C-z T"   . ggtags-find-tag-regexp)
           ("C-z g t" . ggtags-create-tags)
           ("C-z g T" . ggtags-update-tags))
   :init
@@ -1359,7 +1352,7 @@ Which key modal explanation
 *** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "T" "C-z T")
+(modalka-define-kbd "T"   "C-z T")
 (modalka-define-kbd "g t" "C-z g t")
 (modalka-define-kbd "g T" "C-z g T")
 #+END_SRC
@@ -1370,7 +1363,7 @@ Which key modal explanation
 (which-key-add-key-based-replacements
   "g t" "create tags"
   "g T" "update tags"
-  "T" "global tags search")
+  "T"   "global tags search")
 
 #+END_SRC
 
@@ -1408,7 +1401,7 @@ Which key modal explanation
   :ensure t
   :bind* (("C-z SPC p" . persp-switch)
           ("C-z SPC s" . persp-switch-to-buffer)
-          ("C-z g r" . persp-rename))
+          ("C-z g r"   . persp-rename))
   :config
   (persp-mode 1))
 #+END_SRC
@@ -1418,7 +1411,7 @@ Which key modal explanation
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "SPC p" "C-z SPC p")
 (modalka-define-kbd "SPC s" "C-z SPC s")
-(modalka-define-kbd "g r" "C-z g r")
+(modalka-define-kbd "g r"   "C-z g r")
 #+END_SRC
 
 Which key modal explanation
@@ -1427,7 +1420,7 @@ Which key modal explanation
 (which-key-add-key-based-replacements
   "SPC p" "perspective switch"
   "SPC s" "perspective switch to buffer"
-  "g r" "perspective rename")
+  "g r"   "perspective rename")
 #+END_SRC
 
 ** Code documentation
@@ -1447,14 +1440,14 @@ Which key modal explanation
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "SPC y" "C-z SPC y")
 (modalka-define-kbd "SPC Y" "C-z SPC Y")
-(modalka-define-kbd "I" "C-c I")
+(modalka-define-kbd "I"     "C-c I")
 #+END_SRC
 
 Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "I" "info at point"
+  "I"     "info at point"
   "SPC y" "documentation prompt"
   "SPC Y" "documentation at point")
 #+END_SRC
@@ -2070,7 +2063,7 @@ Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "a" "expand around prefix"
+  "a"   "expand around prefix"
   "a o" "expand an org block"
   "a w" "expand a word"
   "a p" "expand a para"
@@ -2365,7 +2358,7 @@ Which key modal explanation
   :ensure t
   :commands (yas-insert-snippet yas-new-snippet)
   :bind (("C-o" . yas-insert-snippet))
-  :bind* (("C-=" . yas-new-snippet)
+  :bind* (("C-="        . yas-new-snippet)
           ("C-<escape>" . yas-visit-snippet-file))
   :diminish (yas-minor-mode . "γ")
   :config
@@ -2522,6 +2515,12 @@ Emacs has the built-in command =align-regexp= to align via regular expression. H
   (align-regexp start end
                 "\\(\\s-*\\)&" 1 1 t))
 
+(defun sk/align-quote-space (start end)
+  "Align columns by quote and space"
+  (interactive "r")
+  (align-regexp start end
+                "\\(\\s-*\\).*\\s-\"" 1 0 t))
+
 (defun sk/align-equals (start end)
   "Align columns by equals sign"
   (interactive "r")
@@ -2554,7 +2553,8 @@ Emacs has the built-in command =align-regexp= to align via regular expression. H
   ("C-z g A SPC" . sk/align-whitespace)
   ("C-z g A &"   . sk/align-ampersand)
   ("C-z g A ,"   . sk/align-comma)
-  ("C-z g A ."   . sk/align-dot)
+  ("C-z g A \""  . sk/align-quote-space)
+  ("C-z g A      ." . sk/align-dot)
   ("C-z g A ="   . sk/align-equals)
   ("C-z g A :"   . sk/align-colon)
   ("C-z g A A"   . align-regexp))
@@ -2571,6 +2571,7 @@ Which key binding explanation
 
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "g A SPC" "C-z g A SPC")
+(modalka-define-kbd "g A \""  "C-z g A \"")
 (modalka-define-kbd "g A &"   "C-z g A &")
 (modalka-define-kbd "g A ,"   "C-z g A ,")
 (modalka-define-kbd "g A ."   "C-z g A .")
@@ -2583,14 +2584,15 @@ Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "g A" "align prefix"
+  "g A"     "align prefix"
   "g A SPC" "align based on spaces"
-  "g A &" "align based on &"
-  "g A ," "align based on ,"
-  "g A ." "align based on ."
-  "g A =" "align based on ="
-  "g A :" "align based on :"
-  "g A A" "align based on regex")
+  "g A &"   "align based on &"
+  "g A ,"   "align based on ,"
+  "g A \""  "align based on \""
+  "g A ."   "align based on ."
+  "g A ="   "align based on ="
+  "g A :"   "align based on :"
+  "g A A"   "align based on regex")
 #+END_SRC
 
 *** Insert date or date and time
@@ -3752,8 +3754,7 @@ Syntax based folding is great and all but sometimes I need to fold some random p
 
 *** Activate minor modes
 
-There are many minor modes that I don't need to be active all the time. And this hydra activates them on my command. It also has a button to activate the package menu based on
-[[*Improve the built-in package menu][paradox]].
+There are many minor modes that I don't need to be active all the time. And this hydra activates them on my command.
 
 #+BEGIN_SRC emacs-lisp
 (defhydra sk/hydra-of-activate (:color blue
@@ -3769,7 +3770,7 @@ There are many minor modes that I don't need to be active all the time. And this
   ("w" wttrin)
   ("f" flyspell-mode)
   ("v" visual-line-mode)
-  ("p" paradox-list-packages)
+  ("p" list-packages)
   ("c" column-enforce-mode)
   ("y" yas-global-mode)
   ("a" company-mode)
@@ -4025,7 +4026,7 @@ pip3 install --user pygments
 ;; http://joat-programmer.blogspot.com/2013/07/org-mode-version-8-and-pdf-export-with.html
 ;; Include the latex-exporter
 ;; check whether org-mode 8.x is available
-(require 'ox-latex)
+;; (require 'ox-latex)
 ;; Add minted to the defaults packages to include when exporting.
 ;; (add-to-list 'org-latex-packages-alist '("" "minted"))
 ;; Tell the latex export to use the minted package for source
@@ -4040,8 +4041,8 @@ pip3 install --user pygments
         ("numbersep" "5pt")
         ("frame" "lines")
         ("framesep" "2mm")))
-;; (setq org-latex-pdf-process
-;;       '("xelatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
+(setq org-latex-pdf-process
+      '("xelatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
 #+END_SRC
 
 ** Tagging
@@ -4049,32 +4050,32 @@ pip3 install --user pygments
 Org mode has a [[http://orgmode.org/manual/Tags.html][tagging system]] that is very useful to organize the contents and notes. You can select the tags with a single letter (the letter after "?" in the following code).
 
 #+BEGIN_SRC emacs-lisp
-(setq org-tag-alist (quote (("article" . ?a) ;; temporary
-                            ("books" . ?b)
-                            ("courses" . ?c) ;; temporary
-                            ("code" . ?C)
-                            ("card" . ?d)
-                            ("drill" . ?D)
-                            ("errands" . ?e)
-                            ("films" . ?f)
-                            ("gubby" . ?g)
-                            ("home" . ?h)
-                            ("idea" . ?i)
-                            ("job" . ?j)
-                            ("ledger" . ?l)
-                            ("meeting" . ?m)
-                            ("note" . ?n)
-                            ("online" . ?o)
-                            ("personal" . ?p)
-                            ("project" . ?P)
+(setq org-tag-alist (quote (("article"   . ?a) ;; temporary
+                            ("books"     . ?b)
+                            ("courses"   . ?c) ;; temporary
+                            ("code"      . ?C)
+                            ("card"      . ?d)
+                            ("drill"     . ?D)
+                            ("errands"   . ?e)
+                            ("films"     . ?f)
+                            ("gubby"     . ?g)
+                            ("home"      . ?h)
+                            ("idea"      . ?i)
+                            ("job"       . ?j)
+                            ("ledger"    . ?l)
+                            ("meeting"   . ?m)
+                            ("note"      . ?n)
+                            ("online"    . ?o)
+                            ("personal"  . ?p)
+                            ("project"   . ?P)
                             ("reference" . ?r) ;; temporary
-                            ("reveal" . ?R)
-                            ("story" . ?s)
+                            ("reveal"    . ?R)
+                            ("story"     . ?s)
                             ("technical" . ?t)
-                            ("vague" . ?v)
-                            ("work" . ?w)
-                            ("noexport" . ?x)
-                            ("cash" . ?$))))
+                            ("vague"     . ?v)
+                            ("work"      . ?w)
+                            ("noexport"  . ?x)
+                            ("cash"      . ?$))))
 #+END_SRC
 
 ** Task management
@@ -4298,39 +4299,39 @@ Finally, we make sure we bind some keys and add some [[http://orgmode.org/manual
 #+BEGIN_SRC emacs-lisp
 (use-package org
   :ensure org
-  :bind* (("C-z o a" . org-agenda)
-          ("C-z o c" . org-capture)
-          ("C-z o i" . org-insert-link)
-          ("C-z o s" . org-store-link)
-          ("C-z o S" . org-list-make-subtree)
-          ("C-z o A" . org-archive-subtree)
-          ("C-z o g" . org-goto)
-          ("C-z o l" . org-toggle-latex-fragment)
-          ("C-z o L" . org-toggle-link-display)
-          ("C-z o I" . org-toggle-inline-images)
-          ("C-z o k" . org-cut-subtree)
-          ("C-z o V" . org-reveal)
-          ("C-z o R" . org-refile)
-          ("C-z o y" . org-copy-subtree)
-          ("C-z o h" . org-toggle-heading)
-          ("C-z o H" . org-insert-heading-respect-content)
-          ("C-z o e" . org-export-dispatch)
-          ("C-z o u" . org-update-dblock)
-          ("C-z o U" . org-update-all-dblocks)
-          ("C-z o O" . org-footnote)
-          ("C-z o ]" . org-narrow-to-subtree)
-          ("C-z o [" . widen)
-          ("C-z o N" . org-note)
-          ("C-z o E" . org-set-effort)
-          ("C-z o B" . org-table-blank-field)
-          ("C-z o <" . org-date-from-calendar)
-          ("C-z o >" . org-goto-calendar)
-          ("C-z o d" . org-todo)
-          ("C-z o t" . org-set-tags-command)
-          ("C-z o w" . org-edit-special)
-          ("C-z o q" . org-edit-src-exit)
-          ("C-z o z" . clone-indirect-buffer-other-window)
-          ("C-z a s" . org-mark-subtree)
+  :bind* (("C-z o a"   . org-agenda)
+          ("C-z o c"   . org-capture)
+          ("C-z o i"   . org-insert-link)
+          ("C-z o s"   . org-store-link)
+          ("C-z o S"   . org-list-make-subtree)
+          ("C-z o A"   . org-archive-subtree)
+          ("C-z o g"   . org-goto)
+          ("C-z o l"   . org-toggle-latex-fragment)
+          ("C-z o L"   . org-toggle-link-display)
+          ("C-z o I"   . org-toggle-inline-images)
+          ("C-z o k"   . org-cut-subtree)
+          ("C-z o V"   . org-reveal)
+          ("C-z o R"   . org-refile)
+          ("C-z o y"   . org-copy-subtree)
+          ("C-z o h"   . org-toggle-heading)
+          ("C-z o H"   . org-insert-heading-respect-content)
+          ("C-z o e"   . org-export-dispatch)
+          ("C-z o u"   . org-update-dblock)
+          ("C-z o U"   . org-update-all-dblocks)
+          ("C-z o O"   . org-footnote)
+          ("C-z o ]"   . org-narrow-to-subtree)
+          ("C-z o ["   . widen)
+          ("C-z o N"   . org-note)
+          ("C-z o E"   . org-set-effort)
+          ("C-z o B"   . org-table-blank-field)
+          ("C-z o <"   . org-date-from-calendar)
+          ("C-z o >"   . org-goto-calendar)
+          ("C-z o d"   . org-todo)
+          ("C-z o t"   . org-set-tags-command)
+          ("C-z o w"   . org-edit-special)
+          ("C-z o q"   . org-edit-src-exit)
+          ("C-z o z"   . clone-indirect-buffer-other-window)
+          ("C-z a s"   . org-mark-subtree)
           ("C-z o RET" . org-open-at-point))
   :config
   ;; More of those nice template expansion
@@ -4342,7 +4343,7 @@ Finally, we make sure we bind some keys and add some [[http://orgmode.org/manual
   (add-to-list 'org-structure-template-alist '("I" ":INTERLEAVE_PDF: ?"))
   (add-to-list 'org-structure-template-alist '("L" "#+BEGIN_LaTeX\n?\n#+END_LaTeX"))
   (add-to-list 'org-structure-template-alist '("M" "#+LATEX_HEADER: \\usepackage{minted}\n"))
-  (add-to-list 'org-structure-template-alist '("N" "#+BEGIN_NOTES\n?\n#+END_NOTES"))
+  (add-to-list 'org-structure-template-alist '("N" "#+NAME: ?"))
   (add-to-list 'org-structure-template-alist '("S" "#+SUBTITLE: ?"))
   (add-to-list 'org-structure-template-alist '("T" ":DRILL_CARD_TYPE: twosided"))
   (add-to-list 'org-structure-template-alist '("V" "#+BEGIN_VERSE\n?\n#+END_VERSE"))
@@ -4357,7 +4358,7 @@ Finally, we make sure we bind some keys and add some [[http://orgmode.org/manual
   (add-to-list 'org-structure-template-alist '("k" "#+KEYWORDS: ?"))
   (add-to-list 'org-structure-template-alist '("l" "#+LABEL: ?"))
   (add-to-list 'org-structure-template-alist '("m" "#+BEGIN_SRC matlab\n?\n#+END_SRC"))
-  (add-to-list 'org-structure-template-alist '("n" "#+NAME: ?"))
+  (add-to-list 'org-structure-template-alist '("n" "#+BEGIN_NOTES\n?\n#+END_NOTES"))
   (add-to-list 'org-structure-template-alist '("o" "#+OPTIONS: ?"))
   (add-to-list 'org-structure-template-alist '("p" "#+BEGIN_SRC python\n?\n#+END_SRC"))
   (add-to-list 'org-structure-template-alist '("q" "#+BEGIN_QUOTE\n?\n#+END_QUOTE"))
@@ -4377,39 +4378,39 @@ Finally, we make sure we bind some keys and add some [[http://orgmode.org/manual
 *** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "o a" "C-z o a")
-(modalka-define-kbd "o c" "C-z o c")
-(modalka-define-kbd "o i" "C-z o i")
-(modalka-define-kbd "o s" "C-z o s")
-(modalka-define-kbd "o S" "C-z o S")
-(modalka-define-kbd "o A" "C-z o A")
-(modalka-define-kbd "o g" "C-z o g")
-(modalka-define-kbd "o l" "C-z o l")
-(modalka-define-kbd "o L" "C-z o L")
-(modalka-define-kbd "o I" "C-z o I")
-(modalka-define-kbd "o k" "C-z o k")
-(modalka-define-kbd "o V" "C-z o V")
-(modalka-define-kbd "o R" "C-z o R")
-(modalka-define-kbd "o y" "C-z o y")
-(modalka-define-kbd "o h" "C-z o h")
-(modalka-define-kbd "o H" "C-z o H")
-(modalka-define-kbd "o e" "C-z o e")
-(modalka-define-kbd "o u" "C-z o u")
-(modalka-define-kbd "o U" "C-z o U")
-(modalka-define-kbd "o O" "C-z o O")
-(modalka-define-kbd "o ]" "C-z o ]")
-(modalka-define-kbd "o [" "C-z o [")
-(modalka-define-kbd "o N" "C-z o N")
-(modalka-define-kbd "o E" "C-z o E")
-(modalka-define-kbd "o B" "C-z o B")
-(modalka-define-kbd "o <" "C-z o <")
-(modalka-define-kbd "o >" "C-z o >")
-(modalka-define-kbd "o d" "C-z o d")
-(modalka-define-kbd "o t" "C-z o t")
-(modalka-define-kbd "o z" "C-z o z")
-(modalka-define-kbd "o w" "C-z o w")
-(modalka-define-kbd "o q" "C-z o q")
-(modalka-define-kbd "a s" "C-z a s")
+(modalka-define-kbd "o a"   "C-z o a")
+(modalka-define-kbd "o c"   "C-z o c")
+(modalka-define-kbd "o i"   "C-z o i")
+(modalka-define-kbd "o s"   "C-z o s")
+(modalka-define-kbd "o S"   "C-z o S")
+(modalka-define-kbd "o A"   "C-z o A")
+(modalka-define-kbd "o g"   "C-z o g")
+(modalka-define-kbd "o l"   "C-z o l")
+(modalka-define-kbd "o L"   "C-z o L")
+(modalka-define-kbd "o I"   "C-z o I")
+(modalka-define-kbd "o k"   "C-z o k")
+(modalka-define-kbd "o V"   "C-z o V")
+(modalka-define-kbd "o R"   "C-z o R")
+(modalka-define-kbd "o y"   "C-z o y")
+(modalka-define-kbd "o h"   "C-z o h")
+(modalka-define-kbd "o H"   "C-z o H")
+(modalka-define-kbd "o e"   "C-z o e")
+(modalka-define-kbd "o u"   "C-z o u")
+(modalka-define-kbd "o U"   "C-z o U")
+(modalka-define-kbd "o O"   "C-z o O")
+(modalka-define-kbd "o ]"   "C-z o ]")
+(modalka-define-kbd "o ["   "C-z o [")
+(modalka-define-kbd "o N"   "C-z o N")
+(modalka-define-kbd "o E"   "C-z o E")
+(modalka-define-kbd "o B"   "C-z o B")
+(modalka-define-kbd "o <"   "C-z o <")
+(modalka-define-kbd "o >"   "C-z o >")
+(modalka-define-kbd "o d"   "C-z o d")
+(modalka-define-kbd "o t"   "C-z o t")
+(modalka-define-kbd "o z"   "C-z o z")
+(modalka-define-kbd "o w"   "C-z o w")
+(modalka-define-kbd "o q"   "C-z o q")
+(modalka-define-kbd "a s"   "C-z a s")
 (modalka-define-kbd "o RET" "C-z o RET")
 #+END_SRC
 
@@ -4417,41 +4418,41 @@ Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "o" "org prefix"
-  "o a" "org agenda"
-  "o c" "org capture"
-  "o i" "org insert link"
-  "o s" "org store link"
-  "o S" "org subtree from list"
-  "o A" "org archive subtree"
-  "o g" "org goto"
-  "o l" "org latex preview"
-  "o L" "org toggle link display"
-  "o I" "org image preview"
-  "o k" "org kill subtree"
-  "o V" "org reveal"
-  "o R" "org refile"
-  "o y" "org copy subtree"
-  "o h" "org toggle heading"
-  "o H" "org insert heading"
-  "o e" "org export"
-  "o u" "org update current"
-  "o U" "org update all"
-  "o O" "org footnote"
-  "o ]" "org narrow subtree"
-  "o [" "org widen"
-  "o N" "org note"
-  "o F" "org attach"
-  "o E" "org set effort"
-  "o B" "org table blank field"
-  "o <" "org select from cal"
-  "o >" "org goto cal"
-  "o t" "org tag"
-  "o d" "org todo"
-  "o z" "split and clone"
-  "o w" "org special edit"
-  "o q" "org special edit quit"
-  "a s" "mark org subtree"
+  "o"     "org prefix"
+  "o a"   "org agenda"
+  "o c"   "org capture"
+  "o i"   "org insert link"
+  "o s"   "org store link"
+  "o S"   "org subtree from list"
+  "o A"   "org archive subtree"
+  "o g"   "org goto"
+  "o l"   "org latex preview"
+  "o L"   "org toggle link display"
+  "o I"   "org image preview"
+  "o k"   "org kill subtree"
+  "o V"   "org reveal"
+  "o R"   "org refile"
+  "o y"   "org copy subtree"
+  "o h"   "org toggle heading"
+  "o H"   "org insert heading"
+  "o e"   "org export"
+  "o u"   "org update current"
+  "o U"   "org update all"
+  "o O"   "org footnote"
+  "o ]"   "org narrow subtree"
+  "o ["   "org widen"
+  "o N"   "org note"
+  "o F"   "org attach"
+  "o E"   "org set effort"
+  "o B"   "org table blank field"
+  "o <"   "org select from cal"
+  "o >"   "org goto cal"
+  "o t"   "org tag"
+  "o d"   "org todo"
+  "o z"   "split and clone"
+  "o w"   "org special edit"
+  "o q"   "org special edit quit"
+  "a s"   "mark org subtree"
   "o RET" "org open link")
 #+END_SRC
 
@@ -4682,7 +4683,7 @@ Org mode and packages take a while to load. This command, when invoked, loads a 
      (latex . t)
      ;; (gnuplot . t)
      (sh . t)
-     (js. t)
+     (js . t)
      ;; (C . t)
      (ledger . t)
      ;; (R . t)
@@ -5175,12 +5176,12 @@ Then, we have the actual hydra.
 (defhydra sk/hydra-org-template (:color blue
                                  :hint nil)
   "
- ^One liners^                                        ^Blocks^                                        ^Properties^
+ ^One liners^                                        ^Blocks^                                      ^Properties^
 --------------------------------------------------------------------------------------------------------------------------------------------------------
- _a_: author        _i_: interleave  _D_: description    _C_: center      _p_: python src    _d_: defaults   _r_: properties        _<_: insert '<'
- _A_: date          _l_: label       _S_: subtitle       _e_: elisp src   _Q_: quote         _L_: latex      _I_: interleave        _q_: quit
- _c_: caption       _n_: name        _k_: keywords       _E_: example     _s_: src           _x_: export     _T_: drill two-sided
- _f_: filetags      _o_: options     _M_: minted         _h_: html        _v_: verbatim      _X_: noexport
+ _a_: author        _i_: interleave  _D_: description    _C_: center      _p_: python src    _n_: notes    _d_: defaults   _r_: properties        _<_: insert '<'
+ _A_: date          _l_: label       _S_: subtitle       _e_: elisp src   _Q_: quote                     _L_: latex      _I_: interleave        _q_: quit
+ _c_: caption       _N_: name        _k_: keywords       _E_: example     _s_: src                       _x_: export     _T_: drill two-sided
+ _f_: filetags      _o_: options     _M_: minted         _h_: html        _v_: verbatim                  _X_: noexport
  _H_: latex header  _t_: title                         _m_: matlab src  _V_: verse
  "
   ("a" (hot-expand "<a"))
@@ -5192,6 +5193,7 @@ Then, we have the actual hydra.
   ("I" (hot-expand "<I"))
   ("l" (hot-expand "<l"))
   ("n" (hot-expand "<n"))
+  ("N" (hot-expand "<N"))
   ("o" (hot-expand "<o"))
   ("t" (hot-expand "<t"))
   ("C" (hot-expand "<C"))
@@ -5379,14 +5381,14 @@ Which key modal explanation
 (use-package magit
   :ensure t
   :bind* (("C-z SPC e" . magit-status)
-          ("C-z g b" . magit-blame)))
+          ("C-z g b"   . magit-blame)))
 #+END_SRC
 
 *** Modal binding
 
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "SPC e" "C-z SPC e")
-(modalka-define-kbd "g b" "C-z g b")
+(modalka-define-kbd "g b"   "C-z g b")
 #+END_SRC
 
 Which key modal explanation
@@ -5394,7 +5396,7 @@ Which key modal explanation
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
   "SPC e" "explore git"
-  "g b" "git blame")
+  "g b"   "git blame")
 #+END_SRC
 
 ** Highlight diffs
@@ -5983,10 +5985,23 @@ I haven't used [[https://www.nginx.com][nginx]] much but useful to have it.
 [[https://github.com/skeeto/skewer-mode][Skewer]] is a JS REPL for JavaScript evaluation.
 
 #+BEGIN_SRC emacs-lisp
-(use-package skewer-mode
-  :ensure t
-  :diminish skewer-mode
-)
+  (use-package skewer-mode
+    :ensure t
+    :diminish skewer-mode
+    :commands (skewer-mode
+               skewer-html-mode
+               skewer-css-mode
+               run-skewer
+               skewer-repl
+               list-skewer-clients
+               skewer-eval-defun
+               skewer-eval-last-expression
+               skewer-eval-print-last-expression
+               skewer-load-buffer
+               skewer-bower-load
+               skewer-bower-refresh
+               skewer-run-phantomjs
+               skewer-phantomjs-kill))
 #+END_SRC
 
 *** Node JS REPL
@@ -6048,8 +6063,8 @@ I'm not sure how useful [[https://github.com/yasuyk/web-beautify][this]] is but 
   :ensure t
   :diminish flycheck-mode
   :defer 2
-  :bind* (("C-z ] l" . flycheck-next-error)
-          ("C-z [ l" . flycheck-previous-error)
+  :bind* (("C-z ] l"   . flycheck-next-error)
+          ("C-z [ l"   . flycheck-previous-error)
           ("C-z SPC l" . flycheck-list-errors))
   :config
   (global-flycheck-mode))
@@ -6058,8 +6073,8 @@ I'm not sure how useful [[https://github.com/yasuyk/web-beautify][this]] is but 
 *** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "] l" "C-z ] l")
-(modalka-define-kbd "[ l" "C-z [ l")
+(modalka-define-kbd "] l"   "C-z ] l")
+(modalka-define-kbd "[ l"   "C-z [ l")
 (modalka-define-kbd "SPC l" "C-z SPC l")
 #+END_SRC
 
@@ -6067,8 +6082,8 @@ Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "] l" "next error"
-  "[ l" "previous error"
+  "] l"   "next error"
+  "[ l"   "previous error"
   "SPC l" "list errors")
 #+END_SRC
 
@@ -6107,12 +6122,12 @@ Which key modal explanation
          ("C-c a" . company-dabbrev)
          ("C-c d" . company-ispell)
          :map company-active-map
-              ("C-n" . company-select-next)
-              ("C-p" . company-select-previous)
+              ("C-n"    . company-select-next)
+              ("C-p"    . company-select-previous)
               ([return] . company-complete-selection)
-              ("C-w" . backward-kill-word)
-              ("C-c" . company-abort)
-              ("C-c" . company-search-abort))
+              ("C-w"    . backward-kill-word)
+              ("C-c"    . company-abort)
+              ("C-c"    . company-search-abort))
   :diminish (company-mode . "ς")
   :config
   (global-company-mode)
@@ -6877,13 +6892,13 @@ For now, I have made it look and act the way I want it too. The additional packa
   :ensure t
   :demand t
   :diminish helm-mode
-  :bind (("M-x" . helm-M-x)
-         ("M-y" . helm-show-kill-ring)
+  :bind (("M-x"     . helm-M-x)
+         ("M-y"     . helm-show-kill-ring)
          ("C-x C-f" . helm-find-files)
-         ("C-x 8" . helm-ucs))
+         ("C-x 8"   . helm-ucs))
   :bind* (("C-z SPC h r" . helm-resume)
-          ("C-z SPC r" . helm-recentf)
-          ("C-z SPC x" . helm-apropos)
+          ("C-z SPC r"   . helm-recentf)
+          ("C-z SPC x"   . helm-apropos)
           ("C-z SPC h c" . helm-colors)
           ("C-z SPC h R" . helm-regexp)
           ("C-z SPC h u" . helm-surfraw)
@@ -6895,38 +6910,38 @@ For now, I have made it look and act the way I want it too. The additional packa
           ("C-z SPC h d" . helm-man-woman)
           ("C-z SPC h h" . helm-documentation)
           ("C-z SPC h e" . helm-run-external-command)
-          ("C-z ;" . helm-all-mark-rings)
+          ("C-z ;"       . helm-all-mark-rings)
           ("C-z SPC h x" . helm-select-xfont)
-          ("C-z SPC i" . helm-locate)
-          ("C-z t" . helm-semantic-or-imenu))
+          ("C-z SPC i"   . helm-locate)
+          ("C-z t"       . helm-semantic-or-imenu))
   :bind (:map helm-map
-              ("<return>" . helm-maybe-exit-minibuffer)
-              ("RET" . helm-maybe-exit-minibuffer)
-              ("<tab>" . helm-select-action)
-              ("C-i" . helm-select-action)
+              ("<return>"   . helm-maybe-exit-minibuffer)
+              ("RET"        . helm-maybe-exit-minibuffer)
+              ("<tab>"      . helm-select-action)
+              ("C-i"        . helm-select-action)
               ("S-<return>" . helm-maybe-exit-minibuffer)
-              ("S-RET" . helm-maybe-exit-minibuffer)
-              ("C-S-m" . helm-maybe-exit-minibuffer))
+              ("S-RET"      . helm-maybe-exit-minibuffer)
+              ("C-S-m"      . helm-maybe-exit-minibuffer))
   :bind (:map helm-find-files-map
-              ("<return>" . helm-execute-persistent-action)
-              ("RET" . helm-execute-persistent-action)
+              ("<return>"    . helm-execute-persistent-action)
+              ("RET"         . helm-execute-persistent-action)
               ("<backspace>" . dwim-helm-find-files-up-one-level-maybe)
-              ("DEL" . dwim-helm-find-files-up-one-level-maybe)
-              ("<tab>" . helm-select-action)
-              ("C-i" . helm-select-action)
-              ("S-<return>" . helm-maybe-exit-minibuffer)
-              ("S-RET" . helm-maybe-exit-minibuffer)
-              ("C-S-m" . helm-maybe-exit-minibuffer))
+              ("DEL"         . dwim-helm-find-files-up-one-level-maybe)
+              ("<tab>"       . helm-select-action)
+              ("C-i"         . helm-select-action)
+              ("S-<return>"  . helm-maybe-exit-minibuffer)
+              ("S-RET"       . helm-maybe-exit-minibuffer)
+              ("C-S-m"       . helm-maybe-exit-minibuffer))
   :bind (:map helm-read-file-map
-              ("<return>" . helm-execute-persistent-action)
-              ("RET" . helm-execute-persistent-action)
+              ("<return>"    . helm-execute-persistent-action)
+              ("RET"         . helm-execute-persistent-action)
               ("<backspace>" . dwim-helm-find-files-up-one-level-maybe)
-              ("DEL" . dwim-helm-find-files-up-one-level-maybe)
-              ("<tab>" . helm-select-action)
-              ("C-i" . helm-select-action)
-              ("S-<return>" . helm-maybe-exit-minibuffer)
-              ("S-RET" . helm-maybe-exit-minibuffer)
-              ("C-S-m" . helm-maybe-exit-minibuffer))
+              ("DEL"         . dwim-helm-find-files-up-one-level-maybe)
+              ("<tab>"       . helm-select-action)
+              ("C-i"         . helm-select-action)
+              ("S-<return>"  . helm-maybe-exit-minibuffer)
+              ("S-RET"       . helm-maybe-exit-minibuffer)
+              ("C-S-m"       . helm-maybe-exit-minibuffer))
   :commands (helm-mode
              helm-M-x
              helm-smex
@@ -7060,9 +7075,9 @@ For now, I have made it look and act the way I want it too. The additional packa
 
   ;; better smex integration
   (use-package helm-smex
-      :ensure t
-      :bind* (("M-x" . helm-smex)
-              ("M-X" . helm-smex-major-mode-commands)))
+    :ensure t
+    :bind* (("M-x" . helm-smex)
+            ("M-X" . helm-smex-major-mode-commands)))
 
   ;; Make helm fuzzier
   (use-package helm-fuzzier
@@ -7095,7 +7110,7 @@ For now, I have made it look and act the way I want it too. The additional packa
   (use-package helm-swoop
     :ensure t
     :bind (("C-s" . helm-swoop-without-pre-input))
-    :bind* (("C-z #" . helm-swoop)
+    :bind* (("C-z #"   . helm-swoop)
             ("C-z g E" . helm-multi-swoop-all))
     :init
     (setq helm-swoop-split-with-multiple-windows nil
@@ -7145,10 +7160,15 @@ For now, I have made it look and act the way I want it too. The additional packa
   (use-package helm-c-yasnippet
     :ensure t
     :bind (("C-o" . helm-yas-complete))
-    :bind* (("C-," . helm-yas-create-snippet-on-region)
+    :bind* (("C-,"        . helm-yas-create-snippet-on-region)
             ("C-<escape>" . helm-yas-visit-snippet-file)))
 
-  ;; Helm integration with ispell
+  ;; Helm integration with company
+  (use-package helm-company
+    :ensure t
+    :bind (("C-t" . helm-company)))
+
+  ;; Helm integration with make
   (use-package helm-make
     :ensure t
     :init
@@ -7199,20 +7219,20 @@ Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "t" "tags/func in buffer"
-  "#" "swoop at point"
-  ";" "previous edit points"
-  "g E" "extract word from buffers"
-  "g s" "search project"
-  "g e" "extract word from dir"
-  "SPC r" "recent files"
-  "SPC i" "spotlight"
-  "SPC t" "helm edit mode"
-  "SPC g" "helm follow"
-  "SPC b" "bibliography"
-  "SPC x" "helm apropos"
-  "SPC J" "helm major mode cmds"
-  "SPC h" "helm prefix"
+  "t"       "tags/func in buffer"
+  "#"       "swoop at point"
+  ";"       "previous edit points"
+  "g E"     "extract word from buffers"
+  "g s"     "search project"
+  "g e"     "extract word from dir"
+  "SPC r"   "recent files"
+  "SPC i"   "spotlight"
+  "SPC t"   "helm edit mode"
+  "SPC g"   "helm follow"
+  "SPC b"   "bibliography"
+  "SPC x"   "helm apropos"
+  "SPC J"   "helm major mode cmds"
+  "SPC h"   "helm prefix"
   "SPC h r" "resume last helm "
   "SPC h w" "AWS instances"
   "SPC h i" "information at point"

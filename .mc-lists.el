@@ -20,7 +20,10 @@
 (setq mc/cmds-to-run-once
       '(
 	beginning-of-buffer
+	dired-unmark-backward
 	end-of-buffer
+	helm-smex
+	helm-yas-complete
 	iedit-mode
 	mc/vertical-align-with-space
 	modalka-mode
@@ -36,5 +39,6 @@
 	sk/hydra-multiple-cursors/mc/skip-to-previous-like-this
 	sk/hydra-multiple-cursors/mc/unmark-previous-like-this
 	sk/hydra-multiple-cursors/nil
+	sk/hydra-of-activate/column-enforce-mode-and-exit
 	sk/hydra-of-activate/smartparens-strict-mode-and-exit
 	))

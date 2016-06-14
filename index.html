@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2016-06-12 Sun 01:53 -->
+<!-- 2016-06-14 Tue 18:39 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>Emacs configuration file</title>
@@ -94,6 +94,7 @@
     { background-color: #ffff00; color: #000000; font-weight: bold; }
   /*]]>*/-->
 </style>
+<link rel="stylesheet" type="text/css" href="org.css"/>
 <script type="text/javascript">
 /*
 @licstart  The following is the entire license notice for the
@@ -220,14 +221,7 @@ for the JavaScript code in this tag.
 <li><a href="#orgheadline45">Use package macro</a>
 <ul>
 <li><a href="#orgheadline46"><code>dired</code></a></li>
-<li><a href="#orgheadline47">Diminish minor modes from the mode line</a>
-<ul>
-<li><a href="#orgheadline48">Diminish <code>org-indent</code> mode</a></li>
-<li><a href="#orgheadline49">Diminish <code>auto-revert</code> mode</a></li>
-<li><a href="#orgheadline50">Diminish <code>eldoc</code> mode</a></li>
-<li><a href="#orgheadline51">Diminish <code>subword</code> mode</a></li>
-</ul>
-</li>
+<li><a href="#orgheadline47">Diminish minor modes from the mode line</a></li>
 <li><a href="#orgheadline52">Manage the built-in flyspell mode</a></li>
 <li><a href="#orgheadline53">Manage the built-in browser <code>eww</code></a></li>
 <li><a href="#orgheadline54">Add a package to set the correct path</a></li>
@@ -245,12 +239,7 @@ for the JavaScript code in this tag.
 </li>
 <li><a href="#orgheadline1">Modal states</a>
 <ul>
-<li><a href="#orgheadline63">Modalka mode</a>
-<ul>
-<li><a href="#orgheadline65">Default modal keybindings</a></li>
-<li><a href="#orgheadline64">Which key explanations for everything</a></li>
-</ul>
-</li>
+<li><a href="#orgheadline63">Modalka mode</a></li>
 <li><a href="#orgheadline82">Hydras</a></li>
 </ul>
 </li>
@@ -258,66 +247,18 @@ for the JavaScript code in this tag.
 <ul>
 <li><a href="#orgheadline85">Flx</a></li>
 <li><a href="#orgheadline86">Smex</a></li>
-<li><a href="#orgheadline87">Beacon mode</a>
-<ul>
-<li><a href="#orgheadline88">Modal binding</a></li>
-</ul>
-</li>
-<li><a href="#orgheadline89">Undo tree</a>
-<ul>
-<li><a href="#orgheadline90">Modal binding</a></li>
-</ul>
-</li>
-<li><a href="#orgheadline91">Goto the last change</a>
-<ul>
-<li><a href="#orgheadline92">Modal binding</a></li>
-</ul>
-</li>
-<li><a href="#orgheadline93">Avy</a>
-<ul>
-<li><a href="#orgheadline94">Modal binding</a></li>
-</ul>
-</li>
-<li><a href="#orgheadline95">Highlight symbol</a>
-<ul>
-<li><a href="#orgheadline96">Modal binding</a></li>
-</ul>
-</li>
-<li><a href="#orgheadline97">Projectile</a>
-<ul>
-<li><a href="#orgheadline98">Modal binding</a></li>
-</ul>
-</li>
-<li><a href="#orgheadline99">Ztree</a>
-<ul>
-<li><a href="#orgheadline100">Modal binding</a></li>
-</ul>
-</li>
-<li><a href="#orgheadline101">Neotree</a>
-<ul>
-<li><a href="#orgheadline102">Modal binding</a></li>
-</ul>
-</li>
-<li><a href="#orgheadline103">Tags based navigation</a>
-<ul>
-<li><a href="#orgheadline104">Modal binding</a></li>
-</ul>
-</li>
-<li><a href="#orgheadline105">Dumb jump</a>
-<ul>
-<li><a href="#orgheadline106">Modal binding</a></li>
-</ul>
-</li>
-<li><a href="#orgheadline107">Perspective</a>
-<ul>
-<li><a href="#orgheadline108">Modal binding</a></li>
-</ul>
-</li>
-<li><a href="#orgheadline109">Code documentation</a>
-<ul>
-<li><a href="#orgheadline110">Modal binding</a></li>
-</ul>
-</li>
+<li><a href="#orgheadline87">Beacon mode</a></li>
+<li><a href="#orgheadline89">Undo tree</a></li>
+<li><a href="#orgheadline91">Goto the last change</a></li>
+<li><a href="#orgheadline93">Avy</a></li>
+<li><a href="#orgheadline95">Highlight symbol</a></li>
+<li><a href="#orgheadline97">Projectile</a></li>
+<li><a href="#orgheadline99">Ztree</a></li>
+<li><a href="#orgheadline101">Neotree</a></li>
+<li><a href="#orgheadline103">Tags based navigation</a></li>
+<li><a href="#orgheadline105">Dumb jump</a></li>
+<li><a href="#orgheadline107">Perspective</a></li>
+<li><a href="#orgheadline109">Code documentation</a></li>
 <li><a href="#orgheadline137">Custom functions</a>
 <ul>
 <li><a href="#orgheadline111">Open the <code>config.org</code> file</a></li>
@@ -342,48 +283,19 @@ for the JavaScript code in this tag.
 </li>
 <li><a href="#orgheadline144">Editing</a>
 <ul>
-<li><a href="#orgheadline145">Expand region</a>
-<ul>
-<li><a href="#orgheadline146">Modal binding</a></li>
-</ul>
-</li>
-<li><a href="#orgheadline147">Commenting</a>
-<ul>
-<li><a href="#orgheadline148">Modal binding</a></li>
-</ul>
-</li>
-<li><a href="#orgheadline149">Smartparens</a>
-<ul>
-<li><a href="#orgheadline150">Modal binding</a></li>
-</ul>
-</li>
-<li><a href="#orgheadline152">Interactive edit</a>
-<ul>
-<li><a href="#orgheadline153">Modal binding</a></li>
-</ul>
-</li>
+<li><a href="#orgheadline145">Expand region</a></li>
+<li><a href="#orgheadline147">Commenting</a></li>
+<li><a href="#orgheadline149">Smartparens</a></li>
+<li><a href="#orgheadline152">Interactive edit</a></li>
 <li><a href="#orgheadline151">Multiple cursors</a>
 <ul>
 <li><a href="#orgheadline154">Region bindings mode</a></li>
-<li><a href="#orgheadline155">Modal binding</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline156">Shrink white space</a>
-<ul>
-<li><a href="#orgheadline157">Modal binding</a></li>
-</ul>
-</li>
-<li><a href="#orgheadline158">Visual replace</a>
-<ul>
-<li><a href="#orgheadline159">Modal binding</a></li>
-</ul>
-</li>
+<li><a href="#orgheadline156">Shrink white space</a></li>
+<li><a href="#orgheadline158">Visual replace</a></li>
 <li><a href="#orgheadline160">Snippets</a></li>
-<li><a href="#orgheadline161">Cycle quotes</a>
-<ul>
-<li><a href="#orgheadline162">Modal binding</a></li>
-</ul>
-</li>
+<li><a href="#orgheadline161">Cycle quotes</a></li>
 <li><a href="#orgheadline223">Custom functions</a>
 <ul>
 <li><a href="#orgheadline163">Kill region or backward word</a></li>
@@ -424,11 +336,7 @@ for the JavaScript code in this tag.
 <li><a href="#orgheadline239">Visual</a>
 <ul>
 <li><a href="#orgheadline240">Volatile highlights</a></li>
-<li><a href="#orgheadline241">Highlight thing at point</a>
-<ul>
-<li><a href="#orgheadline242">Modal binding</a></li>
-</ul>
-</li>
+<li><a href="#orgheadline241">Highlight thing at point</a></li>
 <li><a href="#orgheadline243">Column enforce mode</a></li>
 <li><a href="#orgheadline244">Highlight indentation</a></li>
 <li><a href="#orgheadline245">Fill column indicator</a></li>
@@ -437,11 +345,7 @@ for the JavaScript code in this tag.
 <li><a href="#orgheadline248">Color themes</a></li>
 <li><a href="#orgheadline249">Mode line</a></li>
 <li><a href="#orgheadline250">Fancy battery status</a></li>
-<li><a href="#orgheadline251">Origami - folding based on indentation/syntax</a>
-<ul>
-<li><a href="#orgheadline252">Modal binding</a></li>
-</ul>
-</li>
+<li><a href="#orgheadline251">Origami - folding based on indentation/syntax</a></li>
 <li><a href="#orgheadline253">Vimish fold - Fold regions based on selection</a></li>
 <li><a href="#orgheadline260">Hydras</a>
 <ul>
@@ -456,11 +360,7 @@ for the JavaScript code in this tag.
 <li><a href="#orgheadline261">Markdown and Pandoc support</a></li>
 <li><a href="#orgheadline262">\LaTeX support</a></li>
 <li><a href="#orgheadline263">Pick out passive voice and weasel words</a></li>
-<li><a href="#orgheadline264">Distraction free mode</a>
-<ul>
-<li><a href="#orgheadline265">Modal binding</a></li>
-</ul>
-</li>
+<li><a href="#orgheadline264">Distraction free mode</a></li>
 <li><a href="#orgheadline267">Custom functions</a>
 <ul>
 <li><a href="#orgheadline266">Hard line wrap</a></li>
@@ -485,190 +385,137 @@ for the JavaScript code in this tag.
 <li><a href="#orgheadline278">Task management</a></li>
 <li><a href="#orgheadline279">Agenda</a></li>
 <li><a href="#orgheadline280">Capture</a></li>
-<li><a href="#orgheadline281">Setup org</a>
-<ul>
-<li><a href="#orgheadline282">Which key binding explanation</a></li>
-<li><a href="#orgheadline283">Modal binding</a></li>
-</ul>
-</li>
+<li><a href="#orgheadline281">Setup org</a></li>
 <li><a href="#orgheadline9">Org contributed packages</a></li>
 <li><a href="#orgheadline10">Org babel</a></li>
-<li><a href="#orgheadline284">Deft</a>
-<ul>
-<li><a href="#orgheadline285">Key binding</a></li>
-</ul>
-</li>
-<li><a href="#orgheadline287">Interleave</a>
-<ul>
-<li><a href="#orgheadline288">Modal binding</a></li>
-</ul>
-</li>
+<li><a href="#orgheadline284">Deft</a></li>
+<li><a href="#orgheadline287">Interleave</a></li>
 <li><a href="#orgheadline290">Org extra exports</a></li>
 <li><a href="#orgheadline291">Org download</a></li>
 <li><a href="#orgheadline292">Org bullets</a></li>
 <li><a href="#orgheadline293">Org reference</a></li>
-<li><a href="#orgheadline289">Functions</a>
+<li><a href="#orgheadline298">Custom functions</a>
 <ul>
 <li><a href="#orgheadline294">Load extra org goodies</a></li>
 <li><a href="#orgheadline295">Select inside the subtree</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline298">Hydras</a>
+<li><a href="#orgheadline299">Hydras</a>
 <ul>
-<li><a href="#orgheadline299">Organize trees</a></li>
-<li><a href="#orgheadline302">Hydra for task management</a></li>
-<li><a href="#orgheadline305">Check boxes</a></li>
-<li><a href="#orgheadline308">Properties</a></li>
-<li><a href="#orgheadline311">Clocking functionality</a></li>
-<li><a href="#orgheadline314">Table manipulation</a></li>
-<li><a href="#orgheadline317">Jump</a></li>
-<li><a href="#orgheadline320">Agenda view</a></li>
-<li><a href="#orgheadline323">Org drill</a></li>
-<li><a href="#orgheadline326">Template expansion</a></li>
-<li><a href="#orgheadline328">Org ref</a></li>
+<li><a href="#orgheadline300">Organize trees</a></li>
+<li><a href="#orgheadline303">Hydra for task management</a></li>
+<li><a href="#orgheadline306">Check boxes</a></li>
+<li><a href="#orgheadline309">Properties</a></li>
+<li><a href="#orgheadline312">Clocking functionality</a></li>
+<li><a href="#orgheadline315">Table manipulation</a></li>
+<li><a href="#orgheadline318">Jump</a></li>
+<li><a href="#orgheadline321">Agenda view</a></li>
+<li><a href="#orgheadline324">Org drill</a></li>
+<li><a href="#orgheadline327">Template expansion</a></li>
+<li><a href="#orgheadline329">Org ref</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#orgheadline341">Version control</a>
+<li><a href="#orgheadline342">Version control</a>
 <ul>
-<li><a href="#orgheadline331">Magit</a>
-<ul>
-<li><a href="#orgheadline332">Modal binding</a></li>
+<li><a href="#orgheadline332">Magit</a></li>
+<li><a href="#orgheadline334">Highlight diffs</a></li>
+<li><a href="#orgheadline336">Git time machine</a></li>
+<li><a href="#orgheadline338">Gists</a></li>
+<li><a href="#orgheadline340">Browse remote files</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline333">Highlight diffs</a>
+<li><a href="#orgheadline421">Programming</a>
 <ul>
-<li><a href="#orgheadline334">Modal binding</a></li>
+<li><a href="#orgheadline343">Editorconfig</a></li>
+<li><a href="#orgheadline344">YAML mode</a></li>
+<li><a href="#orgheadline345">Start services</a></li>
+<li><a href="#orgheadline354">Information/documentation at point</a></li>
+<li><a href="#orgheadline356">Source/symbol at point</a></li>
+<li><a href="#orgheadline355">Emacs Lisp</a>
+<ul>
+<li><a href="#orgheadline357">Macro step</a></li>
+<li><a href="#orgheadline358">Auto compile</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline335">Git time machine</a>
+<li><a href="#orgheadline348">C/C++</a>
 <ul>
-<li><a href="#orgheadline336">Modal binding</a></li>
-</ul>
-</li>
-<li><a href="#orgheadline337">Gists</a>
-<ul>
-<li><a href="#orgheadline338">Modal binding</a></li>
-</ul>
-</li>
-<li><a href="#orgheadline339">Browse remote files</a>
-<ul>
-<li><a href="#orgheadline340">Modal binding</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a href="#orgheadline420">Programming</a>
-<ul>
-<li><a href="#orgheadline342">Editorconfig</a></li>
-<li><a href="#orgheadline343">YAML mode</a></li>
-<li><a href="#orgheadline344">Start services</a>
-<ul>
-<li><a href="#orgheadline345">Modal binding</a></li>
-</ul>
-</li>
-<li><a href="#orgheadline353">Information/documentation at point</a></li>
-<li><a href="#orgheadline355">Source/symbol at point</a></li>
-<li><a href="#orgheadline354">Emacs Lisp</a>
-<ul>
-<li><a href="#orgheadline356">Macro step</a></li>
-<li><a href="#orgheadline357">Auto compile</a></li>
-</ul>
-</li>
-<li><a href="#orgheadline347">C/C++</a>
-<ul>
-<li><a href="#orgheadline359">Consider header files to be C++</a></li>
 <li><a href="#orgheadline360">Consider header files to be C++</a></li>
-<li><a href="#orgheadline361">Compile commands</a></li>
-<li><a href="#orgheadline358">Rtags</a></li>
-<li><a href="#orgheadline362">Cmake IDE</a></li>
+<li><a href="#orgheadline361">Consider header files to be C++</a></li>
+<li><a href="#orgheadline362">Compile commands</a></li>
+<li><a href="#orgheadline359">Rtags</a></li>
+<li><a href="#orgheadline363">Cmake IDE</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline348">Python</a>
+<li><a href="#orgheadline349">Python</a>
 <ul>
-<li><a href="#orgheadline363">Anaconda mode</a></li>
-<li><a href="#orgheadline364">Virtual environment support</a></li>
-<li><a href="#orgheadline365">Python formatting</a></li>
-<li><a href="#orgheadline366">Testing</a></li>
+<li><a href="#orgheadline364">Anaconda mode</a></li>
+<li><a href="#orgheadline365">Virtual environment support</a></li>
+<li><a href="#orgheadline366">Python formatting</a></li>
+<li><a href="#orgheadline367">Testing</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline349">Statistics</a></li>
-<li><a href="#orgheadline350">MATLAB</a></li>
-<li><a href="#orgheadline351">Web</a>
+<li><a href="#orgheadline350">Statistics</a></li>
+<li><a href="#orgheadline351">MATLAB</a></li>
+<li><a href="#orgheadline352">Web</a>
 <ul>
-<li><a href="#orgheadline368">Web mode</a></li>
-<li><a href="#orgheadline369">JavaScript syntax highlighting</a></li>
-<li><a href="#orgheadline370">Coffeescript syntax highlighting</a></li>
-<li><a href="#orgheadline371">SCSS syntax highlighting</a></li>
-<li><a href="#orgheadline372">JSON mode</a></li>
-<li><a href="#orgheadline373">Nginx syntax highlighting</a></li>
-<li><a href="#orgheadline374">Write fast HTML</a></li>
-<li><a href="#orgheadline375">Render HTML pages real time</a></li>
-<li><a href="#orgheadline367">JavaScript navigation</a></li>
-<li><a href="#orgheadline376">Skewer JS REPL</a></li>
-<li><a href="#orgheadline377">Node JS REPL</a></li>
-<li><a href="#orgheadline378">Snatch JSON</a></li>
-<li><a href="#orgheadline379">Beautify</a></li>
+<li><a href="#orgheadline369">Web mode</a></li>
+<li><a href="#orgheadline370">JavaScript syntax highlighting</a></li>
+<li><a href="#orgheadline371">Coffeescript syntax highlighting</a></li>
+<li><a href="#orgheadline372">SCSS syntax highlighting</a></li>
+<li><a href="#orgheadline373">JSON mode</a></li>
+<li><a href="#orgheadline374">Nginx syntax highlighting</a></li>
+<li><a href="#orgheadline375">Write fast HTML</a></li>
+<li><a href="#orgheadline376">Render HTML pages real time</a></li>
+<li><a href="#orgheadline368">JavaScript navigation</a></li>
+<li><a href="#orgheadline377">Skewer JS REPL</a></li>
+<li><a href="#orgheadline378">Node JS REPL</a></li>
+<li><a href="#orgheadline379">Snatch JSON</a></li>
+<li><a href="#orgheadline380">Beautify</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline380">Error checking</a>
+<li><a href="#orgheadline381">Error checking</a></li>
+<li><a href="#orgheadline353">Auto completion</a></li>
+<li><a href="#orgheadline383">REPL</a>
 <ul>
-<li><a href="#orgheadline381">Modal binding</a></li>
+<li><a href="#orgheadline384">Eshell</a></li>
+<li><a href="#orgheadline387">Multi term</a></li>
+<li><a href="#orgheadline390">Interacting with Tmux</a></li>
+<li><a href="#orgheadline391">Compilation buffer</a></li>
+<li><a href="#orgheadline392">Quickrun</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline352">Auto completion</a></li>
-<li><a href="#orgheadline382">REPL</a>
+<li><a href="#orgheadline393">Debugging</a></li>
+<li><a href="#orgheadline420">Hydras</a>
 <ul>
-<li><a href="#orgheadline383">Eshell</a></li>
-<li><a href="#orgheadline386">Multi term</a></li>
-<li><a href="#orgheadline389">Interacting with Tmux</a></li>
-<li><a href="#orgheadline390">Compilation buffer</a></li>
-<li><a href="#orgheadline391">Quickrun</a></li>
-</ul>
-</li>
-<li><a href="#orgheadline392">Debugging</a></li>
-<li><a href="#orgheadline419">Hydras</a>
-<ul>
-<li><a href="#orgheadline393">Tmux integration</a></li>
-<li><a href="#orgheadline346">Emacs lisp</a></li>
-<li><a href="#orgheadline398">C/C++</a></li>
-<li><a href="#orgheadline401">Python</a></li>
-<li><a href="#orgheadline404">Statistics</a></li>
-<li><a href="#orgheadline407">MATLAB</a></li>
-<li><a href="#orgheadline410">Web</a></li>
-<li><a href="#orgheadline413">Quickrun</a></li>
-<li><a href="#orgheadline416">Debugging</a></li>
+<li><a href="#orgheadline394">Tmux integration</a></li>
+<li><a href="#orgheadline347">Emacs lisp</a></li>
+<li><a href="#orgheadline399">C/C++</a></li>
+<li><a href="#orgheadline402">Python</a></li>
+<li><a href="#orgheadline405">Statistics</a></li>
+<li><a href="#orgheadline408">MATLAB</a></li>
+<li><a href="#orgheadline411">Web</a></li>
+<li><a href="#orgheadline414">Quickrun</a></li>
+<li><a href="#orgheadline417">Debugging</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#orgheadline84">Helm</a>
+<li><a href="#orgheadline84">Helm</a></li>
+<li><a href="#orgheadline423">Fun</a>
 <ul>
-<li><a href="#orgheadline421">Modal binding</a></li>
-</ul>
-</li>
-<li><a href="#orgheadline422">Fun</a>
+<li><a href="#orgheadline424">Weather</a></li>
+<li><a href="#orgheadline425">How do I do something?</a></li>
+<li><a href="#orgheadline427">XKCD</a></li>
+<li><a href="#orgheadline429">Keep track of accounts</a></li>
+<li><a href="#orgheadline430">Gtalk</a></li>
+<li><a href="#orgheadline431">IRC</a></li>
+<li><a href="#orgheadline432">Touch typing</a></li>
+<li><a href="#orgheadline433">Learn the most frequently used keys</a></li>
+<li><a href="#orgheadline434">Google stuff</a>
 <ul>
-<li><a href="#orgheadline423">Weather</a></li>
-<li><a href="#orgheadline424">How do I do something?</a>
-<ul>
-<li><a href="#orgheadline425">Modal binding</a></li>
-</ul>
-</li>
-<li><a href="#orgheadline426">XKCD</a>
-<ul>
-<li><a href="#orgheadline427">Modal binding</a></li>
-</ul>
-</li>
-<li><a href="#orgheadline428">Keep track of accounts</a></li>
-<li><a href="#orgheadline429">Gtalk</a></li>
-<li><a href="#orgheadline430">IRC</a></li>
-<li><a href="#orgheadline431">Touch typing</a></li>
-<li><a href="#orgheadline432">Learn the most frequently used keys</a></li>
-<li><a href="#orgheadline433">Google stuff</a>
-<ul>
-<li><a href="#orgheadline434">Functions</a></li>
+<li><a href="#orgheadline289">Functions</a></li>
 <li><a href="#orgheadline437">Hydra</a></li>
 </ul>
 </li>
@@ -1512,9 +1359,7 @@ However, some built-in minor modes are notorious and don&rsquo;t seem to work wi
 </p>
 </div>
 
-<div id="outline-container-orgheadline48" class="outline-4">
-<h4 id="orgheadline48">Diminish <code>org-indent</code> mode</h4>
-<div class="outline-text-4" id="text-orgheadline48">
+<ul class="org-ul"><li><a id="orgheadline48"></a>Diminish <code>org-indent</code> mode<br  /><div class="outline-text-5" id="text-orgheadline48">
 <p>
 I like to enable the <a href="http://orgmode.org/manual/Clean-view.html">org-indent mode</a> for a clean view in Org mode and this doesn&rsquo;t seem to get diminish the usual way. We define a function and a add a hook to achieve this.
 </p>
@@ -1527,12 +1372,9 @@ I like to enable the <a href="http://orgmode.org/manual/Clean-view.html">org-ind
 (add-hook 'org-indent-mode-hook 'sk/diminish-org-indent)
 </pre>
 </div>
-</div>
-</div>
+</div></li>
 
-<div id="outline-container-orgheadline49" class="outline-4">
-<h4 id="orgheadline49">Diminish <code>auto-revert</code> mode</h4>
-<div class="outline-text-4" id="text-orgheadline49">
+<li><a id="orgheadline49"></a>Diminish <code>auto-revert</code> mode<br  /><div class="outline-text-5" id="text-orgheadline49">
 <p>
 <a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Reverting.html">auto-revert mode</a> is useful when Emacs auto-saves your file and you want to load the backup.
 </p>
@@ -1545,12 +1387,9 @@ I like to enable the <a href="http://orgmode.org/manual/Clean-view.html">org-ind
 (add-hook 'auto-revert-mode-hook 'sk/diminish-auto-revert)
 </pre>
 </div>
-</div>
-</div>
+</div></li>
 
-<div id="outline-container-orgheadline50" class="outline-4">
-<h4 id="orgheadline50">Diminish <code>eldoc</code> mode</h4>
-<div class="outline-text-4" id="text-orgheadline50">
+<li><a id="orgheadline50"></a>Diminish <code>eldoc</code> mode<br  /><div class="outline-text-5" id="text-orgheadline50">
 <p>
 Eldoc mode is a mode to display documentation for languages in Emacs
 </p>
@@ -1563,12 +1402,9 @@ Eldoc mode is a mode to display documentation for languages in Emacs
 (add-hook 'eldoc-mode-hook 'sk/diminish-eldoc)
 </pre>
 </div>
-</div>
-</div>
+</div></li>
 
-<div id="outline-container-orgheadline51" class="outline-4">
-<h4 id="orgheadline51">Diminish <code>subword</code> mode</h4>
-<div class="outline-text-4" id="text-orgheadline51">
+<li><a id="orgheadline51"></a>Diminish <code>subword</code> mode<br  /><div class="outline-text-5" id="text-orgheadline51">
 <p>
 <code>subword-mode</code> is described <a href="#orgheadline35">here</a>.
 </p>
@@ -1581,8 +1417,7 @@ Eldoc mode is a mode to display documentation for languages in Emacs
 (add-hook 'subword-mode-hook 'sk/diminish-subword)
 </pre>
 </div>
-</div>
-</div>
+</div></li></ul>
 </div>
 
 <div id="outline-container-orgheadline52" class="outline-3">
@@ -1857,16 +1692,14 @@ As mentioned before, I like and prefer modal editing. I feel pressing modifier k
 </div>
 </div>
 
-<div id="outline-container-orgheadline65" class="outline-4">
-<h4 id="orgheadline65">Default modal keybindings</h4>
-<div class="outline-text-4" id="text-orgheadline65">
+<ul class="org-ul"><li><a id="orgheadline65"></a>Default modal keybindings<br  /><div class="outline-text-5" id="text-orgheadline65">
 <p>
 These are modal bindings that just wrap around the existing, already bound, Emacs defaults.
 The explanations for each can be found in the <a href="#orgheadline64">corresponding which key explanations</a>.
 </p>
 </div>
 
-<ul class="org-ul"><li><a id="orgheadline66"></a>Numbers<br  /><div class="outline-text-5" id="text-orgheadline66">
+<ul class="org-ul"><li><a id="orgheadline66"></a>Numbers<br  /><div class="outline-text-6" id="text-orgheadline66">
 <p>
 Pressing the numbers in Modalka state should trigger numbers and not insert them instead.
 </p>
@@ -1887,7 +1720,7 @@ Pressing the numbers in Modalka state should trigger numbers and not insert them
 </div>
 </div></li>
 
-<li><a id="orgheadline67"></a>Movement and one key presses<br  /><div class="outline-text-5" id="text-orgheadline67">
+<li><a id="orgheadline67"></a>Movement and one key presses<br  /><div class="outline-text-6" id="text-orgheadline67">
 <p>
 This is based on Vi-style but only slightly and uses the default movement keys in Emacs.
 </p>
@@ -1942,7 +1775,7 @@ This is based on Vi-style but only slightly and uses the default movement keys i
 </div>
 </div></li>
 
-<li><a id="orgheadline68"></a>Global prefixed keys<br  /><div class="outline-text-5" id="text-orgheadline68">
+<li><a id="orgheadline68"></a>Global prefixed keys<br  /><div class="outline-text-6" id="text-orgheadline68">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"g g"</span> <span style="color: #3e999f;">"M-&lt;"</span>)
@@ -1977,7 +1810,7 @@ This is based on Vi-style but only slightly and uses the default movement keys i
 </div>
 </div></li>
 
-<li><a id="orgheadline69"></a>Select region prefixed keys<br  /><div class="outline-text-5" id="text-orgheadline69">
+<li><a id="orgheadline69"></a>Select region prefixed keys<br  /><div class="outline-text-6" id="text-orgheadline69">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"i a"</span> <span style="color: #3e999f;">"C-x h"</span>)
@@ -1985,7 +1818,7 @@ This is based on Vi-style but only slightly and uses the default movement keys i
 </div>
 </div></li>
 
-<li><a id="orgheadline70"></a>Forward navigation prefixed keys<br  /><div class="outline-text-5" id="text-orgheadline70">
+<li><a id="orgheadline70"></a>Forward navigation prefixed keys<br  /><div class="outline-text-6" id="text-orgheadline70">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"] ]"</span> <span style="color: #3e999f;">"C-x n n"</span>)
@@ -1994,7 +1827,7 @@ This is based on Vi-style but only slightly and uses the default movement keys i
 </div>
 </div></li>
 
-<li><a id="orgheadline71"></a>Backward navigation prefixed keys<br  /><div class="outline-text-5" id="text-orgheadline71">
+<li><a id="orgheadline71"></a>Backward navigation prefixed keys<br  /><div class="outline-text-6" id="text-orgheadline71">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"[ ["</span> <span style="color: #3e999f;">"C-x n w"</span>)
@@ -2002,7 +1835,7 @@ This is based on Vi-style but only slightly and uses the default movement keys i
 </div>
 </div></li>
 
-<li><a id="orgheadline72"></a>Extended prefix to quit/restart and time<br  /><div class="outline-text-5" id="text-orgheadline72">
+<li><a id="orgheadline72"></a>Extended prefix to quit/restart and time<br  /><div class="outline-text-6" id="text-orgheadline72">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">": q"</span> <span style="color: #3e999f;">"C-x C-c"</span>)
@@ -2012,7 +1845,7 @@ This is based on Vi-style but only slightly and uses the default movement keys i
 </div>
 </div></li>
 
-<li><a id="orgheadline73"></a>User prefix for common functions<br  /><div class="outline-text-5" id="text-orgheadline73">
+<li><a id="orgheadline73"></a>User prefix for common functions<br  /><div class="outline-text-6" id="text-orgheadline73">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"SPC j"</span> <span style="color: #3e999f;">"M-x"</span>)
@@ -2028,18 +1861,15 @@ This is based on Vi-style but only slightly and uses the default movement keys i
 (modalka-define-kbd <span style="color: #3e999f;">"SPC ?"</span> <span style="color: #3e999f;">"C-z SPC ?"</span>)
 </pre>
 </div>
-</div></li></ul>
-</div>
+</div></li></ul></li>
 
-<div id="outline-container-orgheadline64" class="outline-4">
-<h4 id="orgheadline64">Which key explanations for everything</h4>
-<div class="outline-text-4" id="text-orgheadline64">
+<li><a id="orgheadline64"></a>Which key explanations for everything<br  /><div class="outline-text-5" id="text-orgheadline64">
 <p>
 I have added the which key explanations for everything at once because it is easier for me to look it up.
 </p>
 </div>
 
-<ul class="org-ul"><li><a id="orgheadline74"></a>Numbers<br  /><div class="outline-text-5" id="text-orgheadline74">
+<ul class="org-ul"><li><a id="orgheadline74"></a>Numbers<br  /><div class="outline-text-6" id="text-orgheadline74">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(which-key-add-key-based-replacements
@@ -2057,7 +1887,7 @@ I have added the which key explanations for everything at once because it is eas
 </div>
 </div></li>
 
-<li><a id="orgheadline75"></a>Movement and one key presses<br  /><div class="outline-text-5" id="text-orgheadline75">
+<li><a id="orgheadline75"></a>Movement and one key presses<br  /><div class="outline-text-6" id="text-orgheadline75">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(which-key-add-key-based-replacements
@@ -2113,7 +1943,7 @@ I have added the which key explanations for everything at once because it is eas
 </div>
 </div></li>
 
-<li><a id="orgheadline76"></a>Global prefixed keys<br  /><div class="outline-text-5" id="text-orgheadline76">
+<li><a id="orgheadline76"></a>Global prefixed keys<br  /><div class="outline-text-6" id="text-orgheadline76">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(which-key-add-key-based-replacements
@@ -2150,7 +1980,7 @@ I have added the which key explanations for everything at once because it is eas
 </div>
 </div></li>
 
-<li><a id="orgheadline77"></a>Select region prefixed keys<br  /><div class="outline-text-5" id="text-orgheadline77">
+<li><a id="orgheadline77"></a>Select region prefixed keys<br  /><div class="outline-text-6" id="text-orgheadline77">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(which-key-add-key-based-replacements
@@ -2160,7 +1990,7 @@ I have added the which key explanations for everything at once because it is eas
 </div>
 </div></li>
 
-<li><a id="orgheadline78"></a>Forward navigation prefixed keys<br  /><div class="outline-text-5" id="text-orgheadline78">
+<li><a id="orgheadline78"></a>Forward navigation prefixed keys<br  /><div class="outline-text-6" id="text-orgheadline78">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(which-key-add-key-based-replacements
@@ -2171,7 +2001,7 @@ I have added the which key explanations for everything at once because it is eas
 </div>
 </div></li>
 
-<li><a id="orgheadline79"></a>Backward navigation prefixed keys<br  /><div class="outline-text-5" id="text-orgheadline79">
+<li><a id="orgheadline79"></a>Backward navigation prefixed keys<br  /><div class="outline-text-6" id="text-orgheadline79">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(which-key-add-key-based-replacements
@@ -2181,7 +2011,7 @@ I have added the which key explanations for everything at once because it is eas
 </div>
 </div></li>
 
-<li><a id="orgheadline80"></a>Extended prefix to quit/restart and time<br  /><div class="outline-text-5" id="text-orgheadline80">
+<li><a id="orgheadline80"></a>Extended prefix to quit/restart and time<br  /><div class="outline-text-6" id="text-orgheadline80">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(which-key-add-key-based-replacements
@@ -2193,7 +2023,7 @@ I have added the which key explanations for everything at once because it is eas
 </div>
 </div></li>
 
-<li><a id="orgheadline81"></a>User prefix for common functions<br  /><div class="outline-text-5" id="text-orgheadline81">
+<li><a id="orgheadline81"></a>User prefix for common functions<br  /><div class="outline-text-6" id="text-orgheadline81">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(which-key-add-key-based-replacements
@@ -2211,8 +2041,7 @@ I have added the which key explanations for everything at once because it is eas
   <span style="color: #3e999f;">"SPC SPC"</span> <span style="color: #3e999f;">"search"</span>)
 </pre>
 </div>
-</div></li></ul>
-</div>
+</div></li></ul></li></ul>
 </div>
 
 <div id="outline-container-orgheadline82" class="outline-3">
@@ -2295,9 +2124,7 @@ This section contains all the packages and custom functions I use for navigating
 </div>
 </div>
 
-<div id="outline-container-orgheadline88" class="outline-4">
-<h4 id="orgheadline88">Modal binding</h4>
-<div class="outline-text-4" id="text-orgheadline88">
+<ul class="org-ul"><li><a id="orgheadline88"></a>Modal binding<br  /><div class="outline-text-5" id="text-orgheadline88">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"g z"</span> <span style="color: #3e999f;">"C-z g z"</span>)
@@ -2314,8 +2141,7 @@ Which key modal explanation
   <span style="color: #3e999f;">"g z"</span> <span style="color: #3e999f;">"blink cursor"</span>)
 </pre>
 </div>
-</div>
-</div>
+</div></li></ul>
 </div>
 
 <div id="outline-container-orgheadline89" class="outline-3">
@@ -2339,9 +2165,7 @@ The default Emacs <a href="https://www.gnu.org/software/emacs/manual/html_node/e
 </div>
 </div>
 
-<div id="outline-container-orgheadline90" class="outline-4">
-<h4 id="orgheadline90">Modal binding</h4>
-<div class="outline-text-4" id="text-orgheadline90">
+<ul class="org-ul"><li><a id="orgheadline90"></a>Modal binding<br  /><div class="outline-text-5" id="text-orgheadline90">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"u"</span> <span style="color: #3e999f;">"C-z u"</span>)
@@ -2362,8 +2186,7 @@ Which key modal explanation
   <span style="color: #3e999f;">"U"</span> <span style="color: #3e999f;">"undo tree"</span>)
 </pre>
 </div>
-</div>
-</div>
+</div></li></ul>
 </div>
 
 <div id="outline-container-orgheadline91" class="outline-3">
@@ -2382,9 +2205,7 @@ Which key modal explanation
 </div>
 </div>
 
-<div id="outline-container-orgheadline92" class="outline-4">
-<h4 id="orgheadline92">Modal binding</h4>
-<div class="outline-text-4" id="text-orgheadline92">
+<ul class="org-ul"><li><a id="orgheadline92"></a>Modal binding<br  /><div class="outline-text-5" id="text-orgheadline92">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"g ;"</span> <span style="color: #3e999f;">"C-z g ;"</span>)
@@ -2401,8 +2222,7 @@ Which key modal explanation
   <span style="color: #3e999f;">"g ;"</span> <span style="color: #3e999f;">"goto last change"</span>)
 </pre>
 </div>
-</div>
-</div>
+</div></li></ul>
 </div>
 
 <div id="outline-container-orgheadline93" class="outline-3">
@@ -2427,9 +2247,7 @@ Which key modal explanation
 </div>
 </div>
 
-<div id="outline-container-orgheadline94" class="outline-4">
-<h4 id="orgheadline94">Modal binding</h4>
-<div class="outline-text-4" id="text-orgheadline94">
+<ul class="org-ul"><li><a id="orgheadline94"></a>Modal binding<br  /><div class="outline-text-5" id="text-orgheadline94">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"f"</span> <span style="color: #3e999f;">"C-z f"</span>)
@@ -2448,8 +2266,7 @@ Which key modal explanation
   <span style="color: #3e999f;">"F"</span> <span style="color: #3e999f;">"find line"</span>)
 </pre>
 </div>
-</div>
-</div>
+</div></li></ul>
 </div>
 
 <div id="outline-container-orgheadline95" class="outline-3">
@@ -2471,9 +2288,7 @@ Which key modal explanation
 </div>
 </div>
 
-<div id="outline-container-orgheadline96" class="outline-4">
-<h4 id="orgheadline96">Modal binding</h4>
-<div class="outline-text-4" id="text-orgheadline96">
+<ul class="org-ul"><li><a id="orgheadline96"></a>Modal binding<br  /><div class="outline-text-5" id="text-orgheadline96">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"n"</span> <span style="color: #3e999f;">"M-n"</span>)
@@ -2492,8 +2307,7 @@ Which key modal explanation
   <span style="color: #3e999f;">"N"</span> <span style="color: #3e999f;">"smart prev item"</span>)
 </pre>
 </div>
-</div>
-</div>
+</div></li></ul>
 </div>
 
 <div id="outline-container-orgheadline97" class="outline-3">
@@ -2518,9 +2332,7 @@ Which key modal explanation
 </div>
 </div>
 
-<div id="outline-container-orgheadline98" class="outline-4">
-<h4 id="orgheadline98">Modal binding</h4>
-<div class="outline-text-4" id="text-orgheadline98">
+<ul class="org-ul"><li><a id="orgheadline98"></a>Modal binding<br  /><div class="outline-text-5" id="text-orgheadline98">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"SPC d"</span>   <span style="color: #3e999f;">"C-z SPC d"</span>)
@@ -2539,8 +2351,7 @@ Which key modal explanation
   <span style="color: #3e999f;">"SPC TAB"</span> <span style="color: #3e999f;">"alternate file"</span>)
 </pre>
 </div>
-</div>
-</div>
+</div></li></ul>
 </div>
 
 <div id="outline-container-orgheadline99" class="outline-3">
@@ -2562,9 +2373,7 @@ Which key modal explanation
 </div>
 </div>
 
-<div id="outline-container-orgheadline100" class="outline-4">
-<h4 id="orgheadline100">Modal binding</h4>
-<div class="outline-text-4" id="text-orgheadline100">
+<ul class="org-ul"><li><a id="orgheadline100"></a>Modal binding<br  /><div class="outline-text-5" id="text-orgheadline100">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"g v"</span> <span style="color: #3e999f;">"C-z g v"</span>)
@@ -2583,8 +2392,7 @@ Which key modal explanation
   <span style="color: #3e999f;">"g V"</span> <span style="color: #3e999f;">"diff directories"</span>)
 </pre>
 </div>
-</div>
-</div>
+</div></li></ul>
 </div>
 
 <div id="outline-container-orgheadline101" class="outline-3">
@@ -2605,9 +2413,7 @@ Which key modal explanation
 </div>
 </div>
 
-<div id="outline-container-orgheadline102" class="outline-4">
-<h4 id="orgheadline102">Modal binding</h4>
-<div class="outline-text-4" id="text-orgheadline102">
+<ul class="org-ul"><li><a id="orgheadline102"></a>Modal binding<br  /><div class="outline-text-5" id="text-orgheadline102">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"SPC n"</span> <span style="color: #3e999f;">"C-c n"</span>)
@@ -2624,8 +2430,7 @@ Which key modal explanation
   <span style="color: #3e999f;">"SPC n"</span> <span style="color: #3e999f;">"directory tree"</span>)
 </pre>
 </div>
-</div>
-</div>
+</div></li></ul>
 </div>
 
 <div id="outline-container-orgheadline103" class="outline-3">
@@ -2651,9 +2456,7 @@ Which key modal explanation
 </div>
 </div>
 
-<div id="outline-container-orgheadline104" class="outline-4">
-<h4 id="orgheadline104">Modal binding</h4>
-<div class="outline-text-4" id="text-orgheadline104">
+<ul class="org-ul"><li><a id="orgheadline104"></a>Modal binding<br  /><div class="outline-text-5" id="text-orgheadline104">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"T"</span>   <span style="color: #3e999f;">"C-z T"</span>)
@@ -2674,8 +2477,7 @@ Which key modal explanation
   <span style="color: #3e999f;">"T"</span>   <span style="color: #3e999f;">"global tags search"</span>)
 </pre>
 </div>
-</div>
-</div>
+</div></li></ul>
 </div>
 
 <div id="outline-container-orgheadline105" class="outline-3">
@@ -2696,9 +2498,7 @@ Which key modal explanation
 </div>
 </div>
 
-<div id="outline-container-orgheadline106" class="outline-4">
-<h4 id="orgheadline106">Modal binding</h4>
-<div class="outline-text-4" id="text-orgheadline106">
+<ul class="org-ul"><li><a id="orgheadline106"></a>Modal binding<br  /><div class="outline-text-5" id="text-orgheadline106">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"S"</span> <span style="color: #3e999f;">"C-c S"</span>)
@@ -2715,8 +2515,7 @@ Which key modal explanation
   <span style="color: #3e999f;">"S"</span> <span style="color: #3e999f;">"src at point"</span>)
 </pre>
 </div>
-</div>
-</div>
+</div></li></ul>
 </div>
 
 <div id="outline-container-orgheadline107" class="outline-3">
@@ -2739,9 +2538,7 @@ Which key modal explanation
 </div>
 </div>
 
-<div id="outline-container-orgheadline108" class="outline-4">
-<h4 id="orgheadline108">Modal binding</h4>
-<div class="outline-text-4" id="text-orgheadline108">
+<ul class="org-ul"><li><a id="orgheadline108"></a>Modal binding<br  /><div class="outline-text-5" id="text-orgheadline108">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"SPC p"</span> <span style="color: #3e999f;">"C-z SPC p"</span>)
@@ -2762,8 +2559,7 @@ Which key modal explanation
   <span style="color: #3e999f;">"g r"</span>   <span style="color: #3e999f;">"perspective rename"</span>)
 </pre>
 </div>
-</div>
-</div>
+</div></li></ul>
 </div>
 
 <div id="outline-container-orgheadline109" class="outline-3">
@@ -2784,9 +2580,7 @@ Which key modal explanation
 </div>
 </div>
 
-<div id="outline-container-orgheadline110" class="outline-4">
-<h4 id="orgheadline110">Modal binding</h4>
-<div class="outline-text-4" id="text-orgheadline110">
+<ul class="org-ul"><li><a id="orgheadline110"></a>Modal binding<br  /><div class="outline-text-5" id="text-orgheadline110">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"SPC y"</span> <span style="color: #3e999f;">"C-z SPC y"</span>)
@@ -2807,8 +2601,7 @@ Which key modal explanation
   <span style="color: #3e999f;">"SPC Y"</span> <span style="color: #3e999f;">"documentation at point"</span>)
 </pre>
 </div>
-</div>
-</div>
+</div></li></ul>
 </div>
 
 <div id="outline-container-orgheadline137" class="outline-3">
@@ -3569,9 +3362,7 @@ We also add some helpful additional expand regions depending on the mode.
 </div>
 </div>
 
-<div id="outline-container-orgheadline146" class="outline-4">
-<h4 id="orgheadline146">Modal binding</h4>
-<div class="outline-text-4" id="text-orgheadline146">
+<ul class="org-ul"><li><a id="orgheadline146"></a>Modal binding<br  /><div class="outline-text-5" id="text-orgheadline146">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"a o"</span> <span style="color: #3e999f;">"C-z a o"</span>)
@@ -3636,8 +3427,7 @@ Which key modal explanation
   <span style="color: #3e999f;">"i v"</span> <span style="color: #3e999f;">"expand in symbol"</span>)
 </pre>
 </div>
-</div>
-</div>
+</div></li></ul>
 </div>
 
 <div id="outline-container-orgheadline147" class="outline-3">
@@ -3656,9 +3446,7 @@ Which key modal explanation
 </div>
 </div>
 
-<div id="outline-container-orgheadline148" class="outline-4">
-<h4 id="orgheadline148">Modal binding</h4>
-<div class="outline-text-4" id="text-orgheadline148">
+<ul class="org-ul"><li><a id="orgheadline148"></a>Modal binding<br  /><div class="outline-text-5" id="text-orgheadline148">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"g c"</span> <span style="color: #3e999f;">"C-z g c"</span>)
@@ -3675,8 +3463,7 @@ Which key modal explanation
   <span style="color: #3e999f;">"g c"</span> <span style="color: #3e999f;">"comment line/region"</span>)
 </pre>
 </div>
-</div>
-</div>
+</div></li></ul>
 </div>
 
 <div id="outline-container-orgheadline149" class="outline-3">
@@ -3730,9 +3517,7 @@ Which key modal explanation
 </div>
 </div>
 
-<div id="outline-container-orgheadline150" class="outline-4">
-<h4 id="orgheadline150">Modal binding</h4>
-<div class="outline-text-4" id="text-orgheadline150">
+<ul class="org-ul"><li><a id="orgheadline150"></a>Modal binding<br  /><div class="outline-text-5" id="text-orgheadline150">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"s j"</span> <span style="color: #3e999f;">"C-z s j"</span>)
@@ -3804,8 +3589,7 @@ Which key modal explanation
   <span style="color: #3e999f;">"s A"</span> <span style="color: #3e999f;">"splice around"</span>)
 </pre>
 </div>
-</div>
-</div>
+</div></li></ul>
 </div>
 
 <div id="outline-container-orgheadline152" class="outline-3">
@@ -3825,9 +3609,7 @@ Which key modal explanation
 </div>
 </div>
 
-<div id="outline-container-orgheadline153" class="outline-4">
-<h4 id="orgheadline153">Modal binding</h4>
-<div class="outline-text-4" id="text-orgheadline153">
+<ul class="org-ul"><li><a id="orgheadline153"></a>Modal binding<br  /><div class="outline-text-5" id="text-orgheadline153">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"*"</span> <span style="color: #3e999f;">"C-z *"</span>)
@@ -3844,8 +3626,7 @@ Which key modal explanation
   <span style="color: #3e999f;">"*"</span> <span style="color: #3e999f;">"multi edit all"</span>)
 </pre>
 </div>
-</div>
-</div>
+</div></li></ul>
 </div>
 
 <div id="outline-container-orgheadline151" class="outline-3">
@@ -3889,11 +3670,8 @@ Which key modal explanation
 </pre>
 </div>
 </div>
-</div>
 
-<div id="outline-container-orgheadline155" class="outline-4">
-<h4 id="orgheadline155">Modal binding</h4>
-<div class="outline-text-4" id="text-orgheadline155">
+<ul class="org-ul"><li><a id="orgheadline155"></a>Modal binding<br  /><div class="outline-text-5" id="text-orgheadline155">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"."</span> <span style="color: #3e999f;">"C-z ."</span>)
@@ -3914,7 +3692,7 @@ Which key modal explanation
   <span style="color: #3e999f;">"."</span> <span style="color: #3e999f;">"multi edit lines"</span>)
 </pre>
 </div>
-</div>
+</div></li></ul>
 </div>
 </div>
 
@@ -3934,9 +3712,7 @@ Which key modal explanation
 </div>
 </div>
 
-<div id="outline-container-orgheadline157" class="outline-4">
-<h4 id="orgheadline157">Modal binding</h4>
-<div class="outline-text-4" id="text-orgheadline157">
+<ul class="org-ul"><li><a id="orgheadline157"></a>Modal binding<br  /><div class="outline-text-5" id="text-orgheadline157">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"g SPC"</span> <span style="color: #3e999f;">"C-z g SPC"</span>)
@@ -3953,8 +3729,7 @@ Which key modal explanation
   <span style="color: #3e999f;">"g SPC"</span> <span style="color: #3e999f;">"shrink space"</span>)
 </pre>
 </div>
-</div>
-</div>
+</div></li></ul>
 </div>
 
 <div id="outline-container-orgheadline158" class="outline-3">
@@ -3978,9 +3753,7 @@ This is the <a href="https://github.com/benma/visual-regexp.el">good old search 
 </div>
 </div>
 
-<div id="outline-container-orgheadline159" class="outline-4">
-<h4 id="orgheadline159">Modal binding</h4>
-<div class="outline-text-4" id="text-orgheadline159">
+<ul class="org-ul"><li><a id="orgheadline159"></a>Modal binding<br  /><div class="outline-text-5" id="text-orgheadline159">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"/"</span> <span style="color: #3e999f;">"C-z /"</span>)
@@ -3997,8 +3770,7 @@ Which key modal explanation
   <span style="color: #3e999f;">"/"</span> <span style="color: #3e999f;">"replace word/expression"</span>)
 </pre>
 </div>
-</div>
-</div>
+</div></li></ul>
 </div>
 
 <div id="outline-container-orgheadline160" class="outline-3">
@@ -4057,9 +3829,7 @@ Also, I don&rsquo;t want to trigger snippets when I&rsquo;m in shell. So, let&rs
 </div>
 </div>
 
-<div id="outline-container-orgheadline162" class="outline-4">
-<h4 id="orgheadline162">Modal binding</h4>
-<div class="outline-text-4" id="text-orgheadline162">
+<ul class="org-ul"><li><a id="orgheadline162"></a>Modal binding<br  /><div class="outline-text-5" id="text-orgheadline162">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"s q"</span> <span style="color: #3e999f;">"C-z s q"</span>)
@@ -4076,8 +3846,7 @@ Which key modal explanation
   <span style="color: #3e999f;">"s q"</span> <span style="color: #3e999f;">"switch quotes"</span>)
 </pre>
 </div>
-</div>
-</div>
+</div></li></ul>
 </div>
 
 <div id="outline-container-orgheadline223" class="outline-3">
@@ -5704,9 +5473,7 @@ I particularly like this <a href="https://github.com/k-talo/volatile-highlights.
 </div>
 </div>
 
-<div id="outline-container-orgheadline242" class="outline-4">
-<h4 id="orgheadline242">Modal binding</h4>
-<div class="outline-text-4" id="text-orgheadline242">
+<ul class="org-ul"><li><a id="orgheadline242"></a>Modal binding<br  /><div class="outline-text-5" id="text-orgheadline242">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"g *"</span> <span style="color: #3e999f;">"C-z g *"</span>)
@@ -5723,8 +5490,7 @@ Which key modal explanation
   <span style="color: #3e999f;">"g *"</span> <span style="color: #3e999f;">"highlight symbol"</span>)
 </pre>
 </div>
-</div>
-</div>
+</div></li></ul>
 </div>
 
 <div id="outline-container-orgheadline243" class="outline-3">
@@ -5902,9 +5668,7 @@ Emacs has a built-in <code>hide-show</code> mode but it isn&rsquo;t great. <a hr
 </div>
 </div>
 
-<div id="outline-container-orgheadline252" class="outline-4">
-<h4 id="orgheadline252">Modal binding</h4>
-<div class="outline-text-4" id="text-orgheadline252">
+<ul class="org-ul"><li><a id="orgheadline252"></a>Modal binding<br  /><div class="outline-text-5" id="text-orgheadline252">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"-"</span> <span style="color: #3e999f;">"C-z -"</span>)
@@ -5921,8 +5685,7 @@ Which key modal explanation
     <span style="color: #3e999f;">"-"</span> <span style="color: #3e999f;">"syntax-based fold toggle"</span>)
 </pre>
 </div>
-</div>
-</div>
+</div></li></ul>
 </div>
 
 <div id="outline-container-orgheadline253" class="outline-3">
@@ -6175,9 +5938,7 @@ I really liked the way <a href="https://bywordapp.com">Byword</a> presents a wri
 </div>
 </div>
 
-<div id="outline-container-orgheadline265" class="outline-4">
-<h4 id="orgheadline265">Modal binding</h4>
-<div class="outline-text-4" id="text-orgheadline265">
+<ul class="org-ul"><li><a id="orgheadline265"></a>Modal binding<br  /><div class="outline-text-5" id="text-orgheadline265">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"g d"</span> <span style="color: #3e999f;">"C-z g d"</span>)
@@ -6196,8 +5957,7 @@ Which key modal explanation
   <span style="color: #3e999f;">"g F"</span> <span style="color: #3e999f;">"focus on sections"</span>)
 </pre>
 </div>
-</div>
-</div>
+</div></li></ul>
 </div>
 
 <div id="outline-container-orgheadline267" class="outline-3">
@@ -6322,7 +6082,7 @@ Org mode has the ability to syntax highlight source code blocks that are embedde
 <h4 id="orgheadline274">Exporting</h4>
 <div class="outline-text-4" id="text-orgheadline274">
 <p>
-Org has a <a href="http://orgmode.org/org.html#Exporting">powerful</a> exporting feature. Let&rsquo;s select the various formats to export and also mention how exactly we need it to export to LaTeX with syntax highlighting.
+Org has a <a href="http://orgmode.org/org.html#Exporting">powerful</a> exporting feature. Let&rsquo;s select the various formats to export and also mention how exactly we need it to export to LaTeX with syntax highlighting. I have also taken a good looking CSS configuration from <a href="http://gongzhitaao.org/orgcss/">Zhitao Gong</a> and I use it for exporting by putting it <a href="./org.css">in the same folder as my org file</a> and adding <code>#+HTML_HEAD: &lt;link rel="stylesheet" type="text/css" href="org.css"/&gt;</code> to the top of my org file.
 </p>
 
 <div class="org-src-container">
@@ -6715,6 +6475,7 @@ Finally, we make sure we bind some keys and add some <a href="http://orgmode.org
   (add-to-list 'org-structure-template-alist '(<span style="color: #3e999f;">"L"</span> <span style="color: #3e999f;">"#+BEGIN_LaTeX\n?\n#+END_LaTeX"</span>))
   (add-to-list 'org-structure-template-alist '(<span style="color: #3e999f;">"M"</span> <span style="color: #3e999f;">"#+LATEX_HEADER: \\usepackage{minted}\n"</span>))
   (add-to-list 'org-structure-template-alist '(<span style="color: #3e999f;">"N"</span> <span style="color: #3e999f;">"#+NAME: ?"</span>))
+  (add-to-list 'org-structure-template-alist '(<span style="color: #3e999f;">"P"</span> <span style="color: #3e999f;">"#+HTML_HEAD: &lt;link rel=\"stylesheet\" type=\"text/css\" href=\"org.css\"/&gt;\n"</span>))
   (add-to-list 'org-structure-template-alist '(<span style="color: #3e999f;">"S"</span> <span style="color: #3e999f;">"#+SUBTITLE: ?"</span>))
   (add-to-list 'org-structure-template-alist '(<span style="color: #3e999f;">"T"</span> <span style="color: #3e999f;">":DRILL_CARD_TYPE: twosided"</span>))
   (add-to-list 'org-structure-template-alist '(<span style="color: #3e999f;">"V"</span> <span style="color: #3e999f;">"#+BEGIN_VERSE\n?\n#+END_VERSE"</span>))
@@ -6741,21 +6502,16 @@ Finally, we make sure we bind some keys and add some <a href="http://orgmode.org
 </div>
 </div>
 
-<div id="outline-container-orgheadline282" class="outline-4">
-<h4 id="orgheadline282">Which key binding explanation</h4>
-<div class="outline-text-4" id="text-orgheadline282">
+<ul class="org-ul"><li><a id="orgheadline282"></a>Which key binding explanation<br  /><div class="outline-text-5" id="text-orgheadline282">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(which-key-add-key-based-replacements
     <span style="color: #3e999f;">"C-z o"</span> <span style="color: #3e999f;">"org mode prefix"</span>)
 </pre>
 </div>
-</div>
-</div>
+</div></li>
 
-<div id="outline-container-orgheadline283" class="outline-4">
-<h4 id="orgheadline283">Modal binding</h4>
-<div class="outline-text-4" id="text-orgheadline283">
+<li><a id="orgheadline283"></a>Modal binding<br  /><div class="outline-text-5" id="text-orgheadline283">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"o a"</span>   <span style="color: #3e999f;">"C-z o a"</span>)
@@ -6840,8 +6596,7 @@ Which key modal explanation
   <span style="color: #3e999f;">"o RET"</span> <span style="color: #3e999f;">"org open link"</span>)
 </pre>
 </div>
-</div>
-</div>
+</div></li></ul>
 </div>
 
 <div id="outline-container-orgheadline9" class="outline-3">
@@ -6952,9 +6707,7 @@ Let&rsquo;s define a couple of functions that use this wrapper function.
 </div>
 </div>
 
-<div id="outline-container-orgheadline285" class="outline-4">
-<h4 id="orgheadline285">Key binding</h4>
-<div class="outline-text-4" id="text-orgheadline285">
+<ul class="org-ul"><li><a id="orgheadline285"></a>Key binding<br  /><div class="outline-text-5" id="text-orgheadline285">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(<span style="color: #718c00;">bind-keys*</span>
@@ -6964,7 +6717,7 @@ Let&rsquo;s define a couple of functions that use this wrapper function.
 </div>
 </div>
 
-<ul class="org-ul"><li><a id="orgheadline286"></a>Modal binding<br  /><div class="outline-text-5" id="text-orgheadline286">
+<ul class="org-ul"><li><a id="orgheadline286"></a>Modal binding<br  /><div class="outline-text-6" id="text-orgheadline286">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"o f"</span> <span style="color: #3e999f;">"C-z o f"</span>)
@@ -6983,8 +6736,7 @@ Which key modal explanation
   <span style="color: #3e999f;">"o F"</span> <span style="color: #3e999f;">"filter blog posts"</span>)
 </pre>
 </div>
-</div></li></ul>
-</div>
+</div></li></ul></li></ul>
 </div>
 
 <div id="outline-container-orgheadline287" class="outline-3">
@@ -7004,9 +6756,7 @@ Interleaved notes are a thing of the past but you can <a href="https://github.co
 </div>
 </div>
 
-<div id="outline-container-orgheadline288" class="outline-4">
-<h4 id="orgheadline288">Modal binding</h4>
-<div class="outline-text-4" id="text-orgheadline288">
+<ul class="org-ul"><li><a id="orgheadline288"></a>Modal binding<br  /><div class="outline-text-5" id="text-orgheadline288">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"o n"</span> <span style="color: #3e999f;">"C-z o n"</span>)
@@ -7023,8 +6773,7 @@ Which key modal explanation
   <span style="color: #3e999f;">"o n"</span> <span style="color: #3e999f;">"org notes"</span>)
 </pre>
 </div>
-</div>
-</div>
+</div></li></ul>
 </div>
 
 <div id="outline-container-orgheadline290" class="outline-3">
@@ -7121,9 +6870,9 @@ We can make Org mode a little more pretty by having <a href="https://github.com/
 </div>
 </div>
 
-<div id="outline-container-orgheadline289" class="outline-3">
-<h3 id="orgheadline289">Functions</h3>
-<div class="outline-text-3" id="text-orgheadline289">
+<div id="outline-container-orgheadline298" class="outline-3">
+<h3 id="orgheadline298">Custom functions</h3>
+<div class="outline-text-3" id="text-orgheadline298">
 </div><div id="outline-container-orgheadline294" class="outline-4">
 <h4 id="orgheadline294">Load extra org goodies</h4>
 <div class="outline-text-4" id="text-orgheadline294">
@@ -7224,17 +6973,17 @@ Which key modal explanation
 </div>
 </div>
 
-<div id="outline-container-orgheadline298" class="outline-3">
-<h3 id="orgheadline298">Hydras</h3>
-<div class="outline-text-3" id="text-orgheadline298">
+<div id="outline-container-orgheadline299" class="outline-3">
+<h3 id="orgheadline299">Hydras</h3>
+<div class="outline-text-3" id="text-orgheadline299">
 <p>
 There is so much functionality packed into org and those modifier keys are hard to press. Let&rsquo;s leverage <a href="#orgheadline82">Hydras</a>.
 </p>
 </div>
 
-<div id="outline-container-orgheadline299" class="outline-4">
-<h4 id="orgheadline299">Organize trees</h4>
-<div class="outline-text-4" id="text-orgheadline299">
+<div id="outline-container-orgheadline300" class="outline-4">
+<h4 id="orgheadline300">Organize trees</h4>
+<div class="outline-text-4" id="text-orgheadline300">
 <p>
 This is to rearrange sub trees, reorder them, promote, demote and cycle through TODOs.
 </p>
@@ -7275,7 +7024,7 @@ This is to rearrange sub trees, reorder them, promote, demote and cycle through 
 </div>
 </div>
 
-<ul class="org-ul"><li><a id="orgheadline300"></a>Key binding<br  /><div class="outline-text-5" id="text-orgheadline300">
+<ul class="org-ul"><li><a id="orgheadline301"></a>Key binding<br  /><div class="outline-text-5" id="text-orgheadline301">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(<span style="color: #718c00;">bind-keys*</span>
@@ -7284,7 +7033,7 @@ This is to rearrange sub trees, reorder them, promote, demote and cycle through 
 </div>
 </div>
 
-<ul class="org-ul"><li><a id="orgheadline301"></a>Modal binding<br  /><div class="outline-text-6" id="text-orgheadline301">
+<ul class="org-ul"><li><a id="orgheadline302"></a>Modal binding<br  /><div class="outline-text-6" id="text-orgheadline302">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"o o"</span> <span style="color: #3e999f;">"C-z o o"</span>)
@@ -7304,9 +7053,9 @@ Which key modal explanation
 </div></li></ul></li></ul>
 </div>
 
-<div id="outline-container-orgheadline302" class="outline-4">
-<h4 id="orgheadline302">Hydra for task management</h4>
-<div class="outline-text-4" id="text-orgheadline302">
+<div id="outline-container-orgheadline303" class="outline-4">
+<h4 id="orgheadline303">Hydra for task management</h4>
+<div class="outline-text-4" id="text-orgheadline303">
 <p>
 As mentioned <a href="#orgheadline278">before</a>, Org is amazing for TODO lists and has the ability to schedule deadlines too.
 </p>
@@ -7327,7 +7076,7 @@ As mentioned <a href="#orgheadline278">before</a>, Org is amazing for TODO lists
 </div>
 </div>
 
-<ul class="org-ul"><li><a id="orgheadline303"></a>Key binding<br  /><div class="outline-text-5" id="text-orgheadline303">
+<ul class="org-ul"><li><a id="orgheadline304"></a>Key binding<br  /><div class="outline-text-5" id="text-orgheadline304">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(<span style="color: #718c00;">bind-keys*</span>
@@ -7336,7 +7085,7 @@ As mentioned <a href="#orgheadline278">before</a>, Org is amazing for TODO lists
 </div>
 </div>
 
-<ul class="org-ul"><li><a id="orgheadline304"></a>Modal binding<br  /><div class="outline-text-6" id="text-orgheadline304">
+<ul class="org-ul"><li><a id="orgheadline305"></a>Modal binding<br  /><div class="outline-text-6" id="text-orgheadline305">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"o D"</span> <span style="color: #3e999f;">"C-z o D"</span>)
@@ -7356,9 +7105,9 @@ Which key modal explanation
 </div></li></ul></li></ul>
 </div>
 
-<div id="outline-container-orgheadline305" class="outline-4">
-<h4 id="orgheadline305">Check boxes</h4>
-<div class="outline-text-4" id="text-orgheadline305">
+<div id="outline-container-orgheadline306" class="outline-4">
+<h4 id="orgheadline306">Check boxes</h4>
+<div class="outline-text-4" id="text-orgheadline306">
 <p>
 <a href="http://orgmode.org/manual/Checkboxes.html">Org supports checkboxes</a> and my configuration should too.
 </p>
@@ -7379,7 +7128,7 @@ Which key modal explanation
 </div>
 </div>
 
-<ul class="org-ul"><li><a id="orgheadline306"></a>Key binding<br  /><div class="outline-text-5" id="text-orgheadline306">
+<ul class="org-ul"><li><a id="orgheadline307"></a>Key binding<br  /><div class="outline-text-5" id="text-orgheadline307">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(<span style="color: #718c00;">bind-keys*</span>
@@ -7388,7 +7137,7 @@ Which key modal explanation
 </div>
 </div>
 
-<ul class="org-ul"><li><a id="orgheadline307"></a>Modal binding<br  /><div class="outline-text-6" id="text-orgheadline307">
+<ul class="org-ul"><li><a id="orgheadline308"></a>Modal binding<br  /><div class="outline-text-6" id="text-orgheadline308">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"o b"</span> <span style="color: #3e999f;">"C-z o b"</span>)
@@ -7408,9 +7157,9 @@ Which key modal explanation
 </div></li></ul></li></ul>
 </div>
 
-<div id="outline-container-orgheadline308" class="outline-4">
-<h4 id="orgheadline308">Properties</h4>
-<div class="outline-text-4" id="text-orgheadline308">
+<div id="outline-container-orgheadline309" class="outline-4">
+<h4 id="orgheadline309">Properties</h4>
+<div class="outline-text-4" id="text-orgheadline309">
 <p>
 <a href="http://orgmode.org/manual/Properties-and-Columns.html">Org properties</a> are really good places to have meta data. Although I personally don&rsquo;t create many properties manually, it is useful to have this functionality around.
 </p>
@@ -7432,7 +7181,7 @@ Which key modal explanation
 </div>
 </div>
 
-<ul class="org-ul"><li><a id="orgheadline309"></a>Key binding<br  /><div class="outline-text-5" id="text-orgheadline309">
+<ul class="org-ul"><li><a id="orgheadline310"></a>Key binding<br  /><div class="outline-text-5" id="text-orgheadline310">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(<span style="color: #718c00;">bind-keys*</span>
@@ -7441,7 +7190,7 @@ Which key modal explanation
 </div>
 </div>
 
-<ul class="org-ul"><li><a id="orgheadline310"></a>Modal binding<br  /><div class="outline-text-6" id="text-orgheadline310">
+<ul class="org-ul"><li><a id="orgheadline311"></a>Modal binding<br  /><div class="outline-text-6" id="text-orgheadline311">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"o P"</span> <span style="color: #3e999f;">"C-z o P"</span>)
@@ -7461,9 +7210,9 @@ Which key modal explanation
 </div></li></ul></li></ul>
 </div>
 
-<div id="outline-container-orgheadline311" class="outline-4">
-<h4 id="orgheadline311">Clocking functionality</h4>
-<div class="outline-text-4" id="text-orgheadline311">
+<div id="outline-container-orgheadline312" class="outline-4">
+<h4 id="orgheadline312">Clocking functionality</h4>
+<div class="outline-text-4" id="text-orgheadline312">
 <p>
 <a href="http://orgmode.org/manual/Clocking-work-time.html">Of course, Org mode has clocking functionality</a>.
 </p>
@@ -7499,7 +7248,7 @@ Which key modal explanation
 </div>
 </div>
 
-<ul class="org-ul"><li><a id="orgheadline312"></a>Key binding<br  /><div class="outline-text-5" id="text-orgheadline312">
+<ul class="org-ul"><li><a id="orgheadline313"></a>Key binding<br  /><div class="outline-text-5" id="text-orgheadline313">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(<span style="color: #718c00;">bind-keys*</span>
@@ -7508,7 +7257,7 @@ Which key modal explanation
 </div>
 </div>
 
-<ul class="org-ul"><li><a id="orgheadline313"></a>Modal binding<br  /><div class="outline-text-6" id="text-orgheadline313">
+<ul class="org-ul"><li><a id="orgheadline314"></a>Modal binding<br  /><div class="outline-text-6" id="text-orgheadline314">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"o C"</span> <span style="color: #3e999f;">"C-z o C"</span>)
@@ -7528,9 +7277,9 @@ Which key modal explanation
 </div></li></ul></li></ul>
 </div>
 
-<div id="outline-container-orgheadline314" class="outline-4">
-<h4 id="orgheadline314">Table manipulation</h4>
-<div class="outline-text-4" id="text-orgheadline314">
+<div id="outline-container-orgheadline315" class="outline-4">
+<h4 id="orgheadline315">Table manipulation</h4>
+<div class="outline-text-4" id="text-orgheadline315">
 <p>
 Org mode can create <a href="http://orgmode.org/manual/Tables.html">tables</a> with <a href="http://orgmode.org/worg/org-tutorials/org-spreadsheet-intro.html">spreadsheet capabilities</a>.
 </p>
@@ -7572,7 +7321,7 @@ Org mode can create <a href="http://orgmode.org/manual/Tables.html">tables</a> w
 </div>
 </div>
 
-<ul class="org-ul"><li><a id="orgheadline315"></a>Key binding<br  /><div class="outline-text-5" id="text-orgheadline315">
+<ul class="org-ul"><li><a id="orgheadline316"></a>Key binding<br  /><div class="outline-text-5" id="text-orgheadline316">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(<span style="color: #718c00;">bind-keys*</span>
@@ -7581,7 +7330,7 @@ Org mode can create <a href="http://orgmode.org/manual/Tables.html">tables</a> w
 </div>
 </div>
 
-<ul class="org-ul"><li><a id="orgheadline316"></a>Modal binding<br  /><div class="outline-text-6" id="text-orgheadline316">
+<ul class="org-ul"><li><a id="orgheadline317"></a>Modal binding<br  /><div class="outline-text-6" id="text-orgheadline317">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"o m"</span> <span style="color: #3e999f;">"C-z o m"</span>)
@@ -7601,9 +7350,9 @@ Which key modal explanation
 </div></li></ul></li></ul>
 </div>
 
-<div id="outline-container-orgheadline317" class="outline-4">
-<h4 id="orgheadline317">Jump</h4>
-<div class="outline-text-4" id="text-orgheadline317">
+<div id="outline-container-orgheadline318" class="outline-4">
+<h4 id="orgheadline318">Jump</h4>
+<div class="outline-text-4" id="text-orgheadline318">
 <p>
 This is a massively useful hydra to move around in an org file
 </p>
@@ -7638,7 +7387,7 @@ This is a massively useful hydra to move around in an org file
 </div>
 </div>
 
-<ul class="org-ul"><li><a id="orgheadline318"></a>Key binding<br  /><div class="outline-text-5" id="text-orgheadline318">
+<ul class="org-ul"><li><a id="orgheadline319"></a>Key binding<br  /><div class="outline-text-5" id="text-orgheadline319">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(<span style="color: #718c00;">bind-keys*</span>
@@ -7647,7 +7396,7 @@ This is a massively useful hydra to move around in an org file
 </div>
 </div>
 
-<ul class="org-ul"><li><a id="orgheadline319"></a>Modal binding<br  /><div class="outline-text-6" id="text-orgheadline319">
+<ul class="org-ul"><li><a id="orgheadline320"></a>Modal binding<br  /><div class="outline-text-6" id="text-orgheadline320">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"o j"</span> <span style="color: #3e999f;">"C-z o j"</span>)
@@ -7667,9 +7416,9 @@ Which key modal explanation
 </div></li></ul></li></ul>
 </div>
 
-<div id="outline-container-orgheadline320" class="outline-4">
-<h4 id="orgheadline320">Agenda view</h4>
-<div class="outline-text-4" id="text-orgheadline320">
+<div id="outline-container-orgheadline321" class="outline-4">
+<h4 id="orgheadline321">Agenda view</h4>
+<div class="outline-text-4" id="text-orgheadline321">
 <p>
 The agenda menu already has a built-in agenda view but I always forget the keys. So, I need some reminding
 </p>
@@ -7711,7 +7460,7 @@ The agenda menu already has a built-in agenda view but I always forget the keys.
 </div>
 </div>
 
-<ul class="org-ul"><li><a id="orgheadline321"></a>Key binding<br  /><div class="outline-text-5" id="text-orgheadline321">
+<ul class="org-ul"><li><a id="orgheadline322"></a>Key binding<br  /><div class="outline-text-5" id="text-orgheadline322">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(<span style="color: #718c00;">bind-keys*</span>
@@ -7720,7 +7469,7 @@ The agenda menu already has a built-in agenda view but I always forget the keys.
 </div>
 </div>
 
-<ul class="org-ul"><li><a id="orgheadline322"></a>Modal binding<br  /><div class="outline-text-6" id="text-orgheadline322">
+<ul class="org-ul"><li><a id="orgheadline323"></a>Modal binding<br  /><div class="outline-text-6" id="text-orgheadline323">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"o v"</span> <span style="color: #3e999f;">"C-z o v"</span>)
@@ -7740,9 +7489,9 @@ Which key modal explanation
 </div></li></ul></li></ul>
 </div>
 
-<div id="outline-container-orgheadline323" class="outline-4">
-<h4 id="orgheadline323">Org drill</h4>
-<div class="outline-text-4" id="text-orgheadline323">
+<div id="outline-container-orgheadline324" class="outline-4">
+<h4 id="orgheadline324">Org drill</h4>
+<div class="outline-text-4" id="text-orgheadline324">
 <p>
 As <a href="#orgheadline9">previously mentioned</a>, I use the drill package from Org drill and I want to invoke it via different commands at different times.
 </p>
@@ -7767,7 +7516,7 @@ As <a href="#orgheadline9">previously mentioned</a>, I use the drill package fro
 </div>
 </div>
 
-<ul class="org-ul"><li><a id="orgheadline324"></a>Key binding<br  /><div class="outline-text-5" id="text-orgheadline324">
+<ul class="org-ul"><li><a id="orgheadline325"></a>Key binding<br  /><div class="outline-text-5" id="text-orgheadline325">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(<span style="color: #718c00;">bind-keys*</span>
@@ -7776,7 +7525,7 @@ As <a href="#orgheadline9">previously mentioned</a>, I use the drill package fro
 </div>
 </div>
 
-<ul class="org-ul"><li><a id="orgheadline325"></a>Modal binding<br  /><div class="outline-text-6" id="text-orgheadline325">
+<ul class="org-ul"><li><a id="orgheadline326"></a>Modal binding<br  /><div class="outline-text-6" id="text-orgheadline326">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"o p"</span> <span style="color: #3e999f;">"C-z o p"</span>)
@@ -7796,9 +7545,9 @@ Which key modal explanation
 </div></li></ul></li></ul>
 </div>
 
-<div id="outline-container-orgheadline326" class="outline-4">
-<h4 id="orgheadline326">Template expansion</h4>
-<div class="outline-text-4" id="text-orgheadline326">
+<div id="outline-container-orgheadline327" class="outline-4">
+<h4 id="orgheadline327">Template expansion</h4>
+<div class="outline-text-4" id="text-orgheadline327">
 <p>
 Org has this useful feature of <a href="#orgheadline281">template expansion</a> but I have so many templates that I forget their combinations. This first function is a wrapper to call those template expansions.
 </p>
@@ -7827,7 +7576,7 @@ Then, we have the actual hydra.
 <span style="color: #3e999f;"> _A_: date          _l_: label       _S_: subtitle       _e_: elisp src   _Q_: quote                     _L_: latex      _I_: interleave        _q_: quit</span>
 <span style="color: #3e999f;"> _c_: caption       _N_: name        _k_: keywords       _E_: example     _s_: src                       _x_: export     _T_: drill two-sided</span>
 <span style="color: #3e999f;"> _f_: filetags      _o_: options     _M_: minted         _h_: html        _v_: verbatim                  _X_: noexport</span>
-<span style="color: #3e999f;"> _H_: latex header  _t_: title                         _m_: matlab src  _V_: verse</span>
+<span style="color: #3e999f;"> _H_: latex header  _t_: title       _P_: publish        _m_: matlab src  _V_: verse</span>
 <span style="color: #3e999f;"> "</span>
   (<span style="color: #3e999f;">"a"</span> (hot-expand <span style="color: #3e999f;">"&lt;a"</span>))
   (<span style="color: #3e999f;">"A"</span> (hot-expand <span style="color: #3e999f;">"&lt;A"</span>))
@@ -7839,6 +7588,7 @@ Then, we have the actual hydra.
   (<span style="color: #3e999f;">"l"</span> (hot-expand <span style="color: #3e999f;">"&lt;l"</span>))
   (<span style="color: #3e999f;">"n"</span> (hot-expand <span style="color: #3e999f;">"&lt;n"</span>))
   (<span style="color: #3e999f;">"N"</span> (hot-expand <span style="color: #3e999f;">"&lt;N"</span>))
+  (<span style="color: #3e999f;">"P"</span> (hot-expand <span style="color: #3e999f;">"&lt;P"</span>))
   (<span style="color: #3e999f;">"o"</span> (hot-expand <span style="color: #3e999f;">"&lt;o"</span>))
   (<span style="color: #3e999f;">"t"</span> (hot-expand <span style="color: #3e999f;">"&lt;t"</span>))
   (<span style="color: #3e999f;">"C"</span> (hot-expand <span style="color: #3e999f;">"&lt;C"</span>))
@@ -7869,7 +7619,7 @@ Then, we have the actual hydra.
 </div>
 </div>
 
-<ul class="org-ul"><li><a id="orgheadline327"></a>Key binding<br  /><div class="outline-text-5" id="text-orgheadline327">
+<ul class="org-ul"><li><a id="orgheadline328"></a>Key binding<br  /><div class="outline-text-5" id="text-orgheadline328">
 <p>
 This key binding is a little different. The following function invokes the hydra if the &ldquo;&lt;&rdquo; character (which is the key for template expansion) is pressed while in a new line else just inserts &ldquo;&lt;&rdquo;.
 </p>
@@ -7888,9 +7638,9 @@ This key binding is a little different. The following function invokes the hydra
 </div></li></ul>
 </div>
 
-<div id="outline-container-orgheadline328" class="outline-4">
-<h4 id="orgheadline328">Org ref</h4>
-<div class="outline-text-4" id="text-orgheadline328">
+<div id="outline-container-orgheadline329" class="outline-4">
+<h4 id="orgheadline329">Org ref</h4>
+<div class="outline-text-4" id="text-orgheadline329">
 <p>
 These are hydras for all the functionality of <a href="#orgheadline293">org ref</a>. Although the first 3 ones have similar versions defined in the actual package, there were a few inconsistencies when I first installed it. So, I made these hydras. I&rsquo;m keeping them. The first 3 pieces of code are hydras that have alternatives in the package. The last one is the one that will be invoked.
 </p>
@@ -8015,7 +7765,7 @@ These are hydras for all the functionality of <a href="#orgheadline293">org ref<
 </div>
 </div>
 
-<ul class="org-ul"><li><a id="orgheadline329"></a>Key binding<br  /><div class="outline-text-5" id="text-orgheadline329">
+<ul class="org-ul"><li><a id="orgheadline330"></a>Key binding<br  /><div class="outline-text-5" id="text-orgheadline330">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(<span style="color: #718c00;">bind-keys*</span>
@@ -8024,7 +7774,7 @@ These are hydras for all the functionality of <a href="#orgheadline293">org ref<
 </div>
 </div>
 
-<ul class="org-ul"><li><a id="orgheadline330"></a>Modal binding<br  /><div class="outline-text-6" id="text-orgheadline330">
+<ul class="org-ul"><li><a id="orgheadline331"></a>Modal binding<br  /><div class="outline-text-6" id="text-orgheadline331">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"o r"</span> <span style="color: #3e999f;">"C-z o r"</span>)
@@ -8046,12 +7796,12 @@ Which key modal explanation
 </div>
 </div>
 
-<div id="outline-container-orgheadline341" class="outline-2">
-<h2 id="orgheadline341">Version control</h2>
-<div class="outline-text-2" id="text-orgheadline341">
-</div><div id="outline-container-orgheadline331" class="outline-3">
-<h3 id="orgheadline331">Magit</h3>
-<div class="outline-text-3" id="text-orgheadline331">
+<div id="outline-container-orgheadline342" class="outline-2">
+<h2 id="orgheadline342">Version control</h2>
+<div class="outline-text-2" id="text-orgheadline342">
+</div><div id="outline-container-orgheadline332" class="outline-3">
+<h3 id="orgheadline332">Magit</h3>
+<div class="outline-text-3" id="text-orgheadline332">
 <p>
 <a href="https://magit.vc">The best interface to Git ever</a>. Enough said.
 </p>
@@ -8066,9 +7816,7 @@ Which key modal explanation
 </div>
 </div>
 
-<div id="outline-container-orgheadline332" class="outline-4">
-<h4 id="orgheadline332">Modal binding</h4>
-<div class="outline-text-4" id="text-orgheadline332">
+<ul class="org-ul"><li><a id="orgheadline333"></a>Modal binding<br  /><div class="outline-text-5" id="text-orgheadline333">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"SPC e"</span> <span style="color: #3e999f;">"C-z SPC e"</span>)
@@ -8087,13 +7835,12 @@ Which key modal explanation
   <span style="color: #3e999f;">"g b"</span>   <span style="color: #3e999f;">"git blame"</span>)
 </pre>
 </div>
-</div>
-</div>
+</div></li></ul>
 </div>
 
-<div id="outline-container-orgheadline333" class="outline-3">
-<h3 id="orgheadline333">Highlight diffs</h3>
-<div class="outline-text-3" id="text-orgheadline333">
+<div id="outline-container-orgheadline334" class="outline-3">
+<h3 id="orgheadline334">Highlight diffs</h3>
+<div class="outline-text-3" id="text-orgheadline334">
 <p>
 <a href="https://github.com/dgutov/diff-hl">Highlight git diffs on the fly</a>.
 </p>
@@ -8124,9 +7871,7 @@ Which key modal explanation
 </div>
 </div>
 
-<div id="outline-container-orgheadline334" class="outline-4">
-<h4 id="orgheadline334">Modal binding</h4>
-<div class="outline-text-4" id="text-orgheadline334">
+<ul class="org-ul"><li><a id="orgheadline335"></a>Modal binding<br  /><div class="outline-text-5" id="text-orgheadline335">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"] h"</span> <span style="color: #3e999f;">"C-z ] h"</span>)
@@ -8153,13 +7898,12 @@ Which key modal explanation
   <span style="color: #3e999f;">"a h"</span> <span style="color: #3e999f;">"select a git hunk"</span>)
 </pre>
 </div>
-</div>
-</div>
+</div></li></ul>
 </div>
 
-<div id="outline-container-orgheadline335" class="outline-3">
-<h3 id="orgheadline335">Git time machine</h3>
-<div class="outline-text-3" id="text-orgheadline335">
+<div id="outline-container-orgheadline336" class="outline-3">
+<h3 id="orgheadline336">Git time machine</h3>
+<div class="outline-text-3" id="text-orgheadline336">
 <p>
 The ability to move to past versions of the current file, <a href="https://github.com/pidu/git-timemachine">like a time machine</a>.
 </p>
@@ -8176,9 +7920,7 @@ The ability to move to past versions of the current file, <a href="https://githu
 </div>
 </div>
 
-<div id="outline-container-orgheadline336" class="outline-4">
-<h4 id="orgheadline336">Modal binding</h4>
-<div class="outline-text-4" id="text-orgheadline336">
+<ul class="org-ul"><li><a id="orgheadline337"></a>Modal binding<br  /><div class="outline-text-5" id="text-orgheadline337">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"g l"</span> <span style="color: #3e999f;">"C-z g l"</span>)
@@ -8197,13 +7939,12 @@ Which key modal explanation
   <span style="color: #3e999f;">"g L"</span> <span style="color: #3e999f;">"time machine switch branch"</span>)
 </pre>
 </div>
-</div>
-</div>
+</div></li></ul>
 </div>
 
-<div id="outline-container-orgheadline337" class="outline-3">
-<h3 id="orgheadline337">Gists</h3>
-<div class="outline-text-3" id="text-orgheadline337">
+<div id="outline-container-orgheadline338" class="outline-3">
+<h3 id="orgheadline338">Gists</h3>
+<div class="outline-text-3" id="text-orgheadline338">
 <p>
 <a href="https://help.github.com/articles/about-gists/">Gists</a> is a nice feature of GitHub to share code easily. <a href="https://github.com/mhayashi1120/yagist.el">This package</a> makes it easy to post code into a Gist.
 </p>
@@ -8222,9 +7963,7 @@ Which key modal explanation
 </div>
 </div>
 
-<div id="outline-container-orgheadline338" class="outline-4">
-<h4 id="orgheadline338">Modal binding</h4>
-<div class="outline-text-4" id="text-orgheadline338">
+<ul class="org-ul"><li><a id="orgheadline339"></a>Modal binding<br  /><div class="outline-text-5" id="text-orgheadline339">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"g p"</span> <span style="color: #3e999f;">"C-z g p"</span>)
@@ -8243,13 +7982,12 @@ Which key modal explanation
   <span style="color: #3e999f;">"g P"</span> <span style="color: #3e999f;">"gist private"</span>)
 </pre>
 </div>
-</div>
-</div>
+</div></li></ul>
 </div>
 
-<div id="outline-container-orgheadline339" class="outline-3">
-<h3 id="orgheadline339">Browse remote files</h3>
-<div class="outline-text-3" id="text-orgheadline339">
+<div id="outline-container-orgheadline340" class="outline-3">
+<h3 id="orgheadline340">Browse remote files</h3>
+<div class="outline-text-3" id="text-orgheadline340">
 <p>
 <a href="https://github.com/rmuslimov/browse-at-remote">browse-at-remote</a> is a very handy package to view the file/region on the actual Github/Gitlab/Bitbucket page.
 </p>
@@ -8263,9 +8001,7 @@ Which key modal explanation
 </div>
 </div>
 
-<div id="outline-container-orgheadline340" class="outline-4">
-<h4 id="orgheadline340">Modal binding</h4>
-<div class="outline-text-4" id="text-orgheadline340">
+<ul class="org-ul"><li><a id="orgheadline341"></a>Modal binding<br  /><div class="outline-text-5" id="text-orgheadline341">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"g i"</span> <span style="color: #3e999f;">"C-z g i"</span>)
@@ -8282,17 +8018,16 @@ Which key modal explanation
   <span style="color: #3e999f;">"g i"</span> <span style="color: #3e999f;">"browse file/region remote"</span>)
 </pre>
 </div>
-</div>
-</div>
+</div></li></ul>
 </div>
 </div>
 
-<div id="outline-container-orgheadline420" class="outline-2">
-<h2 id="orgheadline420">Programming</h2>
-<div class="outline-text-2" id="text-orgheadline420">
-</div><div id="outline-container-orgheadline342" class="outline-3">
-<h3 id="orgheadline342">Editorconfig</h3>
-<div class="outline-text-3" id="text-orgheadline342">
+<div id="outline-container-orgheadline421" class="outline-2">
+<h2 id="orgheadline421">Programming</h2>
+<div class="outline-text-2" id="text-orgheadline421">
+</div><div id="outline-container-orgheadline343" class="outline-3">
+<h3 id="orgheadline343">Editorconfig</h3>
+<div class="outline-text-3" id="text-orgheadline343">
 <p>
 <a href="http://editorconfig.org">Editorconfig</a> is a small utility that is helpful in keeping the code clean as it takes care of the necessary indentation and can be used across editors.
 </p>
@@ -8309,9 +8044,9 @@ Which key modal explanation
 </div>
 </div>
 
-<div id="outline-container-orgheadline343" class="outline-3">
-<h3 id="orgheadline343">YAML mode</h3>
-<div class="outline-text-3" id="text-orgheadline343">
+<div id="outline-container-orgheadline344" class="outline-3">
+<h3 id="orgheadline344">YAML mode</h3>
+<div class="outline-text-3" id="text-orgheadline344">
 <p>
 YAML is a plain text file format used by many places to specify meta data. This provides some syntax highlighting for that.
 </p>
@@ -8326,9 +8061,9 @@ YAML is a plain text file format used by many places to specify meta data. This 
 </div>
 </div>
 
-<div id="outline-container-orgheadline344" class="outline-3">
-<h3 id="orgheadline344">Start services</h3>
-<div class="outline-text-3" id="text-orgheadline344">
+<div id="outline-container-orgheadline345" class="outline-3">
+<h3 id="orgheadline345">Start services</h3>
+<div class="outline-text-3" id="text-orgheadline345">
 <p>
 I often need to start some service/program in the background and instead of dropping down to the terminal every time, <a href="https://github.com/rejeep/prodigy.el">prodigy</a> provides a better alternative to define a service, start and stop from within Emacs.
 </p>
@@ -8369,9 +8104,7 @@ I often need to start some service/program in the background and instead of drop
 </div>
 </div>
 
-<div id="outline-container-orgheadline345" class="outline-4">
-<h4 id="orgheadline345">Modal binding</h4>
-<div class="outline-text-4" id="text-orgheadline345">
+<ul class="org-ul"><li><a id="orgheadline346"></a>Modal binding<br  /><div class="outline-text-5" id="text-orgheadline346">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"m b"</span> <span style="color: #3e999f;">"C-z m b"</span>)
@@ -8389,33 +8122,32 @@ Which key modal explanation
   <span style="color: #3e999f;">"m b"</span> <span style="color: #3e999f;">"background code"</span>)
 </pre>
 </div>
+</div></li></ul>
 </div>
+
+<div id="outline-container-orgheadline354" class="outline-3">
+<h3 id="orgheadline354">Information/documentation at point</h3>
+<div class="outline-text-3" id="text-orgheadline354">
+<p>
+These are a set of programming major mode specific bindings. This will check for documentation/information about the symbol/variable/function at point and try to get information if possible. Else, it will default to a Google search. This depends on all the specific packages used for <a href="#orgheadline347">Emacs lisp</a>, <a href="#orgheadline348">C/C++</a>, <a href="#orgheadline349">Python</a>, <a href="#orgheadline350">Statistics</a>, <a href="#orgheadline351">MATLAB</a>, <a href="#orgheadline352">Web</a> and <a href="#orgheadline109">Dash</a>. Also, <a href="#orgheadline353">just like auto-completion</a>, I bind this functionality to <code>C-c</code> and not <code>C-z</code>. For more functionality, use the respective language specific <a href="#orgheadline82">Hydras</a>.
+</p>
 </div>
 </div>
 
-<div id="outline-container-orgheadline353" class="outline-3">
-<h3 id="orgheadline353">Information/documentation at point</h3>
-<div class="outline-text-3" id="text-orgheadline353">
+<div id="outline-container-orgheadline356" class="outline-3">
+<h3 id="orgheadline356">Source/symbol at point</h3>
+<div class="outline-text-3" id="text-orgheadline356">
 <p>
-These are a set of programming major mode specific bindings. This will check for documentation/information about the symbol/variable/function at point and try to get information if possible. Else, it will default to a Google search. This depends on all the specific packages used for <a href="#orgheadline346">Emacs lisp</a>, <a href="#orgheadline347">C/C++</a>, <a href="#orgheadline348">Python</a>, <a href="#orgheadline349">Statistics</a>, <a href="#orgheadline350">MATLAB</a>, <a href="#orgheadline351">Web</a> and <a href="#orgheadline109">Dash</a>. Also, <a href="#orgheadline352">just like auto-completion</a>, I bind this functionality to <code>C-c</code> and not <code>C-z</code>. For more functionality, use the respective language specific <a href="#orgheadline82">Hydras</a>.
+These are a set of programming major mode specific bindings that will check for the definition/source of the function/variable at point and try to go to it. It will default to a project wide search for other unsupported programming languages. This depends on all the specific packages used for <a href="#orgheadline355">Emacs Lisp</a>, <a href="#orgheadline348">C/C++</a>, <a href="#orgheadline349">Python</a>, <a href="#orgheadline350">Statistics</a>, <a href="#orgheadline351">MATLAB</a>, <a href="#orgheadline352">Web</a> and <a href="#orgheadline84">Helm projectile</a>. For more functionality, use the respective language specific <a href="#orgheadline82">Hydras</a>.
 </p>
 </div>
 </div>
 
 <div id="outline-container-orgheadline355" class="outline-3">
-<h3 id="orgheadline355">Source/symbol at point</h3>
+<h3 id="orgheadline355">Emacs Lisp</h3>
 <div class="outline-text-3" id="text-orgheadline355">
 <p>
-These are a set of programming major mode specific bindings that will check for the definition/source of the function/variable at point and try to go to it. It will default to a project wide search for other unsupported programming languages. This depends on all the specific packages used for <a href="#orgheadline354">Emacs Lisp</a>, <a href="#orgheadline347">C/C++</a>, <a href="#orgheadline348">Python</a>, <a href="#orgheadline349">Statistics</a>, <a href="#orgheadline350">MATLAB</a>, <a href="#orgheadline351">Web</a> and <a href="#orgheadline84">Helm projectile</a>. For more functionality, use the respective language specific <a href="#orgheadline82">Hydras</a>.
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgheadline354" class="outline-3">
-<h3 id="orgheadline354">Emacs Lisp</h3>
-<div class="outline-text-3" id="text-orgheadline354">
-<p>
-I haven&rsquo;t started programming seriously in Emacs Lisp to know the ways around yet but this is what I have at present. First let&rsquo;s configure the Emacs Lisp mode to give us the auto-loaded bindings for <code>I</code> and <code>S</code> as mentioned the previous two sections about <a href="#orgheadline355">Source/symbol at point</a> and <a href="#orgheadline353">Information/documentation at point</a>.
+I haven&rsquo;t started programming seriously in Emacs Lisp to know the ways around yet but this is what I have at present. First let&rsquo;s configure the Emacs Lisp mode to give us the auto-loaded bindings for <code>I</code> and <code>S</code> as mentioned the previous two sections about <a href="#orgheadline356">Source/symbol at point</a> and <a href="#orgheadline354">Information/documentation at point</a>.
 </p>
 
 <div class="org-src-container">
@@ -8429,9 +8161,9 @@ I haven&rsquo;t started programming seriously in Emacs Lisp to know the ways aro
 </div>
 </div>
 
-<div id="outline-container-orgheadline356" class="outline-4">
-<h4 id="orgheadline356">Macro step</h4>
-<div class="outline-text-4" id="text-orgheadline356">
+<div id="outline-container-orgheadline357" class="outline-4">
+<h4 id="orgheadline357">Macro step</h4>
+<div class="outline-text-4" id="text-orgheadline357">
 <p>
 Emacs has provisions for a macro and <a href="https://github.com/joddie/macrostep">this package</a> interactively expands them.
 </p>
@@ -8447,9 +8179,9 @@ Emacs has provisions for a macro and <a href="https://github.com/joddie/macroste
 </div>
 </div>
 
-<div id="outline-container-orgheadline357" class="outline-4">
-<h4 id="orgheadline357">Auto compile</h4>
-<div class="outline-text-4" id="text-orgheadline357">
+<div id="outline-container-orgheadline358" class="outline-4">
+<h4 id="orgheadline358">Auto compile</h4>
+<div class="outline-text-4" id="text-orgheadline358">
 <p>
 <a href="https://github.com/tarsius/auto-compile">Auto compile</a> byte <i>recompiles</i> files if they are byte-compiled already.
 </p>
@@ -8464,27 +8196,12 @@ Emacs has provisions for a macro and <a href="https://github.com/joddie/macroste
 </div>
 </div>
 
-<div id="outline-container-orgheadline347" class="outline-3">
-<h3 id="orgheadline347">C/C++</h3>
-<div class="outline-text-3" id="text-orgheadline347">
+<div id="outline-container-orgheadline348" class="outline-3">
+<h3 id="orgheadline348">C/C++</h3>
+<div class="outline-text-3" id="text-orgheadline348">
 <p>
-I use C++ a lot while programming and this section tries to convert Emacs into a good environment for coding in C++. For a good introduction, <a href="https://www.youtube.com/watch?v=5FQwQ0QWBTU">take a look at this video</a>. Let&rsquo;s make sure we have some default bindings before we start. Note that these bindings depend on <a href="#orgheadline358">Rtags</a> package.
+I use C++ a lot while programming and this section tries to convert Emacs into a good environment for coding in C++. For a good introduction, <a href="https://www.youtube.com/watch?v=5FQwQ0QWBTU">take a look at this video</a>. Let&rsquo;s make sure we have some default bindings before we start. Note that these bindings depend on <a href="#orgheadline359">Rtags</a> package.
 </p>
-</div>
-
-<div id="outline-container-orgheadline359" class="outline-4">
-<h4 id="orgheadline359">Consider header files to be C++</h4>
-<div class="outline-text-4" id="text-orgheadline359">
-<p>
-I usually don&rsquo;t code in C that much. Therefore, let&rsquo;s make sure Emacs considers &ldquo;.h&rdquo; files as C++ header files.
-</p>
-
-<div class="org-src-container">
-
-<pre class="src src-emacs-lisp">(add-to-list 'auto-mode-alist '(<span style="color: #3e999f;">"\\.h\\'"</span> . c++-mode))
-</pre>
-</div>
-</div>
 </div>
 
 <div id="outline-container-orgheadline360" class="outline-4">
@@ -8503,8 +8220,23 @@ I usually don&rsquo;t code in C that much. Therefore, let&rsquo;s make sure Emac
 </div>
 
 <div id="outline-container-orgheadline361" class="outline-4">
-<h4 id="orgheadline361">Compile commands</h4>
+<h4 id="orgheadline361">Consider header files to be C++</h4>
 <div class="outline-text-4" id="text-orgheadline361">
+<p>
+I usually don&rsquo;t code in C that much. Therefore, let&rsquo;s make sure Emacs considers &ldquo;.h&rdquo; files as C++ header files.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp">(add-to-list 'auto-mode-alist '(<span style="color: #3e999f;">"\\.h\\'"</span> . c++-mode))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline362" class="outline-4">
+<h4 id="orgheadline362">Compile commands</h4>
+<div class="outline-text-4" id="text-orgheadline362">
 <p>
 The <a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Compilation.html">compile command</a> bundled with Emacs is super useful. I have defined a few functions that help me compile things quickly.
 </p>
@@ -8556,9 +8288,9 @@ The <a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Compilati
 </div>
 </div>
 
-<div id="outline-container-orgheadline358" class="outline-4">
-<h4 id="orgheadline358">Rtags</h4>
-<div class="outline-text-4" id="text-orgheadline358">
+<div id="outline-container-orgheadline359" class="outline-4">
+<h4 id="orgheadline359">Rtags</h4>
+<div class="outline-text-4" id="text-orgheadline359">
 <p>
 <a href="https://github.com/Andersbakken/rtags">Rtags</a> is an industrial grade indexer based on clang and its integration with Emacs is quite amazing.
 </p>
@@ -8579,9 +8311,9 @@ The <a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Compilati
 </div>
 </div>
 
-<div id="outline-container-orgheadline362" class="outline-4">
-<h4 id="orgheadline362">Cmake IDE</h4>
-<div class="outline-text-4" id="text-orgheadline362">
+<div id="outline-container-orgheadline363" class="outline-4">
+<h4 id="orgheadline363">Cmake IDE</h4>
+<div class="outline-text-4" id="text-orgheadline363">
 <p>
 <a href="https://github.com/atilaneves/cmake-ide">This</a> is a package that sets up all the necessary configuration to work with C/C++.
 </p>
@@ -8599,11 +8331,11 @@ The <a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Compilati
 </div>
 </div>
 
-<div id="outline-container-orgheadline348" class="outline-3">
-<h3 id="orgheadline348">Python</h3>
-<div class="outline-text-3" id="text-orgheadline348">
+<div id="outline-container-orgheadline349" class="outline-3">
+<h3 id="orgheadline349">Python</h3>
+<div class="outline-text-3" id="text-orgheadline349">
 <p>
-This is my python configuration. Similar to Emacs Lisp and C++, let&rsquo;s create some nice bindings that depend on <a href="#orgheadline363">Anaconda mode</a>.
+This is my python configuration. Similar to Emacs Lisp and C++, let&rsquo;s create some nice bindings that depend on <a href="#orgheadline364">Anaconda mode</a>.
 </p>
 
 <p>
@@ -8622,9 +8354,9 @@ Let&rsquo;s use use-package to first manage python mode itself.
 </div>
 </div>
 
-<div id="outline-container-orgheadline363" class="outline-4">
-<h4 id="orgheadline363">Anaconda mode</h4>
-<div class="outline-text-4" id="text-orgheadline363">
+<div id="outline-container-orgheadline364" class="outline-4">
+<h4 id="orgheadline364">Anaconda mode</h4>
+<div class="outline-text-4" id="text-orgheadline364">
 <p>
 <a href="https://github.com/proofit404/anaconda-mode">Anaconda mode</a> provides python code navigation and completion but you need to install a few dependencies first from <code>pip</code> first or it will install on its own.
 </p>
@@ -8647,9 +8379,9 @@ Let&rsquo;s use use-package to first manage python mode itself.
 </div>
 </div>
 
-<div id="outline-container-orgheadline364" class="outline-4">
-<h4 id="orgheadline364">Virtual environment support</h4>
-<div class="outline-text-4" id="text-orgheadline364">
+<div id="outline-container-orgheadline365" class="outline-4">
+<h4 id="orgheadline365">Virtual environment support</h4>
+<div class="outline-text-4" id="text-orgheadline365">
 <p>
 <a href="https://github.com/proofit404/pyenv-mode">This</a> is a companion package in case I need to work with <a href="http://docs.python-guide.org/en/latest/dev/virtualenvs/">virtual environments</a>.
 </p>
@@ -8666,9 +8398,9 @@ Let&rsquo;s use use-package to first manage python mode itself.
 </div>
 </div>
 
-<div id="outline-container-orgheadline365" class="outline-4">
-<h4 id="orgheadline365">Python formatting</h4>
-<div class="outline-text-4" id="text-orgheadline365">
+<div id="outline-container-orgheadline366" class="outline-4">
+<h4 id="orgheadline366">Python formatting</h4>
+<div class="outline-text-4" id="text-orgheadline366">
 <p>
 I format python occasionally using <a href="https://github.com/paetzke/py-yapf.el">py-yapf</a> which uses Google&rsquo;s <a href="https://github.com/google/yapf">yapf</a> formatter.
 </p>
@@ -8684,9 +8416,9 @@ I format python occasionally using <a href="https://github.com/paetzke/py-yapf.e
 </div>
 </div>
 
-<div id="outline-container-orgheadline366" class="outline-4">
-<h4 id="orgheadline366">Testing</h4>
-<div class="outline-text-4" id="text-orgheadline366">
+<div id="outline-container-orgheadline367" class="outline-4">
+<h4 id="orgheadline367">Testing</h4>
+<div class="outline-text-4" id="text-orgheadline367">
 <p>
 I haven&rsquo;t started using this package but <a href="https://github.com/ionrock/pytest-el">it helps in writing tests</a> which I intend to.
 </p>
@@ -8710,9 +8442,9 @@ I haven&rsquo;t started using this package but <a href="https://github.com/ionro
 </div>
 </div>
 
-<div id="outline-container-orgheadline349" class="outline-3">
-<h3 id="orgheadline349">Statistics</h3>
-<div class="outline-text-3" id="text-orgheadline349">
+<div id="outline-container-orgheadline350" class="outline-3">
+<h3 id="orgheadline350">Statistics</h3>
+<div class="outline-text-3" id="text-orgheadline350">
 <p>
 I rarely use <a href="https://www.r-project.org/about.html">R</a> and occasionally <a href="http://julialang.org">julia</a> but since this is just one package, I might as well install it. It might come in handy. For now, I have set it up only for Julia.
 </p>
@@ -8755,9 +8487,9 @@ The following is a helper function to open Julia shell in a vertical split.
 </div>
 </div>
 
-<div id="outline-container-orgheadline350" class="outline-3">
-<h3 id="orgheadline350">MATLAB</h3>
-<div class="outline-text-3" id="text-orgheadline350">
+<div id="outline-container-orgheadline351" class="outline-3">
+<h3 id="orgheadline351">MATLAB</h3>
+<div class="outline-text-3" id="text-orgheadline351">
 <p>
 I use <a href="http://www.mathworks.com/products/matlab/">MATLAB</a> pretty often when I want to quickly type out some code and I use a OS X computer in my lab and have to manually set the path.
 </p>
@@ -8794,17 +8526,17 @@ The following is a helper function to open a MATLAB command line in a vertical s
 </div>
 </div>
 
-<div id="outline-container-orgheadline351" class="outline-3">
-<h3 id="orgheadline351">Web</h3>
-<div class="outline-text-3" id="text-orgheadline351">
+<div id="outline-container-orgheadline352" class="outline-3">
+<h3 id="orgheadline352">Web</h3>
+<div class="outline-text-3" id="text-orgheadline352">
 <p>
-I have just recently started dabbling in HTML/CSS and JavaScript. So, this is an initial configuration I have come up with. The keybindings for <a href="#orgheadline353">Information/documentation at point</a> and <a href="#orgheadline355">Source/symbol at point</a> are left untouched for this mode as of now. If it has to be added in the future, it will depend on <a href="#orgheadline367">Tern</a> for navigation.
+I have just recently started dabbling in HTML/CSS and JavaScript. So, this is an initial configuration I have come up with. The keybindings for <a href="#orgheadline354">Information/documentation at point</a> and <a href="#orgheadline356">Source/symbol at point</a> are left untouched for this mode as of now. If it has to be added in the future, it will depend on <a href="#orgheadline368">Tern</a> for navigation.
 </p>
 </div>
 
-<div id="outline-container-orgheadline368" class="outline-4">
-<h4 id="orgheadline368">Web mode</h4>
-<div class="outline-text-4" id="text-orgheadline368">
+<div id="outline-container-orgheadline369" class="outline-4">
+<h4 id="orgheadline369">Web mode</h4>
+<div class="outline-text-4" id="text-orgheadline369">
 <p>
 <a href="http://web-mode.org">This</a> is a fully featured, supposedly awesome, package to edit HTML in Emacs.
 </p>
@@ -8819,9 +8551,9 @@ I have just recently started dabbling in HTML/CSS and JavaScript. So, this is an
 </div>
 </div>
 
-<div id="outline-container-orgheadline369" class="outline-4">
-<h4 id="orgheadline369">JavaScript syntax highlighting</h4>
-<div class="outline-text-4" id="text-orgheadline369">
+<div id="outline-container-orgheadline370" class="outline-4">
+<h4 id="orgheadline370">JavaScript syntax highlighting</h4>
+<div class="outline-text-4" id="text-orgheadline370">
 <p>
 <a href="https://github.com/thomblake/js3-mode">This</a> improves on the built-in JavaScript syntax highlighting.
 </p>
@@ -8836,9 +8568,9 @@ I have just recently started dabbling in HTML/CSS and JavaScript. So, this is an
 </div>
 </div>
 
-<div id="outline-container-orgheadline370" class="outline-4">
-<h4 id="orgheadline370">Coffeescript syntax highlighting</h4>
-<div class="outline-text-4" id="text-orgheadline370">
+<div id="outline-container-orgheadline371" class="outline-4">
+<h4 id="orgheadline371">Coffeescript syntax highlighting</h4>
+<div class="outline-text-4" id="text-orgheadline371">
 <p>
 I use coffeescript only to edit my <a href="http://tracesof.net/uebersicht/">ubersicht</a> configuration files.
 </p>
@@ -8853,9 +8585,9 @@ I use coffeescript only to edit my <a href="http://tracesof.net/uebersicht/">ube
 </div>
 </div>
 
-<div id="outline-container-orgheadline371" class="outline-4">
-<h4 id="orgheadline371">SCSS syntax highlighting</h4>
-<div class="outline-text-4" id="text-orgheadline371">
+<div id="outline-container-orgheadline372" class="outline-4">
+<h4 id="orgheadline372">SCSS syntax highlighting</h4>
+<div class="outline-text-4" id="text-orgheadline372">
 <p>
 Occasionally I&rsquo;m forced to open SCSS files.
 </p>
@@ -8870,9 +8602,9 @@ Occasionally I&rsquo;m forced to open SCSS files.
 </div>
 </div>
 
-<div id="outline-container-orgheadline372" class="outline-4">
-<h4 id="orgheadline372">JSON mode</h4>
-<div class="outline-text-4" id="text-orgheadline372">
+<div id="outline-container-orgheadline373" class="outline-4">
+<h4 id="orgheadline373">JSON mode</h4>
+<div class="outline-text-4" id="text-orgheadline373">
 <p>
 Syntax highlighting for <code>json</code> files.
 </p>
@@ -8887,9 +8619,9 @@ Syntax highlighting for <code>json</code> files.
 </div>
 </div>
 
-<div id="outline-container-orgheadline373" class="outline-4">
-<h4 id="orgheadline373">Nginx syntax highlighting</h4>
-<div class="outline-text-4" id="text-orgheadline373">
+<div id="outline-container-orgheadline374" class="outline-4">
+<h4 id="orgheadline374">Nginx syntax highlighting</h4>
+<div class="outline-text-4" id="text-orgheadline374">
 <p>
 I haven&rsquo;t used <a href="https://www.nginx.com">nginx</a> much but useful to have it.
 </p>
@@ -8904,9 +8636,9 @@ I haven&rsquo;t used <a href="https://www.nginx.com">nginx</a> much but useful t
 </div>
 </div>
 
-<div id="outline-container-orgheadline374" class="outline-4">
-<h4 id="orgheadline374">Write fast HTML</h4>
-<div class="outline-text-4" id="text-orgheadline374">
+<div id="outline-container-orgheadline375" class="outline-4">
+<h4 id="orgheadline375">Write fast HTML</h4>
+<div class="outline-text-4" id="text-orgheadline375">
 <p>
 <a href="https://github.com/smihica/emmet-mode">Emmet</a> is very useful while writing HTML. Look in to the guide for more details as to how to use it.
 </p>
@@ -8926,9 +8658,9 @@ I haven&rsquo;t used <a href="https://www.nginx.com">nginx</a> much but useful t
 </div>
 </div>
 
-<div id="outline-container-orgheadline375" class="outline-4">
-<h4 id="orgheadline375">Render HTML pages real time</h4>
-<div class="outline-text-4" id="text-orgheadline375">
+<div id="outline-container-orgheadline376" class="outline-4">
+<h4 id="orgheadline376">Render HTML pages real time</h4>
+<div class="outline-text-4" id="text-orgheadline376">
 <p>
 <a href="https://github.com/skeeto/impatient-mode">This</a> package renders HTML in the web browser as you type.
 </p>
@@ -8944,9 +8676,9 @@ I haven&rsquo;t used <a href="https://www.nginx.com">nginx</a> much but useful t
 </div>
 </div>
 
-<div id="outline-container-orgheadline367" class="outline-4">
-<h4 id="orgheadline367">JavaScript navigation</h4>
-<div class="outline-text-4" id="text-orgheadline367">
+<div id="outline-container-orgheadline368" class="outline-4">
+<h4 id="orgheadline368">JavaScript navigation</h4>
+<div class="outline-text-4" id="text-orgheadline368">
 <p>
 <a href="http://ternjs.net">Tern</a> describes itself as a code analysis engine and <a href="https://github.com/ternjs/tern">this</a> is an implementation to bring it into Emacs.
 </p>
@@ -8965,9 +8697,9 @@ I haven&rsquo;t used <a href="https://www.nginx.com">nginx</a> much but useful t
 </div>
 </div>
 
-<div id="outline-container-orgheadline376" class="outline-4">
-<h4 id="orgheadline376">Skewer JS REPL</h4>
-<div class="outline-text-4" id="text-orgheadline376">
+<div id="outline-container-orgheadline377" class="outline-4">
+<h4 id="orgheadline377">Skewer JS REPL</h4>
+<div class="outline-text-4" id="text-orgheadline377">
 <p>
 <a href="https://github.com/skeeto/skewer-mode">Skewer</a> is a JS REPL for JavaScript evaluation.
 </p>
@@ -8996,9 +8728,9 @@ I haven&rsquo;t used <a href="https://www.nginx.com">nginx</a> much but useful t
 </div>
 </div>
 
-<div id="outline-container-orgheadline377" class="outline-4">
-<h4 id="orgheadline377">Node JS REPL</h4>
-<div class="outline-text-4" id="text-orgheadline377">
+<div id="outline-container-orgheadline378" class="outline-4">
+<h4 id="orgheadline378">Node JS REPL</h4>
+<div class="outline-text-4" id="text-orgheadline378">
 <p>
 Bring <a href="https://nodejs.org/en/">node js</a> to <a href="https://github.com/abicky/nodejs-repl.el">Emacs</a>.
 </p>
@@ -9032,9 +8764,9 @@ Managing node versions with <a href="https://github.com/rejeep/nvm.el">nvm.el</a
 </div>
 </div>
 
-<div id="outline-container-orgheadline378" class="outline-4">
-<h4 id="orgheadline378">Snatch JSON</h4>
-<div class="outline-text-4" id="text-orgheadline378">
+<div id="outline-container-orgheadline379" class="outline-4">
+<h4 id="orgheadline379">Snatch JSON</h4>
+<div class="outline-text-4" id="text-orgheadline379">
 <p>
 Get the path to JSON element <a href="https://github.com/Sterlingg/json-snatcher">in Emacs</a>.
 </p>
@@ -9049,9 +8781,9 @@ Get the path to JSON element <a href="https://github.com/Sterlingg/json-snatcher
 </div>
 </div>
 
-<div id="outline-container-orgheadline379" class="outline-4">
-<h4 id="orgheadline379">Beautify</h4>
-<div class="outline-text-4" id="text-orgheadline379">
+<div id="outline-container-orgheadline380" class="outline-4">
+<h4 id="orgheadline380">Beautify</h4>
+<div class="outline-text-4" id="text-orgheadline380">
 <p>
 I&rsquo;m not sure how useful <a href="https://github.com/yasuyk/web-beautify">this</a> is but just like I have formatters for others, I&rsquo;m keeping this.
 </p>
@@ -9072,9 +8804,9 @@ I&rsquo;m not sure how useful <a href="https://github.com/yasuyk/web-beautify">t
 </div>
 </div>
 
-<div id="outline-container-orgheadline380" class="outline-3">
-<h3 id="orgheadline380">Error checking</h3>
-<div class="outline-text-3" id="text-orgheadline380">
+<div id="outline-container-orgheadline381" class="outline-3">
+<h3 id="orgheadline381">Error checking</h3>
+<div class="outline-text-3" id="text-orgheadline381">
 <p>
 <a href="http://www.flycheck.org/en/latest/">Flycheck</a> is awesome.
 </p>
@@ -9094,9 +8826,7 @@ I&rsquo;m not sure how useful <a href="https://github.com/yasuyk/web-beautify">t
 </div>
 </div>
 
-<div id="outline-container-orgheadline381" class="outline-4">
-<h4 id="orgheadline381">Modal binding</h4>
-<div class="outline-text-4" id="text-orgheadline381">
+<ul class="org-ul"><li><a id="orgheadline382"></a>Modal binding<br  /><div class="outline-text-5" id="text-orgheadline382">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"] l"</span>   <span style="color: #3e999f;">"C-z ] l"</span>)
@@ -9117,13 +8847,12 @@ Which key modal explanation
   <span style="color: #3e999f;">"SPC l"</span> <span style="color: #3e999f;">"list errors"</span>)
 </pre>
 </div>
-</div>
-</div>
+</div></li></ul>
 </div>
 
-<div id="outline-container-orgheadline352" class="outline-3">
-<h3 id="orgheadline352">Auto completion</h3>
-<div class="outline-text-3" id="text-orgheadline352">
+<div id="outline-container-orgheadline353" class="outline-3">
+<h3 id="orgheadline353">Auto completion</h3>
+<div class="outline-text-3" id="text-orgheadline353">
 <p>
 <a href="http://company-mode.github.io">Company mode</a> standing for &ldquo;complete any&rdquo; is an auto-completion framework with a lot of third part packages and backends. Although I usually trigger manual completion, this is useful to have sometimes. This is a huge definition. Also, this is the one of the functionality I bind to <code>C-c</code> and not <code>C-z</code>.
 </p>
@@ -9207,17 +8936,17 @@ Which key modal explanation
 </div>
 </div>
 
-<div id="outline-container-orgheadline382" class="outline-3">
-<h3 id="orgheadline382">REPL</h3>
-<div class="outline-text-3" id="text-orgheadline382">
+<div id="outline-container-orgheadline383" class="outline-3">
+<h3 id="orgheadline383">REPL</h3>
+<div class="outline-text-3" id="text-orgheadline383">
 <p>
 This is to interact with various shells.
 </p>
 </div>
 
-<div id="outline-container-orgheadline383" class="outline-4">
-<h4 id="orgheadline383">Eshell</h4>
-<div class="outline-text-4" id="text-orgheadline383">
+<div id="outline-container-orgheadline384" class="outline-4">
+<h4 id="orgheadline384">Eshell</h4>
+<div class="outline-text-4" id="text-orgheadline384">
 <p>
 Eshell is a built-in shell that is written in Lisp. It&rsquo;s pretty good.
 </p>
@@ -9278,7 +9007,7 @@ Let&rsquo;s also define a couple of functions to open it in a vertical or horizo
 </div>
 </div>
 
-<ul class="org-ul"><li><a id="orgheadline384"></a>Key binding<br  /><div class="outline-text-5" id="text-orgheadline384">
+<ul class="org-ul"><li><a id="orgheadline385"></a>Key binding<br  /><div class="outline-text-5" id="text-orgheadline385">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(<span style="color: #718c00;">bind-keys*</span>
@@ -9288,7 +9017,7 @@ Let&rsquo;s also define a couple of functions to open it in a vertical or horizo
 </div>
 </div>
 
-<ul class="org-ul"><li><a id="orgheadline385"></a>Modal binding<br  /><div class="outline-text-6" id="text-orgheadline385">
+<ul class="org-ul"><li><a id="orgheadline386"></a>Modal binding<br  /><div class="outline-text-6" id="text-orgheadline386">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"SPC u"</span> <span style="color: #3e999f;">"C-z SPC u"</span>)
@@ -9310,9 +9039,9 @@ Which key modal explanation
 </div></li></ul></li></ul>
 </div>
 
-<div id="outline-container-orgheadline386" class="outline-4">
-<h4 id="orgheadline386">Multi term</h4>
-<div class="outline-text-4" id="text-orgheadline386">
+<div id="outline-container-orgheadline387" class="outline-4">
+<h4 id="orgheadline387">Multi term</h4>
+<div class="outline-text-4" id="text-orgheadline387">
 <p>
 <a href="https://www.emacswiki.org/emacs/MultiTerm">Multi term</a> doesn&rsquo;t provide any additional commands to built-in Emacs <code>term</code> and <code>ansi-term</code> but helps in managing multiple terminal buffers.
 </p>
@@ -9352,7 +9081,7 @@ Let&rsquo;s also define a couple of wrapper functions to open this in splits.
 </div>
 </div>
 
-<ul class="org-ul"><li><a id="orgheadline387"></a>Key binding<br  /><div class="outline-text-5" id="text-orgheadline387">
+<ul class="org-ul"><li><a id="orgheadline388"></a>Key binding<br  /><div class="outline-text-5" id="text-orgheadline388">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(<span style="color: #718c00;">bind-keys*</span>
@@ -9362,7 +9091,7 @@ Let&rsquo;s also define a couple of wrapper functions to open this in splits.
 </div>
 </div>
 
-<ul class="org-ul"><li><a id="orgheadline388"></a>Modal binding<br  /><div class="outline-text-6" id="text-orgheadline388">
+<ul class="org-ul"><li><a id="orgheadline389"></a>Modal binding<br  /><div class="outline-text-6" id="text-orgheadline389">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"SPC m"</span> <span style="color: #3e999f;">"C-z SPC m"</span>)
@@ -9384,9 +9113,9 @@ Which key modal explanation
 </div></li></ul></li></ul>
 </div>
 
-<div id="outline-container-orgheadline389" class="outline-4">
-<h4 id="orgheadline389">Interacting with Tmux</h4>
-<div class="outline-text-4" id="text-orgheadline389">
+<div id="outline-container-orgheadline390" class="outline-4">
+<h4 id="orgheadline390">Interacting with Tmux</h4>
+<div class="outline-text-4" id="text-orgheadline390">
 <p>
 Although I am not using <a href="https://tmux.github.io">tmux</a> as much as I used to when I was using Vim, <a href="https://github.com/syohex/emacs-emamux">this</a> package helps in integrating with it.
 </p>
@@ -9411,9 +9140,9 @@ Although I am not using <a href="https://tmux.github.io">tmux</a> as much as I u
 </div>
 </div>
 
-<div id="outline-container-orgheadline390" class="outline-4">
-<h4 id="orgheadline390">Compilation buffer</h4>
-<div class="outline-text-4" id="text-orgheadline390">
+<div id="outline-container-orgheadline391" class="outline-4">
+<h4 id="orgheadline391">Compilation buffer</h4>
+<div class="outline-text-4" id="text-orgheadline391">
 <p>
 Whenever I run <code>compile</code>, the buffer stays even after a successful compilation. Let&rsquo;s make it close automatically if the compilation is successful.
 </p>
@@ -9435,9 +9164,9 @@ Whenever I run <code>compile</code>, the buffer stays even after a successful co
 </div>
 </div>
 
-<div id="outline-container-orgheadline391" class="outline-4">
-<h4 id="orgheadline391">Quickrun</h4>
-<div class="outline-text-4" id="text-orgheadline391">
+<div id="outline-container-orgheadline392" class="outline-4">
+<h4 id="orgheadline392">Quickrun</h4>
+<div class="outline-text-4" id="text-orgheadline392">
 <p>
 <a href="https://github.com/syohex/emacs-quickrun">This package</a> helps you quickly run little pieces of code.
 </p>
@@ -9458,9 +9187,9 @@ Whenever I run <code>compile</code>, the buffer stays even after a successful co
 </div>
 </div>
 
-<div id="outline-container-orgheadline392" class="outline-3">
-<h3 id="orgheadline392">Debugging</h3>
-<div class="outline-text-3" id="text-orgheadline392">
+<div id="outline-container-orgheadline393" class="outline-3">
+<h3 id="orgheadline393">Debugging</h3>
+<div class="outline-text-3" id="text-orgheadline393">
 <p>
 Emacs has a built-in <a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Commands-of-GUD.html">debugger</a> interface but this is supposed to provide additional functions. I haven&rsquo;t tested it yet.
 </p>
@@ -9477,14 +9206,14 @@ Emacs has a built-in <a href="https://www.gnu.org/software/emacs/manual/html_nod
 </div>
 </div>
 
-<div id="outline-container-orgheadline419" class="outline-3">
-<h3 id="orgheadline419">Hydras</h3>
-<div class="outline-text-3" id="text-orgheadline419">
-</div><div id="outline-container-orgheadline393" class="outline-4">
-<h4 id="orgheadline393">Tmux integration</h4>
-<div class="outline-text-4" id="text-orgheadline393">
+<div id="outline-container-orgheadline420" class="outline-3">
+<h3 id="orgheadline420">Hydras</h3>
+<div class="outline-text-3" id="text-orgheadline420">
+</div><div id="outline-container-orgheadline394" class="outline-4">
+<h4 id="orgheadline394">Tmux integration</h4>
+<div class="outline-text-4" id="text-orgheadline394">
 <p>
-This menu helps in sending code and commands <a href="#orgheadline389">to tmux</a>.
+This menu helps in sending code and commands <a href="#orgheadline390">to tmux</a>.
 </p>
 
 <div class="org-src-container">
@@ -9515,7 +9244,7 @@ This menu helps in sending code and commands <a href="#orgheadline389">to tmux</
 </div>
 </div>
 
-<ul class="org-ul"><li><a id="orgheadline394"></a>Key binding<br  /><div class="outline-text-5" id="text-orgheadline394">
+<ul class="org-ul"><li><a id="orgheadline395"></a>Key binding<br  /><div class="outline-text-5" id="text-orgheadline395">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(<span style="color: #718c00;">bind-keys*</span>
@@ -9524,7 +9253,7 @@ This menu helps in sending code and commands <a href="#orgheadline389">to tmux</
 </div>
 </div>
 
-<ul class="org-ul"><li><a id="orgheadline395"></a>Modal binding<br  /><div class="outline-text-6" id="text-orgheadline395">
+<ul class="org-ul"><li><a id="orgheadline396"></a>Modal binding<br  /><div class="outline-text-6" id="text-orgheadline396">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"m t"</span> <span style="color: #3e999f;">"C-z m t"</span>)
@@ -9544,11 +9273,11 @@ Which key modal explanation
 </div></li></ul></li></ul>
 </div>
 
-<div id="outline-container-orgheadline346" class="outline-4">
-<h4 id="orgheadline346">Emacs lisp</h4>
-<div class="outline-text-4" id="text-orgheadline346">
+<div id="outline-container-orgheadline347" class="outline-4">
+<h4 id="orgheadline347">Emacs lisp</h4>
+<div class="outline-text-4" id="text-orgheadline347">
 <p>
-We define two hydras for Elisp. One for the <a href="#orgheadline356">macro step package</a> and another for just regular editing.
+We define two hydras for Elisp. One for the <a href="#orgheadline357">macro step package</a> and another for just regular editing.
 </p>
 
 <div class="org-src-container">
@@ -9604,7 +9333,7 @@ Then, the hydra for helping with Emacs Lisp code.
 </div>
 </div>
 
-<ul class="org-ul"><li><a id="orgheadline396"></a>Key binding<br  /><div class="outline-text-5" id="text-orgheadline396">
+<ul class="org-ul"><li><a id="orgheadline397"></a>Key binding<br  /><div class="outline-text-5" id="text-orgheadline397">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(<span style="color: #718c00;">bind-keys*</span>
@@ -9613,7 +9342,7 @@ Then, the hydra for helping with Emacs Lisp code.
 </div>
 </div>
 
-<ul class="org-ul"><li><a id="orgheadline397"></a>Modal binding<br  /><div class="outline-text-6" id="text-orgheadline397">
+<ul class="org-ul"><li><a id="orgheadline398"></a>Modal binding<br  /><div class="outline-text-6" id="text-orgheadline398">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"m e"</span> <span style="color: #3e999f;">"C-z m e"</span>)
@@ -9633,9 +9362,9 @@ Which key modal explanation
 </div></li></ul></li></ul>
 </div>
 
-<div id="outline-container-orgheadline398" class="outline-4">
-<h4 id="orgheadline398">C/C++</h4>
-<div class="outline-text-4" id="text-orgheadline398">
+<div id="outline-container-orgheadline399" class="outline-4">
+<h4 id="orgheadline399">C/C++</h4>
+<div class="outline-text-4" id="text-orgheadline399">
 <p>
 C/C++ code navigation and compilation demands a hydra.
 </p>
@@ -9682,7 +9411,7 @@ C/C++ code navigation and compilation demands a hydra.
 </div>
 </div>
 
-<ul class="org-ul"><li><a id="orgheadline399"></a>Key binding<br  /><div class="outline-text-5" id="text-orgheadline399">
+<ul class="org-ul"><li><a id="orgheadline400"></a>Key binding<br  /><div class="outline-text-5" id="text-orgheadline400">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(<span style="color: #718c00;">bind-keys*</span>
@@ -9691,7 +9420,7 @@ C/C++ code navigation and compilation demands a hydra.
 </div>
 </div>
 
-<ul class="org-ul"><li><a id="orgheadline400"></a>Modal binding<br  /><div class="outline-text-6" id="text-orgheadline400">
+<ul class="org-ul"><li><a id="orgheadline401"></a>Modal binding<br  /><div class="outline-text-6" id="text-orgheadline401">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"m c"</span> <span style="color: #3e999f;">"C-z m c"</span>)
@@ -9711,9 +9440,9 @@ Which key modal explanation
 </div></li></ul></li></ul>
 </div>
 
-<div id="outline-container-orgheadline401" class="outline-4">
-<h4 id="orgheadline401">Python</h4>
-<div class="outline-text-4" id="text-orgheadline401">
+<div id="outline-container-orgheadline402" class="outline-4">
+<h4 id="orgheadline402">Python</h4>
+<div class="outline-text-4" id="text-orgheadline402">
 <p>
 Hydra for Python code navigation, REPL evaluation, testing and formatting.
 </p>
@@ -9758,7 +9487,7 @@ Hydra for Python code navigation, REPL evaluation, testing and formatting.
 </div>
 </div>
 
-<ul class="org-ul"><li><a id="orgheadline402"></a>Key binding<br  /><div class="outline-text-5" id="text-orgheadline402">
+<ul class="org-ul"><li><a id="orgheadline403"></a>Key binding<br  /><div class="outline-text-5" id="text-orgheadline403">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(<span style="color: #718c00;">bind-keys*</span>
@@ -9767,7 +9496,7 @@ Hydra for Python code navigation, REPL evaluation, testing and formatting.
 </div>
 </div>
 
-<ul class="org-ul"><li><a id="orgheadline403"></a>Modal binding<br  /><div class="outline-text-6" id="text-orgheadline403">
+<ul class="org-ul"><li><a id="orgheadline404"></a>Modal binding<br  /><div class="outline-text-6" id="text-orgheadline404">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"m p"</span> <span style="color: #3e999f;">"C-z m p"</span>)
@@ -9787,9 +9516,9 @@ Which key modal explanation
 </div></li></ul></li></ul>
 </div>
 
-<div id="outline-container-orgheadline404" class="outline-4">
-<h4 id="orgheadline404">Statistics</h4>
-<div class="outline-text-4" id="text-orgheadline404">
+<div id="outline-container-orgheadline405" class="outline-4">
+<h4 id="orgheadline405">Statistics</h4>
+<div class="outline-text-4" id="text-orgheadline405">
 <p>
 Since both R and Julia are supported by ESS, one hydra is enough.
 </p>
@@ -9814,7 +9543,7 @@ Since both R and Julia are supported by ESS, one hydra is enough.
 </div>
 </div>
 
-<ul class="org-ul"><li><a id="orgheadline405"></a>Key binding<br  /><div class="outline-text-5" id="text-orgheadline405">
+<ul class="org-ul"><li><a id="orgheadline406"></a>Key binding<br  /><div class="outline-text-5" id="text-orgheadline406">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(<span style="color: #718c00;">bind-keys*</span>
@@ -9823,7 +9552,7 @@ Since both R and Julia are supported by ESS, one hydra is enough.
 </div>
 </div>
 
-<ul class="org-ul"><li><a id="orgheadline406"></a>Modal binding<br  /><div class="outline-text-6" id="text-orgheadline406">
+<ul class="org-ul"><li><a id="orgheadline407"></a>Modal binding<br  /><div class="outline-text-6" id="text-orgheadline407">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"m s"</span> <span style="color: #3e999f;">"C-z m s"</span>)
@@ -9843,9 +9572,9 @@ Which key modal explanation
 </div></li></ul></li></ul>
 </div>
 
-<div id="outline-container-orgheadline407" class="outline-4">
-<h4 id="orgheadline407">MATLAB</h4>
-<div class="outline-text-4" id="text-orgheadline407">
+<div id="outline-container-orgheadline408" class="outline-4">
+<h4 id="orgheadline408">MATLAB</h4>
+<div class="outline-text-4" id="text-orgheadline408">
 <p>
 There is no facility for code navigation in MATLAB, and so this is just sending stuff to the MATLAB commandline.
 </p>
@@ -9870,7 +9599,7 @@ There is no facility for code navigation in MATLAB, and so this is just sending 
 </div>
 </div>
 
-<ul class="org-ul"><li><a id="orgheadline408"></a>Key binding<br  /><div class="outline-text-5" id="text-orgheadline408">
+<ul class="org-ul"><li><a id="orgheadline409"></a>Key binding<br  /><div class="outline-text-5" id="text-orgheadline409">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(<span style="color: #718c00;">bind-keys*</span>
@@ -9879,7 +9608,7 @@ There is no facility for code navigation in MATLAB, and so this is just sending 
 </div>
 </div>
 
-<ul class="org-ul"><li><a id="orgheadline409"></a>Modal binding<br  /><div class="outline-text-6" id="text-orgheadline409">
+<ul class="org-ul"><li><a id="orgheadline410"></a>Modal binding<br  /><div class="outline-text-6" id="text-orgheadline410">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"m m"</span> <span style="color: #3e999f;">"C-z m m"</span>)
@@ -9899,9 +9628,9 @@ Which key modal explanation
 </div></li></ul></li></ul>
 </div>
 
-<div id="outline-container-orgheadline410" class="outline-4">
-<h4 id="orgheadline410">Web</h4>
-<div class="outline-text-4" id="text-orgheadline410">
+<div id="outline-container-orgheadline411" class="outline-4">
+<h4 id="orgheadline411">Web</h4>
+<div class="outline-text-4" id="text-orgheadline411">
 <p>
 There are two hydras we use for Web editing - one for JavaScript specifically and one for web mode.
 </p>
@@ -9989,7 +9718,7 @@ There are two hydras we use for Web editing - one for JavaScript specifically an
 </div>
 </div>
 
-<ul class="org-ul"><li><a id="orgheadline411"></a>Key binding<br  /><div class="outline-text-5" id="text-orgheadline411">
+<ul class="org-ul"><li><a id="orgheadline412"></a>Key binding<br  /><div class="outline-text-5" id="text-orgheadline412">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(<span style="color: #718c00;">bind-keys*</span>
@@ -10000,7 +9729,7 @@ There are two hydras we use for Web editing - one for JavaScript specifically an
 </div>
 </div>
 
-<ul class="org-ul"><li><a id="orgheadline412"></a>Modal binding<br  /><div class="outline-text-6" id="text-orgheadline412">
+<ul class="org-ul"><li><a id="orgheadline413"></a>Modal binding<br  /><div class="outline-text-6" id="text-orgheadline413">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"m j"</span> <span style="color: #3e999f;">"C-z m j"</span>)
@@ -10024,11 +9753,11 @@ Which key modal explanation
 </div></li></ul></li></ul>
 </div>
 
-<div id="outline-container-orgheadline413" class="outline-4">
-<h4 id="orgheadline413">Quickrun</h4>
-<div class="outline-text-4" id="text-orgheadline413">
+<div id="outline-container-orgheadline414" class="outline-4">
+<h4 id="orgheadline414">Quickrun</h4>
+<div class="outline-text-4" id="text-orgheadline414">
 <p>
-This is for <a href="#orgheadline391">Quickrun</a> functionality.
+This is for <a href="#orgheadline392">Quickrun</a> functionality.
 </p>
 
 <div class="org-src-container">
@@ -10050,7 +9779,7 @@ This is for <a href="#orgheadline391">Quickrun</a> functionality.
 </div>
 </div>
 
-<ul class="org-ul"><li><a id="orgheadline414"></a>Key binding<br  /><div class="outline-text-5" id="text-orgheadline414">
+<ul class="org-ul"><li><a id="orgheadline415"></a>Key binding<br  /><div class="outline-text-5" id="text-orgheadline415">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(<span style="color: #718c00;">bind-keys*</span>
@@ -10059,7 +9788,7 @@ This is for <a href="#orgheadline391">Quickrun</a> functionality.
 </div>
 </div>
 
-<ul class="org-ul"><li><a id="orgheadline415"></a>Modal binding<br  /><div class="outline-text-6" id="text-orgheadline415">
+<ul class="org-ul"><li><a id="orgheadline416"></a>Modal binding<br  /><div class="outline-text-6" id="text-orgheadline416">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"m q"</span> <span style="color: #3e999f;">"C-z m q"</span>)
@@ -10079,9 +9808,9 @@ Which key modal explanation
 </div></li></ul></li></ul>
 </div>
 
-<div id="outline-container-orgheadline416" class="outline-4">
-<h4 id="orgheadline416">Debugging</h4>
-<div class="outline-text-4" id="text-orgheadline416">
+<div id="outline-container-orgheadline417" class="outline-4">
+<h4 id="orgheadline417">Debugging</h4>
+<div class="outline-text-4" id="text-orgheadline417">
 <p>
 Emacs has a built-in debugger in <code>edebug</code> and, apparently, it&rsquo;s pretty good. Let&rsquo;s make a small hydra for that.
 </p>
@@ -10110,7 +9839,7 @@ A small hydra to start appropriate debuggers
 </div>
 </div>
 
-<ul class="org-ul"><li><a id="orgheadline417"></a>Key binding<br  /><div class="outline-text-5" id="text-orgheadline417">
+<ul class="org-ul"><li><a id="orgheadline418"></a>Key binding<br  /><div class="outline-text-5" id="text-orgheadline418">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(<span style="color: #718c00;">bind-keys*</span>
@@ -10119,7 +9848,7 @@ A small hydra to start appropriate debuggers
 </div>
 </div>
 
-<ul class="org-ul"><li><a id="orgheadline418"></a>Modal binding<br  /><div class="outline-text-6" id="text-orgheadline418">
+<ul class="org-ul"><li><a id="orgheadline419"></a>Modal binding<br  /><div class="outline-text-6" id="text-orgheadline419">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"m d"</span> <span style="color: #3e999f;">"C-z m d"</span>)
@@ -10445,9 +10174,7 @@ For now, I have made it look and act the way I want it too. The additional packa
 </div>
 </div>
 
-<div id="outline-container-orgheadline421" class="outline-3">
-<h3 id="orgheadline421">Modal binding</h3>
-<div class="outline-text-3" id="text-orgheadline421">
+<ul class="org-ul"><li><a id="orgheadline422"></a>Modal binding<br  /><div class="outline-text-5" id="text-orgheadline422">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"t"</span> <span style="color: #3e999f;">"C-z t"</span>)
@@ -10528,21 +10255,20 @@ Which key modal explanation
   <span style="color: #3e999f;">"SPC h M"</span> <span style="color: #3e999f;">"make in current dir"</span>)
 </pre>
 </div>
-</div>
-</div>
+</div></li></ul>
 </div>
 
-<div id="outline-container-orgheadline422" class="outline-2">
-<h2 id="orgheadline422">Fun</h2>
-<div class="outline-text-2" id="text-orgheadline422">
+<div id="outline-container-orgheadline423" class="outline-2">
+<h2 id="orgheadline423">Fun</h2>
+<div class="outline-text-2" id="text-orgheadline423">
 <p>
 Emacs is fun!
 </p>
 </div>
 
-<div id="outline-container-orgheadline423" class="outline-3">
-<h3 id="orgheadline423">Weather</h3>
-<div class="outline-text-3" id="text-orgheadline423">
+<div id="outline-container-orgheadline424" class="outline-3">
+<h3 id="orgheadline424">Weather</h3>
+<div class="outline-text-3" id="text-orgheadline424">
 <p>
 And while we are it, why not go ahead and <a href="https://github.com/bcbcarl/emacs-wttrin">get some weather status too</a>.
 </p>
@@ -10568,9 +10294,9 @@ And while we are it, why not go ahead and <a href="https://github.com/bcbcarl/em
 </div>
 </div>
 
-<div id="outline-container-orgheadline424" class="outline-3">
-<h3 id="orgheadline424">How do I do something?</h3>
-<div class="outline-text-3" id="text-orgheadline424">
+<div id="outline-container-orgheadline425" class="outline-3">
+<h3 id="orgheadline425">How do I do something?</h3>
+<div class="outline-text-3" id="text-orgheadline425">
 <p>
 <a href="https://github.com/atykhonov/emacs-howdoi">Interface</a> to the awesome <a href="https://github.com/gleitz/howdoi">command line utility</a>.
 </p>
@@ -10586,9 +10312,7 @@ And while we are it, why not go ahead and <a href="https://github.com/bcbcarl/em
 </div>
 </div>
 
-<div id="outline-container-orgheadline425" class="outline-4">
-<h4 id="orgheadline425">Modal binding</h4>
-<div class="outline-text-4" id="text-orgheadline425">
+<ul class="org-ul"><li><a id="orgheadline426"></a>Modal binding<br  /><div class="outline-text-5" id="text-orgheadline426">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"g I"</span> <span style="color: #3e999f;">"C-z g I"</span>)
@@ -10609,13 +10333,12 @@ Which key modal explanation
   <span style="color: #3e999f;">"g Q"</span> <span style="color: #3e999f;">"howdoi query insert code"</span>)
 </pre>
 </div>
-</div>
-</div>
+</div></li></ul>
 </div>
 
-<div id="outline-container-orgheadline426" class="outline-3">
-<h3 id="orgheadline426">XKCD</h3>
-<div class="outline-text-3" id="text-orgheadline426">
+<div id="outline-container-orgheadline427" class="outline-3">
+<h3 id="orgheadline427">XKCD</h3>
+<div class="outline-text-3" id="text-orgheadline427">
 <p>
 Read <a href="http://xkcd.com">xkcd</a> in Emacs.
 </p>
@@ -10630,9 +10353,7 @@ Read <a href="http://xkcd.com">xkcd</a> in Emacs.
 </div>
 </div>
 
-<div id="outline-container-orgheadline427" class="outline-4">
-<h4 id="orgheadline427">Modal binding</h4>
-<div class="outline-text-4" id="text-orgheadline427">
+<ul class="org-ul"><li><a id="orgheadline428"></a>Modal binding<br  /><div class="outline-text-5" id="text-orgheadline428">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"g X"</span> <span style="color: #3e999f;">"C-z g X"</span>)
@@ -10649,13 +10370,12 @@ Which key modal explanation
   <span style="color: #3e999f;">"g X"</span> <span style="color: #3e999f;">"xkcd"</span>)
 </pre>
 </div>
-</div>
-</div>
+</div></li></ul>
 </div>
 
-<div id="outline-container-orgheadline428" class="outline-3">
-<h3 id="orgheadline428">Keep track of accounts</h3>
-<div class="outline-text-3" id="text-orgheadline428">
+<div id="outline-container-orgheadline429" class="outline-3">
+<h3 id="orgheadline429">Keep track of accounts</h3>
+<div class="outline-text-3" id="text-orgheadline429">
 <p>
 <a href="http://www.ledger-cli.org">Ledger</a> is a command-line utility to keep track of finances. I&rsquo;m still experimenting with it.
 </p>
@@ -10670,9 +10390,9 @@ Which key modal explanation
 </div>
 </div>
 
-<div id="outline-container-orgheadline429" class="outline-3">
-<h3 id="orgheadline429">Gtalk</h3>
-<div class="outline-text-3" id="text-orgheadline429">
+<div id="outline-container-orgheadline430" class="outline-3">
+<h3 id="orgheadline430">Gtalk</h3>
+<div class="outline-text-3" id="text-orgheadline430">
 <p>
 You can use the <a href="https://www.emacswiki.org/emacs/JabberEl">jabber protocol</a> to chat from within Emacs.
 </p>
@@ -10696,9 +10416,9 @@ You can use the <a href="https://www.emacswiki.org/emacs/JabberEl">jabber protoc
 </div>
 </div>
 
-<div id="outline-container-orgheadline430" class="outline-3">
-<h3 id="orgheadline430">IRC</h3>
-<div class="outline-text-3" id="text-orgheadline430">
+<div id="outline-container-orgheadline431" class="outline-3">
+<h3 id="orgheadline431">IRC</h3>
+<div class="outline-text-3" id="text-orgheadline431">
 <p>
 I don&rsquo;t really hang around any IRC channels but planning to do so some day.
 </p>
@@ -10713,9 +10433,9 @@ I don&rsquo;t really hang around any IRC channels but planning to do so some day
 </div>
 </div>
 
-<div id="outline-container-orgheadline431" class="outline-3">
-<h3 id="orgheadline431">Touch typing</h3>
-<div class="outline-text-3" id="text-orgheadline431">
+<div id="outline-container-orgheadline432" class="outline-3">
+<h3 id="orgheadline432">Touch typing</h3>
+<div class="outline-text-3" id="text-orgheadline432">
 <p>
 Learn touch typing from within Emacs.
 </p>
@@ -10730,9 +10450,9 @@ Learn touch typing from within Emacs.
 </div>
 </div>
 
-<div id="outline-container-orgheadline432" class="outline-3">
-<h3 id="orgheadline432">Learn the most frequently used keys</h3>
-<div class="outline-text-3" id="text-orgheadline432">
+<div id="outline-container-orgheadline433" class="outline-3">
+<h3 id="orgheadline433">Learn the most frequently used keys</h3>
+<div class="outline-text-3" id="text-orgheadline433">
 <p>
 To track habits, maybe?
 </p>
@@ -10760,9 +10480,9 @@ To track habits, maybe?
 </div>
 </div>
 
-<div id="outline-container-orgheadline433" class="outline-3">
-<h3 id="orgheadline433">Google stuff</h3>
-<div class="outline-text-3" id="text-orgheadline433">
+<div id="outline-container-orgheadline434" class="outline-3">
+<h3 id="orgheadline434">Google stuff</h3>
+<div class="outline-text-3" id="text-orgheadline434">
 <p>
 <a href="https://github.com/Malabarba/emacs-google-this">This</a> is a pretty useful package that lets you Google stuff from within Emacs.
 </p>
@@ -10782,9 +10502,9 @@ To track habits, maybe?
 </div>
 </div>
 
-<div id="outline-container-orgheadline434" class="outline-4">
-<h4 id="orgheadline434">Functions</h4>
-<div class="outline-text-4" id="text-orgheadline434">
+<div id="outline-container-orgheadline289" class="outline-4">
+<h4 id="orgheadline289">Functions</h4>
+<div class="outline-text-4" id="text-orgheadline289">
 <p>
 This function googles the current symbol or the region if the region is active and the line when called with a prefix argument.
 </p>
@@ -10891,7 +10611,7 @@ Which key modal explanation
 <h2 id="orgheadline440">Local configuration</h2>
 <div class="outline-text-2" id="text-orgheadline440">
 <p>
-There is provision to put and load a local configuration. For example, account and password details for <a href="#orgheadline429">Gtalk</a> can be stored here. Here is the code that provides that support.
+There is provision to put and load a local configuration. For example, account and password details for <a href="#orgheadline430">Gtalk</a> can be stored here. Here is the code that provides that support.
 </p>
 
 <div class="org-src-container">
@@ -11721,7 +11441,7 @@ This section documents the key bindings that help to find other key-bindings. No
 <tr>
 <td class="org-left">a h</td>
 <td class="org-left">C-z a h</td>
-<td class="org-left"><a href="#orgheadline333">select a git hunk</a></td>
+<td class="org-left"><a href="#orgheadline334">select a git hunk</a></td>
 </tr>
 
 <tr>
@@ -11817,7 +11537,7 @@ This section documents the key bindings that help to find other key-bindings. No
 <tr>
 <td class="org-left">i h</td>
 <td class="org-left">C-z i h</td>
-<td class="org-left"><a href="#orgheadline333">select git hunk</a></td>
+<td class="org-left"><a href="#orgheadline334">select git hunk</a></td>
 </tr>
 
 <tr>
@@ -12173,7 +11893,7 @@ This section documents the key bindings that help to find other key-bindings. No
 <tr>
 <td class="org-left">o v</td>
 <td class="org-left">C-z o v</td>
-<td class="org-left"><a href="#orgheadline320">org agenda view</a></td>
+<td class="org-left"><a href="#orgheadline321">org agenda view</a></td>
 </tr>
 
 <tr>
@@ -12185,7 +11905,7 @@ This section documents the key bindings that help to find other key-bindings. No
 <tr>
 <td class="org-left">o b</td>
 <td class="org-left">C-z o b</td>
-<td class="org-left"><a href="#orgheadline305">org check box</a></td>
+<td class="org-left"><a href="#orgheadline306">org check box</a></td>
 </tr>
 
 <tr>
@@ -12197,7 +11917,7 @@ This section documents the key bindings that help to find other key-bindings. No
 <tr>
 <td class="org-left">o D</td>
 <td class="org-left">C-z o D</td>
-<td class="org-left"><a href="#orgheadline302">org deadlines</a></td>
+<td class="org-left"><a href="#orgheadline303">org deadlines</a></td>
 </tr>
 
 <tr>
@@ -12215,7 +11935,7 @@ This section documents the key bindings that help to find other key-bindings. No
 <tr>
 <td class="org-left">o j</td>
 <td class="org-left">C-z o j</td>
-<td class="org-left"><a href="#orgheadline317">org jump</a></td>
+<td class="org-left"><a href="#orgheadline318">org jump</a></td>
 </tr>
 
 <tr>
@@ -12233,25 +11953,25 @@ This section documents the key bindings that help to find other key-bindings. No
 <tr>
 <td class="org-left">o m</td>
 <td class="org-left">C-z o m</td>
-<td class="org-left"><a href="#orgheadline314">org manipulate table</a></td>
+<td class="org-left"><a href="#orgheadline315">org manipulate table</a></td>
 </tr>
 
 <tr>
 <td class="org-left">o o</td>
 <td class="org-left">C-z o o</td>
-<td class="org-left"><a href="#orgheadline299">org organize</a></td>
+<td class="org-left"><a href="#orgheadline300">org organize</a></td>
 </tr>
 
 <tr>
 <td class="org-left">o p</td>
 <td class="org-left">C-z o p</td>
-<td class="org-left"><a href="#orgheadline323">org practice</a></td>
+<td class="org-left"><a href="#orgheadline324">org practice</a></td>
 </tr>
 
 <tr>
 <td class="org-left">o P</td>
 <td class="org-left">C-z o P</td>
-<td class="org-left"><a href="#orgheadline308">org properties</a></td>
+<td class="org-left"><a href="#orgheadline309">org properties</a></td>
 </tr>
 
 <tr>
@@ -12269,7 +11989,7 @@ This section documents the key bindings that help to find other key-bindings. No
 <tr>
 <td class="org-left">o r</td>
 <td class="org-left">C-z o r</td>
-<td class="org-left"><a href="#orgheadline328">org ref</a></td>
+<td class="org-left"><a href="#orgheadline329">org ref</a></td>
 </tr>
 
 <tr>
@@ -12293,7 +12013,7 @@ This section documents the key bindings that help to find other key-bindings. No
 <tr>
 <td class="org-left">o C</td>
 <td class="org-left">C-z o C</td>
-<td class="org-left"><a href="#orgheadline311">org clocking</a></td>
+<td class="org-left"><a href="#orgheadline312">org clocking</a></td>
 </tr>
 
 <tr>
@@ -12456,13 +12176,13 @@ This section documents the key bindings that help to find other key-bindings. No
 <tr>
 <td class="org-left">SPC e</td>
 <td class="org-left">C-z SPC e</td>
-<td class="org-left"><a href="#orgheadline331">explore git repository</a></td>
+<td class="org-left"><a href="#orgheadline332">explore git repository</a></td>
 </tr>
 
 <tr>
 <td class="org-left">g i</td>
 <td class="org-left">C-z g i</td>
-<td class="org-left"><a href="#orgheadline339">Browse remote files</a></td>
+<td class="org-left"><a href="#orgheadline340">Browse remote files</a></td>
 </tr>
 
 <tr>
@@ -12474,7 +12194,7 @@ This section documents the key bindings that help to find other key-bindings. No
 <tr>
 <td class="org-left">] h</td>
 <td class="org-left">C-z ] h</td>
-<td class="org-left"><a href="#orgheadline333">next git hunk</a></td>
+<td class="org-left"><a href="#orgheadline334">next git hunk</a></td>
 </tr>
 
 <tr>
@@ -12498,7 +12218,7 @@ This section documents the key bindings that help to find other key-bindings. No
 <tr>
 <td class="org-left">g l</td>
 <td class="org-left">C-z g l</td>
-<td class="org-left"><a href="#orgheadline335">git log time machine</a></td>
+<td class="org-left"><a href="#orgheadline336">git log time machine</a></td>
 </tr>
 
 <tr>
@@ -12510,7 +12230,7 @@ This section documents the key bindings that help to find other key-bindings. No
 <tr>
 <td class="org-left">g p</td>
 <td class="org-left">C-z g p</td>
-<td class="org-left"><a href="#orgheadline337">gist post public</a></td>
+<td class="org-left"><a href="#orgheadline338">gist post public</a></td>
 </tr>
 
 <tr>
@@ -12540,43 +12260,43 @@ This section documents the key bindings that help to find other key-bindings. No
 <tr>
 <td class="org-left">m b</td>
 <td class="org-left">C-z m b</td>
-<td class="org-left"><a href="#orgheadline344">start background processes</a></td>
+<td class="org-left"><a href="#orgheadline345">start background processes</a></td>
 </tr>
 
 <tr>
 <td class="org-left">m e</td>
 <td class="org-left">C-z m e</td>
-<td class="org-left"><a href="#orgheadline346">emacs lisp code menu</a></td>
+<td class="org-left"><a href="#orgheadline347">emacs lisp code menu</a></td>
 </tr>
 
 <tr>
 <td class="org-left">m c</td>
 <td class="org-left">C-z m c</td>
-<td class="org-left"><a href="#orgheadline347">c/c++ code menu</a></td>
+<td class="org-left"><a href="#orgheadline348">c/c++ code menu</a></td>
 </tr>
 
 <tr>
 <td class="org-left">m p</td>
 <td class="org-left">C-z m p</td>
-<td class="org-left"><a href="#orgheadline348">python code menu</a></td>
+<td class="org-left"><a href="#orgheadline349">python code menu</a></td>
 </tr>
 
 <tr>
 <td class="org-left">m s</td>
 <td class="org-left">C-z m s</td>
-<td class="org-left"><a href="#orgheadline349">statistics code menu</a></td>
+<td class="org-left"><a href="#orgheadline350">statistics code menu</a></td>
 </tr>
 
 <tr>
 <td class="org-left">m m</td>
 <td class="org-left">C-z m m</td>
-<td class="org-left"><a href="#orgheadline350">MATLAB code menu</a></td>
+<td class="org-left"><a href="#orgheadline351">MATLAB code menu</a></td>
 </tr>
 
 <tr>
 <td class="org-left">m j</td>
 <td class="org-left">C-z m j</td>
-<td class="org-left"><a href="#orgheadline351">JavaScript code menu</a></td>
+<td class="org-left"><a href="#orgheadline352">JavaScript code menu</a></td>
 </tr>
 
 <tr>
@@ -12594,19 +12314,19 @@ This section documents the key bindings that help to find other key-bindings. No
 <tr>
 <td class="org-left">m d</td>
 <td class="org-left">C-z m d</td>
-<td class="org-left"><a href="#orgheadline392">Debugging code menu</a></td>
+<td class="org-left"><a href="#orgheadline393">Debugging code menu</a></td>
 </tr>
 
 <tr>
 <td class="org-left">m t</td>
 <td class="org-left">C-z m t</td>
-<td class="org-left"><a href="#orgheadline393">Tmux code menu</a></td>
+<td class="org-left"><a href="#orgheadline394">Tmux code menu</a></td>
 </tr>
 
 <tr>
 <td class="org-left">] l</td>
 <td class="org-left">C-z ] l</td>
-<td class="org-left"><a href="#orgheadline380">next error</a></td>
+<td class="org-left"><a href="#orgheadline381">next error</a></td>
 </tr>
 
 <tr>
@@ -12624,7 +12344,7 @@ This section documents the key bindings that help to find other key-bindings. No
 <tr>
 <td class="org-left">SPC u</td>
 <td class="org-left">C-z SPC u</td>
-<td class="org-left"><a href="#orgheadline383">Eshell vertical split</a></td>
+<td class="org-left"><a href="#orgheadline384">Eshell vertical split</a></td>
 </tr>
 
 <tr>
@@ -12636,7 +12356,7 @@ This section documents the key bindings that help to find other key-bindings. No
 <tr>
 <td class="org-left">SPC m</td>
 <td class="org-left">C-z SPC m</td>
-<td class="org-left"><a href="#orgheadline386">Multi term vertical split</a></td>
+<td class="org-left"><a href="#orgheadline387">Multi term vertical split</a></td>
 </tr>
 
 <tr>
@@ -12739,7 +12459,7 @@ This section documents the key bindings that help to find other key-bindings. No
 <tr>
 <td class="org-left">SPC h j</td>
 <td class="org-left">C-z SPC h j</td>
-<td class="org-left">manage <a href="#orgheadline430">IRC</a> buffers</td>
+<td class="org-left">manage <a href="#orgheadline431">IRC</a> buffers</td>
 </tr>
 
 <tr>
@@ -12872,19 +12592,19 @@ This section documents the key bindings that help to find other key-bindings. No
 <tr>
 <td class="org-left">g X</td>
 <td class="org-left">C-z g X</td>
-<td class="org-left"><a href="#orgheadline426">XKCD</a></td>
+<td class="org-left"><a href="#orgheadline427">XKCD</a></td>
 </tr>
 
 <tr>
 <td class="org-left">g G</td>
 <td class="org-left">C-z g G</td>
-<td class="org-left"><a href="#orgheadline433">Google stuff</a></td>
+<td class="org-left"><a href="#orgheadline434">Google stuff</a></td>
 </tr>
 
 <tr>
 <td class="org-left">g I</td>
 <td class="org-left">C-z g I</td>
-<td class="org-left"><a href="#orgheadline424">howdoi query</a></td>
+<td class="org-left"><a href="#orgheadline425">howdoi query</a></td>
 </tr>
 
 <tr>
@@ -12953,7 +12673,7 @@ This portion of comments let Emacs know that it has to <a href="#orgheadline58">
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Sriram Krishnaswamy</p>
-<p class="date">Created: 2016-06-12 Sun 01:53</p>
+<p class="date">Created: 2016-06-14 Tue 18:39</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

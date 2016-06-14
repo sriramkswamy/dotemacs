@@ -3,6 +3,7 @@
 
 #+OPTIONS: num:nil tags:nil todo:nil p:nil pri:nil stat:nil c:nil d:nil
 #+LATEX_HEADER: \usepackage[margin=2cm]{geometry}
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="org.css"/>
 
 * Basics
 
@@ -517,7 +518,7 @@ Now that we have made sure we have installed use-package, we will make sure anot
 
 However, some built-in minor modes are notorious and don't seem to work with the above method. Let's diminish them using functions one by one.
 
-*** Diminish =org-indent= mode
+**** Diminish =org-indent= mode
 
 I like to enable the [[http://orgmode.org/manual/Clean-view.html][org-indent mode]] for a clean view in Org mode and this doesn't seem to get diminish the usual way. We define a function and a add a hook to achieve this.
 
@@ -528,7 +529,7 @@ I like to enable the [[http://orgmode.org/manual/Clean-view.html][org-indent mod
 (add-hook 'org-indent-mode-hook 'sk/diminish-org-indent)
 #+END_SRC
 
-*** Diminish =auto-revert= mode
+**** Diminish =auto-revert= mode
 
 [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Reverting.html][auto-revert mode]] is useful when Emacs auto-saves your file and you want to load the backup.
 
@@ -539,7 +540,7 @@ I like to enable the [[http://orgmode.org/manual/Clean-view.html][org-indent mod
 (add-hook 'auto-revert-mode-hook 'sk/diminish-auto-revert)
 #+END_SRC
 
-*** Diminish =eldoc= mode
+**** Diminish =eldoc= mode
 
 Eldoc mode is a mode to display documentation for languages in Emacs
 
@@ -550,7 +551,7 @@ Eldoc mode is a mode to display documentation for languages in Emacs
 (add-hook 'eldoc-mode-hook 'sk/diminish-eldoc)
 #+END_SRC
 
-*** Diminish =subword= mode
+**** Diminish =subword= mode
 
 =subword-mode= is described [[*Move%20correctly%20over%20camelCased%20words][here]].
 
@@ -762,12 +763,12 @@ As mentioned before, I like and prefer modal editing. I feel pressing modifier k
     "C-z ]"   "next nav prefix"))
 #+END_SRC
 
-*** Default modal keybindings
+**** Default modal keybindings
 
 These are modal bindings that just wrap around the existing, already bound, Emacs defaults.
 The explanations for each can be found in the [[*Which%20key%20explanations%20for%20everything][corresponding which key explanations]].
 
-**** Numbers
+***** Numbers
 
 Pressing the numbers in Modalka state should trigger numbers and not insert them instead.
 
@@ -784,7 +785,7 @@ Pressing the numbers in Modalka state should trigger numbers and not insert them
 (modalka-define-kbd "9" "C-9")
 #+END_SRC
 
-**** Movement and one key presses
+***** Movement and one key presses
 
 This is based on Vi-style but only slightly and uses the default movement keys in Emacs.
 
@@ -835,7 +836,7 @@ This is based on Vi-style but only slightly and uses the default movement keys i
 (modalka-define-kbd "\\" "C-c C-c")
 #+END_SRC
 
-**** Global prefixed keys
+***** Global prefixed keys
 
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "g g" "M-<")
@@ -868,26 +869,26 @@ This is based on Vi-style but only slightly and uses the default movement keys i
 (modalka-define-kbd "g ?" "C-h k")
 #+END_SRC
 
-**** Select region prefixed keys
+***** Select region prefixed keys
 
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "i a" "C-x h")
 #+END_SRC
 
-**** Forward navigation prefixed keys
+***** Forward navigation prefixed keys
 
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "] ]" "C-x n n")
 (modalka-define-kbd "] s" "C-z ] s")
 #+END_SRC
 
-**** Backward navigation prefixed keys
+***** Backward navigation prefixed keys
 
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "[ [" "C-x n w")
 #+END_SRC
 
-**** Extended prefix to quit/restart and time
+***** Extended prefix to quit/restart and time
 
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd ": q" "C-x C-c")
@@ -895,7 +896,7 @@ This is based on Vi-style but only slightly and uses the default movement keys i
 (modalka-define-kbd ": t" "C-z : t")
 #+END_SRC
 
-**** User prefix for common functions
+***** User prefix for common functions
 
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "SPC j" "M-x")
@@ -911,11 +912,11 @@ This is based on Vi-style but only slightly and uses the default movement keys i
 (modalka-define-kbd "SPC ?" "C-z SPC ?")
 #+END_SRC
 
-*** Which key explanations for everything
+**** Which key explanations for everything
 
 I have added the which key explanations for everything at once because it is easier for me to look it up.
 
-**** Numbers
+***** Numbers
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
@@ -931,7 +932,7 @@ I have added the which key explanations for everything at once because it is eas
   "9" "9")
 #+END_SRC
 
-**** Movement and one key presses
+***** Movement and one key presses
 
 #+BEGIN_SRC emacs-lisp
   (which-key-add-key-based-replacements
@@ -985,7 +986,7 @@ I have added the which key explanations for everything at once because it is eas
     "&"   "shell command")
 #+END_SRC
 
-**** Global prefixed keys
+***** Global prefixed keys
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
@@ -1020,7 +1021,7 @@ I have added the which key explanations for everything at once because it is eas
   "g ?" "find command bound to key")
 #+END_SRC
 
-**** Select region prefixed keys
+***** Select region prefixed keys
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
@@ -1028,7 +1029,7 @@ I have added the which key explanations for everything at once because it is eas
   "i a" "expand entire buffer")
 #+END_SRC
 
-**** Forward navigation prefixed keys
+***** Forward navigation prefixed keys
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
@@ -1037,7 +1038,7 @@ I have added the which key explanations for everything at once because it is eas
   "] s" "next spell error")
 #+END_SRC
 
-**** Backward navigation prefixed keys
+***** Backward navigation prefixed keys
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
@@ -1045,7 +1046,7 @@ I have added the which key explanations for everything at once because it is eas
   "[ [" "widen region")
 #+END_SRC
 
-**** Extended prefix to quit/restart and time
+***** Extended prefix to quit/restart and time
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
@@ -1055,7 +1056,7 @@ I have added the which key explanations for everything at once because it is eas
   ": t" "initiliazation time")
 #+END_SRC
 
-**** User prefix for common functions
+***** User prefix for common functions
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
@@ -1121,7 +1122,7 @@ This section contains all the packages and custom functions I use for navigating
   (beacon-mode 1))
 #+END_SRC
 
-*** Modal binding
+**** Modal binding
 
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "g z" "C-z g z")
@@ -1149,7 +1150,7 @@ The default Emacs [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Un
   (global-undo-tree-mode 1))
 #+END_SRC
 
-*** Modal binding
+**** Modal binding
 
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "u" "C-z u")
@@ -1176,7 +1177,7 @@ Which key modal explanation
   :bind* (("C-z g ;" . goto-last-change)))
 #+END_SRC
 
-*** Modal binding
+**** Modal binding
 
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "g ;" "C-z g ;")
@@ -1205,7 +1206,7 @@ Which key modal explanation
           ("C-z F" . avy-goto-line)))
 #+END_SRC
 
-*** Modal binding
+**** Modal binding
 
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "f" "C-z f")
@@ -1233,7 +1234,7 @@ Which key modal explanation
   (highlight-symbol-nav-mode))
 #+END_SRC
 
-*** Modal binding
+**** Modal binding
 
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "n" "M-n")
@@ -1264,7 +1265,7 @@ Which key modal explanation
   (projectile-global-mode))
 #+END_SRC
 
-*** Modal binding
+**** Modal binding
 
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "SPC d"   "C-z SPC d")
@@ -1292,7 +1293,7 @@ Which key modal explanation
   (setq ztree-dir-move-focus t))
 #+END_SRC
 
-*** Modal binding
+**** Modal binding
 
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "g v" "C-z g v")
@@ -1319,7 +1320,7 @@ Which key modal explanation
   (setq neo-smart-open t))
 #+END_SRC
 
-*** Modal binding
+**** Modal binding
 
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "SPC n" "C-c n")
@@ -1349,7 +1350,7 @@ Which key modal explanation
   (add-hook 'prog-mode-hook 'ggtags-mode))
 #+END_SRC
 
-*** Modal binding
+**** Modal binding
 
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "T"   "C-z T")
@@ -1379,7 +1380,7 @@ Which key modal explanation
   (dumb-jump-mode))
 #+END_SRC
 
-*** Modal binding
+**** Modal binding
 
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "S" "C-c S")
@@ -1406,7 +1407,7 @@ Which key modal explanation
   (persp-mode 1))
 #+END_SRC
 
-*** Modal binding
+**** Modal binding
 
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "SPC p" "C-z SPC p")
@@ -1435,7 +1436,7 @@ Which key modal explanation
           ("C-z SPC Y" . dash-at-point)))
 #+END_SRC
 
-*** Modal binding
+**** Modal binding
 
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "SPC y" "C-z SPC y")
@@ -2030,7 +2031,7 @@ We also add some helpful additional expand regions depending on the mode.
           ("C-z i v" . er/mark-symbol)))
 #+END_SRC
 
-*** Modal binding
+**** Modal binding
 
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "a o" "C-z a o")
@@ -2101,7 +2102,7 @@ Which key modal explanation
   :bind* (("C-z g c" . comment-dwim-2)))
 #+END_SRC
 
-*** Modal binding
+**** Modal binding
 
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "g c" "C-z g c")
@@ -2159,7 +2160,7 @@ Which key modal explanation
     "C-z s" "smart nav prefix"))
 #+END_SRC
 
-*** Modal binding
+**** Modal binding
 
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "s j" "C-z s j")
@@ -2238,7 +2239,7 @@ Which key modal explanation
   :bind* (("C-z *" . iedit-mode)))
 #+END_SRC
 
-*** Modal binding
+**** Modal binding
 
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "*" "C-z *")
@@ -2281,7 +2282,7 @@ Which key modal explanation
     (add-hook 'after-init-hook 'region-bindings-mode-enable)))
 #+END_SRC
 
-*** Modal binding
+**** Modal binding
 
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "." "C-z .")
@@ -2308,7 +2309,7 @@ Which key modal explanation
   :bind* (("C-z g SPC" . shrink-whitespace)))
 #+END_SRC
 
-*** Modal binding
+**** Modal binding
 
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "g SPC" "C-z g SPC")
@@ -2336,7 +2337,7 @@ This is the [[https://github.com/benma/visual-regexp.el][good old search and rep
     :commands (vr/select-query-replace)))
 #+END_SRC
 
-*** Modal binding
+**** Modal binding
 
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "/" "C-z /")
@@ -2388,7 +2389,7 @@ Also, I don't want to trigger snippets when I'm in shell. So, let's turn it off.
   :bind* (("C-z s q" . cycle-quotes)))
 #+END_SRC
 
-*** Modal binding
+**** Modal binding
 
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "s q" "C-z s q")
@@ -3600,7 +3601,7 @@ I particularly like this [[https://github.com/k-talo/volatile-highlights.el][pac
   :bind* (("C-z g *" . highlight-thing-mode)))
 #+END_SRC
 
-*** Modal binding
+**** Modal binding
 
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "g *" "C-z g *")
@@ -3726,7 +3727,7 @@ Emacs has a built-in =hide-show= mode but it isn't great. [[https://github.com/g
   :bind* (("C-z -" . orgiami-toggle-node)))
 #+END_SRC
 
-*** Modal binding
+**** Modal binding
 
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "-" "C-z -")
@@ -3921,7 +3922,7 @@ I really liked the way [[https://bywordapp.com][Byword]] presents a writing inte
   :bind* (("C-z g F" . focus-mode)))
 #+END_SRC
 
-*** Modal binding
+**** Modal binding
 
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "g d" "C-z g d")
@@ -4006,7 +4007,7 @@ Org mode has the ability to syntax highlight source code blocks that are embedde
 
 *** Exporting
 
-Org has a [[http://orgmode.org/org.html#Exporting][powerful]] exporting feature. Let's select the various formats to export and also mention how exactly we need it to export to LaTeX with syntax highlighting.
+Org has a [[http://orgmode.org/org.html#Exporting][powerful]] exporting feature. Let's select the various formats to export and also mention how exactly we need it to export to LaTeX with syntax highlighting. I have also taken a good looking CSS configuration from [[http://gongzhitaao.org/orgcss/][Zhitao Gong]] and I use it for exporting by putting it [[./org.css][in the same folder as my org file]] and adding ~#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="org.css"/>~ to the top of my org file.
 
 #+BEGIN_SRC emacs-lisp
 (setq org-export-with-smart-quotes t
@@ -4344,6 +4345,7 @@ Finally, we make sure we bind some keys and add some [[http://orgmode.org/manual
   (add-to-list 'org-structure-template-alist '("L" "#+BEGIN_LaTeX\n?\n#+END_LaTeX"))
   (add-to-list 'org-structure-template-alist '("M" "#+LATEX_HEADER: \\usepackage{minted}\n"))
   (add-to-list 'org-structure-template-alist '("N" "#+NAME: ?"))
+  (add-to-list 'org-structure-template-alist '("P" "#+HTML_HEAD: <link rel=\"stylesheet\" type=\"text/css\" href=\"org.css\"/>\n"))
   (add-to-list 'org-structure-template-alist '("S" "#+SUBTITLE: ?"))
   (add-to-list 'org-structure-template-alist '("T" ":DRILL_CARD_TYPE: twosided"))
   (add-to-list 'org-structure-template-alist '("V" "#+BEGIN_VERSE\n?\n#+END_VERSE"))
@@ -4368,14 +4370,14 @@ Finally, we make sure we bind some keys and add some [[http://orgmode.org/manual
   (add-to-list 'org-structure-template-alist '("v" "#+BEGIN_VERBATIM\n?\n#+END_VERBATIM")))
 #+END_SRC
 
-*** Which key binding explanation
+**** Which key binding explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
     "C-z o" "org mode prefix")
 #+END_SRC
 
-*** Modal binding
+**** Modal binding
 
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "o a"   "C-z o a")
@@ -4536,7 +4538,7 @@ Let's define a couple of functions that use this wrapper function.
   (sk/deft "~/Dropbox/org/blogposts/posts"))
 #+END_SRC
 
-*** Key binding
+**** Key binding
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
@@ -4544,7 +4546,7 @@ Let's define a couple of functions that use this wrapper function.
   ("C-z o F" . sk/deft-blog))
 #+END_SRC
 
-**** Modal binding
+***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "o f" "C-z o f")
@@ -4570,7 +4572,7 @@ Interleaved notes are a thing of the past but you can [[https://github.com/rudol
   :commands (interleave interleave-pdf-mode))
 #+END_SRC
 
-*** Modal binding
+**** Modal binding
 
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "o n" "C-z o n")
@@ -4647,7 +4649,7 @@ We can make Org mode a little more pretty by having [[https://github.com/sabof/o
         org-ref-pdf-directory "~/Dropbox/org/references/pdfs/"))
 #+END_SRC
 
-** Functions
+** Custom functions
 
 *** Load extra org goodies
 
@@ -5182,7 +5184,7 @@ Then, we have the actual hydra.
  _A_: date          _l_: label       _S_: subtitle       _e_: elisp src   _Q_: quote                     _L_: latex      _I_: interleave        _q_: quit
  _c_: caption       _N_: name        _k_: keywords       _E_: example     _s_: src                       _x_: export     _T_: drill two-sided
  _f_: filetags      _o_: options     _M_: minted         _h_: html        _v_: verbatim                  _X_: noexport
- _H_: latex header  _t_: title                         _m_: matlab src  _V_: verse
+ _H_: latex header  _t_: title       _P_: publish        _m_: matlab src  _V_: verse
  "
   ("a" (hot-expand "<a"))
   ("A" (hot-expand "<A"))
@@ -5194,6 +5196,7 @@ Then, we have the actual hydra.
   ("l" (hot-expand "<l"))
   ("n" (hot-expand "<n"))
   ("N" (hot-expand "<N"))
+  ("P" (hot-expand "<P"))
   ("o" (hot-expand "<o"))
   ("t" (hot-expand "<t"))
   ("C" (hot-expand "<C"))
@@ -5384,7 +5387,7 @@ Which key modal explanation
           ("C-z g b"   . magit-blame)))
 #+END_SRC
 
-*** Modal binding
+**** Modal binding
 
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "SPC e" "C-z SPC e")
@@ -5426,7 +5429,7 @@ Which key modal explanation
   (diff-hl-dired-mode))
 #+END_SRC
 
-*** Modal binding
+**** Modal binding
 
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "] h" "C-z ] h")
@@ -5462,7 +5465,7 @@ The ability to move to past versions of the current file, [[https://github.com/p
           ("C-z g L" . git-timemachine-switch-branch)))
 #+END_SRC
 
-*** Modal binding
+**** Modal binding
 
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "g l" "C-z g l")
@@ -5492,7 +5495,7 @@ Which key modal explanation
   (setq yagist-encrypt-risky-config t))
 #+END_SRC
 
-*** Modal binding
+**** Modal binding
 
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "g p" "C-z g p")
@@ -5517,7 +5520,7 @@ Which key modal explanation
   :bind* (("C-z g i" . browse-at-remote)))
 #+END_SRC
 
-*** Modal binding
+**** Modal binding
 
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "g i" "C-z g i")
@@ -5591,7 +5594,7 @@ I often need to start some service/program in the background and instead of drop
     :kill-signal 'sigkill))
 #+END_SRC
 
-*** Modal binding
+**** Modal binding
 
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "m b" "C-z m b")
@@ -6070,7 +6073,7 @@ I'm not sure how useful [[https://github.com/yasuyk/web-beautify][this]] is but 
   (global-flycheck-mode))
 #+END_SRC
 
-*** Modal binding
+**** Modal binding
 
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "] l"   "C-z ] l")
@@ -7177,7 +7180,7 @@ For now, I have made it look and act the way I want it too. The additional packa
             ("C-z SPC h M" . helm-make))))
 #+END_SRC
 
-** Modal binding
+**** Modal binding
 
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "t" "C-z t")
@@ -7289,7 +7292,7 @@ And while we are it, why not go ahead and [[https://github.com/bcbcarl/emacs-wtt
           ("C-z g Q" . howdoi-query-insert-code-snippet-at-point)))
 #+END_SRC
 
-*** Modal binding
+**** Modal binding
 
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "g I" "C-z g I")
@@ -7317,7 +7320,7 @@ Read [[http://xkcd.com][xkcd]] in Emacs.
   :bind* (("C-z g X" . xkcd)))
 #+END_SRC
 
-*** Modal binding
+**** Modal binding
 
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "g X" "C-z g X")

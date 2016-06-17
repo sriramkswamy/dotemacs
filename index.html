@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2016-06-14 Tue 18:39 -->
+<!-- 2016-06-17 Fri 18:47 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>Emacs configuration file</title>
@@ -869,18 +869,7 @@ The default screen of Emacs is just so useless and cluttered with links and text
 
 <pre class="src src-emacs-lisp"><span style="color: #8e908c; font-style: italic;">;; </span><span style="color: #8e908c; font-style: italic;">No welcome screen - opens directly in scratch buffer</span>
 (<span style="color: #718c00;">setq</span> inhibit-startup-message t
-      initial-scratch-message <span style="color: #3e999f;">";; Scratch</span>
-
-<span style="color: #3e999f;">;; Press '?' in Modalka state or 'C-x ?' in Emacs state for bindings list.</span>
-<span style="color: #3e999f;">;; Press 'g ?' in Modalka state or 'C-h k' in Emacs state to find which command is bound to the key entered.</span>
-<span style="color: #3e999f;">;; Press 'SPC ?' in Modalka state or 'C-h b' in Emacs state for searching through bindings.</span>
-<span style="color: #3e999f;">;; Press 'SPC j' in Modalka state or 'M-x' in Emacs state to access all the functions/commands.</span>
-<span style="color: #3e999f;">;; Press 'SPC v' in Modalka state or 'C-z SPC v' in Emacs state to open the configuration file.</span>
-<span style="color: #3e999f;">;; Press 'C-h C-h' for help regarding how to use help.</span>
-<span style="color: #3e999f;">;; Finally, pressing one of the prefix keys and waiting for a second will also show hints.</span>
-
-
-<span style="color: #3e999f;">"</span>
+      initial-scratch-message <span style="color: #3e999f;">""</span>
       initial-major-mode 'fundamental-mode
       inhibit-splash-screen t)
 </pre>
@@ -9874,7 +9863,7 @@ Which key modal explanation
 <h2 id="orgheadline84">Helm</h2>
 <div class="outline-text-2" id="text-orgheadline84">
 <p>
-I am still on the fence about helm and <a href="http://oremacs.com/2015/04/16/ivy-mode/">ivy</a> but <a href="#orgheadline293">org-ref</a> requires this package. Since I have to install it anyway, I might as well make it a little better to suit my needs. Also, helm, for now, has many more features such as multiple sources, multiple selection, etc. It also has many plugins that take advantage of these features. I find ivy much simpler and I like it. Here, I have taken the help of <a href="https://github.com/hatschipuh/helm-better-defaults">this article</a> to make it a little more usable (for me). Note that helm already has nice integration with <a href="#orgheadline249">spaceline</a> and this configuration adds (and requires) support for <a href="#orgheadline85">Flx</a> and <a href="#orgheadline86">Smex</a>.
+I am still on the fence about <a href="https://github.com/emacs-helm/helm">helm</a> and <a href="http://oremacs.com/2015/04/16/ivy-mode/">ivy</a> but <a href="#orgheadline293">org-ref</a> requires this package. Since I have to install it anyway, I might as well make it a little better to suit my needs. Also, helm, for now, has many more features such as multiple sources, multiple selection, etc. It also has many plugins that take advantage of these features. I find ivy much simpler and I like it. Here, I have taken the help of <a href="https://github.com/hatschipuh/helm-better-defaults">this article</a> to make it a little more usable (for me). Note that helm already has nice integration with <a href="#orgheadline249">spaceline</a> and this configuration adds (and requires) support for <a href="#orgheadline85">Flx</a> and <a href="#orgheadline86">Smex</a>.
 </p>
 
 <p>
@@ -12673,7 +12662,7 @@ This portion of comments let Emacs know that it has to <a href="#orgheadline58">
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Sriram Krishnaswamy</p>
-<p class="date">Created: 2016-06-14 Tue 18:39</p>
+<p class="date">Created: 2016-06-17 Fri 18:47</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

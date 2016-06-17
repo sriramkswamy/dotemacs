@@ -210,18 +210,7 @@ The default screen of Emacs is just so useless and cluttered with links and text
 #+BEGIN_SRC emacs-lisp
 ;; No welcome screen - opens directly in scratch buffer
 (setq inhibit-startup-message t
-      initial-scratch-message ";; Scratch
-
-;; Press '?' in Modalka state or 'C-x ?' in Emacs state for bindings list.
-;; Press 'g ?' in Modalka state or 'C-h k' in Emacs state to find which command is bound to the key entered.
-;; Press 'SPC ?' in Modalka state or 'C-h b' in Emacs state for searching through bindings.
-;; Press 'SPC j' in Modalka state or 'M-x' in Emacs state to access all the functions/commands.
-;; Press 'SPC v' in Modalka state or 'C-z SPC v' in Emacs state to open the configuration file.
-;; Press 'C-h C-h' for help regarding how to use help.
-;; Finally, pressing one of the prefix keys and waiting for a second will also show hints.
-
-
-"
+      initial-scratch-message ""
       initial-major-mode 'fundamental-mode
       inhibit-splash-screen t)
 #+END_SRC
@@ -6886,7 +6875,7 @@ Which key modal explanation
 
 * Helm
 
-I am still on the fence about helm and [[http://oremacs.com/2015/04/16/ivy-mode/][ivy]] but [[*Org reference][org-ref]] requires this package. Since I have to install it anyway, I might as well make it a little better to suit my needs. Also, helm, for now, has many more features such as multiple sources, multiple selection, etc. It also has many plugins that take advantage of these features. I find ivy much simpler and I like it. Here, I have taken the help of [[https://github.com/hatschipuh/helm-better-defaults][this article]] to make it a little more usable (for me). Note that helm already has nice integration with [[*Mode line][spaceline]] and this configuration adds (and requires) support for [[*Flx][Flx]] and [[*Smex][Smex]].
+I am still on the fence about [[https://github.com/emacs-helm/helm][helm]] and [[http://oremacs.com/2015/04/16/ivy-mode/][ivy]] but [[*Org reference][org-ref]] requires this package. Since I have to install it anyway, I might as well make it a little better to suit my needs. Also, helm, for now, has many more features such as multiple sources, multiple selection, etc. It also has many plugins that take advantage of these features. I find ivy much simpler and I like it. Here, I have taken the help of [[https://github.com/hatschipuh/helm-better-defaults][this article]] to make it a little more usable (for me). Note that helm already has nice integration with [[*Mode line][spaceline]] and this configuration adds (and requires) support for [[*Flx][Flx]] and [[*Smex][Smex]].
 
 For now, I have made it look and act the way I want it too. The additional packages also help significantly. Therefore, I'm going to stick with Helm for now. This is a huge configuration. It has tons of additional packages [[https://github.com/EphramPerdition/helm-fuzzier][that make helm act fuzzier]], [[https://github.com/PythonNut/helm-flx][improves Flx support]], [[https://github.com/syohex/emacs-helm-ag][adds project wide search and replace]], [[https://github.com/ShingoFukuyama/helm-swoop][adds buffer wide search and replace]], [[https://github.com/bbatsov/helm-projectile][integrates with projectile]], [[https://github.com/emacs-helm/helm-descbinds][searches through bindings]], [[*Snippets][selecting snippets]], [[https://github.com/istib/helm-aws][manages AWS instances]], [[https://github.com/lesharris/helm-circe][adds IRC support]], [[https://github.com/yasuyk/helm-flycheck][integrates with error checking]], [[https://github.com/pronobis/helm-flyspell][helps in correcting spelling mistakes]] and [[https://github.com/abo-abo/helm-make][selecting a Makefile target]].
 

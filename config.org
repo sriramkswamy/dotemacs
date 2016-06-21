@@ -804,6 +804,7 @@ This is based on Vi-style but only slightly and uses the default movement keys i
 (modalka-define-kbd "M" "C-u")
 (modalka-define-kbd "(" "M-a")
 (modalka-define-kbd ")" "M-e")
+(modalka-define-kbd "/" "C-s")
 (modalka-define-kbd "E" "C-g")
 (modalka-define-kbd "d" "C-w")
 (modalka-define-kbd "w" "C-x o")
@@ -893,7 +894,6 @@ This is based on Vi-style but only slightly and uses the default movement keys i
 (modalka-define-kbd "SPC k" "C-x k")
 (modalka-define-kbd "SPC d" "C-x d")
 (modalka-define-kbd "SPC q" "C-x 0")
-(modalka-define-kbd "SPC SPC" "C-s")
 (modalka-define-kbd "SPC f" "C-x C-f")
 (modalka-define-kbd "SPC w" "C-x C-s")
 (modalka-define-kbd "SPC o" "C-c C-k")
@@ -943,6 +943,7 @@ I have added the which key explanations for everything at once because it is eas
     "$"   "end of line"
     "("   "start of sentence"
     ")"   "end of sentence"
+    "/" "search"
     "E"   "exit anything"
     "B"   "previous buffer"
     "w"   "other window"
@@ -1059,8 +1060,7 @@ I have added the which key explanations for everything at once because it is eas
   "SPC w" "save buffer"
   "SPC c" "load theme"
   "SPC q" "quit window"
-  "SPC o" "org abort"
-  "SPC SPC" "search")
+  "SPC o" "org abort")
 #+END_SRC
 
 ** Hydras
@@ -2319,7 +2319,7 @@ This is the [[https://github.com/benma/visual-regexp.el][good old search and rep
 (use-package visual-regexp
   :ensure t
   :commands (vr/query-replace)
-  :bind* (("C-z /" . vr/query-replace))
+  :bind* (("C-z SPC SPC" . vr/query-replace))
   :config
   (use-package visual-regexp-steroids
     :ensure t
@@ -2329,14 +2329,14 @@ This is the [[https://github.com/benma/visual-regexp.el][good old search and rep
 **** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "/" "C-z /")
+(modalka-define-kbd "SPC SPC" "C-z SPC SPC")
 #+END_SRC
 
 Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "/" "replace word/expression")
+  "SPC SPC" "replace word/expression")
 #+END_SRC
 
 ** Snippets
@@ -4656,13 +4656,6 @@ Org mode and packages take a while to load. This command, when invoked, loads a 
   (require 'ox-rst)
   (require 'ox-nikola)
   (require 'ox-gfm)
-  ;; References and citation
-  (require 'org-ref)
-  (require 'org-ref-latex)
-  (require 'org-ref-pdf)
-  (require 'org-ref-url-utils)
-  ;; Flash cards
-  (require 'org-drill)
   ;; JavaScript repl support
   (require 'ob-js)
   ;; Babel load
@@ -4680,7 +4673,14 @@ Org mode and packages take a while to load. This command, when invoked, loads a 
      ;; (R . t)
      ;; (octave . t)
      (matlab . t)
-     (python . t))))
+     (python . t)))
+  ;; References and citation
+  (require 'org-ref)
+  (require 'org-ref-latex)
+  (require 'org-ref-pdf)
+  (require 'org-ref-url-utils)
+  ;; Flash cards
+  (require 'org-drill))
 ;; Add obvious org mode hooks
 (add-hook 'org-mode-hook 'visual-line-mode)
 (add-hook 'org-mode-hook 'flyspell-mode)

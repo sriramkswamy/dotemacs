@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2016-06-17 Fri 18:47 -->
+<!-- 2016-06-21 Tue 00:31 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>Emacs configuration file</title>
@@ -1741,6 +1741,7 @@ This is based on Vi-style but only slightly and uses the default movement keys i
 (modalka-define-kbd <span style="color: #3e999f;">"M"</span> <span style="color: #3e999f;">"C-u"</span>)
 (modalka-define-kbd <span style="color: #3e999f;">"("</span> <span style="color: #3e999f;">"M-a"</span>)
 (modalka-define-kbd <span style="color: #3e999f;">")"</span> <span style="color: #3e999f;">"M-e"</span>)
+(modalka-define-kbd <span style="color: #3e999f;">"/"</span> <span style="color: #3e999f;">"C-s"</span>)
 (modalka-define-kbd <span style="color: #3e999f;">"E"</span> <span style="color: #3e999f;">"C-g"</span>)
 (modalka-define-kbd <span style="color: #3e999f;">"d"</span> <span style="color: #3e999f;">"C-w"</span>)
 (modalka-define-kbd <span style="color: #3e999f;">"w"</span> <span style="color: #3e999f;">"C-x o"</span>)
@@ -1842,7 +1843,6 @@ This is based on Vi-style but only slightly and uses the default movement keys i
 (modalka-define-kbd <span style="color: #3e999f;">"SPC k"</span> <span style="color: #3e999f;">"C-x k"</span>)
 (modalka-define-kbd <span style="color: #3e999f;">"SPC d"</span> <span style="color: #3e999f;">"C-x d"</span>)
 (modalka-define-kbd <span style="color: #3e999f;">"SPC q"</span> <span style="color: #3e999f;">"C-x 0"</span>)
-(modalka-define-kbd <span style="color: #3e999f;">"SPC SPC"</span> <span style="color: #3e999f;">"C-s"</span>)
 (modalka-define-kbd <span style="color: #3e999f;">"SPC f"</span> <span style="color: #3e999f;">"C-x C-f"</span>)
 (modalka-define-kbd <span style="color: #3e999f;">"SPC w"</span> <span style="color: #3e999f;">"C-x C-s"</span>)
 (modalka-define-kbd <span style="color: #3e999f;">"SPC o"</span> <span style="color: #3e999f;">"C-c C-k"</span>)
@@ -1898,6 +1898,7 @@ I have added the which key explanations for everything at once because it is eas
   <span style="color: #3e999f;">"$"</span>   <span style="color: #3e999f;">"end of line"</span>
   <span style="color: #3e999f;">"("</span>   <span style="color: #3e999f;">"start of sentence"</span>
   <span style="color: #3e999f;">")"</span>   <span style="color: #3e999f;">"end of sentence"</span>
+  <span style="color: #3e999f;">"/"</span> <span style="color: #3e999f;">"search"</span>
   <span style="color: #3e999f;">"E"</span>   <span style="color: #3e999f;">"exit anything"</span>
   <span style="color: #3e999f;">"B"</span>   <span style="color: #3e999f;">"previous buffer"</span>
   <span style="color: #3e999f;">"w"</span>   <span style="color: #3e999f;">"other window"</span>
@@ -2026,8 +2027,7 @@ I have added the which key explanations for everything at once because it is eas
   <span style="color: #3e999f;">"SPC w"</span> <span style="color: #3e999f;">"save buffer"</span>
   <span style="color: #3e999f;">"SPC c"</span> <span style="color: #3e999f;">"load theme"</span>
   <span style="color: #3e999f;">"SPC q"</span> <span style="color: #3e999f;">"quit window"</span>
-  <span style="color: #3e999f;">"SPC o"</span> <span style="color: #3e999f;">"org abort"</span>
-  <span style="color: #3e999f;">"SPC SPC"</span> <span style="color: #3e999f;">"search"</span>)
+  <span style="color: #3e999f;">"SPC o"</span> <span style="color: #3e999f;">"org abort"</span>)
 </pre>
 </div>
 </div></li></ul></li></ul>
@@ -3733,7 +3733,7 @@ This is the <a href="https://github.com/benma/visual-regexp.el">good old search 
 <pre class="src src-emacs-lisp">(<span style="color: #718c00;">use-package</span> <span style="color: #4271ae;">visual-regexp</span>
   <span style="color: #8959a8;">:ensure</span> t
   <span style="color: #8959a8;">:commands</span> (vr/query-replace)
-  <span style="color: #8959a8;">:bind*</span> ((<span style="color: #3e999f;">"C-z /"</span> . vr/query-replace))
+  <span style="color: #8959a8;">:bind*</span> ((<span style="color: #3e999f;">"C-z SPC SPC"</span> . vr/query-replace))
   <span style="color: #8959a8;">:config</span>
   (<span style="color: #718c00;">use-package</span> <span style="color: #4271ae;">visual-regexp-steroids</span>
     <span style="color: #8959a8;">:ensure</span> t
@@ -3745,7 +3745,7 @@ This is the <a href="https://github.com/benma/visual-regexp.el">good old search 
 <ul class="org-ul"><li><a id="orgheadline159"></a>Modal binding<br  /><div class="outline-text-5" id="text-orgheadline159">
 <div class="org-src-container">
 
-<pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"/"</span> <span style="color: #3e999f;">"C-z /"</span>)
+<pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"SPC SPC"</span> <span style="color: #3e999f;">"C-z SPC SPC"</span>)
 </pre>
 </div>
 
@@ -3756,7 +3756,7 @@ Which key modal explanation
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(which-key-add-key-based-replacements
-  <span style="color: #3e999f;">"/"</span> <span style="color: #3e999f;">"replace word/expression"</span>)
+  <span style="color: #3e999f;">"SPC SPC"</span> <span style="color: #3e999f;">"replace word/expression"</span>)
 </pre>
 </div>
 </div></li></ul>
@@ -6882,13 +6882,6 @@ Org mode and packages take a while to load. This command, when invoked, loads a 
   (<span style="color: #718c00;">require</span> '<span style="color: #4271ae;">ox-rst</span>)
   (<span style="color: #718c00;">require</span> '<span style="color: #4271ae;">ox-nikola</span>)
   (<span style="color: #718c00;">require</span> '<span style="color: #4271ae;">ox-gfm</span>)
-  <span style="color: #8e908c; font-style: italic;">;; </span><span style="color: #8e908c; font-style: italic;">References and citation</span>
-  (<span style="color: #718c00;">require</span> '<span style="color: #4271ae;">org-ref</span>)
-  (<span style="color: #718c00;">require</span> '<span style="color: #4271ae;">org-ref-latex</span>)
-  (<span style="color: #718c00;">require</span> '<span style="color: #4271ae;">org-ref-pdf</span>)
-  (<span style="color: #718c00;">require</span> '<span style="color: #4271ae;">org-ref-url-utils</span>)
-  <span style="color: #8e908c; font-style: italic;">;; </span><span style="color: #8e908c; font-style: italic;">Flash cards</span>
-  (<span style="color: #718c00;">require</span> '<span style="color: #4271ae;">org-drill</span>)
   <span style="color: #8e908c; font-style: italic;">;; </span><span style="color: #8e908c; font-style: italic;">JavaScript repl support</span>
   (<span style="color: #718c00;">require</span> '<span style="color: #4271ae;">ob-js</span>)
   <span style="color: #8e908c; font-style: italic;">;; </span><span style="color: #8e908c; font-style: italic;">Babel load</span>
@@ -6906,7 +6899,14 @@ Org mode and packages take a while to load. This command, when invoked, loads a 
      <span style="color: #8e908c; font-style: italic;">;; </span><span style="color: #8e908c; font-style: italic;">(R . t)</span>
      <span style="color: #8e908c; font-style: italic;">;; </span><span style="color: #8e908c; font-style: italic;">(octave . t)</span>
      (matlab . t)
-     (python . t))))
+     (python . t)))
+  <span style="color: #8e908c; font-style: italic;">;; </span><span style="color: #8e908c; font-style: italic;">References and citation</span>
+  (<span style="color: #718c00;">require</span> '<span style="color: #4271ae;">org-ref</span>)
+  (<span style="color: #718c00;">require</span> '<span style="color: #4271ae;">org-ref-latex</span>)
+  (<span style="color: #718c00;">require</span> '<span style="color: #4271ae;">org-ref-pdf</span>)
+  (<span style="color: #718c00;">require</span> '<span style="color: #4271ae;">org-ref-url-utils</span>)
+  <span style="color: #8e908c; font-style: italic;">;; </span><span style="color: #8e908c; font-style: italic;">Flash cards</span>
+  (<span style="color: #718c00;">require</span> '<span style="color: #4271ae;">org-drill</span>))
 <span style="color: #8e908c; font-style: italic;">;; </span><span style="color: #8e908c; font-style: italic;">Add obvious org mode hooks</span>
 (add-hook 'org-mode-hook 'visual-line-mode)
 (add-hook 'org-mode-hook 'flyspell-mode)
@@ -12662,7 +12662,7 @@ This portion of comments let Emacs know that it has to <a href="#orgheadline58">
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Sriram Krishnaswamy</p>
-<p class="date">Created: 2016-06-17 Fri 18:47</p>
+<p class="date">Created: 2016-06-21 Tue 00:31</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

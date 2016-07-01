@@ -892,6 +892,7 @@ This is based on Vi-style but only slightly and uses the default movement keys i
 (modalka-define-kbd "SPC j" "M-x")
 (modalka-define-kbd "SPC a" "C-x b")
 (modalka-define-kbd "SPC k" "C-x k")
+(modalka-define-kbd "SPC g" "M-g g")
 (modalka-define-kbd "SPC d" "C-x d")
 (modalka-define-kbd "SPC q" "C-x 0")
 (modalka-define-kbd "SPC f" "C-x C-f")
@@ -1055,6 +1056,7 @@ I have added the which key explanations for everything at once because it is eas
   "SPC j" "jump to cmd"
   "SPC f" "find file"
   "SPC a" "switch buffers"
+  "SPC g" "goto line"
   "SPC d" "dired"
   "SPC k" "close buffer"
   "SPC w" "save buffer"
@@ -1243,21 +1245,23 @@ Which key modal explanation
 [[https://github.com/bbatsov/projectile][Projectile]] is a nice package for project navigation. It hijacks the =C-c p= prefix by default and you can learn more about its commands by pressing =C-c p= and waiting for which key to show hints.
 
 #+BEGIN_SRC emacs-lisp
-(use-package projectile
-  :ensure t
-  :bind* (("C-z SPC d"   . projectile-find-file)
-          ("C-z SPC TAB" . projectile-find-other-file))
-  :init
-  (setq projectile-file-exists-remote-cache-expire (* 10 60))
-  :diminish projectile-mode
-  :config
-  (projectile-global-mode))
+  (use-package projectile
+    :ensure t
+    :bind* (("C-z SPC d"   . projectile-find-file)
+            ("C-z SPC D"   . projectile-switch-project)
+            ("C-z SPC TAB" . projectile-find-other-file))
+    :init
+    (setq projectile-file-exists-remote-cache-expire (* 10 60))
+    :diminish projectile-mode
+    :config
+    (projectile-global-mode))
 #+END_SRC
 
 **** Modal binding
 
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "SPC d"   "C-z SPC d")
+(modalka-define-kbd "SPC D"   "C-z SPC D")
 (modalka-define-kbd "SPC TAB" "C-z SPC TAB")
 #+END_SRC
 
@@ -1266,6 +1270,7 @@ Which key modal explanation
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
   "SPC d"   "project files"
+  "SPC D"   "project switch"
   "SPC TAB" "alternate file")
 #+END_SRC
 
@@ -1390,7 +1395,8 @@ Which key modal explanation
 (use-package perspective
   :ensure t
   :bind* (("C-z SPC p" . persp-switch)
-          ("C-z SPC s" . persp-switch-to-buffer)
+          ("C-z SPC P" . persp-kill)
+          ("C-z SPC A" . persp-switch-to-buffer)
           ("C-z g r"   . persp-rename))
   :config
   (persp-mode 1))
@@ -1400,7 +1406,8 @@ Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "SPC p" "C-z SPC p")
-(modalka-define-kbd "SPC s" "C-z SPC s")
+(modalka-define-kbd "SPC P" "C-z SPC P")
+(modalka-define-kbd "SPC A" "C-z SPC A")
 (modalka-define-kbd "g r"   "C-z g r")
 #+END_SRC
 
@@ -1409,7 +1416,8 @@ Which key modal explanation
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
   "SPC p" "perspective switch"
-  "SPC s" "perspective switch to buffer"
+  "SPC P" "perspective kill"
+  "SPC A" "perspective buffer switch"
   "g r"   "perspective rename")
 #+END_SRC
 
@@ -2250,6 +2258,7 @@ Which key modal explanation
   :ensure t
   :bind* (("C-z ." . mc/edit-lines)
           ("C-z >" . mc/mark-next-like-this)
+          ("C-z ," . mc/skip-to-next-like-this)
           ("C-z <" . mc/mark-previous-like-this)))
 #+END_SRC
 
@@ -2263,7 +2272,8 @@ Which key modal explanation
   :demand t
   :bind (:map region-bindings-mode-map
               ("<" . mc/mark-previous-like-this)
-              (">" . mc/mark-next-like-this)
+              (">" . mc/skip-to-next-like-this)
+              ("," . mc/mark-next-like-this)
               ("." . mc/edit-lines))
   :diminish (region-bindings-mode . "ρ")
   :config
@@ -2276,6 +2286,7 @@ Which key modal explanation
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "." "C-z .")
 (modalka-define-kbd ">" "C-z >")
+(modalka-define-kbd "," "C-z ,")
 (modalka-define-kbd "<" "C-z <")
 #+END_SRC
 
@@ -2284,6 +2295,7 @@ Which key modal explanation
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
   ">" "multi cursor next"
+  "," "multi cursor skip"
   "<" "multi cursor prev"
   "." "multi edit lines")
 #+END_SRC
@@ -3406,20 +3418,7 @@ Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z ," . sk/hydra-multiple-cursors/body))
-#+END_SRC
-
-***** Modal binding
-
-#+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "," "C-z ,")
-#+END_SRC
-
-Which key modal explanation
-
-#+BEGIN_SRC emacs-lisp
-(which-key-add-key-based-replacements
-  "," "multi cursor menu")
+  ("C-t" . sk/hydra-multiple-cursors/body))
 #+END_SRC
 
 *** Rectangle edit mode
@@ -6110,7 +6109,8 @@ Which key modal explanation
   (eval-after-load 'company
     '(add-to-list 'company-backends '(company-files
                                       company-capf)))
-  :bind (("C-c f" . company-files)
+  :bind (("C-r"   . company-complete)
+         ("C-c f" . company-files)
          ("C-c a" . company-dabbrev)
          ("C-c d" . company-ispell)
          :map company-active-map
@@ -7158,7 +7158,7 @@ For now, I have made it look and act the way I want it too. The additional packa
   ;; Helm integration with company
   (use-package helm-company
     :ensure t
-    :bind (("C-t" . helm-company)))
+    :bind (("M-t" . helm-company)))
 
   ;; Helm integration with make
   (use-package helm-make
@@ -7180,11 +7180,9 @@ For now, I have made it look and act the way I want it too. The additional packa
 (modalka-define-kbd "g s" "C-z g s")
 (modalka-define-kbd "g e" "C-z g e")
 (modalka-define-kbd "SPC t" "C-c C-e")
-(modalka-define-kbd "SPC I" "C-z SPC I")
 (modalka-define-kbd "SPC r" "C-z SPC r")
 (modalka-define-kbd "SPC b" "C-z SPC b")
 (modalka-define-kbd "SPC i" "C-z SPC i")
-(modalka-define-kbd "SPC g" "C-c C-f")
 (modalka-define-kbd "SPC x" "C-z SPC x")
 (modalka-define-kbd "SPC h r" "C-z SPC h r")
 (modalka-define-kbd "SPC h w" "C-z SPC h w")
@@ -7220,7 +7218,6 @@ Which key modal explanation
   "SPC r"   "recent files"
   "SPC i"   "spotlight"
   "SPC t"   "helm edit mode"
-  "SPC g"   "helm follow"
   "SPC b"   "bibliography"
   "SPC x"   "helm apropos"
   "SPC J"   "helm major mode cmds"
@@ -7582,7 +7579,8 @@ This section documents the key bindings that help to find other key-bindings. No
 | g T                   | C-z g T             | update tags for code                              |
 | g z                   | C-z g z             | [[*Beacon mode][blink cursor]]                                      |
 | SPC p                 | C-z SPC p           | [[*Perspective][switch perspective]]                                |
-| SPC s                 | C-z SPC s           | switch to buffer in perspective                   |
+| SPC A                 | C-z SPC A           | switch to buffer in perspective                   |
+| SPC P                 | C-z SPC P           | kill perspective                                  |
 | g r                   | C-z g r             | rename perspective                                |
 | ] ]                   | C-x n n             | narrow to region                                  |
 | [ [                   | C-x n w             | widen narrowed region                             |
@@ -7599,6 +7597,7 @@ This section documents the key bindings that help to find other key-bindings. No
 | g f                   | C-z g f             | find file/url under cursor                        |
 | SPC f                 | C-x C-f             | find file browsing by directory                   |
 | SPC d                 | C-z SPC d           | find files based on [[*Projectile][Projectile]] or helm-projectile |
+| SPC D                 | C-z SPC D           | switch projects                                   |
 | SPC n                 | C-z SPC n           | [[*Neotree][directory navigation]]                              |
 | Z                     | C-z Z               | zoom in to the current window                     |
 | SPC q                 | C-x 0               | close current window                              |

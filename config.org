@@ -626,6 +626,7 @@ There are some pretty nice default functions that are unbound. I use the =bind-k
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
+  ("C-r"       . hippie-expand)
   ("C-S-d"     . kill-whole-line)
   ("C-z SPC c" . load-theme)
   ("C-z g m"   . make-frame)
@@ -837,9 +838,6 @@ This is based on Vi-style but only slightly and uses the default movement keys i
 (modalka-define-kbd "g n" "C-z g n")
 (modalka-define-kbd "g N" "C-z g N")
 (modalka-define-kbd "g f" "C-z g f")
-(modalka-define-kbd "g u" "C-z g u")
-(modalka-define-kbd "g U" "C-z g U")
-(modalka-define-kbd "g C" "C-z g C")
 (modalka-define-kbd "g j" "C-z g j")
 (modalka-define-kbd "g k" "C-z g k")
 (modalka-define-kbd "g q" "C-z g q")
@@ -983,9 +981,6 @@ I have added the which key explanations for everything at once because it is eas
 (which-key-add-key-based-replacements
   "g"   "global prefix"
   "g g" "start of file"
-  "g u" "downcase region"
-  "g U" "upcase region"
-  "g C" "capitalize region"
   "g m" "make frame"
   "g M" "delete frame"
   "g n" "select frame by name"
@@ -1549,40 +1544,6 @@ Which key modal explanation
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
   "[ s" "previous spell error")
-#+END_SRC
-
-*** TODO Go to matching parenthesis, like Vi
-
-Vi/Vim has a nice feature that jumps to the matching parenthesis/braces/brackets/tags when in one. This function emulates only the parenthesis part as of now. Should look into this once I learn more Emacs Lisp.
-
-#+BEGIN_SRC emacs-lisp
-(defun sk/goto-match-paren (arg)
-  "Go to the matching parenthesis if on parenthesis, otherwise insert %.
-vi style of % jumping to matching brace."
-  (interactive "p")
-  (cond ((looking-at "\\s\(") (forward-list 1) (backward-char 1))
-        ((looking-at "\\s\)") (forward-char 1) (backward-list 1))
-        (t (self-insert-command (or arg 1)))))
-#+END_SRC
-
-**** Key binding
-
-#+BEGIN_SRC emacs-lisp
-(bind-keys*
-  ("C-z %" . sk/goto-match-paren))
-#+END_SRC
-
-***** Modal binding
-
-#+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "%" "C-z %")
-#+END_SRC
-
-Which key for modal explanation
-
-#+BEGIN_SRC emacs-lisp
-(which-key-add-key-based-replacements
-  "%" "goto matching paren")
 #+END_SRC
 
 *** Non native full screen
@@ -2272,8 +2233,8 @@ Which key modal explanation
   :demand t
   :bind (:map region-bindings-mode-map
               ("<" . mc/mark-previous-like-this)
-              (">" . mc/skip-to-next-like-this)
-              ("," . mc/mark-next-like-this)
+              ("," . mc/skip-to-next-like-this)
+              (">" . mc/mark-next-like-this)
               ("." . mc/edit-lines))
   :diminish (region-bindings-mode . "ρ")
   :config
@@ -2404,6 +2365,65 @@ Which key modal explanation
 #+END_SRC
 
 ** Custom functions
+
+*** Toggle case
+
+This is from somewhere on the internet. It toggles the case of the word or selection.
+
+#+BEGIN_SRC emacs-lisp
+(defun sk/toggle-letter-case ()
+  "Toggle the letter case of current word or text selection.
+Toggles from 3 cases: UPPER CASE, lower case, Title Case,
+in that cyclic order."
+  (interactive)
+  (let (pos1 pos2 (deactivate-mark nil) (case-fold-search nil))
+    (if (and transient-mark-mode mark-active)
+        (setq pos1 (region-beginning)
+              pos2 (region-end))
+      (setq pos1 (car (bounds-of-thing-at-point 'word))
+            pos2 (cdr (bounds-of-thing-at-point 'word))))
+
+    (when (not (eq last-command this-command))
+      (save-excursion
+        (goto-char pos1)
+        (cond
+         ((looking-at "[[:lower:]][[:lower:]]") (put this-command 'state
+                                                     "all lower"))
+         ((looking-at "[[:upper:]][[:upper:]]") (put this-command 'state
+                                                     "all caps") )
+         ((looking-at "[[:upper:]][[:lower:]]") (put this-command 'state
+                                                     "init caps") )
+         (t (put this-command 'state "all lower") ))))
+
+    (cond
+     ((string= "all lower" (get this-command 'state))
+      (upcase-initials-region pos1 pos2) (put this-command 'state "init caps"))
+     ((string= "init caps" (get this-command 'state))
+      (upcase-region pos1 pos2) (put this-command 'state "all caps"))
+     ((string= "all caps" (get this-command 'state))
+      (downcase-region pos1 pos2) (put this-command 'state "all lower")))))
+#+END_SRC
+
+**** Key binding
+
+#+BEGIN_SRC emacs-lisp
+(bind-keys*
+  ("C-z ~" . sk/toggle-letter-case))
+#+END_SRC
+
+***** Modal binding
+
+#+BEGIN_SRC emacs-lisp
+(modalka-define-kbd "~" "C-z ~")
+#+END_SRC
+
+Which key modal explanation
+
+#+BEGIN_SRC emacs-lisp
+(which-key-add-key-based-replacements
+   "~" "toggle case")
+#+END_SRC
+
 
 *** Kill region or backward word
 
@@ -2603,22 +2623,42 @@ This function is to easily insert date or datetime in the current buffer.
 
 #+BEGIN_SRC emacs-lisp
 (defun sk/insert-date (prefix)
-  "Insert the current date. With prefix-argument, use British format. With
-   two prefix arguments, write out the day and month name."
+  "Insert the current date. With prefix-argument, write out the day and month name."
   (interactive "P")
   (let ((format (cond
                  ((not prefix) "%Y-%m-%d")
-                 ((equal prefix '(4)) "%d/%m/%Y")
-                 ((equal prefix '(16)) "%A, %d %B %Y"))))
+                 ((equal prefix '(4)) "%A, %d %B %Y"))))
     (insert (format-time-string format))))
 
-(defun sk/insert-datetime (prefix)
-  "Insert the current date and time."
+(defun sk/insert-date-and-time (prefix)
+  "Inserts the current date and time"
   (interactive "P")
   (let ((format (cond
-                 ((not prefix) "%Y-%m-%d %H:%M:%S")
-                 ((equal prefix '(4)) "%Y-%m-%dT%H:%M:%SZ"))))
+                 ((not prefix) "%Y-%m-%d %H:%M:%S"))))
     (insert (format-time-string format))))
+#+END_SRC
+
+**** Key binding
+
+#+BEGIN_SRC emacs-lisp
+(bind-keys*
+  ("C-z g D" . sk/insert-date)
+  ("C-z %"   . sk/insert-date-and-time))
+#+END_SRC
+
+***** Modal binding
+
+#+BEGIN_SRC emacs-lisp
+(modalka-define-kbd "g D" "C-z g D")
+(modalka-define-kbd "%" "C-z %")
+#+END_SRC
+
+Which key modal explanation
+
+#+BEGIN_SRC emacs-lisp
+(which-key-add-key-based-replacements
+  "g U"   "insert date"
+  "%" "insert date and time")
 #+END_SRC
 
 *** Rename the current buffer and the file associated with it
@@ -2855,7 +2895,7 @@ Which key modal explanation
 
 *** Duplicate
 
-Duplicate the selected region.
+Duplicate the selected region or line.
 
 #+BEGIN_SRC emacs-lisp
 (defun sk/duplicate-region (&optional num start end)
@@ -2870,26 +2910,39 @@ region-end is used."
       (goto-char end)
       (dotimes (i num)
         (insert region)))))
+
+(defun sk/duplicate-current-line (&optional num)
+  "Duplicate the current line NUM times."
+  (interactive "p")
+  (save-excursion
+    (when (eq (point-at-eol) (point-max))
+      (goto-char (point-max))
+      (newline)
+      (forward-char -1))
+    (sk/duplicate-region num (point-at-bol) (1+ (point-at-eol)))))
 #+END_SRC
 
 **** Key binding
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z g D" . sk/duplicate-region))
+  ("C-z g U" . sk/duplicate-region)
+  ("C-z g u" . sk/duplicate-current-line))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "g D" "C-z g D")
+(modalka-define-kbd "g U" "C-z g U")
+(modalka-define-kbd "g u" "C-z g u")
 #+END_SRC
 
 Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "g D" "duplicate region")
+  "g U" "duplicate region"
+  "g u" "duplicate line")
 #+END_SRC
 
 *** Open line
@@ -3131,7 +3184,7 @@ Which key modal explanation
 (defun sk/replace-next-underscore-with-camel (arg)
   (interactive "p")
   (if (> arg 0)
-      (setq arg (1+ arg))) ; 1-based index to get eternal loop with 0
+ (setq arg (1+ arg))) ; 1-based index to get eternal loop with 0
   (let ((case-fold-search nil))
     (while (not (= arg 1))
       (search-forward-regexp "\\b_[a-z]")
@@ -3145,20 +3198,20 @@ Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z g +" . sk/replace-next-underscore-with-camel))
+  ("C-z g C" . sk/replace-next-underscore-with-camel))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "g +" "C-z g +")
+(modalka-define-kbd "g C" "C-z g C")
 #+END_SRC
 
 Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "g +" "camelCase word")
+  "g C" "camelCase word")
 #+END_SRC
 
 *** Make current word snake case
@@ -4299,6 +4352,7 @@ Finally, we make sure we bind some keys and add some [[http://orgmode.org/manual
           ("C-z o L"   . org-toggle-link-display)
           ("C-z o I"   . org-toggle-inline-images)
           ("C-z o k"   . org-cut-subtree)
+          ("C-z o K"   . org-ref-set-bibtex-keywords)
           ("C-z o V"   . org-reveal)
           ("C-z o R"   . org-refile)
           ("C-z o y"   . org-copy-subtree)
@@ -6109,7 +6163,7 @@ Which key modal explanation
   (eval-after-load 'company
     '(add-to-list 'company-backends '(company-files
                                       company-capf)))
-  :bind (("C-r"   . company-complete)
+  :bind (("M-t"   . company-complete)
          ("C-c f" . company-files)
          ("C-c a" . company-dabbrev)
          ("C-c d" . company-ispell)
@@ -7155,11 +7209,6 @@ For now, I have made it look and act the way I want it too. The additional packa
     :bind* (("C-,"        . helm-yas-create-snippet-on-region)
             ("C-<escape>" . helm-yas-visit-snippet-file)))
 
-  ;; Helm integration with company
-  (use-package helm-company
-    :ensure t
-    :bind (("M-t" . helm-company)))
-
   ;; Helm integration with make
   (use-package helm-make
     :ensure t
@@ -7507,7 +7556,7 @@ Also, note that you can redefine any of the functions that have been defined her
 
 #+END_SRC
 
-* Key bindings
+* TODO Key bindings
 
 This section documents the key bindings that help to find other key-bindings. Note that when you search the keybindings, the Emacs ones are shown by default. These tend to be of the form =C-z g g=. The corresponding Modalka mode binding is just =g g=. So Pressing =C-z= or pressing =Esc= to toggle Modalka mode produces similar results (except, of course, you need not press =Esc= every time you want to use a binding in Modalka mode). Also note that [[*Snippets][Snippets]] is one place where modal bindings are not enforced because I want to write fast and not switch often when I'm writing.
 
@@ -7563,7 +7612,6 @@ This section documents the key bindings that help to find other key-bindings. No
 | n                     | M-n                 | [[*Highlight symbol][smart next item]]                                   |
 | N                     | M-p                 | smart previous item                               |
 | ;                     | C-z ;               | see previous changes                              |
-| %                     | C-z %               | [[*Go to matching parenthesis, like Vi][matching parenthesis]]                              |
 | +                     | C-z +               | [[*Bookmark navigation][Bookmark navigation]]                               |
 | B                     | C-z B               | switch to the buffer edited last                  |
 | z                     | C-l                 | recenter screen                                   |

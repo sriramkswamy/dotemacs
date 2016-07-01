@@ -3,11 +3,16 @@
 
 (setq mc/cmds-to-run-for-all
       '(
+	LaTeX-insert-left-brace
+	TeX-insert-backslash
+	TeX-insert-dollar
+	TeX-insert-sub-or-superscript
 	delete-horizontal-space
 	electric-newline-and-maybe-indent
 	ivy-alt-done
 	kill-region
 	org-cdlatex-underscore-caret
+	org-cycle
 	org-force-self-insert
 	org-self-insert-command
 	sk/kill-region-or-backward-word

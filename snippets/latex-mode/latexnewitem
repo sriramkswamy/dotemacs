@@ -2,4 +2,4 @@
 # name: new item
 # key: it
 # --
-\item
+\item $0

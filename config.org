@@ -740,6 +740,8 @@ As mentioned before, I like and prefer modal editing. I feel pressing modifier k
   (add-to-list 'modalka-excluded-modes 'magit-status-mode)
   (add-to-list 'modalka-excluded-modes 'magit-popup-mode)
   (add-to-list 'modalka-excluded-modes 'eshell-mode)
+  (add-to-list 'modalka-excluded-modes 'deft-mode)
+  (add-to-list 'modalka-excluded-modes 'term-mode)
   (which-key-add-key-based-replacements
     "C-z"     "Modalka prefix"
     "C-z :"   "extended prefix"
@@ -1905,6 +1907,15 @@ Some functions/regions have complimenting expansions - you can expand inside the
   (previous-line 1)
   (end-of-line 1))
 
+(defun sk/mark-around-LaTeX-environment ()
+  "Select around a LaTeX environment with both the begin and end keywords"
+  (interactive)
+  (er/mark-LaTeX-inside-environment)
+  (previous-line 1)
+  (exchange-point-and-mark)
+  (next-line 1)
+  (end-of-line 1))
+
 (defun sk/mark-around-word ()
   "Mark the word and the adjacent whitespace"
   (interactive)
@@ -1967,6 +1978,7 @@ We also add some helpful additional expand regions depending on the mode.
           ("C-z a w" . sk/mark-around-word)
           ("C-z a p" . sk/mark-around-text-paragraph)
           ("C-z a f" . er/mark-defun)
+          ("C-z a e" . sk/mark-around-LaTeX-environment)
           ("C-z a t" . er/mark-LaTeX-math)
           ("C-z a m" . er/mark-python-block)
           ("C-z a j" . er/mark-ruby-block-up)
@@ -1978,6 +1990,7 @@ We also add some helpful additional expand regions depending on the mode.
           ("C-z i p" . er/mark-text-paragraph)
           ("C-z i f" . er/mark-defun)
           ("C-z i w" . er/mark-word)
+          ("C-z i e" . er/mark-LaTeX-inside-environment)
           ("C-z i t" . sk/mark-inside-LaTeX-math)
           ("C-z i u" . er/mark-url)
           ("C-z i c" . er/mark-comment)
@@ -1996,6 +2009,7 @@ We also add some helpful additional expand regions depending on the mode.
 (modalka-define-kbd "a w" "C-z a w")
 (modalka-define-kbd "a p" "C-z a p")
 (modalka-define-kbd "a f" "C-z a f")
+(modalka-define-kbd "a e" "C-z a e")
 (modalka-define-kbd "a t" "C-z a t")
 (modalka-define-kbd "a m" "C-z a m")
 (modalka-define-kbd "a j" "C-z a j")
@@ -2009,6 +2023,7 @@ We also add some helpful additional expand regions depending on the mode.
 (modalka-define-kbd "i w" "C-z i w")
 (modalka-define-kbd "i u" "C-z i u")
 (modalka-define-kbd "i t" "C-z i t")
+(modalka-define-kbd "i e" "C-z i e")
 (modalka-define-kbd "i c" "C-z i c")
 (modalka-define-kbd "i b" "C-z i b")
 (modalka-define-kbd "i q" "C-z i q")
@@ -2027,6 +2042,7 @@ Which key modal explanation
   "a w" "expand a word"
   "a p" "expand a para"
   "a f" "expand a func"
+  "a e" "expand a latex env"
   "a t" "expand a latex math"
   "a m" "expand a python block"
   "a j" "expand a julia block"
@@ -2040,7 +2056,8 @@ Which key modal explanation
   "i f" "expand in func"
   "i w" "expand in word"
   "i u" "expand in url"
-  "i t" "expand in latex"
+  "i e" "expand in latex env"
+  "i t" "expand in latex math"
   "i c" "expand in comment"
   "i b" "expand in pair"
   "i q" "expand in quote"
@@ -4227,8 +4244,7 @@ Capture is an [[https://www.youtube.com/watch?v=KdcXu_RdKI0][amazing tool]]. It 
          "Meeting"         ; name
          entry             ; type
          (file+datetree "~/Dropbox/org/phd.org" "Meeting")  ; target
-         "* %^{Title} %(org-set-tags)  :meeting:\n:PROPERTIES:\n:Created: %U\n:END:\n%i
-Minutes of the meeting:\n%?"  ; template
+         "* %^{Title} %(org-set-tags)  :meeting:\n:PROPERTIES:\n:Created: %U\n:END:\n%i\n**Agenda:\n%?\n\n** Minutes of the meeting:\n"  ; template
          :prepend t        ; properties
          :empty-lines 1    ; properties
          :created t        ; properties
@@ -4692,6 +4708,41 @@ We can make Org mode a little more pretty by having [[https://github.com/sabof/o
 #+END_SRC
 
 ** Custom functions
+
+*** List the count of items under each tag
+
+Put this piece of code in any org mode buffer and evaluate it. You will get a table containing the tag and number of items in each tag.
+
+#+BEGIN_SRC emacs-lisp :tangle no
+(mapcar (lambda (tag)
+          (list tag (length (org-map-entries t tag nil))))
+        '("article"
+          "books"
+          "courses"
+          "code"
+          "card"
+          "drill"
+          "errands"
+          "films"
+          "gubby"
+          "home"
+          "idea"
+          "job"
+          "ledger"
+          "meeting"
+          "note"
+          "online"
+          "personal"
+          "project"
+          "reference"
+          "reveal"
+          "story"
+          "technical"
+          "vague"
+          "work"
+          "noexport"
+          "cash"))
+#+END_SRC
 
 *** Load extra org goodies
 

@@ -1,6 +1,6 @@
 # -*- mode: snippet; require-final-newline: nil -*-
 # name: LaTeX subfigure
-# key: lsfig
+# key: sfig
 # binding: direct-keybinding
 # --
 \begin{subfigure}[ ${1:b} ]{ ${2:0.5}\textwidth }

@@ -3,9 +3,9 @@
 # key: sfig
 # binding: direct-keybinding
 # --
-\begin{subfigure}[ ${1:b} ]{ ${2:0.5}\textwidth }
+\begin{subfigure}[${1:b}]{${2:0.5}\textwidth}
 ${6:\centering}
 $5
-\caption{ $3 }
+\caption{$3}
 \label{sfig:$4}
 \end{subfigure}

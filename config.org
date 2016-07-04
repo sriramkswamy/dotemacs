@@ -626,9 +626,12 @@ There are some pretty nice default functions that are unbound. I use the =bind-k
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-r"       . hippie-expand)
+  ("C-r"       . dabbrev-expand)
+  ("M-/"       . hippie-expand)
   ("C-S-d"     . kill-whole-line)
   ("C-z SPC c" . load-theme)
+  ("C-z SPC S" . locate)
+  ("C-z W"     . winner-undo)
   ("C-z g m"   . make-frame)
   ("C-z g M"   . delete-frame)
   ("C-z g n"   . select-frame-by-name)
@@ -811,6 +814,7 @@ This is based on Vi-style but only slightly and uses the default movement keys i
 (modalka-define-kbd "E" "C-g")
 (modalka-define-kbd "d" "C-w")
 (modalka-define-kbd "w" "C-x o")
+(modalka-define-kbd "W" "C-z W")
 (modalka-define-kbd "B" "C-z B")
 (modalka-define-kbd "H" "C-x >")
 (modalka-define-kbd "L" "C-x <")
@@ -899,6 +903,7 @@ This is based on Vi-style but only slightly and uses the default movement keys i
 (modalka-define-kbd "SPC w" "C-x C-s")
 (modalka-define-kbd "SPC o" "C-c C-k")
 (modalka-define-kbd "SPC c" "C-z SPC c")
+(modalka-define-kbd "SPC S" "C-z SPC S")
 (modalka-define-kbd "SPC ?" "C-z SPC ?")
 #+END_SRC
 
@@ -947,6 +952,7 @@ I have added the which key explanations for everything at once because it is eas
     "/" "search"
     "E"   "exit anything"
     "B"   "previous buffer"
+    "W"   "winner undo"
     "w"   "other window"
     "G"   "end of file"
     "d"   "delete selection"
@@ -1058,8 +1064,9 @@ I have added the which key explanations for everything at once because it is eas
   "SPC k" "close buffer"
   "SPC w" "save buffer"
   "SPC c" "load theme"
+  "SPC S" "locate"
   "SPC q" "quit window"
-  "SPC o" "org abort")
+  "SPC o" "C-c C-k")
 #+END_SRC
 
 ** Hydras
@@ -1449,6 +1456,46 @@ Which key modal explanation
 
 ** Custom functions
 
+*** Go to the closest number
+
+Go to the closest numeral that is present in the file or change the number at point.
+
+#+BEGIN_SRC emacs-lisp
+  (defun sk/goto-closest-number ()
+    (interactive)
+    (let ((closest-behind (save-excursion (search-backward-regexp "[0-9]" nil t)))
+          (closest-ahead (save-excursion (search-forward-regexp "[0-9]" nil t))))
+      (push-mark)
+      (goto-char
+       (cond
+        ((and (not closest-ahead) (not closest-behind)) (error "No numbers in buffer"))
+        ((and closest-ahead (not closest-behind)) closest-ahead)
+        ((and closest-behind (not closest-ahead)) closest-behind)
+        ((> (- closest-ahead (point)) (- (point) closest-behind)) closest-behind)
+        ((> (- (point) closest-behind) (- closest-ahead (point))) closest-ahead)
+        :else closest-ahead))))
+#+END_SRC
+
+**** Key binding
+
+#+BEGIN_SRC emacs-lisp
+(bind-keys*
+  ("C-z %" . sk/goto-closest-number))
+#+END_SRC
+
+***** Modal binding
+
+#+BEGIN_SRC emacs-lisp
+(modalka-define-kbd "%" "C-z %")
+#+END_SRC
+
+Which key modal explanation
+
+#+BEGIN_SRC emacs-lisp
+(which-key-add-key-based-replacements
+  "%" "goto closest number")
+#+END_SRC
+
 *** Open the =config.org= file
 
 This function opens the current file when invoked from anywhere so that I can edit my configuration quickly, whenever I want
@@ -1836,20 +1883,20 @@ Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z W" . sk/hydra-of-windows/body))
+  ("C-z SPC t" . sk/hydra-of-windows/body))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "W" "C-z W")
+(modalka-define-kbd "SPC t" "C-z SPC t")
 #+END_SRC
 
 Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "W" "window menu")
+  "SPC t" "window menu")
 #+END_SRC
 
 *** Bookmark navigation
@@ -2336,6 +2383,7 @@ Which key modal explanation
 #+BEGIN_SRC emacs-lisp
 (use-package yasnippet
   :ensure t
+  :disabled t
   :commands (yas-insert-snippet yas-new-snippet)
   :bind (("C-o" . yas-insert-snippet))
   :bind* (("C-="        . yas-new-snippet)
@@ -2441,17 +2489,42 @@ Which key modal explanation
    "~" "toggle case")
 #+END_SRC
 
+*** Copy region on line
+
+This function copies the current line or the region if the region is active.
+
+#+BEGIN_SRC emacs-lisp
+(defun sk/copy-whole-lines (arg)
+  "Copy lines (as many as prefix argument) in the kill ring"
+  (interactive "p")
+  (kill-ring-save (line-beginning-position)
+                  (line-beginning-position (+ 1 arg)))
+  (message "%d line%s copied" arg (if (= 1 arg) "" "s")))
+
+(defun sk/copy-region-or-line (arg)
+  (interactive "p")
+  (if (region-active-p)
+      (kill-ring-save (region-beginning) (region-end))
+    (sk/copy-whole-lines arg)))
+#+END_SRC
+
+**** Key binding
+
+#+BEGIN_SRC emacs-lisp
+(bind-keys*
+  ("M-w" . sk/copy-region-or-line))
+#+END_SRC
 
 *** Kill region or backward word
 
 This function kills the region if active and kills the backward word if it is not.
 
 #+BEGIN_SRC emacs-lisp
-(defun sk/kill-region-or-backward-word ()
-  (interactive)
+(defun sk/kill-region-or-backward-word (arg)
+  (interactive "p")
   (if (region-active-p)
       (kill-region (region-beginning) (region-end))
-    (backward-kill-word 1)))
+    (backward-kill-word arg)))
 #+END_SRC
 
 **** Key binding
@@ -2503,6 +2576,58 @@ Which key modal explanation
 (which-key-add-key-based-replacements
   "c" "change region"
   "C" "change rest of line")
+#+END_SRC
+
+*** Increase or decrease number at point
+
+Once [[*Go to the closest number][you go to the closest number]], you might want to change it. These functions are useful for that.
+
+#+BEGIN_SRC emacs-lisp
+(defun sk/incs (s &optional num)
+  (let* ((inc (or num 1))
+         (new-number (number-to-string (+ inc (string-to-number s))))
+         (zero-padded? (s-starts-with? "0" s)))
+    (if zero-padded?
+        (s-pad-left (length s) "0" new-number)
+      new-number)))
+
+(defun sk/change-number-at-point (arg)
+  (interactive "p")
+  (unless (or (looking-at "[0-9]")
+              (looking-back "[0-9]"))
+    (sk/goto-closest-number))
+  (save-excursion
+    (while (looking-back "[0-9]")
+      (forward-char -1))
+    (re-search-forward "[0-9]+" nil)
+    (replace-match (sk/incs (match-string 0) arg) nil nil)))
+
+(defun sk/subtract-number-at-point (arg)
+  (interactive "p")
+  (sk/change-number-at-point (- arg)))
+#+END_SRC
+
+**** Key binding
+
+#+BEGIN_SRC emacs-lisp
+(bind-keys*
+  ("C-z g +" . sk/change-number-at-point)
+  ("C-z g -" . sk/subtract-number-at-point))
+#+END_SRC
+
+***** Modal binding
+
+#+BEGIN_SRC emacs-lisp
+(modalka-define-kbd "g +" "C-z g +")
+(modalka-define-kbd "g -" "C-z g -")
+#+END_SRC
+
+Which key modal explanation
+
+#+BEGIN_SRC emacs-lisp
+(which-key-add-key-based-replacements
+  "g +" "increase number"
+  "g -" "decrease number")
 #+END_SRC
 
 *** Deactivate region
@@ -2644,14 +2769,8 @@ This function is to easily insert date or datetime in the current buffer.
   (interactive "P")
   (let ((format (cond
                  ((not prefix) "%Y-%m-%d")
-                 ((equal prefix '(4)) "%A, %d %B %Y"))))
-    (insert (format-time-string format))))
-
-(defun sk/insert-date-and-time (prefix)
-  "Inserts the current date and time"
-  (interactive "P")
-  (let ((format (cond
-                 ((not prefix) "%Y-%m-%d %H:%M:%S"))))
+                 ((equal prefix '(4)) "%A, %d %B %Y")
+                 ((equal prefix '(16)) "%Y-%m-%d %H:%M:%S"))))
     (insert (format-time-string format))))
 #+END_SRC
 
@@ -2659,23 +2778,20 @@ This function is to easily insert date or datetime in the current buffer.
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z g D" . sk/insert-date)
-  ("C-z %"   . sk/insert-date-and-time))
+  ("C-z g D" . sk/insert-date))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "g D" "C-z g D")
-(modalka-define-kbd "%" "C-z %")
 #+END_SRC
 
 Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "g U"   "insert date"
-  "%" "insert date and time")
+  "g U"   "insert date")
 #+END_SRC
 
 *** Rename the current buffer and the file associated with it
@@ -2900,7 +3016,7 @@ We already have delete to the end of line (pressing =C-k=). It is only natural t
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "Y" "C-z y")
+(modalka-define-kbd "Y" "C-z Y")
 #+END_SRC
 
 Which key modal explanation
@@ -2910,7 +3026,7 @@ Which key modal explanation
   "Y" "copy till end of line")
 #+END_SRC
 
-*** Duplicate
+*** Duplicate line or region
 
 Duplicate the selected region or line.
 
@@ -2937,29 +3053,35 @@ region-end is used."
       (newline)
       (forward-char -1))
     (sk/duplicate-region num (point-at-bol) (1+ (point-at-eol)))))
+
+(defun sk/duplicate-line-or-region (&optional num)
+  "Duplicate the current line or region if active"
+  (interactive "p")
+  (if (region-active-p)
+      (let ((beg (region-beginning))
+            (end (region-end)))
+        (sk/duplicate-region num beg end)))
+  (sk/duplicate-current-line num))
 #+END_SRC
 
 **** Key binding
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z g U" . sk/duplicate-region)
-  ("C-z g u" . sk/duplicate-current-line))
+  ("C-z g d" . sk/duplicate-line-or-region))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "g U" "C-z g U")
-(modalka-define-kbd "g u" "C-z g u")
+(modalka-define-kbd "g d" "C-z g d")
 #+END_SRC
 
 Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "g U" "duplicate region"
-  "g u" "duplicate line")
+  "g d" "duplicate line or region")
 #+END_SRC
 
 *** Open line
@@ -3244,6 +3366,15 @@ Works just like the [[*Change from snake case to camel case][previous case]]. No
          (current-word (buffer-substring-no-properties beg end))
          (snakified (snake-case current-word)))
     (replace-string current-word snakified nil beg end)))
+
+(defun sk/kebab-current-word ()
+  (interactive)
+  (er/mark-word)
+  (let* ((beg (region-beginning))
+         (end (region-end))
+         (current-word (buffer-substring-no-properties beg end))
+         (kebabed (s-dashed-words current-word)))
+    (replace-string current-word kebabed nil beg end)))
 #+END_SRC
 
 **** Key binding
@@ -3264,41 +3395,6 @@ Which key modal explanation
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
   "g _" "snake_case word")
-#+END_SRC
-
-*** Kebab case current word
-
-=kebab-case= is how almost all Emacs Lisp functions/variables are written. It is useful to have this. Note that this also depends on [[*Expand region][Expand region]]. Also stolen from Magnar's config. The man has so many useful functions!
-
-#+BEGIN_SRC emacs-lisp
-(defun sk/kebab-current-word ()
-  (interactive)
-  (er/mark-word)
-  (let* ((beg (region-beginning))
-         (end (region-end))
-         (current-word (buffer-substring-no-properties beg end))
-         (kebabed (s-dashed-words current-word)))
-    (replace-string current-word kebabed nil beg end)))
-#+END_SRC
-
-**** Key binding
-
-#+BEGIN_SRC emacs-lisp
-(bind-keys*
-  ("C-z g -" . sk/kebab-current-word))
-#+END_SRC
-
-***** Modal binding
-
-#+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "g -" "C-z g -")
-#+END_SRC
-
-Which key modal explanation
-
-#+BEGIN_SRC emacs-lisp
-(which-key-add-key-based-replacements
-  "g -" "kebab-case word")
 #+END_SRC
 
 *** Transpose paranthesis
@@ -3970,7 +4066,7 @@ I really liked the way [[https://bywordapp.com][Byword]] presents a writing inte
 (use-package olivetti
   :ensure t
   :diminish olivetti-mode
-  :bind* (("C-z g d" . olivetti-mode))
+  :bind* (("C-z g U" . olivetti-mode))
   :config
   (progn
     (olivetti-set-width 100)))
@@ -3983,7 +4079,7 @@ I really liked the way [[https://bywordapp.com][Byword]] presents a writing inte
 **** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "g d" "C-z g d")
+(modalka-define-kbd "g U" "C-z g U")
 (modalka-define-kbd "g F" "C-z g F")
 #+END_SRC
 
@@ -3991,7 +4087,7 @@ Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "g d" "distraction free"
+  "g U" "distraction free"
   "g F" "focus on sections")
 #+END_SRC
 
@@ -7009,7 +7105,7 @@ For now, I have made it look and act the way I want it too. The additional packa
           ("C-z SPC h e" . helm-run-external-command)
           ("C-z ;"       . helm-all-mark-rings)
           ("C-z SPC h x" . helm-select-xfont)
-          ("C-z SPC i"   . helm-locate)
+          ("C-z SPC s"   . helm-locate)
           ("C-z t"       . helm-semantic-or-imenu))
   :bind (:map helm-map
               ("<return>"   . helm-maybe-exit-minibuffer)
@@ -7279,10 +7375,10 @@ For now, I have made it look and act the way I want it too. The additional packa
 (modalka-define-kbd "g E" "C-z g E")
 (modalka-define-kbd "g s" "C-z g s")
 (modalka-define-kbd "g e" "C-z g e")
-(modalka-define-kbd "SPC t" "C-c C-e")
+(modalka-define-kbd "SPC i" "C-c C-e")
 (modalka-define-kbd "SPC r" "C-z SPC r")
 (modalka-define-kbd "SPC b" "C-z SPC b")
-(modalka-define-kbd "SPC i" "C-z SPC i")
+(modalka-define-kbd "SPC s" "C-z SPC s")
 (modalka-define-kbd "SPC x" "C-z SPC x")
 (modalka-define-kbd "SPC h r" "C-z SPC h r")
 (modalka-define-kbd "SPC h w" "C-z SPC h w")
@@ -7316,7 +7412,7 @@ Which key modal explanation
   "g s"     "search project"
   "g e"     "extract word from dir"
   "SPC r"   "recent files"
-  "SPC i"   "spotlight"
+  "SPC s"   "spotlight"
   "SPC t"   "helm edit mode"
   "SPC b"   "bibliography"
   "SPC x"   "helm apropos"
@@ -7607,7 +7703,7 @@ Also, note that you can redefine any of the functions that have been defined her
 
 #+END_SRC
 
-* TODO Key bindings
+* Key bindings
 
 This section documents the key bindings that help to find other key-bindings. Note that when you search the keybindings, the Emacs ones are shown by default. These tend to be of the form =C-z g g=. The corresponding Modalka mode binding is just =g g=. So Pressing =C-z= or pressing =Esc= to toggle Modalka mode produces similar results (except, of course, you need not press =Esc= every time you want to use a binding in Modalka mode). Also note that [[*Snippets][Snippets]] is one place where modal bindings are not enforced because I want to write fast and not switch often when I'm writing.
 
@@ -7616,7 +7712,7 @@ This section documents the key bindings that help to find other key-bindings. No
 #+NAME: meta_bindings
 | Modalka state binding | Emacs state binding | Function                            |
 |-----------------------+---------------------+-------------------------------------|
-| ?                     | C-z ?               | Show top level bindings             |
+| ?                     | C-z ?               | [[*Which key][Show top level bindings]]             |
 | g ?                   | C-h k               | Check the command for the given key |
 | SPC ?                 | C-h b               | search bindings                     |
 | M                     | C-u                 | universal argument                  |
@@ -7655,21 +7751,23 @@ This section documents the key bindings that help to find other key-bindings. No
 | 0                     | C-a                 | [[*Smarter start of line][start of line]]                                     |
 | $                     | C-e                 | end of line                                       |
 | f                     | C-z f               | find anything on screen with timer [[*Avy][Avy]]            |
-| F                     | C-z F               | goto line                                         |
-| /                     | C-s                 | search in buffer                                  |
-| SPC SPC               | C-s                 | search in buffer                                  |
+| F                     | C-z F               | goto line using Avy                               |
+| /                     | C-s                 | search in buffer or use =helm-swoop= if available   |
 | g s                   | C-z g s             | search in project                                 |
 | g e                   | C-z g e             | extract word from project                         |
 | n                     | M-n                 | [[*Highlight symbol][smart next item]]                                   |
 | N                     | M-p                 | smart previous item                               |
 | ;                     | C-z ;               | see previous changes                              |
 | +                     | C-z +               | [[*Bookmark navigation][Bookmark navigation]]                               |
-| B                     | C-z B               | switch to the buffer edited last                  |
+| B                     | C-z B               | [[*Bind key to bind some unbound defaults][switch to the buffer edited last]]                  |
 | z                     | C-l                 | recenter screen                                   |
-| #                     | C-z #               | [[*Highlight symbol][highlight symbol]] like this                        |
+| #                     | C-z #               | helm - swoop = with cursor word                   |
 | g j                   | C-z g j             | next PDF page                                     |
 | g k                   | C-z g k             | previous PDF page                                 |
-| w                     | C-z w               | [[*Window navigation][Window navigation hydra]]                           |
+| SPC t                 | C-z SPC t           | [[*Window navigation][Window navigation hydra]]                           |
+| w                     | C-x o               | switch to other window                            |
+| W                     | C-z W               | undo window configuration                         |
+| Z                     | C-z Z               | zoom in to the current window                     |
 | g w                   | C-x 3               | split window vertically                           |
 | g W                   | C-x 2               | split window horizontally                         |
 | t                     | C-z t               | [[*Helm][tags in buffer]]                                    |
@@ -7697,183 +7795,188 @@ This section documents the key bindings that help to find other key-bindings. No
 | SPC f                 | C-x C-f             | find file browsing by directory                   |
 | SPC d                 | C-z SPC d           | find files based on [[*Projectile][Projectile]] or helm-projectile |
 | SPC D                 | C-z SPC D           | switch projects                                   |
+| SPC g                 | M-g g               | goto line number                                  |
 | SPC n                 | C-z SPC n           | [[*Neotree][directory navigation]]                              |
-| Z                     | C-z Z               | zoom in to the current window                     |
 | SPC q                 | C-x 0               | close current window                              |
 | SPC z                 | C-z SPC z           | [[*Non native full screen][Non native full screen]]                            |
 | SPC a                 | C-x b               | switch to open buffer                             |
 | SPC k                 | C-x k               | kill buffer                                       |
-| SPC v                 | C-z SPC v           | view configuration file                           |
+| SPC S                 | C-x S               | use =locate= command                                |
+| SPC v                 | C-z SPC v           | [[*Open the =config.org= file][view configuration file]]                           |
 | SPC j                 | M-x                 | find command                                      |
+| SPC J                 | M-X                 | find command in current mode                      |
 | SPC y                 | C-z SPC y           | [[*Code documentation][browse code documentation]] with docset             |
 | SPC Y                 | C-z SPC Y           | browse code docs immediately                      |
 
 ** Editing
 
 #+NAME: editing
-| Modalka state binding | Emacs state binding | Function                             |
-|-----------------------+---------------------+--------------------------------------|
-| y                     | M-w                 | copy selected region                 |
-| Y                     | C-z Y               | copy to end of line                  |
-| p                     | C-y                 | paste                                |
-| P                     | M-y                 | paste history                        |
-| x                     | C-d                 | delete character                     |
-| d                     | C-S-w               | cut selection                        |
-| D                     | C-k                 | delete to end of line                |
-| q                     | C-x (               | start macro                          |
-| Q                     | C-x )               | end macro                            |
-| @                     | C-z @               | [[*Macros][macros play menu]]                     |
-| =                     | C-z =               | indent region                        |
-| O                     | C-o                 | [[*Open line][Open line above]]                      |
-| g O                   | C-z g O             | open line below                      |
-| g S                   | C-z g S             | split line                           |
-| g J                   | C-z g J             | [[*Join line][join line]]                            |
-| g u                   | C-z g u             | lower case region                    |
-| g U                   | C-z g U             | upper case region                    |
-| g C                   | C-z g C             | capitalize region                    |
-| g q                   | C-z g q             | format paragraph                     |
-| g c                   | C-z g c             | comment line or region               |
-| v                     | C-SPC               | start selecting region               |
-| V                     | C-z V               | start selecting rectangle region     |
-| X                     | C-x C-x             | exchange cursor and end of selection |
-| a a                   | C-z a a             | [[*Expand region hydra][expand region hydra]]                  |
-| a l                   | C-z a l             | [[*Select the current line][select around the current line]]       |
-| a p                   | C-z a p             | [[*Expand region][select around the para]]               |
-| a f                   | C-z a f             | select around function               |
-| a w                   | C-z a w             | select around word                   |
-| a v                   | C-z a v             | select around variable               |
-| a u                   | C-z a u             | select around url                    |
-| a t                   | C-z a t             | select around latex math             |
-| a b                   | C-z a b             | select around pairs ()               |
-| a q                   | C-z a q             | select around quotes                 |
-| a c                   | C-z a c             | select around comment                |
-| a o                   | C-z a o             | select around org code block         |
-| a s                   | C-z a s             | select around org subtree            |
-| a m                   | C-z a m             | select around python method          |
-| a j                   | C-z a j             | select around julia/ruby block       |
-| a h                   | C-z a h             | [[*Highlight diffs][select a git hunk]]                    |
-| i a                   | C-x h               | select whole buffer                  |
-| i l                   | C-z i l             | [[*Select the current line][select the current line]]              |
-| i p                   | C-z i p             | [[*Expand region][select the para]]                      |
-| i f                   | C-z i f             | select inside function               |
-| i w                   | C-z i w             | select inside word                   |
-| i v                   | C-z i v             | select inside variable               |
-| i u                   | C-z i u             | select inside url                    |
-| i t                   | C-z i t             | select inside latex math             |
-| i b                   | C-z i b             | select inside pairs ()               |
-| i q                   | C-z i q             | select inside quotes                 |
-| i c                   | C-z i c             | select inside comment                |
-| i o                   | C-z i o             | select inside org code block         |
-| i s                   | C-z i s             | [[*Select inside the subtree][select inside org subtree]]            |
-| i m                   | C-z i m             | select around python method          |
-| i j                   | C-z i j             | select around julia/ruby block       |
-| i h                   | C-z i h             | [[*Highlight diffs][select git hunk]]                      |
-| s a                   | C-z s a             | [[*Smartparens][Smartparens]] beginning of block       |
-| s b                   | C-z s b             | smartparens backward expression      |
-| s c                   | C-z s c             | smartparens change surroundings      |
-| s d                   | C-z s d             | smartparens delete expression        |
-| s e                   | C-z s e             | smartparens end of block             |
-| s f                   | C-z s f             | smartparens forward expression       |
-| s h                   | C-z s h             | smartparens backward down expression |
-| s j                   | C-z s j             | smartparens down expression          |
-| s k                   | C-z s k             | smartparens backward up expression   |
-| s l                   | C-z s l             | smartparens up expression            |
-| s n                   | C-z s n             | smartparens next block               |
-| s p                   | C-z s p             | smartparens previous block           |
-| s q                   | C-z s q             | [[*Cycle quotes][cycle quotes]]                         |
-| s s                   | C-z s s             | surroundings unwrap                  |
-| s S                   | C-z s S             | surroundings backward unwrap         |
-| s x                   | C-z s x             | smartparens transpose expressions    |
-| s y                   | C-z s y             | smartparens copy expression          |
-| .                     | C-z .               | [[*Interactive edit][multi edit restrict to line]]          |
-| ,                     | C-z ,               | multi edit toggle selection          |
-| >                     | C-z >               | multi edit expand down               |
-| <                     | C-z <               | multi edit expand up                 |
-| *                     | C-z *               | multiple interactive edits           |
-| \                     | C-c C-c             | simulate C-c C-c                     |
-| SPC w                 | C-x C-s             | save                                 |
-| SPC o                 | C-c C-k             | org abort                            |
-| /                     | C-z /               | [[*Visual replace][visual replace word in buffer/region]] |
-| g R                   | C-z g R             | [[*Rename the current buffer and the file associated with it][rename current file]]                  |
-| g K                   | C-z g K             | [[*Delete the current buffer and the file associated with it][delete current file]]                  |
-| g y                   | C-z g y             | [[*Copy the current file path][copy current file path]]               |
-| g D                   | C-z g D             | [[*Duplicate][duplicate line]]                       |
-| [ w                   | C-z [ w             | [[*Transposing words][exchange with previous word]]          |
-| ] w                   | C-z ] w             | exchange with next word              |
-| [ c                   | C-z [ c             | [[*Transposing characters][exchange with previous character]]     |
-| ] c                   | C-z ] c             | exchange with next character         |
-| [ e                   | C-z [ e             | [[*Move lines][move line/region up]]                  |
-| ] e                   | C-z ] e             | move line/region down                |
-| g +                   | C-z g +             | [[*Change from snake case to camel case][Change from snake case to camel case]] |
-| g _                   | C-z g _             | [[*Make current word snake case][Make current word snake case]]         |
-| g -                   | C-z g -             | [[*Kebab case current word][Kebab case current word]]              |
-| g =                   | C-z g =             | [[*Add for auto correction][Add for auto correction]]              |
-| E                     | C-z E               | [[*Rectangle edit mode][Rectangle edit mode]]                  |
-| "                     | C-z "               | [[*Registers][Registers]]                            |
+| Modalka state binding | Emacs state binding | Function                               |
+|-----------------------+---------------------+----------------------------------------|
+| y                     | M-w                 | [[*Copy region on line][copy selected region or line]]           |
+| Y                     | C-z Y               | [[*Copy to the end of the line][copy to end of line]]                    |
+| p                     | C-y                 | paste                                  |
+| P                     | M-y                 | paste history                          |
+| x                     | C-d                 | delete character                       |
+| d                     | C-w                 | [[*Kill region or backward word][kill region or backward word]]           |
+| D                     | C-k                 | delete to end of line                  |
+| q                     | C-x (               | start macro                            |
+| Q                     | C-x )               | end macro                              |
+| @                     | C-z @               | [[*Macros][macros play menu]]                       |
+| =                     | C-z =               | indent region                          |
+| O                     | C-o                 | [[*Open line][Open line above]]                        |
+| g S                   | C-j                 | split line                             |
+| g J                   | C-z g J             | [[*Join line][join line]]                              |
+| ~                     | C-z ~               | [[*Toggle case][Toggle case]]                            |
+| g u                   | C-z g u             | lower case region                      |
+| g q                   | M-q                 | [[*Hard line wrap][format or unformat paragraph]]           |
+| g c                   | C-z g c             | [[*Commenting][comment line or region]]                 |
+| v                     | C-SPC               | start selecting region                 |
+| V                     | C-z V               | [[*Rectangle edit mode][rectangle edit menu]]                    |
+| X                     | C-x C-x             | exchange mark or reselect region       |
+| a a                   | C-z a a             | [[*Expand region hydra][expand region hydra]]                    |
+| a b                   | C-z a b             | select around pairs ()                 |
+| a c                   | C-z a c             | select around comment                  |
+| a e                   | C-z a e             | select around latex environment        |
+| a f                   | C-z a f             | select around function                 |
+| a h                   | C-z a h             | [[*Highlight diffs][select a git hunk]]                      |
+| a j                   | C-z a j             | select around julia/ruby block         |
+| a l                   | C-z a l             | [[*Select the current line][select around the current line]]         |
+| a m                   | C-z a m             | select around python method            |
+| a o                   | C-z a o             | select around org code block           |
+| a p                   | C-z a p             | [[*Expand region][select around the para]]                 |
+| a q                   | C-z a q             | select around quotes                   |
+| a s                   | C-z a s             | select around org subtree              |
+| a t                   | C-z a t             | select around latex math               |
+| a u                   | C-z a u             | select around url                      |
+| a v                   | C-z a v             | select around variable                 |
+| a w                   | C-z a w             | select around word                     |
+| i a                   | C-x h               | select whole buffer                    |
+| i b                   | C-z i b             | select inside pairs ()                 |
+| i c                   | C-z i c             | select inside comment                  |
+| i e                   | C-z i e             | select inside latex environment        |
+| i f                   | C-z i f             | select inside function                 |
+| i h                   | C-z i h             | [[*Highlight diffs][select git hunk]]                        |
+| i j                   | C-z i j             | select around julia/ruby block         |
+| i l                   | C-z i l             | [[*Select the current line][select the current line]]                |
+| i m                   | C-z i m             | select around python method            |
+| i o                   | C-z i o             | select inside org code block           |
+| i p                   | C-z i p             | [[*Expand region][select the para]]                        |
+| i q                   | C-z i q             | select inside quotes                   |
+| i s                   | C-z i s             | [[*Select inside the subtree][select inside org subtree]]              |
+| i t                   | C-z i t             | select inside latex math               |
+| i u                   | C-z i u             | select inside url                      |
+| i v                   | C-z i v             | select inside variable                 |
+| i w                   | C-z i w             | select inside word                     |
+| s a                   | C-z s a             | [[*Smartparens][Smartparens]] beginning of block         |
+| s b                   | C-z s b             | smartparens backward expression        |
+| s c                   | C-z s c             | smartparens change surroundings        |
+| s d                   | C-z s d             | smartparens delete expression          |
+| s e                   | C-z s e             | smartparens end of block               |
+| s f                   | C-z s f             | smartparens forward expression         |
+| s h                   | C-z s h             | smartparens backward down expression   |
+| s j                   | C-z s j             | smartparens down expression            |
+| s k                   | C-z s k             | smartparens backward up expression     |
+| s l                   | C-z s l             | smartparens up expression              |
+| s n                   | C-z s n             | smartparens next block                 |
+| s p                   | C-z s p             | smartparens previous block             |
+| s q                   | C-z s q             | [[*Cycle quotes][cycle quotes]]                           |
+| s s                   | C-z s s             | surroundings unwrap                    |
+| s S                   | C-z s S             | surroundings backward unwrap           |
+| s x                   | C-z s x             | smartparens transpose expressions      |
+| s y                   | C-z s y             | smartparens copy expression            |
+| .                     | C-z .               | [[*Multiple cursors][Multiple cursors each line]]             |
+| ,                     | C-z ,               | multiple cursors skip                  |
+| >                     | C-z >               | multiple cursors next                  |
+| <                     | C-z <               | multiple cursors previous              |
+| *                     | C-z *               | [[*Interactive edit][Interactive edit all instances]]         |
+| \                     | C-c C-c             | simulate C-c C-c                       |
+| SPC w                 | C-x C-s             | save                                   |
+| SPC o                 | C-c C-k             | simulate C-c C-k - usually destructive |
+| SPC i                 | C-c C-e             | simulate C-c C-e - usually toggle edit |
+| SPC SPC               | C-z SPC SPC         | [[*Visual replace][Visually replace words]]                 |
+| g R                   | C-z g R             | [[*Rename the current buffer and the file associated with it][rename current file]]                    |
+| g K                   | C-z g K             | [[*Delete the current buffer and the file associated with it][delete current file]]                    |
+| g y                   | C-z g y             | [[*Copy the current file path][copy current file path]]                 |
+| g d                   | C-z g d             | [[*Duplicate line or region][Duplicate line or region]]               |
+| g D                   | C-z g D             | [[*Insert date or date and time][Insert date or date and time]]           |
+| [ w                   | C-z [ w             | [[*Transposing words][exchange with previous word]]            |
+| ] w                   | C-z ] w             | exchange with next word                |
+| [ c                   | C-z [ c             | [[*Transposing characters][exchange with previous character]]       |
+| ] c                   | C-z ] c             | exchange with next character           |
+| [ e                   | C-z [ e             | [[*Move lines][move line/region up]]                    |
+| ] e                   | C-z ] e             | move line/region down                  |
+| g C                   | C-z g C             | [[*Change from snake case to camel case][Change from snake case to camel case]]   |
+| g _                   | C-z g _             | [[*Make current word snake case][Make current word snake case]]           |
+| g =                   | C-z g =             | [[*Add for auto correction][Add for auto correction]]                |
+| g +                   | C-z g +             | [[*Increase or decrease number at point][Increase number at point]]               |
+| g -                   | C-z g -             | Decrease number at point               |
+| "                     | C-z "               | [[*Registers][Registers menu]]                         |
 
 ** Visual aids
 
 #+NAME: visual_aids
-| Modalka state binding | Emacs state binding | Function               |
-|-----------------------+---------------------+------------------------|
-| SPC c                 | C-z SPC c           | load color themes      |
-| <Bar>                 | C-z <Bar>           | [[*Origami - folding based on indentation/syntax][syntax based fold]]      |
-| -                     | C-z -               | [[*Vimish fold - Fold regions based on selection][fold toggle]]            |
-| _                     | C-z _               | [[*Vimish fold][fold menu]]              |
-| g a                   | C-z g a             | [[*Activate minor modes][Activate minor modes]]   |
-| g d                   | C-z g d             | [[*Distraction free mode][Distraction free mode]]  |
-| g F                   | C-z g F             | Distraction free focus |
-| g *                   | C-z g *             |                        |
+| Modalka state binding | Emacs state binding | Function                 |
+|-----------------------+---------------------+--------------------------|
+| SPC c                 | C-z SPC c           | load color themes        |
+| <Bar>                 | C-z <Bar>           | [[*Origami - folding based on indentation/syntax][syntax based fold]]        |
+| -                     | C-z -               | [[*Vimish fold - Fold regions based on selection][fold toggle]]              |
+| _                     | C-z _               | [[*Vimish fold][fold menu]]                |
+| g a                   | C-z g a             | [[*Activate minor modes][Activate minor modes]]     |
+| g U                   | C-z g U             | [[*Distraction free mode][Distraction free mode]]    |
+| g F                   | C-z g F             | Distraction free focus   |
+| g *                   | C-z g *             | [[*Highlight thing at point][Highlight thing at point]] |
 
 ** Org
 
 #+NAME: org_mode
 | Modalka state binding | Emacs state binding | Function                    |
 |-----------------------+---------------------+-----------------------------|
-| o a                   | C-z o a             | org agenda                  |
-| o v                   | C-z o v             | [[*Agenda view][org agenda view]]             |
-| o c                   | C-z o c             | org capture                 |
-| o b                   | C-z o b             | [[*Check boxes][org check box]]               |
-| o d                   | C-z o d             | org todo                    |
+| o <                   | C-z o <             | org date from calendar      |
+| o >                   | C-z o >             | org goto calendar           |
+| o A                   | C-z o A             | org archive                 |
+| o B                   | C-z o B             | org table blank field       |
+| o C                   | C-z o C             | [[*Clocking functionality][org clocking]]                |
 | o D                   | C-z o D             | [[*Hydra for task management][org deadlines]]               |
+| o E                   | C-z o E             | org set effort              |
+| o F                   | C-z o F             | org attach                  |
+| o H                   | C-z o H             | org heading respect content |
+| o I                   | C-z o I             | org toggle inline images    |
+| o K                   | C-z o K             | org bibtex add keyword      |
+| o L                   | C-z o L             | org toggle link display     |
+| o N                   | C-z o N             | org note                    |
+| o P                   | C-z o P             | [[*Properties][org properties]]              |
+| o R                   | C-z o R             | org refile                  |
+| o S                   | C-z o S             | org make subtree            |
+| o U                   | C-z o U             | update all dblocks          |
+| o V                   | C-z o V             | org reveal                  |
+| o [                   | C-z o [             | org widen                   |
+| o ]                   | C-z o ]             | org narrow to subtree       |
+| o a                   | C-z o a             | org agenda                  |
+| o b                   | C-z o b             | [[*Check boxes][org check box]]               |
+| o c                   | C-z o c             | org capture                 |
+| o d                   | C-z o d             | org todo                    |
 | o e                   | C-z o e             | org export                  |
 | o f                   | C-z o f             | [[*Deft][org filter]]                  |
+| o g                   | C-z o g             | org goto                    |
+| o h                   | C-z o h             | org toggle heading          |
+| o i                   | C-z o i             | org insert link             |
 | o j                   | C-z o j             | [[*Jump][org jump]]                    |
 | o k                   | C-z o k             | org kill subtree            |
 | o l                   | C-z o l             | org latex toggle            |
 | o m                   | C-z o m             | [[*Table manipulation][org manipulate table]]        |
+| o n                   | C-z o n             | [[*Interleave][org interleave]]              |
 | o o                   | C-z o o             | [[*Organize trees][org organize]]                |
 | o p                   | C-z o p             | [[*Org drill][org practice]]                |
-| o P                   | C-z o P             | [[*Properties][org properties]]              |
-| o w                   | C-z o w             | org edit in special buffer  |
 | o q                   | C-z o q             | org quit special buffer     |
 | o r                   | C-z o r             | [[*Org ref][org ref]]                     |
 | o s                   | C-z o s             | org store link              |
-| o i                   | C-z o i             | org insert link             |
-| o L                   | C-z o L             | org toggle link display     |
-| o C                   | C-z o C             | [[*Clocking functionality][org clocking]]                |
-| o S                   | C-z o S             | org make subtree            |
-| o A                   | C-z o A             | org archive                 |
-| o g                   | C-z o g             | org goto                    |
-| o I                   | C-z o I             | org toggle inline images    |
-| o V                   | C-z o V             | org reveal                  |
-| o R                   | C-z o R             | org refile                  |
-| o h                   | C-z o h             | org toggle heading          |
-| o H                   | C-z o H             | org heading respect content |
-| o u                   | C-z o u             | update dblock               |
-| o U                   | C-z o U             | update all dblocks          |
-| o [                   | C-z o [             | org widen                   |
-| o ]                   | C-z o ]             | org narrow to subtree       |
-| o n                   | C-z o n             | [[*Interleave][org interleave]]              |
-| o N                   | C-z o N             | org note                    |
-| o z                   | C-z o z             | org clone indirect buffer   |
-| o F                   | C-z o F             | org attach                  |
-| o E                   | C-z o E             | org set effort              |
-| o B                   | C-z o B             | org table blank field       |
-| o y                   | C-z o y             | org copy subtree            |
 | o t                   | C-z o t             | org tags command            |
-| o <                   | C-z o <             | org date from calendar      |
-| o >                   | C-z o >             | org goto calendar           |
+| o u                   | C-z o u             | update dblock               |
+| o v                   | C-z o v             | [[*Agenda view][org agenda view]]             |
+| o w                   | C-z o w             | org edit in special buffer  |
+| o y                   | C-z o y             | org copy subtree            |
+| o z                   | C-z o z             | org clone indirect buffer   |
 
 ** Programming
 
@@ -7892,6 +7995,7 @@ This section documents the key bindings that help to find other key-bindings. No
 | g p                   | C-z g p             | [[*Gists][gist post public]]                                  |
 | g P                   | C-z g P             | gist post private                                 |
 | g o                   | C-x C-e             | emacs lisp evaluate                               |
+| g O                   | C-M-x               | Evaluate function according to mode               |
 | I                     | C-c I               | get info about thing at point ([[*Code documentation][Dash]] fallback)     |
 | S                     | C-c S               | get source of thing at point ([[*Dumb jump][Dumb jump]] fallback) |
 | m b                   | C-z m b             | [[*Start services][start background processes]]                        |
@@ -7918,14 +8022,11 @@ This section documents the key bindings that help to find other key-bindings. No
 #+NAME: helm
 | Modalka state binding | Emacs state binding | Function                                |
 |-----------------------+---------------------+-----------------------------------------|
-| SPC i                 | C-z SPC i           | [[*Helm][spotlight search]]                        |
-| SPC g                 | C-c C-f             | helm follow selection                   |
+| SPC s                 | C-z SPC s           | [[*Helm][spotlight search]]                        |
 | SPC t                 | C-c C-e             | helm swoop edit mode                    |
 | SPC b                 | C-z SPC b           | helm bibtex                             |
-| SPC y                 | C-z SPC y           | [[*Hydras][helm extra commands]]                     |
 | SPC r                 | C-z SPC r           | recent files                            |
 | SPC x                 | C-z SPC x           | helm apropos                            |
-| SPC J                 | C-z SPC J           | helm smex major mode commands           |
 | SPC h r               | C-z SPC h r         | helm resume                             |
 | SPC h s               | C-z SPC h s         | helm correct spelling                   |
 | SPC h w               | C-z SPC h w         | manage [[https://aws.amazon.com/cli/][AWS via aws cli]]                  |
@@ -7936,15 +8037,15 @@ This section documents the key bindings that help to find other key-bindings. No
 | SPC h c               | C-z SPC h c         | color picker                            |
 | SPC h d               | C-z SPC h d         | man pages                               |
 | SPC h e               | C-z SPC h e         | run external command                    |
-| SPC h f               | C-z SPC h f         | use the 'find' utility                  |
+| SPC h f               | C-z SPC h f         | use the =find= utility                    |
 | SPC h h               | C-z SPC h h         | read the helm documentation             |
 | SPC h i               | C-z SPC h i         | information at point                    |
 | SPC h k               | C-z SPC h k         | calculate expression                    |
 | SPC h l               | C-z SPC h l         | all marks                               |
 | SPC h p               | C-z SPC h p         | emacs processes                         |
 | SPC h R               | C-z SPC h R         | build regexp interactively              |
-| SPC h t               | C-z SPC h t         | system 'top' utility                    |
-| SPC h u               | C-z SPC h u         | use the surfraw utility                 |
+| SPC h t               | C-z SPC h t         | system =top= utility                      |
+| SPC h u               | C-z SPC h u         | use the =surfraw= utility                 |
 | SPC h x               | C-z SPC h x         | select the xfont                        |
 
 ** Fun
@@ -7952,9 +8053,9 @@ This section documents the key bindings that help to find other key-bindings. No
 #+NAME: fun
 | Modalka state binding | Emacs state binding | Function                       |
 |-----------------------+---------------------+--------------------------------|
-| A                     | C-z A               | Google appropriately           |
+| A                     | C-z A               | Google variable or region      |
+| g G                   | C-z g G             | [[*Google stuff][Google menu]]                    |
 | g X                   | C-z g X             | [[*XKCD][XKCD]]                           |
-| g G                   | C-z g G             | [[*Google stuff][Google stuff]]                   |
 | g I                   | C-z g I             | [[*How do I do something?][howdoi query]]                   |
 | g Y                   | C-z g Y             | howdoi query line              |
 | g Q                   | C-z g Q             | howdoi query insert code       |

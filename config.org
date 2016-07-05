@@ -7,7 +7,7 @@
 
 * Basics
 
-My configuration is modal in nature. The best example of a modal editor is [[https://en.wikipedia.org/wiki/Vim_(text_editor)][Vim]]. In fact, I use Vim every now and then and was a Vim user for almost 4 years before I switched to Emacs (primarily because of [[http://orgmode.org][Org mode]]). I like modal editing as a concept and have set it up that way. That's probably the most important thing about this configuration. This is better explained under the section - [[*Modal states][Modal states]].
+My configuration is modal in nature. The best example of a modal editor is [[https://en.wikipedia.org/wiki/Vim_(text_editor)][Vim]]. In fact, I use Vim every now and then and was a Vim user for almost 4 years before I switched to Emacs (primarily because of [[http://orgmode.org][Org mode]]). I like modal editing as a concept and have set it up that way. That's probably the most important thing about this configuration. This is better explained under the section - [[*Modal states][Modal states]]. However, it can still be used as a non-modal editor too since all bindings start with =M-m= as a leader key except for some basic defaults.
 
 The best way to get help is to ask Emacs about it. =C-h= is the prefix key for getting help. This means pressing *Control* and *h* together. So, if you are new to Emacs you might want to start by pressing =C-h C-h=, i.e., press =C-h= twice. Everything else regarding help will be explained along the way.
 
@@ -558,18 +558,18 @@ Eldoc mode is a mode to display documentation for languages in Emacs
 #+BEGIN_SRC emacs-lisp
 (use-package flyspell
   :diminish (flyspell-mode . "φ")
-  :bind* (("C-z ] s" . flyspell-goto-next-error)))
+  :bind* (("M-m ] s" . flyspell-goto-next-error)))
 #+END_SRC
 
 ** Manage the built-in browser =eww=
 
 #+BEGIN_SRC emacs-lisp
 (use-package eww
-  :bind* (("C-z g x" . eww)
-          ("C-z g :" . eww-browse-with-external-browser)
-          ("C-z g #" . eww-list-histories)
-          ("C-z g {" . eww-back-url)
-          ("C-z g }" . eww-forward-url))
+  :bind* (("M-m g x" . eww)
+          ("M-m g :" . eww-browse-with-external-browser)
+          ("M-m g #" . eww-list-histories)
+          ("M-m g {" . eww-back-url)
+          ("M-m g }" . eww-forward-url))
   :config
   (progn
     (add-hook 'eww-mode-hook 'visual-line-mode)))
@@ -622,37 +622,37 @@ The heading says it all. I find it useful
 
 ** Bind key to bind some unbound defaults
 
-There are some pretty nice default functions that are unbound. I use the =bind-key= package that comes along with use-package to bind these keys. I hijack the =C-z= prefix. I find the default action bound to =C-z= (=suspend-frame=) is pretty useless and even if needed can be accessed via =C-x C-z=.
+There are some pretty nice default functions that are unbound. I use the =bind-key= package that comes along with use-package to bind these keys. I hijack the =M-m= (which can be =command + m= or =alt + m= depending on how you [[*Installing Emacs][configure it)]] prefix. I find the default action bound to =M-m= - going to the first non-whitespace character in line - pretty useless as our [[*Smarter start of line][smarter start of line]] already takes care of this for us.
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
   ("C-r"       . dabbrev-expand)
   ("M-/"       . hippie-expand)
   ("C-S-d"     . kill-whole-line)
-  ("C-z SPC c" . load-theme)
-  ("C-z SPC S" . locate)
-  ("C-z W"     . winner-undo)
-  ("C-z g m"   . make-frame)
-  ("C-z g M"   . delete-frame)
-  ("C-z g n"   . select-frame-by-name)
-  ("C-z g N"   . set-frame-name)
-  ("C-z B"     . mode-line-other-buffer)
-  ("C-z ="     . indent-region)
-  ("C-z g ("   . Info-prev)
-  ("C-z g )"   . Info-next)
-  ("C-z ^"     . Info-up)
-  ("C-z &"     . Info-goto-node)
-  ("C-z g f"   . find-file-at-point)
-  ("C-z g u"   . downcase-region)
-  ("C-z g U"   . upcase-region)
-  ("C-z g C"   . capitalize-region)
-  ("C-z R"     . overwrite-mode)
-  ("C-z g j"   . doc-view-next-page)
-  ("C-z g k"   . doc-view-previous-page)
-  ("C-z : t"   . emacs-init-time)
-  ("C-z g q"   . fill-paragraph)
-  ("C-z g @"   . compose-mail)
-  ("C-z SPC ?" . describe-bindings))
+  ("M-m SPC c" . load-theme)
+  ("M-m SPC S" . locate)
+  ("M-m W"     . winner-undo)
+  ("M-m g m"   . make-frame)
+  ("M-m g M"   . delete-frame)
+  ("M-m g n"   . select-frame-by-name)
+  ("M-m g N"   . set-frame-name)
+  ("M-m B"     . mode-line-other-buffer)
+  ("M-m ="     . indent-region)
+  ("M-m g ("   . Info-prev)
+  ("M-m g )"   . Info-next)
+  ("M-m ^"     . Info-up)
+  ("M-m &"     . Info-goto-node)
+  ("M-m g f"   . find-file-at-point)
+  ("M-m g u"   . downcase-region)
+  ("M-m g U"   . upcase-region)
+  ("M-m g C"   . capitalize-region)
+  ("M-m R"     . overwrite-mode)
+  ("M-m g j"   . doc-view-next-page)
+  ("M-m g k"   . doc-view-previous-page)
+  ("M-m : t"   . emacs-init-time)
+  ("M-m g q"   . fill-paragraph)
+  ("M-m g @"   . compose-mail)
+  ("M-m SPC ?" . describe-bindings))
 #+END_SRC
 
 * Tangle on save
@@ -705,11 +705,11 @@ Emacs has 100s of bindings and it is impossible to remember them all. Sometimes 
   :diminish which-key-mode
   :init
   (setq which-key-sort-order 'which-key-key-order-alpha)
-  :bind* (("C-z ?" . which-key-show-top-level))
+  :bind* (("M-m ?" . which-key-show-top-level))
   :config
   (which-key-mode)
   (which-key-add-key-based-replacements
-    "C-z ?" "top level bindings"))
+    "M-m ?" "top level bindings"))
 #+END_SRC
 
 ** Discover my major
@@ -727,13 +727,13 @@ Emacs has 100s of bindings and it is impossible to remember them all. Sometimes 
 
 ** Modalka mode
 
-As mentioned before, I like and prefer modal editing. I feel pressing modifier keys all the time just leads to wrist pain and repetitive stress injuries. [[https://github.com/mrkkrp/modalka][Modalka]] is a package that is pretty simple and gives a platform for anyone to implement a modal mode. Let's call this state Modalka state and the normal Emacs way as Emacs state. This is also one of the core packages that I rely on. First, to load and configure some defaults. Note that when using in terminals, the default toggle (pressing =escape= key) might not work because of how terminals operate. I have added another key to toggle it in that case - =M-m= (which is either =command + m= or =alt +m= depending on how you [[*Installing Emacs][configure it]])which is bound to going to the first non-whitespace character in line but our [[*Smarter start of line][smarter start of line]] already takes care of this for us.
+As mentioned before, I like and prefer modal editing. I feel pressing modifier keys all the time just leads to wrist pain and repetitive stress injuries. [[https://github.com/mrkkrp/modalka][Modalka]] is a package that is pretty simple and gives a platform for anyone to implement a modal mode. Let's call this state Modalka state and the normal Emacs way as Emacs state. This is also one of the core packages that I rely on. First, to load and configure some defaults. Note that when using in terminals, the default toggle (pressing =escape= key) might not work because of how terminals operate. I have added another key to toggle it in that case - =C-z= (which is =control + z)= - bound to =suspend-frame= by default. This same function is also bound to =C-x C-z= by default and this binding seems pointless to me. We use =M-m= as sort of a "leader" key, as in [[*Bind key to bind some unbound defaults][all bindings]] start from there. This can be easily remembered as the mnemonic of "Modalka mode" (=M-m=).
 
 #+BEGIN_SRC emacs-lisp
 (use-package modalka
   :ensure t
   :demand t
-  :bind* (("M-m" . modalka-mode))
+  :bind* (("C-z" . modalka-mode))
   :diminish (modalka-mode . "μ")
   :init
   (setq modalka-cursor-type 'box)
@@ -746,16 +746,16 @@ As mentioned before, I like and prefer modal editing. I feel pressing modifier k
   (add-to-list 'modalka-excluded-modes 'deft-mode)
   (add-to-list 'modalka-excluded-modes 'term-mode)
   (which-key-add-key-based-replacements
-    "C-z"     "Modalka prefix"
-    "C-z :"   "extended prefix"
-    "C-z c"   "code prefix"
-    "C-z m"   "multi-edit prefix"
-    "C-z s"   "smart nav prefix"
-    "C-z SPC" "user prefix"
-    "C-z g"   "global prefix"
-    "C-z i"   "expand prefix"
-    "C-z ["   "prev nav prefix"
-    "C-z ]"   "next nav prefix"))
+    "M-m"     "Modalka prefix"
+    "M-m :"   "extended prefix"
+    "M-m c"   "code prefix"
+    "M-m m"   "multi-edit prefix"
+    "M-m s"   "smart nav prefix"
+    "M-m SPC" "user prefix"
+    "M-m g"   "global prefix"
+    "M-m i"   "expand prefix"
+    "M-m ["   "prev nav prefix"
+    "M-m ]"   "next nav prefix"))
 #+END_SRC
 
 **** Default modal keybindings
@@ -814,19 +814,19 @@ This is based on Vi-style but only slightly and uses the default movement keys i
 (modalka-define-kbd "E" "C-g")
 (modalka-define-kbd "d" "C-w")
 (modalka-define-kbd "w" "C-x o")
-(modalka-define-kbd "W" "C-z W")
-(modalka-define-kbd "B" "C-z B")
+(modalka-define-kbd "W" "M-m W")
+(modalka-define-kbd "B" "M-m B")
 (modalka-define-kbd "H" "C-x >")
 (modalka-define-kbd "L" "C-x <")
 (modalka-define-kbd "Z" "C-x 1")
 (modalka-define-kbd "q" "C-x (")
 (modalka-define-kbd "Q" "C-x )")
-(modalka-define-kbd "." "C-z .")
-(modalka-define-kbd "?" "C-z ?")
+(modalka-define-kbd "." "M-m .")
+(modalka-define-kbd "?" "M-m ?")
 (modalka-define-kbd "v" "C-SPC")
-(modalka-define-kbd "V" "C-z V")
-(modalka-define-kbd "=" "C-z =")
-(modalka-define-kbd "R" "C-z R")
+(modalka-define-kbd "V" "M-m V")
+(modalka-define-kbd "=" "M-m =")
+(modalka-define-kbd "R" "M-m R")
 (modalka-define-kbd "X" "C-x C-x")
 (modalka-define-kbd "+" "C-x r m")
 (modalka-define-kbd "'" "C-x r b")
@@ -839,26 +839,26 @@ This is based on Vi-style but only slightly and uses the default movement keys i
 (modalka-define-kbd "g g" "M-<")
 (modalka-define-kbd "g o" "C-x C-e")
 (modalka-define-kbd "g O" "C-M-x")
-(modalka-define-kbd "g m" "C-z g m")
-(modalka-define-kbd "g M" "C-z g M")
-(modalka-define-kbd "g n" "C-z g n")
-(modalka-define-kbd "g N" "C-z g N")
-(modalka-define-kbd "g f" "C-z g f")
-(modalka-define-kbd "g j" "C-z g j")
-(modalka-define-kbd "g k" "C-z g k")
-(modalka-define-kbd "g q" "C-z g q")
+(modalka-define-kbd "g m" "M-m g m")
+(modalka-define-kbd "g M" "M-m g M")
+(modalka-define-kbd "g n" "M-m g n")
+(modalka-define-kbd "g N" "M-m g N")
+(modalka-define-kbd "g f" "M-m g f")
+(modalka-define-kbd "g j" "M-m g j")
+(modalka-define-kbd "g k" "M-m g k")
+(modalka-define-kbd "g q" "M-m g q")
 (modalka-define-kbd "g w" "C-x 3")
 (modalka-define-kbd "g W" "C-x 2")
-(modalka-define-kbd "g @" "C-z g @")
-(modalka-define-kbd "g ;" "C-z g ;")
-(modalka-define-kbd "g :" "C-z g :")
-(modalka-define-kbd "g #" "C-z g #")
-(modalka-define-kbd "g {" "C-z g {")
-(modalka-define-kbd "g }" "C-z g }")
-(modalka-define-kbd "g (" "C-z g (")
-(modalka-define-kbd "g )" "C-z g )")
-(modalka-define-kbd "^" "C-z ^")
-(modalka-define-kbd "&" "C-z &")
+(modalka-define-kbd "g @" "M-m g @")
+(modalka-define-kbd "g ;" "M-m g ;")
+(modalka-define-kbd "g :" "M-m g :")
+(modalka-define-kbd "g #" "M-m g #")
+(modalka-define-kbd "g {" "M-m g {")
+(modalka-define-kbd "g }" "M-m g }")
+(modalka-define-kbd "g (" "M-m g (")
+(modalka-define-kbd "g )" "M-m g )")
+(modalka-define-kbd "^" "M-m ^")
+(modalka-define-kbd "&" "M-m &")
 (modalka-define-kbd "g S" "C-j")
 (modalka-define-kbd "g ?" "C-h k")
 #+END_SRC
@@ -873,7 +873,7 @@ This is based on Vi-style but only slightly and uses the default movement keys i
 
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "] ]" "C-x n n")
-(modalka-define-kbd "] s" "C-z ] s")
+(modalka-define-kbd "] s" "M-m ] s")
 #+END_SRC
 
 ***** Backward navigation prefixed keys
@@ -887,7 +887,7 @@ This is based on Vi-style but only slightly and uses the default movement keys i
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd ": q" "C-x C-c")
 (modalka-define-kbd ": r" "C-x M-c")
-(modalka-define-kbd ": t" "C-z : t")
+(modalka-define-kbd ": t" "M-m : t")
 #+END_SRC
 
 ***** User prefix for common functions
@@ -902,9 +902,9 @@ This is based on Vi-style but only slightly and uses the default movement keys i
 (modalka-define-kbd "SPC f" "C-x C-f")
 (modalka-define-kbd "SPC w" "C-x C-s")
 (modalka-define-kbd "SPC o" "C-c C-k")
-(modalka-define-kbd "SPC c" "C-z SPC c")
-(modalka-define-kbd "SPC S" "C-z SPC S")
-(modalka-define-kbd "SPC ?" "C-z SPC ?")
+(modalka-define-kbd "SPC c" "M-m SPC c")
+(modalka-define-kbd "SPC S" "M-m SPC S")
+(modalka-define-kbd "SPC ?" "M-m SPC ?")
 #+END_SRC
 
 **** Which key explanations for everything
@@ -1112,7 +1112,7 @@ This section contains all the packages and custom functions I use for navigating
   :ensure t
   :demand t
   :diminish beacon-mode
-  :bind* (("C-z g z" . beacon-blink))
+  :bind* (("M-m g z" . beacon-blink))
   :config
   (beacon-mode 1))
 #+END_SRC
@@ -1120,7 +1120,7 @@ This section contains all the packages and custom functions I use for navigating
 **** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "g z" "C-z g z")
+(modalka-define-kbd "g z" "M-m g z")
 #+END_SRC
 
 Which key modal explanation
@@ -1138,9 +1138,9 @@ The default Emacs [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Un
 (use-package undo-tree
   :ensure t
   :diminish undo-tree-mode
-  :bind* (("C-z u" . undo-tree-undo)
-          ("C-z r" . undo-tree-redo)
-          ("C-z U" . undo-tree-visualize))
+  :bind* (("M-m u" . undo-tree-undo)
+          ("M-m r" . undo-tree-redo)
+          ("M-m U" . undo-tree-visualize))
   :config
   (global-undo-tree-mode 1))
 #+END_SRC
@@ -1148,9 +1148,9 @@ The default Emacs [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Un
 **** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "u" "C-z u")
-(modalka-define-kbd "U" "C-z U")
-(modalka-define-kbd "r" "C-z r")
+(modalka-define-kbd "u" "M-m u")
+(modalka-define-kbd "U" "M-m U")
+(modalka-define-kbd "r" "M-m r")
 #+END_SRC
 
 Which key modal explanation
@@ -1169,13 +1169,13 @@ Which key modal explanation
 #+BEGIN_SRC emacs-lisp
 (use-package goto-last-change
   :ensure t
-  :bind* (("C-z g ;" . goto-last-change)))
+  :bind* (("M-m g ;" . goto-last-change)))
 #+END_SRC
 
 **** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "g ;" "C-z g ;")
+(modalka-define-kbd "g ;" "M-m g ;")
 #+END_SRC
 
 Which key modal explanation
@@ -1197,15 +1197,15 @@ Which key modal explanation
         `((avy-goto-char-timer . (?j ?k ?l ?f ?s ?d ?e ?r ?u ?i))
           (avy-goto-line . (?j ?k ?l ?f ?s ?d ?e ?r ?u ?i))))
   (setq avy-style 'pre)
-  :bind* (("C-z f" . avy-goto-char-timer)
-          ("C-z F" . avy-goto-line)))
+  :bind* (("M-m f" . avy-goto-char-timer)
+          ("M-m F" . avy-goto-line)))
 #+END_SRC
 
 **** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "f" "C-z f")
-(modalka-define-kbd "F" "C-z F")
+(modalka-define-kbd "f" "M-m f")
+(modalka-define-kbd "F" "M-m F")
 #+END_SRC
 
 Which key modal explanation
@@ -1251,9 +1251,9 @@ Which key modal explanation
 #+BEGIN_SRC emacs-lisp
   (use-package projectile
     :ensure t
-    :bind* (("C-z SPC d"   . projectile-find-file)
-            ("C-z SPC D"   . projectile-switch-project)
-            ("C-z SPC TAB" . projectile-find-other-file))
+    :bind* (("M-m SPC d"   . projectile-find-file)
+            ("M-m SPC D"   . projectile-switch-project)
+            ("M-m SPC TAB" . projectile-find-other-file))
     :init
     (setq projectile-file-exists-remote-cache-expire (* 10 60))
     :diminish projectile-mode
@@ -1264,9 +1264,9 @@ Which key modal explanation
 **** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "SPC d"   "C-z SPC d")
-(modalka-define-kbd "SPC D"   "C-z SPC D")
-(modalka-define-kbd "SPC TAB" "C-z SPC TAB")
+(modalka-define-kbd "SPC d"   "M-m SPC d")
+(modalka-define-kbd "SPC D"   "M-m SPC D")
+(modalka-define-kbd "SPC TAB" "M-m SPC TAB")
 #+END_SRC
 
 Which key modal explanation
@@ -1285,8 +1285,8 @@ Which key modal explanation
 #+BEGIN_SRC emacs-lisp
 (use-package ztree
   :ensure t
-  :bind* (("C-z g v" . ztree-dir)
-          ("C-z g V" . ztree-diff))
+  :bind* (("M-m g v" . ztree-dir)
+          ("M-m g V" . ztree-diff))
   :init
   (setq ztree-dir-move-focus t))
 #+END_SRC
@@ -1294,8 +1294,8 @@ Which key modal explanation
 **** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "g v" "C-z g v")
-(modalka-define-kbd "g V" "C-z g V")
+(modalka-define-kbd "g v" "M-m g v")
+(modalka-define-kbd "g V" "M-m g V")
 #+END_SRC
 
 Which key modal explanation
@@ -1313,7 +1313,7 @@ Which key modal explanation
 #+BEGIN_SRC emacs-lisp
 (use-package neotree
   :ensure t
-  :bind* (("C-z SPC n". neotree-toggle))
+  :bind* (("M-m SPC n". neotree-toggle))
   :init
   (setq neo-smart-open t))
 #+END_SRC
@@ -1339,9 +1339,9 @@ Which key modal explanation
 (use-package ggtags
   :ensure t
   :diminish ggtags-mode
-  :bind* (("C-z T"   . ggtags-find-tag-regexp)
-          ("C-z g t" . ggtags-create-tags)
-          ("C-z g T" . ggtags-update-tags))
+  :bind* (("M-m T"   . ggtags-find-tag-regexp)
+          ("M-m g t" . ggtags-create-tags)
+          ("M-m g T" . ggtags-update-tags))
   :init
   (setq-local imenu-create-index-function #'ggtags-build-imenu-index)
   :config
@@ -1351,9 +1351,9 @@ Which key modal explanation
 **** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "T"   "C-z T")
-(modalka-define-kbd "g t" "C-z g t")
-(modalka-define-kbd "g T" "C-z g T")
+(modalka-define-kbd "T"   "M-m T")
+(modalka-define-kbd "g t" "M-m g t")
+(modalka-define-kbd "g T" "M-m g T")
 #+END_SRC
 
 Which key modal explanation
@@ -1398,10 +1398,10 @@ Which key modal explanation
 #+BEGIN_SRC emacs-lisp
 (use-package perspective
   :ensure t
-  :bind* (("C-z SPC p" . persp-switch)
-          ("C-z SPC P" . persp-kill)
-          ("C-z SPC A" . persp-switch-to-buffer)
-          ("C-z g r"   . persp-rename))
+  :bind* (("M-m SPC p" . persp-switch)
+          ("M-m SPC P" . persp-kill)
+          ("M-m SPC A" . persp-switch-to-buffer)
+          ("M-m g r"   . persp-rename))
   :config
   (persp-mode 1))
 #+END_SRC
@@ -1409,10 +1409,10 @@ Which key modal explanation
 **** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "SPC p" "C-z SPC p")
-(modalka-define-kbd "SPC P" "C-z SPC P")
-(modalka-define-kbd "SPC A" "C-z SPC A")
-(modalka-define-kbd "g r"   "C-z g r")
+(modalka-define-kbd "SPC p" "M-m SPC p")
+(modalka-define-kbd "SPC P" "M-m SPC P")
+(modalka-define-kbd "SPC A" "M-m SPC A")
+(modalka-define-kbd "g r"   "M-m g r")
 #+END_SRC
 
 Which key modal explanation
@@ -1432,13 +1432,13 @@ I generally have multiple windows open and might need to zoom into one every now
 #+BEGIN_SRC emacs-lisp
 (use-package zoom-window
   :ensure t
-  :bind* (("C-z Z" . zoom-window-zoom)))
+  :bind* (("M-m Z" . zoom-window-zoom)))
 #+END_SRC
 
 **** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "Z" "C-z Z")
+(modalka-define-kbd "Z" "M-m Z")
 #+END_SRC
 
 Which key modal explanation
@@ -1456,15 +1456,15 @@ Which key modal explanation
 (use-package dash-at-point
   :ensure t
   :bind (("C-c I" . dash-at-point))
-  :bind* (("C-z SPC y" . dash-at-point-with-docset)
-          ("C-z SPC Y" . dash-at-point)))
+  :bind* (("M-m SPC y" . dash-at-point-with-docset)
+          ("M-m SPC Y" . dash-at-point)))
 #+END_SRC
 
 **** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "SPC y" "C-z SPC y")
-(modalka-define-kbd "SPC Y" "C-z SPC Y")
+(modalka-define-kbd "SPC y" "M-m SPC y")
+(modalka-define-kbd "SPC Y" "M-m SPC Y")
 (modalka-define-kbd "I"     "C-c I")
 #+END_SRC
 
@@ -1503,13 +1503,13 @@ Go to the closest numeral that is present in the file or change the number at po
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z %" . sk/goto-closest-number))
+  ("M-m %" . sk/goto-closest-number))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "%" "C-z %")
+(modalka-define-kbd "%" "M-m %")
 #+END_SRC
 
 Which key modal explanation
@@ -1534,13 +1534,13 @@ This function opens the current file when invoked from anywhere so that I can ed
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z SPC v" . sk/open-config))
+  ("M-m SPC v" . sk/open-config))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "SPC v" "C-z SPC v")
+(modalka-define-kbd "SPC v" "M-m SPC v")
 #+END_SRC
 
 Which key modal explanation
@@ -1602,13 +1602,13 @@ Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z [ s" . sk/flyspell-goto-previous-error))
+  ("M-m [ s" . sk/flyspell-goto-previous-error))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "[ s" "C-z [ s")
+(modalka-define-kbd "[ s" "M-m [ s")
 #+END_SRC
 
 Which key modal explanation
@@ -1643,13 +1643,13 @@ As mentioned [[*Fullscreen][here]], this is to further ensure that we use a non-
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z SPC z" . sk/toggle-frame-fullscreen-non-native))
+  ("M-m SPC z" . sk/toggle-frame-fullscreen-non-native))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "SPC z" "C-z SPC z")
+(modalka-define-kbd "SPC z" "M-m SPC z")
 #+END_SRC
 
 Which key modal explanation
@@ -1705,15 +1705,15 @@ This is one of the few occasions I just replace it with my custom function becau
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z ] d" . sk/other-pdf-next)
-  ("C-z [ d" . sk/other-pdf-previous))
+  ("M-m ] d" . sk/other-pdf-next)
+  ("M-m [ d" . sk/other-pdf-previous))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "] d" "C-z ] d")
-(modalka-define-kbd "[ d" "C-z [ d")
+(modalka-define-kbd "] d" "M-m ] d")
+(modalka-define-kbd "[ d" "M-m [ d")
 #+END_SRC
 
 Which key modal explanation
@@ -1745,15 +1745,15 @@ Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z g ]" . sk/other-window-down)
-  ("C-z g [" . sk/other-window-up))
+  ("M-m g ]" . sk/other-window-down)
+  ("M-m g [" . sk/other-window-up))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "g ]" "C-z g ]")
-(modalka-define-kbd "g [" "C-z g [")
+(modalka-define-kbd "g ]" "M-m g ]")
+(modalka-define-kbd "g [" "M-m g [")
 #+END_SRC
 
 Which key modal explanation
@@ -1847,13 +1847,13 @@ Not sure where I got this from. Most likely Magnar Sveen.
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z g B" . sk/browse-current-file))
+  ("M-m g B" . sk/browse-current-file))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "g B" "C-z g B")
+(modalka-define-kbd "g B" "M-m g B")
 #+END_SRC
 
 Which key modal explanation
@@ -1906,13 +1906,13 @@ Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z SPC t" . sk/hydra-of-windows/body))
+  ("M-m SPC t" . sk/hydra-of-windows/body))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "SPC t" "C-z SPC t")
+(modalka-define-kbd "SPC t" "M-m SPC t")
 #+END_SRC
 
 Which key modal explanation
@@ -1941,13 +1941,13 @@ Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z `" . sk/hydra-bookmarks/body))
+  ("M-m `" . sk/hydra-bookmarks/body))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "`" "C-z `")
+(modalka-define-kbd "`" "M-m `")
 #+END_SRC
 
 Which key modal explanation
@@ -2044,63 +2044,63 @@ We also add some helpful additional expand regions depending on the mode.
 #+BEGIN_SRC emacs-lisp
 (use-package expand-region
   :ensure t
-  :bind* (("C-z a o" . er/mark-org-code-block)
-          ("C-z a w" . sk/mark-around-word)
-          ("C-z a p" . sk/mark-around-text-paragraph)
-          ("C-z a f" . er/mark-defun)
-          ("C-z a e" . sk/mark-around-LaTeX-environment)
-          ("C-z a t" . er/mark-LaTeX-math)
-          ("C-z a m" . er/mark-python-block)
-          ("C-z a j" . er/mark-ruby-block-up)
-          ("C-z a q" . er/mark-outside-quotes)
-          ("C-z a b" . er/mark-outside-pairs)
-          ("C-z a u" . er/mark-url)
-          ("C-z a c" . er/mark-comment)
-          ("C-z a v" . sk/mark-around-symbol)
-          ("C-z i p" . er/mark-text-paragraph)
-          ("C-z i f" . er/mark-defun)
-          ("C-z i w" . er/mark-word)
-          ("C-z i e" . er/mark-LaTeX-inside-environment)
-          ("C-z i t" . sk/mark-inside-LaTeX-math)
-          ("C-z i u" . er/mark-url)
-          ("C-z i c" . er/mark-comment)
-          ("C-z i b" . er/mark-inside-pairs)
-          ("C-z i q" . er/mark-inside-quotes)
-          ("C-z i o" . sk/mark-inside-org-code)
-          ("C-z i m" . sk/mark-inside-python-block)
-          ("C-z i j" . sk/mark-inside-ruby-block)
-          ("C-z i v" . er/mark-symbol)))
+  :bind* (("M-m a o" . er/mark-org-code-block)
+          ("M-m a w" . sk/mark-around-word)
+          ("M-m a p" . sk/mark-around-text-paragraph)
+          ("M-m a f" . er/mark-defun)
+          ("M-m a e" . sk/mark-around-LaTeX-environment)
+          ("M-m a t" . er/mark-LaTeX-math)
+          ("M-m a m" . er/mark-python-block)
+          ("M-m a j" . er/mark-ruby-block-up)
+          ("M-m a q" . er/mark-outside-quotes)
+          ("M-m a b" . er/mark-outside-pairs)
+          ("M-m a u" . er/mark-url)
+          ("M-m a c" . er/mark-comment)
+          ("M-m a v" . sk/mark-around-symbol)
+          ("M-m i p" . er/mark-text-paragraph)
+          ("M-m i f" . er/mark-defun)
+          ("M-m i w" . er/mark-word)
+          ("M-m i e" . er/mark-LaTeX-inside-environment)
+          ("M-m i t" . sk/mark-inside-LaTeX-math)
+          ("M-m i u" . er/mark-url)
+          ("M-m i c" . er/mark-comment)
+          ("M-m i b" . er/mark-inside-pairs)
+          ("M-m i q" . er/mark-inside-quotes)
+          ("M-m i o" . sk/mark-inside-org-code)
+          ("M-m i m" . sk/mark-inside-python-block)
+          ("M-m i j" . sk/mark-inside-ruby-block)
+          ("M-m i v" . er/mark-symbol)))
 #+END_SRC
 
 **** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "a o" "C-z a o")
-(modalka-define-kbd "a w" "C-z a w")
-(modalka-define-kbd "a p" "C-z a p")
-(modalka-define-kbd "a f" "C-z a f")
-(modalka-define-kbd "a e" "C-z a e")
-(modalka-define-kbd "a t" "C-z a t")
-(modalka-define-kbd "a m" "C-z a m")
-(modalka-define-kbd "a j" "C-z a j")
-(modalka-define-kbd "a q" "C-z a q")
-(modalka-define-kbd "a b" "C-z a b")
-(modalka-define-kbd "a u" "C-z a u")
-(modalka-define-kbd "a c" "C-z a c")
-(modalka-define-kbd "a v" "C-z a v")
-(modalka-define-kbd "i p" "C-z i p")
-(modalka-define-kbd "i f" "C-z i f")
-(modalka-define-kbd "i w" "C-z i w")
-(modalka-define-kbd "i u" "C-z i u")
-(modalka-define-kbd "i t" "C-z i t")
-(modalka-define-kbd "i e" "C-z i e")
-(modalka-define-kbd "i c" "C-z i c")
-(modalka-define-kbd "i b" "C-z i b")
-(modalka-define-kbd "i q" "C-z i q")
-(modalka-define-kbd "i o" "C-z i o")
-(modalka-define-kbd "i m" "C-z i m")
-(modalka-define-kbd "i j" "C-z i j")
-(modalka-define-kbd "i v" "C-z i v")
+(modalka-define-kbd "a o" "M-m a o")
+(modalka-define-kbd "a w" "M-m a w")
+(modalka-define-kbd "a p" "M-m a p")
+(modalka-define-kbd "a f" "M-m a f")
+(modalka-define-kbd "a e" "M-m a e")
+(modalka-define-kbd "a t" "M-m a t")
+(modalka-define-kbd "a m" "M-m a m")
+(modalka-define-kbd "a j" "M-m a j")
+(modalka-define-kbd "a q" "M-m a q")
+(modalka-define-kbd "a b" "M-m a b")
+(modalka-define-kbd "a u" "M-m a u")
+(modalka-define-kbd "a c" "M-m a c")
+(modalka-define-kbd "a v" "M-m a v")
+(modalka-define-kbd "i p" "M-m i p")
+(modalka-define-kbd "i f" "M-m i f")
+(modalka-define-kbd "i w" "M-m i w")
+(modalka-define-kbd "i u" "M-m i u")
+(modalka-define-kbd "i t" "M-m i t")
+(modalka-define-kbd "i e" "M-m i e")
+(modalka-define-kbd "i c" "M-m i c")
+(modalka-define-kbd "i b" "M-m i b")
+(modalka-define-kbd "i q" "M-m i q")
+(modalka-define-kbd "i o" "M-m i o")
+(modalka-define-kbd "i m" "M-m i m")
+(modalka-define-kbd "i j" "M-m i j")
+(modalka-define-kbd "i v" "M-m i v")
 #+END_SRC
 
 Which key modal explanation
@@ -2144,13 +2144,13 @@ Which key modal explanation
 #+BEGIN_SRC emacs-lisp
 (use-package comment-dwim-2
   :ensure t
-  :bind* (("C-z g c" . comment-dwim-2)))
+  :bind* (("M-m g c" . comment-dwim-2)))
 #+END_SRC
 
 **** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "g c" "C-z g c")
+(modalka-define-kbd "g c" "M-m g c")
 #+END_SRC
 
 Which key modal explanation
@@ -2168,32 +2168,32 @@ Which key modal explanation
 (use-package smartparens
   :ensure t
   :demand t
-  :bind* (("C-z s j" . sp-down-sexp)
-          ("C-z s k" . sp-backward-up-sexp)
-          ("C-z s h" . sp-backward-down-sexp)
-          ("C-z s l" . sp-up-sexp)
-          ("C-z s f" . sp-forward-sexp)
-          ("C-z s b" . sp-backward-sexp)
-          ("C-z s a" . sp-beginning-of-sexp)
-          ("C-z s e" . sp-end-of-sexp)
-          ("C-z s n" . sp-next-sexp)
-          ("C-z s p" . sp-previous-sexp)
-          ("C-z s >" . sp-forward-barf-sexp)
-          ("C-z s <" . sp-backward-barf-sexp)
-          ("C-z s )" . sp-forward-slurp-sexp)
-          ("C-z s (" . sp-backward-slurp-sexp)
-          ("C-z s x" . sp-transpose-sexp)
-          ("C-z s d" . sp-kill-sexp)
-          ("C-z s y" . sp-copy-sexp)
-          ("C-z s u" . sp-unwrap-sexp)
-          ("C-z s U" . sp-backward-unwrap-sexp)
-          ("C-z s C" . sp-convolute-sexp)
-          ("C-z s r" . sp-raise-sexp)
-          ("C-z s s" . sp-split-sexp)
-          ("C-z s S" . sp-splice-sexp)
-          ("C-z s F" . sp-splice-sexp-killing-forward)
-          ("C-z s B" . sp-splice-sexp-killing-backward)
-          ("C-z s A" . sp-splice-sexp-killing-around))
+  :bind* (("M-m s j" . sp-down-sexp)
+          ("M-m s k" . sp-backward-up-sexp)
+          ("M-m s h" . sp-backward-down-sexp)
+          ("M-m s l" . sp-up-sexp)
+          ("M-m s f" . sp-forward-sexp)
+          ("M-m s b" . sp-backward-sexp)
+          ("M-m s a" . sp-beginning-of-sexp)
+          ("M-m s e" . sp-end-of-sexp)
+          ("M-m s n" . sp-next-sexp)
+          ("M-m s p" . sp-previous-sexp)
+          ("M-m s >" . sp-forward-barf-sexp)
+          ("M-m s <" . sp-backward-barf-sexp)
+          ("M-m s )" . sp-forward-slurp-sexp)
+          ("M-m s (" . sp-backward-slurp-sexp)
+          ("M-m s x" . sp-transpose-sexp)
+          ("M-m s d" . sp-kill-sexp)
+          ("M-m s y" . sp-copy-sexp)
+          ("M-m s u" . sp-unwrap-sexp)
+          ("M-m s U" . sp-backward-unwrap-sexp)
+          ("M-m s C" . sp-convolute-sexp)
+          ("M-m s r" . sp-raise-sexp)
+          ("M-m s s" . sp-split-sexp)
+          ("M-m s S" . sp-splice-sexp)
+          ("M-m s F" . sp-splice-sexp-killing-forward)
+          ("M-m s B" . sp-splice-sexp-killing-backward)
+          ("M-m s A" . sp-splice-sexp-killing-around))
   :diminish smartparens-mode
   :diminish smartparens-strict-mode
   :config
@@ -2202,40 +2202,40 @@ Which key modal explanation
   (smartparens-global-strict-mode)
   (show-smartparens-global-mode)
   (which-key-add-key-based-replacements
-    "C-z s" "smart nav prefix"))
+    "M-m s" "smart nav prefix"))
 #+END_SRC
 
 **** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "s j" "C-z s j")
-(modalka-define-kbd "s k" "C-z s k")
-(modalka-define-kbd "s h" "C-z s h")
-(modalka-define-kbd "s l" "C-z s l")
-(modalka-define-kbd "s f" "C-z s f")
-(modalka-define-kbd "s b" "C-z s b")
-(modalka-define-kbd "s a" "C-z s a")
-(modalka-define-kbd "s e" "C-z s e")
-(modalka-define-kbd "s n" "C-z s n")
-(modalka-define-kbd "s p" "C-z s p")
-(modalka-define-kbd "s >" "C-z s >")
-(modalka-define-kbd "s <" "C-z s <")
-(modalka-define-kbd "s )" "C-z s )")
-(modalka-define-kbd "s (" "C-z s (")
-(modalka-define-kbd "s x" "C-z s x")
-(modalka-define-kbd "s d" "C-z s d")
-(modalka-define-kbd "s y" "C-z s y")
-(modalka-define-kbd "s u" "C-z s u")
-(modalka-define-kbd "s U" "C-z s U")
-(modalka-define-kbd "s U" "C-z s U")
-(modalka-define-kbd "s U" "C-z s U")
-(modalka-define-kbd "s C" "C-z s C")
-(modalka-define-kbd "s r" "C-z s r")
-(modalka-define-kbd "s s" "C-z s s")
-(modalka-define-kbd "s S" "C-z s S")
-(modalka-define-kbd "s F" "C-z s F")
-(modalka-define-kbd "s B" "C-z s B")
-(modalka-define-kbd "s A" "C-z s A")
+(modalka-define-kbd "s j" "M-m s j")
+(modalka-define-kbd "s k" "M-m s k")
+(modalka-define-kbd "s h" "M-m s h")
+(modalka-define-kbd "s l" "M-m s l")
+(modalka-define-kbd "s f" "M-m s f")
+(modalka-define-kbd "s b" "M-m s b")
+(modalka-define-kbd "s a" "M-m s a")
+(modalka-define-kbd "s e" "M-m s e")
+(modalka-define-kbd "s n" "M-m s n")
+(modalka-define-kbd "s p" "M-m s p")
+(modalka-define-kbd "s >" "M-m s >")
+(modalka-define-kbd "s <" "M-m s <")
+(modalka-define-kbd "s )" "M-m s )")
+(modalka-define-kbd "s (" "M-m s (")
+(modalka-define-kbd "s x" "M-m s x")
+(modalka-define-kbd "s d" "M-m s d")
+(modalka-define-kbd "s y" "M-m s y")
+(modalka-define-kbd "s u" "M-m s u")
+(modalka-define-kbd "s U" "M-m s U")
+(modalka-define-kbd "s U" "M-m s U")
+(modalka-define-kbd "s U" "M-m s U")
+(modalka-define-kbd "s C" "M-m s C")
+(modalka-define-kbd "s r" "M-m s r")
+(modalka-define-kbd "s s" "M-m s s")
+(modalka-define-kbd "s S" "M-m s S")
+(modalka-define-kbd "s F" "M-m s F")
+(modalka-define-kbd "s B" "M-m s B")
+(modalka-define-kbd "s A" "M-m s A")
 #+END_SRC
 
 Which key modal explanation
@@ -2281,13 +2281,13 @@ Which key modal explanation
 (use-package iedit
   :ensure t
   :commands (iedit-mode)
-  :bind* (("C-z *" . iedit-mode)))
+  :bind* (("M-m *" . iedit-mode)))
 #+END_SRC
 
 **** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "*" "C-z *")
+(modalka-define-kbd "*" "M-m *")
 #+END_SRC
 
 Which key modal explanation
@@ -2304,10 +2304,10 @@ Which key modal explanation
 #+BEGIN_SRC emacs-lisp
 (use-package multiple-cursors
   :ensure t
-  :bind* (("C-z ." . mc/edit-lines)
-          ("C-z >" . mc/mark-next-like-this)
-          ("C-z ," . mc/skip-to-next-like-this)
-          ("C-z <" . mc/mark-previous-like-this)))
+  :bind* (("M-m ." . mc/edit-lines)
+          ("M-m >" . mc/mark-next-like-this)
+          ("M-m ," . mc/skip-to-next-like-this)
+          ("M-m <" . mc/mark-previous-like-this)))
 #+END_SRC
 
 *** Region bindings mode
@@ -2332,10 +2332,10 @@ Which key modal explanation
 **** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "." "C-z .")
-(modalka-define-kbd ">" "C-z >")
-(modalka-define-kbd "," "C-z ,")
-(modalka-define-kbd "<" "C-z <")
+(modalka-define-kbd "." "M-m .")
+(modalka-define-kbd ">" "M-m >")
+(modalka-define-kbd "," "M-m ,")
+(modalka-define-kbd "<" "M-m <")
 #+END_SRC
 
 Which key modal explanation
@@ -2355,13 +2355,13 @@ Which key modal explanation
 #+BEGIN_SRC emacs-lisp
 (use-package shrink-whitespace
   :ensure t
-  :bind* (("C-z g SPC" . shrink-whitespace)))
+  :bind* (("M-m g SPC" . shrink-whitespace)))
 #+END_SRC
 
 **** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "g SPC" "C-z g SPC")
+(modalka-define-kbd "g SPC" "M-m g SPC")
 #+END_SRC
 
 Which key modal explanation
@@ -2379,7 +2379,7 @@ This is the [[https://github.com/benma/visual-regexp.el][good old search and rep
 (use-package visual-regexp
   :ensure t
   :commands (vr/query-replace)
-  :bind* (("C-z SPC SPC" . vr/query-replace))
+  :bind* (("M-m SPC SPC" . vr/query-replace))
   :config
   (use-package visual-regexp-steroids
     :ensure t
@@ -2389,7 +2389,7 @@ This is the [[https://github.com/benma/visual-regexp.el][good old search and rep
 **** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "SPC SPC" "C-z SPC SPC")
+(modalka-define-kbd "SPC SPC" "M-m SPC SPC")
 #+END_SRC
 
 Which key modal explanation
@@ -2435,13 +2435,13 @@ Also, I don't want to trigger snippets when I'm in shell. So, let's turn it off.
 #+BEGIN_SRC emacs-lisp
 (use-package cycle-quotes
   :ensure t
-  :bind* (("C-z s q" . cycle-quotes)))
+  :bind* (("M-m s q" . cycle-quotes)))
 #+END_SRC
 
 **** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "s q" "C-z s q")
+(modalka-define-kbd "s q" "M-m s q")
 #+END_SRC
 
 Which key modal explanation
@@ -2495,13 +2495,13 @@ in that cyclic order."
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z ~" . sk/toggle-letter-case))
+  ("M-m ~" . sk/toggle-letter-case))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "~" "C-z ~")
+(modalka-define-kbd "~" "M-m ~")
 #+END_SRC
 
 Which key modal explanation
@@ -2581,15 +2581,15 @@ Being almost always in [[*Modalka mode][Modalka mode]] implies I have to toggle 
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z c" . sk/change-region)
-  ("C-z C" . sk/change-rest-of-line))
+  ("M-m c" . sk/change-region)
+  ("M-m C" . sk/change-rest-of-line))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "c" "C-z c")
-(modalka-define-kbd "C" "C-z C")
+(modalka-define-kbd "c" "M-m c")
+(modalka-define-kbd "C" "M-m C")
 #+END_SRC
 
 Which key modal explanation
@@ -2633,15 +2633,15 @@ Once [[*Go to the closest number][you go to the closest number]], you might want
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z g +" . sk/change-number-at-point)
-  ("C-z g -" . sk/subtract-number-at-point))
+  ("M-m g +" . sk/change-number-at-point)
+  ("M-m g -" . sk/subtract-number-at-point))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "g +" "C-z g +")
-(modalka-define-kbd "g -" "C-z g -")
+(modalka-define-kbd "g +" "M-m g +")
+(modalka-define-kbd "g -" "M-m g -")
 #+END_SRC
 
 Which key modal explanation
@@ -2668,13 +2668,13 @@ By default there is no way to deactivate mark/region once you start selecting so
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z E" . sk/remove-mark))
+  ("M-m E" . sk/remove-mark))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "E" "C-z E")
+(modalka-define-kbd "E" "M-m E")
 #+END_SRC
 
 Which key modal explanation
@@ -2736,34 +2736,34 @@ Emacs has the built-in command =align-regexp= to align via regular expression. H
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z g A SPC" . sk/align-whitespace)
-  ("C-z g A &"   . sk/align-ampersand)
-  ("C-z g A ,"   . sk/align-comma)
-  ("C-z g A \""  . sk/align-quote-space)
-  ("C-z g A      ." . sk/align-dot)
-  ("C-z g A ="   . sk/align-equals)
-  ("C-z g A :"   . sk/align-colon)
-  ("C-z g A A"   . align-regexp))
+  ("M-m g A SPC" . sk/align-whitespace)
+  ("M-m g A &"   . sk/align-ampersand)
+  ("M-m g A ,"   . sk/align-comma)
+  ("M-m g A \""  . sk/align-quote-space)
+  ("M-m g A      ." . sk/align-dot)
+  ("M-m g A ="   . sk/align-equals)
+  ("M-m g A :"   . sk/align-colon)
+  ("M-m g A A"   . align-regexp))
 #+END_SRC
 
 Which key binding explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "C-z g A" "align prefix")
+  "M-m g A" "align prefix")
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "g A SPC" "C-z g A SPC")
-(modalka-define-kbd "g A \""  "C-z g A \"")
-(modalka-define-kbd "g A &"   "C-z g A &")
-(modalka-define-kbd "g A ,"   "C-z g A ,")
-(modalka-define-kbd "g A ."   "C-z g A .")
-(modalka-define-kbd "g A ="   "C-z g A =")
-(modalka-define-kbd "g A :"   "C-z g A :")
-(modalka-define-kbd "g A A"   "C-z g A A")
+(modalka-define-kbd "g A SPC" "M-m g A SPC")
+(modalka-define-kbd "g A \""  "M-m g A \"")
+(modalka-define-kbd "g A &"   "M-m g A &")
+(modalka-define-kbd "g A ,"   "M-m g A ,")
+(modalka-define-kbd "g A ."   "M-m g A .")
+(modalka-define-kbd "g A ="   "M-m g A =")
+(modalka-define-kbd "g A :"   "M-m g A :")
+(modalka-define-kbd "g A A"   "M-m g A A")
 #+END_SRC
 
 Which key modal explanation
@@ -2800,13 +2800,13 @@ This function is to easily insert date or datetime in the current buffer.
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z g D" . sk/insert-date))
+  ("M-m g D" . sk/insert-date))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "g D" "C-z g D")
+(modalka-define-kbd "g D" "M-m g D")
 #+END_SRC
 
 Which key modal explanation
@@ -2843,13 +2843,13 @@ Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z g R" . sk/rename-current-buffer-file))
+  ("M-m g R" . sk/rename-current-buffer-file))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "g R" "C-z g R")
+(modalka-define-kbd "g R" "M-m g R")
 #+END_SRC
 
 Which key modal explanation
@@ -2882,13 +2882,13 @@ Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z g K" . sk/delete-current-buffer-file))
+  ("M-m g K" . sk/delete-current-buffer-file))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "g K" "C-z g K")
+(modalka-define-kbd "g K" "M-m g K")
 #+END_SRC
 
 Which key modal explanation
@@ -2913,13 +2913,13 @@ Get the file path of the current file.
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z g y" . sk/copy-current-file-path))
+  ("M-m g y" . sk/copy-current-file-path))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "g y" "C-z g y")
+(modalka-define-kbd "g y" "M-m g y")
 #+END_SRC
 
 Which key modal explanation
@@ -2954,15 +2954,15 @@ Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z [ w" . sk/transpose-words-backward)
-  ("C-z ] w" . sk/transpose-words-forward))
+  ("M-m [ w" . sk/transpose-words-backward)
+  ("M-m ] w" . sk/transpose-words-forward))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "[ w" "C-z [ w")
-(modalka-define-kbd "] w" "C-z ] w")
+(modalka-define-kbd "[ w" "M-m [ w")
+(modalka-define-kbd "] w" "M-m ] w")
 #+END_SRC
 
 Which key modal explanation
@@ -2997,15 +2997,15 @@ Though this is used much less that [[*Transposing words][transposing words]], it
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z [ c" . sk/transpose-chars-backward)
-  ("C-z ] c" . sk/transpose-chars-forward))
+  ("M-m [ c" . sk/transpose-chars-backward)
+  ("M-m ] c" . sk/transpose-chars-forward))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "[ c" "C-z [ c")
-(modalka-define-kbd "] c" "C-z ] c")
+(modalka-define-kbd "[ c" "M-m [ c")
+(modalka-define-kbd "] c" "M-m ] c")
 #+END_SRC
 
 Which key modal explanation
@@ -3032,13 +3032,13 @@ We already have delete to the end of line (pressing =C-k=). It is only natural t
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z Y" . sk/copy-to-end-of-line))
+  ("M-m Y" . sk/copy-to-end-of-line))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "Y" "C-z Y")
+(modalka-define-kbd "Y" "M-m Y")
 #+END_SRC
 
 Which key modal explanation
@@ -3090,13 +3090,13 @@ region-end is used."
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z g d" . sk/duplicate-line-or-region))
+  ("M-m g d" . sk/duplicate-line-or-region))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "g d" "C-z g d")
+(modalka-define-kbd "g d" "M-m g d")
 #+END_SRC
 
 Which key modal explanation
@@ -3200,15 +3200,15 @@ Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z i l" . sk/select-inside-line)
-  ("C-z a l" . sk/select-around-line))
+  ("M-m i l" . sk/select-inside-line)
+  ("M-m a l" . sk/select-around-line))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "i l" "C-z i l")
-(modalka-define-kbd "a l" "C-z a l")
+(modalka-define-kbd "i l" "M-m i l")
+(modalka-define-kbd "a l" "M-m a l")
 #+END_SRC
 
 Which key modal explanation
@@ -3318,15 +3318,15 @@ Now, let's define wrapper functions which we bind
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z [ e" . sk/move-text-up)
-  ("C-z ] e" . sk/move-text-down))
+  ("M-m [ e" . sk/move-text-up)
+  ("M-m ] e" . sk/move-text-down))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "[ e" "C-z [ e")
-(modalka-define-kbd "] e" "C-z ] e")
+(modalka-define-kbd "[ e" "M-m [ e")
+(modalka-define-kbd "] e" "M-m ] e")
 #+END_SRC
 
 Which key modal explanation
@@ -3359,13 +3359,13 @@ Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z g C" . sk/replace-next-underscore-with-camel))
+  ("M-m g C" . sk/replace-next-underscore-with-camel))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "g C" "C-z g C")
+(modalka-define-kbd "g C" "M-m g C")
 #+END_SRC
 
 Which key modal explanation
@@ -3403,13 +3403,13 @@ Works just like the [[*Change from snake case to camel case][previous case]]. No
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z g _" . sk/snakeify-current-word))
+  ("M-m g _" . sk/snakeify-current-word))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "g _" "C-z g _")
+(modalka-define-kbd "g _" "M-m g _")
 #+END_SRC
 
 Which key modal explanation
@@ -3464,13 +3464,13 @@ This function was something I missed when I was using Vim with the [[https://git
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z s c" . transpose-params))
+  ("M-m s c" . transpose-params))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "s c" "C-z s c")
+(modalka-define-kbd "s c" "M-m s c")
 #+END_SRC
 
 Which key modal explanation
@@ -3525,13 +3525,13 @@ abort completely with `C-g'."
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z g =" . sk/ispell-word-then-abbrev))
+  ("M-m g =" . sk/ispell-word-then-abbrev))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "g =" "C-z g =")
+(modalka-define-kbd "g =" "M-m g =")
 #+END_SRC
 
 Which key modal explanation
@@ -3561,13 +3561,13 @@ Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z a a" . sk/hydra-expand/body))
+  ("M-m a a" . sk/hydra-expand/body))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "a a" "C-z a a")
+(modalka-define-kbd "a a" "M-m a a")
 #+END_SRC
 
 Which key modal explanation
@@ -3644,13 +3644,13 @@ Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z V" . sk/hydra-rectangle/body))
+  ("M-m V" . sk/hydra-rectangle/body))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "V" "C-z V")
+(modalka-define-kbd "V" "M-m V")
 #+END_SRC
 
 Which key modal explanation
@@ -3688,13 +3688,13 @@ Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z @" . sk/hydra-of-macros/body))
+  ("M-m @" . sk/hydra-of-macros/body))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "@" "C-z @")
+(modalka-define-kbd "@" "M-m @")
 #+END_SRC
 
 Which key modal explanation
@@ -3733,13 +3733,13 @@ Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
- ("C-z \"" . sk/hydra-registers/body))
+ ("M-m \"" . sk/hydra-registers/body))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "\"" "C-z \"")
+(modalka-define-kbd "\"" "M-m \"")
 #+END_SRC
 
 Which key modal explanation
@@ -3774,13 +3774,13 @@ I particularly like this [[https://github.com/k-talo/volatile-highlights.el][pac
 (use-package highlight-thing
   :ensure t
   :diminish highlight-thing-mode
-  :bind* (("C-z g *" . highlight-thing-mode)))
+  :bind* (("M-m g *" . highlight-thing-mode)))
 #+END_SRC
 
 **** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "g *" "C-z g *")
+(modalka-define-kbd "g *" "M-m g *")
 #+END_SRC
 
 Which key modal explanation
@@ -3900,13 +3900,13 @@ Emacs has a built-in =hide-show= mode but it isn't great. [[https://github.com/g
 (use-package origami
   :ensure t
   :commands (origami-toggle-node)
-  :bind* (("C-z -" . orgiami-toggle-node)))
+  :bind* (("M-m -" . orgiami-toggle-node)))
 #+END_SRC
 
 **** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "-" "C-z -")
+(modalka-define-kbd "-" "M-m -")
 #+END_SRC
 
 Which key modal explanation
@@ -3969,13 +3969,13 @@ There are many minor modes that I don't need to be active all the time. And this
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z g a" . sk/hydra-of-activate/body))
+  ("M-m g a" . sk/hydra-of-activate/body))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "g a" "C-z g a")
+(modalka-define-kbd "g a" "M-m g a")
 #+END_SRC
 
 Which key modal explanation
@@ -4014,15 +4014,15 @@ Vimish fold has all these fancy features and I use it much more than Origami. Le
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z _" . vimish-fold-toggle)
-  ("C-z |" . sk/hydra-vimish-fold/body))
+  ("M-m _" . vimish-fold-toggle)
+  ("M-m |" . sk/hydra-vimish-fold/body))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "_" "C-z _")
-(modalka-define-kbd "|" "C-z _")
+(modalka-define-kbd "_" "M-m _")
+(modalka-define-kbd "|" "M-m _")
 #+END_SRC
 
 Which key modal explanation
@@ -4112,21 +4112,21 @@ I really liked the way [[https://bywordapp.com][Byword]] presents a writing inte
 (use-package olivetti
   :ensure t
   :diminish olivetti-mode
-  :bind* (("C-z g U" . olivetti-mode))
+  :bind* (("M-m g U" . olivetti-mode))
   :config
   (progn
     (olivetti-set-width 100)))
 ;; Focus on a particular section
 (use-package focus
   :ensure t
-  :bind* (("C-z g F" . focus-mode)))
+  :bind* (("M-m g F" . focus-mode)))
 #+END_SRC
 
 **** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "g U" "C-z g U")
-(modalka-define-kbd "g F" "C-z g F")
+(modalka-define-kbd "g U" "M-m g U")
+(modalka-define-kbd "g F" "M-m g F")
 #+END_SRC
 
 Which key modal explanation
@@ -4499,41 +4499,41 @@ Finally, we make sure we bind some keys and add some [[http://orgmode.org/manual
 #+BEGIN_SRC emacs-lisp
 (use-package org
   :ensure org
-  :bind* (("C-z o a"   . org-agenda)
-          ("C-z o c"   . org-capture)
-          ("C-z o i"   . org-insert-link)
-          ("C-z o s"   . org-store-link)
-          ("C-z o S"   . org-list-make-subtree)
-          ("C-z o A"   . org-archive-subtree)
-          ("C-z o g"   . org-goto)
-          ("C-z o l"   . org-toggle-latex-fragment)
-          ("C-z o L"   . org-toggle-link-display)
-          ("C-z o I"   . org-toggle-inline-images)
-          ("C-z o k"   . org-cut-subtree)
-          ("C-z o K"   . org-ref-set-bibtex-keywords)
-          ("C-z o V"   . org-reveal)
-          ("C-z o R"   . org-refile)
-          ("C-z o y"   . org-copy-subtree)
-          ("C-z o h"   . org-toggle-heading)
-          ("C-z o H"   . org-insert-heading-respect-content)
-          ("C-z o e"   . org-export-dispatch)
-          ("C-z o u"   . org-update-dblock)
-          ("C-z o U"   . org-update-all-dblocks)
-          ("C-z o O"   . org-footnote)
-          ("C-z o ]"   . org-narrow-to-subtree)
-          ("C-z o ["   . widen)
-          ("C-z o N"   . org-note)
-          ("C-z o E"   . org-set-effort)
-          ("C-z o B"   . org-table-blank-field)
-          ("C-z o <"   . org-date-from-calendar)
-          ("C-z o >"   . org-goto-calendar)
-          ("C-z o d"   . org-todo)
-          ("C-z o t"   . org-set-tags-command)
-          ("C-z o w"   . org-edit-special)
-          ("C-z o q"   . org-edit-src-exit)
-          ("C-z o z"   . clone-indirect-buffer-other-window)
-          ("C-z a s"   . org-mark-subtree)
-          ("C-z o RET" . org-open-at-point))
+  :bind* (("M-m o a"   . org-agenda)
+          ("M-m o c"   . org-capture)
+          ("M-m o i"   . org-insert-link)
+          ("M-m o s"   . org-store-link)
+          ("M-m o S"   . org-list-make-subtree)
+          ("M-m o A"   . org-archive-subtree)
+          ("M-m o g"   . org-goto)
+          ("M-m o l"   . org-toggle-latex-fragment)
+          ("M-m o L"   . org-toggle-link-display)
+          ("M-m o I"   . org-toggle-inline-images)
+          ("M-m o k"   . org-cut-subtree)
+          ("M-m o K"   . org-ref-set-bibtex-keywords)
+          ("M-m o V"   . org-reveal)
+          ("M-m o R"   . org-refile)
+          ("M-m o y"   . org-copy-subtree)
+          ("M-m o h"   . org-toggle-heading)
+          ("M-m o H"   . org-insert-heading-respect-content)
+          ("M-m o e"   . org-export-dispatch)
+          ("M-m o u"   . org-update-dblock)
+          ("M-m o U"   . org-update-all-dblocks)
+          ("M-m o O"   . org-footnote)
+          ("M-m o ]"   . org-narrow-to-subtree)
+          ("M-m o ["   . widen)
+          ("M-m o N"   . org-note)
+          ("M-m o E"   . org-set-effort)
+          ("M-m o B"   . org-table-blank-field)
+          ("M-m o <"   . org-date-from-calendar)
+          ("M-m o >"   . org-goto-calendar)
+          ("M-m o d"   . org-todo)
+          ("M-m o t"   . org-set-tags-command)
+          ("M-m o w"   . org-edit-special)
+          ("M-m o q"   . org-edit-src-exit)
+          ("M-m o z"   . clone-indirect-buffer-other-window)
+          ("M-m a s"   . org-mark-subtree)
+          ("M-m o RET" . org-open-at-point))
   :config
   ;; More of those nice template expansion
   (add-to-list 'org-structure-template-alist '("A" "#+DATE: ?"))
@@ -4574,46 +4574,46 @@ Finally, we make sure we bind some keys and add some [[http://orgmode.org/manual
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-    "C-z o" "org mode prefix")
+    "M-m o" "org mode prefix")
 #+END_SRC
 
 **** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "o a"   "C-z o a")
-(modalka-define-kbd "o c"   "C-z o c")
-(modalka-define-kbd "o i"   "C-z o i")
-(modalka-define-kbd "o s"   "C-z o s")
-(modalka-define-kbd "o S"   "C-z o S")
-(modalka-define-kbd "o A"   "C-z o A")
-(modalka-define-kbd "o g"   "C-z o g")
-(modalka-define-kbd "o l"   "C-z o l")
-(modalka-define-kbd "o L"   "C-z o L")
-(modalka-define-kbd "o I"   "C-z o I")
-(modalka-define-kbd "o k"   "C-z o k")
-(modalka-define-kbd "o V"   "C-z o V")
-(modalka-define-kbd "o R"   "C-z o R")
-(modalka-define-kbd "o y"   "C-z o y")
-(modalka-define-kbd "o h"   "C-z o h")
-(modalka-define-kbd "o H"   "C-z o H")
-(modalka-define-kbd "o e"   "C-z o e")
-(modalka-define-kbd "o u"   "C-z o u")
-(modalka-define-kbd "o U"   "C-z o U")
-(modalka-define-kbd "o O"   "C-z o O")
-(modalka-define-kbd "o ]"   "C-z o ]")
-(modalka-define-kbd "o ["   "C-z o [")
-(modalka-define-kbd "o N"   "C-z o N")
-(modalka-define-kbd "o E"   "C-z o E")
-(modalka-define-kbd "o B"   "C-z o B")
-(modalka-define-kbd "o <"   "C-z o <")
-(modalka-define-kbd "o >"   "C-z o >")
-(modalka-define-kbd "o d"   "C-z o d")
-(modalka-define-kbd "o t"   "C-z o t")
-(modalka-define-kbd "o z"   "C-z o z")
-(modalka-define-kbd "o w"   "C-z o w")
-(modalka-define-kbd "o q"   "C-z o q")
-(modalka-define-kbd "a s"   "C-z a s")
-(modalka-define-kbd "o RET" "C-z o RET")
+(modalka-define-kbd "o a"   "M-m o a")
+(modalka-define-kbd "o c"   "M-m o c")
+(modalka-define-kbd "o i"   "M-m o i")
+(modalka-define-kbd "o s"   "M-m o s")
+(modalka-define-kbd "o S"   "M-m o S")
+(modalka-define-kbd "o A"   "M-m o A")
+(modalka-define-kbd "o g"   "M-m o g")
+(modalka-define-kbd "o l"   "M-m o l")
+(modalka-define-kbd "o L"   "M-m o L")
+(modalka-define-kbd "o I"   "M-m o I")
+(modalka-define-kbd "o k"   "M-m o k")
+(modalka-define-kbd "o V"   "M-m o V")
+(modalka-define-kbd "o R"   "M-m o R")
+(modalka-define-kbd "o y"   "M-m o y")
+(modalka-define-kbd "o h"   "M-m o h")
+(modalka-define-kbd "o H"   "M-m o H")
+(modalka-define-kbd "o e"   "M-m o e")
+(modalka-define-kbd "o u"   "M-m o u")
+(modalka-define-kbd "o U"   "M-m o U")
+(modalka-define-kbd "o O"   "M-m o O")
+(modalka-define-kbd "o ]"   "M-m o ]")
+(modalka-define-kbd "o ["   "M-m o [")
+(modalka-define-kbd "o N"   "M-m o N")
+(modalka-define-kbd "o E"   "M-m o E")
+(modalka-define-kbd "o B"   "M-m o B")
+(modalka-define-kbd "o <"   "M-m o <")
+(modalka-define-kbd "o >"   "M-m o >")
+(modalka-define-kbd "o d"   "M-m o d")
+(modalka-define-kbd "o t"   "M-m o t")
+(modalka-define-kbd "o z"   "M-m o z")
+(modalka-define-kbd "o w"   "M-m o w")
+(modalka-define-kbd "o q"   "M-m o q")
+(modalka-define-kbd "a s"   "M-m a s")
+(modalka-define-kbd "o RET" "M-m o RET")
 #+END_SRC
 
 Which key modal explanation
@@ -4742,15 +4742,15 @@ Let's define a couple of functions that use this wrapper function.
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z o f" . sk/deft-org)
-  ("C-z o F" . sk/deft-blog))
+  ("M-m o f" . sk/deft-org)
+  ("M-m o F" . sk/deft-blog))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "o f" "C-z o f")
-(modalka-define-kbd "o F" "C-z o F")
+(modalka-define-kbd "o f" "M-m o f")
+(modalka-define-kbd "o F" "M-m o F")
 #+END_SRC
 
 Which key modal explanation
@@ -4768,14 +4768,14 @@ Interleaved notes are a thing of the past but you can [[https://github.com/rudol
 #+BEGIN_SRC emacs-lisp
 (use-package interleave
   :ensure t
-  :bind* (("C-z o n" . interleave))
+  :bind* (("M-m o n" . interleave))
   :commands (interleave interleave-pdf-mode))
 #+END_SRC
 
 **** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "o n" "C-z o n")
+(modalka-define-kbd "o n" "M-m o n")
 #+END_SRC
 
 Which key modal explanation
@@ -4947,13 +4947,13 @@ We have a way to select the entire subtree with heading but sometimes I want to 
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z i s" . sk/mark-inside-subtree))
+  ("M-m i s" . sk/mark-inside-subtree))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "i s" "C-z i s")
+(modalka-define-kbd "i s" "M-m i s")
 #+END_SRC
 
 Which key modal explanation
@@ -5008,13 +5008,13 @@ This is to rearrange sub trees, reorder them, promote, demote and cycle through 
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z o o" . sk/hydra-org-organize/body))
+  ("M-m o o" . sk/hydra-org-organize/body))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "o o" "C-z o o")
+(modalka-define-kbd "o o" "M-m o o")
 #+END_SRC
 
 Which key modal explanation
@@ -5045,13 +5045,13 @@ As mentioned [[*Task management][before]], Org is amazing for TODO lists and has
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z o D" . sk/hydra-org-todo/body))
+  ("M-m o D" . sk/hydra-org-todo/body))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "o D" "C-z o D")
+(modalka-define-kbd "o D" "M-m o D")
 #+END_SRC
 
 Which key modal explanation
@@ -5082,13 +5082,13 @@ Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z o b" . sk/hydra-org-checkbox/body))
+  ("M-m o b" . sk/hydra-org-checkbox/body))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "o b" "C-z o b")
+(modalka-define-kbd "o b" "M-m o b")
 #+END_SRC
 
 Which key modal explanation
@@ -5120,13 +5120,13 @@ Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z o P" . sk/hydra-org-property/body))
+  ("M-m o P" . sk/hydra-org-property/body))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "o P" "C-z o P")
+(modalka-define-kbd "o P" "M-m o P")
 #+END_SRC
 
 Which key modal explanation
@@ -5172,13 +5172,13 @@ Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z o C" . sk/hydra-org-clock/body))
+  ("M-m o C" . sk/hydra-org-clock/body))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "o C" "C-z o C")
+(modalka-define-kbd "o C" "M-m o C")
 #+END_SRC
 
 Which key modal explanation
@@ -5230,13 +5230,13 @@ Org mode can create [[http://orgmode.org/manual/Tables.html][tables]] with [[htt
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z o m" . sk/hydra-org-tables/body))
+  ("M-m o m" . sk/hydra-org-tables/body))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "o m" "C-z o m")
+(modalka-define-kbd "o m" "M-m o m")
 #+END_SRC
 
 Which key modal explanation
@@ -5281,13 +5281,13 @@ This is a massively useful hydra to move around in an org file
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z o j" . sk/hydra-org-jump/body))
+  ("M-m o j" . sk/hydra-org-jump/body))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "o j" "C-z o j")
+(modalka-define-kbd "o j" "M-m o j")
 #+END_SRC
 
 Which key modal explanation
@@ -5339,13 +5339,13 @@ The agenda menu already has a built-in agenda view but I always forget the keys.
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z o v" . sk/hydra-org-agenda-view/body))
+  ("M-m o v" . sk/hydra-org-agenda-view/body))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "o v" "C-z o v")
+(modalka-define-kbd "o v" "M-m o v")
 #+END_SRC
 
 Which key modal explanation
@@ -5380,13 +5380,13 @@ As [[*Org contributed packages][previously mentioned]], I use the drill package 
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z o p" . sk/hydra-org-drill/body))
+  ("M-m o p" . sk/hydra-org-drill/body))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "o p" "C-z o p")
+(modalka-define-kbd "o p" "M-m o p")
 #+END_SRC
 
 Which key modal explanation
@@ -5593,13 +5593,13 @@ _u_: Update field _F_: file funcs
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z o r" . sk/hydra-org-org-ref/body))
+  ("M-m o r" . sk/hydra-org-org-ref/body))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "o r" "C-z o r")
+(modalka-define-kbd "o r" "M-m o r")
 #+END_SRC
 
 Which key modal explanation
@@ -5618,15 +5618,15 @@ Which key modal explanation
 #+BEGIN_SRC emacs-lisp
 (use-package magit
   :ensure t
-  :bind* (("C-z SPC e" . magit-status)
-          ("C-z g b"   . magit-blame)))
+  :bind* (("M-m SPC e" . magit-status)
+          ("M-m g b"   . magit-blame)))
 #+END_SRC
 
 **** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "SPC e" "C-z SPC e")
-(modalka-define-kbd "g b"   "C-z g b")
+(modalka-define-kbd "SPC e" "M-m SPC e")
+(modalka-define-kbd "g b"   "M-m g b")
 #+END_SRC
 
 Which key modal explanation
@@ -5651,12 +5651,12 @@ Which key modal explanation
              diff-hl-mark-hunk
              diff-hl-diff-goto-hunk
              diff-hl-revert-hunk)
-  :bind* (("C-z ] h" . diff-hl-next-hunk)
-          ("C-z [ h" . diff-hl-previous-hunk)
-          ("C-z i h" . diff-hl-mark-hunk)
-          ("C-z a h" . diff-hl-mark-hunk)
-          ("C-z g h" . diff-hl-diff-goto-hunk)
-          ("C-z g H" . diff-hl-revert-hunk))
+  :bind* (("M-m ] h" . diff-hl-next-hunk)
+          ("M-m [ h" . diff-hl-previous-hunk)
+          ("M-m i h" . diff-hl-mark-hunk)
+          ("M-m a h" . diff-hl-mark-hunk)
+          ("M-m g h" . diff-hl-diff-goto-hunk)
+          ("M-m g H" . diff-hl-revert-hunk))
   :config
   (global-diff-hl-mode)
   (diff-hl-flydiff-mode)
@@ -5667,12 +5667,12 @@ Which key modal explanation
 **** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "] h" "C-z ] h")
-(modalka-define-kbd "[ h" "C-z [ h")
-(modalka-define-kbd "g h" "C-z g h")
-(modalka-define-kbd "g H" "C-z g H")
-(modalka-define-kbd "i h" "C-z i h")
-(modalka-define-kbd "a h" "C-z a h")
+(modalka-define-kbd "] h" "M-m ] h")
+(modalka-define-kbd "[ h" "M-m [ h")
+(modalka-define-kbd "g h" "M-m g h")
+(modalka-define-kbd "g H" "M-m g H")
+(modalka-define-kbd "i h" "M-m i h")
+(modalka-define-kbd "a h" "M-m a h")
 #+END_SRC
 
 Which key modal explanation
@@ -5696,15 +5696,15 @@ The ability to move to past versions of the current file, [[https://github.com/p
   :ensure t
   :commands (git-timemachine-toggle
              git-timemachine-switch-branch)
-  :bind* (("C-z g l" . git-timemachine-toggle)
-          ("C-z g L" . git-timemachine-switch-branch)))
+  :bind* (("M-m g l" . git-timemachine-toggle)
+          ("M-m g L" . git-timemachine-switch-branch)))
 #+END_SRC
 
 **** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "g l" "C-z g l")
-(modalka-define-kbd "g L" "C-z g L")
+(modalka-define-kbd "g l" "M-m g l")
+(modalka-define-kbd "g L" "M-m g L")
 #+END_SRC
 
 Which key modal explanation
@@ -5724,8 +5724,8 @@ Which key modal explanation
   :ensure t
   :commands (yagist-region-or-buffer
              yagist-region-or-buffer-private)
-  :bind* (("C-z g p" . yagist-region-or-buffer)
-          ("C-z g P" . yagist-region-or-buffer-private))
+  :bind* (("M-m g p" . yagist-region-or-buffer)
+          ("M-m g P" . yagist-region-or-buffer-private))
   :init
   (setq yagist-encrypt-risky-config t))
 #+END_SRC
@@ -5733,8 +5733,8 @@ Which key modal explanation
 **** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "g p" "C-z g p")
-(modalka-define-kbd "g P" "C-z g P")
+(modalka-define-kbd "g p" "M-m g p")
+(modalka-define-kbd "g P" "M-m g P")
 #+END_SRC
 
 Which key modal explanation
@@ -5752,13 +5752,13 @@ Which key modal explanation
 #+BEGIN_SRC emacs-lisp
 (use-package browse-at-remote
   :ensure t
-  :bind* (("C-z g i" . browse-at-remote)))
+  :bind* (("M-m g i" . browse-at-remote)))
 #+END_SRC
 
 **** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "g i" "C-z g i")
+(modalka-define-kbd "g i" "M-m g i")
 #+END_SRC
 
 Which key modal explanation
@@ -5800,7 +5800,7 @@ I often need to start some service/program in the background and instead of drop
 (use-package prodigy
   :ensure t
   :commands (prodigy)
-  :bind* (("C-z m b" . prodigy))
+  :bind* (("M-m m b" . prodigy))
   :init
   (prodigy-define-tag
     :name 'blog
@@ -5832,7 +5832,7 @@ I often need to start some service/program in the background and instead of drop
 **** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "m b" "C-z m b")
+(modalka-define-kbd "m b" "M-m m b")
 #+END_SRC
 
 Which key modal explanation
@@ -5845,7 +5845,7 @@ Which key modal explanation
 
 ** Information/documentation at point
 
-These are a set of programming major mode specific bindings. This will check for documentation/information about the symbol/variable/function at point and try to get information if possible. Else, it will default to a Google search. This depends on all the specific packages used for [[*Emacs lisp][Emacs lisp]], [[*C/C++][C/C++]], [[*Python][Python]], [[*Statistics][Statistics]], [[*MATLAB][MATLAB]], [[*Web][Web]] and [[*Code documentation][Dash]]. Also, [[*Auto completion][just like auto-completion]], I bind this functionality to =C-c= and not =C-z=. For more functionality, use the respective language specific [[*Hydras][Hydras]].
+These are a set of programming major mode specific bindings. This will check for documentation/information about the symbol/variable/function at point and try to get information if possible. Else, it will default to a Google search. This depends on all the specific packages used for [[*Emacs lisp][Emacs lisp]], [[*C/C++][C/C++]], [[*Python][Python]], [[*Statistics][Statistics]], [[*MATLAB][MATLAB]], [[*Web][Web]] and [[*Code documentation][Dash]]. Also, [[*Auto completion][just like auto-completion]], I bind this functionality to =C-c= and not =M-m=. For more functionality, use the respective language specific [[*Hydras][Hydras]].
 
 ** Source/symbol at point
 
@@ -6313,9 +6313,9 @@ I'm not sure how useful [[https://github.com/yasuyk/web-beautify][this]] is but 
   :ensure t
   :diminish flycheck-mode
   :defer 2
-  :bind* (("C-z ] l"   . flycheck-next-error)
-          ("C-z [ l"   . flycheck-previous-error)
-          ("C-z SPC l" . flycheck-list-errors))
+  :bind* (("M-m ] l"   . flycheck-next-error)
+          ("M-m [ l"   . flycheck-previous-error)
+          ("M-m SPC l" . flycheck-list-errors))
   :config
   (global-flycheck-mode))
 #+END_SRC
@@ -6323,9 +6323,9 @@ I'm not sure how useful [[https://github.com/yasuyk/web-beautify][this]] is but 
 **** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "] l"   "C-z ] l")
-(modalka-define-kbd "[ l"   "C-z [ l")
-(modalka-define-kbd "SPC l" "C-z SPC l")
+(modalka-define-kbd "] l"   "M-m ] l")
+(modalka-define-kbd "[ l"   "M-m [ l")
+(modalka-define-kbd "SPC l" "M-m SPC l")
 #+END_SRC
 
 Which key modal explanation
@@ -6339,7 +6339,7 @@ Which key modal explanation
 
 ** Auto completion
 
-[[http://company-mode.github.io][Company mode]] standing for "complete any" is an auto-completion framework with a lot of third part packages and backends. Although I usually trigger manual completion, this is useful to have sometimes. This is a huge definition. Also, this is the one of the functionality I bind to =C-c= and not =C-z=.
+[[http://company-mode.github.io][Company mode]] standing for "complete any" is an auto-completion framework with a lot of third part packages and backends. Although I usually trigger manual completion, this is useful to have sometimes. This is a huge definition. Also, this is the one of the functionality I bind to =C-c= and not =M-m=.
 
 #+BEGIN_SRC emacs-lisp
 (use-package company
@@ -6428,8 +6428,8 @@ Eshell is a built-in shell that is written in Lisp. It's pretty good.
 #+BEGIN_SRC emacs-lisp
 (use-package eshell
   :commands (eshell)
-  :bind* (("C-z SPC u" . sk/eshell-vertical)
-          ("C-z SPC U" . sk/eshell-horizontal))
+  :bind* (("M-m SPC u" . sk/eshell-vertical)
+          ("M-m SPC U" . sk/eshell-horizontal))
   :init
   (setq eshell-glob-case-insensitive t
         eshell-scroll-to-bottom-on-input 'this
@@ -6478,15 +6478,15 @@ Let's also define a couple of functions to open it in a vertical or horizontal s
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z SPC u" . sk/eshell-vertical)
-  ("C-z SPC U" . sk/eshell-horizontal))
+  ("M-m SPC u" . sk/eshell-vertical)
+  ("M-m SPC U" . sk/eshell-horizontal))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "SPC u" "C-z SPC u")
-(modalka-define-kbd "SPC U" "C-z SPC U")
+(modalka-define-kbd "SPC u" "M-m SPC u")
+(modalka-define-kbd "SPC U" "M-m SPC U")
 #+END_SRC
 
 Which key modal explanation
@@ -6505,8 +6505,8 @@ Which key modal explanation
 (use-package multi-term
   :ensure t
   :commands (multi-term)
-  :bind* (("C-z SPC m" . sk/multi-term-vertical)
-          ("C-z SPC M". sk/multi-term-horizontal)))
+  :bind* (("M-m SPC m" . sk/multi-term-vertical)
+          ("M-m SPC M". sk/multi-term-horizontal)))
 #+END_SRC
 
 Let's also define a couple of wrapper functions to open this in splits.
@@ -6533,15 +6533,15 @@ Let's also define a couple of wrapper functions to open this in splits.
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z SPC m" . sk/multi-term-vertical)
-  ("C-z SPC M" . sk/multi-term-horizontal))
+  ("M-m SPC m" . sk/multi-term-vertical)
+  ("M-m SPC M" . sk/multi-term-horizontal))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "SPC m" "C-z SPC m")
-(modalka-define-kbd "SPC M" "C-z SPC M")
+(modalka-define-kbd "SPC m" "M-m SPC m")
+(modalka-define-kbd "SPC M" "M-m SPC M")
 #+END_SRC
 
 Which key modal explanation
@@ -6651,13 +6651,13 @@ This menu helps in sending code and commands [[*Interacting with Tmux][to tmux]]
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z m t" . sk/hydra-for-emamux/body))
+  ("M-m m t" . sk/hydra-for-emamux/body))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "m t" "C-z m t")
+(modalka-define-kbd "m t" "M-m m t")
 #+END_SRC
 
 Which key modal explanation
@@ -6721,13 +6721,13 @@ Then, the hydra for helping with Emacs Lisp code.
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z m e" . sk/hydra-for-elisp/body))
+  ("M-m m e" . sk/hydra-for-elisp/body))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "m e" "C-z m e")
+(modalka-define-kbd "m e" "M-m m e")
 #+END_SRC
 
 Which key modal explanation
@@ -6784,13 +6784,13 @@ C/C++ code navigation and compilation demands a hydra.
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z m c" . sk/hydra-for-cpp/body))
+  ("M-m m c" . sk/hydra-for-cpp/body))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "m c" "C-z m c")
+(modalka-define-kbd "m c" "M-m m c")
 #+END_SRC
 
 Which key modal explanation
@@ -6846,13 +6846,13 @@ Hydra for Python code navigation, REPL evaluation, testing and formatting.
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z m p" . sk/hydra-for-py/body))
+  ("M-m m p" . sk/hydra-for-py/body))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "m p" "C-z m p")
+(modalka-define-kbd "m p" "M-m m p")
 #+END_SRC
 
 Which key modal explanation
@@ -6887,13 +6887,13 @@ Since both R and Julia are supported by ESS, one hydra is enough.
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z m s" . sk/hydra-for-ess/body))
+  ("M-m m s" . sk/hydra-for-ess/body))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "m s" "C-z m s")
+(modalka-define-kbd "m s" "M-m m s")
 #+END_SRC
 
 Which key modal explanation
@@ -6928,13 +6928,13 @@ There is no facility for code navigation in MATLAB, and so this is just sending 
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z m m" . sk/hydra-for-matlab/body))
+  ("M-m m m" . sk/hydra-for-matlab/body))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "m m" "C-z m m")
+(modalka-define-kbd "m m" "M-m m m")
 #+END_SRC
 
 Which key modal explanation
@@ -7028,17 +7028,17 @@ There are two hydras we use for Web editing - one for JavaScript specifically an
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z m j" . sk/hydra-for-js/body)
-  ("C-z m w" . sk/hydra-for-web/body)
-  ("C-z m f" . sk/hydra-for-format/body))
+  ("M-m m j" . sk/hydra-for-js/body)
+  ("M-m m w" . sk/hydra-for-web/body)
+  ("M-m m f" . sk/hydra-for-format/body))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "m j" "C-z m j")
-(modalka-define-kbd "m w" "C-z m w")
-(modalka-define-kbd "m f" "C-z m f")
+(modalka-define-kbd "m j" "M-m m j")
+(modalka-define-kbd "m w" "M-m m w")
+(modalka-define-kbd "m f" "M-m m f")
 #+END_SRC
 
 Which key modal explanation
@@ -7074,13 +7074,13 @@ This is for [[*Quickrun][Quickrun]] functionality.
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z m q" . sk/hydra-quickrun/body))
+  ("M-m m q" . sk/hydra-quickrun/body))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "m q" "C-z m q")
+(modalka-define-kbd "m q" "M-m m q")
 #+END_SRC
 
 Which key modal explanation
@@ -7117,13 +7117,13 @@ A small hydra to start appropriate debuggers
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z m d" . sk/hydra-debug/body))
+  ("M-m m d" . sk/hydra-debug/body))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "m d" "C-z m d")
+(modalka-define-kbd "m d" "M-m m d")
 #+END_SRC
 
 Which key modal explanation
@@ -7148,24 +7148,24 @@ For now, I have made it look and act the way I want it too. The additional packa
          ("M-y"     . helm-show-kill-ring)
          ("C-x C-f" . helm-find-files)
          ("C-x 8"   . helm-ucs))
-  :bind* (("C-z SPC h r" . helm-resume)
-          ("C-z SPC r"   . helm-recentf)
-          ("C-z SPC x"   . helm-apropos)
-          ("C-z SPC h c" . helm-colors)
-          ("C-z SPC h R" . helm-regexp)
-          ("C-z SPC h u" . helm-surfraw)
-          ("C-z SPC h t" . helm-top)
-          ("C-z SPC h p" . helm-list-emacs-process)
-          ("C-z SPC h f" . helm-find)
-          ("C-z SPC h k" . helm-calcul-expression)
-          ("C-z SPC h i" . helm-info-at-point)
-          ("C-z SPC h d" . helm-man-woman)
-          ("C-z SPC h h" . helm-documentation)
-          ("C-z SPC h e" . helm-run-external-command)
-          ("C-z ;"       . helm-all-mark-rings)
-          ("C-z SPC h x" . helm-select-xfont)
-          ("C-z SPC s"   . helm-locate)
-          ("C-z t"       . helm-semantic-or-imenu))
+  :bind* (("M-m SPC h r" . helm-resume)
+          ("M-m SPC r"   . helm-recentf)
+          ("M-m SPC x"   . helm-apropos)
+          ("M-m SPC h c" . helm-colors)
+          ("M-m SPC h R" . helm-regexp)
+          ("M-m SPC h u" . helm-surfraw)
+          ("M-m SPC h t" . helm-top)
+          ("M-m SPC h p" . helm-list-emacs-process)
+          ("M-m SPC h f" . helm-find)
+          ("M-m SPC h k" . helm-calcul-expression)
+          ("M-m SPC h i" . helm-info-at-point)
+          ("M-m SPC h d" . helm-man-woman)
+          ("M-m SPC h h" . helm-documentation)
+          ("M-m SPC h e" . helm-run-external-command)
+          ("M-m ;"       . helm-all-mark-rings)
+          ("M-m SPC h x" . helm-select-xfont)
+          ("M-m SPC s"   . helm-locate)
+          ("M-m t"       . helm-semantic-or-imenu))
   :bind (:map helm-map
               ("<return>"   . helm-maybe-exit-minibuffer)
               ("RET"        . helm-maybe-exit-minibuffer)
@@ -7346,7 +7346,7 @@ For now, I have made it look and act the way I want it too. The additional packa
   ;; Add helm-bibtex
   (use-package helm-bibtex
     :ensure t
-    :bind* (("C-z SPC b" . helm-bibtex))
+    :bind* (("M-m SPC b" . helm-bibtex))
     :init
     (setq bibtex-completion-bibliography '("~/Dropbox/org/references/multiphysics.bib" "~/Dropbox/org/references/chanceconstraints.bib"))
     (setq bibtex-completion-library-path "~/Dropbox/org/references/pdfs")
@@ -7355,17 +7355,17 @@ For now, I have made it look and act the way I want it too. The additional packa
   ;; to search in projects - the silver searcher
   (use-package helm-ag
     :ensure t
-    :bind* (("C-z g s" . helm-do-ag-project-root)
-            ("C-z g e" . helm-do-ag)))
+    :bind* (("M-m g s" . helm-do-ag-project-root)
+            ("M-m g e" . helm-do-ag)))
 
   ;; to search in files
   (use-package helm-swoop
     :ensure t
     :bind (("C-s" . helm-swoop-without-pre-input))
-    :bind* (("C-z #"   . helm-swoop)
-            ("C-z g /" . helm-multi-swoop)
-            ("C-z o /" . helm-multi-swoop-org)
-            ("C-z g E" . helm-multi-swoop-all))
+    :bind* (("M-m #"   . helm-swoop)
+            ("M-m g /" . helm-multi-swoop)
+            ("M-m o /" . helm-multi-swoop-org)
+            ("M-m g E" . helm-multi-swoop-all))
     :init
     (setq helm-swoop-split-with-multiple-windows nil
           helm-swoop-split-direction 'split-window-vertically
@@ -7374,35 +7374,35 @@ For now, I have made it look and act the way I want it too. The additional packa
   ;; to help with projectile
   (use-package helm-projectile
     :ensure t
-    :bind* (("C-z SPC d" . helm-projectile))
+    :bind* (("M-m SPC d" . helm-projectile))
     :init
     (setq projectile-completion-system 'helm))
 
   ;; to describe bindings
   (use-package helm-descbinds
     :ensure t
-    :bind* (("C-z SPC ?" . helm-descbinds)))
+    :bind* (("M-m SPC ?" . helm-descbinds)))
 
   ;; Control AWS via helm
   (use-package helm-aws
     :ensure t
-    :bind* (("C-z SPC h w" . helm-aws)))
+    :bind* (("M-m SPC h w" . helm-aws)))
 
   ;; Control circe with helm
   (use-package helm-circe
     :ensure t
-    :bind* (("C-z SPC h j" . helm-circe)
-            ("C-z SPC h J" . helm-circe-new-activity)))
+    :bind* (("M-m SPC h j" . helm-circe)
+            ("M-m SPC h J" . helm-circe-new-activity)))
 
   ;; List errors with helm
   (use-package helm-flycheck
     :ensure t
-    :bind* (("C-z SPC l" . helm-flycheck)))
+    :bind* (("M-m SPC l" . helm-flycheck)))
 
   ;; Flyspell errors with helm
   (use-package helm-flyspell
     :ensure t
-    :bind* (("C-z SPC h s" . sk/helm-correct-word))
+    :bind* (("M-m SPC h s" . sk/helm-correct-word))
     :config
     (defun sk/helm-correct-word ()
       (interactive)
@@ -7422,46 +7422,46 @@ For now, I have made it look and act the way I want it too. The additional packa
     :ensure t
     :init
     (setq helm-make-build-directory "build")
-    :bind* (("C-z SPC h m" . helm-make-projectile)
-            ("C-z SPC h M" . helm-make))))
+    :bind* (("M-m SPC h m" . helm-make-projectile)
+            ("M-m SPC h M" . helm-make))))
 #+END_SRC
 
 **** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "t" "C-z t")
-(modalka-define-kbd "#" "C-z #")
-(modalka-define-kbd ";" "C-z ;")
+(modalka-define-kbd "t" "M-m t")
+(modalka-define-kbd "#" "M-m #")
+(modalka-define-kbd ";" "M-m ;")
 (modalka-define-kbd "SPC J" "M-X")
-(modalka-define-kbd "g E" "C-z g E")
-(modalka-define-kbd "g s" "C-z g s")
-(modalka-define-kbd "g /" "C-z g /")
-(modalka-define-kbd "o /" "C-z o /")
-(modalka-define-kbd "g e" "C-z g e")
+(modalka-define-kbd "g E" "M-m g E")
+(modalka-define-kbd "g s" "M-m g s")
+(modalka-define-kbd "g /" "M-m g /")
+(modalka-define-kbd "o /" "M-m o /")
+(modalka-define-kbd "g e" "M-m g e")
 (modalka-define-kbd "SPC i" "C-c C-e")
-(modalka-define-kbd "SPC r" "C-z SPC r")
-(modalka-define-kbd "SPC b" "C-z SPC b")
-(modalka-define-kbd "SPC s" "C-z SPC s")
-(modalka-define-kbd "SPC x" "C-z SPC x")
-(modalka-define-kbd "SPC h r" "C-z SPC h r")
-(modalka-define-kbd "SPC h w" "C-z SPC h w")
-(modalka-define-kbd "SPC h i" "C-z SPC h i")
-(modalka-define-kbd "SPC h c" "C-z SPC h c")
-(modalka-define-kbd "SPC h R" "C-z SPC h R")
-(modalka-define-kbd "SPC h u" "C-z SPC h u")
-(modalka-define-kbd "SPC h t" "C-z SPC h t")
-(modalka-define-kbd "SPC h p" "C-z SPC h p")
-(modalka-define-kbd "SPC h f" "C-z SPC h f")
-(modalka-define-kbd "SPC h k" "C-z SPC h k")
-(modalka-define-kbd "SPC h d" "C-z SPC h d")
-(modalka-define-kbd "SPC h h" "C-z SPC h h")
-(modalka-define-kbd "SPC h e" "C-z SPC h e")
-(modalka-define-kbd "SPC h x" "C-z SPC h x")
-(modalka-define-kbd "SPC h j" "C-z SPC h j")
-(modalka-define-kbd "SPC h J" "C-z SPC h J")
-(modalka-define-kbd "SPC h s" "C-z SPC h s")
-(modalka-define-kbd "SPC h m" "C-z SPC h m")
-(modalka-define-kbd "SPC h M" "C-z SPC h M")
+(modalka-define-kbd "SPC r" "M-m SPC r")
+(modalka-define-kbd "SPC b" "M-m SPC b")
+(modalka-define-kbd "SPC s" "M-m SPC s")
+(modalka-define-kbd "SPC x" "M-m SPC x")
+(modalka-define-kbd "SPC h r" "M-m SPC h r")
+(modalka-define-kbd "SPC h w" "M-m SPC h w")
+(modalka-define-kbd "SPC h i" "M-m SPC h i")
+(modalka-define-kbd "SPC h c" "M-m SPC h c")
+(modalka-define-kbd "SPC h R" "M-m SPC h R")
+(modalka-define-kbd "SPC h u" "M-m SPC h u")
+(modalka-define-kbd "SPC h t" "M-m SPC h t")
+(modalka-define-kbd "SPC h p" "M-m SPC h p")
+(modalka-define-kbd "SPC h f" "M-m SPC h f")
+(modalka-define-kbd "SPC h k" "M-m SPC h k")
+(modalka-define-kbd "SPC h d" "M-m SPC h d")
+(modalka-define-kbd "SPC h h" "M-m SPC h h")
+(modalka-define-kbd "SPC h e" "M-m SPC h e")
+(modalka-define-kbd "SPC h x" "M-m SPC h x")
+(modalka-define-kbd "SPC h j" "M-m SPC h j")
+(modalka-define-kbd "SPC h J" "M-m SPC h J")
+(modalka-define-kbd "SPC h s" "M-m SPC h s")
+(modalka-define-kbd "SPC h m" "M-m SPC h m")
+(modalka-define-kbd "SPC h M" "M-m SPC h M")
 #+END_SRC
 
 Which key modal explanation
@@ -7534,17 +7534,17 @@ And while we are it, why not go ahead and [[https://github.com/bcbcarl/emacs-wtt
 #+BEGIN_SRC emacs-lisp
 (use-package howdoi
   :ensure t
-  :bind* (("C-z g I" . howdoi-query)
-          ("C-z g Y" . howdoi-query-line-at-point)
-          ("C-z g Q" . howdoi-query-insert-code-snippet-at-point)))
+  :bind* (("M-m g I" . howdoi-query)
+          ("M-m g Y" . howdoi-query-line-at-point)
+          ("M-m g Q" . howdoi-query-insert-code-snippet-at-point)))
 #+END_SRC
 
 **** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "g I" "C-z g I")
-(modalka-define-kbd "g Y" "C-z g Y")
-(modalka-define-kbd "g Q" "C-z g Q")
+(modalka-define-kbd "g I" "M-m g I")
+(modalka-define-kbd "g Y" "M-m g Y")
+(modalka-define-kbd "g Q" "M-m g Q")
 #+END_SRC
 
 Which key modal explanation
@@ -7564,13 +7564,13 @@ Read [[http://xkcd.com][xkcd]] in Emacs.
 (use-package xkcd
   :ensure t
   :commands (xkcd)
-  :bind* (("C-z g X" . xkcd)))
+  :bind* (("M-m g X" . xkcd)))
 #+END_SRC
 
 **** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "g X" "C-z g X")
+(modalka-define-kbd "g X" "M-m g X")
 #+END_SRC
 
 Which key modal explanation
@@ -7685,13 +7685,13 @@ This function googles the current symbol or the region if the region is active a
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z A" . sk/google-this))
+  ("M-m A" . sk/google-this))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "A" "C-z A")
+(modalka-define-kbd "A" "M-m A")
 #+END_SRC
 
 Which key modal explanation
@@ -7726,13 +7726,13 @@ A hydra for googling things!
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("C-z g G" . sk/hydra-google/body))
+  ("M-m g G" . sk/hydra-google/body))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "g G" "C-z g G")
+(modalka-define-kbd "g G" "M-m g G")
 #+END_SRC
 
 Which key modal explanation
@@ -7770,20 +7770,20 @@ Also, note that you can redefine any of the functions that have been defined her
 
 * Key bindings
 
-This section documents the key bindings that help to find other key-bindings. Note that when you search the keybindings, the Emacs ones are shown by default. These tend to be of the form =C-z g g=. The corresponding Modalka mode binding is just =g g=. So Pressing =C-z= or pressing =Esc= to toggle Modalka mode produces similar results (except, of course, you need not press =Esc= every time you want to use a binding in Modalka mode). Also note that [[*Snippets][Snippets]] is one place where modal bindings are not enforced because I want to write fast and not switch often when I'm writing.
+This section documents the key bindings that help to find other key-bindings. Note that when you search the keybindings, the Emacs ones are shown by default. These tend to be of the form =M-m g g=. The corresponding Modalka mode binding is just =g g=. So Pressing =M-m= or pressing =Esc= to toggle Modalka mode produces similar results (except, of course, you need not press =Esc= every time you want to use a binding in Modalka mode). Also note that [[*Snippets][Snippets]] is one place where modal bindings are not enforced because I want to write fast and not switch often when I'm writing.
 
 ** Meta
 
 #+NAME: meta_bindings
 | Modalka state binding | Emacs state binding | Function                            |
 |-----------------------+---------------------+-------------------------------------|
-| ?                     | C-z ?               | [[*Which key][Show top level bindings]]             |
+| ?                     | M-m ?               | [[*Which key][Show top level bindings]]             |
 | g ?                   | C-h k               | Check the command for the given key |
 | SPC ?                 | C-h b               | search bindings                     |
 | M                     | C-u                 | universal argument                  |
-| E                     | C-z E               | [[*Deactivate region][Deactivate region]]                   |
+| E                     | M-m E               | [[*Deactivate region][Deactivate region]]                   |
 | ESC                   | ESC                 | Toggle [[*Modalka mode][Modalka mode]]                 |
-| M-m                   | M-m                 | Toggle Modalka mode                 |
+| C-z                   | C-z                 | Toggle Modalka mode                 |
 
 ** Quitting and restarting Emacs
 
@@ -7792,7 +7792,7 @@ This section documents the key bindings that help to find other key-bindings. No
 |-----------------------+---------------------+-------------------------|
 | : q                   | C-x C-c             | Prompt to save and quit |
 | : r                   | C-x M-c             | Quit and [[*Restart emacs from emacs][restart-emacs]]  |
-| : t                   | C-z : t             | Emacs startup time      |
+| : t                   | M-m : t             | Emacs startup time      |
 
 ** Navigation
 
@@ -7815,64 +7815,64 @@ This section documents the key bindings that help to find other key-bindings. No
 | b                     | M-b                 | previous word                                     |
 | 0                     | C-a                 | [[*Smarter start of line][start of line]]                                     |
 | $                     | C-e                 | end of line                                       |
-| f                     | C-z f               | find anything on screen with timer [[*Avy][Avy]]            |
-| F                     | C-z F               | goto line using Avy                               |
+| f                     | M-m f               | find anything on screen with timer [[*Avy][Avy]]            |
+| F                     | M-m F               | goto line using Avy                               |
 | /                     | C-s                 | search in buffer or use =helm-swoop= if available   |
-| g /                   | C-z g /             | multi file search using =helm-swoop=                |
-| g s                   | C-z g s             | search in project                                 |
-| g e                   | C-z g e             | extract word from project                         |
+| g /                   | M-m g /             | multi file search using =helm-swoop=                |
+| g s                   | M-m g s             | search in project                                 |
+| g e                   | M-m g e             | extract word from project                         |
 | n                     | M-n                 | [[*Highlight symbol][smart next item]]                                   |
 | N                     | M-p                 | smart previous item                               |
-| ;                     | C-z ;               | see previous changes                              |
-| +                     | C-z +               | [[*Bookmark navigation][Bookmark navigation]]                               |
-| B                     | C-z B               | [[*Bind key to bind some unbound defaults][switch to the buffer edited last]]                  |
+| ;                     | M-m ;               | see previous changes                              |
+| +                     | M-m +               | [[*Bookmark navigation][Bookmark navigation]]                               |
+| B                     | M-m B               | [[*Bind key to bind some unbound defaults][switch to the buffer edited last]]                  |
 | z                     | C-l                 | recenter screen                                   |
-| #                     | C-z #               | helm - swoop = with cursor word                   |
-| g j                   | C-z g j             | next PDF page                                     |
-| g k                   | C-z g k             | previous PDF page                                 |
-| SPC t                 | C-z SPC t           | [[*Window navigation][Window navigation hydra]]                           |
+| #                     | M-m #               | helm - swoop = with cursor word                   |
+| g j                   | M-m g j             | next PDF page                                     |
+| g k                   | M-m g k             | previous PDF page                                 |
+| SPC t                 | M-m SPC t           | [[*Window navigation][Window navigation hydra]]                           |
 | w                     | C-x o               | switch to other window                            |
-| W                     | C-z W               | undo window configuration                         |
-| Z                     | C-z Z               | [[*Toggle zoom][zoom in to the current window]]                     |
+| W                     | M-m W               | undo window configuration                         |
+| Z                     | M-m Z               | [[*Toggle zoom][zoom in to the current window]]                     |
 | g w                   | C-x 3               | split window vertically                           |
 | g W                   | C-x 2               | split window horizontally                         |
-| t                     | C-z t               | [[*Helm][tags in buffer]]                                    |
+| t                     | M-m t               | [[*Helm][tags in buffer]]                                    |
 | T                     | C-x T               | [[*Tags based navigation][tags based navigation in project]]                  |
-| g t                   | C-z g t             | create tags for code                              |
-| g T                   | C-z g T             | update tags for code                              |
-| g z                   | C-z g z             | [[*Beacon mode][blink cursor]]                                      |
-| SPC p                 | C-z SPC p           | [[*Perspective][switch perspective]]                                |
-| SPC A                 | C-z SPC A           | switch to buffer in perspective                   |
-| SPC P                 | C-z SPC P           | kill perspective                                  |
-| g r                   | C-z g r             | rename perspective                                |
+| g t                   | M-m g t             | create tags for code                              |
+| g T                   | M-m g T             | update tags for code                              |
+| g z                   | M-m g z             | [[*Beacon mode][blink cursor]]                                      |
+| SPC p                 | M-m SPC p           | [[*Perspective][switch perspective]]                                |
+| SPC A                 | M-m SPC A           | switch to buffer in perspective                   |
+| SPC P                 | M-m SPC P           | kill perspective                                  |
+| g r                   | M-m g r             | rename perspective                                |
 | ] ]                   | C-x n n             | narrow to region                                  |
 | [ [                   | C-x n w             | widen narrowed region                             |
-| [ s                   | C-z [ s             | [[*Flyspell go to the previous spell error][previous spelling error]]                           |
-| ] s                   | C-z ] s             | next spelling error                               |
-| [ d                   | C-z [ d             | turn the PDF previous page                        |
-| ] d                   | C-z ] d             | [[*Turn the adjoining PDF (only with 2 windows)][Turn the adjoining PDF]] next page                  |
-| g [                   | C-z g [             | [[*Turn the adjoining window (only with 2 windows)][Scroll the adjoining window up]]                    |
-| g ]                   | C-z g ]             | Scroll the adjoining window down                  |
-| g m                   | C-z g m             | make frame                                        |
-| g M                   | C-z g M             | close frame                                       |
-| g n                   | C-z g n             | select frame by name                              |
-| g N                   | C-z g N             | name frame                                        |
-| g f                   | C-z g f             | find file/url under cursor                        |
+| [ s                   | M-m [ s             | [[*Flyspell go to the previous spell error][previous spelling error]]                           |
+| ] s                   | M-m ] s             | next spelling error                               |
+| [ d                   | M-m [ d             | turn the PDF previous page                        |
+| ] d                   | M-m ] d             | [[*Turn the adjoining PDF (only with 2 windows)][Turn the adjoining PDF]] next page                  |
+| g [                   | M-m g [             | [[*Turn the adjoining window (only with 2 windows)][Scroll the adjoining window up]]                    |
+| g ]                   | M-m g ]             | Scroll the adjoining window down                  |
+| g m                   | M-m g m             | make frame                                        |
+| g M                   | M-m g M             | close frame                                       |
+| g n                   | M-m g n             | select frame by name                              |
+| g N                   | M-m g N             | name frame                                        |
+| g f                   | M-m g f             | find file/url under cursor                        |
 | SPC f                 | C-x C-f             | find file browsing by directory                   |
-| SPC d                 | C-z SPC d           | find files based on [[*Projectile][Projectile]] or helm-projectile |
-| SPC D                 | C-z SPC D           | switch projects                                   |
+| SPC d                 | M-m SPC d           | find files based on [[*Projectile][Projectile]] or helm-projectile |
+| SPC D                 | M-m SPC D           | switch projects                                   |
 | SPC g                 | M-g g               | goto line number                                  |
-| SPC n                 | C-z SPC n           | [[*Neotree][directory navigation]]                              |
+| SPC n                 | M-m SPC n           | [[*Neotree][directory navigation]]                              |
 | SPC q                 | C-x 0               | close current window                              |
-| SPC z                 | C-z SPC z           | [[*Non native full screen][Non native full screen]]                            |
+| SPC z                 | M-m SPC z           | [[*Non native full screen][Non native full screen]]                            |
 | SPC a                 | C-x b               | switch to open buffer                             |
 | SPC k                 | C-x k               | kill buffer                                       |
 | SPC S                 | C-x S               | use =locate= command                                |
-| SPC v                 | C-z SPC v           | [[*Open the =config.org= file][view configuration file]]                           |
+| SPC v                 | M-m SPC v           | [[*Open the =config.org= file][view configuration file]]                           |
 | SPC j                 | M-x                 | find command                                      |
 | SPC J                 | M-X                 | find command in current mode                      |
-| SPC y                 | C-z SPC y           | [[*Code documentation][browse code documentation]] with docset             |
-| SPC Y                 | C-z SPC Y           | browse code docs immediately                      |
+| SPC y                 | M-m SPC y           | [[*Code documentation][browse code documentation]] with docset             |
+| SPC Y                 | M-m SPC Y           | browse code docs immediately                      |
 
 ** Editing
 
@@ -7880,7 +7880,7 @@ This section documents the key bindings that help to find other key-bindings. No
 | Modalka state binding | Emacs state binding | Function                               |
 |-----------------------+---------------------+----------------------------------------|
 | y                     | M-w                 | [[*Copy region on line][copy selected region or line]]           |
-| Y                     | C-z Y               | [[*Copy to the end of the line][copy to end of line]]                    |
+| Y                     | M-m Y               | [[*Copy to the end of the line][copy to end of line]]                    |
 | p                     | C-y                 | paste                                  |
 | P                     | M-y                 | paste history                          |
 | x                     | C-d                 | delete character                       |
@@ -7888,249 +7888,249 @@ This section documents the key bindings that help to find other key-bindings. No
 | D                     | C-k                 | delete to end of line                  |
 | q                     | C-x (               | start macro                            |
 | Q                     | C-x )               | end macro                              |
-| @                     | C-z @               | [[*Macros][macros play menu]]                       |
-| =                     | C-z =               | indent region                          |
+| @                     | M-m @               | [[*Macros][macros play menu]]                       |
+| =                     | M-m =               | indent region                          |
 | O                     | C-o                 | [[*Open line][Open line above]]                        |
 | g S                   | C-j                 | split line                             |
-| g J                   | C-z g J             | [[*Join line][join line]]                              |
-| ~                     | C-z ~               | [[*Toggle case][Toggle case]]                            |
-| g u                   | C-z g u             | lower case region                      |
+| g J                   | M-m g J             | [[*Join line][join line]]                              |
+| ~                     | M-m ~               | [[*Toggle case][Toggle case]]                            |
+| g u                   | M-m g u             | lower case region                      |
 | g q                   | M-q                 | [[*Hard line wrap][format or unformat paragraph]]           |
-| g c                   | C-z g c             | [[*Commenting][comment line or region]]                 |
+| g c                   | M-m g c             | [[*Commenting][comment line or region]]                 |
 | v                     | C-SPC               | start selecting region                 |
-| V                     | C-z V               | [[*Rectangle edit mode][rectangle edit menu]]                    |
+| V                     | M-m V               | [[*Rectangle edit mode][rectangle edit menu]]                    |
 | X                     | C-x C-x             | exchange mark or reselect region       |
-| a a                   | C-z a a             | [[*Expand region hydra][expand region hydra]]                    |
-| a b                   | C-z a b             | select around pairs ()                 |
-| a c                   | C-z a c             | select around comment                  |
-| a e                   | C-z a e             | select around latex environment        |
-| a f                   | C-z a f             | select around function                 |
-| a h                   | C-z a h             | [[*Highlight diffs][select a git hunk]]                      |
-| a j                   | C-z a j             | select around julia/ruby block         |
-| a l                   | C-z a l             | [[*Select the current line][select around the current line]]         |
-| a m                   | C-z a m             | select around python method            |
-| a o                   | C-z a o             | select around org code block           |
-| a p                   | C-z a p             | [[*Expand region][select around the para]]                 |
-| a q                   | C-z a q             | select around quotes                   |
-| a s                   | C-z a s             | select around org subtree              |
-| a t                   | C-z a t             | select around latex math               |
-| a u                   | C-z a u             | select around url                      |
-| a v                   | C-z a v             | select around variable                 |
-| a w                   | C-z a w             | select around word                     |
+| a a                   | M-m a a             | [[*Expand region hydra][expand region hydra]]                    |
+| a b                   | M-m a b             | select around pairs ()                 |
+| a c                   | M-m a c             | select around comment                  |
+| a e                   | M-m a e             | select around latex environment        |
+| a f                   | M-m a f             | select around function                 |
+| a h                   | M-m a h             | [[*Highlight diffs][select a git hunk]]                      |
+| a j                   | M-m a j             | select around julia/ruby block         |
+| a l                   | M-m a l             | [[*Select the current line][select around the current line]]         |
+| a m                   | M-m a m             | select around python method            |
+| a o                   | M-m a o             | select around org code block           |
+| a p                   | M-m a p             | [[*Expand region][select around the para]]                 |
+| a q                   | M-m a q             | select around quotes                   |
+| a s                   | M-m a s             | select around org subtree              |
+| a t                   | M-m a t             | select around latex math               |
+| a u                   | M-m a u             | select around url                      |
+| a v                   | M-m a v             | select around variable                 |
+| a w                   | M-m a w             | select around word                     |
 | i a                   | C-x h               | select whole buffer                    |
-| i b                   | C-z i b             | select inside pairs ()                 |
-| i c                   | C-z i c             | select inside comment                  |
-| i e                   | C-z i e             | select inside latex environment        |
-| i f                   | C-z i f             | select inside function                 |
-| i h                   | C-z i h             | [[*Highlight diffs][select git hunk]]                        |
-| i j                   | C-z i j             | select around julia/ruby block         |
-| i l                   | C-z i l             | [[*Select the current line][select the current line]]                |
-| i m                   | C-z i m             | select around python method            |
-| i o                   | C-z i o             | select inside org code block           |
-| i p                   | C-z i p             | [[*Expand region][select the para]]                        |
-| i q                   | C-z i q             | select inside quotes                   |
-| i s                   | C-z i s             | [[*Select inside the subtree][select inside org subtree]]              |
-| i t                   | C-z i t             | select inside latex math               |
-| i u                   | C-z i u             | select inside url                      |
-| i v                   | C-z i v             | select inside variable                 |
-| i w                   | C-z i w             | select inside word                     |
-| s a                   | C-z s a             | [[*Smartparens][Smartparens]] beginning of block         |
-| s b                   | C-z s b             | smartparens backward expression        |
-| s c                   | C-z s c             | smartparens change surroundings        |
-| s d                   | C-z s d             | smartparens delete expression          |
-| s e                   | C-z s e             | smartparens end of block               |
-| s f                   | C-z s f             | smartparens forward expression         |
-| s h                   | C-z s h             | smartparens backward down expression   |
-| s j                   | C-z s j             | smartparens down expression            |
-| s k                   | C-z s k             | smartparens backward up expression     |
-| s l                   | C-z s l             | smartparens up expression              |
-| s n                   | C-z s n             | smartparens next block                 |
-| s p                   | C-z s p             | smartparens previous block             |
-| s q                   | C-z s q             | [[*Cycle quotes][cycle quotes]]                           |
-| s s                   | C-z s s             | surroundings unwrap                    |
-| s S                   | C-z s S             | surroundings backward unwrap           |
-| s x                   | C-z s x             | smartparens transpose expressions      |
-| s y                   | C-z s y             | smartparens copy expression            |
-| .                     | C-z .               | [[*Multiple cursors][Multiple cursors each line]]             |
-| ,                     | C-z ,               | multiple cursors skip                  |
-| >                     | C-z >               | multiple cursors next                  |
-| <                     | C-z <               | multiple cursors previous              |
-| *                     | C-z *               | [[*Interactive edit][Interactive edit all instances]]         |
+| i b                   | M-m i b             | select inside pairs ()                 |
+| i c                   | M-m i c             | select inside comment                  |
+| i e                   | M-m i e             | select inside latex environment        |
+| i f                   | M-m i f             | select inside function                 |
+| i h                   | M-m i h             | [[*Highlight diffs][select git hunk]]                        |
+| i j                   | M-m i j             | select around julia/ruby block         |
+| i l                   | M-m i l             | [[*Select the current line][select the current line]]                |
+| i m                   | M-m i m             | select around python method            |
+| i o                   | M-m i o             | select inside org code block           |
+| i p                   | M-m i p             | [[*Expand region][select the para]]                        |
+| i q                   | M-m i q             | select inside quotes                   |
+| i s                   | M-m i s             | [[*Select inside the subtree][select inside org subtree]]              |
+| i t                   | M-m i t             | select inside latex math               |
+| i u                   | M-m i u             | select inside url                      |
+| i v                   | M-m i v             | select inside variable                 |
+| i w                   | M-m i w             | select inside word                     |
+| s a                   | M-m s a             | [[*Smartparens][Smartparens]] beginning of block         |
+| s b                   | M-m s b             | smartparens backward expression        |
+| s c                   | M-m s c             | smartparens change surroundings        |
+| s d                   | M-m s d             | smartparens delete expression          |
+| s e                   | M-m s e             | smartparens end of block               |
+| s f                   | M-m s f             | smartparens forward expression         |
+| s h                   | M-m s h             | smartparens backward down expression   |
+| s j                   | M-m s j             | smartparens down expression            |
+| s k                   | M-m s k             | smartparens backward up expression     |
+| s l                   | M-m s l             | smartparens up expression              |
+| s n                   | M-m s n             | smartparens next block                 |
+| s p                   | M-m s p             | smartparens previous block             |
+| s q                   | M-m s q             | [[*Cycle quotes][cycle quotes]]                           |
+| s s                   | M-m s s             | surroundings unwrap                    |
+| s S                   | M-m s S             | surroundings backward unwrap           |
+| s x                   | M-m s x             | smartparens transpose expressions      |
+| s y                   | M-m s y             | smartparens copy expression            |
+| .                     | M-m .               | [[*Multiple cursors][Multiple cursors each line]]             |
+| ,                     | M-m ,               | multiple cursors skip                  |
+| >                     | M-m >               | multiple cursors next                  |
+| <                     | M-m <               | multiple cursors previous              |
+| *                     | M-m *               | [[*Interactive edit][Interactive edit all instances]]         |
 | \                     | C-c C-c             | simulate C-c C-c                       |
 | SPC w                 | C-x C-s             | save                                   |
 | SPC o                 | C-c C-k             | simulate C-c C-k - usually destructive |
 | SPC i                 | C-c C-e             | simulate C-c C-e - usually toggle edit |
-| SPC SPC               | C-z SPC SPC         | [[*Visual replace][Visually replace words]]                 |
-| g R                   | C-z g R             | [[*Rename the current buffer and the file associated with it][rename current file]]                    |
-| g K                   | C-z g K             | [[*Delete the current buffer and the file associated with it][delete current file]]                    |
-| g y                   | C-z g y             | [[*Copy the current file path][copy current file path]]                 |
-| g d                   | C-z g d             | [[*Duplicate line or region][Duplicate line or region]]               |
-| g D                   | C-z g D             | [[*Insert date or date and time][Insert date or date and time]]           |
-| [ w                   | C-z [ w             | [[*Transposing words][exchange with previous word]]            |
-| ] w                   | C-z ] w             | exchange with next word                |
-| [ c                   | C-z [ c             | [[*Transposing characters][exchange with previous character]]       |
-| ] c                   | C-z ] c             | exchange with next character           |
-| [ e                   | C-z [ e             | [[*Move lines][move line/region up]]                    |
-| ] e                   | C-z ] e             | move line/region down                  |
-| g C                   | C-z g C             | [[*Change from snake case to camel case][Change from snake case to camel case]]   |
-| g _                   | C-z g _             | [[*Make current word snake case][Make current word snake case]]           |
-| g =                   | C-z g =             | [[*Add for auto correction][Add for auto correction]]                |
-| g +                   | C-z g +             | [[*Increase or decrease number at point][Increase number at point]]               |
-| g -                   | C-z g -             | Decrease number at point               |
-| "                     | C-z "               | [[*Registers][Registers menu]]                         |
+| SPC SPC               | M-m SPC SPC         | [[*Visual replace][Visually replace words]]                 |
+| g R                   | M-m g R             | [[*Rename the current buffer and the file associated with it][rename current file]]                    |
+| g K                   | M-m g K             | [[*Delete the current buffer and the file associated with it][delete current file]]                    |
+| g y                   | M-m g y             | [[*Copy the current file path][copy current file path]]                 |
+| g d                   | M-m g d             | [[*Duplicate line or region][Duplicate line or region]]               |
+| g D                   | M-m g D             | [[*Insert date or date and time][Insert date or date and time]]           |
+| [ w                   | M-m [ w             | [[*Transposing words][exchange with previous word]]            |
+| ] w                   | M-m ] w             | exchange with next word                |
+| [ c                   | M-m [ c             | [[*Transposing characters][exchange with previous character]]       |
+| ] c                   | M-m ] c             | exchange with next character           |
+| [ e                   | M-m [ e             | [[*Move lines][move line/region up]]                    |
+| ] e                   | M-m ] e             | move line/region down                  |
+| g C                   | M-m g C             | [[*Change from snake case to camel case][Change from snake case to camel case]]   |
+| g _                   | M-m g _             | [[*Make current word snake case][Make current word snake case]]           |
+| g =                   | M-m g =             | [[*Add for auto correction][Add for auto correction]]                |
+| g +                   | M-m g +             | [[*Increase or decrease number at point][Increase number at point]]               |
+| g -                   | M-m g -             | Decrease number at point               |
+| "                     | M-m "               | [[*Registers][Registers menu]]                         |
 
 ** Visual aids
 
 #+NAME: visual_aids
 | Modalka state binding | Emacs state binding | Function                 |
 |-----------------------+---------------------+--------------------------|
-| SPC c                 | C-z SPC c           | load color themes        |
-| <Bar>                 | C-z <Bar>           | [[*Origami - folding based on indentation/syntax][syntax based fold]]        |
-| -                     | C-z -               | [[*Vimish fold - Fold regions based on selection][fold toggle]]              |
-| _                     | C-z _               | [[*Vimish fold][fold menu]]                |
-| g a                   | C-z g a             | [[*Activate minor modes][Activate minor modes]]     |
-| g U                   | C-z g U             | [[*Distraction free mode][Distraction free mode]]    |
-| g F                   | C-z g F             | Distraction free focus   |
-| g *                   | C-z g *             | [[*Highlight thing at point][Highlight thing at point]] |
+| SPC c                 | M-m SPC c           | load color themes        |
+| <Bar>                 | M-m <Bar>           | [[*Origami - folding based on indentation/syntax][syntax based fold]]        |
+| -                     | M-m -               | [[*Vimish fold - Fold regions based on selection][fold toggle]]              |
+| _                     | M-m _               | [[*Vimish fold][fold menu]]                |
+| g a                   | M-m g a             | [[*Activate minor modes][Activate minor modes]]     |
+| g U                   | M-m g U             | [[*Distraction free mode][Distraction free mode]]    |
+| g F                   | M-m g F             | Distraction free focus   |
+| g *                   | M-m g *             | [[*Highlight thing at point][Highlight thing at point]] |
 
 ** Org
 
 #+NAME: org_mode
 | Modalka state binding | Emacs state binding | Function                    |
 |-----------------------+---------------------+-----------------------------|
-| o <                   | C-z o <             | org date from calendar      |
-| o >                   | C-z o >             | org goto calendar           |
-| o /                   | C-z o /             | org file =helm-swoop=         |
-| o A                   | C-z o A             | org archive                 |
-| o B                   | C-z o B             | org table blank field       |
-| o C                   | C-z o C             | [[*Clocking functionality][org clocking]]                |
-| o D                   | C-z o D             | [[*Hydra for task management][org deadlines]]               |
-| o E                   | C-z o E             | org set effort              |
-| o F                   | C-z o F             | org attach                  |
-| o H                   | C-z o H             | org heading respect content |
-| o I                   | C-z o I             | org toggle inline images    |
-| o K                   | C-z o K             | org bibtex add keyword      |
-| o L                   | C-z o L             | org toggle link display     |
-| o N                   | C-z o N             | org note                    |
-| o P                   | C-z o P             | [[*Properties][org properties]]              |
-| o R                   | C-z o R             | org refile                  |
-| o S                   | C-z o S             | org make subtree            |
-| o U                   | C-z o U             | update all dblocks          |
-| o V                   | C-z o V             | org reveal                  |
-| o [                   | C-z o [             | org widen                   |
-| o ]                   | C-z o ]             | org narrow to subtree       |
-| o a                   | C-z o a             | org agenda                  |
-| o b                   | C-z o b             | [[*Check boxes][org check box]]               |
-| o c                   | C-z o c             | org capture                 |
-| o d                   | C-z o d             | org todo                    |
-| o e                   | C-z o e             | org export                  |
-| o f                   | C-z o f             | [[*Deft][org filter]]                  |
-| o g                   | C-z o g             | org goto                    |
-| o h                   | C-z o h             | org toggle heading          |
-| o i                   | C-z o i             | org insert link             |
-| o j                   | C-z o j             | [[*Jump][org jump]]                    |
-| o k                   | C-z o k             | org kill subtree            |
-| o l                   | C-z o l             | org latex toggle            |
-| o m                   | C-z o m             | [[*Table manipulation][org manipulate table]]        |
-| o n                   | C-z o n             | [[*Interleave][org interleave]]              |
-| o o                   | C-z o o             | [[*Organize trees][org organize]]                |
-| o p                   | C-z o p             | [[*Org drill][org practice]]                |
-| o q                   | C-z o q             | org quit special buffer     |
-| o r                   | C-z o r             | [[*Org ref][org ref]]                     |
-| o s                   | C-z o s             | org store link              |
-| o t                   | C-z o t             | org tags command            |
-| o u                   | C-z o u             | update dblock               |
-| o v                   | C-z o v             | [[*Agenda view][org agenda view]]             |
-| o w                   | C-z o w             | org edit in special buffer  |
-| o y                   | C-z o y             | org copy subtree            |
-| o z                   | C-z o z             | org clone indirect buffer   |
+| o <                   | M-m o <             | org date from calendar      |
+| o >                   | M-m o >             | org goto calendar           |
+| o /                   | M-m o /             | org file =helm-swoop=         |
+| o A                   | M-m o A             | org archive                 |
+| o B                   | M-m o B             | org table blank field       |
+| o C                   | M-m o C             | [[*Clocking functionality][org clocking]]                |
+| o D                   | M-m o D             | [[*Hydra for task management][org deadlines]]               |
+| o E                   | M-m o E             | org set effort              |
+| o F                   | M-m o F             | org attach                  |
+| o H                   | M-m o H             | org heading respect content |
+| o I                   | M-m o I             | org toggle inline images    |
+| o K                   | M-m o K             | org bibtex add keyword      |
+| o L                   | M-m o L             | org toggle link display     |
+| o N                   | M-m o N             | org note                    |
+| o P                   | M-m o P             | [[*Properties][org properties]]              |
+| o R                   | M-m o R             | org refile                  |
+| o S                   | M-m o S             | org make subtree            |
+| o U                   | M-m o U             | update all dblocks          |
+| o V                   | M-m o V             | org reveal                  |
+| o [                   | M-m o [             | org widen                   |
+| o ]                   | M-m o ]             | org narrow to subtree       |
+| o a                   | M-m o a             | org agenda                  |
+| o b                   | M-m o b             | [[*Check boxes][org check box]]               |
+| o c                   | M-m o c             | org capture                 |
+| o d                   | M-m o d             | org todo                    |
+| o e                   | M-m o e             | org export                  |
+| o f                   | M-m o f             | [[*Deft][org filter]]                  |
+| o g                   | M-m o g             | org goto                    |
+| o h                   | M-m o h             | org toggle heading          |
+| o i                   | M-m o i             | org insert link             |
+| o j                   | M-m o j             | [[*Jump][org jump]]                    |
+| o k                   | M-m o k             | org kill subtree            |
+| o l                   | M-m o l             | org latex toggle            |
+| o m                   | M-m o m             | [[*Table manipulation][org manipulate table]]        |
+| o n                   | M-m o n             | [[*Interleave][org interleave]]              |
+| o o                   | M-m o o             | [[*Organize trees][org organize]]                |
+| o p                   | M-m o p             | [[*Org drill][org practice]]                |
+| o q                   | M-m o q             | org quit special buffer     |
+| o r                   | M-m o r             | [[*Org ref][org ref]]                     |
+| o s                   | M-m o s             | org store link              |
+| o t                   | M-m o t             | org tags command            |
+| o u                   | M-m o u             | update dblock               |
+| o v                   | M-m o v             | [[*Agenda view][org agenda view]]             |
+| o w                   | M-m o w             | org edit in special buffer  |
+| o y                   | M-m o y             | org copy subtree            |
+| o z                   | M-m o z             | org clone indirect buffer   |
 
 ** Programming
 
 #+NAME: programming
 | Modalka state binding | Emacs state binding | Function                                          |
 |-----------------------+---------------------+---------------------------------------------------|
-| SPC e                 | C-z SPC e           | [[*Magit][explore git repository]]                            |
-| g i                   | C-z g i             | [[*Browse remote files][Browse remote files]]                               |
-| g b                   | C-z g b             | git blame                                         |
-| ] h                   | C-z ] h             | [[*Highlight diffs][next git hunk]]                                     |
-| [ h                   | C-z [ h             | previous git hunk                                 |
-| g h                   | C-z g h             | goto git hunk                                     |
-| g H                   | C-z g H             | revert git hunk                                   |
-| g l                   | C-z g l             | [[*Git time machine][git log time machine]]                              |
-| g L                   | C-z g L             | git log switch branch                             |
-| g p                   | C-z g p             | [[*Gists][gist post public]]                                  |
-| g P                   | C-z g P             | gist post private                                 |
+| SPC e                 | M-m SPC e           | [[*Magit][explore git repository]]                            |
+| g i                   | M-m g i             | [[*Browse remote files][Browse remote files]]                               |
+| g b                   | M-m g b             | git blame                                         |
+| ] h                   | M-m ] h             | [[*Highlight diffs][next git hunk]]                                     |
+| [ h                   | M-m [ h             | previous git hunk                                 |
+| g h                   | M-m g h             | goto git hunk                                     |
+| g H                   | M-m g H             | revert git hunk                                   |
+| g l                   | M-m g l             | [[*Git time machine][git log time machine]]                              |
+| g L                   | M-m g L             | git log switch branch                             |
+| g p                   | M-m g p             | [[*Gists][gist post public]]                                  |
+| g P                   | M-m g P             | gist post private                                 |
 | g o                   | C-x C-e             | emacs lisp evaluate                               |
 | g O                   | C-M-x               | Evaluate function according to mode               |
 | I                     | C-c I               | get info about thing at point ([[*Code documentation][Dash]] fallback)     |
 | S                     | C-c S               | get source of thing at point ([[*Dumb jump][Dumb jump]] fallback) |
-| m b                   | C-z m b             | [[*Start services][start background processes]]                        |
-| m e                   | C-z m e             | [[*Emacs lisp][emacs lisp code menu]]                              |
-| m c                   | C-z m c             | [[*C/C++][c/c++ code menu]]                                   |
-| m p                   | C-z m p             | [[*Python][python code menu]]                                  |
-| m s                   | C-z m s             | [[*Statistics][statistics code menu]]                              |
-| m m                   | C-z m m             | [[*MATLAB][MATLAB code menu]]                                  |
-| m j                   | C-z m j             | [[*Web][JavaScript code menu]]                              |
-| m w                   | C-z m w             | web mode code menu                                |
-| m f                   | C-z m f             | format code menu                                  |
-| m d                   | C-z m d             | [[*Debugging][Debugging code menu]]                               |
-| m t                   | C-z m t             | [[*Tmux integration][Tmux code menu]]                                    |
-| ] l                   | C-z ] l             | [[*Error checking][next error]]                                        |
-| [ l                   | C-z [ l             | previous error                                    |
-| SPC l                 | C-z SPC l           | list errors                                       |
-| SPC u                 | C-z SPC u           | [[*Eshell][Eshell vertical split]]                             |
-| SPC U                 | C-z SPC U           | Eshell horizontal split                           |
-| SPC m                 | C-z SPC m           | [[*Multi term][Multi term vertical split]]                         |
-| SPC M                 | C-z SPC M           | Multi term horizontal split                       |
+| m b                   | M-m m b             | [[*Start services][start background processes]]                        |
+| m e                   | M-m m e             | [[*Emacs lisp][emacs lisp code menu]]                              |
+| m c                   | M-m m c             | [[*C/C++][c/c++ code menu]]                                   |
+| m p                   | M-m m p             | [[*Python][python code menu]]                                  |
+| m s                   | M-m m s             | [[*Statistics][statistics code menu]]                              |
+| m m                   | M-m m m             | [[*MATLAB][MATLAB code menu]]                                  |
+| m j                   | M-m m j             | [[*Web][JavaScript code menu]]                              |
+| m w                   | M-m m w             | web mode code menu                                |
+| m f                   | M-m m f             | format code menu                                  |
+| m d                   | M-m m d             | [[*Debugging][Debugging code menu]]                               |
+| m t                   | M-m m t             | [[*Tmux integration][Tmux code menu]]                                    |
+| ] l                   | M-m ] l             | [[*Error checking][next error]]                                        |
+| [ l                   | M-m [ l             | previous error                                    |
+| SPC l                 | M-m SPC l           | list errors                                       |
+| SPC u                 | M-m SPC u           | [[*Eshell][Eshell vertical split]]                             |
+| SPC U                 | M-m SPC U           | Eshell horizontal split                           |
+| SPC m                 | M-m SPC m           | [[*Multi term][Multi term vertical split]]                         |
+| SPC M                 | M-m SPC M           | Multi term horizontal split                       |
 
 ** Helm
 
 #+NAME: helm
 | Modalka state binding | Emacs state binding | Function                                |
 |-----------------------+---------------------+-----------------------------------------|
-| SPC s                 | C-z SPC s           | [[*Helm][spotlight search]]                        |
+| SPC s                 | M-m SPC s           | [[*Helm][spotlight search]]                        |
 | SPC t                 | C-c C-e             | helm swoop edit mode                    |
-| SPC b                 | C-z SPC b           | helm bibtex                             |
-| SPC r                 | C-z SPC r           | recent files                            |
-| SPC x                 | C-z SPC x           | helm apropos                            |
-| SPC h r               | C-z SPC h r         | helm resume                             |
-| SPC h s               | C-z SPC h s         | helm correct spelling                   |
-| SPC h w               | C-z SPC h w         | manage [[https://aws.amazon.com/cli/][AWS via aws cli]]                  |
-| SPC h j               | C-z SPC h j         | manage [[*IRC][IRC]] buffers                      |
-| SPC h J               | C-z SPC h J         | checkout new IRC activity               |
-| SPC h m               | C-z SPC h m         | select a [[https://en.wikipedia.org/wiki/Makefile][Makefile]] target                |
-| SPC h M               | C-z SPC h M         | select a Makefile target in current dir |
-| SPC h c               | C-z SPC h c         | color picker                            |
-| SPC h d               | C-z SPC h d         | man pages                               |
-| SPC h e               | C-z SPC h e         | run external command                    |
-| SPC h f               | C-z SPC h f         | use the =find= utility                    |
-| SPC h h               | C-z SPC h h         | read the helm documentation             |
-| SPC h i               | C-z SPC h i         | information at point                    |
-| SPC h k               | C-z SPC h k         | calculate expression                    |
-| SPC h l               | C-z SPC h l         | all marks                               |
-| SPC h p               | C-z SPC h p         | emacs processes                         |
-| SPC h R               | C-z SPC h R         | build regexp interactively              |
-| SPC h t               | C-z SPC h t         | system =top= utility                      |
-| SPC h u               | C-z SPC h u         | use the =surfraw= utility                 |
-| SPC h x               | C-z SPC h x         | select the xfont                        |
+| SPC b                 | M-m SPC b           | helm bibtex                             |
+| SPC r                 | M-m SPC r           | recent files                            |
+| SPC x                 | M-m SPC x           | helm apropos                            |
+| SPC h r               | M-m SPC h r         | helm resume                             |
+| SPC h s               | M-m SPC h s         | helm correct spelling                   |
+| SPC h w               | M-m SPC h w         | manage [[https://aws.amazon.com/cli/][AWS via aws cli]]                  |
+| SPC h j               | M-m SPC h j         | manage [[*IRC][IRC]] buffers                      |
+| SPC h J               | M-m SPC h J         | checkout new IRC activity               |
+| SPC h m               | M-m SPC h m         | select a [[https://en.wikipedia.org/wiki/Makefile][Makefile]] target                |
+| SPC h M               | M-m SPC h M         | select a Makefile target in current dir |
+| SPC h c               | M-m SPC h c         | color picker                            |
+| SPC h d               | M-m SPC h d         | man pages                               |
+| SPC h e               | M-m SPC h e         | run external command                    |
+| SPC h f               | M-m SPC h f         | use the =find= utility                    |
+| SPC h h               | M-m SPC h h         | read the helm documentation             |
+| SPC h i               | M-m SPC h i         | information at point                    |
+| SPC h k               | M-m SPC h k         | calculate expression                    |
+| SPC h l               | M-m SPC h l         | all marks                               |
+| SPC h p               | M-m SPC h p         | emacs processes                         |
+| SPC h R               | M-m SPC h R         | build regexp interactively              |
+| SPC h t               | M-m SPC h t         | system =top= utility                      |
+| SPC h u               | M-m SPC h u         | use the =surfraw= utility                 |
+| SPC h x               | M-m SPC h x         | select the xfont                        |
 
 ** Fun
 
 #+NAME: fun
 | Modalka state binding | Emacs state binding | Function                       |
 |-----------------------+---------------------+--------------------------------|
-| A                     | C-z A               | Google variable or region      |
-| g G                   | C-z g G             | [[*Google stuff][Google menu]]                    |
-| g X                   | C-z g X             | [[*XKCD][XKCD]]                           |
-| g I                   | C-z g I             | [[*How do I do something?][howdoi query]]                   |
-| g Y                   | C-z g Y             | howdoi query line              |
-| g Q                   | C-z g Q             | howdoi query insert code       |
-| g x                   | C-z g x             | [[*Manage the built-in browser =eww=][open with the built-in browser]] |
-| g :                   | C-z g :             | open in external browser       |
-| g #                   | C-z g #             | eww history                    |
-| g {                   | C-z g {             | browser back url               |
-| g }                   | C-z g }             | browser forward url            |
+| A                     | M-m A               | Google variable or region      |
+| g G                   | M-m g G             | [[*Google stuff][Google menu]]                    |
+| g X                   | M-m g X             | [[*XKCD][XKCD]]                           |
+| g I                   | M-m g I             | [[*How do I do something?][howdoi query]]                   |
+| g Y                   | M-m g Y             | howdoi query line              |
+| g Q                   | M-m g Q             | howdoi query insert code       |
+| g x                   | M-m g x             | [[*Manage the built-in browser =eww=][open with the built-in browser]] |
+| g :                   | M-m g :             | open in external browser       |
+| g #                   | M-m g #             | eww history                    |
+| g {                   | M-m g {             | browser back url               |
+| g }                   | M-m g }             | browser forward url            |
 
 * Playground
 

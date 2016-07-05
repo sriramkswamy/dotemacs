@@ -1425,6 +1425,29 @@ Which key modal explanation
   "g r"   "perspective rename")
 #+END_SRC
 
+** Toggle zoom
+
+I generally have multiple windows open and might need to zoom into one every now and then. I also might split them and change them. I would like to think of [[https://github.com/syohex/emacs-zoom-window][this package]] as smart zoom where I zoom into a window, split further, and have =winner= handle the history and just zoom right back out and continue working on the previous configuration. It also indicates if you are zoomed in or not via the status line color.
+
+#+BEGIN_SRC emacs-lisp
+(use-package zoom-window
+  :ensure t
+  :bind* (("C-z Z" . zoom-window-zoom)))
+#+END_SRC
+
+**** Modal binding
+
+#+BEGIN_SRC emacs-lisp
+(modalka-define-kbd "Z" "C-z Z")
+#+END_SRC
+
+Which key modal explanation
+
+#+BEGIN_SRC emacs-lisp
+(which-key-add-key-based-replacements
+  "Z"   "zoom window")
+#+END_SRC
+
 ** Code documentation
 
 [[https://kapeli.com/dash][Dash]] is a nice little app that stores documents offline for reference. Let's [[https://github.com/stanaka/dash-at-point][bring that to Emacs]].
@@ -2383,7 +2406,6 @@ Which key modal explanation
 #+BEGIN_SRC emacs-lisp
 (use-package yasnippet
   :ensure t
-  :disabled t
   :commands (yas-insert-snippet yas-new-snippet)
   :bind (("C-o" . yas-insert-snippet))
   :bind* (("C-="        . yas-new-snippet)
@@ -4027,9 +4049,9 @@ Although I use Org for most of my markup documentation and it has an export func
     :mode ("\\.markdown\\'" "\\.mkd\\'" "\\.md\\'")))
 #+END_SRC
 
-** \LaTeX support
+** LaTeX support
 
-I use \LaTeX extensively compared to Markdown (although Org is still preferred for shorter reports).
+I use LaTeX extensively compared to Markdown (although Org is still preferred for shorter reports). A chunk of good stuff is taken from this [[http://www.stefanom.org/setting-up-a-nice-auctex-environment-on-mac-os-x/][blog post]].
 
 #+BEGIN_SRC emacs-lisp
 (use-package tex-site
@@ -4040,8 +4062,32 @@ I use \LaTeX extensively compared to Markdown (although Org is still preferred f
          ("\\.xtx\\'" . LaTeX-mode))
   :init
   (setq reftex-default-bibliography '("~/Dropbox/references/references.bib"))
+  (setq TeX-auto-save t)
+  (setq TeX-parse-self t)
+  (setq-default TeX-master nil)
+  (add-hook 'LaTeX-mode-hook 'visual-line-mode)
+  (add-hook 'LaTeX-mode-hook 'flyspell-mode)
+  (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
+  (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+  (setq reftex-plug-into-AUCTeX t)
+  (setq TeX-PDF-mode t)
   :config
-  (latex-preview-pane-enable))
+  ;; Use Skim as viewer, enable source <-> PDF sync
+  ;; make latexmk available via C-c C-c
+  ;; Note: SyncTeX is setup via ~/.latexmkrc (see below)
+  (add-hook 'LaTeX-mode-hook (lambda ()
+                               (push
+                                '("latexmk" "latexmk -xelatex -pdf %s" TeX-run-TeX nil t
+                                  :help "Run latexmk on file")
+                                TeX-command-list)))
+  (add-hook 'TeX-mode-hook '(lambda () (setq TeX-command-default "latexmk")))
+
+  ;; use Skim as default pdf viewer
+  ;; Skim's displayline is used for forward search (from .tex to .pdf)
+  ;; option -b highlights the current line; option -g opens Skim in the background
+  (setq TeX-view-program-selection '((output-pdf "PDF Viewer")))
+  (setq TeX-view-program-list
+        '(("PDF Viewer" "/Applications/Skim.app/Contents/SharedSupport/displayline -b -g %n %o %b"))))
 #+END_SRC
 
 ** Pick out passive voice and weasel words
@@ -5988,6 +6034,18 @@ I format python occasionally using [[https://github.com/paetzke/py-yapf.el][py-y
              py-yapf-enable-on-save))
 #+END_SRC
 
+*** Python formatting
+
+I use [[http://www.sphinx-doc.org/en/stable/][sphinx]] for documentation and [[https://github.com/naiquevin/sphinx-doc.el][this tiny package]] creates a sphinx appropriate docstring
+
+#+BEGIN_SRC emacs-lisp
+(use-package sphinx-doc
+  :ensure t
+  :diminish sphinx-doc-mode
+  :commands (sphinx-doc
+             sphinx-doc-mode))
+#+END_SRC
+
 *** Testing
 
 I haven't started using this package but [[https://github.com/ionrock/pytest-el][it helps in writing tests]] which I intend to.
@@ -6752,9 +6810,9 @@ Hydra for Python code navigation, REPL evaluation, testing and formatting.
   "
  ^Send^                     ^Navigate^                    ^Virtualenv^      ^Testing^                                        ^Format^
 ^^^^^^^^^^--------------------------------------------------------------------------------------------------------------------------------
- _r_: region    _s_: start    _d_: definition    _F_: file    _V_: pyenv        _ta_: test all    _tm_: test mod    _pd_: pdb dir    _y_: yapf
- _b_: buffer    _S_: switch   _a_: assignment    _B_: back    _u_: pyenv set    _td_: test dir    _to_: test one    _pm_: pdb mod    _q_: quit
- _f_: func                  _v_: reference     _D_: doc     _U_: pyenv unset  _tf_: test fail   _pa_: pdb all     _po_: pdb one
+ _r_: region    _s_: start    _d_: definition    _F_: file    _V_: pyenv        _ta_: test all    _tm_: test mod    _pd_: pdb dir    _c_: create-doc
+ _b_: buffer    _S_: switch   _a_: assignment    _B_: back    _u_: pyenv set    _td_: test dir    _to_: test one    _pm_: pdb mod    _y_: yapf
+ _f_: func                  _v_: reference     _D_: doc     _U_: pyenv unset  _tf_: test fail   _pa_: pdb all     _po_: pdb one    _q_: quit
 "
   ("r" python-shell-send-region)
   ("b" python-shell-send-buffer)
@@ -6779,6 +6837,7 @@ Hydra for Python code navigation, REPL evaluation, testing and formatting.
   ("pd" pytest-pdb-directory)
   ("pm" pytest-pdb-module)
   ("po" pytest-pdb-one)
+  ("c" sphinx-doc)
   ("y" py-yapf-buffer)
   ("q" nil :color blue))
 #+END_SRC
@@ -7304,6 +7363,8 @@ For now, I have made it look and act the way I want it too. The additional packa
     :ensure t
     :bind (("C-s" . helm-swoop-without-pre-input))
     :bind* (("C-z #"   . helm-swoop)
+            ("C-z g /" . helm-multi-swoop)
+            ("C-z o /" . helm-multi-swoop-org)
             ("C-z g E" . helm-multi-swoop-all))
     :init
     (setq helm-swoop-split-with-multiple-windows nil
@@ -7374,6 +7435,8 @@ For now, I have made it look and act the way I want it too. The additional packa
 (modalka-define-kbd "SPC J" "M-X")
 (modalka-define-kbd "g E" "C-z g E")
 (modalka-define-kbd "g s" "C-z g s")
+(modalka-define-kbd "g /" "C-z g /")
+(modalka-define-kbd "o /" "C-z o /")
 (modalka-define-kbd "g e" "C-z g e")
 (modalka-define-kbd "SPC i" "C-c C-e")
 (modalka-define-kbd "SPC r" "C-z SPC r")
@@ -7410,6 +7473,8 @@ Which key modal explanation
   ";"       "previous edit points"
   "g E"     "extract word from buffers"
   "g s"     "search project"
+  "g /"     "multi file search"
+  "o /"     "org swoop"
   "g e"     "extract word from dir"
   "SPC r"   "recent files"
   "SPC s"   "spotlight"
@@ -7753,6 +7818,7 @@ This section documents the key bindings that help to find other key-bindings. No
 | f                     | C-z f               | find anything on screen with timer [[*Avy][Avy]]            |
 | F                     | C-z F               | goto line using Avy                               |
 | /                     | C-s                 | search in buffer or use =helm-swoop= if available   |
+| g /                   | C-z g /             | multi file search using =helm-swoop=                |
 | g s                   | C-z g s             | search in project                                 |
 | g e                   | C-z g e             | extract word from project                         |
 | n                     | M-n                 | [[*Highlight symbol][smart next item]]                                   |
@@ -7767,7 +7833,7 @@ This section documents the key bindings that help to find other key-bindings. No
 | SPC t                 | C-z SPC t           | [[*Window navigation][Window navigation hydra]]                           |
 | w                     | C-x o               | switch to other window                            |
 | W                     | C-z W               | undo window configuration                         |
-| Z                     | C-z Z               | zoom in to the current window                     |
+| Z                     | C-z Z               | [[*Toggle zoom][zoom in to the current window]]                     |
 | g w                   | C-x 3               | split window vertically                           |
 | g W                   | C-x 2               | split window horizontally                         |
 | t                     | C-z t               | [[*Helm][tags in buffer]]                                    |
@@ -7934,6 +8000,7 @@ This section documents the key bindings that help to find other key-bindings. No
 |-----------------------+---------------------+-----------------------------|
 | o <                   | C-z o <             | org date from calendar      |
 | o >                   | C-z o >             | org goto calendar           |
+| o /                   | C-z o /             | org file =helm-swoop=         |
 | o A                   | C-z o A             | org archive                 |
 | o B                   | C-z o B             | org table blank field       |
 | o C                   | C-z o C             | [[*Clocking functionality][org clocking]]                |
@@ -8064,6 +8131,18 @@ This section documents the key bindings that help to find other key-bindings. No
 | g #                   | C-z g #             | eww history                    |
 | g {                   | C-z g {             | browser back url               |
 | g }                   | C-z g }             | browser forward url            |
+
+* Playground
+
+This is a small section that I keep to put some random thoughts or packages that I need to try.
+
+** Setup Scala
+
+Check out [[http://ensime.github.io][Ensime]] for that.
+
+** State
+
+=g >= and =g <= to switch between [[https://github.com/thisirs/state][state]].
 
 * Automatically invoke tangle on save
 

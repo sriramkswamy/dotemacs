@@ -630,7 +630,7 @@ There are some pretty nice default functions that are unbound. I use the =bind-k
   ("M-/"       . hippie-expand)
   ("C-S-d"     . kill-whole-line)
   ("M-m SPC c" . load-theme)
-  ("M-m SPC S" . locate)
+  ("M-m SPC R" . locate)
   ("M-m W"     . winner-undo)
   ("M-m g m"   . make-frame)
   ("M-m g M"   . delete-frame)
@@ -903,7 +903,7 @@ This is based on Vi-style but only slightly and uses the default movement keys i
 (modalka-define-kbd "SPC w" "C-x C-s")
 (modalka-define-kbd "SPC o" "C-c C-k")
 (modalka-define-kbd "SPC c" "M-m SPC c")
-(modalka-define-kbd "SPC S" "M-m SPC S")
+(modalka-define-kbd "SPC R" "M-m SPC R")
 (modalka-define-kbd "SPC ?" "M-m SPC ?")
 #+END_SRC
 
@@ -1064,7 +1064,7 @@ I have added the which key explanations for everything at once because it is eas
   "SPC k" "close buffer"
   "SPC w" "save buffer"
   "SPC c" "load theme"
-  "SPC S" "locate"
+  "SPC R" "locate"
   "SPC q" "quit window"
   "SPC o" "C-c C-k")
 #+END_SRC
@@ -3541,6 +3541,19 @@ Which key modal explanation
   "g =" "autocorrect word")
 #+END_SRC
 
+*** Disable modalka mode when overwriting
+
+I want to use =overwrite-mode= now and then and this is a small optimization to disable modalka mode when in overwrite mode and enable it again when not overwriting.
+
+#+BEGIN_SRC emacs-lisp
+(defun sk/modalka-toggle-on-overwrite ()
+  "Toggle modalka-mode on overwrite-mode."
+  (if (bound-and-true-p overwrite-mode)
+      (modalka-mode 0)
+    (modalka-mode 1)))
+(add-hook 'overwrite-mode-hook 'sk/modalka-toggle-on-overwrite)
+#+END_SRC
+
 ** Hydras
 
 *** Expand region hydra
@@ -4058,6 +4071,7 @@ I use LaTeX extensively compared to Markdown (although Org is still preferred fo
   :ensure auctex
   :ensure auctex-latexmk
   :ensure latex-preview-pane
+  :diminish reftex-mode
   :mode (("\\.tex\\'" . LaTeX-mode)
          ("\\.xtx\\'" . LaTeX-mode))
   :init
@@ -4088,6 +4102,13 @@ I use LaTeX extensively compared to Markdown (although Org is still preferred fo
   (setq TeX-view-program-selection '((output-pdf "PDF Viewer")))
   (setq TeX-view-program-list
         '(("PDF Viewer" "/Applications/Skim.app/Contents/SharedSupport/displayline -b -g %n %o %b"))))
+
+(defun sk/diminish-reftex ()
+  (interactive)
+  (diminish 'reftex-mode ""))
+(add-hook 'auctex-mode-hook 'sk/diminish-reftex)
+(add-hook 'latex-mode-hook 'sk/diminish-reftex)
+(add-hook 'reftex-mode-hook 'sk/diminish-reftex)
 #+END_SRC
 
 ** Pick out passive voice and weasel words
@@ -4386,7 +4407,7 @@ Capture is an [[https://www.youtube.com/watch?v=KdcXu_RdKI0][amazing tool]]. It 
          "Meeting"         ; name
          entry             ; type
          (file+datetree "~/Dropbox/org/phd.org" "Meeting")  ; target
-         "* %^{Title} %(org-set-tags)  :meeting:\n:PROPERTIES:\n:Created: %U\n:END:\n%i\n**Agenda:\n%?\n\n** Minutes of the meeting:\n"  ; template
+         "* %^{Title} %(org-set-tags)  :meeting:\n:PROPERTIES:\n:Created: %U\n:END:\n%i\n** Agenda:\n%?\n\n** Minutes of the meeting:\n"  ; template
          :prepend t        ; properties
          :empty-lines 1    ; properties
          :created t        ; properties
@@ -4510,7 +4531,6 @@ Finally, we make sure we bind some keys and add some [[http://orgmode.org/manual
           ("M-m o L"   . org-toggle-link-display)
           ("M-m o I"   . org-toggle-inline-images)
           ("M-m o k"   . org-cut-subtree)
-          ("M-m o K"   . org-ref-set-bibtex-keywords)
           ("M-m o V"   . org-reveal)
           ("M-m o R"   . org-refile)
           ("M-m o y"   . org-copy-subtree)
@@ -4552,9 +4572,9 @@ Finally, we make sure we bind some keys and add some [[http://orgmode.org/manual
   (add-to-list 'org-structure-template-alist '("X" "#+EXCLUDE_TAGS: reveal?"))
   (add-to-list 'org-structure-template-alist '("a" "#+AUTHOR: ?"))
   (add-to-list 'org-structure-template-alist '("c" "#+CAPTION: ?"))
-  (add-to-list 'org-structure-template-alist '("d" "#+OPTIONS: ':nil *:t -:t ::t <:t H:3 \\n:nil ^:t arch:headline\n#+OPTIONS: author:t email:nil e:t f:t inline:t creator:comment d:nil date:t\n#+OPTIONS: toc:nil num:nil tags:nil todo:nil p:nil pri:nil stat:nil c:nil d:nil\n#+LATEX_HEADER: \\usepackage[margin=2cm]{geometry}\n#+LANGUAGE: en\n\n#+REVEAL_TRANS: slide\n#+REVEAL_THEME: white\n#+REVEAL_ROOT: file:///Users/sriramkswamy/Documents/workspace/github/reveal.js\n\n?"))
+  (add-to-list 'org-structure-template-alist '("d" "#+OPTIONS: ':nil *:t -:t ::t <:t H:3 \\n:nil ^:t arch:headline\n#+OPTIONS: author:t email:nil e:t f:t inline:t creator:nil d:nil date:t\n#+OPTIONS: toc:nil num:nil tags:nil todo:nil p:nil pri:nil stat:nil c:nil d:nil\n#+LATEX_HEADER: \\usepackage[margin=2cm]{geometry}\n#+LANGUAGE: en\n\n#+REVEAL_TRANS: slide\n#+REVEAL_THEME: white\n#+REVEAL_ROOT: file:///Users/sriramkswamy/Documents/workspace/github/reveal.js\n\n?"))
   (add-to-list 'org-structure-template-alist '("e" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC"))
-  (add-to-list 'org-structure-template-alist '("f" "#+FILETAGS: ?"))
+  (add-to-list 'org-structure-template-alist '("f" "#+TAGS: @?"))
   (add-to-list 'org-structure-template-alist '("h" "#+BEGIN_HTML\n?\n#+END_HTML\n"))
   (add-to-list 'org-structure-template-alist '("i" "#+INTERLEAVE_PDF: ?"))
   (add-to-list 'org-structure-template-alist '("k" "#+KEYWORDS: ?"))
@@ -4975,11 +4995,11 @@ This is to rearrange sub trees, reorder them, promote, demote and cycle through 
 (defhydra sk/hydra-org-organize (:color red
                                  :hint nil)
   "
- ^Move^                                       ^Item^
+ ^Meta^    ^Shift^   ^Shift-Meta^ ^Shift-Ctrl^  ^Move^        ^Item^
 ^^^^^^^^^^^^^--------------------------------------------------------------------
- ^ ^ _k_ ^ ^   ^ ^ _K_ ^ ^   ^ ^ _p_ ^ ^  ^ ^ _P_ ^ ^   _<_: promote  _u_: up     _q_: quit
- _h_ ^+^ _l_   _H_ ^+^ _L_   _b_ ^+^ _f_  _B_ ^+^ _F_   _>_: demote   _d_: down
- ^ ^ _j_ ^ ^   ^ ^ _J_ ^ ^   ^ ^ _n_ ^ ^  ^ ^ _N_ ^ ^
+ ^ ^ _k_ ^ ^   ^ ^ _K_ ^ ^   ^ ^ _p_ ^ ^      ^ ^ _P_ ^ ^       _<_: promote  _u_: up     _q_: quit
+ _h_ ^+^ _l_   _H_ ^+^ _L_   _b_ ^+^ _f_      _B_ ^+^ _F_       _>_: demote   _d_: down
+ ^ ^ _j_ ^ ^   ^ ^ _J_ ^ ^   ^ ^ _n_ ^ ^      ^ ^ _N_ ^ ^
 "
   ("h" org-metaleft)
   ("l" org-metaright)
@@ -5066,7 +5086,7 @@ Which key modal explanation
 [[http://orgmode.org/manual/Checkboxes.html][Org supports checkboxes]] and my configuration should too.
 
 #+BEGIN_SRC emacs-lisp
-(defhydra sk/hydra-org-checkbox (:color red
+(defhydra sk/hydra-org-checkbox (:color pink
                                  :hint nil)
   "
  _t_: toggle   _s_: stats    _r_: reset    _c_: count    _q_: quit
@@ -5418,7 +5438,7 @@ Then, we have the actual hydra.
  _a_: author        _i_: interleave  _D_: description    _C_: center      _p_: python src    _n_: notes    _d_: defaults   _r_: properties        _<_: insert '<'
  _A_: date          _l_: label       _S_: subtitle       _e_: elisp src   _Q_: quote                     _L_: latex      _I_: interleave        _q_: quit
  _c_: caption       _N_: name        _k_: keywords       _E_: example     _s_: src                       _x_: export     _T_: drill two-sided
- _f_: filetags      _o_: options     _M_: minted         _h_: html        _v_: verbatim                  _X_: noexport
+ _f_: file tags     _o_: options     _M_: minted         _h_: html        _v_: verbatim                  _X_: noexport
  _H_: latex header  _t_: title       _P_: publish        _m_: matlab src  _V_: verse
  "
   ("a" (hot-expand "<a"))
@@ -5574,14 +5594,15 @@ _u_: Update field _F_: file funcs
 (defhydra sk/hydra-org-ref (:color blue
                             :hint nil)
   "
- _e_: bib new entry     _r_: ref link     _b_: bib file options
+ _e_: bib new entry     _r_: ref link     _b_: bib file options    _q_: quit
  _t_: crossref entry    _l_: label link   _f_: file format
- _d_: doi entry         _c_: cite link    _q_: quit
+ _d_: doi entry         _c_: cite link    _k_: keyword set
   "
   ("e" sk/org-ref-bibtex-new-entry/body)
   ("t" crossref-add-bibtex-entry)
   ("d" doi-add-bibtex-entry)
   ("b" sk/org-ref-bibtex-hydra/body)
+  ("k" org-ref-set-bibtex-keywords)
   ("r" org-ref-ivy-insert-ref-link)
   ("l" org-ref-ivy-insert-label-link)
   ("c" org-ref-ivy-insert-cite-link)
@@ -5593,7 +5614,7 @@ _u_: Update field _F_: file funcs
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("M-m o r" . sk/hydra-org-org-ref/body))
+  ("M-m o r" . sk/hydra-org-ref/body))
 #+END_SRC
 
 ***** Modal binding
@@ -6478,23 +6499,23 @@ Let's also define a couple of functions to open it in a vertical or horizontal s
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("M-m SPC u" . sk/eshell-vertical)
-  ("M-m SPC U" . sk/eshell-horizontal))
+  ("M-m SPC s" . sk/eshell-vertical)
+  ("M-m SPC S" . sk/eshell-horizontal))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "SPC u" "M-m SPC u")
-(modalka-define-kbd "SPC U" "M-m SPC U")
+(modalka-define-kbd "SPC s" "M-m SPC s")
+(modalka-define-kbd "SPC S" "M-m SPC S")
 #+END_SRC
 
 Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "SPC u" "eshell vertical split"
-  "SPC U" "eshell horizontal split")
+  "SPC s" "eshell vertical split"
+  "SPC S" "eshell horizontal split")
 #+END_SRC
 
 *** Multi term
@@ -6505,8 +6526,8 @@ Which key modal explanation
 (use-package multi-term
   :ensure t
   :commands (multi-term)
-  :bind* (("M-m SPC m" . sk/multi-term-vertical)
-          ("M-m SPC M". sk/multi-term-horizontal)))
+  :bind* (("M-m SPC u" . sk/multi-term-vertical)
+          ("M-m SPC U". sk/multi-term-horizontal)))
 #+END_SRC
 
 Let's also define a couple of wrapper functions to open this in splits.
@@ -6533,23 +6554,23 @@ Let's also define a couple of wrapper functions to open this in splits.
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("M-m SPC m" . sk/multi-term-vertical)
-  ("M-m SPC M" . sk/multi-term-horizontal))
+  ("M-m SPC u" . sk/multi-term-vertical)
+  ("M-m SPC U" . sk/multi-term-horizontal))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "SPC m" "M-m SPC m")
-(modalka-define-kbd "SPC M" "M-m SPC M")
+(modalka-define-kbd "SPC u" "M-m SPC u")
+(modalka-define-kbd "SPC U" "M-m SPC U")
 #+END_SRC
 
 Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "SPC m" "multi-term vertical split"
-  "SPC M" "multi-term horizontal split")
+  "SPC u" "multi-term vertical split"
+  "SPC U" "multi-term horizontal split")
 #+END_SRC
 
 *** Interacting with Tmux
@@ -7149,22 +7170,21 @@ For now, I have made it look and act the way I want it too. The additional packa
          ("C-x C-f" . helm-find-files)
          ("C-x 8"   . helm-ucs))
   :bind* (("M-m SPC h r" . helm-resume)
-          ("M-m SPC r"   . helm-recentf)
+          ("M-m SPC r"   . helm-for-files)
           ("M-m SPC x"   . helm-apropos)
-          ("M-m SPC h c" . helm-colors)
+          ("M-m SPC C" . helm-colors)
           ("M-m SPC h R" . helm-regexp)
           ("M-m SPC h u" . helm-surfraw)
           ("M-m SPC h t" . helm-top)
           ("M-m SPC h p" . helm-list-emacs-process)
-          ("M-m SPC h f" . helm-find)
+          ("M-m SPC F"   . helm-find)
           ("M-m SPC h k" . helm-calcul-expression)
           ("M-m SPC h i" . helm-info-at-point)
           ("M-m SPC h d" . helm-man-woman)
           ("M-m SPC h h" . helm-documentation)
-          ("M-m SPC h e" . helm-run-external-command)
+          ("M-m g u"     . helm-run-external-command)
           ("M-m ;"       . helm-all-mark-rings)
           ("M-m SPC h x" . helm-select-xfont)
-          ("M-m SPC s"   . helm-locate)
           ("M-m t"       . helm-semantic-or-imenu))
   :bind (:map helm-map
               ("<return>"   . helm-maybe-exit-minibuffer)
@@ -7422,8 +7442,8 @@ For now, I have made it look and act the way I want it too. The additional packa
     :ensure t
     :init
     (setq helm-make-build-directory "build")
-    :bind* (("M-m SPC h m" . helm-make-projectile)
-            ("M-m SPC h M" . helm-make))))
+    :bind* (("M-m SPC m" . helm-make-projectile)
+            ("M-m SPC M" . helm-make))))
 #+END_SRC
 
 **** Modal binding
@@ -7438,30 +7458,29 @@ For now, I have made it look and act the way I want it too. The additional packa
 (modalka-define-kbd "g /" "M-m g /")
 (modalka-define-kbd "o /" "M-m o /")
 (modalka-define-kbd "g e" "M-m g e")
+(modalka-define-kbd "g u" "M-m g u")
 (modalka-define-kbd "SPC i" "C-c C-e")
 (modalka-define-kbd "SPC r" "M-m SPC r")
 (modalka-define-kbd "SPC b" "M-m SPC b")
-(modalka-define-kbd "SPC s" "M-m SPC s")
 (modalka-define-kbd "SPC x" "M-m SPC x")
+(modalka-define-kbd "SPC F" "M-m SPC F")
+(modalka-define-kbd "SPC C" "M-m SPC C")
+(modalka-define-kbd "SPC m" "M-m SPC m")
+(modalka-define-kbd "SPC M" "M-m SPC M")
 (modalka-define-kbd "SPC h r" "M-m SPC h r")
 (modalka-define-kbd "SPC h w" "M-m SPC h w")
 (modalka-define-kbd "SPC h i" "M-m SPC h i")
-(modalka-define-kbd "SPC h c" "M-m SPC h c")
 (modalka-define-kbd "SPC h R" "M-m SPC h R")
 (modalka-define-kbd "SPC h u" "M-m SPC h u")
 (modalka-define-kbd "SPC h t" "M-m SPC h t")
 (modalka-define-kbd "SPC h p" "M-m SPC h p")
-(modalka-define-kbd "SPC h f" "M-m SPC h f")
 (modalka-define-kbd "SPC h k" "M-m SPC h k")
 (modalka-define-kbd "SPC h d" "M-m SPC h d")
 (modalka-define-kbd "SPC h h" "M-m SPC h h")
-(modalka-define-kbd "SPC h e" "M-m SPC h e")
 (modalka-define-kbd "SPC h x" "M-m SPC h x")
 (modalka-define-kbd "SPC h j" "M-m SPC h j")
 (modalka-define-kbd "SPC h J" "M-m SPC h J")
 (modalka-define-kbd "SPC h s" "M-m SPC h s")
-(modalka-define-kbd "SPC h m" "M-m SPC h m")
-(modalka-define-kbd "SPC h M" "M-m SPC h M")
 #+END_SRC
 
 Which key modal explanation
@@ -7476,32 +7495,31 @@ Which key modal explanation
   "g /"     "multi file search"
   "o /"     "org swoop"
   "g e"     "extract word from dir"
-  "SPC r"   "recent files"
-  "SPC s"   "spotlight"
+  "g u"     "external command"
+  "SPC r"   "find any file"
+  "SPC C"   "color picker"
   "SPC t"   "helm edit mode"
   "SPC b"   "bibliography"
   "SPC x"   "helm apropos"
   "SPC J"   "helm major mode cmds"
+  "SPC F"   "find command"
   "SPC h"   "helm prefix"
   "SPC h r" "resume last helm "
   "SPC h w" "AWS instances"
   "SPC h i" "information at point"
-  "SPC h c" "color picker"
   "SPC h R" "build regexp"
   "SPC h u" "surfraw"
   "SPC h t" "system processes"
   "SPC h p" "emacs processes"
-  "SPC h f" "find file"
   "SPC h k" "calc expression"
   "SPC h d" "manual docs"
   "SPC h h" "helm docs"
-  "SPC h e" "external command"
   "SPC h x" "select font"
   "SPC h j" "circe chat"
   "SPC h J" "circe new activity"
   "SPC h s" "helm spelling"
-  "SPC h m" "make in project"
-  "SPC h M" "make in current dir")
+  "SPC m" "make in project"
+  "SPC M" "make in current dir")
 #+END_SRC
 
 * Fun
@@ -7867,7 +7885,7 @@ This section documents the key bindings that help to find other key-bindings. No
 | SPC z                 | M-m SPC z           | [[*Non native full screen][Non native full screen]]                            |
 | SPC a                 | C-x b               | switch to open buffer                             |
 | SPC k                 | C-x k               | kill buffer                                       |
-| SPC S                 | C-x S               | use =locate= command                                |
+| SPC R                 | M-m SPC R           | use =locate= command                                |
 | SPC v                 | M-m SPC v           | [[*Open the =config.org= file][view configuration file]]                           |
 | SPC j                 | M-x                 | find command                                      |
 | SPC J                 | M-X                 | find command in current mode                      |
@@ -8079,36 +8097,35 @@ This section documents the key bindings that help to find other key-bindings. No
 | ] l                   | M-m ] l             | [[*Error checking][next error]]                                        |
 | [ l                   | M-m [ l             | previous error                                    |
 | SPC l                 | M-m SPC l           | list errors                                       |
-| SPC u                 | M-m SPC u           | [[*Eshell][Eshell vertical split]]                             |
-| SPC U                 | M-m SPC U           | Eshell horizontal split                           |
-| SPC m                 | M-m SPC m           | [[*Multi term][Multi term vertical split]]                         |
-| SPC M                 | M-m SPC M           | Multi term horizontal split                       |
+| SPC s                 | M-m SPC s           | [[*Eshell][Eshell vertical split]]                             |
+| SPC S                 | M-m SPC S           | Eshell horizontal split                           |
+| SPC u                 | M-m SPC u           | [[*Multi term][Multi term vertical split]]                         |
+| SPC U                 | M-m SPC U           | Multi term horizontal split                       |
 
 ** Helm
 
 #+NAME: helm
 | Modalka state binding | Emacs state binding | Function                                |
 |-----------------------+---------------------+-----------------------------------------|
-| SPC s                 | M-m SPC s           | [[*Helm][spotlight search]]                        |
+| ;                     | M-m ;               | all marks                               |
+| g u                   | M-m g u             | run external command                    |
 | SPC t                 | C-c C-e             | helm swoop edit mode                    |
 | SPC b                 | M-m SPC b           | helm bibtex                             |
-| SPC r                 | M-m SPC r           | recent files                            |
+| SPC r                 | M-m SPC r           | =helm-for-files=                          |
 | SPC x                 | M-m SPC x           | helm apropos                            |
+| SPC m                 | M-m SPC m           | select a [[https://en.wikipedia.org/wiki/Makefile][Makefile]] target                |
+| SPC M                 | M-m SPC M           | select a Makefile target in current dir |
+| SPC C                 | M-m SPC C           | color picker                            |
+| SPC F                 | M-m SPC F           | use the =find= utility                    |
 | SPC h r               | M-m SPC h r         | helm resume                             |
 | SPC h s               | M-m SPC h s         | helm correct spelling                   |
 | SPC h w               | M-m SPC h w         | manage [[https://aws.amazon.com/cli/][AWS via aws cli]]                  |
 | SPC h j               | M-m SPC h j         | manage [[*IRC][IRC]] buffers                      |
 | SPC h J               | M-m SPC h J         | checkout new IRC activity               |
-| SPC h m               | M-m SPC h m         | select a [[https://en.wikipedia.org/wiki/Makefile][Makefile]] target                |
-| SPC h M               | M-m SPC h M         | select a Makefile target in current dir |
-| SPC h c               | M-m SPC h c         | color picker                            |
 | SPC h d               | M-m SPC h d         | man pages                               |
-| SPC h e               | M-m SPC h e         | run external command                    |
-| SPC h f               | M-m SPC h f         | use the =find= utility                    |
 | SPC h h               | M-m SPC h h         | read the helm documentation             |
 | SPC h i               | M-m SPC h i         | information at point                    |
 | SPC h k               | M-m SPC h k         | calculate expression                    |
-| SPC h l               | M-m SPC h l         | all marks                               |
 | SPC h p               | M-m SPC h p         | emacs processes                         |
 | SPC h R               | M-m SPC h R         | build regexp interactively              |
 | SPC h t               | M-m SPC h t         | system =top= utility                      |

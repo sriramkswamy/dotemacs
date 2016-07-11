@@ -11,12 +11,16 @@
 	electric-newline-and-maybe-indent
 	ivy-alt-done
 	kill-region
+	matlab-linefeed
 	org-cdlatex-underscore-caret
 	org-cycle
 	org-force-self-insert
 	org-self-insert-command
+	sk/copy-region-or-line
 	sk/kill-region-or-backward-word
+	sk/remove-mark
 	sk/smarter-move-beginning-of-line
+	sk/toggle-letter-case
 	sp-backward-delete-char
 	sp-backward-kill-word
 	sp-delete-char
@@ -46,4 +50,5 @@
 	sk/hydra-multiple-cursors/nil
 	sk/hydra-of-activate/column-enforce-mode-and-exit
 	sk/hydra-of-activate/smartparens-strict-mode-and-exit
+	sp-kill-hybrid-sexp
 	))

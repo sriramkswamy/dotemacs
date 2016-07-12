@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2016-07-11 Mon 18:56 -->
+<!-- 2016-07-11 Mon 19:17 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>Emacs configuration file</title>
@@ -1531,6 +1531,7 @@ There are some pretty nice default functions that are unbound. I use the <code>b
   (<span style="color: #3e999f;">"M-m g u"</span>   . downcase-region)
   (<span style="color: #3e999f;">"M-m g U"</span>   . upcase-region)
   (<span style="color: #3e999f;">"M-m g C"</span>   . capitalize-region)
+  (<span style="color: #3e999f;">"M-m g F"</span>   . follow-mode)
   (<span style="color: #3e999f;">"M-m R"</span>     . overwrite-mode)
   (<span style="color: #3e999f;">"M-m g j"</span>   . doc-view-next-page)
   (<span style="color: #3e999f;">"M-m g k"</span>   . doc-view-previous-page)
@@ -1665,12 +1666,13 @@ As mentioned before, I like and prefer modal editing. I feel pressing modifier k
   (which-key-add-key-based-replacements
     <span style="color: #3e999f;">"M-m"</span>     <span style="color: #3e999f;">"Modalka prefix"</span>
     <span style="color: #3e999f;">"M-m :"</span>   <span style="color: #3e999f;">"extended prefix"</span>
-    <span style="color: #3e999f;">"M-m c"</span>   <span style="color: #3e999f;">"code prefix"</span>
-    <span style="color: #3e999f;">"M-m m"</span>   <span style="color: #3e999f;">"multi-edit prefix"</span>
-    <span style="color: #3e999f;">"M-m s"</span>   <span style="color: #3e999f;">"smart nav prefix"</span>
+    <span style="color: #3e999f;">"M-m m"</span>   <span style="color: #3e999f;">"move prefix"</span>
+    <span style="color: #3e999f;">"M-m s"</span>   <span style="color: #3e999f;">"send code prefix"</span>
     <span style="color: #3e999f;">"M-m SPC"</span> <span style="color: #3e999f;">"user prefix"</span>
     <span style="color: #3e999f;">"M-m g"</span>   <span style="color: #3e999f;">"global prefix"</span>
-    <span style="color: #3e999f;">"M-m i"</span>   <span style="color: #3e999f;">"expand prefix"</span>
+    <span style="color: #3e999f;">"M-m o"</span>   <span style="color: #3e999f;">"org prefix"</span>
+    <span style="color: #3e999f;">"M-m a"</span>   <span style="color: #3e999f;">"expand around prefix"</span>
+    <span style="color: #3e999f;">"M-m i"</span>   <span style="color: #3e999f;">"expand inside prefix"</span>
     <span style="color: #3e999f;">"M-m ["</span>   <span style="color: #3e999f;">"prev nav prefix"</span>
     <span style="color: #3e999f;">"M-m ]"</span>   <span style="color: #3e999f;">"next nav prefix"</span>))
 </pre>
@@ -1773,6 +1775,7 @@ This is based on Vi-style but only slightly and uses the default movement keys i
 (modalka-define-kbd <span style="color: #3e999f;">"g n"</span> <span style="color: #3e999f;">"M-m g n"</span>)
 (modalka-define-kbd <span style="color: #3e999f;">"g N"</span> <span style="color: #3e999f;">"M-m g N"</span>)
 (modalka-define-kbd <span style="color: #3e999f;">"g f"</span> <span style="color: #3e999f;">"M-m g f"</span>)
+(modalka-define-kbd <span style="color: #3e999f;">"g F"</span> <span style="color: #3e999f;">"M-m g F"</span>)
 (modalka-define-kbd <span style="color: #3e999f;">"g j"</span> <span style="color: #3e999f;">"M-m g j"</span>)
 (modalka-define-kbd <span style="color: #3e999f;">"g k"</span> <span style="color: #3e999f;">"M-m g k"</span>)
 (modalka-define-kbd <span style="color: #3e999f;">"g q"</span> <span style="color: #3e999f;">"M-m g q"</span>)
@@ -1943,6 +1946,7 @@ I have added the which key explanations for everything at once because it is eas
   <span style="color: #3e999f;">"g j"</span> <span style="color: #3e999f;">"next pdf page"</span>
   <span style="color: #3e999f;">"g k"</span> <span style="color: #3e999f;">"previous pdf page"</span>
   <span style="color: #3e999f;">"g f"</span> <span style="color: #3e999f;">"file/url at cursor"</span>
+  <span style="color: #3e999f;">"g F"</span> <span style="color: #3e999f;">"focus on sections"</span>
   <span style="color: #3e999f;">"g o"</span> <span style="color: #3e999f;">"eval elisp"</span>
   <span style="color: #3e999f;">"g O"</span> <span style="color: #3e999f;">"eval defun"</span>
   <span style="color: #3e999f;">"g w"</span> <span style="color: #3e999f;">"vertical split win"</span>
@@ -3606,7 +3610,7 @@ Which key modal explanation
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(which-key-add-key-based-replacements
-  <span style="color: #3e999f;">"m"</span> <span style="color: #3e999f;">"smart nav prefix"</span>
+  <span style="color: #3e999f;">"m"</span> <span style="color: #3e999f;">"move prefix"</span>
   <span style="color: #3e999f;">"m j"</span> <span style="color: #3e999f;">"move down"</span>
   <span style="color: #3e999f;">"m k"</span> <span style="color: #3e999f;">"move backward up"</span>
   <span style="color: #3e999f;">"m h"</span> <span style="color: #3e999f;">"move backward down"</span>
@@ -6185,10 +6189,6 @@ I really liked the way <a href="https://bywordapp.com">Byword</a> presents a wri
   <span style="color: #8959a8;">:config</span>
   (<span style="color: #718c00;">progn</span>
     (olivetti-set-width 100)))
-<span style="color: #8e908c; font-style: italic;">;; </span><span style="color: #8e908c; font-style: italic;">Focus on a particular section</span>
-(<span style="color: #718c00;">use-package</span> <span style="color: #4271ae;">focus</span>
-  <span style="color: #8959a8;">:ensure</span> t
-  <span style="color: #8959a8;">:bind*</span> ((<span style="color: #3e999f;">"M-m g F"</span> . focus-mode)))
 </pre>
 </div>
 </div>
@@ -6197,7 +6197,6 @@ I really liked the way <a href="https://bywordapp.com">Byword</a> presents a wri
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"g U"</span> <span style="color: #3e999f;">"M-m g U"</span>)
-(modalka-define-kbd <span style="color: #3e999f;">"g F"</span> <span style="color: #3e999f;">"M-m g F"</span>)
 </pre>
 </div>
 
@@ -6208,8 +6207,7 @@ Which key modal explanation
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(which-key-add-key-based-replacements
-  <span style="color: #3e999f;">"g U"</span> <span style="color: #3e999f;">"distraction free"</span>
-  <span style="color: #3e999f;">"g F"</span> <span style="color: #3e999f;">"focus on sections"</span>)
+  <span style="color: #3e999f;">"g U"</span> <span style="color: #3e999f;">"distraction free"</span>)
 </pre>
 </div>
 </div></li></ul>
@@ -11415,6 +11413,12 @@ This section documents the key bindings that help to find other key-bindings. No
 </tr>
 
 <tr>
+<td class="org-left">g F</td>
+<td class="org-left">M-m g F</td>
+<td class="org-left">Synchronize splits</td>
+</tr>
+
+<tr>
 <td class="org-left">g m</td>
 <td class="org-left">M-m g m</td>
 <td class="org-left">make frame</td>
@@ -12212,12 +12216,6 @@ This section documents the key bindings that help to find other key-bindings. No
 <td class="org-left">g U</td>
 <td class="org-left">M-m g U</td>
 <td class="org-left"><a href="#orgheadline273">Distraction free mode</a></td>
-</tr>
-
-<tr>
-<td class="org-left">g F</td>
-<td class="org-left">M-m g F</td>
-<td class="org-left">Distraction free focus</td>
 </tr>
 
 <tr>
@@ -13061,7 +13059,7 @@ This portion of comments let Emacs know that it has to <a href="#orgheadline59">
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Sriram Krishnaswamy</p>
-<p class="date">Created: 2016-07-11 Mon 18:56</p>
+<p class="date">Created: 2016-07-11 Mon 19:17</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

@@ -646,6 +646,7 @@ There are some pretty nice default functions that are unbound. I use the =bind-k
   ("M-m g u"   . downcase-region)
   ("M-m g U"   . upcase-region)
   ("M-m g C"   . capitalize-region)
+  ("M-m g F"   . follow-mode)
   ("M-m R"     . overwrite-mode)
   ("M-m g j"   . doc-view-next-page)
   ("M-m g k"   . doc-view-previous-page)
@@ -748,12 +749,13 @@ As mentioned before, I like and prefer modal editing. I feel pressing modifier k
   (which-key-add-key-based-replacements
     "M-m"     "Modalka prefix"
     "M-m :"   "extended prefix"
-    "M-m c"   "code prefix"
-    "M-m m"   "multi-edit prefix"
-    "M-m s"   "smart nav prefix"
+    "M-m m"   "move prefix"
+    "M-m s"   "send code prefix"
     "M-m SPC" "user prefix"
     "M-m g"   "global prefix"
-    "M-m i"   "expand prefix"
+    "M-m o"   "org prefix"
+    "M-m a"   "expand around prefix"
+    "M-m i"   "expand inside prefix"
     "M-m ["   "prev nav prefix"
     "M-m ]"   "next nav prefix"))
 #+END_SRC
@@ -844,6 +846,7 @@ This is based on Vi-style but only slightly and uses the default movement keys i
 (modalka-define-kbd "g n" "M-m g n")
 (modalka-define-kbd "g N" "M-m g N")
 (modalka-define-kbd "g f" "M-m g f")
+(modalka-define-kbd "g F" "M-m g F")
 (modalka-define-kbd "g j" "M-m g j")
 (modalka-define-kbd "g k" "M-m g k")
 (modalka-define-kbd "g q" "M-m g q")
@@ -996,6 +999,7 @@ I have added the which key explanations for everything at once because it is eas
   "g j" "next pdf page"
   "g k" "previous pdf page"
   "g f" "file/url at cursor"
+  "g F" "focus on sections"
   "g o" "eval elisp"
   "g O" "eval defun"
   "g w" "vertical split win"
@@ -2242,7 +2246,7 @@ Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "m" "smart nav prefix"
+  "m" "move prefix"
   "m j" "move down"
   "m k" "move backward up"
   "m h" "move backward down"
@@ -4135,25 +4139,19 @@ I really liked the way [[https://bywordapp.com][Byword]] presents a writing inte
   :config
   (progn
     (olivetti-set-width 100)))
-;; Focus on a particular section
-(use-package focus
-  :ensure t
-  :bind* (("M-m g F" . focus-mode)))
 #+END_SRC
 
 **** Modal binding
 
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "g U" "M-m g U")
-(modalka-define-kbd "g F" "M-m g F")
 #+END_SRC
 
 Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "g U" "distraction free"
-  "g F" "focus on sections")
+  "g U" "distraction free")
 #+END_SRC
 
 ** Custom functions
@@ -7869,6 +7867,7 @@ This section documents the key bindings that help to find other key-bindings. No
 | ] d                   | M-m ] d             | [[*Turn the adjoining PDF (only with 2 windows)][Turn the adjoining PDF]] next page                  |
 | g [                   | M-m g [             | [[*Turn the adjoining window (only with 2 windows)][Scroll the adjoining window up]]                    |
 | g ]                   | M-m g ]             | Scroll the adjoining window down                  |
+| g F                   | M-m g F             | Synchronize splits                                 |
 | g m                   | M-m g m             | make frame                                        |
 | g M                   | M-m g M             | close frame                                       |
 | g n                   | M-m g n             | select frame by name                              |
@@ -8006,7 +8005,6 @@ This section documents the key bindings that help to find other key-bindings. No
 | _                     | M-m _               | [[*Vimish fold][fold menu]]                |
 | g a                   | M-m g a             | [[*Activate minor modes][Activate minor modes]]     |
 | g U                   | M-m g U             | [[*Distraction free mode][Distraction free mode]]    |
-| g F                   | M-m g F             | Distraction free focus   |
 | g *                   | M-m g *             | [[*Highlight thing at point][Highlight thing at point]] |
 
 ** Org

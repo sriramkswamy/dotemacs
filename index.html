@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2016-07-11 Mon 12:15 -->
+<!-- 2016-07-11 Mon 18:56 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>Emacs configuration file</title>
@@ -3526,32 +3526,32 @@ Which key modal explanation
 <pre class="src src-emacs-lisp">(<span style="color: #718c00;">use-package</span> <span style="color: #4271ae;">smartparens</span>
   <span style="color: #8959a8;">:ensure</span> t
   <span style="color: #8959a8;">:demand</span> t
-  <span style="color: #8959a8;">:bind*</span> ((<span style="color: #3e999f;">"M-m s j"</span> . sp-down-sexp)
-          (<span style="color: #3e999f;">"M-m s k"</span> . sp-backward-up-sexp)
-          (<span style="color: #3e999f;">"M-m s h"</span> . sp-backward-down-sexp)
-          (<span style="color: #3e999f;">"M-m s l"</span> . sp-up-sexp)
-          (<span style="color: #3e999f;">"M-m s f"</span> . sp-forward-sexp)
-          (<span style="color: #3e999f;">"M-m s b"</span> . sp-backward-sexp)
-          (<span style="color: #3e999f;">"M-m s a"</span> . sp-beginning-of-sexp)
-          (<span style="color: #3e999f;">"M-m s e"</span> . sp-end-of-sexp)
-          (<span style="color: #3e999f;">"M-m s n"</span> . sp-next-sexp)
-          (<span style="color: #3e999f;">"M-m s p"</span> . sp-previous-sexp)
-          (<span style="color: #3e999f;">"M-m s &gt;"</span> . sp-forward-barf-sexp)
-          (<span style="color: #3e999f;">"M-m s &lt;"</span> . sp-backward-barf-sexp)
-          (<span style="color: #3e999f;">"M-m s )"</span> . sp-forward-slurp-sexp)
-          (<span style="color: #3e999f;">"M-m s ("</span> . sp-backward-slurp-sexp)
-          (<span style="color: #3e999f;">"M-m s x"</span> . sp-transpose-sexp)
-          (<span style="color: #3e999f;">"M-m s d"</span> . sp-kill-sexp)
-          (<span style="color: #3e999f;">"M-m s y"</span> . sp-copy-sexp)
-          (<span style="color: #3e999f;">"M-m s u"</span> . sp-unwrap-sexp)
-          (<span style="color: #3e999f;">"M-m s U"</span> . sp-backward-unwrap-sexp)
-          (<span style="color: #3e999f;">"M-m s C"</span> . sp-convolute-sexp)
-          (<span style="color: #3e999f;">"M-m s r"</span> . sp-raise-sexp)
-          (<span style="color: #3e999f;">"M-m s s"</span> . sp-split-sexp)
-          (<span style="color: #3e999f;">"M-m s S"</span> . sp-splice-sexp)
-          (<span style="color: #3e999f;">"M-m s F"</span> . sp-splice-sexp-killing-forward)
-          (<span style="color: #3e999f;">"M-m s B"</span> . sp-splice-sexp-killing-backward)
-          (<span style="color: #3e999f;">"M-m s A"</span> . sp-splice-sexp-killing-around))
+  <span style="color: #8959a8;">:bind*</span> ((<span style="color: #3e999f;">"M-m m j"</span> . sp-down-sexp)
+          (<span style="color: #3e999f;">"M-m m k"</span> . sp-backward-up-sexp)
+          (<span style="color: #3e999f;">"M-m m h"</span> . sp-backward-down-sexp)
+          (<span style="color: #3e999f;">"M-m m l"</span> . sp-up-sexp)
+          (<span style="color: #3e999f;">"M-m m f"</span> . sp-forward-sexp)
+          (<span style="color: #3e999f;">"M-m m b"</span> . sp-backward-sexp)
+          (<span style="color: #3e999f;">"M-m m a"</span> . sp-beginning-of-sexp)
+          (<span style="color: #3e999f;">"M-m m e"</span> . sp-end-of-sexp)
+          (<span style="color: #3e999f;">"M-m m n"</span> . sp-next-sexp)
+          (<span style="color: #3e999f;">"M-m m p"</span> . sp-previous-sexp)
+          (<span style="color: #3e999f;">"M-m m &gt;"</span> . sp-forward-barf-sexp)
+          (<span style="color: #3e999f;">"M-m m &lt;"</span> . sp-backward-barf-sexp)
+          (<span style="color: #3e999f;">"M-m m )"</span> . sp-forward-slurp-sexp)
+          (<span style="color: #3e999f;">"M-m m ("</span> . sp-backward-slurp-sexp)
+          (<span style="color: #3e999f;">"M-m m x"</span> . sp-transpose-sexp)
+          (<span style="color: #3e999f;">"M-m m d"</span> . sp-kill-sexp)
+          (<span style="color: #3e999f;">"M-m m y"</span> . sp-copy-sexp)
+          (<span style="color: #3e999f;">"M-m m u"</span> . sp-unwrap-sexp)
+          (<span style="color: #3e999f;">"M-m m U"</span> . sp-backward-unwrap-sexp)
+          (<span style="color: #3e999f;">"M-m m C"</span> . sp-convolute-sexp)
+          (<span style="color: #3e999f;">"M-m m r"</span> . sp-raise-sexp)
+          (<span style="color: #3e999f;">"M-m m s"</span> . sp-split-sexp)
+          (<span style="color: #3e999f;">"M-m m S"</span> . sp-splice-sexp)
+          (<span style="color: #3e999f;">"M-m m F"</span> . sp-splice-sexp-killing-forward)
+          (<span style="color: #3e999f;">"M-m m B"</span> . sp-splice-sexp-killing-backward)
+          (<span style="color: #3e999f;">"M-m m A"</span> . sp-splice-sexp-killing-around))
   <span style="color: #8959a8;">:diminish</span> smartparens-mode
   <span style="color: #8959a8;">:diminish</span> smartparens-strict-mode
   <span style="color: #8959a8;">:config</span>
@@ -3560,7 +3560,7 @@ Which key modal explanation
   (smartparens-global-strict-mode)
   (show-smartparens-global-mode)
   (which-key-add-key-based-replacements
-    <span style="color: #3e999f;">"M-m s"</span> <span style="color: #3e999f;">"smart nav prefix"</span>))
+    <span style="color: #3e999f;">"M-m m"</span> <span style="color: #3e999f;">"move prefix"</span>))
 </pre>
 </div>
 </div>
@@ -3568,34 +3568,34 @@ Which key modal explanation
 <ul class="org-ul"><li><a id="orgheadline152"></a>Modal binding<br  /><div class="outline-text-5" id="text-orgheadline152">
 <div class="org-src-container">
 
-<pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"s j"</span> <span style="color: #3e999f;">"M-m s j"</span>)
-(modalka-define-kbd <span style="color: #3e999f;">"s k"</span> <span style="color: #3e999f;">"M-m s k"</span>)
-(modalka-define-kbd <span style="color: #3e999f;">"s h"</span> <span style="color: #3e999f;">"M-m s h"</span>)
-(modalka-define-kbd <span style="color: #3e999f;">"s l"</span> <span style="color: #3e999f;">"M-m s l"</span>)
-(modalka-define-kbd <span style="color: #3e999f;">"s f"</span> <span style="color: #3e999f;">"M-m s f"</span>)
-(modalka-define-kbd <span style="color: #3e999f;">"s b"</span> <span style="color: #3e999f;">"M-m s b"</span>)
-(modalka-define-kbd <span style="color: #3e999f;">"s a"</span> <span style="color: #3e999f;">"M-m s a"</span>)
-(modalka-define-kbd <span style="color: #3e999f;">"s e"</span> <span style="color: #3e999f;">"M-m s e"</span>)
-(modalka-define-kbd <span style="color: #3e999f;">"s n"</span> <span style="color: #3e999f;">"M-m s n"</span>)
-(modalka-define-kbd <span style="color: #3e999f;">"s p"</span> <span style="color: #3e999f;">"M-m s p"</span>)
-(modalka-define-kbd <span style="color: #3e999f;">"s &gt;"</span> <span style="color: #3e999f;">"M-m s &gt;"</span>)
-(modalka-define-kbd <span style="color: #3e999f;">"s &lt;"</span> <span style="color: #3e999f;">"M-m s &lt;"</span>)
-(modalka-define-kbd <span style="color: #3e999f;">"s )"</span> <span style="color: #3e999f;">"M-m s )"</span>)
-(modalka-define-kbd <span style="color: #3e999f;">"s ("</span> <span style="color: #3e999f;">"M-m s ("</span>)
-(modalka-define-kbd <span style="color: #3e999f;">"s x"</span> <span style="color: #3e999f;">"M-m s x"</span>)
-(modalka-define-kbd <span style="color: #3e999f;">"s d"</span> <span style="color: #3e999f;">"M-m s d"</span>)
-(modalka-define-kbd <span style="color: #3e999f;">"s y"</span> <span style="color: #3e999f;">"M-m s y"</span>)
-(modalka-define-kbd <span style="color: #3e999f;">"s u"</span> <span style="color: #3e999f;">"M-m s u"</span>)
-(modalka-define-kbd <span style="color: #3e999f;">"s U"</span> <span style="color: #3e999f;">"M-m s U"</span>)
-(modalka-define-kbd <span style="color: #3e999f;">"s U"</span> <span style="color: #3e999f;">"M-m s U"</span>)
-(modalka-define-kbd <span style="color: #3e999f;">"s U"</span> <span style="color: #3e999f;">"M-m s U"</span>)
-(modalka-define-kbd <span style="color: #3e999f;">"s C"</span> <span style="color: #3e999f;">"M-m s C"</span>)
-(modalka-define-kbd <span style="color: #3e999f;">"s r"</span> <span style="color: #3e999f;">"M-m s r"</span>)
-(modalka-define-kbd <span style="color: #3e999f;">"s s"</span> <span style="color: #3e999f;">"M-m s s"</span>)
-(modalka-define-kbd <span style="color: #3e999f;">"s S"</span> <span style="color: #3e999f;">"M-m s S"</span>)
-(modalka-define-kbd <span style="color: #3e999f;">"s F"</span> <span style="color: #3e999f;">"M-m s F"</span>)
-(modalka-define-kbd <span style="color: #3e999f;">"s B"</span> <span style="color: #3e999f;">"M-m s B"</span>)
-(modalka-define-kbd <span style="color: #3e999f;">"s A"</span> <span style="color: #3e999f;">"M-m s A"</span>)
+<pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"m j"</span> <span style="color: #3e999f;">"M-m m j"</span>)
+(modalka-define-kbd <span style="color: #3e999f;">"m k"</span> <span style="color: #3e999f;">"M-m m k"</span>)
+(modalka-define-kbd <span style="color: #3e999f;">"m h"</span> <span style="color: #3e999f;">"M-m m h"</span>)
+(modalka-define-kbd <span style="color: #3e999f;">"m l"</span> <span style="color: #3e999f;">"M-m m l"</span>)
+(modalka-define-kbd <span style="color: #3e999f;">"m f"</span> <span style="color: #3e999f;">"M-m m f"</span>)
+(modalka-define-kbd <span style="color: #3e999f;">"m b"</span> <span style="color: #3e999f;">"M-m m b"</span>)
+(modalka-define-kbd <span style="color: #3e999f;">"m a"</span> <span style="color: #3e999f;">"M-m m a"</span>)
+(modalka-define-kbd <span style="color: #3e999f;">"m e"</span> <span style="color: #3e999f;">"M-m m e"</span>)
+(modalka-define-kbd <span style="color: #3e999f;">"m n"</span> <span style="color: #3e999f;">"M-m m n"</span>)
+(modalka-define-kbd <span style="color: #3e999f;">"m p"</span> <span style="color: #3e999f;">"M-m m p"</span>)
+(modalka-define-kbd <span style="color: #3e999f;">"m &gt;"</span> <span style="color: #3e999f;">"M-m m &gt;"</span>)
+(modalka-define-kbd <span style="color: #3e999f;">"m &lt;"</span> <span style="color: #3e999f;">"M-m m &lt;"</span>)
+(modalka-define-kbd <span style="color: #3e999f;">"m )"</span> <span style="color: #3e999f;">"M-m m )"</span>)
+(modalka-define-kbd <span style="color: #3e999f;">"m ("</span> <span style="color: #3e999f;">"M-m m ("</span>)
+(modalka-define-kbd <span style="color: #3e999f;">"m x"</span> <span style="color: #3e999f;">"M-m m x"</span>)
+(modalka-define-kbd <span style="color: #3e999f;">"m d"</span> <span style="color: #3e999f;">"M-m m d"</span>)
+(modalka-define-kbd <span style="color: #3e999f;">"m y"</span> <span style="color: #3e999f;">"M-m m y"</span>)
+(modalka-define-kbd <span style="color: #3e999f;">"m u"</span> <span style="color: #3e999f;">"M-m m u"</span>)
+(modalka-define-kbd <span style="color: #3e999f;">"m U"</span> <span style="color: #3e999f;">"M-m m U"</span>)
+(modalka-define-kbd <span style="color: #3e999f;">"m U"</span> <span style="color: #3e999f;">"M-m m U"</span>)
+(modalka-define-kbd <span style="color: #3e999f;">"m U"</span> <span style="color: #3e999f;">"M-m m U"</span>)
+(modalka-define-kbd <span style="color: #3e999f;">"m C"</span> <span style="color: #3e999f;">"M-m m C"</span>)
+(modalka-define-kbd <span style="color: #3e999f;">"m r"</span> <span style="color: #3e999f;">"M-m m r"</span>)
+(modalka-define-kbd <span style="color: #3e999f;">"m s"</span> <span style="color: #3e999f;">"M-m m s"</span>)
+(modalka-define-kbd <span style="color: #3e999f;">"m S"</span> <span style="color: #3e999f;">"M-m m S"</span>)
+(modalka-define-kbd <span style="color: #3e999f;">"m F"</span> <span style="color: #3e999f;">"M-m m F"</span>)
+(modalka-define-kbd <span style="color: #3e999f;">"m B"</span> <span style="color: #3e999f;">"M-m m B"</span>)
+(modalka-define-kbd <span style="color: #3e999f;">"m A"</span> <span style="color: #3e999f;">"M-m m A"</span>)
 </pre>
 </div>
 
@@ -3606,35 +3606,33 @@ Which key modal explanation
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(which-key-add-key-based-replacements
-  <span style="color: #3e999f;">"s"</span> <span style="color: #3e999f;">"smart nav prefix"</span>
-  <span style="color: #3e999f;">"s &gt;"</span> <span style="color: #3e999f;">"forward prefix"</span>
-  <span style="color: #3e999f;">"s &lt;"</span> <span style="color: #3e999f;">"backward prefix"</span>
-  <span style="color: #3e999f;">"s j"</span> <span style="color: #3e999f;">"smart down"</span>
-  <span style="color: #3e999f;">"s k"</span> <span style="color: #3e999f;">"smart backward up"</span>
-  <span style="color: #3e999f;">"s h"</span> <span style="color: #3e999f;">"smart backward down"</span>
-  <span style="color: #3e999f;">"s l"</span> <span style="color: #3e999f;">"smart up"</span>
-  <span style="color: #3e999f;">"s f"</span> <span style="color: #3e999f;">"smart forward"</span>
-  <span style="color: #3e999f;">"s b"</span> <span style="color: #3e999f;">"smart backward"</span>
-  <span style="color: #3e999f;">"s a"</span> <span style="color: #3e999f;">"smart beginning"</span>
-  <span style="color: #3e999f;">"s e"</span> <span style="color: #3e999f;">"smart end"</span>
-  <span style="color: #3e999f;">"s n"</span> <span style="color: #3e999f;">"smart next"</span>
-  <span style="color: #3e999f;">"s p"</span> <span style="color: #3e999f;">"smart previous"</span>
-  <span style="color: #3e999f;">"s &gt;"</span> <span style="color: #3e999f;">"expression forward barf"</span>
-  <span style="color: #3e999f;">"s &lt;"</span> <span style="color: #3e999f;">"expression backward barf"</span>
-  <span style="color: #3e999f;">"s )"</span> <span style="color: #3e999f;">"expression forward slurp"</span>
-  <span style="color: #3e999f;">"s ("</span> <span style="color: #3e999f;">"expression backward slurp"</span>
-  <span style="color: #3e999f;">"s x"</span> <span style="color: #3e999f;">"smart transpose"</span>
-  <span style="color: #3e999f;">"s d"</span> <span style="color: #3e999f;">"smart delete"</span>
-  <span style="color: #3e999f;">"s y"</span> <span style="color: #3e999f;">"smart copy"</span>
-  <span style="color: #3e999f;">"s u"</span> <span style="color: #3e999f;">"selection unwrap"</span>
-  <span style="color: #3e999f;">"s U"</span> <span style="color: #3e999f;">"backward unwrap"</span>
-  <span style="color: #3e999f;">"s C"</span> <span style="color: #3e999f;">"convolute sexp"</span>
-  <span style="color: #3e999f;">"s r"</span> <span style="color: #3e999f;">"raise sexp"</span>
-  <span style="color: #3e999f;">"s s"</span> <span style="color: #3e999f;">"split sexp"</span>
-  <span style="color: #3e999f;">"s S"</span> <span style="color: #3e999f;">"splice sexp"</span>
-  <span style="color: #3e999f;">"s F"</span> <span style="color: #3e999f;">"splice forward"</span>
-  <span style="color: #3e999f;">"s B"</span> <span style="color: #3e999f;">"splice backward"</span>
-  <span style="color: #3e999f;">"s A"</span> <span style="color: #3e999f;">"splice around"</span>)
+  <span style="color: #3e999f;">"m"</span> <span style="color: #3e999f;">"smart nav prefix"</span>
+  <span style="color: #3e999f;">"m j"</span> <span style="color: #3e999f;">"move down"</span>
+  <span style="color: #3e999f;">"m k"</span> <span style="color: #3e999f;">"move backward up"</span>
+  <span style="color: #3e999f;">"m h"</span> <span style="color: #3e999f;">"move backward down"</span>
+  <span style="color: #3e999f;">"m l"</span> <span style="color: #3e999f;">"move up"</span>
+  <span style="color: #3e999f;">"m f"</span> <span style="color: #3e999f;">"move forward"</span>
+  <span style="color: #3e999f;">"m b"</span> <span style="color: #3e999f;">"move backward"</span>
+  <span style="color: #3e999f;">"m a"</span> <span style="color: #3e999f;">"move beginning"</span>
+  <span style="color: #3e999f;">"m e"</span> <span style="color: #3e999f;">"move end"</span>
+  <span style="color: #3e999f;">"m n"</span> <span style="color: #3e999f;">"move next"</span>
+  <span style="color: #3e999f;">"m p"</span> <span style="color: #3e999f;">"move previous"</span>
+  <span style="color: #3e999f;">"m &gt;"</span> <span style="color: #3e999f;">"expression forward barf"</span>
+  <span style="color: #3e999f;">"m &lt;"</span> <span style="color: #3e999f;">"expression backward barf"</span>
+  <span style="color: #3e999f;">"m )"</span> <span style="color: #3e999f;">"expression forward slurp"</span>
+  <span style="color: #3e999f;">"m ("</span> <span style="color: #3e999f;">"expression backward slurp"</span>
+  <span style="color: #3e999f;">"m x"</span> <span style="color: #3e999f;">"smart transpose"</span>
+  <span style="color: #3e999f;">"m d"</span> <span style="color: #3e999f;">"smart delete"</span>
+  <span style="color: #3e999f;">"m y"</span> <span style="color: #3e999f;">"smart copy"</span>
+  <span style="color: #3e999f;">"m u"</span> <span style="color: #3e999f;">"selection unwrap"</span>
+  <span style="color: #3e999f;">"m U"</span> <span style="color: #3e999f;">"backward unwrap"</span>
+  <span style="color: #3e999f;">"m C"</span> <span style="color: #3e999f;">"convolute sexp"</span>
+  <span style="color: #3e999f;">"m r"</span> <span style="color: #3e999f;">"raise sexp"</span>
+  <span style="color: #3e999f;">"m s"</span> <span style="color: #3e999f;">"split sexp"</span>
+  <span style="color: #3e999f;">"m S"</span> <span style="color: #3e999f;">"splice sexp"</span>
+  <span style="color: #3e999f;">"m F"</span> <span style="color: #3e999f;">"splice forward"</span>
+  <span style="color: #3e999f;">"m B"</span> <span style="color: #3e999f;">"splice backward"</span>
+  <span style="color: #3e999f;">"m A"</span> <span style="color: #3e999f;">"splice around"</span>)
 </pre>
 </div>
 </div></li></ul>
@@ -8372,7 +8370,7 @@ I often need to start some service/program in the background and instead of drop
 <pre class="src src-emacs-lisp">(<span style="color: #718c00;">use-package</span> <span style="color: #4271ae;">prodigy</span>
   <span style="color: #8959a8;">:ensure</span> t
   <span style="color: #8959a8;">:commands</span> (prodigy)
-  <span style="color: #8959a8;">:bind*</span> ((<span style="color: #3e999f;">"M-m m b"</span> . prodigy))
+  <span style="color: #8959a8;">:bind*</span> ((<span style="color: #3e999f;">"M-m s b"</span> . prodigy))
   <span style="color: #8959a8;">:init</span>
   (prodigy-define-tag
     <span style="color: #8959a8;">:name</span> 'blog
@@ -8406,7 +8404,7 @@ I often need to start some service/program in the background and instead of drop
 <ul class="org-ul"><li><a id="orgheadline356"></a>Modal binding<br  /><div class="outline-text-5" id="text-orgheadline356">
 <div class="org-src-container">
 
-<pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"m b"</span> <span style="color: #3e999f;">"M-m m b"</span>)
+<pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"s b"</span> <span style="color: #3e999f;">"M-m s b"</span>)
 </pre>
 </div>
 
@@ -8417,8 +8415,8 @@ Which key modal explanation
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(which-key-add-key-based-replacements
-  <span style="color: #3e999f;">"m"</span> <span style="color: #3e999f;">"code prefix"</span>
-  <span style="color: #3e999f;">"m b"</span> <span style="color: #3e999f;">"background code"</span>)
+  <span style="color: #3e999f;">"s"</span> <span style="color: #3e999f;">"send code prefix"</span>
+  <span style="color: #3e999f;">"s b"</span> <span style="color: #3e999f;">"background code"</span>)
 </pre>
 </div>
 </div></li></ul>
@@ -9274,8 +9272,8 @@ Eshell is a built-in shell that is written in Lisp. It&rsquo;s pretty good.
 
 <pre class="src src-emacs-lisp">(<span style="color: #718c00;">use-package</span> <span style="color: #4271ae;">eshell</span>
   <span style="color: #8959a8;">:commands</span> (eshell)
-  <span style="color: #8959a8;">:bind*</span> ((<span style="color: #3e999f;">"M-m SPC u"</span> . sk/eshell-vertical)
-          (<span style="color: #3e999f;">"M-m SPC U"</span> . sk/eshell-horizontal))
+  <span style="color: #8959a8;">:bind*</span> ((<span style="color: #3e999f;">"M-m SPC s"</span> . sk/eshell-vertical)
+          (<span style="color: #3e999f;">"M-m SPC S"</span> . sk/eshell-horizontal))
   <span style="color: #8959a8;">:init</span>
   (<span style="color: #718c00;">setq</span> eshell-glob-case-insensitive t
         eshell-scroll-to-bottom-on-input 'this
@@ -9567,7 +9565,7 @@ This menu helps in sending code and commands <a href="#orgheadline401">to tmux</
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(<span style="color: #718c00;">bind-keys*</span>
-  (<span style="color: #3e999f;">"M-m m t"</span> . sk/hydra-for-emamux/body))
+  (<span style="color: #3e999f;">"M-m s t"</span> . sk/hydra-for-emamux/body))
 </pre>
 </div>
 </div>
@@ -9575,7 +9573,7 @@ This menu helps in sending code and commands <a href="#orgheadline401">to tmux</
 <ul class="org-ul"><li><a id="orgheadline407"></a>Modal binding<br  /><div class="outline-text-6" id="text-orgheadline407">
 <div class="org-src-container">
 
-<pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"m t"</span> <span style="color: #3e999f;">"M-m m t"</span>)
+<pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"s t"</span> <span style="color: #3e999f;">"M-m s t"</span>)
 </pre>
 </div>
 
@@ -9586,7 +9584,7 @@ Which key modal explanation
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(which-key-add-key-based-replacements
-  <span style="color: #3e999f;">"m t"</span> <span style="color: #3e999f;">"tmux code"</span>)
+  <span style="color: #3e999f;">"s t"</span> <span style="color: #3e999f;">"tmux code"</span>)
 </pre>
 </div>
 </div></li></ul></li></ul>
@@ -9656,7 +9654,7 @@ Then, the hydra for helping with Emacs Lisp code.
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(<span style="color: #718c00;">bind-keys*</span>
-  (<span style="color: #3e999f;">"M-m m e"</span> . sk/hydra-for-elisp/body))
+  (<span style="color: #3e999f;">"M-m s e"</span> . sk/hydra-for-elisp/body))
 </pre>
 </div>
 </div>
@@ -9664,7 +9662,7 @@ Then, the hydra for helping with Emacs Lisp code.
 <ul class="org-ul"><li><a id="orgheadline409"></a>Modal binding<br  /><div class="outline-text-6" id="text-orgheadline409">
 <div class="org-src-container">
 
-<pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"m e"</span> <span style="color: #3e999f;">"M-m m e"</span>)
+<pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"s e"</span> <span style="color: #3e999f;">"M-m s e"</span>)
 </pre>
 </div>
 
@@ -9675,7 +9673,7 @@ Which key modal explanation
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(which-key-add-key-based-replacements
-    <span style="color: #3e999f;">"m e"</span> <span style="color: #3e999f;">"elisp code"</span>)
+    <span style="color: #3e999f;">"s e"</span> <span style="color: #3e999f;">"elisp code"</span>)
 </pre>
 </div>
 </div></li></ul></li></ul>
@@ -9734,7 +9732,7 @@ C/C++ code navigation and compilation demands a hydra.
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(<span style="color: #718c00;">bind-keys*</span>
-  (<span style="color: #3e999f;">"M-m m c"</span> . sk/hydra-for-cpp/body))
+  (<span style="color: #3e999f;">"M-m s c"</span> . sk/hydra-for-cpp/body))
 </pre>
 </div>
 </div>
@@ -9742,7 +9740,7 @@ C/C++ code navigation and compilation demands a hydra.
 <ul class="org-ul"><li><a id="orgheadline412"></a>Modal binding<br  /><div class="outline-text-6" id="text-orgheadline412">
 <div class="org-src-container">
 
-<pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"m c"</span> <span style="color: #3e999f;">"M-m m c"</span>)
+<pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"s c"</span> <span style="color: #3e999f;">"M-m s c"</span>)
 </pre>
 </div>
 
@@ -9753,7 +9751,7 @@ Which key modal explanation
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(which-key-add-key-based-replacements
-  <span style="color: #3e999f;">"m c"</span> <span style="color: #3e999f;">"c/cpp code"</span>)
+  <span style="color: #3e999f;">"s c"</span> <span style="color: #3e999f;">"c/cpp code"</span>)
 </pre>
 </div>
 </div></li></ul></li></ul>
@@ -9811,7 +9809,7 @@ Hydra for Python code navigation, REPL evaluation, testing and formatting.
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(<span style="color: #718c00;">bind-keys*</span>
-  (<span style="color: #3e999f;">"M-m m p"</span> . sk/hydra-for-py/body))
+  (<span style="color: #3e999f;">"M-m s p"</span> . sk/hydra-for-py/body))
 </pre>
 </div>
 </div>
@@ -9819,7 +9817,7 @@ Hydra for Python code navigation, REPL evaluation, testing and formatting.
 <ul class="org-ul"><li><a id="orgheadline415"></a>Modal binding<br  /><div class="outline-text-6" id="text-orgheadline415">
 <div class="org-src-container">
 
-<pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"m p"</span> <span style="color: #3e999f;">"M-m m p"</span>)
+<pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"s p"</span> <span style="color: #3e999f;">"M-m s p"</span>)
 </pre>
 </div>
 
@@ -9830,7 +9828,7 @@ Which key modal explanation
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(which-key-add-key-based-replacements
-  <span style="color: #3e999f;">"m p"</span> <span style="color: #3e999f;">"python code"</span>)
+  <span style="color: #3e999f;">"s p"</span> <span style="color: #3e999f;">"python code"</span>)
 </pre>
 </div>
 </div></li></ul></li></ul>
@@ -9867,7 +9865,7 @@ Since both R and Julia are supported by ESS, one hydra is enough.
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(<span style="color: #718c00;">bind-keys*</span>
-  (<span style="color: #3e999f;">"M-m m s"</span> . sk/hydra-for-ess/body))
+  (<span style="color: #3e999f;">"M-m s s"</span> . sk/hydra-for-ess/body))
 </pre>
 </div>
 </div>
@@ -9875,7 +9873,7 @@ Since both R and Julia are supported by ESS, one hydra is enough.
 <ul class="org-ul"><li><a id="orgheadline418"></a>Modal binding<br  /><div class="outline-text-6" id="text-orgheadline418">
 <div class="org-src-container">
 
-<pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"m s"</span> <span style="color: #3e999f;">"M-m m s"</span>)
+<pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"s s"</span> <span style="color: #3e999f;">"M-m s s"</span>)
 </pre>
 </div>
 
@@ -9886,7 +9884,7 @@ Which key modal explanation
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(which-key-add-key-based-replacements
-  <span style="color: #3e999f;">"m s"</span> <span style="color: #3e999f;">"stats code"</span>)
+  <span style="color: #3e999f;">"s s"</span> <span style="color: #3e999f;">"stats code"</span>)
 </pre>
 </div>
 </div></li></ul></li></ul>
@@ -9923,7 +9921,7 @@ There is no facility for code navigation in MATLAB, and so this is just sending 
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(<span style="color: #718c00;">bind-keys*</span>
-  (<span style="color: #3e999f;">"M-m m m"</span> . sk/hydra-for-matlab/body))
+  (<span style="color: #3e999f;">"M-m s m"</span> . sk/hydra-for-matlab/body))
 </pre>
 </div>
 </div>
@@ -9931,7 +9929,7 @@ There is no facility for code navigation in MATLAB, and so this is just sending 
 <ul class="org-ul"><li><a id="orgheadline421"></a>Modal binding<br  /><div class="outline-text-6" id="text-orgheadline421">
 <div class="org-src-container">
 
-<pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"m m"</span> <span style="color: #3e999f;">"M-m m m"</span>)
+<pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"s m"</span> <span style="color: #3e999f;">"M-s m m"</span>)
 </pre>
 </div>
 
@@ -9942,7 +9940,7 @@ Which key modal explanation
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(which-key-add-key-based-replacements
-  <span style="color: #3e999f;">"m m"</span> <span style="color: #3e999f;">"matlab code"</span>)
+  <span style="color: #3e999f;">"s m"</span> <span style="color: #3e999f;">"matlab code"</span>)
 </pre>
 </div>
 </div></li></ul></li></ul>
@@ -10042,9 +10040,9 @@ There are two hydras we use for Web editing - one for JavaScript specifically an
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(<span style="color: #718c00;">bind-keys*</span>
-  (<span style="color: #3e999f;">"M-m m j"</span> . sk/hydra-for-js/body)
-  (<span style="color: #3e999f;">"M-m m w"</span> . sk/hydra-for-web/body)
-  (<span style="color: #3e999f;">"M-m m f"</span> . sk/hydra-for-format/body))
+  (<span style="color: #3e999f;">"M-m s j"</span> . sk/hydra-for-js/body)
+  (<span style="color: #3e999f;">"M-m s w"</span> . sk/hydra-for-web/body)
+  (<span style="color: #3e999f;">"M-m s f"</span> . sk/hydra-for-format/body))
 </pre>
 </div>
 </div>
@@ -10052,9 +10050,9 @@ There are two hydras we use for Web editing - one for JavaScript specifically an
 <ul class="org-ul"><li><a id="orgheadline424"></a>Modal binding<br  /><div class="outline-text-6" id="text-orgheadline424">
 <div class="org-src-container">
 
-<pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"m j"</span> <span style="color: #3e999f;">"M-m m j"</span>)
-(modalka-define-kbd <span style="color: #3e999f;">"m w"</span> <span style="color: #3e999f;">"M-m m w"</span>)
-(modalka-define-kbd <span style="color: #3e999f;">"m f"</span> <span style="color: #3e999f;">"M-m m f"</span>)
+<pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"s j"</span> <span style="color: #3e999f;">"M-m s j"</span>)
+(modalka-define-kbd <span style="color: #3e999f;">"s w"</span> <span style="color: #3e999f;">"M-m s w"</span>)
+(modalka-define-kbd <span style="color: #3e999f;">"s f"</span> <span style="color: #3e999f;">"M-m s f"</span>)
 </pre>
 </div>
 
@@ -10065,9 +10063,9 @@ Which key modal explanation
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(which-key-add-key-based-replacements
-  <span style="color: #3e999f;">"m j"</span> <span style="color: #3e999f;">"javscript code"</span>
-  <span style="color: #3e999f;">"m w"</span> <span style="color: #3e999f;">"web code"</span>
-  <span style="color: #3e999f;">"m f"</span> <span style="color: #3e999f;">"format code"</span>)
+  <span style="color: #3e999f;">"s j"</span> <span style="color: #3e999f;">"javscript code"</span>
+  <span style="color: #3e999f;">"s w"</span> <span style="color: #3e999f;">"web code"</span>
+  <span style="color: #3e999f;">"s f"</span> <span style="color: #3e999f;">"format code"</span>)
 </pre>
 </div>
 </div></li></ul></li></ul>
@@ -10103,7 +10101,7 @@ This is for <a href="#orgheadline403">Quickrun</a> functionality.
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(<span style="color: #718c00;">bind-keys*</span>
-  (<span style="color: #3e999f;">"M-m m q"</span> . sk/hydra-quickrun/body))
+  (<span style="color: #3e999f;">"M-m s q"</span> . sk/hydra-quickrun/body))
 </pre>
 </div>
 </div>
@@ -10111,7 +10109,7 @@ This is for <a href="#orgheadline403">Quickrun</a> functionality.
 <ul class="org-ul"><li><a id="orgheadline427"></a>Modal binding<br  /><div class="outline-text-6" id="text-orgheadline427">
 <div class="org-src-container">
 
-<pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"m q"</span> <span style="color: #3e999f;">"M-m m q"</span>)
+<pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"s q"</span> <span style="color: #3e999f;">"M-m s q"</span>)
 </pre>
 </div>
 
@@ -10122,7 +10120,7 @@ Which key modal explanation
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(which-key-add-key-based-replacements
-  <span style="color: #3e999f;">"m q"</span> <span style="color: #3e999f;">"quickrun code"</span>)
+  <span style="color: #3e999f;">"s q"</span> <span style="color: #3e999f;">"quickrun code"</span>)
 </pre>
 </div>
 </div></li></ul></li></ul>
@@ -10163,7 +10161,7 @@ A small hydra to start appropriate debuggers
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(<span style="color: #718c00;">bind-keys*</span>
-  (<span style="color: #3e999f;">"M-m m d"</span> . sk/hydra-debug/body))
+  (<span style="color: #3e999f;">"M-m s d"</span> . sk/hydra-debug/body))
 </pre>
 </div>
 </div>
@@ -10171,7 +10169,7 @@ A small hydra to start appropriate debuggers
 <ul class="org-ul"><li><a id="orgheadline430"></a>Modal binding<br  /><div class="outline-text-6" id="text-orgheadline430">
 <div class="org-src-container">
 
-<pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"m d"</span> <span style="color: #3e999f;">"M-m m d"</span>)
+<pre class="src src-emacs-lisp">(modalka-define-kbd <span style="color: #3e999f;">"s d"</span> <span style="color: #3e999f;">"M-m s d"</span>)
 </pre>
 </div>
 
@@ -10182,7 +10180,7 @@ Which key modal explanation
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(which-key-add-key-based-replacements
-  <span style="color: #3e999f;">"m d"</span> <span style="color: #3e999f;">"debug code"</span>)
+  <span style="color: #3e999f;">"s d"</span> <span style="color: #3e999f;">"debug code"</span>)
 </pre>
 </div>
 </div></li></ul></li></ul>
@@ -11447,6 +11445,108 @@ This section documents the key bindings that help to find other key-bindings. No
 </tr>
 
 <tr>
+<td class="org-left">m a</td>
+<td class="org-left">M-m m a</td>
+<td class="org-left"><a href="#orgheadline151">Smartparens</a> beginning of block</td>
+</tr>
+
+<tr>
+<td class="org-left">m b</td>
+<td class="org-left">M-m m b</td>
+<td class="org-left">smartparens backward expression</td>
+</tr>
+
+<tr>
+<td class="org-left">m c</td>
+<td class="org-left">M-m m c</td>
+<td class="org-left">smartparens change surroundings</td>
+</tr>
+
+<tr>
+<td class="org-left">m d</td>
+<td class="org-left">M-m m d</td>
+<td class="org-left">smartparens delete expression</td>
+</tr>
+
+<tr>
+<td class="org-left">m e</td>
+<td class="org-left">M-m m e</td>
+<td class="org-left">smartparens end of block</td>
+</tr>
+
+<tr>
+<td class="org-left">m f</td>
+<td class="org-left">M-m m f</td>
+<td class="org-left">smartparens forward expression</td>
+</tr>
+
+<tr>
+<td class="org-left">m h</td>
+<td class="org-left">M-m m h</td>
+<td class="org-left">smartparens backward down expression</td>
+</tr>
+
+<tr>
+<td class="org-left">m j</td>
+<td class="org-left">M-m m j</td>
+<td class="org-left">smartparens down expression</td>
+</tr>
+
+<tr>
+<td class="org-left">m k</td>
+<td class="org-left">M-m m k</td>
+<td class="org-left">smartparens backward up expression</td>
+</tr>
+
+<tr>
+<td class="org-left">m l</td>
+<td class="org-left">M-m m l</td>
+<td class="org-left">smartparens up expression</td>
+</tr>
+
+<tr>
+<td class="org-left">m n</td>
+<td class="org-left">M-m m n</td>
+<td class="org-left">smartparens next block</td>
+</tr>
+
+<tr>
+<td class="org-left">m p</td>
+<td class="org-left">M-m m p</td>
+<td class="org-left">smartparens previous block</td>
+</tr>
+
+<tr>
+<td class="org-left">m q</td>
+<td class="org-left">M-m m q</td>
+<td class="org-left"><a href="#orgheadline163">cycle quotes</a></td>
+</tr>
+
+<tr>
+<td class="org-left">m s</td>
+<td class="org-left">M-m m s</td>
+<td class="org-left">surroundings unwrap</td>
+</tr>
+
+<tr>
+<td class="org-left">m S</td>
+<td class="org-left">M-m m S</td>
+<td class="org-left">surroundings backward unwrap</td>
+</tr>
+
+<tr>
+<td class="org-left">m x</td>
+<td class="org-left">M-m m x</td>
+<td class="org-left">smartparens transpose expressions</td>
+</tr>
+
+<tr>
+<td class="org-left">m y</td>
+<td class="org-left">M-m m y</td>
+<td class="org-left">smartparens copy expression</td>
+</tr>
+
+<tr>
 <td class="org-left">SPC f</td>
 <td class="org-left">C-x C-f</td>
 <td class="org-left">find file browsing by directory</td>
@@ -11889,108 +11989,6 @@ This section documents the key bindings that help to find other key-bindings. No
 <td class="org-left">i w</td>
 <td class="org-left">M-m i w</td>
 <td class="org-left">select inside word</td>
-</tr>
-
-<tr>
-<td class="org-left">s a</td>
-<td class="org-left">M-m s a</td>
-<td class="org-left"><a href="#orgheadline151">Smartparens</a> beginning of block</td>
-</tr>
-
-<tr>
-<td class="org-left">s b</td>
-<td class="org-left">M-m s b</td>
-<td class="org-left">smartparens backward expression</td>
-</tr>
-
-<tr>
-<td class="org-left">s c</td>
-<td class="org-left">M-m s c</td>
-<td class="org-left">smartparens change surroundings</td>
-</tr>
-
-<tr>
-<td class="org-left">s d</td>
-<td class="org-left">M-m s d</td>
-<td class="org-left">smartparens delete expression</td>
-</tr>
-
-<tr>
-<td class="org-left">s e</td>
-<td class="org-left">M-m s e</td>
-<td class="org-left">smartparens end of block</td>
-</tr>
-
-<tr>
-<td class="org-left">s f</td>
-<td class="org-left">M-m s f</td>
-<td class="org-left">smartparens forward expression</td>
-</tr>
-
-<tr>
-<td class="org-left">s h</td>
-<td class="org-left">M-m s h</td>
-<td class="org-left">smartparens backward down expression</td>
-</tr>
-
-<tr>
-<td class="org-left">s j</td>
-<td class="org-left">M-m s j</td>
-<td class="org-left">smartparens down expression</td>
-</tr>
-
-<tr>
-<td class="org-left">s k</td>
-<td class="org-left">M-m s k</td>
-<td class="org-left">smartparens backward up expression</td>
-</tr>
-
-<tr>
-<td class="org-left">s l</td>
-<td class="org-left">M-m s l</td>
-<td class="org-left">smartparens up expression</td>
-</tr>
-
-<tr>
-<td class="org-left">s n</td>
-<td class="org-left">M-m s n</td>
-<td class="org-left">smartparens next block</td>
-</tr>
-
-<tr>
-<td class="org-left">s p</td>
-<td class="org-left">M-m s p</td>
-<td class="org-left">smartparens previous block</td>
-</tr>
-
-<tr>
-<td class="org-left">s q</td>
-<td class="org-left">M-m s q</td>
-<td class="org-left"><a href="#orgheadline163">cycle quotes</a></td>
-</tr>
-
-<tr>
-<td class="org-left">s s</td>
-<td class="org-left">M-m s s</td>
-<td class="org-left">surroundings unwrap</td>
-</tr>
-
-<tr>
-<td class="org-left">s S</td>
-<td class="org-left">M-m s S</td>
-<td class="org-left">surroundings backward unwrap</td>
-</tr>
-
-<tr>
-<td class="org-left">s x</td>
-<td class="org-left">M-m s x</td>
-<td class="org-left">smartparens transpose expressions</td>
-</tr>
-
-<tr>
-<td class="org-left">s y</td>
-<td class="org-left">M-m s y</td>
-<td class="org-left">smartparens copy expression</td>
 </tr>
 
 <tr>
@@ -12645,68 +12643,68 @@ This section documents the key bindings that help to find other key-bindings. No
 </tr>
 
 <tr>
-<td class="org-left">m b</td>
-<td class="org-left">M-m m b</td>
+<td class="org-left">s b</td>
+<td class="org-left">M-m s b</td>
 <td class="org-left"><a href="#orgheadline355">start background processes</a></td>
 </tr>
 
 <tr>
-<td class="org-left">m e</td>
-<td class="org-left">M-m m e</td>
+<td class="org-left">s e</td>
+<td class="org-left">M-m s e</td>
 <td class="org-left"><a href="#orgheadline357">emacs lisp code menu</a></td>
 </tr>
 
 <tr>
-<td class="org-left">m c</td>
-<td class="org-left">M-m m c</td>
+<td class="org-left">s c</td>
+<td class="org-left">M-m s c</td>
 <td class="org-left"><a href="#orgheadline358">c/c++ code menu</a></td>
 </tr>
 
 <tr>
-<td class="org-left">m p</td>
-<td class="org-left">M-m m p</td>
+<td class="org-left">s p</td>
+<td class="org-left">M-m s p</td>
 <td class="org-left"><a href="#orgheadline359">python code menu</a></td>
 </tr>
 
 <tr>
-<td class="org-left">m s</td>
-<td class="org-left">M-m m s</td>
+<td class="org-left">s s</td>
+<td class="org-left">M-m s s</td>
 <td class="org-left"><a href="#orgheadline360">statistics code menu</a></td>
 </tr>
 
 <tr>
-<td class="org-left">m m</td>
-<td class="org-left">M-m m m</td>
+<td class="org-left">s m</td>
+<td class="org-left">M-m s m</td>
 <td class="org-left"><a href="#orgheadline361">MATLAB code menu</a></td>
 </tr>
 
 <tr>
-<td class="org-left">m j</td>
-<td class="org-left">M-m m j</td>
+<td class="org-left">s j</td>
+<td class="org-left">M-m s j</td>
 <td class="org-left"><a href="#orgheadline362">JavaScript code menu</a></td>
 </tr>
 
 <tr>
-<td class="org-left">m w</td>
-<td class="org-left">M-m m w</td>
+<td class="org-left">s w</td>
+<td class="org-left">M-m s w</td>
 <td class="org-left">web mode code menu</td>
 </tr>
 
 <tr>
-<td class="org-left">m f</td>
-<td class="org-left">M-m m f</td>
+<td class="org-left">s f</td>
+<td class="org-left">M-m s f</td>
 <td class="org-left">format code menu</td>
 </tr>
 
 <tr>
-<td class="org-left">m d</td>
-<td class="org-left">M-m m d</td>
+<td class="org-left">s d</td>
+<td class="org-left">M-m s d</td>
 <td class="org-left"><a href="#orgheadline404">Debugging code menu</a></td>
 </tr>
 
 <tr>
-<td class="org-left">m t</td>
-<td class="org-left">M-m m t</td>
+<td class="org-left">s t</td>
+<td class="org-left">M-m s t</td>
 <td class="org-left"><a href="#orgheadline405">Tmux code menu</a></td>
 </tr>
 
@@ -13063,7 +13061,7 @@ This portion of comments let Emacs know that it has to <a href="#orgheadline59">
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Sriram Krishnaswamy</p>
-<p class="date">Created: 2016-07-11 Mon 12:15</p>
+<p class="date">Created: 2016-07-11 Mon 18:56</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

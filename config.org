@@ -2168,32 +2168,32 @@ Which key modal explanation
 (use-package smartparens
   :ensure t
   :demand t
-  :bind* (("M-m s j" . sp-down-sexp)
-          ("M-m s k" . sp-backward-up-sexp)
-          ("M-m s h" . sp-backward-down-sexp)
-          ("M-m s l" . sp-up-sexp)
-          ("M-m s f" . sp-forward-sexp)
-          ("M-m s b" . sp-backward-sexp)
-          ("M-m s a" . sp-beginning-of-sexp)
-          ("M-m s e" . sp-end-of-sexp)
-          ("M-m s n" . sp-next-sexp)
-          ("M-m s p" . sp-previous-sexp)
-          ("M-m s >" . sp-forward-barf-sexp)
-          ("M-m s <" . sp-backward-barf-sexp)
-          ("M-m s )" . sp-forward-slurp-sexp)
-          ("M-m s (" . sp-backward-slurp-sexp)
-          ("M-m s x" . sp-transpose-sexp)
-          ("M-m s d" . sp-kill-sexp)
-          ("M-m s y" . sp-copy-sexp)
-          ("M-m s u" . sp-unwrap-sexp)
-          ("M-m s U" . sp-backward-unwrap-sexp)
-          ("M-m s C" . sp-convolute-sexp)
-          ("M-m s r" . sp-raise-sexp)
-          ("M-m s s" . sp-split-sexp)
-          ("M-m s S" . sp-splice-sexp)
-          ("M-m s F" . sp-splice-sexp-killing-forward)
-          ("M-m s B" . sp-splice-sexp-killing-backward)
-          ("M-m s A" . sp-splice-sexp-killing-around))
+  :bind* (("M-m m j" . sp-down-sexp)
+          ("M-m m k" . sp-backward-up-sexp)
+          ("M-m m h" . sp-backward-down-sexp)
+          ("M-m m l" . sp-up-sexp)
+          ("M-m m f" . sp-forward-sexp)
+          ("M-m m b" . sp-backward-sexp)
+          ("M-m m a" . sp-beginning-of-sexp)
+          ("M-m m e" . sp-end-of-sexp)
+          ("M-m m n" . sp-next-sexp)
+          ("M-m m p" . sp-previous-sexp)
+          ("M-m m >" . sp-forward-barf-sexp)
+          ("M-m m <" . sp-backward-barf-sexp)
+          ("M-m m )" . sp-forward-slurp-sexp)
+          ("M-m m (" . sp-backward-slurp-sexp)
+          ("M-m m x" . sp-transpose-sexp)
+          ("M-m m d" . sp-kill-sexp)
+          ("M-m m y" . sp-copy-sexp)
+          ("M-m m u" . sp-unwrap-sexp)
+          ("M-m m U" . sp-backward-unwrap-sexp)
+          ("M-m m C" . sp-convolute-sexp)
+          ("M-m m r" . sp-raise-sexp)
+          ("M-m m s" . sp-split-sexp)
+          ("M-m m S" . sp-splice-sexp)
+          ("M-m m F" . sp-splice-sexp-killing-forward)
+          ("M-m m B" . sp-splice-sexp-killing-backward)
+          ("M-m m A" . sp-splice-sexp-killing-around))
   :diminish smartparens-mode
   :diminish smartparens-strict-mode
   :config
@@ -2202,75 +2202,73 @@ Which key modal explanation
   (smartparens-global-strict-mode)
   (show-smartparens-global-mode)
   (which-key-add-key-based-replacements
-    "M-m s" "smart nav prefix"))
+    "M-m m" "move prefix"))
 #+END_SRC
 
 **** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "s j" "M-m s j")
-(modalka-define-kbd "s k" "M-m s k")
-(modalka-define-kbd "s h" "M-m s h")
-(modalka-define-kbd "s l" "M-m s l")
-(modalka-define-kbd "s f" "M-m s f")
-(modalka-define-kbd "s b" "M-m s b")
-(modalka-define-kbd "s a" "M-m s a")
-(modalka-define-kbd "s e" "M-m s e")
-(modalka-define-kbd "s n" "M-m s n")
-(modalka-define-kbd "s p" "M-m s p")
-(modalka-define-kbd "s >" "M-m s >")
-(modalka-define-kbd "s <" "M-m s <")
-(modalka-define-kbd "s )" "M-m s )")
-(modalka-define-kbd "s (" "M-m s (")
-(modalka-define-kbd "s x" "M-m s x")
-(modalka-define-kbd "s d" "M-m s d")
-(modalka-define-kbd "s y" "M-m s y")
-(modalka-define-kbd "s u" "M-m s u")
-(modalka-define-kbd "s U" "M-m s U")
-(modalka-define-kbd "s U" "M-m s U")
-(modalka-define-kbd "s U" "M-m s U")
-(modalka-define-kbd "s C" "M-m s C")
-(modalka-define-kbd "s r" "M-m s r")
-(modalka-define-kbd "s s" "M-m s s")
-(modalka-define-kbd "s S" "M-m s S")
-(modalka-define-kbd "s F" "M-m s F")
-(modalka-define-kbd "s B" "M-m s B")
-(modalka-define-kbd "s A" "M-m s A")
+(modalka-define-kbd "m j" "M-m m j")
+(modalka-define-kbd "m k" "M-m m k")
+(modalka-define-kbd "m h" "M-m m h")
+(modalka-define-kbd "m l" "M-m m l")
+(modalka-define-kbd "m f" "M-m m f")
+(modalka-define-kbd "m b" "M-m m b")
+(modalka-define-kbd "m a" "M-m m a")
+(modalka-define-kbd "m e" "M-m m e")
+(modalka-define-kbd "m n" "M-m m n")
+(modalka-define-kbd "m p" "M-m m p")
+(modalka-define-kbd "m >" "M-m m >")
+(modalka-define-kbd "m <" "M-m m <")
+(modalka-define-kbd "m )" "M-m m )")
+(modalka-define-kbd "m (" "M-m m (")
+(modalka-define-kbd "m x" "M-m m x")
+(modalka-define-kbd "m d" "M-m m d")
+(modalka-define-kbd "m y" "M-m m y")
+(modalka-define-kbd "m u" "M-m m u")
+(modalka-define-kbd "m U" "M-m m U")
+(modalka-define-kbd "m U" "M-m m U")
+(modalka-define-kbd "m U" "M-m m U")
+(modalka-define-kbd "m C" "M-m m C")
+(modalka-define-kbd "m r" "M-m m r")
+(modalka-define-kbd "m s" "M-m m s")
+(modalka-define-kbd "m S" "M-m m S")
+(modalka-define-kbd "m F" "M-m m F")
+(modalka-define-kbd "m B" "M-m m B")
+(modalka-define-kbd "m A" "M-m m A")
 #+END_SRC
 
 Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "s" "smart nav prefix"
-  "s >" "forward prefix"
-  "s <" "backward prefix"
-  "s j" "smart down"
-  "s k" "smart backward up"
-  "s h" "smart backward down"
-  "s l" "smart up"
-  "s f" "smart forward"
-  "s b" "smart backward"
-  "s a" "smart beginning"
-  "s e" "smart end"
-  "s n" "smart next"
-  "s p" "smart previous"
-  "s >" "expression forward barf"
-  "s <" "expression backward barf"
-  "s )" "expression forward slurp"
-  "s (" "expression backward slurp"
-  "s x" "smart transpose"
-  "s d" "smart delete"
-  "s y" "smart copy"
-  "s u" "selection unwrap"
-  "s U" "backward unwrap"
-  "s C" "convolute sexp"
-  "s r" "raise sexp"
-  "s s" "split sexp"
-  "s S" "splice sexp"
-  "s F" "splice forward"
-  "s B" "splice backward"
-  "s A" "splice around")
+  "m" "smart nav prefix"
+  "m j" "move down"
+  "m k" "move backward up"
+  "m h" "move backward down"
+  "m l" "move up"
+  "m f" "move forward"
+  "m b" "move backward"
+  "m a" "move beginning"
+  "m e" "move end"
+  "m n" "move next"
+  "m p" "move previous"
+  "m >" "expression forward barf"
+  "m <" "expression backward barf"
+  "m )" "expression forward slurp"
+  "m (" "expression backward slurp"
+  "m x" "smart transpose"
+  "m d" "smart delete"
+  "m y" "smart copy"
+  "m u" "selection unwrap"
+  "m U" "backward unwrap"
+  "m C" "convolute sexp"
+  "m r" "raise sexp"
+  "m s" "split sexp"
+  "m S" "splice sexp"
+  "m F" "splice forward"
+  "m B" "splice backward"
+  "m A" "splice around")
 #+END_SRC
 
 ** Interactive edit
@@ -5821,7 +5819,7 @@ I often need to start some service/program in the background and instead of drop
 (use-package prodigy
   :ensure t
   :commands (prodigy)
-  :bind* (("M-m m b" . prodigy))
+  :bind* (("M-m s b" . prodigy))
   :init
   (prodigy-define-tag
     :name 'blog
@@ -5853,15 +5851,15 @@ I often need to start some service/program in the background and instead of drop
 **** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "m b" "M-m m b")
+(modalka-define-kbd "s b" "M-m s b")
 #+END_SRC
 
 Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "m" "code prefix"
-  "m b" "background code")
+  "s" "send code prefix"
+  "s b" "background code")
 #+END_SRC
 
 ** Information/documentation at point
@@ -6449,8 +6447,8 @@ Eshell is a built-in shell that is written in Lisp. It's pretty good.
 #+BEGIN_SRC emacs-lisp
 (use-package eshell
   :commands (eshell)
-  :bind* (("M-m SPC u" . sk/eshell-vertical)
-          ("M-m SPC U" . sk/eshell-horizontal))
+  :bind* (("M-m SPC s" . sk/eshell-vertical)
+          ("M-m SPC S" . sk/eshell-horizontal))
   :init
   (setq eshell-glob-case-insensitive t
         eshell-scroll-to-bottom-on-input 'this
@@ -6672,20 +6670,20 @@ This menu helps in sending code and commands [[*Interacting with Tmux][to tmux]]
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("M-m m t" . sk/hydra-for-emamux/body))
+  ("M-m s t" . sk/hydra-for-emamux/body))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "m t" "M-m m t")
+(modalka-define-kbd "s t" "M-m s t")
 #+END_SRC
 
 Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "m t" "tmux code")
+  "s t" "tmux code")
 #+END_SRC
 
 *** Emacs lisp
@@ -6742,20 +6740,20 @@ Then, the hydra for helping with Emacs Lisp code.
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("M-m m e" . sk/hydra-for-elisp/body))
+  ("M-m s e" . sk/hydra-for-elisp/body))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "m e" "M-m m e")
+(modalka-define-kbd "s e" "M-m s e")
 #+END_SRC
 
 Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-    "m e" "elisp code")
+    "s e" "elisp code")
 #+END_SRC
 
 *** C/C++
@@ -6805,20 +6803,20 @@ C/C++ code navigation and compilation demands a hydra.
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("M-m m c" . sk/hydra-for-cpp/body))
+  ("M-m s c" . sk/hydra-for-cpp/body))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "m c" "M-m m c")
+(modalka-define-kbd "s c" "M-m s c")
 #+END_SRC
 
 Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "m c" "c/cpp code")
+  "s c" "c/cpp code")
 #+END_SRC
 
 *** Python
@@ -6867,20 +6865,20 @@ Hydra for Python code navigation, REPL evaluation, testing and formatting.
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("M-m m p" . sk/hydra-for-py/body))
+  ("M-m s p" . sk/hydra-for-py/body))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "m p" "M-m m p")
+(modalka-define-kbd "s p" "M-m s p")
 #+END_SRC
 
 Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "m p" "python code")
+  "s p" "python code")
 #+END_SRC
 
 *** Statistics
@@ -6908,20 +6906,20 @@ Since both R and Julia are supported by ESS, one hydra is enough.
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("M-m m s" . sk/hydra-for-ess/body))
+  ("M-m s s" . sk/hydra-for-ess/body))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "m s" "M-m m s")
+(modalka-define-kbd "s s" "M-m s s")
 #+END_SRC
 
 Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "m s" "stats code")
+  "s s" "stats code")
 #+END_SRC
 
 *** MATLAB
@@ -6949,20 +6947,20 @@ There is no facility for code navigation in MATLAB, and so this is just sending 
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("M-m m m" . sk/hydra-for-matlab/body))
+  ("M-m s m" . sk/hydra-for-matlab/body))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "m m" "M-m m m")
+(modalka-define-kbd "s m" "M-s m m")
 #+END_SRC
 
 Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "m m" "matlab code")
+  "s m" "matlab code")
 #+END_SRC
 
 *** Web
@@ -7049,26 +7047,26 @@ There are two hydras we use for Web editing - one for JavaScript specifically an
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("M-m m j" . sk/hydra-for-js/body)
-  ("M-m m w" . sk/hydra-for-web/body)
-  ("M-m m f" . sk/hydra-for-format/body))
+  ("M-m s j" . sk/hydra-for-js/body)
+  ("M-m s w" . sk/hydra-for-web/body)
+  ("M-m s f" . sk/hydra-for-format/body))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "m j" "M-m m j")
-(modalka-define-kbd "m w" "M-m m w")
-(modalka-define-kbd "m f" "M-m m f")
+(modalka-define-kbd "s j" "M-m s j")
+(modalka-define-kbd "s w" "M-m s w")
+(modalka-define-kbd "s f" "M-m s f")
 #+END_SRC
 
 Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "m j" "javscript code"
-  "m w" "web code"
-  "m f" "format code")
+  "s j" "javscript code"
+  "s w" "web code"
+  "s f" "format code")
 #+END_SRC
 
 *** Quickrun
@@ -7095,20 +7093,20 @@ This is for [[*Quickrun][Quickrun]] functionality.
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("M-m m q" . sk/hydra-quickrun/body))
+  ("M-m s q" . sk/hydra-quickrun/body))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "m q" "M-m m q")
+(modalka-define-kbd "s q" "M-m s q")
 #+END_SRC
 
 Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "m q" "quickrun code")
+  "s q" "quickrun code")
 #+END_SRC
 
 *** Debugging
@@ -7138,20 +7136,20 @@ A small hydra to start appropriate debuggers
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("M-m m d" . sk/hydra-debug/body))
+  ("M-m s d" . sk/hydra-debug/body))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "m d" "M-m m d")
+(modalka-define-kbd "s d" "M-m s d")
 #+END_SRC
 
 Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "m d" "debug code")
+  "s d" "debug code")
 #+END_SRC
 
 * Helm
@@ -7876,6 +7874,23 @@ This section documents the key bindings that help to find other key-bindings. No
 | g n                   | M-m g n             | select frame by name                              |
 | g N                   | M-m g N             | name frame                                        |
 | g f                   | M-m g f             | find file/url under cursor                        |
+| m a                   | M-m m a             | [[*Smartparens][Smartparens]] beginning of block                    |
+| m b                   | M-m m b             | smartparens backward expression                   |
+| m c                   | M-m m c             | smartparens change surroundings                   |
+| m d                   | M-m m d             | smartparens delete expression                     |
+| m e                   | M-m m e             | smartparens end of block                          |
+| m f                   | M-m m f             | smartparens forward expression                    |
+| m h                   | M-m m h             | smartparens backward down expression              |
+| m j                   | M-m m j             | smartparens down expression                       |
+| m k                   | M-m m k             | smartparens backward up expression                |
+| m l                   | M-m m l             | smartparens up expression                         |
+| m n                   | M-m m n             | smartparens next block                            |
+| m p                   | M-m m p             | smartparens previous block                        |
+| m q                   | M-m m q             | [[*Cycle quotes][cycle quotes]]                                      |
+| m s                   | M-m m s             | surroundings unwrap                               |
+| m S                   | M-m m S             | surroundings backward unwrap                      |
+| m x                   | M-m m x             | smartparens transpose expressions                 |
+| m y                   | M-m m y             | smartparens copy expression                       |
 | SPC f                 | C-x C-f             | find file browsing by directory                   |
 | SPC d                 | M-m SPC d           | find files based on [[*Projectile][Projectile]] or helm-projectile |
 | SPC D                 | M-m SPC D           | switch projects                                   |
@@ -7952,23 +7967,6 @@ This section documents the key bindings that help to find other key-bindings. No
 | i u                   | M-m i u             | select inside url                      |
 | i v                   | M-m i v             | select inside variable                 |
 | i w                   | M-m i w             | select inside word                     |
-| s a                   | M-m s a             | [[*Smartparens][Smartparens]] beginning of block         |
-| s b                   | M-m s b             | smartparens backward expression        |
-| s c                   | M-m s c             | smartparens change surroundings        |
-| s d                   | M-m s d             | smartparens delete expression          |
-| s e                   | M-m s e             | smartparens end of block               |
-| s f                   | M-m s f             | smartparens forward expression         |
-| s h                   | M-m s h             | smartparens backward down expression   |
-| s j                   | M-m s j             | smartparens down expression            |
-| s k                   | M-m s k             | smartparens backward up expression     |
-| s l                   | M-m s l             | smartparens up expression              |
-| s n                   | M-m s n             | smartparens next block                 |
-| s p                   | M-m s p             | smartparens previous block             |
-| s q                   | M-m s q             | [[*Cycle quotes][cycle quotes]]                           |
-| s s                   | M-m s s             | surroundings unwrap                    |
-| s S                   | M-m s S             | surroundings backward unwrap           |
-| s x                   | M-m s x             | smartparens transpose expressions      |
-| s y                   | M-m s y             | smartparens copy expression            |
 | .                     | M-m .               | [[*Multiple cursors][Multiple cursors each line]]             |
 | ,                     | M-m ,               | multiple cursors skip                  |
 | >                     | M-m >               | multiple cursors next                  |
@@ -8083,17 +8081,17 @@ This section documents the key bindings that help to find other key-bindings. No
 | g O                   | C-M-x               | Evaluate function according to mode               |
 | I                     | C-c I               | get info about thing at point ([[*Code documentation][Dash]] fallback)     |
 | S                     | C-c S               | get source of thing at point ([[*Dumb jump][Dumb jump]] fallback) |
-| m b                   | M-m m b             | [[*Start services][start background processes]]                        |
-| m e                   | M-m m e             | [[*Emacs lisp][emacs lisp code menu]]                              |
-| m c                   | M-m m c             | [[*C/C++][c/c++ code menu]]                                   |
-| m p                   | M-m m p             | [[*Python][python code menu]]                                  |
-| m s                   | M-m m s             | [[*Statistics][statistics code menu]]                              |
-| m m                   | M-m m m             | [[*MATLAB][MATLAB code menu]]                                  |
-| m j                   | M-m m j             | [[*Web][JavaScript code menu]]                              |
-| m w                   | M-m m w             | web mode code menu                                |
-| m f                   | M-m m f             | format code menu                                  |
-| m d                   | M-m m d             | [[*Debugging][Debugging code menu]]                               |
-| m t                   | M-m m t             | [[*Tmux integration][Tmux code menu]]                                    |
+| s b                   | M-m s b             | [[*Start services][start background processes]]                        |
+| s e                   | M-m s e             | [[*Emacs lisp][emacs lisp code menu]]                              |
+| s c                   | M-m s c             | [[*C/C++][c/c++ code menu]]                                   |
+| s p                   | M-m s p             | [[*Python][python code menu]]                                  |
+| s s                   | M-m s s             | [[*Statistics][statistics code menu]]                              |
+| s m                   | M-m s m             | [[*MATLAB][MATLAB code menu]]                                  |
+| s j                   | M-m s j             | [[*Web][JavaScript code menu]]                              |
+| s w                   | M-m s w             | web mode code menu                                |
+| s f                   | M-m s f             | format code menu                                  |
+| s d                   | M-m s d             | [[*Debugging][Debugging code menu]]                               |
+| s t                   | M-m s t             | [[*Tmux integration][Tmux code menu]]                                    |
 | ] l                   | M-m ] l             | [[*Error checking][next error]]                                        |
 | [ l                   | M-m [ l             | previous error                                    |
 | SPC l                 | M-m SPC l           | list errors                                       |

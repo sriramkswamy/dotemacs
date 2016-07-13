@@ -336,6 +336,14 @@ While we are in the topic of prompting, a lot of the default prompts ask for a =
 (subword-mode)
 #+END_SRC
 
+** Understand the more common =sentence=
+
+By default, Emacs thinks a sentence is a full-stop followed by 2 spaces. Let's make it full-stop and 1 space.
+
+#+BEGIN_SRC emacs-lisp
+(setq sentence-end-double-space nil)
+#+END_SRC
+
 ** Recenter screen
 
 Emacs lets you move the current line to the top, middle or bottom of the screen to get appropriate context. The default goes to the middle first. I prefer that the default goes to the top first. Let's change this.
@@ -1168,25 +1176,28 @@ Which key modal explanation
 
 ** Goto the last change
 
-[[https://github.com/camdez/goto-last-change.el][This package]] goes to the last place I made a change in the file, and compliments marks.
+[[https://www.emacswiki.org/emacs/GotoChg][This package]] goes to the last place I made a change in the file, and compliments marks.
 
 #+BEGIN_SRC emacs-lisp
-(use-package goto-last-change
+(use-package goto-chg
   :ensure t
-  :bind* (("M-m g ;" . goto-last-change)))
+  :bind* (("M-m g ;" . goto-last-change)
+          ("M-m g ," . goto-last-change-reverse)))
 #+END_SRC
 
 **** Modal binding
 
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "g ;" "M-m g ;")
+(modalka-define-kbd "g ," "M-m g ,")
 #+END_SRC
 
 Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "g ;" "goto last change")
+  "g ;" "goto last change"
+  "g ," "goto last change reverse")
 #+END_SRC
 
 ** Avy
@@ -2815,7 +2826,7 @@ Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "g U"   "insert date")
+  "g D"   "insert date")
 #+END_SRC
 
 *** Rename the current buffer and the file associated with it
@@ -4861,7 +4872,7 @@ We can make Org mode a little more pretty by having [[https://github.com/sabof/o
   (setq org-ref-completion-library 'org-ref-ivy-bibtex)
   (setq org-ref-notes-directory "~/Dropbox/org/references/notes"
         org-ref-bibliography-notes "~/Dropbox/org/references/articles.org"
-        org-ref-default-bibliography '("~/Dropbox/org/references/multiphysics.bib" "~/Dropbox/org/references/chanceconstraints.bib")
+        org-ref-default-bibliography '("~/Dropbox/org/references/multiphysics.bib" "~/Dropbox/org/references/chanceconstraints.bib" "~/Dropbox/org/references/tensors.bib")
         org-ref-pdf-directory "~/Dropbox/org/references/pdfs/"))
 #+END_SRC
 
@@ -4977,6 +4988,93 @@ Which key modal explanation
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
   "i s" "mark inside subtree")
+#+END_SRC
+
+*** Org export as OPML
+
+As mentioned [[*Clean OPML auto-generated file][previously]], [[https://github.com/semk/Org2OPML][Org2OPML]] is a script that converts Org documents to OPML ones. Let's make a wrapper around this so that it is easier to call from a buffer. First, let's download that utility. I have forked it.
+
+#+BEGIN_SRC sh :tangle no
+git clone https://github.com/sriramkswamy/Org2OPML ~/bin/Org2OPML
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+(defun sk/org-opml-map ()
+  "Uses Org2OPML script to generate OPML files"
+  (interactive)
+  (async-shell-command (concat "python ~/bin/Org2OPML/org2opml.py " buffer-file-name)))
+#+END_SRC
+
+**** Key bindings
+
+#+BEGIN_SRC emacs-lisp
+(bind-keys*
+  ("M-m o M" . sk/org-opml-map))
+#+END_SRC
+
+***** Modal binding
+
+#+BEGIN_SRC emacs-lisp
+(modalka-define-kbd "o M" "M-m o M")
+#+END_SRC
+
+Which key modal explanation
+
+#+BEGIN_SRC emacs-lisp
+(which-key-add-key-based-replacements
+  "o M" "org export OPML map")
+#+END_SRC
+
+*** Clean OPML auto-generated file
+
+[[https://github.com/semk/Org2OPML][Org2OPML]] is a neat little script that generates OPML files from Org mode content. This is useful while creating mind maps. However, there is a small nag that it adds an extra outline. This little function, derived from a macro, cleans that.
+
+#+BEGIN_SRC emacs-lisp
+(defun sk/clean-opml ()
+  "Clean that extra outline the org2opml python script puts"
+  (interactive)
+  (beginning-of-buffer)
+  (re-search-forward "=\"\"" nil)
+  (set-mark (point))
+  (forward-char 1)
+  (exchange-point-and-mark)
+  (backward-word 2)
+  (backward-char 1)
+  (if (region-active-p)
+      (let ((beg (region-beginning))
+            (end (region-end)))
+        (kill-region beg end)))
+  (end-of-buffer)
+  (re-search-backward "outline")
+  (set-mark (point))
+  (backward-char 2)
+  (exchange-point-and-mark)
+  (forward-word 1)
+  (forward-char 1)
+  (if (region-active-p)
+      (let ((beg (region-beginning))
+            (end (region-end)))
+        (kill-region beg end))))
+#+END_SRC
+
+**** Key bindings
+
+#+BEGIN_SRC emacs-lisp
+(bind-keys*
+  ("M-m o K" . sk/clean-opml))
+#+END_SRC
+
+***** Modal binding
+
+#+BEGIN_SRC emacs-lisp
+(modalka-define-kbd "o K" "M-m o K")
+#+END_SRC
+
+Which key modal explanation
+
+#+BEGIN_SRC emacs-lisp
+(which-key-add-key-based-replacements
+  "o K" "org clean OPML")
 #+END_SRC
 
 ** Hydras
@@ -7364,7 +7462,7 @@ For now, I have made it look and act the way I want it too. The additional packa
     :ensure t
     :bind* (("M-m SPC b" . helm-bibtex))
     :init
-    (setq bibtex-completion-bibliography '("~/Dropbox/org/references/multiphysics.bib" "~/Dropbox/org/references/chanceconstraints.bib"))
+    (setq bibtex-completion-bibliography '("~/Dropbox/org/references/multiphysics.bib" "~/Dropbox/org/references/chanceconstraints.bib" "~/Dropbox/org/references/tensors.bib"))
     (setq bibtex-completion-library-path "~/Dropbox/org/references/pdfs")
     (setq bibtex-completion-notes-path "~/Dropbox/org/references/articles.org"))
 
@@ -7867,12 +7965,14 @@ This section documents the key bindings that help to find other key-bindings. No
 | ] d                   | M-m ] d             | [[*Turn the adjoining PDF (only with 2 windows)][Turn the adjoining PDF]] next page                  |
 | g [                   | M-m g [             | [[*Turn the adjoining window (only with 2 windows)][Scroll the adjoining window up]]                    |
 | g ]                   | M-m g ]             | Scroll the adjoining window down                  |
-| g F                   | M-m g F             | Synchronize splits                                 |
+| g F                   | M-m g F             | Synchronize splits                                |
 | g m                   | M-m g m             | make frame                                        |
 | g M                   | M-m g M             | close frame                                       |
 | g n                   | M-m g n             | select frame by name                              |
 | g N                   | M-m g N             | name frame                                        |
 | g f                   | M-m g f             | find file/url under cursor                        |
+| g ;                   | M-m g ;             | =goto-last-change=                                  |
+| g ,                   | M-m g ,             | =goto-last-change-reverse=                          |
 | m a                   | M-m m a             | [[*Smartparens][Smartparens]] beginning of block                    |
 | m b                   | M-m m b             | smartparens backward expression                   |
 | m c                   | M-m m c             | smartparens change surroundings                   |
@@ -8010,54 +8110,56 @@ This section documents the key bindings that help to find other key-bindings. No
 ** Org
 
 #+NAME: org_mode
-| Modalka state binding | Emacs state binding | Function                    |
-|-----------------------+---------------------+-----------------------------|
-| o <                   | M-m o <             | org date from calendar      |
-| o >                   | M-m o >             | org goto calendar           |
-| o /                   | M-m o /             | org file =helm-swoop=         |
-| o A                   | M-m o A             | org archive                 |
-| o B                   | M-m o B             | org table blank field       |
-| o C                   | M-m o C             | [[*Clocking functionality][org clocking]]                |
-| o D                   | M-m o D             | [[*Hydra for task management][org deadlines]]               |
-| o E                   | M-m o E             | org set effort              |
-| o F                   | M-m o F             | org attach                  |
-| o H                   | M-m o H             | org heading respect content |
-| o I                   | M-m o I             | org toggle inline images    |
-| o K                   | M-m o K             | org bibtex add keyword      |
-| o L                   | M-m o L             | org toggle link display     |
-| o N                   | M-m o N             | org note                    |
-| o P                   | M-m o P             | [[*Properties][org properties]]              |
-| o R                   | M-m o R             | org refile                  |
-| o S                   | M-m o S             | org make subtree            |
-| o U                   | M-m o U             | update all dblocks          |
-| o V                   | M-m o V             | org reveal                  |
-| o [                   | M-m o [             | org widen                   |
-| o ]                   | M-m o ]             | org narrow to subtree       |
-| o a                   | M-m o a             | org agenda                  |
-| o b                   | M-m o b             | [[*Check boxes][org check box]]               |
-| o c                   | M-m o c             | org capture                 |
-| o d                   | M-m o d             | org todo                    |
-| o e                   | M-m o e             | org export                  |
-| o f                   | M-m o f             | [[*Deft][org filter]]                  |
-| o g                   | M-m o g             | org goto                    |
-| o h                   | M-m o h             | org toggle heading          |
-| o i                   | M-m o i             | org insert link             |
-| o j                   | M-m o j             | [[*Jump][org jump]]                    |
-| o k                   | M-m o k             | org kill subtree            |
-| o l                   | M-m o l             | org latex toggle            |
-| o m                   | M-m o m             | [[*Table manipulation][org manipulate table]]        |
-| o n                   | M-m o n             | [[*Interleave][org interleave]]              |
-| o o                   | M-m o o             | [[*Organize trees][org organize]]                |
-| o p                   | M-m o p             | [[*Org drill][org practice]]                |
-| o q                   | M-m o q             | org quit special buffer     |
-| o r                   | M-m o r             | [[*Org ref][org ref]]                     |
-| o s                   | M-m o s             | org store link              |
-| o t                   | M-m o t             | org tags command            |
-| o u                   | M-m o u             | update dblock               |
-| o v                   | M-m o v             | [[*Agenda view][org agenda view]]             |
-| o w                   | M-m o w             | org edit in special buffer  |
-| o y                   | M-m o y             | org copy subtree            |
-| o z                   | M-m o z             | org clone indirect buffer   |
+| Modalka state binding | Emacs state binding | Function                       |
+|-----------------------+---------------------+--------------------------------|
+| o <                   | M-m o <             | org date from calendar         |
+| o >                   | M-m o >             | org goto calendar              |
+| o /                   | M-m o /             | org file =helm-swoop=            |
+| o A                   | M-m o A             | org archive                    |
+| o B                   | M-m o B             | org table blank field          |
+| o C                   | M-m o C             | [[*Clocking functionality][org clocking]]                   |
+| o D                   | M-m o D             | [[*Hydra for task management][org deadlines]]                  |
+| o E                   | M-m o E             | org set effort                 |
+| o F                   | M-m o F             | org attach                     |
+| o H                   | M-m o H             | org heading respect content    |
+| o I                   | M-m o I             | org toggle inline images       |
+| o K                   | M-m o K             | org bibtex add keyword         |
+| o L                   | M-m o L             | org toggle link display        |
+| o N                   | M-m o N             | org note                       |
+| o P                   | M-m o P             | [[*Properties][org properties]]                 |
+| o R                   | M-m o R             | org refile                     |
+| o S                   | M-m o S             | org make subtree               |
+| o U                   | M-m o U             | update all dblocks             |
+| o V                   | M-m o V             | org reveal                     |
+| o [                   | M-m o [             | org widen                      |
+| o ]                   | M-m o ]             | org narrow to subtree          |
+| o a                   | M-m o a             | org agenda                     |
+| o b                   | M-m o b             | [[*Check boxes][org check box]]                  |
+| o c                   | M-m o c             | org capture                    |
+| o d                   | M-m o d             | org todo                       |
+| o e                   | M-m o e             | org export                     |
+| o f                   | M-m o f             | [[*Deft][org filter]]                     |
+| o g                   | M-m o g             | org goto                       |
+| o h                   | M-m o h             | org toggle heading             |
+| o i                   | M-m o i             | org insert link                |
+| o j                   | M-m o j             | [[*Jump][org jump]]                       |
+| o k                   | M-m o k             | org kill subtree               |
+| o l                   | M-m o l             | org latex toggle               |
+| o m                   | M-m o m             | [[*Table manipulation][org manipulate table]]           |
+| o n                   | M-m o n             | [[*Interleave][org interleave]]                 |
+| o o                   | M-m o o             | [[*Organize trees][org organize]]                   |
+| o p                   | M-m o p             | [[*Org drill][org practice]]                   |
+| o q                   | M-m o q             | org quit special buffer        |
+| o r                   | M-m o r             | [[*Org ref][org ref]]                        |
+| o s                   | M-m o s             | org store link                 |
+| o t                   | M-m o t             | org tags command               |
+| o u                   | M-m o u             | update dblock                  |
+| o v                   | M-m o v             | [[*Agenda view][org agenda view]]                |
+| o w                   | M-m o w             | org edit in special buffer     |
+| o y                   | M-m o y             | org copy subtree               |
+| o z                   | M-m o z             | org clone indirect buffer      |
+| o M                   | M-m o M             | [[*Org export as OPML][Org export as OPML]]             |
+| o K                   | M-m o K             | [[*Clean OPML auto-generated file][Clean OPML auto-generated file]] |
 
 ** Programming
 

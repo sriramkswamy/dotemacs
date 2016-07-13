@@ -14,8 +14,11 @@
 	matlab-linefeed
 	org-cdlatex-underscore-caret
 	org-cycle
+	org-end-of-line
 	org-force-self-insert
+	org-return-indent
 	org-self-insert-command
+	org-yank
 	sk/copy-region-or-line
 	sk/kill-region-or-backward-word
 	sk/remove-mark

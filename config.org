@@ -2813,20 +2813,20 @@ This function is to easily insert date or datetime in the current buffer.
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("M-m g D" . sk/insert-date))
+  ("M-m g u" . sk/insert-date))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "g D" "M-m g D")
+(modalka-define-kbd "g u" "M-m g u")
 #+END_SRC
 
 Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "g D"   "insert date")
+  "g u"   "insert date")
 #+END_SRC
 
 *** Rename the current buffer and the file associated with it
@@ -3124,15 +3124,21 @@ Which key modal explanation
 The built-in command for open-line (triggered by =C-o=) is weird. I prefer Vi style opening of lines. This creates a new line either above or below accordingly and puts you there. I open lines above more than below and hence, prefer that to be a single-key binding. I feel that this kind of opening lines is sensible enough that it has to be the default ([[*Split window and move][like window splitting]]).
 
 #+BEGIN_SRC emacs-lisp
-;; Open line above
-(defun sk/open-line-above ()
-  "Insert a newline above the current line and put point at beginning."
-  (interactive)
-  (unless (bolp)
-    (beginning-of-line))
-  (newline)
-  (forward-line -1)
-  (indent-according-to-mode))
+(defun sk/open-line-above (args)
+  "Insert a new line above the current one or open a new line above for editing"
+  (interactive "P")
+  (if (equal args '(4))
+      (save-excursion
+        (unless (bolp)
+          (beginning-of-line))
+        (newline)
+        (indent-according-to-mode))
+    (unless (bolp)
+      (beginning-of-line))
+    (newline)
+    (forward-line -1)
+    (indent-according-to-mode)
+    (modalka-mode 0)))
 #+END_SRC
 
 **** Key binding
@@ -4013,7 +4019,7 @@ Which key modal explanation
 
 *** Vimish fold
 
-Vimish fold has all these fancy features and I use it much more than Origami. Let's make a hydra for that.
+Vimish fold has all these fancy features and I use it much more than [[*Origami - folding based on indentation/syntax][Origami]]. Let's make a hydra for that.
 
 #+BEGIN_SRC emacs-lisp
 (defhydra sk/hydra-vimish-fold (:color red
@@ -4048,7 +4054,7 @@ Vimish fold has all these fancy features and I use it much more than Origami. Le
 
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "_" "M-m _")
-(modalka-define-kbd "|" "M-m _")
+(modalka-define-kbd "|" "M-m |")
 #+END_SRC
 
 Which key modal explanation
@@ -4135,34 +4141,6 @@ I use LaTeX extensively compared to Markdown (although Org is still preferred fo
   :config
   (progn
     (add-hook 'text-mode-hook 'writegood-mode)))
-#+END_SRC
-
-** Distraction free mode
-
-I really liked the way [[https://bywordapp.com][Byword]] presents a writing interface. However, I really cannot edit there because I'm so used to editing on Emacs. So, let's bring that in to Emacs with a [[https://github.com/rnkn/olivetti][a distraction free package]] and a [[https://github.com/larstvei/Focus][package to focus on sections of text]].
-
-#+BEGIN_SRC emacs-lisp
-;; Distraction free
-(use-package olivetti
-  :ensure t
-  :diminish olivetti-mode
-  :bind* (("M-m g U" . olivetti-mode))
-  :config
-  (progn
-    (olivetti-set-width 100)))
-#+END_SRC
-
-**** Modal binding
-
-#+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "g U" "M-m g U")
-#+END_SRC
-
-Which key modal explanation
-
-#+BEGIN_SRC emacs-lisp
-(which-key-add-key-based-replacements
-  "g U" "distraction free")
 #+END_SRC
 
 ** Custom functions
@@ -4549,7 +4527,7 @@ Finally, we make sure we bind some keys and add some [[http://orgmode.org/manual
           ("M-m o O"   . org-footnote)
           ("M-m o ]"   . org-narrow-to-subtree)
           ("M-m o ["   . widen)
-          ("M-m o N"   . org-note)
+          ("M-m o N"   . org-add-note)
           ("M-m o E"   . org-set-effort)
           ("M-m o B"   . org-table-blank-field)
           ("M-m o <"   . org-date-from-calendar)
@@ -7276,7 +7254,7 @@ For now, I have made it look and act the way I want it too. The additional packa
           ("M-m SPC h i" . helm-info-at-point)
           ("M-m SPC h d" . helm-man-woman)
           ("M-m SPC h h" . helm-documentation)
-          ("M-m g u"     . helm-run-external-command)
+          ("M-m SPC h e" . helm-run-external-command)
           ("M-m ;"       . helm-all-mark-rings)
           ("M-m SPC h x" . helm-select-xfont)
           ("M-m t"       . helm-semantic-or-imenu))
@@ -7552,7 +7530,6 @@ For now, I have made it look and act the way I want it too. The additional packa
 (modalka-define-kbd "g /" "M-m g /")
 (modalka-define-kbd "o /" "M-m o /")
 (modalka-define-kbd "g e" "M-m g e")
-(modalka-define-kbd "g u" "M-m g u")
 (modalka-define-kbd "SPC i" "C-c C-e")
 (modalka-define-kbd "SPC r" "M-m SPC r")
 (modalka-define-kbd "SPC b" "M-m SPC b")
@@ -7562,6 +7539,7 @@ For now, I have made it look and act the way I want it too. The additional packa
 (modalka-define-kbd "SPC m" "M-m SPC m")
 (modalka-define-kbd "SPC M" "M-m SPC M")
 (modalka-define-kbd "SPC h r" "M-m SPC h r")
+(modalka-define-kbd "SPC h e" "M-m SPC h e")
 (modalka-define-kbd "SPC h w" "M-m SPC h w")
 (modalka-define-kbd "SPC h i" "M-m SPC h i")
 (modalka-define-kbd "SPC h R" "M-m SPC h R")
@@ -7589,7 +7567,6 @@ Which key modal explanation
   "g /"     "multi file search"
   "o /"     "org swoop"
   "g e"     "extract word from dir"
-  "g u"     "external command"
   "SPC r"   "find any file"
   "SPC C"   "color picker"
   "SPC t"   "helm edit mode"
@@ -7599,6 +7576,7 @@ Which key modal explanation
   "SPC F"   "find command"
   "SPC h"   "helm prefix"
   "SPC h r" "resume last helm "
+  "SPC h e" "external command"
   "SPC h w" "AWS instances"
   "SPC h i" "information at point"
   "SPC h R" "build regexp"
@@ -8080,7 +8058,7 @@ This section documents the key bindings that help to find other key-bindings. No
 | g K                   | M-m g K             | [[*Delete the current buffer and the file associated with it][delete current file]]                    |
 | g y                   | M-m g y             | [[*Copy the current file path][copy current file path]]                 |
 | g d                   | M-m g d             | [[*Duplicate line or region][Duplicate line or region]]               |
-| g D                   | M-m g D             | [[*Insert date or date and time][Insert date or date and time]]           |
+| g u                   | M-m g u             | [[*Insert date or date and time][Insert date or date and time]]           |
 | [ w                   | M-m [ w             | [[*Transposing words][exchange with previous word]]            |
 | ] w                   | M-m ] w             | exchange with next word                |
 | [ c                   | M-m [ c             | [[*Transposing characters][exchange with previous character]]       |
@@ -8104,7 +8082,6 @@ This section documents the key bindings that help to find other key-bindings. No
 | -                     | M-m -               | [[*Vimish fold - Fold regions based on selection][fold toggle]]              |
 | _                     | M-m _               | [[*Vimish fold][fold menu]]                |
 | g a                   | M-m g a             | [[*Activate minor modes][Activate minor modes]]     |
-| g U                   | M-m g U             | [[*Distraction free mode][Distraction free mode]]    |
 | g *                   | M-m g *             | [[*Highlight thing at point][Highlight thing at point]] |
 
 ** Org
@@ -8206,7 +8183,6 @@ This section documents the key bindings that help to find other key-bindings. No
 | Modalka state binding | Emacs state binding | Function                                |
 |-----------------------+---------------------+-----------------------------------------|
 | ;                     | M-m ;               | all marks                               |
-| g u                   | M-m g u             | run external command                    |
 | SPC t                 | C-c C-e             | helm swoop edit mode                    |
 | SPC b                 | M-m SPC b           | helm bibtex                             |
 | SPC r                 | M-m SPC r           | =helm-for-files=                          |
@@ -8216,6 +8192,7 @@ This section documents the key bindings that help to find other key-bindings. No
 | SPC C                 | M-m SPC C           | color picker                            |
 | SPC F                 | M-m SPC F           | use the =find= utility                    |
 | SPC h r               | M-m SPC h r         | helm resume                             |
+| SPC h e               | M-m SPC h e         | run external command                    |
 | SPC h s               | M-m SPC h s         | helm correct spelling                   |
 | SPC h w               | M-m SPC h w         | manage [[https://aws.amazon.com/cli/][AWS via aws cli]]                  |
 | SPC h j               | M-m SPC h j         | manage [[*IRC][IRC]] buffers                      |

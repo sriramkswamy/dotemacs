@@ -904,6 +904,7 @@ This is based on Vi-style but only slightly and uses the default movement keys i
 ***** User prefix for common functions
 
 #+BEGIN_SRC emacs-lisp
+(modalka-define-kbd "g U" "C-c C-k")
 (modalka-define-kbd "SPC j" "M-x")
 (modalka-define-kbd "SPC a" "C-x b")
 (modalka-define-kbd "SPC k" "C-x k")
@@ -912,7 +913,6 @@ This is based on Vi-style but only slightly and uses the default movement keys i
 (modalka-define-kbd "SPC q" "C-x 0")
 (modalka-define-kbd "SPC f" "C-x C-f")
 (modalka-define-kbd "SPC w" "C-x C-s")
-(modalka-define-kbd "SPC o" "C-c C-k")
 (modalka-define-kbd "SPC c" "M-m SPC c")
 (modalka-define-kbd "SPC R" "M-m SPC R")
 (modalka-define-kbd "SPC ?" "M-m SPC ?")
@@ -1007,7 +1007,7 @@ I have added the which key explanations for everything at once because it is eas
   "g j" "next pdf page"
   "g k" "previous pdf page"
   "g f" "file/url at cursor"
-  "g F" "focus on sections"
+  "g F" "enable follow mode"
   "g o" "eval elisp"
   "g O" "eval defun"
   "g w" "vertical split win"
@@ -1078,7 +1078,7 @@ I have added the which key explanations for everything at once because it is eas
   "SPC c" "load theme"
   "SPC R" "locate"
   "SPC q" "quit window"
-  "SPC o" "C-c C-k")
+  "g U"   "simulate C-c C-k")
 #+END_SRC
 
 ** Hydras
@@ -1471,15 +1471,15 @@ Which key modal explanation
 (use-package dash-at-point
   :ensure t
   :bind (("C-c I" . dash-at-point))
-  :bind* (("M-m SPC y" . dash-at-point-with-docset)
-          ("M-m SPC Y" . dash-at-point)))
+  :bind* (("M-m SPC i" . dash-at-point-with-docset)
+          ("M-m SPC I" . dash-at-point)))
 #+END_SRC
 
 **** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "SPC y" "M-m SPC y")
-(modalka-define-kbd "SPC Y" "M-m SPC Y")
+(modalka-define-kbd "SPC i" "M-m SPC i")
+(modalka-define-kbd "SPC I" "M-m SPC I")
 (modalka-define-kbd "I"     "C-c I")
 #+END_SRC
 
@@ -1488,8 +1488,8 @@ Which key modal explanation
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
   "I"     "info at point"
-  "SPC y" "documentation prompt"
-  "SPC Y" "documentation at point")
+  "SPC i" "documentation prompt"
+  "SPC I" "documentation at point")
 #+END_SRC
 
 ** Custom functions
@@ -1921,20 +1921,20 @@ Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("M-m SPC t" . sk/hydra-of-windows/body))
+  ("M-m SPC u" . sk/hydra-of-windows/body))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "SPC t" "M-m SPC t")
+(modalka-define-kbd "SPC u" "M-m SPC u")
 #+END_SRC
 
 Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "SPC t" "window menu")
+  "SPC u" "window menu")
 #+END_SRC
 
 *** Bookmark navigation
@@ -2813,20 +2813,20 @@ This function is to easily insert date or datetime in the current buffer.
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("M-m g u" . sk/insert-date))
+  ("M-m g D" . sk/insert-date))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "g u" "M-m g u")
+(modalka-define-kbd "g D" "M-m g D")
 #+END_SRC
 
 Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "g u"   "insert date")
+  "g D"   "insert date")
 #+END_SRC
 
 *** Rename the current buffer and the file associated with it
@@ -4145,22 +4145,38 @@ I use LaTeX extensively compared to Markdown (although Org is still preferred fo
 
 ** Custom functions
 
-*** Hard line wrap
+*** Hard and Soft line wrap
 
-I usually just use the built-in [[https://www.emacswiki.org/emacs/VisualLineMode][visual line mode]] which acts like a soft-wrap that is seen in most modern prose editors. However, there are situations where a hard line break is preferable. This function taken from [[http://endlessparentheses.com/fill-and-unfill-paragraphs-with-a-single-key.html][the endless paranthesis blog]] enables toggling it with a function.
+I usually just use the built-in [[https://www.emacswiki.org/emacs/VisualLineMode][visual line mode]] which acts like a soft-wrap that is seen in most modern prose editors. However, there are situations where a hard line break is preferable, like in LaTeX. To do that, we make use of the built-in function =fill-paragraph=. This function, taken from [[https://www.emacswiki.org/emacs/UnfillParagraph][EmacsWiki]], does the opposite.
 
 #+BEGIN_SRC emacs-lisp
-(defun sk/fill-or-unfill ()
-  "Like `fill-paragraph', but unfill if used twice."
-  (interactive)
-  (let ((fill-column
-         (if (eq last-command 'sk/fill-or-unfill)
-             (progn (setq this-command nil)
-                    (point-max))
-           fill-column)))
-    (call-interactively #'fill-paragraph)))
+(defun sk/unfill-paragraph (&optional region)
+      "Takes a multi-line paragraph and makes it into a single line of text."
+      (interactive (progn (barf-if-buffer-read-only) '(t)))
+      (let ((fill-column (point-max))
+            ;; This would override `fill-column' if it's an integer.
+            (emacs-lisp-docstring-fill-column t))
+        (fill-paragraph nil region)))
+#+END_SRC
 
-(global-set-key [remap fill-paragraph] #'sk/fill-or-unfill)
+**** Key binding
+
+#+BEGIN_SRC emacs-lisp
+(bind-keys*
+  ("M-m g Q" . sk/unfill-paragraph))
+#+END_SRC
+
+***** Modal binding
+
+#+BEGIN_SRC emacs-lisp
+(modalka-define-kbd "g Q" "M-m g Q")
+#+END_SRC
+
+Which key modal explanation
+
+#+BEGIN_SRC emacs-lisp
+(which-key-add-key-based-replacements
+  "g Q" "unfill paragraph")
 #+END_SRC
 
 * Org
@@ -5055,6 +5071,37 @@ Which key modal explanation
   "o K" "org clean OPML")
 #+END_SRC
 
+*** Open article notes
+
+This function open my notes on the various research articles I have read.
+
+#+BEGIN_SRC emacs-lisp
+  (defun sk/open-article-notes ()
+    "Opens the article notes from anywhere. Hard coded stuff"
+    (interactive)
+    (find-file "~/Dropbox/org/references/articles.org"))
+#+END_SRC
+
+**** Key binding
+
+#+BEGIN_SRC emacs-lisp
+(bind-keys*
+  ("M-m SPC o" . sk/open-article-notes))
+#+END_SRC
+
+***** Modal binding
+
+#+BEGIN_SRC emacs-lisp
+(modalka-define-kbd "SPC o" "M-m SPC o")
+#+END_SRC
+
+Which key modal explanation
+
+#+BEGIN_SRC emacs-lisp
+(which-key-add-key-based-replacements
+  "SPC o" "open article notes")
+#+END_SRC
+
 ** Hydras
 
 There is so much functionality packed into org and those modifier keys are hard to press. Let's leverage [[*Hydras][Hydras]].
@@ -5845,20 +5892,23 @@ Which key modal explanation
 #+BEGIN_SRC emacs-lisp
 (use-package browse-at-remote
   :ensure t
-  :bind* (("M-m g i" . browse-at-remote)))
+  :bind* (("M-m g i" . browse-at-remote)
+          ("M-m g I" . browse-at-remote-kill)))
 #+END_SRC
 
 **** Modal binding
 
 #+BEGIN_SRC emacs-lisp
 (modalka-define-kbd "g i" "M-m g i")
+(modalka-define-kbd "g I" "M-m g I")
 #+END_SRC
 
 Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
   (which-key-add-key-based-replacements
-    "g i" "browse file/region remote")
+    "g i" "browse file/region remote"
+    "g I" "copy remote URL")
 #+END_SRC
 
 * Programming
@@ -6598,8 +6648,8 @@ Which key modal explanation
 (use-package multi-term
   :ensure t
   :commands (multi-term)
-  :bind* (("M-m SPC u" . sk/multi-term-vertical)
-          ("M-m SPC U". sk/multi-term-horizontal)))
+  :bind* (("M-m SPC t" . sk/multi-term-vertical)
+          ("M-m SPC T". sk/multi-term-horizontal)))
 #+END_SRC
 
 Let's also define a couple of wrapper functions to open this in splits.
@@ -6626,23 +6676,23 @@ Let's also define a couple of wrapper functions to open this in splits.
 
 #+BEGIN_SRC emacs-lisp
 (bind-keys*
-  ("M-m SPC u" . sk/multi-term-vertical)
-  ("M-m SPC U" . sk/multi-term-horizontal))
+  ("M-m SPC t" . sk/multi-term-vertical)
+  ("M-m SPC T" . sk/multi-term-horizontal))
 #+END_SRC
 
 ***** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "SPC u" "M-m SPC u")
-(modalka-define-kbd "SPC U" "M-m SPC U")
+(modalka-define-kbd "SPC t" "M-m SPC t")
+(modalka-define-kbd "SPC T" "M-m SPC T")
 #+END_SRC
 
 Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "SPC u" "multi-term vertical split"
-  "SPC U" "multi-term horizontal split")
+  "SPC t" "terminal vertical split"
+  "SPC T" "terminal horizontal split")
 #+END_SRC
 
 *** Interacting with Tmux
@@ -7530,7 +7580,7 @@ For now, I have made it look and act the way I want it too. The additional packa
 (modalka-define-kbd "g /" "M-m g /")
 (modalka-define-kbd "o /" "M-m o /")
 (modalka-define-kbd "g e" "M-m g e")
-(modalka-define-kbd "SPC i" "C-c C-e")
+(modalka-define-kbd "g u" "C-c C-e")
 (modalka-define-kbd "SPC r" "M-m SPC r")
 (modalka-define-kbd "SPC b" "M-m SPC b")
 (modalka-define-kbd "SPC x" "M-m SPC x")
@@ -7569,7 +7619,7 @@ Which key modal explanation
   "g e"     "extract word from dir"
   "SPC r"   "find any file"
   "SPC C"   "color picker"
-  "SPC t"   "helm edit mode"
+  "g u"     "simulate C-c C-e"
   "SPC b"   "bibliography"
   "SPC x"   "helm apropos"
   "SPC J"   "helm major mode cmds"
@@ -7624,26 +7674,26 @@ And while we are it, why not go ahead and [[https://github.com/bcbcarl/emacs-wtt
 #+BEGIN_SRC emacs-lisp
 (use-package howdoi
   :ensure t
-  :bind* (("M-m g I" . howdoi-query)
-          ("M-m g Y" . howdoi-query-line-at-point)
-          ("M-m g Q" . howdoi-query-insert-code-snippet-at-point)))
+  :bind* (("M-m g Y"   . howdoi-query)
+          ("M-m SPC y" . howdoi-query-line-at-point)
+          ("M-m SPC Y" . howdoi-query-insert-code-snippet-at-point)))
 #+END_SRC
 
 **** Modal binding
 
 #+BEGIN_SRC emacs-lisp
-(modalka-define-kbd "g I" "M-m g I")
 (modalka-define-kbd "g Y" "M-m g Y")
-(modalka-define-kbd "g Q" "M-m g Q")
+(modalka-define-kbd "SPC y" "M-m SPC y")
+(modalka-define-kbd "SPC Y" "M-m SPC Y")
 #+END_SRC
 
 Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "g I" "howdoi query"
-  "g Y" "howdoi query line"
-  "g Q" "howdoi query insert code")
+  "g Y" "howdoi query"
+  "SPC y" "howdoi query line"
+  "SPC Y" "howdoi query insert code")
 #+END_SRC
 
 ** XKCD
@@ -7788,7 +7838,7 @@ Which key modal explanation
 
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements
-  "A" "google this")
+  "A" "ask google")
 #+END_SRC
 
 *** Hydra
@@ -7920,7 +7970,7 @@ This section documents the key bindings that help to find other key-bindings. No
 | #                     | M-m #               | helm - swoop = with cursor word                   |
 | g j                   | M-m g j             | next PDF page                                     |
 | g k                   | M-m g k             | previous PDF page                                 |
-| SPC t                 | M-m SPC t           | [[*Window navigation][Window navigation hydra]]                           |
+| SPC u                 | M-m SPC u           | [[*Window navigation][Window navigation hydra]]                           |
 | w                     | C-x o               | switch to other window                            |
 | W                     | M-m W               | undo window configuration                         |
 | Z                     | M-m Z               | [[*Toggle zoom][zoom in to the current window]]                     |
@@ -7981,8 +8031,8 @@ This section documents the key bindings that help to find other key-bindings. No
 | SPC v                 | M-m SPC v           | [[*Open the =config.org= file][view configuration file]]                           |
 | SPC j                 | M-x                 | find command                                      |
 | SPC J                 | M-X                 | find command in current mode                      |
-| SPC y                 | M-m SPC y           | [[*Code documentation][browse code documentation]] with docset             |
-| SPC Y                 | M-m SPC Y           | browse code docs immediately                      |
+| SPC i                 | M-m SPC i           | [[*Code documentation][browse code documentation]] with docset             |
+| SPC I                 | M-m SPC I           | browse code docs immediately                      |
 
 ** Editing
 
@@ -8005,7 +8055,7 @@ This section documents the key bindings that help to find other key-bindings. No
 | g J                   | M-m g J             | [[*Join line][join line]]                              |
 | ~                     | M-m ~               | [[*Toggle case][Toggle case]]                            |
 | g u                   | M-m g u             | lower case region                      |
-| g q                   | M-q                 | [[*Hard line wrap][format or unformat paragraph]]           |
+| g q                   | M-q                 | [[*Hard and Soft line wrap][Hard and Soft line wrap]]                |
 | g c                   | M-m g c             | [[*Commenting][comment line or region]]                 |
 | v                     | C-SPC               | start selecting region                 |
 | V                     | M-m V               | [[*Rectangle edit mode][rectangle edit menu]]                    |
@@ -8051,14 +8101,12 @@ This section documents the key bindings that help to find other key-bindings. No
 | *                     | M-m *               | [[*Interactive edit][Interactive edit all instances]]         |
 | \                     | C-c C-c             | simulate C-c C-c                       |
 | SPC w                 | C-x C-s             | save                                   |
-| SPC o                 | C-c C-k             | simulate C-c C-k - usually destructive |
-| SPC i                 | C-c C-e             | simulate C-c C-e - usually toggle edit |
 | SPC SPC               | M-m SPC SPC         | [[*Visual replace][Visually replace words]]                 |
 | g R                   | M-m g R             | [[*Rename the current buffer and the file associated with it][rename current file]]                    |
 | g K                   | M-m g K             | [[*Delete the current buffer and the file associated with it][delete current file]]                    |
 | g y                   | M-m g y             | [[*Copy the current file path][copy current file path]]                 |
 | g d                   | M-m g d             | [[*Duplicate line or region][Duplicate line or region]]               |
-| g u                   | M-m g u             | [[*Insert date or date and time][Insert date or date and time]]           |
+| g D                   | M-m g D             | [[*Insert date or date and time][Insert date or date and time]]           |
 | [ w                   | M-m [ w             | [[*Transposing words][exchange with previous word]]            |
 | ] w                   | M-m ] w             | exchange with next word                |
 | [ c                   | M-m [ c             | [[*Transposing characters][exchange with previous character]]       |
@@ -8071,6 +8119,8 @@ This section documents the key bindings that help to find other key-bindings. No
 | g +                   | M-m g +             | [[*Increase or decrease number at point][Increase number at point]]               |
 | g -                   | M-m g -             | Decrease number at point               |
 | "                     | M-m "               | [[*Registers][Registers menu]]                         |
+| g u                   | C-c C-e             | simulate C-c C-e - toggle edit modes   |
+| g U                   | C-c C-k             | simulate C-c C-k - kill current action |
 
 ** Visual aids
 
@@ -8137,6 +8187,7 @@ This section documents the key bindings that help to find other key-bindings. No
 | o z                   | M-m o z             | org clone indirect buffer      |
 | o M                   | M-m o M             | [[*Org export as OPML][Org export as OPML]]             |
 | o K                   | M-m o K             | [[*Clean OPML auto-generated file][Clean OPML auto-generated file]] |
+| SPC o                 | M-m SPC o           | [[*Open article notes][Open article notes]]             |
 
 ** Programming
 
@@ -8145,6 +8196,7 @@ This section documents the key bindings that help to find other key-bindings. No
 |-----------------------+---------------------+---------------------------------------------------|
 | SPC e                 | M-m SPC e           | [[*Magit][explore git repository]]                            |
 | g i                   | M-m g i             | [[*Browse remote files][Browse remote files]]                               |
+| g I                   | M-m g I             | copy remote file URL                              |
 | g b                   | M-m g b             | git blame                                         |
 | ] h                   | M-m ] h             | [[*Highlight diffs][next git hunk]]                                     |
 | [ h                   | M-m [ h             | previous git hunk                                 |
@@ -8174,8 +8226,8 @@ This section documents the key bindings that help to find other key-bindings. No
 | SPC l                 | M-m SPC l           | list errors                                       |
 | SPC s                 | M-m SPC s           | [[*Eshell][Eshell vertical split]]                             |
 | SPC S                 | M-m SPC S           | Eshell horizontal split                           |
-| SPC u                 | M-m SPC u           | [[*Multi term][Multi term vertical split]]                         |
-| SPC U                 | M-m SPC U           | Multi term horizontal split                       |
+| SPC t                 | M-m SPC t           | [[*Multi term][Terminal vertical split]]                           |
+| SPC T                 | M-m SPC T           | Terminal horizontal split                         |
 
 ** Helm
 
@@ -8183,7 +8235,6 @@ This section documents the key bindings that help to find other key-bindings. No
 | Modalka state binding | Emacs state binding | Function                                |
 |-----------------------+---------------------+-----------------------------------------|
 | ;                     | M-m ;               | all marks                               |
-| SPC t                 | C-c C-e             | helm swoop edit mode                    |
 | SPC b                 | M-m SPC b           | helm bibtex                             |
 | SPC r                 | M-m SPC r           | =helm-for-files=                          |
 | SPC x                 | M-m SPC x           | helm apropos                            |
@@ -8215,9 +8266,9 @@ This section documents the key bindings that help to find other key-bindings. No
 | A                     | M-m A               | Google variable or region      |
 | g G                   | M-m g G             | [[*Google stuff][Google menu]]                    |
 | g X                   | M-m g X             | [[*XKCD][XKCD]]                           |
-| g I                   | M-m g I             | [[*How do I do something?][howdoi query]]                   |
-| g Y                   | M-m g Y             | howdoi query line              |
-| g Q                   | M-m g Q             | howdoi query insert code       |
+| g Y                   | M-m g Y             | [[*How do I do something?][howdoi query]]                   |
+| SPC y                 | M-m SPC y           | howdoi query line              |
+| SPC Y                 | M-m SPC Y           | howdoi query insert code       |
 | g x                   | M-m g x             | [[*Manage the built-in browser =eww=][open with the built-in browser]] |
 | g :                   | M-m g :             | open in external browser       |
 | g #                   | M-m g #             | eww history                    |

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: nikola preview image
+# key: nimg
+# --
+#+NIKOLA_PREVIEWIMAGE: ${1:image}

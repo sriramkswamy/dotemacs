@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: square
+# key: sq
+# --
+{ $1 }^2

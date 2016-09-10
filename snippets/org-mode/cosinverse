@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: cos inverse
+# key: cosi
+# --
+\cos^{-1}{ $1 }

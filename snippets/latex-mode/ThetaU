@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: Theta Upper Case
+# key: The
+# binding: direct-keybinding
+# --
+\Theta

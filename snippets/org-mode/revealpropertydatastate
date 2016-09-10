@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: reveal data state property
+# key: rdsp
+# --
+:reveal_data_state: ${1:alert/blackout/soothe}

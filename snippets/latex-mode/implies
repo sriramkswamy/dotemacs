@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: implies
+# key: imp
+# binding: direct-keybinding
+# --
+\implies

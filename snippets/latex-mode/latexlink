@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: latex link
+# key: ll
+# --
+\href{\url{${2:url}}{${1:description}}}

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: double partial
+# key: pp
+# --
+\partial^2{ $1 }

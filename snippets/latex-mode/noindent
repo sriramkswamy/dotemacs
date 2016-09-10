@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: noindent
+# key: noi
+# binding: direct-keybinding
+# --
+\noindent

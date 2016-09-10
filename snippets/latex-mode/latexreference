@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: latex reference
+# key: lr
+# --
+~\ref{$1}

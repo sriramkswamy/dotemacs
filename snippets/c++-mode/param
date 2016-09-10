@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# contributor: Sriram Krishnaswamy
+# name: param
+# key: @p
+# condition: 'force-in-comment
+# --
+ * @param ${1:argument} ${2:argument description}$0

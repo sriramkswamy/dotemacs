@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: big double differential fraction
+# key: Dff
+# --
+\frac{ \mathrm{D}^2{ $1 } }{ \mathrm{D}{ $2 }^2 }

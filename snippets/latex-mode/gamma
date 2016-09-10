@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: Gamma
+# key: gam
+# binding: direct-keybinding
+# --
+\gamma

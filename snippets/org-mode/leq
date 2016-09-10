@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: less than oe equal to
+# key: leq
+# --
+\leq $0

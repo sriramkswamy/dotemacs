@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: big differential fraction
+# key: Df
+# --
+\frac{ \mathrm{D} $1 }{ \mathrm{D} $2 }

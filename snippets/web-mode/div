@@ -1,0 +1,8 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: div
+# key: div
+# binding: direct-keybinding
+# --
+<div align="${2:$$(yas-choose-value '("right" "center" "left"))}">
+  $0
+</div>

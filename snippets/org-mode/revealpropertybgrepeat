@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: reveal background repeat property
+# key: rbpr
+# --
+:reveal_background_repeat: ${1:repeat}

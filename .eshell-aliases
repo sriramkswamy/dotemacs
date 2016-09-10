@@ -1,0 +1,78 @@
+############
+#  Emacs   #
+############
+
+# Eshell specific
+alias f find-file $1
+alias d dired $1
+
+############
+#  Common  #
+############
+
+# General Utilities
+alias ls ls -GFh
+alias profile vim ~/.alias
+alias gscompress gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dNOPAUSE -dQUIET -dBATCH -sOutputFile=gs-compressed.pdf 
+alias pingu ping www.google.com
+alias please sudo $fc -ln -1
+
+# Compilers and related
+alias mcc /usr/local/openmpi/bin/mpicc -lgsl -lcblas -llapack -g
+alias mpp /usr/local/openmpi/bin/mpic++ -lgsl -lcblas -llapack -g
+alias mrun /usr/local/openmpi/bin/mpirun
+alias mexec /usr/local/openmpi/bin/mpiexec
+alias mpi4py /usr/local/openmpi/bin/mpiexec -n 4 python
+alias ipopt g++ -Wall -fopenmp -lgsl -lcblas -llapack -I/usr/local/ipopt/include -L/usr/local/ipopt/lib -g
+alias tril /usr/local/openmpi/bin/mpic++ -I/usr/local/trilinos/include -L/usr/local/trilinos/lib -lgsl -lcblas -llapack -g
+
+# Command line programs
+alias mk latexmk -pvc -pdf
+alias pandoc pandoc -V geometry:margin=1in
+alias ofoam hdiutil attach -quiet -mountpoint $HOME/OpenFOAM $HOME/OpenFOAM.sparsebundle; sleep 1; source $HOME/OpenFOAM/OpenFOAM-2.3.1/etc/bashrc
+alias valmem valgrind --leak-check=full --show-leak-kinds=all --dsymutil=yes --leak-check-heuristics=all --log-file=valmem.log --leak-resolution=low
+alias valcall valgrind --tool=callgrind --log-file=valcall.log
+alias valmass valgrind --tool=massif --log-file=valmass.log
+alias valhel valgrind --tool=helgrind --log-file=valhel.log
+alias set dk6=export JAVA_HOME=$/usr/libexec/java_home -v 1.6
+alias set dk7=export JAVA_HOME=$/usr/libexec/java_home -v 1.7
+alias set dk8=export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)
+alias gistclip gist -Pcd
+
+# Directories
+alias cda cd ~/Documents/workspace/algorithms
+alias cdb cd ~/Box\ Sync
+alias cdc cd ~/Documents/workspace/pycfd
+alias cdd cd ~/Downloads/
+alias cdt cd ~/Documents/workspace/TensorMethods
+alias cdf cd ~/Documents/workspace/cfokker
+alias cdg cd ~/Documents/workspace/github
+alias cdj cd ~/Documents/workspace/java
+alias cdl cd ~/Documents/workspace/lorenz
+alias cdm cd ~/Documents/workspace/matfokker
+alias cdn cd ~/Dropbox/notes
+alias cdr cd ~/Documents/workspace/sriramkswamy.github.io
+alias cdw cd ~/Documents/workspace/
+
+#########################
+#  OS X specific stuff  #
+#########################
+
+# Sage
+alias sage /Applications/Sage-6.8.app/Contents/Resources/sage/sage
+
+# Matlab
+alias matlab /Applications/MATLAB_R2014a.app/bin/matlab -nodesktop -nosplash
+alias matlabd /Applications/MATLAB_R2014a.app/bin/matlab
+
+# Firefox
+alias firefox open -a "/Applications/Firefox.app/Contents/MacOS/firefox"
+
+# Xcode
+alias xcodeinstall xcode-select --install
+
+# Power
+alias coffee caffeinate -u -t 10800
+
+# Network
+alias whatsmyip ipconfig getifaddr en0

@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: latex subsection
+# key: lsub
+# --
+\subsection${1:*}{ $2 }
+\label{sub:$3}

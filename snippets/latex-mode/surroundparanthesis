@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: Surround paranthesis
+# key: ssp
+# binding: direct-keybinding
+# --
+\left( $1 \right)

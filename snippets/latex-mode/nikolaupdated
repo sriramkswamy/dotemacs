@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: nikola updated
+# key: nup
+# --
+#+NIKOLA_UPDATED: ${1:2016}/${2:01}/${0:31}

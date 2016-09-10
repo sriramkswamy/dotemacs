@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: Tensor product
+# key: oti
+# binding: direct-keybinding
+# --
+\otimes

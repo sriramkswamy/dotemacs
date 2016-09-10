@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: cos square
+# key: coss
+# --
+\cos^2{ $1 }

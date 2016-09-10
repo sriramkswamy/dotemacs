@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: latex description
+# key: lde
+# --
+\begin{description}
+\item[ $1 ] $2
+
+\end{description}

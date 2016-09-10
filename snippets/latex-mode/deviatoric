@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: deviatoric stress
+# key: dev
+# --
+d_{ ${1:ij} }

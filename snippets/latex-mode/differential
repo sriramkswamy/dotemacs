@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: differential symbol
+# key: d
+# binding: direct-keybinding
+# --
+\mathrm{d} { $1 }

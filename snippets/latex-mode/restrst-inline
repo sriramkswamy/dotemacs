@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: rst inline in org
+# key: srsi
+# --
+@@$0@@

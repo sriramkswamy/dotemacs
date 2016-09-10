@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: Phi
+# key: phii
+# binding: direct-keybinding
+# --
+\phi

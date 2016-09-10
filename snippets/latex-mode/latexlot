@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: latex list of tables
+# key: llot
+# --
+\listoftables
+

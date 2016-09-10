@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: Delta Upper Case
+# key: Del
+# binding: direct-keybinding
+# --
+\Delta

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: nikola description
+# key: ndes
+# --
+#+DESCRIPTION: ${1:description text}

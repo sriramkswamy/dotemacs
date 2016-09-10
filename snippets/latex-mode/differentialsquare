@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: differential square
+# key: d2
+# --
+\mathrm{d} { $1 }^2

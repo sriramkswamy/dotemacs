@@ -1,0 +1,8 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: math newline
+# key: ma
+# binding: direct-keybinding
+# --
+\[
+$1
+\]

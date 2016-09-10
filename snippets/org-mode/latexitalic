@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: latex italicize font
+# key: lif
+# --
+\textit{ $1 }

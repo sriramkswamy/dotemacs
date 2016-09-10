@@ -1,0 +1,13 @@
+/abbrev_defs
+anaconda-mode/*
+auto-save-list/*
+/bookmarks
+/custom.el
+elps/*
+elpa/*
+eshell/*
+/history
+/projectile-bookmarks.eld
+/recentf
+/smex-items
+/srecode-map.el

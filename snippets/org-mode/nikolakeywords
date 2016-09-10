@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: nikola keywords
+# key: nkey
+# --
+#+KEYWORDS: ${1:tags}

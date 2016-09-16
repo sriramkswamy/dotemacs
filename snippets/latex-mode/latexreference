@@ -2,4 +2,4 @@
 # name: latex reference
 # key: lr
 # --
-~\ref{$1}
+$1~\ref{$0}

@@ -411,7 +411,7 @@ abort completely with `C-g'."
           (message "\"%s\" now expands to \"%s\" %sally"
                    bef aft (if p "loc" "glob")))
       (user-error "No typo at or before point"))))
-(general-define-key "C-=" 'sk/ispell-word-then-abbrev)
+(general-imap "C-s" 'sk/ispell-word-then-abbrev)
 
 ;; Set fonts
 (cond ((eq system-type 'gnu/linux)                                             ; if system is GNU/Linux
@@ -516,6 +516,14 @@ abort completely with `C-g'."
     (insert " ")))
 (general-nmap "[b" 'sk/blank-char-before)
 (general-nmap "]b" 'sk/blank-char-after)
+
+;; turn on some nice soft wrapping and flyspell for any mode
+(defun sk/writing-helpers ()
+  "writing helpers for any text based mode"
+  (interactive)
+  (flyspell-mode)
+  (visual-line-mode))
+(general-nvmap :prefix sk--evil-global-leader "=" 'sk/writing-helpers)
 
 ;; provide this configuration
 (provide 'sk-functions)

@@ -18,11 +18,12 @@
 (setq coding-system-for-write 'utf-8)                                          ; use utf-8 by default for writing
 (setq sentence-end-double-space nil)                                           ; sentence SHOULD end with only a point.
 (setq default-fill-column 80)                                                  ; toggle wrapping text at the 80th character
-(setq initial-scratch-message "(hello-human)")                              ; print a default message in the empty scratch buffer opened at startup
+(setq initial-scratch-message "(hello-human)")                                 ; print a default message in the empty scratch buffer opened at startup
+(menu-bar-mode -1)                                                             ; deactivate the menubar
 (when window-system                                                            ; when the GUI is active
-  (tool-bar-mode 0)                                                            ; deactivate the toolbar
-  (scroll-bar-mode 0)                                                          ; deactivate the scrollbar
-  (tooltip-mode 0))                                                            ; deactivate the tooltips
+  (tool-bar-mode -1)                                                           ; deactivate the toolbar
+  (scroll-bar-mode -1)                                                         ; deactivate the scrollbar
+  (tooltip-mode -1))                                                           ; deactivate the tooltips
 (setq initial-frame-alist                                                      ; initial frame size
       '((width . 102)                                                          ; characters in a line
 	(height . 54)))                                                        ; number of lines
@@ -184,8 +185,8 @@
   :ensure t
   :commands (yas-insert-snippet yas-new-snippet)
   :general
-  (general-imap "C-j" 'yas-insert-snippet)
-  (general-imap "C-," 'yas-new-snippet)
+  (general-imap "C-a" 'yas-insert-snippet)
+  (general-imap "C-n" 'yas-new-snippet)
   :diminish (yas-minor-mode . " γ")
   :config
   (setq yas/triggers-in-field t); Enable nested triggering of snippets
@@ -207,34 +208,37 @@
 ;; Avy - simulating a mouse click
 (use-package avy		     ; avy - a replacement to ace-jump
   :ensure t			     ; ensure the package is loaded
+  :demand t
   :init				     ; configuration before the package is laded
   (setq avy-keys-alist		     ; what keys to use for clicking
         `((avy-goto-char-timer . (?j ?k ?l ?f ?s ?d))
 	  (avy-goto-char-2 . (?j ?k ?l ?f ?s ?d ?e ?r ?u ?i))
           (avy-goto-line . (?j ?k ?l ?f ?s ?d ?e ?r ?u ?i))))
   (setq avy-style 'pre)			; where the characters should be placed
+  (setq avy-background t)		; always highlight the background
   :general				; `general.el' maps
   (general-nmap "-" nil)
-  (general-nmap "-" 'avy-goto-line)
-  (general-omap "-" 'avy-goto-line)
-  (general-vmap "-" 'avy-goto-line)
-  (general-mmap "-" 'avy-goto-line)
+  (general-nmap "M" nil)
+  (general-nmap "M" 'avy-goto-line)
+  (general-omap "M" 'avy-goto-line)
+  (general-vmap "M" 'avy-goto-line)
+  (general-mmap "M" 'avy-goto-line)
+  (general-nmap "-" 'avy-goto-char-2)
+  (general-omap "-" 'avy-goto-char-2)
+  (general-vmap "-" 'avy-goto-char-2)
+  (general-mmap "-" 'avy-goto-char-2)
   :config
   (use-package ace-link
     :ensure t
+    :demand t
     :general
-    (general-evil-define-key '(normal visual motion) help-mode-map
-      "o" 'ace-link-help)
-    (general-evil-define-key '(normal visual motion) info-mode-map
-      "o" 'ace-link-info)
-    (general-evil-define-key '(normal visual motion) eww-mode-map
-      "o" 'ace-link-eww)
-    (general-evil-define-key '(normal visual motion) woman-mode-map
-      "o" 'ace-link-woman)
-    (general-evil-define-key '(normal visual motion) compilation-mode-map
-      "o" 'ace-link-compilation)
-    (general-evil-define-key '(normal visual motion) custom-mode-map
-      "o" 'ace-link-custom)
+    (general-nvmap :prefix "\\"
+		   "h" 'ace-link-help
+		   "i" 'ace-link-info
+		   "w" 'ace-link-eww
+		   "m" 'ace-link-woman
+		   "c" 'ace-link-compilation
+		   "u" 'ace-link-custom)
     :config
     (ace-link-setup-default)))
 
@@ -249,6 +253,7 @@
 ;; tags based navigation
 (use-package ggtags
   :ensure t
+  :defer 2
   :diminish ggtags-mode
   :general
   (general-nmap "T" '(ggtags-find-tag-regexp :which-key "tags in project"))
@@ -278,6 +283,8 @@
   :ensure t
   :general
   (general-nvmap "J" '(dumb-jump-go :which-key "jump to source"))
+  :init
+  (setq dumb-jump-selector 'ivy)
   :config
   (dumb-jump-mode))
 
@@ -286,9 +293,6 @@
   :ensure t
   :general
   (general-nvmap "gK" 'dash-at-point))
-
-;; ivy
-(require 'sk-ivy)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Debugging using GDB    ;;
@@ -308,12 +312,12 @@
 ;;    Improve aesthetics      ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; better theme
-(use-package color-theme-sanityinc-tomorrow
+;; better themes
+(use-package zenburn-theme
   :ensure t
   :demand t
   :config
-  (load-theme 'sanityinc-tomorrow-eighties t))
+  (load-theme 'zenburn t))
 
 ;; rainbow paranthesis for easier viewing
 (use-package rainbow-delimiters
@@ -326,6 +330,15 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Convenience packages    ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; easy copying between system clipboard and Emacs kill ring
+(use-package simpleclip
+  :ensure t
+  :general
+  (general-nvmap :prefix "\\"
+		 "d" 'simpleclip-cut
+		 "y" 'simpleclip-copy
+		 "p" 'simpleclip-paste))
 
 ;; cleanup whitespace
 (use-package ws-butler
@@ -368,41 +381,62 @@
     :mode ("\\.markdown\\'" "\\.mkd\\'" "\\.md\\'")))
 
 ;; LaTeX support
-(use-package tex-site
-  :ensure auctex
-  :ensure auctex-latexmk
-  :ensure latex-preview-pane
-  :diminish reftex-mode
-  :mode (("\\.tex\\'" . LaTeX-mode)
-         ("\\.xtx\\'" . LaTeX-mode))
+(use-package latex-mode
+  :defer 2
+  :mode (("\\.tex\\'" . latex-mode)
+	 ("\\.xtx\\'" . latex-mode))
   :init
-  (setq reftex-default-bibliography '("~/Dropbox/references/references.bib"))
   (setq TeX-auto-save t)
   (setq TeX-parse-self t)
   (setq-default TeX-master nil)
-  (add-hook 'LaTeX-mode-hook 'visual-line-mode)
-  (add-hook 'LaTeX-mode-hook 'flyspell-mode)
-  (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
-  (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
-  (setq reftex-plug-into-AUCTeX t)
   (setq TeX-PDF-mode t)
   :config
-  ;; Use Skim as viewer, enable source <-> PDF sync
-  ;; make latexmk available via C-c C-c
-  ;; Note: SyncTeX is setup via ~/.latexmkrc (see below)
-  (add-hook 'LaTeX-mode-hook (lambda ()
-                               (push
-                                '("latexmk" "latexmk -xelatex -pdf %s" TeX-run-TeX nil t
-                                  :help "Run latexmk on file")
-                                TeX-command-list)))
-  (add-hook 'TeX-mode-hook '(lambda () (setq TeX-command-default "latexmk")))
+  (use-package auctex
+    :ensure t
+    :demand t
+    :config
+    (use-package auctex-latexmk
+      :ensure t))
+  (use-package reftex
+    :ensure t
+    :diminish reftex-mode
+    :init
+    (setq reftex-plug-into-AUCTeX t)
+    (setq reftex-default-bibliography '("~/Dropbox/PhD/articles/tensors/tensors.bib"))))
+;; custom function to setup latex mode properly - why isn't the normal use-package definition working?
+(defun sk/setup-latex ()
+  "hooks to setup latex properly"
+  (interactive)
+  (visual-line-mode)
+  (flyspell-mode)
+  (auctex-latexmk-setup)
+  (reftex-mode)
+  (turn-on-reftex))
+(defun sk/diminish-reftex ()
+  "diminish reftex because use-package is unable to do it"
+  (interactive)
+  (diminish 'reftex-mode))
+(add-hook 'reftex-mode-hook 'sk/diminish-reftex)
+(general-nvmap :prefix sk--evil-global-leader "-" 'sk/setup-latex)
 
-  ;; use Skim as default pdf viewer
-  ;; Skim's displayline is used for forward search (from .tex to .pdf)
-  ;; option -b highlights the current line; option -g opens Skim in the background
-  (setq TeX-view-program-selection '((output-pdf "PDF Viewer")))
-  (setq TeX-view-program-list
-        '(("PDF Viewer" "/Applications/Skim.app/Contents/SharedSupport/displayline -b -g %n %o %b"))))
+;; awesome latex magic
+(use-package magic-latex-buffer
+  :ensure t
+  :diminish (magic-latex-buffer . " μ")
+  :diminish iimage-mode
+  :init
+  (setq magic-latex-enable-subscript t
+	magic-latex-enable-pretty-symbols t)
+  :general
+  (general-nvmap :prefix sk--evil-global-leader
+		 "'" 'magic-latex-buffer))
+
+;; preview latex in emacs (GUI only)
+(use-package latex-preview-pane
+  :ensure t
+  :general
+  (general-nvmap :prefix sk--evil-global-leader
+		 ";" 'latex-preview-pane-mode))
 
 ;; pick out weasel words
 (use-package writegood-mode
@@ -411,6 +445,7 @@
   :general
   (general-nmap "g]" 'writegood-grade-level)
   (general-nmap "g[" 'writegood-reading-ease)
+  (general-nvmap :prefix sk--evil-global-leader "." 'writegood-mode)
   :config
   (progn
     (add-hook 'text-mode-hook 'writegood-mode)))
@@ -460,8 +495,8 @@
   (general-nvmap "[h" 'diff-hl-previous-hunk)
   (general-nvmap "]h" 'diff-hl-next-hunk)
   (general-tomap "h" 'diff-hl-mark-hunk)
-  (general-tomap "gh" 'diff-hl-diff-goto-hunk)
-  (general-tomap "gH" 'diff-hl-revert-hunk)
+  (general-nvmap "gh" 'diff-hl-diff-goto-hunk)
+  (general-nvmap "gH" 'diff-hl-revert-hunk)
   :config
   (global-diff-hl-mode)
   (diff-hl-flydiff-mode)
@@ -581,7 +616,7 @@
   :general
   (general-nmap "[l" 'flycheck-previous-error)
   (general-nmap "]l" 'flycheck-next-error)
-  (general-nmap :prefix sk--evil-global-leader "l" 'flycheck-list-error)
+  (general-nmap :prefix sk--evil-global-leader "l" 'flycheck-list-errors)
   :config
   (global-flycheck-mode))
 
@@ -601,23 +636,26 @@
     '(add-to-list 'company-backends '(company-files
 				      company-capf)))
   :general
-  (general-evil-define-key 'insert company-active-map
-    "C-n" 'company-select-next
-    "C-p" 'company-select-previous
-    "RET" 'company-complete-selection
-    "C-w" 'backward-kill-word
-    "C-c" 'company-abort
-    "C-c" 'company-search-abort)
-  :bind* (("C-c f" . company-files)
-	  ("C-c a" . company-dabbrev)
-	  ("C-c d" . company-ispell))
-  :diminish (company-mode . "ς")
+  (general-imap "C-d" 'company-complete)
+  :bind (("C-c f" . company-files)
+	 ("C-c a" . company-dabbrev)
+	 ("C-c d" . company-ispell)
+	 :map company-active-map
+	 ("C-n"    . company-select-next)
+	 ("C-p"    . company-select-previous)
+	 ([return] . company-complete-selection)
+	 ([tab]    . yas/expand)
+	 ("C-f"    . company-search-filtering)
+	 ("C-w"    . backward-kill-word)
+	 ("C-c"    . company-abort)
+	 ("C-c"    . company-search-abort))
+  :diminish (company-mode . " ς")
   :config
   (global-company-mode)
   ;; C++ header completion
   (use-package company-c-headers
     :ensure t
-    :bind* (("C-c c" . company-c-headers))
+    :bind (("C-c c" . company-c-headers))
     :config
     (add-to-list 'company-backends 'company-c-headers))
   ;; Python auto completion
@@ -629,7 +667,7 @@
   ;; Tern for JS
   (use-package company-tern
     :ensure t
-    :bind* (("C-c t" . company-tern))
+    :bind (("C-c t" . company-tern))
     :init
     (setq company-tern-property-marker "")
     (setq company-tern-meta-as-single-line t)
@@ -638,13 +676,13 @@
   ;; HTML completion
   (use-package company-web
     :ensure t
-    :bind* (("C-c w" . company-web-html))
+    :bind (("C-c w" . company-web-html))
     :config
     (add-to-list 'company-backends 'company-web-html))
   ;; LaTeX autocompletion
   (use-package company-auctex
     :ensure t
-    :bind* (("C-c l" . company-auctex))
+    :bind (("C-c l" . company-auctex))
     :config
     (add-to-list 'company-backends 'company-auctex)))
 
@@ -677,6 +715,16 @@
   (interactive)
   (message (concat "I know who you are, " user-full-name)))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;    Narrowing packages    ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; ivy
+;; (require 'sk-ivy)
+;; helm
+(require 'sk-helm)
+(helm-ido-like)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Included packages    ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -692,3 +740,4 @@
 (when (file-exists-p (concat user-emacs-directory "local.el"))
   (load-file (concat user-emacs-directory "local.el")))
 
+(put 'scroll-left 'disabled nil)

@@ -1,7 +1,7 @@
 ;; dired to view directories
 (use-package dired                                                             ; directory viewing and manipulating
   :general                                                                     ; map using the `general.el' package
-  (general-evil-define-key '(normal visual) 'dired-mode-map                     ; dired mode map
+  (general-evil-define-key '(normal visual) dired-mode-map                     ; dired mode map
     "G" (general-simulate-keys "M->" t "end of buffer")
     "gg" (general-simulate-keys "M-<" t "beginning of buffer"))
   :init                                                                        ; settings to be loaded before package loading
@@ -16,7 +16,7 @@
 (use-package doc-view
   :mode ("\\.pdf$" . doc-view-mode)
   :general
-  (general-evil-define-key '(normal visual) 'doc-view-mode-map ; doc-view mode map
+  (general-evil-define-key '(normal visual) doc-view-mode-map ; doc-view mode map
     "l" (general-simulate-keys "n" t "next page")
     "h" (general-simulate-keys "p" t "prev page")
     "j" (general-simulate-keys "SPC" t "scroll down")
@@ -31,7 +31,7 @@
 ;; package menu mode
 (use-package package-menu
   :general
-  (general-evil-define-key '(normal visual) 'package-menu-mode-map ; package-menu mode map
+  (general-evil-define-key '(normal visual) package-menu-mode-map ; package-menu mode map
     "j" (general-simulate-keys "n" t "next package")
     "k" (general-simulate-keys "p" t "prev package")
     "u" (general-simulate-keys "U" t "update")
@@ -44,7 +44,7 @@
 ;; debugger mode
 (use-package debugger
   :general
-  (general-evil-define-key '(normal visual) 'debugger-mode-map ; debugger mode map
+  (general-evil-define-key '(normal visual) debugger-mode-map ; debugger mode map
     "q" (general-simulate-keys "q" t "quit")))
 
 ;; flyspell mode
@@ -74,10 +74,29 @@
 	eshell-buffer-shorthand t
 	eshell-history-size 1024
 	eshell-cmpl-ignore-case t
+	eshell-prompt-function (lambda () (concat " $ "))
 	eshell-aliases-file (concat user-emacs-directory ".eshell-aliases")
 	eshell-last-dir-ring-size 512)
   :config
   (add-hook 'shell-mode-hook 'goto-address-mode))
+
+;; diminish auto-revert mode
+(defun sk/diminish-auto-revert ()
+  (interactive)
+  (diminish 'auto-revert-mode ""))
+(add-hook 'auto-revert-mode-hook 'sk/diminish-auto-revert)
+
+;; special mode
+(use-package special
+  :general
+  (general-evil-define-key '(normal visual) special-mode-map
+    "q" (general-simulate-keys "q" t "quit")))
+
+;; help mode
+(use-package help
+  :general
+  (general-evil-define-key '(normal visual) help-mode-map
+    "q" (general-simulate-keys "q" t "quit")))
 
 ;; provide this
 (provide 'sk-included)

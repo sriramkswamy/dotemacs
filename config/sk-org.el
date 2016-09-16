@@ -153,9 +153,6 @@
 	org-outline-path-complete-in-steps nil)
 
   :config
-  ;; fly through org headings - applicable in insert mode
-  (use-package worf
-    :ensure t)
 ;; mark inside subtree
   (defun sk/mark-inside-subtree ()
     (interactive)
@@ -197,7 +194,6 @@
     :ensure t
     :defer t)
   ;; some nice hooks for org
-  (add-hook 'org-mode-hook 'worf-mode)
   (add-hook 'org-mode-hook 'visual-line-mode)
   (add-hook 'org-mode-hook 'flyspell-mode)
   ;; More of those nice template expansion
@@ -217,7 +213,7 @@
   (add-to-list 'org-structure-template-alist '("X" "#+EXCLUDE_TAGS: reveal?"))
   (add-to-list 'org-structure-template-alist '("a" "#+AUTHOR: ?"))
   (add-to-list 'org-structure-template-alist '("c" "#+CAPTION: ?"))
-  (add-to-list 'org-structure-template-alist '("d" "#+OPTIONS: ':nil *:t -:t ::t <:t H:3 \\n:nil ^:t arch:headline\n#+OPTIONS: author:t email:nil e:t f:t inline:t creator:nil d:nil date:t\n#+OPTIONS: toc:nil num:nil tags:nil todo:nil p:nil pri:nil stat:nil c:nil d:nil\n#+LATEX_HEADER: \\usepackage[margin=2cm]{geometry}\n#+LANGUAGE: en\n\n#+REVEAL_TRANS: slide\n#+REVEAL_THEME: white\n#+REVEAL_ROOT: file:///Users/sriramkswamy/Documents/workspace/github/reveal.js\n\n?"))
+  (add-to-list 'org-structure-template-alist '("d" "#+OPTIONS: ':nil *:t -:t ::t <:t H:3 \\n:nil ^:t arch:headline\n#+OPTIONS: author:t email:nil e:t f:t inline:t creator:nil d:nil date:t\n#+OPTIONS: toc:nil num:nil tags:nil todo:nil p:nil pri:nil stat:nil c:nil d:nil\n#+LATEX_HEADER: \\usepackage[margin=2cm]{geometry}\n#+LANGUAGE: en\n\n#+REVEAL_TRANS: slide\n#+REVEAL_THEME: white\n#+REVEAL_ROOT: file:///Users/sriramkswamy/Documents/github/reveal.js\n\n?"))
   (add-to-list 'org-structure-template-alist '("e" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC"))
   (add-to-list 'org-structure-template-alist '("f" "#+TAGS: @?"))
   (add-to-list 'org-structure-template-alist '("h" "#+BEGIN_HTML\n?\n#+END_HTML\n"))
@@ -255,7 +251,7 @@
 			   "n" '(org-add-note :which-key "note")
 			   "r" '(org-reveal :which-key "reveal")
 			   "R" '(org-refile :which-key "refile")
-			   "s" '(org-edit-special :which-key "special edit")
+			   "s" (general-simulate-keys "C-c '" t "special edit")
 			   "S" '(org-store-link :which-key "store link")
 			   "t" '(org-set-tags-command :which-key "tags")
 			   "T" '(org-todo :which-key "tasks")
@@ -316,6 +312,7 @@
      ;; (octave . t)
      (matlab . t)
      (python . t))))
+(general-nvmap :prefix sk--evil-global-leader "," 'sk/org-custom-load)
 
 ;; deft - for quickly searching org files
 (use-package deft

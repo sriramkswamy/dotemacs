@@ -4,12 +4,22 @@
 (general-nvmap :prefix sk--evil-global-leader
 	       "[" 'isend-associate
 	       "]" 'isend-send)
+;; diminish isend
+(defun sk/diminish-isend ()
+  (interactive)
+  (diminish 'isend-mode ""))
+(add-hook 'isend-mode-hook 'sk/diminish-isend)
 
 ;; interact with tmux
 (use-package emamux
   :ensure t
   :commands (emamux:send-command
 	     emamux:run-command
+	     emamux:run-region
+	     emamux:new-window
+	     emamux:clone-current-frame
+	     emamux:split-window
+	     emamux:split-window-horizontally
 	     emamux:run-last-command
 	     emamux:zoom-runner
 	     emamux:inspect-runner
@@ -23,14 +33,14 @@
 (defhydra hydra-emamux (:color red
 			:hint nil)
   "
- ^Command^    ^Runner^                          ^Clipboard^
-^^^^^^^^^^-----------------------------------------------------------------
- _s_: send    _r_: run        _c_: close          _y_: copy kill    _q_: quit
-	    _l_: last cmd   _C_: close other    _p_: paste tmux
-	    _z_: zoom       _h_: clear hist
-	    _i_: inspect    _I_: interrupt
-"
-  ("s" emamux:send-command)
+ ^Command^       ^Runner^                          ^Clipboard^       ^tmux^
+^^^^^^^^^^----------------------------------------------------------------------------------------------
+ _s_: region     _r_: run        _c_: close          _y_: copy kill    _w_: new window        _q_: quit
+ _S_: command    _l_: last cmd   _C_: close other    _p_: paste tmux   _f_: clone frame
+	       _z_: zoom       _h_: clear hist                     _v_: split vertically
+	       _i_: inspect    _I_: interrupt                      _V_: split horizontally"
+  ("s" emamux:run-region)
+  ("S" emamux:send-command)
   ("r" emamux:run-command)
   ("l" emamux:run-last-command)
   ("z" emamux:zoom-runner)
@@ -41,9 +51,18 @@
   ("I" emamux:interrupt-runner)
   ("y" emamux:copy-kill-ring)
   ("p" emamux:yank-from-list-buffers)
+  ("w" emamux:new-window)
+  ("f" emamux:clone-current-frame)
+  ("v" emamux:split-window-horizontally)
+  ("V" emamux:split-window)
   ("q" nil :color blue))
-(general-nvmap :prefix sk--evil-global-leader
-	       "x" 'hydra-emamux/body)
+(general-nvmap "'" 'hydra-emamux/body)
+;; zoom into the tmux pane (tmux > 1.8)
+;; tmux resize-pane -Z
+(defun sk/zoom-tmux ()
+  (interactive)
+  (shell-command "tmux resize-pane -Z"))
+(general-nvmap "gz" 'sk/zoom-tmux)
 
 ;; quickly launch and run stuff
 (use-package quickrun

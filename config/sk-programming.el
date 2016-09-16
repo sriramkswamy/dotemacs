@@ -180,7 +180,11 @@
 			   "s" 'python-shell-send-region)
   :config
   (setq python-shell-interpreter "ipython"
-	python-shell-interpreter-args "-i")
+	python-shell-interpreter-args "--simple-prompt -i")
+  ;; (setq ansi-color-for-comint-mode t)
+  ;; (setq python-shell-interpreter "python3")
+  (setq python-shell-native-complete nil)
+  (add-to-list 'python-shell-completion-native-disabled-interpreters "python3")
   ;; python semantic analyzer
   (use-package anaconda-mode
     :ensure t
@@ -202,14 +206,35 @@
     (progn
       (add-hook 'python-mode-hook 'anaconda-mode))))
 
-;; virtualenv support
+;; virtualenv packages integration
 (use-package pyenv-mode
   :ensure t
   :general
   (general-evil-define-key 'normal python-mode-map :prefix sk--evil-local-leader
-			   "v" 'pyenv-mode
 			   "e" 'pyenv-mode-set
-			   "u" 'pyenv-mode-unset))
+			   "u" 'pyenv-mode-unset)
+  :config
+  (pyenv-mode))
+
+;; virtualenv wrapper
+(use-package virtualenvwrapper
+  :ensure t
+  :general
+  (general-evil-define-key 'normal python-mode-map :prefix sk--evil-local-leader
+			   "w" 'venv-workon
+			   "vd" 'venv-deactivate
+			   "vl" 'venv-lsvirtualenv
+			   "vm" 'venv-mkvirtualenv
+			   "vr" 'venv-rmvirtualenv
+			   "vc" 'venv-cdvirtualenv
+			   "vp" 'venv-cpvirtualenv
+			   "l" 'venv-set-location)
+  :config
+  (setq eshell-prompt-function
+	(lambda ()
+	  (concat venv-current-name " $ ")))
+  (venv-initialize-interactive-shells)
+  (venv-initialize-eshell))
 
 ;; Format python code
 (use-package py-yapf
@@ -280,16 +305,22 @@
               ("C-c C-c" . term-interrupt-subjob))
   :init
   (setq matlab-shell-command "/Applications/MATLAB_R2016a.app/bin/matlab"
+	matlab-mode-install-path "/Applications/MATLAB_R2016a.app/toolbox/"
         matlab-indent-function t)
   (eval-after-load 'matlab
-    '(add-to-list 'matlab-shell-command-switches "-nosplash"))
+    '(add-to-list 'matlab-shell-command-switches "-nodesktop -nosplash"))
   :general
+  (general-nvmap "J" 'matlab-function-called-at-point
+		 "K" 'matlab-shell-describe-command)
   (general-evil-define-key '(normal visual) matlab-mode-map :prefix sk--evil-local-leader
 			   "r" 'matlab-shell
 			   "R" 'matlab-show-matlab-shell-buffer
 			   "s" 'matlab-shell-run-region-or-line
 			   "S" 'matlab-shell-run-cell
-			   "c" 'matlab-shell-run-command))
+			   "c" 'matlab-shell-run-command
+			   "t" 'matlab-shell-topic-browser
+			   "v" 'matlab-shell-describe-variable
+			   "l" 'matlab-show-line-info))
 
 ;;;;;;;;;;;;;;;
 ;;    Web    ;;
@@ -440,7 +471,7 @@
 ;; emmet for easy HTML
 (use-package emmet-mode
   :ensure t
-  :diminish (emmet-mode . "ε")
+  :diminish (emmet-mode . " ε")
   :general
   (general-imap "C-o" 'emmet-expand-line)
   (general-imap "C-y" 'emmet-prev-edit-point)

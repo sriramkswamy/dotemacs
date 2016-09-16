@@ -17,53 +17,59 @@
     :diminish undo-tree-mode
     :general
     (general-nmap "U" 'undo-tree-visualize))
-  (setq evil-normal-state-modes (append evil-emacs-state-modes evil-normal-state-modes))
+  (setq evil-normal-state-modes (append evil-emacs-state-modes evil-motion-state-modes evil-normal-state-modes))
   (setq evil-emacs-state-modes nil)	        ; let there be no emacs state modes. add them all to normal state
+  (setq evil-motion-state-modes nil)	        ; let there be no emacs state modes. add them all to normal state
   (evil-mode 1))
 ;; remove conflicting maps
-(general-nmap "gw" nil)
+(general-nvmap "gw" nil)
+(general-nvmap "Z" nil)
 ;; global leader maps
-(general-nmap :prefix sk--evil-global-leader  ; create a global leader map
-	      "" '(nil :which-key "user prefix")
-	      "q" '(evil-quit :which-key "quit window/emacs")
-	      "k" '(evil-delete-buffer :which-key "kill buffer")
-	      "r" (general-simulate-keys "C-x b" t "switch buffers")
-	      "f" (general-simulate-keys "C-x C-f" t "find files")
-	      "j" (general-simulate-keys "M-x" t "command")
-	      "y" (general-simulate-keys "M-y" t "yank ring")
-	      "h" (general-simulate-keys "C-h" t "help")
-	      "v" 'clone-indirect-buffer-other-window
-	      "w" 'save-buffer)
-;; maps under 'co' and 'c'
-(general-nmap "c" (general-key-dispatch #'evil-change
-		    "ow" #'toggle-word-wrap
-		    "ov" #'visual-line-mode
-		    "os" #'flyspell-mode
-		    "ob" #'display-battery-mode
-		    "ot" #'display-time-mode
-		    "og" #'writegood-mode
-		    "oo" #'sk/org-custom-load
-		    "d" #'dired
-		    "c" #'evil-change-whole-line))
-(general-vmap "c" 'evil-change)
+(general-nvmap :prefix sk--evil-global-leader  ; create a global leader map
+	       "" '(nil :which-key "user prefix")
+	       "q" '(evil-quit :which-key "quit window/emacs")
+	       "k" '(evil-delete-buffer :which-key "kill buffer")
+	       "r" (general-simulate-keys "C-x b" t "switch buffers")
+	       "f" (general-simulate-keys "C-x C-f" t "find files")
+	       "j" (general-simulate-keys "M-x" t "command")
+	       "J" (general-simulate-keys "M-X" t "major mode command")
+	       "y" (general-simulate-keys "M-y" t "yank ring")
+	       "h" (general-simulate-keys "C-h" t "help")
+	       "v" 'clone-indirect-buffer-other-window
+	       "TAB" 'mode-line-other-buffer
+	       "w" 'save-buffer)
 ;; other remaps
-(general-nvmap "'" (general-simulate-keys "C-c '" t "C-c '"))
+(general-nvmap :prefix sk--evil-global-leader
+	       "x" (general-simulate-keys "C-c C-k" t "abort")
+	       "X" (general-simulate-keys "C-c C-g" t "abort"))
 (general-nvmap "`" (general-simulate-keys "C-c C-c" t "C-c C-c"))
-(general-nvmap "\\" (general-simulate-keys "C-c C-k" t "C-c C-k"))
+(general-nvmap "g=" 'flyspell-mode)
+(general-nvmap "g+" 'flyspell-prog-mode)
+(general-nvmap "g-" 'visual-line-mode)
 (general-nvmap "gn" 'narrow-to-region)
 (general-nvmap "gN" 'narrow-to-defun)
 (general-nvmap "gs" 'widen)
-(general-nmap "go" (general-simulate-keys "C-x C-e" t "eval"))
-(general-nmap "w" (general-simulate-keys "C-x o" t "other window"))
-(general-nmap "gz" (general-simulate-keys "C-x 1" t "only window"))
-(general-nmap "W" 'winner-undo)
-(general-nmap "gW" 'winner-redo)
-(general-nmap "gS" (general-simulate-keys "C-j" t "split line"))
-(general-nmap "gJ" 'evil-join)
+(general-nvmap "go" (general-simulate-keys "C-x C-e" t "eval"))
+(general-nvmap "w" (general-simulate-keys "C-x o" t "other window"))
+(general-nvmap "Z" (general-simulate-keys "C-x 1" t "only window"))
+(general-nvmap "W" 'winner-undo)
+(general-nvmap "gW" 'winner-redo)
+(general-nvmap "gS" (general-simulate-keys "C-j" t "split line"))
+(general-nvmap "gJ" 'evil-join)
+(general-nvmap "H" 'scroll-right)
+(general-nvmap "L" 'scroll-left)
+(general-imap "C-p" 'hippie-expand)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Evil editing integration    ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; better '%' command
+(use-package evil-matchit
+  :ensure t
+  :demand t
+  :config
+  (global-evil-matchit-mode 1))
 
 ;; better commenting
 (use-package evil-commentary
@@ -202,16 +208,6 @@
   (smartparens-global-strict-mode)
   (show-smartparens-global-mode)
   (add-hook 'smartparens-mode-hook 'evil-smartparens-mode))
-
-;; execute some god state commands if need be
-(use-package evil-god-state
-  :ensure t
-  :general
-  (general-nmap "\\" 'evil-execute-in-god-state)
-  :config
-  (add-hook 'evil-god-state-entry-hook (lambda () (diminish 'god-local-mode)))
-  (add-hook 'evil-god-state-exit-hook (lambda () (diminish-undo 'god-local-mode)))
-  (evil-define-key 'god global-map [escape] 'evil-god-state-bail))
 
 ;; provide the configuration
 (provide 'sk-evil)

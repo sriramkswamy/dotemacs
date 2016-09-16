@@ -1,3 +1,9 @@
+;; Call the terminal
+(defun sk/call-terminal ()
+  (interactive)
+  (shell-command "open -a /Applications/Utilities/Terminal.app"))
+(general-nvmap "Q" 'sk/call-terminal)
+
 ;; send stuff to any buffer
 (add-to-list 'load-path (concat user-emacs-directory "lisp/isend-mode"))
 (require 'isend)

@@ -18,8 +18,9 @@
     :general
     (general-nmap "U" 'undo-tree-visualize))
   (setq evil-normal-state-modes (append evil-emacs-state-modes evil-motion-state-modes evil-normal-state-modes))
-  (setq evil-emacs-state-modes nil)	        ; let there be no emacs state modes. add them all to normal state
-  (setq evil-motion-state-modes nil)	        ; let there be no emacs state modes. add them all to normal state
+  (setq evil-emacs-state-modes nil)	        ; let there be no emacs state modes until I later add magit
+  (setq evil-motion-state-modes nil)	        ; let there be no emacs state modes
+  (evil-set-initial-state 'magit-popup-mode 'emacs)
   (evil-mode 1))
 ;; remove conflicting maps
 (general-nvmap "gw" nil)

@@ -47,6 +47,10 @@
   (general-evil-define-key '(normal visual) debugger-mode-map ; debugger mode map
     "q" (general-simulate-keys "q" t "quit")))
 
+;; man mode
+(general-evil-define-key '(normal visual) man-mode-map ; man mode map
+    "q" (general-simulate-keys "q" t "quit"))
+
 ;; flyspell mode
 (use-package flyspell
   :diminish (flyspell-mode . " φ"))

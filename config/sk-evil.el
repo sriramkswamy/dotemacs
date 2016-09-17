@@ -38,6 +38,7 @@
 	       "h" (general-simulate-keys "C-h" t "help")
 	       "v" 'clone-indirect-buffer-other-window
 	       "TAB" 'mode-line-other-buffer
+	       "<tab>" 'mode-line-other-buffer
 	       "w" 'save-buffer)
 ;; other remaps
 (general-nvmap :prefix sk--evil-global-leader
@@ -59,7 +60,7 @@
 (general-nvmap "gJ" 'evil-join)
 (general-nvmap "H" 'scroll-right)
 (general-nvmap "L" 'scroll-left)
-(general-imap "C-p" 'hippie-expand)
+(general-nvmap "g!" 'async-shell-command)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Evil editing integration    ;;

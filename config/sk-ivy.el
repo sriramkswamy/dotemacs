@@ -13,6 +13,7 @@
   :demand t
   :init
   (setq ivy-use-virtual-buffers t)
+  (setq ivy-virtual-abbreviate 'full)
   (setq ivy-re-builders-alist
 	'((counsel-M-x . ivy--regex-fuzzy)
 	  (t . ivy--regex-plus)))

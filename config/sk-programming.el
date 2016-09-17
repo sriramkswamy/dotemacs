@@ -305,12 +305,12 @@
               ("C-c C-c" . term-interrupt-subjob))
   :init
   (setq matlab-shell-command "/Applications/MATLAB_R2016a.app/bin/matlab"
-	matlab-mode-install-path "/Applications/MATLAB_R2016a.app/toolbox/"
+	matlab-mode-install-path '("~/Dropbox/PhD/codes/ttmat" "/Applications/MATLAB_R2016a.app/toolbox")
         matlab-indent-function t)
   (eval-after-load 'matlab
     '(add-to-list 'matlab-shell-command-switches "-nodesktop -nosplash"))
   :general
-  (general-nvmap "J" 'matlab-function-called-at-point
+  (general-nvmap "J" 'matlab-find-file-on-path
 		 "K" 'matlab-shell-describe-command)
   (general-evil-define-key '(normal visual) matlab-mode-map :prefix sk--evil-local-leader
 			   "r" 'matlab-shell

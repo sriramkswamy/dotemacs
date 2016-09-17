@@ -20,10 +20,9 @@
 (setq default-fill-column 80)                                                  ; toggle wrapping text at the 80th character
 (setq initial-scratch-message "(hello-human)")                                 ; print a default message in the empty scratch buffer opened at startup
 (menu-bar-mode -1)                                                             ; deactivate the menubar
-(when window-system                                                            ; when the GUI is active
-  (tool-bar-mode -1)                                                           ; deactivate the toolbar
-  (scroll-bar-mode -1)                                                         ; deactivate the scrollbar
-  (tooltip-mode -1))                                                           ; deactivate the tooltips
+(tool-bar-mode -1)                                                             ; deactivate the toolbar
+(scroll-bar-mode -1)                                                           ; deactivate the scrollbar
+(tooltip-mode -1)                                                              ; deactivate the tooltip
 (setq initial-frame-alist                                                      ; initial frame size
       '((width . 102)                                                          ; characters in a line
 	(height . 54)))                                                        ; number of lines
@@ -54,6 +53,7 @@
 (savehist-mode)                                                                ; keep persistent history
 (subword-mode)                                                                 ; move correctly over camelCase words
 (add-to-list 'load-path (expand-file-name "config" user-emacs-directory))      ; load more configuration from the 'config' folder
+(put 'scroll-left 'disabled nil)                                               ; enable sideward scrolling
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Package management    ;;
@@ -538,7 +538,6 @@
 ;; start services
 (use-package prodigy
   :ensure t
-  :defer t
   :commands (prodigy)
   :general
   (general-nvmap :prefix sk--evil-global-leader
@@ -737,5 +736,3 @@
 ;; load the local configuration if it exists
 (when (file-exists-p (concat user-emacs-directory "local.el"))
   (load-file (concat user-emacs-directory "local.el")))
-
-(put 'scroll-left 'disabled nil)

@@ -50,57 +50,7 @@ alias vd deactivate
 #  OS X specific stuff  #
 #########################
 
-# disk usage
-alias df df -h
-alias du du -h
-
-# Turn off/restart
-alias poweroff shutdown -h now
-alias reboot shutdown -r now
-
-# TextEdit
-alias texteditplain defaults write com.apple.TextEdit RichText -int 0
-
-# Skim
-alias skim open -a /Applications/Skim.app
-alias skimauto defaults write -app Skim SKAutoReloadFileUpdate -boolean true
-
-# Sage
-alias sage /Applications/Sage-6.8.app/Contents/Resources/sage/sage
-
-# Matlab
-alias matlab /Applications/MATLAB_R2014a.app/bin/matlab -nodesktop -nosplash
-alias matlabd /Applications/MATLAB_R2014a.app/bin/matlab
-
-# Xcode
-alias xcodeinstall xcode-select --install
-
-# Finder
-alias findershow defaults write com.apple.finder AppleShowAllFiles true
-alias finderhide defaults write com.apple.finder AppleShowAllFiles false
-alias finderlib chflags nohidden ~/Library
-alias findershowpath defaults write com.apple.finder ShowPathbar -bool true
-alias finderhidepath defaults write com.apple.finder ShowPathbar -bool false
-
-# Power
-alias coffee caffeinate -u -t 10800
-alias rebootfreeze sudo systemsetup -setrestartfreeze on
-
 # Network
 alias whatsmyip ipconfig getifaddr en0
 alias firewallup sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setglobalstate on
 alias firewalldown sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setglobalstate off
-
-# Software
-alias softupdate sudo softwareupdate -ia
-alias softupdatelist sudo softwareupdate -l
-
-# brew
-alias em2mac brew unlinkapps emacs && brew linkapps emacs-mac
-alias mac2em brew unlinkapps emacs-mac && brew linkapps emacs
-
-# Contacts
-# Debug Enable
-defaults write com.apple.addressbook ABShowDebugMenu -bool true
-# Debug Disable (Default)
-defaults write com.apple.addressbook ABShowDebugMenu -bool false

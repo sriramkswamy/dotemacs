@@ -209,6 +209,7 @@ Its element is a pair of `buffer-name' and `mode-line-format'.")
   :diminish helm-mode
   :general
   (general-nvmap "t" 'helm-semantic-or-imenu)
+  (general-nvmap "M" 'helm-man-woman)
   (general-nvmap :prefix sk--evil-global-leader
 		 "i" 'helm-resume
 		 "s" 'helm-for-files

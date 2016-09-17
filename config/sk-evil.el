@@ -148,6 +148,13 @@
   (general-nvmap "C-e" 'evil-multiedit-restore)
   (general-mmap "RET" 'evil-multiedit-toggle-or-restrict-region))
 
+;; evil surround functionality
+(use-package evil-surround
+  :ensure t
+  :demand t
+  :config
+  (global-evil-surround-mode 1))
+
 ;; evil-smartparens - semantic navigation, especially for lisps
 (use-package evil-smartparens
   :ensure t
@@ -156,7 +163,7 @@
   :diminish smartparens-strict-mode
   :diminish (evil-smartparens-mode . " ()")
   :general
-  (general-evil-define-key '(normal visual) smartparens-mode-map :prefix "S"
+  (general-evil-define-key '(normal visual) smartparens-mode-map :prefix "s"
 			   "j" 'sp-down-sexp
 			   "k" 'sp-backward-up-sexp
 			   "h" 'sp-backward-down-sexp

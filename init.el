@@ -194,13 +194,6 @@
   (add-hook 'snippet-mode-hook '(lambda () (setq-local require-final-newline nil)))
   (yas-global-mode))
 
-;; surround text objects with brackets/quotes
-;; depends on expand-region - so don't install that
-(use-package embrace
-  :ensure t
-  :general
-  (general-nvmap "s" 'embrace-commander))
-
 ;;;;;;;;;;;;;;;;;;;;;;
 ;;    Navigation    ;;
 ;;;;;;;;;;;;;;;;;;;;;;
@@ -218,15 +211,14 @@
   (setq avy-background t)		; always highlight the background
   :general				; `general.el' maps
   (general-nmap "-" nil)
-  (general-nmap "M" nil)
-  (general-nmap "M" 'avy-goto-line)
-  (general-omap "M" 'avy-goto-line)
-  (general-vmap "M" 'avy-goto-line)
-  (general-mmap "M" 'avy-goto-line)
   (general-nmap "-" 'avy-goto-char-2)
   (general-omap "-" 'avy-goto-char-2)
   (general-vmap "-" 'avy-goto-char-2)
   (general-mmap "-" 'avy-goto-char-2)
+  (general-nmap "M" 'avy-goto-line)
+  (general-omap "M" 'avy-goto-line)
+  (general-vmap "M" 'avy-goto-line)
+  (general-mmap "M" 'avy-goto-line)
   :config
   (use-package ace-link
     :ensure t
@@ -428,15 +420,15 @@
   (setq magic-latex-enable-subscript t
 	magic-latex-enable-pretty-symbols t)
   :general
-  (general-nvmap :prefix sk--evil-global-leader
-		 "'" 'magic-latex-buffer))
+  (general-evil-define-key '(normal visual) latex-mode-map :prefix sk--evil-local-leader
+			   "m" 'magic-latex-buffer))
 
 ;; preview latex in emacs (GUI only)
 (use-package latex-preview-pane
   :ensure t
   :general
-  (general-nvmap :prefix sk--evil-global-leader
-		 ";" 'latex-preview-pane-mode))
+  (general-evil-define-key '(normal visual) latex-mode-map :prefix sk--evil-local-leader
+			   "p" 'latex-preview-pane-mode))
 
 ;; pick out weasel words
 (use-package writegood-mode
@@ -685,6 +677,12 @@
     :bind (("C-c l" . company-auctex))
     :config
     (add-to-list 'company-backends 'company-auctex)))
+
+;; Dash documentation
+(use-package dash-at-point
+  :ensure t
+  :general
+  (general-nvmap "K" 'dash-at-point))
 
 ;; Shell interaction
 (require 'sk-shell)

@@ -34,17 +34,20 @@
   (setq org-latex-pdf-process
 	'("xelatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
   ;; tags
-  (setq org-tag-alist (quote (("article"   . ?a) ;; temporary
-			      ("courses"   . ?o) ;; temporary
+  (setq org-tag-alist (quote (("article"   . ?a)
+			      ("courses"   . ?o)
 			      ("code"      . ?c)
 			      ("errands"   . ?e)
-			      ("idea"      . ?i)
+			      ("blog"      . ?b)
+			      ("idea"      . ?d)
 			      ("job"       . ?j)
 			      ("meeting"   . ?m)
 			      ("note"      . ?n)
 			      ("personal"  . ?i)
+			      ("gubby"     . ?g)
+			      ("reading"   . ?r)
 			      ("project"   . ?p)
-			      ("reveal"    . ?r)
+			      ("reveal"    . ?l)
 			      ("vague"     . ?v)
 			      ("work"      . ?w)
 			      ("noexport"  . ?x))))
@@ -56,9 +59,9 @@
   (setq org-agenda-files (list
 			  "~/Dropbox/org/errands.org"
 			  "~/Dropbox/org/phd.org"
-			  "~/Dropbox/org/references/articles.org"
+			  "~/Dropbox/org/articles.org"
 			  "~/Dropbox/org/notes.org"
-			  "~/Dropbox/org/fun.org"))
+			  "~/Dropbox/org/blog.org"))
   ;; deadline handling
   (setq org-deadline-warning-days 7
 	org-agenda-span 'fortnight
@@ -91,6 +94,36 @@
 				 entry	; type
 				 (file+headline "~/Dropbox/org/notes.org" "Notes") ; target
 				 "* %? %(org-set-tags)  :note:\n:PROPERTIES:\n:Created: %U\n:Linked: %A\n:END:\n%i" ; template
+				 :prepend t	 ; properties
+				 :empty-lines 1	 ; properties
+				 :created t	 ; properties
+				 :kill-buffer t) ; properties
+				;; Blogging ideas
+				("b"	; key
+				 "Blog" ; name
+				 entry	; type
+				 (file+headline "~/Dropbox/org/blog.org" "Blog") ; target
+				 "* %? %(org-set-tags)  :blog:\n:PROPERTIES:\n:Created: %U\n:Linked: %A\n:END:\n%i" ; template
+				 :prepend t	 ; properties
+				 :empty-lines 1	 ; properties
+				 :created t	 ; properties
+				 :kill-buffer t) ; properties
+				;; Stuff to read
+				("r"	   ; key
+				 "Reading" ; name
+				 entry	   ; type
+				 (file+headline "~/Dropbox/org/notes.org" "Reading") ; target
+				 "* %? %(org-set-tags)  :reading:\n:PROPERTIES:\n:Created: %U\n:Linked: %A\n:END:\n%i" ; template
+				 :prepend t	 ; properties
+				 :empty-lines 1	 ; properties
+				 :created t	 ; properties
+				 :kill-buffer t) ; properties
+				;; For potating
+				("g"	 ; key
+				 "Gubby" ; name
+				 entry	 ; type
+				 (file+headline "~/Dropbox/org/potato.org" "Gubby") ; target
+				 "* %? %(org-set-tags)  :gubby:\n:PROPERTIES:\n:Created: %U\n:Linked: %A\n:END:\n%i" ; template
 				 :prepend t	 ; properties
 				 :empty-lines 1	 ; properties
 				 :created t	 ; properties
@@ -234,7 +267,7 @@
 		"c" 'org-capture
 		"a" 'org-agenda)
   (general-evil-define-key '(normal visual) org-mode-map :prefix sk--evil-local-leader
-			   "b" '(org-archive-subtree :which-key "archive")
+			   "a" '(org-archive-subtree :which-key "archive")
 			   "b" '(org-table-blank-field :which-key "table blank field")
 			   "d" '(org-cut-subtree :which-key "delete subtree")
 			   "e" '(org-export-dispatch :which-key "export")
@@ -313,18 +346,6 @@
      (matlab . t)
      (python . t))))
 (general-nvmap :prefix sk--evil-global-leader "," 'sk/org-custom-load)
-
-;; deft - for quickly searching org files
-(use-package deft
-  :ensure t
-  :init
-  (setq deft-extensions '("org")
-	deft-recursive nil
-	deft-use-filename-as-title t
-	deft-directory "~/Dropbox/org")
-  :general
-  (general-nmap :prefix sk--evil-global-leader
-		"o" 'deft))
 
 ;; org hydra for template expansion
 (defun hot-expand (str)
@@ -420,6 +441,34 @@
   ("q" nil :color blue))
 (general-evil-define-key '(normal visual) org-mode-map :prefix sk--evil-local-leader
 			 "o" 'hydra-org-organize/body)
+
+;; hydra to jump around the org file
+(defhydra hydra-org-jump (:color pink
+			  :hint nil)
+  "
+ ^Outline^          ^Item^   ^Table^   ^Block^   ^Link^
+ ^^^^^^^^^^^-------------------------------------------------------------------------------
+ ^ ^ _k_ ^ ^   ^ ^ _K_ ^ ^   ^ ^ _u_ ^ ^   ^ ^ ^ ^ ^ ^   ^ ^ _p_ ^ ^   ^ ^ _P_ ^ ^    _q_ quit
+ _h_ ^+^ _l_   ^ ^ ^+^ ^ ^   ^ ^ ^+^ ^ ^   _b_ ^+^ _f_   ^ ^ ^+^ ^ ^   ^ ^ ^+^ ^ ^
+ ^ ^ _j_ ^ ^   ^ ^ _J_ ^ ^   ^ ^ _d_ ^ ^   ^ ^ ^ ^ ^ ^   ^ ^ _n_ ^ ^   ^ ^ _N_ ^ ^
+"
+  ("j" outline-next-visible-heading)
+  ("k" outline-previous-visible-heading)
+  ("l" org-down-element)
+  ("h" org-up-element)
+  ("J" org-forward-heading-same-level)
+  ("K" org-backward-heading-same-level)
+  ("u" org-next-item)
+  ("d" org-previous-item)
+  ("f" org-table-next-field)
+  ("b" org-table-previous-field)
+  ("n" org-next-block)
+  ("p" org-previous-block)
+  ("N" org-next-link)
+  ("P" org-previous-link)
+  ("q" nil :color blue))
+(general-evil-define-key '(normal visual) org-mode-map :prefix sk--evil-local-leader
+			 "j" 'hydra-org-jump/body)
 
 ;; provide this configuration
 (provide 'sk-org)

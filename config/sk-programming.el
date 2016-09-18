@@ -302,16 +302,17 @@
   :ensure t
   :mode ("\\.m$" . matlab-mode)
   :bind (:map matlab-shell-mode-map
-              ("C-c C-c" . term-interrupt-subjob))
+	      ("C-c C-c" . term-interrupt-subjob))
   :init
   (setq matlab-shell-command "/Applications/MATLAB_R2016a.app/bin/matlab"
 	matlab-mode-install-path '("~/Dropbox/PhD/codes/ttmat" "/Applications/MATLAB_R2016a.app/toolbox")
-        matlab-indent-function t)
+	matlab-indent-function t)
   (eval-after-load 'matlab
     '(add-to-list 'matlab-shell-command-switches "-nodesktop -nosplash"))
   :general
-  (general-nvmap "J" 'matlab-find-file-on-path
-		 "K" 'matlab-shell-describe-command)
+  (general-evil-define-key '(normal visual) matlab-mode-map
+    "J" 'matlab-find-file-on-path
+    "K" 'matlab-shell-describe-command)
   (general-evil-define-key '(normal visual) matlab-mode-map :prefix sk--evil-local-leader
 			   "r" 'matlab-shell
 			   "R" 'matlab-show-matlab-shell-buffer
@@ -476,6 +477,94 @@
   (general-imap "C-o" 'emmet-expand-line)
   (general-imap "C-y" 'emmet-prev-edit-point)
   (general-imap "C-e" 'emmet-next-edit-point))
+
+;;;;;;;;;;;;;;;
+;;    Lua    ;;
+;;;;;;;;;;;;;;;
+
+(use-package lua-mode
+  :ensure t
+  :mode "\\.lua$")
+
+;;;;;;;;;;;;;;;
+;;    SML    ;;
+;;;;;;;;;;;;;;;
+
+(use-package sml-mode
+  :ensure t
+  :mode "\\.sml$"
+  :init
+  (setq sml-program-name "sml")
+  :general
+  (general-evil-define-key '(normal visual) sml-mode-map :prefix sk--evil-local-leader
+			   "r" (general-simulate-keys "C-c C-z" t "run sml")
+			   "R" (general-simulate-keys "C-c C-s" t "switch to sml")
+			   "s" (general-simulate-keys "C-c C-r" t "send region")
+			   "S" (general-simulate-keys "C-c C-b" t "send buffer")
+			   "c" (general-simulate-keys "C-c C-c" t "compile")
+			   "l" (general-simulate-keys "C-c C-l" t "load file")))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;
+;;    Racket/Scheme    ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(use-package geiser
+  :ensure t
+  :ensure racket-mode
+  :mode (("\\.scm$" . scheme-mode)
+	 ("\\.rkt$" . racket-mode))
+  :diminish geiser-mode
+  :general
+  (general-evil-define-key '(normal visual) scheme-mode-map
+    "J" 'geiser-edit-symbol-at-point
+    "K" 'geiser-doc-symbol-at-point)
+  (general-evil-define-key '(normal) scheme-mode-map :prefix sk--evil-local-leader
+			   "r" 'run-guile
+			   "R" 'geiser-mode-switch-to-repl
+			   "s" 'geiser-eval-definition
+			   "S" 'geiser-eval-buffer
+			   "l" 'geiser-eval-last-sexp
+			   "L" 'geiser-expand-last-sexp
+			   "e" 'geiser-expand-definition)
+  (general-evil-define-key '(visual) scheme-mode-map :prefix sk--evil-local-leader
+			   "s" 'geiser-eval-region)
+  (general-evil-define-key '(normal visual) racket-mode-map
+    "J" 'geiser-edit-symbol-at-point
+    "K" 'geiser-doc-symbol-at-point)
+  (general-evil-define-key '(normal) racket-mode-map :prefix sk--evil-local-leader
+			   "r" 'run-racket
+			   "R" 'geiser-mode-switch-to-repl
+			   "s" 'geiser-eval-definition
+			   "S" 'geiser-eval-buffer
+			   "l" 'geiser-eval-last-sexp
+			   "L" 'geiser-expand-last-sexp
+			   "e" 'geiser-expand-definition)
+  (general-evil-define-key '(visual) racket-mode-map :prefix sk--evil-local-leader
+			   "s" 'geiser-eval-region))
+
+;; ;; links for even more language specific configuration
+;; ;; Haskell
+;; http://commercialhaskell.github.io/intero/
+;; ;; OCaml
+;; https://github.com/ocaml/tuareg
+;; https://github.com/the-lambda-church/merlin
+;; ;; Scala
+;; http://ensime.github.io/
+;; ;; Elixir
+;; https://github.com/tonini/alchemist.el
+;; ;; Go
+;; http://yousefourabi.com/blog/2014/05/emacs-for-go/
+;; https://github.com/dominikh/go-mode.el
+;; https://github.com/nsf/gocode
+;; ;; Clojure
+;; https://github.com/clojure-emacs/clojure-mode
+;; https://github.com/clojure-emacs/cider
+;; ;; Ruby
+;; https://github.com/eschulte/rinari
+;; https://github.com/pezra/rspec-mode
+;; https://github.com/bbatsov/rubocop
+;; https://github.com/nonsequitur/inf-ruby
+;; https://github.com/endofunky/bundler.el
 
 ;; provide the entire configuration
 (provide 'sk-programming)

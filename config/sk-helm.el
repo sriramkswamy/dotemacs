@@ -137,11 +137,15 @@ Its element is a pair of `buffer-name' and `mode-line-format'.")
   (define-key helm-map (kbd "S-<return>") 'helm-maybe-exit-minibuffer)
   (define-key helm-map (kbd "S-RET") 'helm-maybe-exit-minibuffer)
   (define-key helm-map (kbd "C-S-m") 'helm-maybe-exit-minibuffer)
+  (define-key helm-map (kbd "C-w") 'backward-kill-word)
   (with-eval-after-load 'helm-files
     (define-key helm-read-file-map (kbd "<backspace>") 'helm-ido-like-find-files-up-one-level-maybe)
     (define-key helm-read-file-map (kbd "DEL") 'helm-ido-like-find-files-up-one-level-maybe)
     (define-key helm-find-files-map (kbd "<backspace>") 'helm-ido-like-find-files-up-one-level-maybe)
     (define-key helm-find-files-map (kbd "DEL") 'helm-ido-like-find-files-up-one-level-maybe)
+
+    (define-key helm-read-file-map (kbd "C-w") 'backward-kill-word)
+    (define-key helm-find-files-map (kbd "C-w") 'backward-kill-word)
 
     (define-key helm-find-files-map (kbd "<return>") 'helm-execute-persistent-action)
     (define-key helm-read-file-map (kbd "<return>") 'helm-execute-persistent-action)
@@ -201,6 +205,12 @@ Its element is a pair of `buffer-name' and `mode-line-format'.")
   (helm-ido-like-load-file-nav)
   (helm-ido-like-load-fuzzy-enhancements)
   (helm-ido-like-fix-fuzzy-files))
+
+;; Search through my org files
+(defun sk/helm-org-rifle ()
+  "Searches throughout the directory where my org files are kept"
+  (interactive)
+  (helm-org-rifle-directories '("~/Dropbox/org")))
 
 ;; helm for narrowing
 (use-package helm
@@ -295,11 +305,21 @@ Its element is a pair of `buffer-name' and `mode-line-format'.")
   (use-package helm-bibtex
     :ensure t
     :general
-    (general-nmap :prefix sk--evil-global-leader "b" 'helm-bibtex)
+    (general-nvmap :prefix sk--evil-global-leader "b" 'helm-bibtex)
     :init
-    (setq bibtex-completion-bibliography '("~/Dropbox/PhD/articles/tensors/tensors.bib"))
-    (setq bibtex-completion-library-path '("~/Dropbox/PhD/articles/tensors"))
-    (setq bibtex-completion-notes-path "~/Dropbox/Phd/articles/articles.org")
+    (setq bibtex-completion-bibliography
+	  '("~/Dropbox/PhD/articles/tensors/tensors.bib"
+	    "~/Dropbox/PhD/articles/machinelearning/machinelearning.bib"
+	    "~/Dropbox/PhD/articles/association/association.bib"
+	    "~/Dropbox/PhD/articles/lorenz/lorenz.bib"
+	    "~/Dropbox/PhD/articles/multiphysics/multiphysics.bib"))
+    (setq bibtex-completion-library-path
+	  '("~/Dropbox/PhD/articles/tensors"
+	    "~/Dropbox/PhD/articles/machinelearning"
+	    "~/Dropbox/PhD/articles/association"
+	    "~/Dropbox/PhD/articles/lorenz"
+	    "~/Dropbox/PhD/articles/multiphysics"))
+    (setq bibtex-completion-notes-path "~/Dropbox/org/articles.org")
     (setq helm-bibtex-full-frame nil)
     (setq bibtex-completion-pdf-symbol "⌘")
     (setq bibtex-completion-notes-symbol "✎"))
@@ -364,7 +384,14 @@ Its element is a pair of `buffer-name' and `mode-line-format'.")
   (use-package helm-c-yasnippet
     :ensure t
     :general
-    (general-imap "C-a" 'helm-yas-complete)))
+    (general-imap "C-a" 'helm-yas-complete))
+
+  ;; for awesome org navigation
+  (use-package helm-org-rifle
+    :ensure t
+    :general
+    (general-nvmap :prefix sk--evil-global-leader
+		   "o" 'sk/helm-org-rifle)))
 
 ;; helm hydra
 (defhydra hydra-helm (:hint nil :color pink)

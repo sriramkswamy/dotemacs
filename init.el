@@ -1,10 +1,17 @@
+;;; package --- Summary
+
+;;; Commentary:
+;; Here be pokemons.
+
+;;; Code:
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Change some settings    ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; General settings
 (setq user-full-name "Sriram Krishnaswamy")                                    ; Hi Emacs, I'm Sriram
-(setq gc-cons-threshold (* 500 1024 1024))                                     ; increase the threshold for garbage collection
+(setq gc-cons-threshold (* 500 1024 1024))                                     ; increase the threshold for garbage collection - 500MB
 (setq delete-old-versions -1)                                                  ; delete excess backup versions silently
 (setq version-control t)                                                       ; use version control for backups
 (setq backup-directory-alist `(("." . "~/.emacs.d/backups")))                  ; which directory to put backups file
@@ -17,7 +24,7 @@
 (setq coding-system-for-read 'utf-8)                                           ; use utf-8 by default for reading
 (setq coding-system-for-write 'utf-8)                                          ; use utf-8 by default for writing
 (setq sentence-end-double-space nil)                                           ; sentence SHOULD end with only a point.
-(setq default-fill-column 80)                                                  ; toggle wrapping text at the 80th character
+(setq fill-column 80)                                                           ; toggle wrapping text at the 80th character
 (setq initial-scratch-message "(hello-human)")                                 ; print a default message in the empty scratch buffer opened at startup
 (menu-bar-mode -1)                                                             ; deactivate the menubar
 (tool-bar-mode -1)                                                             ; deactivate the toolbar
@@ -51,9 +58,11 @@
 (when (file-exists-p custom-file)                                              ; if the custom file exists
   (load custom-file))                                                          ; load the custom file
 (savehist-mode)                                                                ; keep persistent history
-(subword-mode)                                                                 ; move correctly over camelCase words
+(subword-mode 1)                                                               ; move correctly over camelCase words
 (add-to-list 'load-path (expand-file-name "config" user-emacs-directory))      ; load more configuration from the 'config' folder
 (put 'scroll-left 'disabled nil)                                               ; enable sideward scrolling
+(load-theme 'leuven t)                                                         ; load leuven - an awesome default theme
+(define-key minibuffer-local-map (kbd "C-w") 'backward-kill-word)              ; backward kill word in minibuffer
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Package management    ;;
@@ -162,7 +171,8 @@
   ("+" text-scale-increase)
   ("-" text-scale-decrease)
   ("q" nil :exit t))
-(general-nmap "gw" 'hydra-windows/body)
+(general-nmap "w" 'hydra-windows/body)
+
 ;; bookmark hydra
 (defhydra hydra-bookmarks (:color blue
                            :hint nil)
@@ -211,14 +221,14 @@
   (setq avy-background t)		; always highlight the background
   :general				; `general.el' maps
   (general-nmap "-" nil)
-  (general-nmap "-" 'avy-goto-char-2)
-  (general-omap "-" 'avy-goto-char-2)
-  (general-vmap "-" 'avy-goto-char-2)
-  (general-mmap "-" 'avy-goto-char-2)
-  (general-nmap "M" 'avy-goto-line)
-  (general-omap "M" 'avy-goto-line)
-  (general-vmap "M" 'avy-goto-line)
-  (general-mmap "M" 'avy-goto-line)
+  (general-nmap "-" 'avy-goto-line)
+  (general-omap "-" 'avy-goto-line)
+  (general-vmap "-" 'avy-goto-line)
+  (general-mmap "-" 'avy-goto-line)
+  (general-nmap "gw" 'avy-goto-char-2)
+  (general-omap "gw" 'avy-goto-char-2)
+  (general-vmap "gw" 'avy-goto-char-2)
+  (general-mmap "gw" 'avy-goto-char-2)
   :config
   (use-package ace-link
     :ensure t
@@ -304,13 +314,6 @@
 ;;    Improve aesthetics      ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; better themes
-(use-package zenburn-theme
-  :ensure t
-  :demand t
-  :config
-  (load-theme 'zenburn t))
-
 ;; rainbow paranthesis for easier viewing
 (use-package rainbow-delimiters
   :ensure t
@@ -373,28 +376,44 @@
     :mode ("\\.markdown\\'" "\\.mkd\\'" "\\.md\\'")))
 
 ;; LaTeX support
-(use-package latex-mode
+(use-package tex-site
   :defer 2
-  :mode (("\\.tex\\'" . latex-mode)
-	 ("\\.xtx\\'" . latex-mode))
+  :ensure auctex
+  :ensure auctex-latexmk
+  :mode (("\\.tex\\'" . LaTeX-mode)
+	 ("\\.xtx\\'" . LaTeX-mode))
+  :general
+  (general-evil-define-key '(normal visual) LaTeX-mode-map :prefix sk--evil-local-leader
+			   "m" 'preview-at-point
+			   "c" (general-simulate-keys "C-c C-l" t "compile result")
+			   "f" 'TeX-fold-mode
+			   "qe" 'LaTeX-fill-environment
+			   "qp" 'LaTeX-fill-paragraph
+			   "qs" 'LaTeX-fill-section
+			   "qr" 'LaTeX-fill-region)
   :init
+  (setq reftex-plug-into-AUCTeX t)
+  (setq reftex-default-bibliography '("~/Dropbox/PhD/articles/tensors/tensors.bib"))
   (setq TeX-auto-save t)
   (setq TeX-parse-self t)
   (setq-default TeX-master nil)
   (setq TeX-PDF-mode t)
   :config
-  (use-package auctex
-    :ensure t
-    :demand t
-    :config
-    (use-package auctex-latexmk
-      :ensure t))
-  (use-package reftex
-    :ensure t
-    :diminish reftex-mode
-    :init
-    (setq reftex-plug-into-AUCTeX t)
-    (setq reftex-default-bibliography '("~/Dropbox/PhD/articles/tensors/tensors.bib"))))
+  ;; Use Skim as viewer, enable source <-> PDF sync
+  ;; make latexmk available via C-c C-c
+  ;; Note: SyncTeX is setup via ~/.latexmkrc (see below)
+  (add-hook 'LaTeX-mode-hook (lambda ()
+			       (push
+				'("latexmk" "latexmk -xelatex -pdf %s" TeX-run-TeX nil t
+				  :help "Run latexmk on file")
+				TeX-command-list)))
+  (add-hook 'TeX-mode-hook '(lambda () (setq TeX-command-default "latexmk")))
+  ;; use Skim as default pdf viewer
+  ;; Skim's displayline is used for forward search (from .tex to .pdf)
+  ;; option -b highlights the current line; option -g opens Skim in the background
+  (setq TeX-view-program-selection '((output-pdf "PDF Viewer")))
+  (setq TeX-view-program-list
+	'(("PDF Viewer" "/Applications/Skim.app/Contents/SharedSupport/displayline -b -g %n %o %b"))))
 ;; custom function to setup latex mode properly - why isn't the normal use-package definition working?
 (defun sk/setup-latex ()
   "hooks to setup latex properly"
@@ -404,12 +423,13 @@
   (auctex-latexmk-setup)
   (reftex-mode)
   (turn-on-reftex))
+(add-hook 'LaTeX-mode-hook 'sk/setup-latex)
+(general-nvmap :prefix sk--evil-global-leader "-" 'sk/setup-latex)
 (defun sk/diminish-reftex ()
   "diminish reftex because use-package is unable to do it"
   (interactive)
   (diminish 'reftex-mode))
 (add-hook 'reftex-mode-hook 'sk/diminish-reftex)
-(general-nvmap :prefix sk--evil-global-leader "-" 'sk/setup-latex)
 
 ;; awesome latex magic
 (use-package magic-latex-buffer
@@ -420,14 +440,14 @@
   (setq magic-latex-enable-subscript t
 	magic-latex-enable-pretty-symbols t)
   :general
-  (general-evil-define-key '(normal visual) latex-mode-map :prefix sk--evil-local-leader
-			   "m" 'magic-latex-buffer))
+  (general-evil-define-key '(normal visual) LaTeX-mode-map :prefix sk--evil-local-leader
+			   "l" 'magic-latex-buffer))
 
 ;; preview latex in emacs (GUI only)
 (use-package latex-preview-pane
   :ensure t
   :general
-  (general-evil-define-key '(normal visual) latex-mode-map :prefix sk--evil-local-leader
+  (general-evil-define-key '(normal visual) LaTeX-mode-map :prefix sk--evil-local-leader
 			   "p" 'latex-preview-pane-mode))
 
 ;; pick out weasel words
@@ -471,7 +491,10 @@
     :ensure t
     :demand t
     :init
-    (setq evil-magit-want-horizontal-movement t)))
+    (setq evil-magit-want-horizontal-movement t))
+  ;; Github integration - press '@' in Magit status
+  (use-package magithub
+    :ensure t))
 
 ;; highlight diffs
 (use-package diff-hl

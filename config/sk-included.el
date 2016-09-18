@@ -2,6 +2,9 @@
 (use-package dired                                                             ; directory viewing and manipulating
   :general                                                                     ; map using the `general.el' package
   (general-evil-define-key '(normal visual) dired-mode-map                     ; dired mode map
+    "y" (general-simulate-keys "w" t "copy file name")
+    "gw" 'hydra-windows/body
+    "SPC" nil
     "G" (general-simulate-keys "M->" t "end of buffer")
     "gg" (general-simulate-keys "M-<" t "beginning of buffer"))
   :init                                                                        ; settings to be loaded before package loading
@@ -20,7 +23,7 @@
     "l" (general-simulate-keys "n" t "next page")
     "h" (general-simulate-keys "p" t "prev page")
     "j" (general-simulate-keys "SPC" t "scroll down")
-    "k" (general-simulate-keys "BS" t "scroll up")
+    "k" (general-simulate-keys "DEL" t "scroll up")
     "q" (general-simulate-keys "q" t "quit")
     "/" (general-simulate-keys "C-s" t "search")
     "G" (general-simulate-keys "M->" t "end of pdf")

@@ -29,7 +29,7 @@
 (general-nvmap :prefix sk--evil-global-leader  ; create a global leader map
 	       "" '(nil :which-key "user prefix")
 	       "q" '(evil-quit :which-key "quit window/emacs")
-	       "k" '(evil-delete-buffer :which-key "kill buffer")
+	       "k" (general-simulate-keys "C-x k" t "kill buffers")
 	       "r" (general-simulate-keys "C-x b" t "switch buffers")
 	       "f" (general-simulate-keys "C-x C-f" t "find files")
 	       "j" (general-simulate-keys "M-x" t "command")
@@ -41,6 +41,8 @@
 	       "<tab>" 'mode-line-other-buffer
 	       "w" 'save-buffer)
 ;; other remaps
+(general-nvmap "j" 'evil-next-visual-line)
+(general-nvmap "k" 'evil-previous-visual-line)
 (general-nvmap :prefix sk--evil-global-leader
 	       "x" (general-simulate-keys "C-c C-k" t "abort")
 	       "X" (general-simulate-keys "C-c C-g" t "abort"))
@@ -52,7 +54,6 @@
 (general-nvmap "gN" 'narrow-to-defun)
 (general-nvmap "gs" 'widen)
 (general-nvmap "go" (general-simulate-keys "C-x C-e" t "eval"))
-(general-nvmap "w" (general-simulate-keys "C-x o" t "other window"))
 (general-nvmap "Z" (general-simulate-keys "C-x 1" t "only window"))
 (general-nvmap "W" 'winner-undo)
 (general-nvmap "gW" 'winner-redo)
@@ -153,6 +154,19 @@
 (use-package evil-surround
   :ensure t
   :demand t
+  :general
+  (general-nmap "s" 'evil-surround-region)
+  (general-nmap "S" 'evil-Surround-region)
+  (general-omap "s" 'evil-surround-edit)
+  (general-vmap "s" 'evil-surround-region)
+  (general-omap "S" 'evil-Surround-edit)
+  (general-vmap "S" 'evil-Surround-region)
+  (general-evil-define-key '(normal) evil-surround-mode-map "s" 'evil-surround-region)
+  (general-evil-define-key '(normal) evil-surround-mode-map "S" 'evil-Surround-region)
+  (general-evil-define-key '(visual) evil-surround-mode-map "s" 'evil-surround-region)
+  (general-evil-define-key '(visual) evil-surround-mode-map "S" 'evil-Surround-region)
+  (general-evil-define-key '(operator) evil-surround-mode-map "s" 'evil-surround-edit)
+  (general-evil-define-key '(operator) evil-surround-mode-map "S" 'evil-Surround-edit)
   :config
   (global-evil-surround-mode 1))
 
@@ -164,7 +178,7 @@
   :diminish smartparens-strict-mode
   :diminish (evil-smartparens-mode . " ()")
   :general
-  (general-evil-define-key '(normal visual) smartparens-mode-map :prefix "s"
+  (general-evil-define-key '(normal visual) smartparens-mode-map :prefix "'"
 			   "j" 'sp-down-sexp
 			   "k" 'sp-backward-up-sexp
 			   "h" 'sp-backward-down-sexp

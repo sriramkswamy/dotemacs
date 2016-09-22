@@ -3,7 +3,7 @@
   :general                                                                     ; map using the `general.el' package
   (general-evil-define-key '(normal visual) dired-mode-map                     ; dired mode map
     "y" (general-simulate-keys "w" t "copy file name")
-    "gw" 'hydra-windows/body
+    "w" 'hydra-windows/body
     "SPC" nil
     "G" (general-simulate-keys "M->" t "end of buffer")
     "gg" (general-simulate-keys "M-<" t "beginning of buffer"))
@@ -92,6 +92,12 @@
   (interactive)
   (diminish 'auto-revert-mode ""))
 (add-hook 'auto-revert-mode-hook 'sk/diminish-auto-revert)
+
+;; diminish eldoc mode
+(defun sk/diminish-eldoc ()
+  (interactive)
+  (diminish 'eldoc-mode ""))
+(add-hook 'eldoc-mode-hook 'sk/diminish-eldoc)
 
 ;; special mode
 (use-package special

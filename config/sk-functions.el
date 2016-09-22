@@ -148,8 +148,24 @@ point reaches the beginning or end of the buffer, stop there."
   (other-window 1)
   (doc-view-previous-page)
   (other-window 1))
-(general-nmap "[d" 'sk/other-pdf-previous)
-(general-nmap "]d" 'sk/other-pdf-next)
+(general-nmap "[D" 'sk/other-pdf-previous)
+(general-nmap "]D" 'sk/other-pdf-next)
+;; scrolling the adjoining pdf
+(defun sk/other-pdf-down ()
+  "Turns the next page in adjoining PDF file"
+  (interactive)
+  (other-window 1)
+  (doc-view-scroll-down-or-previous-page 10)
+  (other-window 1))
+(defun sk/other-pdf-up ()
+  "Turns the previous page in adjoining PDF file"
+  (interactive)
+  (other-window 1)
+  (doc-view-scroll-up-or-next-page 10)
+  (other-window 1))
+(general-nmap "[d" 'sk/other-pdf-down)
+(general-nmap "]d" 'sk/other-pdf-up)
+
 
 ;; browse the current HTML file in browser
 (defun sk/browse-current-file ()

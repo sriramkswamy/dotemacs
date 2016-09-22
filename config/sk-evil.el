@@ -23,8 +23,9 @@
   (evil-set-initial-state 'magit-popup-mode 'emacs)
   (evil-mode 1))
 ;; remove conflicting maps
-(general-nvmap "gw" nil)
+(general-nvmap "m" nil)
 (general-nvmap "Z" nil)
+(general-nvmap "gw" nil)
 ;; global leader maps
 (general-nvmap :prefix sk--evil-global-leader  ; create a global leader map
 	       "" '(nil :which-key "user prefix")
@@ -43,9 +44,9 @@
 ;; other remaps
 (general-nvmap "j" 'evil-next-visual-line)
 (general-nvmap "k" 'evil-previous-visual-line)
-(general-nvmap :prefix sk--evil-global-leader
-	       "x" (general-simulate-keys "C-c C-k" t "abort")
-	       "X" (general-simulate-keys "C-c C-g" t "abort"))
+(general-nvmap :prefix sk--evil-local-leader
+	       "-" (general-simulate-keys "C-c C-k" t "abort")
+	       "`" (general-simulate-keys "C-c C-g" t "big abort"))
 (general-nvmap "`" (general-simulate-keys "C-c C-c" t "C-c C-c"))
 (general-nvmap "g=" 'flyspell-mode)
 (general-nvmap "g+" 'flyspell-prog-mode)

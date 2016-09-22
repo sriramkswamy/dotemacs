@@ -36,8 +36,7 @@
 	     emamux:copy-kill-ring
 	     emamux:yank-from-list-buffers))
 ;; hydra for interacting with this
-(defhydra hydra-emamux (:color red
-			:hint nil)
+(defhydra hydra-emamux (:color red :hint nil)
   "
  ^Command^       ^Runner^                          ^Clipboard^       ^tmux^
 ^^^^^^^^^^----------------------------------------------------------------------------------------------
@@ -62,7 +61,7 @@
   ("v" emamux:split-window-horizontally)
   ("V" emamux:split-window)
   ("q" nil :color blue))
-(general-nvmap :prefix sk--evil-global-leader "'" 'hydra-emamux/body)
+(general-nvmap :prefix sk--evil-global-leader "x" 'hydra-emamux/body)
 ;; zoom into the tmux pane (tmux > 1.8)
 ;; tmux resize-pane -Z
 (defun sk/zoom-tmux ()

@@ -204,10 +204,8 @@
   ;; interleaved notes
   (use-package interleave
     :ensure t
-    :general
-    (general-evil-define-key '(normal visual) org-mode-map :prefix sk--evil-local-leader
-			     "p" 'interleave
-			     "P" 'interleave-pdf-mode))
+    :commands (interleave
+	       interleave-pdf-mode))
   ;; extra exports
   (use-package ox-reveal
     :ensure t
@@ -263,37 +261,20 @@
   (add-to-list 'org-structure-template-alist '("t" "#+TITLE: ?"))
   (add-to-list 'org-structure-template-alist '("v" "#+BEGIN_VERBATIM\n?\n#+END_VERBATIM"))
   :general
-  (general-nmap :prefix sk--evil-global-leader
-		"c" 'org-capture
-		"a" 'org-agenda)
-  (general-evil-define-key '(normal visual) org-mode-map :prefix sk--evil-local-leader
-			   "a" '(org-archive-subtree :which-key "archive")
-			   "b" '(org-table-blank-field :which-key "table blank field")
-			   "d" '(org-cut-subtree :which-key "delete subtree")
-			   "e" '(org-export-dispatch :which-key "export")
-			   "E" '(org-set-effort :which-key "effort")
-			   "f" '(org-footnote :which-key "footnote")
-			   "g" '(org-goto :which-key "goto")
-			   "h" '(org-toggle-heading :which-key "toggle heading")
-			   "H" '(org-insert-heading-respect-content :which-key "appropriate heading")
-			   "i" '(org-toggle-inline-images :which-key "images display")
-			   "I" '(org-list-make-subtree :which-key "items to subtree")
-			   "l" '(org-insert-link :which-key "link")
-			   "L" '(org-toggle-link-display :which-key "toggle links")
-			   "m" '(org-toggle-latex-fragment :which-key "math display")
-			   "n" '(org-add-note :which-key "note")
-			   "r" '(org-reveal :which-key "reveal")
-			   "R" '(org-refile :which-key "refile")
-			   "s" (general-simulate-keys "C-c '" t "special edit")
-			   "S" '(org-store-link :which-key "store link")
-			   "t" '(org-set-tags-command :which-key "tags")
-			   "T" '(org-todo :which-key "tasks")
-			   "u" '(org-update-dblock :which-key "update")
-			   "U" '(org-update-all-dblocks :which-key "update all")
-			   "y" '(org-copy-subtree :which-key "yank subtree")
-			   "[" '(org-date-from-calendar :which-key "date from cal")
-			   "]" '(org-goto-calendar :which-key "goto calendar")
-			   "RET" '(org-open-at-point :which-key "open at point"))
+  (general-nvmap :prefix sk--evil-global-leader
+		 "c" 'org-capture
+		 "a" 'org-agenda)
+  (general-nvmap :prefix sk--evil-local-leader
+		 "o" '(hydra-org-jump/body :which-key "org"))
+  (general-nvmap :prefix sk--evil-local-leader
+		 "," '(org-toggle-inline-images :which-key "org images display")
+		 "/" '(org-insert-link :which-key "org insert link")
+		 "\\" '(org-toggle-link-display :which-key "org toggle links")
+		 ";" '(org-toggle-latex-fragment :which-key "org math display")
+		 "[" '(org-date-from-calendar :which-key "org date cal")
+		 "]" '(org-goto-calendar :which-key "org goto cal")
+		 "'" (general-simulate-keys "C-c '" t "org special")
+		 "RET" '(org-open-at-point :which-key "org open at point"))
   (general-nmap "gO" '(org-narrow-to-subtree :which-key "org narrow"))
   (general-otomap "o" 'org-mark-subtree)
   (general-itomap "o" 'sk/mark-inside-subtree)
@@ -345,7 +326,8 @@
      ;; (octave . t)
      (matlab . t)
      (python . t))))
-(general-nvmap :prefix sk--evil-global-leader "," 'sk/org-custom-load)
+(general-nvmap :prefix sk--evil-local-leader
+	       "." 'sk/org-custom-load)
 
 ;; org hydra for template expansion
 (defun hot-expand (str)
@@ -412,11 +394,11 @@
 (defhydra hydra-org-organize (:color red
                               :hint nil)
   "
- ^Meta^    ^Shift^   ^Shift-Meta^ ^Shift-Ctrl^  ^Move^        ^Item^
-^^^^^^^^^^^^^--------------------------------------------------------------------
- ^ ^ _k_ ^ ^   ^ ^ _K_ ^ ^   ^ ^ _p_ ^ ^      ^ ^ _P_ ^ ^       _<_: promote  _u_: up     _q_: quit
- _h_ ^+^ _l_   _H_ ^+^ _L_   _b_ ^+^ _f_      _B_ ^+^ _F_       _>_: demote   _d_: down
- ^ ^ _j_ ^ ^   ^ ^ _J_ ^ ^   ^ ^ _n_ ^ ^      ^ ^ _N_ ^ ^
+ ^Meta^    ^Shift^   ^Shift-Meta^ ^Shift-Ctrl^  ^Move^        ^Item^     ^Subtree^
+^^^^^^^^^^^^^--------------------------------------------------------------------------------------
+ ^ ^ _k_ ^ ^   ^ ^ _K_ ^ ^   ^ ^ _p_ ^ ^      ^ ^ _P_ ^ ^       _<_: promote  _u_: up    _a_: archive  _q_: quit
+ _h_ ^+^ _l_   _H_ ^+^ _L_   _b_ ^+^ _f_      _B_ ^+^ _F_       _>_: demote   _d_: down  _r_: refile
+ ^ ^ _j_ ^ ^   ^ ^ _J_ ^ ^   ^ ^ _n_ ^ ^      ^ ^ _N_ ^ ^                            _v_: reveal
 "
   ("h" org-metaleft)
   ("l" org-metaright)
@@ -438,19 +420,19 @@
   (">" org-demote)
   ("d" org-move-item-down)
   ("u" org-move-item-up)
+  ("a" org-archive-subtree :color blue)
+  ("r" org-refile :color blue)
+  ("v" org-reveal :color blue)
   ("q" nil :color blue))
-(general-evil-define-key '(normal visual) org-mode-map :prefix sk--evil-local-leader
-			 "o" 'hydra-org-organize/body)
 
 ;; hydra to jump around the org file
-(defhydra hydra-org-jump (:color pink
-			  :hint nil)
+(defhydra hydra-org-jump (:color pink :hint nil)
   "
- ^Outline^          ^Item^   ^Table^   ^Block^   ^Link^
- ^^^^^^^^^^^-------------------------------------------------------------------------------
- ^ ^ _k_ ^ ^   ^ ^ _K_ ^ ^   ^ ^ _u_ ^ ^   ^ ^ ^ ^ ^ ^   ^ ^ _p_ ^ ^   ^ ^ _P_ ^ ^    _q_ quit
- _h_ ^+^ _l_   ^ ^ ^+^ ^ ^   ^ ^ ^+^ ^ ^   _b_ ^+^ _f_   ^ ^ ^+^ ^ ^   ^ ^ ^+^ ^ ^
- ^ ^ _j_ ^ ^   ^ ^ _J_ ^ ^   ^ ^ _d_ ^ ^   ^ ^ ^ ^ ^ ^   ^ ^ _n_ ^ ^   ^ ^ _N_ ^ ^
+ ^Outline^          ^Item^   ^Table^   ^Block^   ^Link^     ^Organize^       ^Subtree^     ^Links^
+ ^^^^^^^^^^^----------------------------------------------------------------------------------------------------
+ ^ ^ _k_ ^ ^   ^ ^ _K_ ^ ^   ^ ^ _u_ ^ ^   ^ ^ ^ ^ ^ ^   ^ ^ _p_ ^ ^   ^ ^ _P_ ^ ^    _o_: organize    _x_: cut      _t_: tags    _q_ quit
+ _h_ ^+^ _l_   ^ ^ ^+^ ^ ^   ^ ^ ^+^ ^ ^   _b_ ^+^ _f_   ^ ^ ^+^ ^ ^   ^ ^ ^+^ ^ ^    _i_: interleave  _y_: copy     _T_: todo
+ ^ ^ _j_ ^ ^   ^ ^ _J_ ^ ^   ^ ^ _d_ ^ ^   ^ ^ ^ ^ ^ ^   ^ ^ _n_ ^ ^   ^ ^ _N_ ^ ^    _h_: heading     _e_: export   _s_: store
 "
   ("j" outline-next-visible-heading)
   ("k" outline-previous-visible-heading)
@@ -466,9 +448,16 @@
   ("p" org-previous-block)
   ("N" org-next-link)
   ("P" org-previous-link)
+  ("o" hydra-org-organize/body :exit t)
+  ("i" interleave :color blue)
+  ("h" org-insert-heading-respect-content)
+  ("x" org-cut-subtree)
+  ("y" org-copy-subtree)
+  ("e" org-export-dispatch :color blue)
+  ("t" org-set-tags-command :color blue)
+  ("T" org-todo :color blue)
+  ("s" org-store-link :color blue)
   ("q" nil :color blue))
-(general-evil-define-key '(normal visual) org-mode-map :prefix sk--evil-local-leader
-			 "j" 'hydra-org-jump/body)
 
 ;; provide this configuration
 (provide 'sk-org)

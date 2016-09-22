@@ -128,7 +128,22 @@
   (general-iemap "M-m" 'which-key-show-top-level)
   :config
   (which-key-enable-god-mode-support)
-  (which-key-mode))
+  (which-key-mode)
+  (which-key-add-key-based-replacements
+    "`" "C-c C-c"
+    "Z" "zoom"
+    "go" "C-x C-e"
+    "gS" "C-j"
+    "m'" "C-c '"
+    "m`" "C-c C-g"
+    "m-" "C-c C-k"
+    "SPC r" "switch buffers"
+    "SPC h" "help"
+    "SPC k" "kill buffers"
+    "SPC y" "kill ring"
+    "SPC j" "exec command"
+    "SPC J" "major-mode command"
+    "SPC f" "find files"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Modal states    ;;
@@ -148,7 +163,7 @@
  ^Move^    ^Size^    ^Change^                    ^Split^           ^Text^
  ^^^^^^^^^^^------------------------------------------------------------------
  ^ ^ _k_ ^ ^   ^ ^ _K_ ^ ^   _u_: winner-undo _o_: rotate  _v_: vertical     _+_: zoom in
- _h_ ^+^ _l_   _H_ ^+^ _L_   _r_: winner-redo            _s_: horizontal   _-_: zoom out
+ _h_ ^+^ _l_   _H_ ^+^ _L_   _r_: winner-redo _w_: other   _s_: horizontal   _-_: zoom out
  ^ ^ _j_ ^ ^   ^ ^ _J_ ^ ^   _c_: close                  _z_: zoom         _q_: quit
 "
   ("h" windmove-left)
@@ -163,6 +178,7 @@
   ("s" sk/split-below-and-move)
   ("c" delete-window)
   ("o" sk/rotate-windows)
+  ("w" other-window :color blue)
   ("z" delete-other-windows)
   ("u" (progn
          (winner-undo)
@@ -294,6 +310,7 @@
 (use-package dash-at-point
   :ensure t
   :general
+  (general-nvmap "K" 'dash-at-point-with-docset)
   (general-nvmap "gK" 'dash-at-point))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -383,14 +400,8 @@
   :mode (("\\.tex\\'" . LaTeX-mode)
 	 ("\\.xtx\\'" . LaTeX-mode))
   :general
-  (general-evil-define-key '(normal visual) LaTeX-mode-map :prefix sk--evil-local-leader
-			   "m" 'preview-at-point
-			   "c" (general-simulate-keys "C-c C-l" t "compile result")
-			   "f" 'TeX-fold-mode
-			   "qe" 'LaTeX-fill-environment
-			   "qp" 'LaTeX-fill-paragraph
-			   "qs" 'LaTeX-fill-section
-			   "qr" 'LaTeX-fill-region)
+  (general-nvmap :prefix sk--evil-local-leader
+		 "x" '(hydra-latex/body :which-key "latex"))
   :init
   (setq reftex-plug-into-AUCTeX t)
   (setq reftex-default-bibliography '("~/Dropbox/PhD/articles/tensors/tensors.bib"))
@@ -431,24 +442,30 @@
   (diminish 'reftex-mode))
 (add-hook 'reftex-mode-hook 'sk/diminish-reftex)
 
-;; awesome latex magic
-(use-package magic-latex-buffer
-  :ensure t
-  :diminish (magic-latex-buffer . " μ")
-  :diminish iimage-mode
-  :init
-  (setq magic-latex-enable-subscript t
-	magic-latex-enable-pretty-symbols t)
-  :general
-  (general-evil-define-key '(normal visual) LaTeX-mode-map :prefix sk--evil-local-leader
-			   "l" 'magic-latex-buffer))
-
-;; preview latex in emacs (GUI only)
-(use-package latex-preview-pane
-  :ensure t
-  :general
-  (general-evil-define-key '(normal visual) LaTeX-mode-map :prefix sk--evil-local-leader
-			   "p" 'latex-preview-pane-mode))
+;; hydra for latex
+(defhydra hydra-latex (:color pink :hint nil)
+  "
+ ^LaTeX^                                                ^Commands^
+^^^^^^^^^^----------------------------------------------------------------------------------------------------
+ _l_: preview at pt   _i_: fill region    _v_: tex view     _c_: command master    _O_: cmd kill      _q_: quit
+ _L_: preview buffer  _b_: fill para      _m_: master file  _o_: compile output    _C_: preview clear
+ _f_: fill env        _s_: fill section   _h_: home buffer  _r_: cmd run all
+"
+  ("l" preview-at-point)
+  ("L" preview-buffer :color blue)
+  ("f" LaTeX-fill-environment)
+  ("i" LaTeX-fill-region)
+  ("b" LaTeX-fill-paragraph)
+  ("s" LaTeX-fill-section)
+  ("v" TeX-view :color blue)
+  ("m" TeX-master-file-ask :color blue)
+  ("h" TeX-home-buffer)
+  ("c" TeX-command-master :color blue)
+  ("o" TeX-recenter-output-buffer :color blue)
+  ("r" TeX-command-run-all :color blue)
+  ("O" TeX-kill-job :color blue)
+  ("C" preview-clearout-buffer :color blue)
+  ("q" nil :color blue))
 
 ;; pick out weasel words
 (use-package writegood-mode
@@ -457,7 +474,8 @@
   :general
   (general-nmap "g]" 'writegood-grade-level)
   (general-nmap "g[" 'writegood-reading-ease)
-  (general-nvmap :prefix sk--evil-global-leader "." 'writegood-mode)
+  (general-nvmap :prefix sk--evil-local-leader
+		 "=" 'writegood-mode)
   :config
   (progn
     (add-hook 'text-mode-hook 'writegood-mode)))
@@ -699,12 +717,6 @@
     :bind (("C-c l" . company-auctex))
     :config
     (add-to-list 'company-backends 'company-auctex)))
-
-;; Dash documentation
-(use-package dash-at-point
-  :ensure t
-  :general
-  (general-nvmap "K" 'dash-at-point))
 
 ;; Shell interaction
 (require 'sk-shell)

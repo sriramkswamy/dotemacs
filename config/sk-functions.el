@@ -13,8 +13,8 @@
 	     (if (eq (frame-parameter nil 'maximized) 'maximized)
 		 'maximized)
 	   'fullboth)))))
-(general-nmap :prefix sk--evil-global-leader                                   ; global leader prefix
-	      "z" 'sk/toggle-frame-fullscreen-non-native)                      ; 'SPC z' - fullscreen
+(general-nmap :prefix sk--evil-global-leader
+	      "z" '(sk/toggle-frame-fullscreen-non-native :which-key "fullscreen"))
 
 ;; smarter start of line
 (defun sk/smarter-move-beginning-of-line (arg)
@@ -79,9 +79,9 @@ point reaches the beginning or end of the buffer, stop there."
         (forward-word)))))
 ;; map the function
 (general-nmap :prefix "["
-	      "s" 'sk/flyspell-goto-previous-error)
+	      "s" '(sk/flyspell-goto-previous-error :which-key "previous spell error"))
 (general-nmap :prefix "]"
-	      "s" 'flyspell-goto-next-error)
+	      "s" '(flyspell-goto-next-error :which-key "next spell error"))
 
 ;; window movements
 (defun sk/split-below-and-move ()
@@ -132,8 +132,8 @@ point reaches the beginning or end of the buffer, stop there."
   (other-window 1)
   (scroll-down-command)
   (other-window 1))
-(general-nmap "[v" 'sk/other-window-up)
-(general-nmap "]v" 'sk/other-window-down)
+(general-nmap "[v" '(sk/other-window-up :which-key "scroll other window up"))
+(general-nmap "]v" '(sk/other-window-down :which-key "scroll other window down"))
 
 ;; turn the adjoining pdf
 (defun sk/other-pdf-next ()
@@ -163,9 +163,8 @@ point reaches the beginning or end of the buffer, stop there."
   (other-window 1)
   (doc-view-scroll-up-or-next-page 10)
   (other-window 1))
-(general-nmap "[d" 'sk/other-pdf-down)
-(general-nmap "]d" 'sk/other-pdf-up)
-
+(general-nmap "[d" '(sk/other-pdf-down :which-key "scroll down other pdf"))
+(general-nmap "]d" '(sk/other-pdf-up :which-key "scroll up other pdf"))
 
 ;; browse the current HTML file in browser
 (defun sk/browse-current-file ()
@@ -176,51 +175,52 @@ point reaches the beginning or end of the buffer, stop there."
              (tramp-tramp-file-p file-name))
         (error "Cannot open tramp file")
       (browse-url (concat "file://" file-name)))))
-(general-nmap "gB" 'sk/browse-current-file)
+(general-nmap "gB" '(sk/browse-current-file :which-key "open in browser"))
 
 ;; alignment functions
+(general-nvmap "gA" '(nil :which-key "align region"))
 (defun sk/align-whitespace (start end)
   "Align columns by whitespace"
   (interactive "r")
   (align-regexp start end
                 "\\(\\s-*\\)\\s-" 1 0 t))
-(general-nvmap "gAs" 'sk/align-whitespace)
+(general-nvmap "gAs" '(sk/align-whitespace :which-key "by whitespace"))
 (defun sk/align-ampersand (start end)
   "Align columns by ampersand"
   (interactive "r")
   (align-regexp start end
                 "\\(\\s-*\\)&" 1 1 t))
-(general-nvmap "gAa" 'sk/align-ampersand)
+(general-nvmap "gAa" '(sk/align-ampersand :which-key "by ampersand"))
 (defun sk/align-quote-space (start end)
   "Align columns by quote and space"
   (interactive "r")
   (align-regexp start end
                 "\\(\\s-*\\).*\\s-\"" 1 0 t))
-(general-nvmap "gAq" 'sk/align-quote-space)
+(general-nvmap "gAq" '(sk/align-quote-space :which-key "by quotes"))
 (defun sk/align-equals (start end)
   "Align columns by equals sign"
   (interactive "r")
   (align-regexp start end
                 "\\(\\s-*\\)=" 1 0 t))
-(general-nvmap "gA=" 'sk/align-equals)
+(general-nvmap "gA=" '(sk/align-equals :which-key "by equal"))
 (defun sk/align-comma (start end)
   "Align columns by comma"
   (interactive "r")
   (align-regexp start end
                 "\\(\\s-*\\)," 1 1 t))
-(general-nvmap "gA," 'sk/align-comma)
+(general-nvmap "gA," '(sk/align-comma :which-key "by comma"))
 (defun sk/align-dot (start end)
   "Align columns by dot"
   (interactive "r")
   (align-regexp start end
                 "\\(\\s-*\\)\\\." 1 1 t))
-(general-nvmap "gA." 'sk/align-dot)
+(general-nvmap "gA." '(sk/align-dot :which-key "by dot"))
 (defun sk/align-colon (start end)
   "Align columns by equals sign"
   (interactive "r")
   (align-regexp start end
                 "\\(\\s-*\\):" 1 0 t))
-(general-nvmap "gA:" 'sk/align-colon)
+(general-nvmap "gA:" '(sk/align-colon :which-key "by colon"))
 
 ;; rename buffer and file
 (defun sk/rename-current-buffer-file ()
@@ -239,7 +239,7 @@ point reaches the beginning or end of the buffer, stop there."
           (set-buffer-modified-p nil)
           (message "File '%s' successfully renamed to '%s'"
                    name (file-name-nondirectory new-name)))))))
-(general-nmap "gR" 'sk/rename-current-buffer-file)
+(general-nvmap "gR" '(sk/rename-current-buffer-file :which-key "rename file"))
 
 ;; delete buffer and file
 (defun sk/delete-current-buffer-file ()
@@ -254,15 +254,14 @@ point reaches the beginning or end of the buffer, stop there."
         (delete-file filename)
         (kill-buffer buffer)
         (message "File '%s' successfully removed" filename)))))
-(general-nmap :prefix sk--evil-global-leader
-	      "K" 'sk/delete-current-buffer-file)
+(general-nvmap "gK" '(sk/delete-current-buffer-file :which-key "delete file"))
 
 ;; copy the file path
 (defun sk/copy-current-file-path ()
   "Add current file path to kill ring. Limits the filename to project root if possible."
   (interactive)
   (kill-new buffer-file-name))
-(general-nmap "gY" 'sk/copy-current-file-path)
+(general-nvmap "gY" '(sk/copy-current-file-path :which-key "copy file path"))
 
 ;; Transpose words forward
 (defun sk/transpose-words-forward ()
@@ -272,14 +271,14 @@ point reaches the beginning or end of the buffer, stop there."
   (forward-char 1)
   (transpose-words 1)
   (backward-word 1))
-(general-nmap "]w" 'sk/transpose-words-forward)
 ;; Transpose words backward
 (defun sk/transpose-words-backward ()
   "Transpose words backward"
   (interactive)
   (transpose-words 1)
   (backward-word 1))
-(general-nmap "[w" 'sk/transpose-words-backward)
+(general-nmap "]w" '(sk/transpose-words-forward :which-key "exchange word forward"))
+(general-nmap "[w" '(sk/transpose-words-backward :which-key "exchange word backward"))
 
 ;; Transpose chars forward
 (defun sk/transpose-chars-forward ()
@@ -288,46 +287,14 @@ point reaches the beginning or end of the buffer, stop there."
   (forward-char 1)
   (transpose-chars 1)
   (backward-char 1))
-(general-nmap "]c" 'sk/transpose-chars-forward)
 ;; Transpose chars backward
 (defun sk/transpose-chars-backward ()
   "Transpose chars backward"
   (interactive)
   (transpose-chars 1)
   (backward-char 1))
-(general-nmap "[c" 'sk/transpose-chars-backward)
-
-;; duplicate line or region
-(defun sk/duplicate-region (&optional num start end)
-  "Duplicates the region bounded by START and END NUM times.
-If no START and END is provided, the current region-beginning and
-region-end is used."
-  (interactive "p")
-  (save-excursion
-    (let* ((start (or start (region-beginning)))
-           (end (or end (region-end)))
-           (region (buffer-substring start end)))
-      (goto-char end)
-      (dotimes (i num)
-        (insert region)))))
-(defun sk/duplicate-current-line (&optional num)
-  "Duplicate the current line NUM times."
-  (interactive "p")
-  (save-excursion
-    (when (eq (point-at-eol) (point-max))
-      (goto-char (point-max))
-      (newline)
-      (forward-char -1))
-    (sk/duplicate-region num (point-at-bol) (1+ (point-at-eol)))))
-(defun sk/duplicate-line-or-region (&optional num)
-  "Duplicate the current line or region if active"
-  (interactive "p")
-  (if (region-active-p)
-      (let ((beg (region-beginning))
-            (end (region-end)))
-        (sk/duplicate-region num beg end)))
-  (sk/duplicate-current-line num))
-(general-nmap "gD" 'sk/duplicate-line-or-region)
+(general-nmap "]c" '(sk/transpose-chars-forward :which-key "exchange char forward"))
+(general-nmap "[c" '(sk/transpose-chars-backward :which-key "exchange char backward"))
 
 ;; Correct the DOuble capitals
 (defun sk/dcaps-to-scaps ()
@@ -389,8 +356,8 @@ Single Capitals as you type."
   (interactive "*p")
   (sk/move-text-internal (- arg))
   (next-line 1))
-(general-nmap "[e" 'sk/move-text-up)
-(general-nmap "]e" 'sk/move-text-down)
+(general-nmap "[e" '(sk/move-text-up :which-key "exchange line up"))
+(general-nmap "]e" '(sk/move-text-down :which-key "exchange line down"))
 
 ;; Autocorrect
 (defun sk/simple-get-word ()
@@ -427,7 +394,7 @@ abort completely with `C-g'."
           (message "\"%s\" now expands to \"%s\" %sally"
                    bef aft (if p "loc" "glob")))
       (user-error "No typo at or before point"))))
-(general-imap "C-s" 'sk/ispell-word-then-abbrev)
+(general-imap "C-s" '(sk/ispell-word-then-abbrev :which-key "correct spelling mistake"))
 
 ;; Set fonts
 (cond ((eq system-type 'gnu/linux)                                             ; if system is GNU/Linux
@@ -514,8 +481,8 @@ abort completely with `C-g'."
   (save-excursion
     (end-of-line 1)
     (newline)))
-(general-nmap "[o" 'sk/blank-line-up)
-(general-nmap "]o" 'sk/blank-line-down)
+(general-nmap "[o" '(sk/blank-line-up :which-key "blank line up"))
+(general-nmap "]o" '(sk/blank-line-down :which-key "blank line down"))
 
 ;; blank chars
 (defun sk/blank-char-before ()
@@ -530,8 +497,8 @@ abort completely with `C-g'."
   (save-excursion
     (forward-char 1)
     (insert " ")))
-(general-nmap "[b" 'sk/blank-char-before)
-(general-nmap "]b" 'sk/blank-char-after)
+(general-nmap "[b" '(sk/blank-char-before :which-key "blank char before"))
+(general-nmap "]b" '(sk/blank-char-after :which-key "blank char after"))
 
 ;; provide this configuration
 (provide 'sk-functions)

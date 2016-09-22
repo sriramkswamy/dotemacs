@@ -235,15 +235,15 @@ Its element is a pair of `buffer-name' and `mode-line-format'.")
   :demand t
   :diminish helm-mode
   :general
-  (general-nvmap "t" 'helm-semantic-or-imenu)
-  (general-nvmap "M" 'helm-man-woman)
+  (general-nvmap "t" '(helm-semantic-or-imenu :which-key "tags in file"))
+  (general-nvmap "M" '(helm-man-woman :which-key "man pages"))
   (general-nvmap :prefix sk--evil-global-leader
-		 "i" 'helm-resume
-		 "s" 'helm-for-files
-		 "#" 'helm-colors
-		 "`" 'helm-all-mark-rings
-		 "\\" 'helm-top)
-  (general-imap "C-v" 'helm-ucs)
+		 "i" '(helm-resume :which-key "resume helm")
+		 "s" '(helm-for-files :which-key "search desktop")
+		 "#" '(helm-colors :which-key "color picker")
+		 "`" '(helm-all-mark-rings :which-key "mark rings")
+		 "\\" '(helm-top :which-key "system top"))
+  (general-imap "C-v" '(helm-ucs :which-key "unicode char"))
   :bind (("M-x"     . helm-M-x)
 	 ("M-y"     . helm-show-kill-ring)
 	 ("C-x C-f" . helm-find-files)
@@ -322,7 +322,7 @@ Its element is a pair of `buffer-name' and `mode-line-format'.")
   (use-package helm-bibtex
     :ensure t
     :general
-    (general-nvmap :prefix sk--evil-global-leader "b" 'helm-bibtex)
+    (general-nvmap :prefix sk--evil-global-leader "b" '(helm-bibtex :which-key "bibliography"))
     :init
     (setq bibtex-completion-bibliography
 	  '("~/Dropbox/PhD/articles/tensors/tensors.bib"
@@ -345,9 +345,9 @@ Its element is a pair of `buffer-name' and `mode-line-format'.")
   (use-package helm-ag
     :ensure t
     :general
-    (general-nvmap "J" '(sk/helm-do-ag-project-root-at-point :which-key "search symbol in proj"))
     (general-nvmap :prefix sk--evil-global-leader
 		   "/" '(sk/helm-do-ag :which-key "search in dir")
+		   "a" '(sk/helm-do-ag-project-root-at-point :which-key "search symbol in proj")
 		   "p" '(sk/helm-do-ag-project-root :which-key "search in project")))
 
   ;; to search in files
@@ -355,9 +355,9 @@ Its element is a pair of `buffer-name' and `mode-line-format'.")
     :ensure t
     :bind (("C-s" . helm-swoop-without-pre-input))
     :general
-    (general-nvmap "#" 'helm-swoop)
-    (general-nvmap "/" 'helm-swoop-without-pre-input)
-    (general-nvmap "g/" 'helm-multi-swoop-all)
+    (general-nvmap "#" '(helm-swoop :which-key "search word in buffer"))
+    (general-nvmap "/" '(helm-swoop-without-pre-input :which-key "search in buffer"))
+    (general-nvmap "g/" '(helm-multi-swoop-all :which-key "search in all buffers"))
     :init
     (setq helm-swoop-split-with-multiple-windows nil
           helm-swoop-split-direction 'split-window-vertically
@@ -368,8 +368,7 @@ Its element is a pair of `buffer-name' and `mode-line-format'.")
     :ensure t
     :general
     (general-nvmap :prefix sk--evil-global-leader
-		   "d" '(helm-projectile :which-key "project files")
-		   "TAB" '(helm-projectile-find-other-file :which-key "project other file"))
+		   "d" '(helm-projectile :which-key "project files"))
     :init
     (setq projectile-completion-system 'helm))
 
@@ -378,19 +377,19 @@ Its element is a pair of `buffer-name' and `mode-line-format'.")
     :ensure t
     :general
     (general-nvmap :prefix sk--evil-global-leader
-		   "?" 'helm-descbinds))
+		   "?" '(helm-descbinds :which-key "search bindings")))
 
   ;; List errors with helm
   (use-package helm-flycheck
     :ensure t
     :general
-    (general-nvmap :prefix sk--evil-global-leader "l" 'helm-flycheck))
+    (general-nvmap :prefix sk--evil-global-leader "l" '(helm-flycheck :which-key "list errors")))
 
   ;; correct spellings
   (use-package flyspell-correct-helm
     :ensure t
     :general
-    (general-imap "C-z" #'flyspell-correct-previous-word-generic)
+    (general-imap "C-z" #'(flyspell-correct-previous-word-generic :which-key "correct spelling mistake"))
     :config
     (require 'flyspell-helm))
 
@@ -398,14 +397,14 @@ Its element is a pair of `buffer-name' and `mode-line-format'.")
   (use-package helm-c-yasnippet
     :ensure t
     :general
-    (general-imap "C-a" 'helm-yas-complete))
+    (general-imap "C-a" '(helm-yas-complete :which-key "choose snippet")))
 
   ;; for awesome org navigation
   (use-package helm-org-rifle
     :ensure t
     :general
     (general-nvmap :prefix sk--evil-global-leader
-		   "o" '(sk/helm-org-rifle :which-key "narrow down org"))))
+		   "of" '(sk/helm-org-rifle :which-key "find in org files"))))
 
 ;; helm hydra
 (defhydra hydra-helm (:hint nil :color pink)
@@ -444,30 +443,30 @@ Its element is a pair of `buffer-name' and `mode-line-format'.")
 	("w" helm-toggle-resplit-and-swap-windows)
 	("e" helm-swoop-edit)
         ("f" helm-follow-mode))
-(define-key helm-map (kbd "C-o") 'hydra-helm/body)
-(define-key helm-read-file-map (kbd "C-o") 'hydra-helm/body)
-(define-key helm-find-files-map (kbd "C-o") 'hydra-helm/body)
+(define-key helm-map (kbd "C-o") '(hydra-helm/body :which-key "helm hydra"))
+(define-key helm-read-file-map (kbd "C-o") '(hydra-helm/body :which-key "helm hydra"))
+(define-key helm-find-files-map (kbd "C-o") '(hydra-helm/body :which-key "helm hydra"))
 
 ;; ivy views is great. eyebrowse is the closest alternative
 (use-package eyebrowse
   :ensure t
   :general
-  (general-nvmap "gt" 'eyebrowse-next-window-config)
-  (general-nvmap "gT" 'eyebrowse-prev-window-config)
-  (general-nvmap "g'" 'eyebrowse-last-window-config)
-  (general-nvmap "g\"" 'eyebrowse-close-window-config)
-  (general-nvmap "g\\" 'eyebrowse-rename-window-config)
-  (general-nvmap "g." 'eyebrowse-switch-to-window-config)
-  (general-nvmap "g0" 'eyebrowse-switch-to-window-config-0)
-  (general-nvmap "g1" 'eyebrowse-switch-to-window-config-1)
-  (general-nvmap "g2" 'eyebrowse-switch-to-window-config-2)
-  (general-nvmap "g3" 'eyebrowse-switch-to-window-config-3)
-  (general-nvmap "g4" 'eyebrowse-switch-to-window-config-4)
-  (general-nvmap "g5" 'eyebrowse-switch-to-window-config-5)
-  (general-nvmap "g6" 'eyebrowse-switch-to-window-config-6)
-  (general-nvmap "g7" 'eyebrowse-switch-to-window-config-7)
-  (general-nvmap "g8" 'eyebrowse-switch-to-window-config-8)
-  (general-nvmap "g9" 'eyebrowse-switch-to-window-config-9)
+  (general-nvmap "gt" '(eyebrowse-next-window-config :which-key "next tab"))
+  (general-nvmap "gT" '(eyebrowse-prev-window-config :which-key "prev tab"))
+  (general-nvmap "g\\" '(eyebrowse-last-window-config :which-key "last tab"))
+  (general-nvmap "g\"" '(eyebrowse-close-window-config :which-key "close tab"))
+  (general-nvmap "g'" '(eyebrowse-rename-window-config :which-key "rename tab"))
+  (general-nvmap "g." '(eyebrowse-switch-to-window-config :which-key "switch tab"))
+  (general-nvmap "g0" '(eyebrowse-switch-to-window-config-0 :which-key "0th tab"))
+  (general-nvmap "g1" '(eyebrowse-switch-to-window-config-1 :which-key "1st tab"))
+  (general-nvmap "g2" '(eyebrowse-switch-to-window-config-2 :which-key "2nd tab"))
+  (general-nvmap "g3" '(eyebrowse-switch-to-window-config-3 :which-key "3rd tab"))
+  (general-nvmap "g4" '(eyebrowse-switch-to-window-config-4 :which-key "4th tab"))
+  (general-nvmap "g5" '(eyebrowse-switch-to-window-config-5 :which-key "5th tab"))
+  (general-nvmap "g6" '(eyebrowse-switch-to-window-config-6 :which-key "6th tab"))
+  (general-nvmap "g7" '(eyebrowse-switch-to-window-config-7 :which-key "7th tab"))
+  (general-nvmap "g8" '(eyebrowse-switch-to-window-config-8 :which-key "8th tab"))
+  (general-nvmap "g9" '(eyebrowse-switch-to-window-config-9 :which-key "9th tab"))
   :config
   (eyebrowse-mode t))
 

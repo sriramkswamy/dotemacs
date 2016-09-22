@@ -115,7 +115,11 @@
   (general-evil-setup))
 (setq sk--emacs-leader "C-c")
 (setq sk--evil-local-leader "m")
+(general-nvmap :prefix sk--evil-local-leader
+	       "" '(nil :which-key "major mode map"))
 (setq sk--evil-global-leader "SPC")
+(general-nvmap :prefix sk--evil-global-leader
+	       "" '(nil :which-key "global map"))
 
 ;; hint for bindings
 (use-package which-key
@@ -188,7 +192,7 @@
   ("+" text-scale-increase)
   ("-" text-scale-decrease)
   ("q" nil :exit t))
-(general-nmap "w" 'hydra-windows/body)
+(general-nmap "w" '(hydra-windows/body :which-key "manage windows"))
 
 ;; bookmark hydra
 (defhydra hydra-bookmarks (:color blue
@@ -201,7 +205,7 @@
   ("j" bookmark-jump)
   ("d" bookmark-delete)
   ("q" nil :color blue))
-(general-nmap "+" 'hydra-bookmarks/body)
+(general-nvmap "+" '(hydra-bookmarks/body :which-key "bookmarks"))
 
 ;;;;;;;;;;;;;;;;;;;
 ;;    Editing    ;;
@@ -212,8 +216,10 @@
   :ensure t
   :commands (yas-insert-snippet yas-new-snippet)
   :general
-  (general-imap "C-a" 'yas-insert-snippet)
-  (general-imap "C-n" 'yas-new-snippet)
+  (general-imap "C-a" '(yas-insert-snippet :which-key "choose snippet"))
+  (general-nvmap :prefix sk--evil-global-leader
+		 "c" '(yas-new-snippet :which-key "new snippet")
+		 "C" '(yas-reload-all :which-key "reload snippets"))
   :diminish (yas-minor-mode . " γ")
   :config
   (setq yas/triggers-in-field t); Enable nested triggering of snippets
@@ -237,27 +243,26 @@
   (setq avy-style 'pre)			; where the characters should be placed
   (setq avy-background t)		; always highlight the background
   :general				; `general.el' maps
-  (general-nmap "-" nil)
-  (general-nmap "-" 'avy-goto-line)
-  (general-omap "-" 'avy-goto-line)
-  (general-vmap "-" 'avy-goto-line)
-  (general-mmap "-" 'avy-goto-line)
-  (general-nmap "gw" 'avy-goto-char-2)
-  (general-omap "gw" 'avy-goto-char-2)
-  (general-vmap "gw" 'avy-goto-char-2)
-  (general-mmap "gw" 'avy-goto-char-2)
+  (general-nvmap "-" nil)
+  (general-nvmap "-" '(avy-goto-line :which-key "jump to line"))
+  (general-omap "-" '(avy-goto-line :which-key "jump to line"))
+  (general-mmap "-" '(avy-goto-line :which-key "jump to line"))
+  (general-nvmap "gw" '(avy-goto-char-2 :which-key "jump to 2 char"))
+  (general-omap "gw" '(avy-goto-char-2 :which-key "jump to 2 char"))
+  (general-mmap "gw" '(avy-goto-char-2 :which-key "jump to 2 char"))
   :config
   (use-package ace-link
     :ensure t
     :demand t
     :general
     (general-nvmap :prefix "\\"
-		   "h" 'ace-link-help
-		   "i" 'ace-link-info
-		   "w" 'ace-link-eww
-		   "m" 'ace-link-woman
-		   "c" 'ace-link-compilation
-		   "u" 'ace-link-custom)
+		   "\\" '(nil :which-key "link/clipboard")
+		   "h" '(ace-link-help :which-key "help mode link")
+		   "i" '(ace-link-info :which-key "info mode link")
+		   "w" '(ace-link-eww :which-key "eww mode link")
+		   "m" '(ace-link-woman :which-key "woman mode link")
+		   "c" '(ace-link-compilation :which-key "compilation mode link")
+		   "u" '(ace-link-custom :which-key "custom mode link"))
     :config
     (ace-link-setup-default)))
 
@@ -295,13 +300,24 @@
   ("t" ggtags-find-tag-dwim)
   ("q" nil :exit t))
 (general-nmap :prefix sk--evil-global-leader
-	      "t" 'hydra-ggtags/body)
+	      "t" '(hydra-ggtags/body :which-key "manage tags"))
+
+;; dumb semantic jump
+(use-package dumb-jump
+  :ensure t
+  :general
+  (general-nvmap "J" '(dumb-jump-go :which-key "find definition"))
+  :init
+  (setq dumb-jump-selector 'ivy)
+  :config
+  (dumb-jump-mode))
 
 ;; dash documentation
 (use-package dash-at-point
   :ensure t
   :general
-  (general-nvmap "gK" 'dash-at-point-with-docset))
+  (general-nvmap "K" '(dash-at-point-with-docset :which-key "show doc"))
+  (general-nvmap "gD" '(dash-at-point-with-docset :which-key "dash documentation")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Debugging using GDB    ;;
@@ -338,9 +354,9 @@
   :ensure t
   :general
   (general-nvmap :prefix "\\"
-		 "d" 'simpleclip-cut
-		 "y" 'simpleclip-copy
-		 "p" 'simpleclip-paste))
+		 "d" '(simpleclip-cut :which-key "system clipboard cut")
+		 "y" '(simpleclip-copy :which-key "system clipboard copy")
+		 "p" '(simpleclip-paste :which-key "system clipboard paste")))
 
 ;; cleanup whitespace
 (use-package ws-butler
@@ -354,7 +370,7 @@
   :ensure t
   :general
   (general-nmap :prefix sk--evil-global-leader
-		"Q" 'restart-emacs))
+		"Q" '(restart-emacs :which-key "restart emacs")))
 
 ;; discovering the major mode bindings and details
 (use-package discover-my-major
@@ -462,8 +478,8 @@
   :ensure t
   :diminish writegood-mode
   :general
-  (general-nvmap "g]" 'writegood-grade-level)
-  (general-nvmap "g[" 'writegood-reading-ease)
+  (general-nvmap "g]" '(writegood-grade-level :which-key "grade writing"))
+  (general-nvmap "g[" '(writegood-reading-ease :which-key "grade reading"))
   :config
   (progn
     (add-hook 'text-mode-hook 'writegood-mode)))
@@ -476,8 +492,8 @@
 (use-package magit
   :ensure t
   :general
-  (general-nmap :prefix sk--evil-global-leader "e" 'magit-status)
-  (general-nmap "gb" 'magit-blame)
+  (general-nvmap :prefix sk--evil-global-leader "e" '(magit-status :which-key "git status"))
+  (general-nvmap "gb" '(magit-blame :which-key "git blame"))
   (general-evil-define-key '(normal visual) 'magit-blame-mode-map
     "q" (general-simulate-keys "q" t "quit")
     "n" (general-simulate-keys "n" t "quit")
@@ -490,8 +506,6 @@
     "u" (general-simulate-keys "DEL" t "quit")
     "c" (general-simulate-keys "RET" t "quit")
     "RET" (general-simulate-keys "RET" t "quit"))
-  (general-nmap :prefix sk--evil-global-leader
-		"e" 'magit-status)
   :config
   (use-package evil-magit
     :ensure t
@@ -513,11 +527,11 @@
              diff-hl-diff-goto-hunk
              diff-hl-revert-hunk)
   :general
-  (general-nvmap "[h" 'diff-hl-previous-hunk)
-  (general-nvmap "]h" 'diff-hl-next-hunk)
-  (general-tomap "h" 'diff-hl-mark-hunk)
-  (general-nvmap "gh" 'diff-hl-diff-goto-hunk)
-  (general-nvmap "gH" 'diff-hl-revert-hunk)
+  (general-nvmap "[h" '(diff-hl-previous-hunk :which-key "previous hunk"))
+  (general-nvmap "]h" '(diff-hl-next-hunk :which-key "next hunk"))
+  (general-tomap "h" '(diff-hl-mark-hunk :which-key "hunk"))
+  (general-nvmap "gh" '(diff-hl-diff-goto-hunk :which-key "goto hunk"))
+  (general-nvmap "gH" '(diff-hl-revert-hunk :which-key "revert hunk"))
   :config
   (global-diff-hl-mode)
   (diff-hl-flydiff-mode)
@@ -528,8 +542,8 @@
 (use-package git-timemachine
   :ensure t
   :general
-  (general-nmap "gl" 'git-timemachine-toggle)
-  (general-nmap "gL" 'git-timemachine-switch-branch))
+  (general-nmap "gl" '(git-timemachine-toggle :which-key "git timemachine"))
+  (general-nmap "gL" '(git-timemachine-switch-branch :which-key "git timemachine branch")))
 
 ;; posting gists
 (use-package yagist
@@ -537,14 +551,14 @@
   :init
   (setq yagist-encrypt-risky-config t)
   :general
-  (general-nmap "gp" 'yagist-region-or-buffer)
-  (general-nmap "gP" 'yagist-region-or-buffer-private))
+  (general-nmap "gp" '(yagist-region-or-buffer :which-key "create gist"))
+  (general-nmap "gP" '(yagist-region-or-buffer-private :which-key "create private gist")))
 
 ;; browse remote packages
 (use-package browse-at-remote
   :ensure t
   :general
-  (general-nmap "gI" 'browse-at-remote))
+  (general-nmap "gI" '(browse-at-remote :which-key "browse remote")))
 
 ;;;;;;;;;;;;;;;
 ;;    Org    ;;
@@ -570,7 +584,7 @@
   :commands (prodigy)
   :general
   (general-nvmap :prefix sk--evil-global-leader
-		 "g" 'prodigy)
+		 "g" '(prodigy :which-key "background process"))
   (general-evil-define-key '(normal visual) 'prodigy-mode-map
     "q" (general-simulate-keys "q" t "quit")
     "s" (general-simulate-keys "s" t "start")
@@ -634,9 +648,9 @@
   :ensure t
   :defer 2
   :general
-  (general-nmap "[l" 'flycheck-previous-error)
-  (general-nmap "]l" 'flycheck-next-error)
-  (general-nmap :prefix sk--evil-global-leader "l" 'flycheck-list-errors)
+  (general-nmap "[l" '(flycheck-previous-error :which-key "previous error"))
+  (general-nmap "]l" '(flycheck-next-error :which-key "next error"))
+  (general-nmap :prefix sk--evil-global-leader "l" '(flycheck-list-errors :which-key "list errors"))
   :config
   (global-flycheck-mode))
 
@@ -727,8 +741,7 @@
 	(google-this-region 1)
       (google-this-symbol 1)))
   :general
-  (general-nvmap "K" 'sk/google-this)
-  (general-nvmap "gG" 'sk/google-this))
+  (general-nvmap "gG" '(sk/google-this :which-key "google")))
 
 ;; creepy function
 (defun hello-human ()
@@ -741,10 +754,10 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; ivy
-;; (require 'sk-ivy)
+(require 'sk-ivy)
 ;; helm
-(require 'sk-helm)
-(helm-ido-like)
+;; (require 'sk-helm)
+;; (helm-ido-like)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Included packages    ;;

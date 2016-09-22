@@ -1,4 +1,4 @@
-;; Flx for fuzzy matching
+;; Flex for fuzzy matching
 (use-package flx-ido	; Flx matching for ido (includes flx)
   :ensure t)
 
@@ -15,8 +15,10 @@
   (setq ivy-use-virtual-buffers t)
   (setq ivy-virtual-abbreviate 'full)
   (setq ivy-re-builders-alist
-	'((counsel-M-x . ivy--regex-fuzzy)
-	  (t . ivy--regex-plus)))
+	'((swiper . ivy--regex-plus)
+	  (counsel-ag . ivy--regex-plus)
+	  (counsel-grep-or-swiper . ivy--regex-plus)
+	  (t . ivy--regex-fuzzy)))
   :general
   (general-define-key :keymaps 'ivy-minibuffer-map
 		      "C-w" 'backward-kill-word
@@ -26,20 +28,12 @@
 		      "C-t" 'ivy-avy
 		      "S-<return>" 'ivy-restrict-to-matches
 		      "C-S-m" 'ivy-restrict-to-matches)
-  (general-evil-define-key '(normal visual) ivy-occur-mode-map
-    "j" (general-simulate-keys "j" t "next line")
-    "k" (general-simulate-keys "k" t "prev line")
-    "h" (general-simulate-keys "h" t "prev char")
-    "l" (general-simulate-keys "l" t "next char")
-    "a" (general-simulate-keys "a" t "read action")
-    )
   (general-nvmap :prefix sk--evil-global-leader
-		 "i" 'ivy-resume)
+		 "i" '(ivy-resume :which-key "resume ivy"))
   (general-nvmap :prefix sk--evil-local-leader
-		 "q" '(wgrep-change-to-wgrep-mode :which-key "refactor")
-		 "=" '(wgrep-save-all-buffers :which-key "save refactored files"))
-  (general-nvmap "gt" 'ivy-push-view)
-  (general-nvmap "gT" 'ivy-pop-view)
+		 "q" '(ivy-wgrep-change-to-wgrep-mode :which-key "refactor"))
+  (general-nvmap "gt" '(ivy-push-view :which-key "add window config"))
+  (general-nvmap "gT" '(ivy-pop-view :which-key "remove window config"))
   :config				; settings once the package is loaded
   (ivy-mode 1)
 
@@ -47,20 +41,16 @@
   (use-package ivy-hydra
     :ensure t)
 
-  ;; wgrep for refactoring
-  (use-package wgrep
-    :ensure t)
-
   ;; wrapper around ivy for many functions
   (use-package counsel
     :ensure t
     :diminish counsel-mode
     :general				; `general.el' maps
-    (general-nvmap "t" 'counsel-imenu)
-    (general-nvmap "M" 'woman)
-    (general-nvmap :prefix sk--evil-global-leader "/" 'counsel-ag)
-    (general-nvmap :prefix sk--evil-global-leader "?" 'counsel-descbinds)
-    (general-imap "C-v" 'counsel-unicode-char)
+    (general-nvmap "t" '(counsel-imenu :which-key "tags in file"))
+    (general-nvmap "M" '(woman :which-key "man pages"))
+    (general-nvmap :prefix sk--evil-global-leader "/" '(counsel-ag :which-key "search in dir"))
+    (general-nvmap :prefix sk--evil-global-leader "?" '(counsel-descbinds :which-key "search bindings"))
+    (general-imap "C-v" '(counsel-unicode-char :which-key "unicode char"))
     :config
     (counsel-mode 1))
 
@@ -68,10 +58,10 @@
   (use-package swiper
     :ensure t
     :general
-    (general-nvmap "g/" 'swiper-all)
-    (general-nvmap "/" 'counsel-grep-or-swiper)
-    (general-nvmap "#" 'sk/swiper-at-point)
-    (general-define-key "C-s" 'counsel-grep-or-swiper)
+    (general-nvmap "g/" '(swiper-all :which-key "search in all buffers"))
+    (general-nvmap "/" '(counsel-grep-or-swiper :which-key "search in buffer"))
+    (general-nvmap "#" '(sk/swiper-at-point :which-key "search word in buffer"))
+    (general-define-key "C-s" '(counsel-grep-or-swiper :which-key "search"))
     :config
     (defun sk/swiper-at-point ()
       "use swiper to search for a word at point"
@@ -82,18 +72,17 @@
   (use-package counsel-projectile
     :ensure t
     :general
-    (general-nmap :prefix sk--evil-global-leader
-		  "d" '(counsel-projectile-find-file-or-buffer :which-key "find in project")
-		  "TAB" '(projectile-find-other-file :which-key "project other file")
-		  "p" '(sk/counsel-ag-project-at-point :which-key "search word in project")
-		  "P" '(sk/counsel-ag-project :which-key "search in project"))
+    (general-nvmap :prefix sk--evil-global-leader
+		   "d" '(counsel-projectile-find-file-or-buffer :which-key "project files")
+		   "a" '(sk/counsel-ag-project-at-point :which-key "search symbol in proj")
+		   "p" '(sk/counsel-ag-project :which-key "search in project"))
     :init
     (setq projectile-completion-system 'ivy)
     :config
     (defun sk/counsel-ag-project-at-point ()
       "use counsel ag to search for the word at point in the project"
       (interactive)
-      (counsel-ag (thing-at-point 'word) (projectile-project-root)))
+      (counsel-ag (thing-at-point 'symbol) (projectile-project-root)))
     (defun sk/counsel-ag-project ()
       "use counsel ag to search the project"
       (interactive)
@@ -103,7 +92,7 @@
   (use-package flyspell-correct-ivy
     :ensure t
     :general
-    (general-imap "C-z" #'flyspell-correct-previous-word-generic)
+    (general-imap "C-z" #'(flyspell-correct-previous-word-generic :which-key "correct spelling mistake"))
     :config
     (require 'flyspell-ivy))
 
@@ -111,7 +100,7 @@
   (use-package spotlight
     :ensure t
     :general
-    (general-nmap :prefix sk--evil-global-leader "s" 'spotlight))
+    (general-nvmap :prefix sk--evil-global-leader "s" '(spotlight :which-key "search desktop")))
 
   ;; to narrow down org files
   (use-package deft
@@ -121,13 +110,13 @@
     (setq deft-directory "~/Dropbox/org")
     :general
     (general-nvmap :prefix sk--evil-global-leader
-		   "o" '(deft :which-key "narrow down org")))
+		   "of" '(deft :which-key "find in org files")))
 
   ;; bibliography and citations
   (use-package ivy-bibtex
     :ensure t
     :general
-    (general-nmap :prefix sk--evil-global-leader "b" 'ivy-bibtex)
+    (general-nvmap :prefix sk--evil-global-leader "b" '(ivy-bibtex :which-key "bibliography"))
     :init
     (setq bibtex-completion-bibliography
 	  '("~/Dropbox/PhD/articles/tensors/tensors.bib"
@@ -144,6 +133,32 @@
     (setq bibtex-completion-notes-path "~/Dropbox/org/articles.org")
     (setq bibtex-completion-pdf-symbol "⌘")
     (setq bibtex-completion-notes-symbol "✎")))
+
+;; wgrep + ag for refactoring
+(use-package ag
+  :ensure t
+  :general
+  (general-evil-define-key '(normal visual) ag-mode-map :prefix sk--evil-local-leader
+			   "Q" '(wgrep-change-to-wgrep-mode :which-key "refactor")
+			   "=" '(wgrep-finish-edit :which-key "finish editing"))
+  (general-nvmap :prefix sk--evil-global-leader
+		 "D" '(ag-files :which-key "refactor in files")
+		 "A" '(ag-project-at-point :which-key "refactor symbol in proj")
+		 "P" '(ag-project :which-key "refactor in project")))
+(use-package wgrep-ag
+  :ensure t
+  :init
+  (setq wgrep-auto-save-buffer t)
+  :general
+  (general-evil-define-key '(normal visual) wgrep-mode-map :prefix sk--evil-local-leader
+			   "Q" '(wgrep-change-to-wgrep-mode :which-key "refactor")
+			   "=" '(wgrep-finish-edit :which-key "finish editing"))
+  (general-nvmap :prefix sk--evil-local-leader
+		 "Q" '(wgrep-change-to-wgrep-mode :which-key "refactor")
+		 "=" '(wgrep-finish-edit :which-key "finish editing"))
+  (general-mmap :prefix sk--evil-local-leader
+		"Q" '(wgrep-change-to-wgrep-mode :which-key "refactor")
+		"=" '(wgrep-finish-edit :which-key "finish editing")))
 
 ;; Redefine ivy's hydra
 (defun ivy--matcher-desc ()
@@ -193,6 +208,33 @@ _h_ ^+^ _l_ | _d_one      ^ ^  | _q_uit   | _m_: matcher %-5s(ivy--matcher-desc)
   ("D" (ivy-exit-with-action
 	(lambda (_) (find-function 'hydra-ivy/body)))
        :exit t))
+
+;; hydra for ivy occur
+(defhydra hydra-ivy-occur (:color red :hint nil)
+  "
+ ^Occur^                                     ^Compile^
+^^^^^^^^^^----------------------------------------------------------------------------------------------
+ _j_: next    _a_: action  _<_: end of buffer    _n_: next file      _h_: prev error  _q_: quit
+ _k_: prev    _s_: press   _>_: start of buffer  _p_: prev file      _l_: next error
+ _f_: follow  _o_: occur                       _c_: compile error  _d_: display error
+"
+  ("j" ivy-occur-next-line)
+  ("k" ivy-occur-previous-line)
+  ("a" ivy-occur-read-action)
+  ("s" ivy-occur-press)
+  ("f" ivy-occur-toggle-calling)
+  ("o" ivy-occur-dispatch :color blue)
+  ("<" beginning-of-buffer)
+  (">" end-of-buffer)
+  ("n" compilation-next-file)
+  ("p" compilation-previous-file)
+  ("h" previous-error-no-select)
+  ("l" next-error-no-select)
+  ("c" compilation-next-error)
+  ("d" compilation-display-error)
+  ("q" nil :color blue))
+(general-nvmap :prefix sk--evil-local-leader
+	       "y" '(hydra-ivy-occur/body :which-key "ivy occur"))
 
 ;; provide the configuration
 (provide 'sk-ivy)

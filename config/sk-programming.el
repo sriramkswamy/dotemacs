@@ -506,8 +506,9 @@
 	      ("C-c C-c" . term-interrupt-subjob))
   :init
   (setq matlab-shell-command "/Applications/MATLAB_R2016a.app/bin/matlab"
-	matlab-mode-install-path '("~/Dropbox/PhD/codes/ttmat" "/Applications/MATLAB_R2016a.app/toolbox")
 	matlab-indent-function t)
+  ;; (setq matlab-mode-install-path '("~/Dropbox/PhD/codes/ttmat"
+  ;; 				   "/Applications/MATLAB_R2016a.app/toolbox"))
   (eval-after-load 'matlab
     '(add-to-list 'matlab-shell-command-switches "-nodesktop -nosplash"))
   :commands (matlab-shell

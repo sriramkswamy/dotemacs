@@ -61,11 +61,11 @@
 ;; eww mode
 (use-package eww
   :general
-  (general-nmap "gx" 'eww)
-  (general-nmap "g:" 'eww-browse-with-external-browser)
-  (general-nmap "gX" 'eww-list-histories)
-  (general-nmap "g{" 'eww-back-url)
-  (general-nmap "g}" 'eww-forward-url)
+  (general-nvmap "gx" '(eww :which-key "eww open link"))
+  (general-nvmap "g:" '(eww-browse-with-external-browser :which-key "browse with external browser"))
+  (general-nvmap "gX" '(eww-list-histories :which-key "eww history"))
+  (general-nvmap "g{" '(eww-back-url :which-key "eww back"))
+  (general-nvmap "g}" '(eww-forward-url :which-key "eww forward"))
   :config
   (progn
     (add-hook 'eww-mode-hook 'visual-line-mode)))
@@ -74,7 +74,7 @@
 (use-package eshell
   :general
   (general-nvmap :prefix sk--evil-global-leader
-		 "u" 'eshell)
+		 "u" '(eshell :which-key "emacs shell"))
   :init
   (setq eshell-glob-case-insensitive t
 	eshell-scroll-to-bottom-on-input 'this

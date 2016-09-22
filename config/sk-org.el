@@ -262,8 +262,9 @@
   (add-to-list 'org-structure-template-alist '("v" "#+BEGIN_VERBATIM\n?\n#+END_VERBATIM"))
   :general
   (general-nvmap :prefix sk--evil-global-leader
-		 "c" 'org-capture
-		 "a" 'org-agenda)
+		 "o" '(nil :which-key "org")
+		 "oc" '(org-capture :which-key "capture")
+		 "oa" '(org-agenda :which-key "agenda"))
   (general-nvmap :prefix sk--evil-local-leader
 		 "o" '(hydra-org-jump/body :which-key "org"))
   (general-nvmap :prefix sk--evil-local-leader

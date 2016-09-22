@@ -380,6 +380,8 @@
     "K" '(ess-display-help-on-object :which-key "show doc"))
   (general-nvmap :prefix sk--evil-local-leader
 		 "s" '(hydra-stats/body :which-key "stats"))
+  :init
+  (setq ess-use-ido nil)
   :config
   (require 'ess-site))
 

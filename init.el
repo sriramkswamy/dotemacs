@@ -11,7 +11,7 @@
 
 ;; General settings
 (setq user-full-name "Sriram Krishnaswamy")                                    ; Hi Emacs, I'm Sriram
-(setq gc-cons-threshold (* 500 1024 1024))                                     ; increase the threshold for garbage collection - 500MB
+(setq gc-cons-threshold (* 100 1024 1024))                                     ; increase the threshold for garbage collection - 100 MB
 (setq delete-old-versions -1)                                                  ; delete excess backup versions silently
 (setq version-control t)                                                       ; use version control for backups
 (setq backup-directory-alist `(("." . "~/.emacs.d/backups")))                  ; which directory to put backups file
@@ -138,6 +138,7 @@
     "m`" "C-c C-g"
     "m-" "C-c C-k"
     "SPC r" "switch buffers"
+    "SPC w" "save buffers"
     "SPC h" "help"
     "SPC k" "kill buffers"
     "SPC y" "kill ring"
@@ -296,22 +297,11 @@
 (general-nmap :prefix sk--evil-global-leader
 	      "t" 'hydra-ggtags/body)
 
-;; dumb semantic jump
-(use-package dumb-jump
-  :ensure t
-  :general
-  (general-nvmap "J" '(dumb-jump-go :which-key "jump to source"))
-  :init
-  (setq dumb-jump-selector 'ivy)
-  :config
-  (dumb-jump-mode))
-
-;; dumb documentation
+;; dash documentation
 (use-package dash-at-point
   :ensure t
   :general
-  (general-nvmap "K" 'dash-at-point-with-docset)
-  (general-nvmap "gK" 'dash-at-point))
+  (general-nvmap "gK" 'dash-at-point-with-docset))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Debugging using GDB    ;;
@@ -435,7 +425,7 @@
   (reftex-mode)
   (turn-on-reftex))
 (add-hook 'LaTeX-mode-hook 'sk/setup-latex)
-(general-nvmap :prefix sk--evil-global-leader "-" 'sk/setup-latex)
+(general-nvmap :prefix sk--evil-global-leader "=" 'sk/setup-latex)
 (defun sk/diminish-reftex ()
   "diminish reftex because use-package is unable to do it"
   (interactive)
@@ -472,10 +462,8 @@
   :ensure t
   :diminish writegood-mode
   :general
-  (general-nmap "g]" 'writegood-grade-level)
-  (general-nmap "g[" 'writegood-reading-ease)
-  (general-nvmap :prefix sk--evil-local-leader
-		 "=" 'writegood-mode)
+  (general-nvmap "g]" 'writegood-grade-level)
+  (general-nvmap "g[" 'writegood-reading-ease)
   :config
   (progn
     (add-hook 'text-mode-hook 'writegood-mode)))
@@ -739,7 +727,8 @@
 	(google-this-region 1)
       (google-this-symbol 1)))
   :general
-  (general-nmap "gG" 'sk/google-this))
+  (general-nvmap "K" 'sk/google-this)
+  (general-nvmap "gG" 'sk/google-this))
 
 ;; creepy function
 (defun hello-human ()
@@ -771,3 +760,12 @@
 ;; load the local configuration if it exists
 (when (file-exists-p (concat user-emacs-directory "local.el"))
   (load-file (concat user-emacs-directory "local.el")))
+
+;;;;;;;;;;;;;;;;;;;;;;;;
+;;    Start server    ;;
+;;;;;;;;;;;;;;;;;;;;;;;;
+
+(use-package server
+  :config
+  (unless (server-running-p)
+    (server-start)))

@@ -212,6 +212,23 @@ Its element is a pair of `buffer-name' and `mode-line-format'.")
   (interactive)
   (helm-org-rifle-directories '("~/Dropbox/org")))
 
+;; Search using ag
+(defun sk/helm-do-ag-project-root ()
+  "Searches the project with ag"
+  (interactive)
+  (setq helm-ag-insert-at-point nil)
+  (helm-do-ag-project-root))
+(defun sk/helm-do-ag ()
+  "Searches the specified directory with ag"
+  (interactive)
+  (setq helm-ag-insert-at-point nil)
+  (helm-do-ag))
+(defun sk/helm-do-ag-project-root-at-point ()
+  "Searches the project for the symbol at point with ag"
+  (interactive)
+  (setq helm-ag-insert-at-point 'symbol)
+  (helm-do-ag-project-root))
+
 ;; helm for narrowing
 (use-package helm
   :ensure t
@@ -328,9 +345,10 @@ Its element is a pair of `buffer-name' and `mode-line-format'.")
   (use-package helm-ag
     :ensure t
     :general
+    (general-nvmap "J" '(sk/helm-do-ag-project-root-at-point :which-key "search symbol in proj"))
     (general-nvmap :prefix sk--evil-global-leader
-		   "p" 'helm-do-ag
-		   "/" 'helm-do-ag-project-root))
+		   "/" '(sk/helm-do-ag :which-key "search in dir")
+		   "p" '(sk/helm-do-ag-project-root :which-key "search in project")))
 
   ;; to search in files
   (use-package helm-swoop
@@ -368,17 +386,13 @@ Its element is a pair of `buffer-name' and `mode-line-format'.")
     :general
     (general-nvmap :prefix sk--evil-global-leader "l" 'helm-flycheck))
 
-  ;; Flyspell errors with helm
-  (use-package helm-flyspell
+  ;; correct spellings
+  (use-package flyspell-correct-helm
     :ensure t
     :general
-    (general-imap "C-z" 'sk/helm-correct-word)
+    (general-imap "C-z" #'flyspell-correct-previous-word-generic)
     :config
-    (defun sk/helm-correct-word ()
-      (interactive)
-      (save-excursion
-        (sk/flyspell-goto-previous-error 1)
-        (helm-flyspell-correct))))
+    (require 'flyspell-helm))
 
   ;; Select snippets with helm
   (use-package helm-c-yasnippet
@@ -391,7 +405,7 @@ Its element is a pair of `buffer-name' and `mode-line-format'.")
     :ensure t
     :general
     (general-nvmap :prefix sk--evil-global-leader
-		   "o" 'sk/helm-org-rifle)))
+		   "o" '(sk/helm-org-rifle :which-key "narrow down org"))))
 
 ;; helm hydra
 (defhydra hydra-helm (:hint nil :color pink)

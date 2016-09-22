@@ -21,6 +21,7 @@
   (setq evil-emacs-state-modes nil)	        ; let there be no emacs state modes until I later add magit
   (setq evil-motion-state-modes nil)	        ; let there be no emacs state modes
   (evil-set-initial-state 'magit-popup-mode 'emacs)
+  (evil-set-initial-state 'deft-mode 'insert)
   (evil-mode 1))
 ;; remove conflicting maps
 (general-nvmap "m" nil)
@@ -37,10 +38,10 @@
 	       "J" (general-simulate-keys "M-X" t "major mode command")
 	       "y" (general-simulate-keys "M-y" t "yank ring")
 	       "h" (general-simulate-keys "C-h" t "help")
+	       "w" (general-simulate-keys "C-x C-s" t "save buffers")
 	       "v" 'clone-indirect-buffer-other-window
 	       "TAB" 'mode-line-other-buffer
-	       "<tab>" 'mode-line-other-buffer
-	       "w" 'save-buffer)
+	       "<tab>" 'mode-line-other-buffer)
 ;; other remaps
 (general-nvmap "j" 'evil-next-visual-line)
 (general-nvmap "k" 'evil-previous-visual-line)

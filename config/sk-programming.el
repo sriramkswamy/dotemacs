@@ -338,9 +338,9 @@
 ;; Emacs Speaks Statistics
 (use-package ess
   :ensure t
-  :mode (("\\.r$" . R-mode)
-	 ("\\.R$" . R-mode)
-	 ("\\.jl$" . julia-mode))
+  :mode (("\\.r\\'" . R-mode)
+	 ("\\.R\\'" . R-mode)
+	 ("\\.jl\\'" . julia-mode))
   :commands (ess-r-devtools-load-package
 	     ess-display-package-index
 	     ess-r-devtools-document-package
@@ -501,7 +501,7 @@
 ;; install matlab from OCIO first
 (use-package matlab-mode
   :ensure t
-  :mode ("\\.m$" . matlab-mode)
+  :mode ("\\.m\\'" . matlab-mode)
   :bind (:map matlab-shell-mode-map
 	      ("C-c C-c" . term-interrupt-subjob))
   :init
@@ -556,7 +556,7 @@
 ;; web mode for html files
 (use-package web-mode
   :ensure t
-  :mode ("\\.html$" . web-mode)
+  :mode ("\\.html\\'" . web-mode)
   :commands (httpd-start
 	     httpd-stop)
   :general
@@ -633,7 +633,7 @@
 ;; js3 mode for javascript
 (use-package js3-mode
   :ensure t
-  :mode ("\\.js$" . js3-mode)
+  :mode ("\\.js\\'" . js3-mode)
   :general
   (general-nvmap :prefix sk--evil-local-leader
 		 "j" '(hydra-javascript/body :which-key "javscript")))
@@ -711,17 +711,17 @@
 ;; coffee script syntax highlighting
 (use-package coffee-mode
   :ensure t
-  :mode "\\.coffee$")
+  :mode "\\.coffee\\'")
 
 ;; SCSS syntax
 (use-package scss-mode
   :ensure t
-  :mode "\\.scss$")
+  :mode "\\.scss\\'")
 
 ;; json syntax
 (use-package json-mode
   :ensure t
-  :mode "\\.json$")
+  :mode "\\.json\\'")
 
 ;; Nginx syntax
 (use-package nginx-mode
@@ -743,7 +743,30 @@
 
 (use-package lua-mode
   :ensure t
-  :mode "\\.lua$")
+  :mode "\\.lua\\'"
+  :general
+  (general-evil-define-key '(normal visual) lua-mode-map
+    "K" '(lua-search-documentation :which-key "show doc"))
+  (general-nvmap :prefix sk--evil-local-leader
+		 "u" '(hydra-lua/body :which-key "lua")))
+
+;; hydra for lua
+(defhydra hydra-lua (:color pink :hint nil)
+  "
+ ^Eval^
+^^^^^^^^^^--------------------------------------------------------
+ _r_: run lua        _i_: send region   _d_: send defun    _q_: quit
+ _R_: switch to lua  _b_: send buffer   _l_: send line
+ _K_: lua-search-documentation
+"
+  ("r" lua-start-process :color blue)
+  ("R" lua-show-process-buffer :color blue)
+  ("K" lua-search-documentation :color blue)
+  ("i" lua-send-region)
+  ("b" lua-send-buffer :color blue)
+  ("d" lua-send-defun :color blue)
+  ("l" lua-send-current-line :color blue)
+  ("q" nil :color blue))
 
 ;;;;;;;;;;;;;;;
 ;;    SML    ;;
@@ -751,7 +774,7 @@
 
 (use-package sml-mode
   :ensure t
-  :mode "\\.sml$"
+  :mode "\\.sml\\'"
   :init
   (setq sml-program-name "sml")
   :general
@@ -781,8 +804,8 @@
 (use-package geiser
   :ensure t
   :ensure racket-mode
-  :mode (("\\.scm$" . scheme-mode)
-	 ("\\.rkt$" . racket-mode))
+  :mode (("\\.scm\\'" . scheme-mode)
+	 ("\\.rkt\\'" . racket-mode))
   :diminish geiser-mode
   :commands (run-geiser
 	     geiser-mode-switch-to-repl
@@ -1022,11 +1045,84 @@
   ("l" hydra-projectile-rails/body :exit t)
   ("q" nil :color blue))
 
+;;;;;;;;;;;;;;
+;;    Go    ;;
+;;;;;;;;;;;;;;
+
+(use-package go-mode
+  :ensure t
+  :mode "\\.go\\'"
+  :commands (godef-jump
+	     godef-jump-other-window
+	     godef-describe
+	     gofmt
+	     go-import-add
+	     go-remove-unused-imports
+	     go-goto-imports
+	     go-goto-arguments
+	     go-goto-docstring
+	     go-goto-function
+	     go-goto-function-name
+	     go-goto-return-values
+	     go-goto-method-receiver
+	     godoc-at-point
+	     go-play-buffer
+	     go-play-region
+	     go-download-play)
+  :general
+  (general-evil-define-key '(normal visual) go-mode-map
+    "J" '(godef-jump :which-key "find definition")
+    "K" '(godoc-at-point :which-key "show doc"))
+  (general-nvmap :prefix sk--evil-local-leader
+		 "g" '(hydra-go/body :which-key "go"))
+  :config
+  (defun sk/go-oracle-load ()
+    (interactive)
+    (load-file (concat
+		(getenv "GOPATH") "/src/golang.org/x/tools/cmd/oracle/oracle.el")))
+  (add-hook 'go-mode-hook #'sk/go-oracle-load))
+
+;; hydra for go
+(defhydra hydra-go (:color pink :hint nil)
+  "
+ ^Semantic Nav^      ^Goto^                          ^Playground^    ^Oracle^
+^^^^^^^^^^-----------------------------------------------------------------------------------------------------------------
+ _J_: jump to def    _e_: arguments  _m_: method rec   _b_: buffer     _s_: scope      _<_: callers     _l_: implements  _q_: quit
+ _K_: show doc       _d_: function   _g_: imports      _i_: region     _p_: peers      _>_: callees     _o_: points to
+ _D_: godef desc     _n_: func name  _u_: rm unused    _W_: download   _G_: callgraph  _f_: definition  _r_: referrers
+ _w_: jump other     _v_: return val _a_: add import   _t_: format     _S_: callstack  _F_: freevars    _c_: describe
+"
+  ("J" godef-jump)
+  ("D" godef-describe :color blue)
+  ("K" godoc-at-point :color blue)
+  ("w" godef-jump-other-window)
+  ("e" go-goto-arguments)
+  ("d" go-goto-function)
+  ("n" go-goto-function-name)
+  ("v" go-goto-return-values)
+  ("m" go-goto-method-receiver)
+  ("g" go-goto-imports)
+  ("u" go-remove-unused-imports)
+  ("a" go-import-add :color blue)
+  ("b" go-play-buffer :color blue)
+  ("i" go-play-region :color blue)
+  ("W" go-download-play :color blue)
+  ("t" gofmt :color blue)
+  ("s" go-oracle-set-scope :color blue)
+  ("p" go-oracle-peers)
+  ("G" go-oracle-callgraph :color blue)
+  ("S" go-oracle-callstack :color blue)
+  ("<" go-oracle-callers)
+  (">" go-oracle-callees)
+  ("f" go-oracle-definition)
+  ("F" go-oracle-freevars)
+  ("l" go-oracle-implements)
+  ("o" go-oracle-pointsto)
+  ("r" go-oracle-referrers)
+  ("c" go-oracle-describe)
+  ("q" nil :color blue))
+
 ;; ;; links for even more language specific configuration
-;; ;; Go
-;; http://yousefourabi.com/blog/2014/05/emacs-for-go/
-;; https://github.com/dominikh/go-mode.el
-;; https://github.com/nsf/gocode
 ;; ;; Clojure
 ;; https://github.com/clojure-emacs/clojure-mode
 ;; https://github.com/clojure-emacs/cider

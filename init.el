@@ -61,7 +61,6 @@
 (subword-mode 1)                                                               ; move correctly over camelCase words
 (add-to-list 'load-path (expand-file-name "config" user-emacs-directory))      ; load more configuration from the 'config' folder
 (put 'scroll-left 'disabled nil)                                               ; enable sideward scrolling
-(load-theme 'leuven t)                                                         ; load leuven - an awesome default theme
 (define-key minibuffer-local-map (kbd "C-w") 'backward-kill-word)              ; backward kill word in minibuffer
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -335,6 +334,11 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Improve aesthetics      ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; better theme
+(use-package spacemacs-theme
+  :ensure t)
+(load-theme 'spacemacs-dark t)
 
 ;; rainbow paranthesis for easier viewing
 (use-package rainbow-delimiters
@@ -712,6 +716,12 @@
     :bind (("C-c w" . company-web-html))
     :config
     (add-to-list 'company-backends 'company-web-html))
+  ;; Go completion
+  (use-package company-go
+    :ensure t
+    :bind (("C-c g" . company-go))
+    :config
+    (add-to-list 'company-backends 'company-go))
   ;; LaTeX autocompletion
   (use-package company-auctex
     :ensure t

@@ -47,6 +47,10 @@
   (use-package counsel
     :ensure t
     :diminish counsel-mode
+    :bind (("M-x" . counsel-M-x)
+	   ("M-y" . counsel-yank-pop)
+	   ("C-x C-f" . counsel-find-file)
+	   ("C-x 8" . counsel-unicode-char))
     :general				; `general.el' maps
     (general-nvmap "t" '(counsel-imenu :which-key "tags in file"))
     (general-nvmap "M" '(woman :which-key "man pages"))
@@ -175,8 +179,8 @@
 ^ ^ ^ ^ ^ ^ | ^Call^      ^ ^  | ^Cancel^ | ^Options^ | Action _w_/_s_/_a_: %-14s(ivy-action-name)
 ^-^-^-^-^-^-+-^-^---------^-^--+-^-^------+-^-^-------+-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^---------------------------
 ^ ^ _k_ ^ ^ | _f_ollow _o_ccur | _i_nsert | _c_: calling %-5s(if ivy-calling \"on\" \"off\") _C_ase-fold: %-10`ivy-case-fold-search
-_h_ ^+^ _l_ | _d_one      ^ ^  | _q_uit   | _m_: matcher %-5s(ivy--matcher-desc)^^^^^^^^^^^^ _t_runcate: %-11`truncate-lines
-^ ^ _j_ ^ ^ | _g_o        ^ ^  | _p_roj   | _<_/_>_: shrink/grow^^^^^^^^^^^^^^^^^^^^^^^^^^^^ _D_efinition of this menu
+_h_ ^+^ _l_ | _d_one   _p_roj  | _q_uit   | _m_: matcher %-5s(ivy--matcher-desc)^^^^^^^^^^^^ _t_runcate: %-11`truncate-lines
+^ ^ _j_ ^ ^ | _g_o     _D_efun | _n_arrow | _<_/_>_: shrink/grow^^^^^^^^^^^^^^^^^^^^^^^^^^^^ _J_/_K_: scroll up or down
 "
   ;; arrows
   ("h" ivy-beginning-of-buffer)
@@ -196,11 +200,14 @@ _h_ ^+^ _l_ | _d_one      ^ ^  | _q_uit   | _m_: matcher %-5s(ivy--matcher-desc)
   ("d" ivy-done :exit t)
   ("g" ivy-call)
   ("o" ivy-occur :exit t)
+  ("n" ivy-restrict-to-matches :color blue)
   ("C-m" ivy-done :exit t)
   ("c" ivy-toggle-calling)
   ("m" ivy-toggle-fuzzy)
   (">" ivy-minibuffer-grow)
   ("<" ivy-minibuffer-shrink)
+  ("J" ivy-scroll-up-command)
+  ("K" ivy-scroll-down-command)
   ("w" ivy-prev-action)
   ("s" ivy-next-action)
   ("a" ivy-read-action)

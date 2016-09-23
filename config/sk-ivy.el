@@ -7,38 +7,47 @@
   :ensure t)
 
 ;; ivy for everything
-(use-package ivy			; narrowing and selecting framework
-  :ensure t				; make sure this package is installed
-  :diminish ivy-mode			; don't clutter the mode-line
+(use-package ivy
+  :ensure t
+  :diminish ivy-mode
   :demand t
   :init
+  ;; set ivy height
   (setq ivy-height 10)
+  ;; make sure it always stays that high
   (setq ivy-fixed-height-minibuffer t)
+  ;; virtual buffers - combines many good things into one command
   (setq ivy-use-virtual-buffers t)
+  ;; full file names - useful when multiple files have same names
   (setq ivy-virtual-abbreviate 'full)
+  ;; fuzzy everywhere except when searching for something
   (setq ivy-re-builders-alist
 	'((swiper . ivy--regex-plus)
 	  (counsel-ag . ivy--regex-plus)
 	  (counsel-grep-or-swiper . ivy--regex-plus)
 	  (t . ivy--regex-fuzzy)))
   :general
+  ;; similar to helm - because I got used to that kind of TAB
   (general-define-key :keymaps 'ivy-minibuffer-map
 		      "C-w" 'backward-kill-word
-		      "C-m" 'ivy-alt-done
+		      "RET" 'ivy-alt-done
 		      "C-j" 'ivy-immediate-done
 		      "TAB" 'ivy-dispatching-done
 		      "C-t" 'ivy-avy
 		      "S-<return>" 'ivy-restrict-to-matches
 		      "C-S-m" 'ivy-restrict-to-matches)
+  ;; resume ivy
   (general-nvmap :prefix sk--evil-global-leader
 		 "i" '(ivy-resume :which-key "resume ivy"))
+  ;; wgrep in ivy occur - invoked from swiper/counsel-grep-or-swiper/counsel-grep
   (general-nvmap :prefix sk--evil-local-leader
 		 "q" '(ivy-wgrep-change-to-wgrep-mode :which-key "ivy refactor"))
+  ;; push/pop current window config
   (general-nvmap "gt" '(ivy-push-view :which-key "add window config"))
   (general-nvmap "gT" '(ivy-pop-view :which-key "remove window config"))
-  :config				; settings once the package is loaded
-  (ivy-mode 1)
 
+  :config
+  (ivy-mode 1)
   ;; the hydra in ivy
   (use-package ivy-hydra
     :ensure t)
@@ -50,12 +59,21 @@
     :bind (("M-x" . counsel-M-x)
 	   ("M-y" . counsel-yank-pop)
 	   ("C-x C-f" . counsel-find-file)
+	   ("C-h v" . counsel-describe-variable)
+	   ("C-h f" . counsel-describe-function)
 	   ("C-x 8" . counsel-unicode-char))
-    :general				; `general.el' maps
+    :general
+    ;; imenu - maybe use imenu everywhere?
     (general-nvmap "t" '(counsel-imenu :which-key "tags in file"))
+    ;; man pages - completing read
     (general-nvmap "M" '(woman :which-key "man pages"))
-    (general-nvmap :prefix sk--evil-global-leader "/" '(counsel-ag :which-key "search in dir"))
-    (general-nvmap :prefix sk--evil-global-leader "?" '(counsel-descbinds :which-key "search bindings"))
+    ;; search in directory
+    (general-nvmap :prefix sk--evil-global-leader
+		   "/" '(counsel-ag :which-key "search in dir"))
+    ;; key bindings
+    (general-nvmap :prefix sk--evil-global-leader
+		   "?" '(counsel-descbinds :which-key "search bindings"))
+    ;; unicode char in evil-insert-state
     (general-imap "C-v" '(counsel-unicode-char :which-key "unicode char"))
     :config
     (counsel-mode 1))
@@ -64,9 +82,13 @@
   (use-package swiper
     :ensure t
     :general
+    ;; swiper all buffers
     (general-nvmap "g/" '(swiper-all :which-key "search in all buffers"))
+    ;; replace normal evil search with swiper
     (general-nvmap "/" '(counsel-grep-or-swiper :which-key "search in buffer"))
+    ;; swiper with word-at-point
     (general-nvmap "#" '(sk/swiper-at-point :which-key "search word in buffer"))
+    ;; bind C-s too
     (general-define-key "C-s" '(counsel-grep-or-swiper :which-key "search"))
     :config
     (defun sk/swiper-at-point ()
@@ -78,6 +100,7 @@
   (use-package counsel-projectile
     :ensure t
     :general
+    ;; map to some handy wrapper functions based on projectile
     (general-nvmap :prefix sk--evil-global-leader
 		   "d" '(counsel-projectile-find-file-or-buffer :which-key "project files")
 		   "a" '(sk/counsel-ag-project-at-point :which-key "search symbol in proj")
@@ -102,13 +125,14 @@
     :config
     (require 'flyspell-ivy))
 
-  ;; search spotlight
+  ;; search using spotlight
   (use-package spotlight
     :ensure t
     :general
-    (general-nvmap :prefix sk--evil-global-leader "s" '(spotlight :which-key "search desktop")))
+    (general-nvmap :prefix sk--evil-global-leader
+		   "s" '(spotlight :which-key "search desktop")))
 
-  ;; to narrow down org files
+  ;; to narrow down org files - because helm has helm-org-rifle. This is the closest
   (use-package deft
     :ensure t
     :init
@@ -124,23 +148,27 @@
     :general
     (general-nvmap :prefix sk--evil-global-leader "b" '(ivy-bibtex :which-key "bibliography"))
     :init
+    ;; where are the bib files
     (setq bibtex-completion-bibliography
 	  '("~/Dropbox/PhD/articles/tensors/tensors.bib"
 	    "~/Dropbox/PhD/articles/machinelearning/machinelearning.bib"
 	    "~/Dropbox/PhD/articles/association/association.bib"
 	    "~/Dropbox/PhD/articles/lorenz/lorenz.bib"
 	    "~/Dropbox/PhD/articles/multiphysics/multiphysics.bib"))
+    ;; where are the pdfs
     (setq bibtex-completion-library-path
 	  '("~/Dropbox/PhD/articles/tensors"
 	    "~/Dropbox/PhD/articles/machinelearning"
 	    "~/Dropbox/PhD/articles/association"
 	    "~/Dropbox/PhD/articles/lorenz"
 	    "~/Dropbox/PhD/articles/multiphysics"))
+    ;; where is the notes
     (setq bibtex-completion-notes-path "~/Dropbox/org/articles.org")
+    ;; some handy visual markers
     (setq bibtex-completion-pdf-symbol "⌘")
     (setq bibtex-completion-notes-symbol "✎")))
 
-;; wgrep + ag for refactoring
+;; wgrep + ag for refactoring - as an alternate to counsel commands
 (use-package ag
   :ensure t
   :general
@@ -150,29 +178,19 @@
   (general-nvmap :prefix sk--evil-global-leader
 		 "D" '(ag-files :which-key "refactor in files")
 		 "A" '(ag-project-at-point :which-key "refactor symbol in proj")
-		 "P" '(ag-project :which-key "refactor in project")))
-(use-package wgrep-ag
-  :ensure t
-  :init
-  (setq wgrep-auto-save-buffer t)
-  :general
-  (general-evil-define-key '(normal visual) wgrep-mode-map :prefix sk--evil-local-leader
-			   "Q" '(wgrep-change-to-wgrep-mode :which-key "refactor")
-			   "=" '(wgrep-finish-edit :which-key "finish editing"))
-  (general-nvmap :prefix sk--evil-local-leader
-		 "Q" '(wgrep-change-to-wgrep-mode :which-key "refactor")
-		 "=" '(wgrep-finish-edit :which-key "finish editing"))
-  (general-mmap :prefix sk--evil-local-leader
-		"Q" '(wgrep-change-to-wgrep-mode :which-key "refactor")
-		"=" '(wgrep-finish-edit :which-key "finish editing")))
+		 "P" '(ag-project :which-key "refactor in project"))
+  :config
+  ;; writeable grep
+  (use-package wgrep-ag
+    :ensure t
+    :init
+    (setq wgrep-auto-save-buffer t)
+    :general
+    (general-nvmap :prefix sk--evil-local-leader
+		   "Q" '(wgrep-change-to-wgrep-mode :which-key "refactor")
+		   "=" '(wgrep-finish-edit :which-key "finish editing"))))
 
 ;; Redefine ivy's hydra
-(defun ivy--matcher-desc ()
-  (if (eq ivy--regex-function
-	  'ivy--regex-fuzzy)
-      "fuzzy"
-    "ivy"))
-
 (defhydra hydra-ivy (:hint nil
 		     :color pink)
   "
@@ -218,7 +236,7 @@ _h_ ^+^ _l_ | _d_one   _p_roj  | _q_uit   | _m_: matcher %-5s(ivy--matcher-desc)
 	(lambda (_) (find-function 'hydra-ivy/body)))
        :exit t))
 
-;; hydra for ivy occur
+;; hydra for ivy occur - because evil and ivy-occur-mode mess up often
 (defhydra hydra-ivy-occur (:color red :hint nil)
   "
  ^Occur^                                     ^Compile^

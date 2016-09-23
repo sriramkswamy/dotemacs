@@ -1099,7 +1099,7 @@
 (defun sk/run-go ()
   "run the go file"
   (interactive)
-  (compile
+  (async-shell-command
    (concat "go run " (buffer-file-name))))
 (defun sk/run-bin-go ()
   "run all the binaries in the project folder - depends on `projectile'"

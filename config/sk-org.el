@@ -73,7 +73,7 @@
 				 "Articles" ; name
 				 entry	    ; type
 				 (file+headline "~/Dropbox/org/phd.org" "Articles") ; target
-				 "* %? %(org-set-tags)  :article:\n:PROPERTIES:\n:Created: %U\n:Linked: %A\n:END:\n%i" ; template
+				 "* %? %(org-set-tags)  :article:\n:PROPERTIES:\n:Created: %U\n:END:\n%i" ; template
 				 :prepend t	 ; properties
 				 :empty-lines 1	 ; properties
 				 :created t	 ; properties

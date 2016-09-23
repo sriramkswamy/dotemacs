@@ -186,7 +186,12 @@
 	org-outline-path-complete-in-steps nil)
 
   :config
-;; mark inside subtree
+  ;; worf mode for super fast org navigation
+  (use-package worf
+    :ensure t
+    :config
+    (add-hook 'org-mode-hook 'worf-mode))
+  ;; mark inside subtree
   (defun sk/mark-inside-subtree ()
     (interactive)
     (org-mark-subtree)
@@ -260,18 +265,15 @@
   (add-to-list 'org-structure-template-alist '("s" "#+BEGIN_SRC ?\n#+END_SRC\n"))
   (add-to-list 'org-structure-template-alist '("t" "#+TITLE: ?"))
   (add-to-list 'org-structure-template-alist '("v" "#+BEGIN_VERBATIM\n?\n#+END_VERBATIM"))
+
   :general
   (general-nvmap :prefix sk--evil-global-leader
 		 "o" '(nil :which-key "org")
 		 "oc" '(org-capture :which-key "capture")
 		 "oa" '(org-agenda :which-key "agenda"))
   (general-nvmap :prefix sk--evil-local-leader
-		 "o" '(hydra-org-jump/body :which-key "org"))
+		 "o" '(hydra-org/body :which-key "org"))
   (general-nvmap :prefix sk--evil-local-leader
-		 "," '(org-toggle-inline-images :which-key "org images display")
-		 "/" '(org-insert-link :which-key "org insert link")
-		 "\\" '(org-toggle-link-display :which-key "org toggle links")
-		 ";" '(org-toggle-latex-fragment :which-key "org math display")
 		 "[" '(org-date-from-calendar :which-key "org date cal")
 		 "]" '(org-goto-calendar :which-key "org goto cal")
 		 "'" (general-simulate-keys "C-c '" t "org special")
@@ -327,8 +329,6 @@
      ;; (octave . t)
      (matlab . t)
      (python . t))))
-(general-nvmap :prefix sk--evil-local-leader
-	       "." 'sk/org-custom-load)
 
 ;; org hydra for template expansion
 (defun hot-expand (str)
@@ -395,28 +395,20 @@
 (defhydra hydra-org-organize (:color red
                               :hint nil)
   "
- ^Meta^    ^Shift^   ^Shift-Meta^ ^Shift-Ctrl^  ^Move^        ^Item^     ^Subtree^
-^^^^^^^^^^^^^--------------------------------------------------------------------------------------
- ^ ^ _k_ ^ ^   ^ ^ _K_ ^ ^   ^ ^ _p_ ^ ^      ^ ^ _P_ ^ ^       _<_: promote  _u_: up    _a_: archive  _q_: quit
- _h_ ^+^ _l_   _H_ ^+^ _L_   _b_ ^+^ _f_      _B_ ^+^ _F_       _>_: demote   _d_: down  _r_: refile
- ^ ^ _j_ ^ ^   ^ ^ _J_ ^ ^   ^ ^ _n_ ^ ^      ^ ^ _N_ ^ ^                            _v_: reveal
+ ^Subtree^               ^Heading^             ^Item^
+^^^^^^^^^^^^^-----------------------------------------------------------------
+ ^ ^ _k_ ^ ^   _a_: archive    ^ ^ _p_ ^ ^   _<_: promote  _u_: up   _q_: quit
+ _h_ ^+^ _l_   _r_: refile     _b_ ^+^ _f_   _>_: demote   _d_: down
+ ^ ^ _j_ ^ ^   _v_: reveal     ^ ^ _n_ ^ ^
 "
-  ("h" org-metaleft)
-  ("l" org-metaright)
+  ("h" org-shiftmetaleft)
+  ("l" org-shiftmetaright)
   ("j" org-metadown)
   ("k" org-metaup)
-  ("H" org-shiftleft)
-  ("L" org-shiftright)
-  ("J" org-shiftdown)
-  ("K" org-shiftup)
-  ("b" org-shiftmetaleft)
-  ("f" org-shiftmetaright)
+  ("b" org-metaleft)
+  ("f" org-metaright)
   ("n" org-shiftmetadown)
   ("p" org-shiftmetaup)
-  ("B" org-shiftcontrolleft)
-  ("F" org-shiftcontrolright)
-  ("P" org-shiftcontroldown)
-  ("N" org-shiftcontrolup)
   ("<" org-promote)
   (">" org-demote)
   ("d" org-move-item-down)
@@ -426,38 +418,30 @@
   ("v" org-reveal :color blue)
   ("q" nil :color blue))
 
-;; hydra to jump around the org file
-(defhydra hydra-org-jump (:color pink :hint nil)
+;; hydra for org files
+(defhydra hydra-org (:color pink :hint nil)
   "
- ^Outline^          ^Item^   ^Table^   ^Block^   ^Link^     ^Organize^       ^Subtree^     ^Links^
- ^^^^^^^^^^^----------------------------------------------------------------------------------------------------
- ^ ^ _k_ ^ ^   ^ ^ _K_ ^ ^   ^ ^ _u_ ^ ^   ^ ^ ^ ^ ^ ^   ^ ^ _p_ ^ ^   ^ ^ _P_ ^ ^    _o_: organize    _x_: cut      _t_: tags    _q_ quit
- _h_ ^+^ _l_   ^ ^ ^+^ ^ ^   ^ ^ ^+^ ^ ^   _b_ ^+^ _f_   ^ ^ ^+^ ^ ^   ^ ^ ^+^ ^ ^    _i_: interleave  _y_: copy     _T_: todo
- ^ ^ _j_ ^ ^   ^ ^ _J_ ^ ^   ^ ^ _d_ ^ ^   ^ ^ ^ ^ ^ ^   ^ ^ _n_ ^ ^   ^ ^ _N_ ^ ^    _h_: heading     _e_: export   _s_: store
+ ^Link^        ^Inline^      ^Organize^          ^Subtree^     ^Meta^
+ ^^^^^^^^^^^------------------------------------------------------------------------
+ _s_: store    _l_: latex    _o_: organize       _x_: cut      _t_: tags    _q_ quit
+ _i_: insert   _m_: images   _p_: interleave     _y_: copy     _d_: todo
+ _a_: display  _h_: heading  _w_: heading dwim   _e_: export   _c_: custom load
 "
-  ("j" outline-next-visible-heading)
-  ("k" outline-previous-visible-heading)
-  ("l" org-down-element)
-  ("h" org-up-element)
-  ("J" org-forward-heading-same-level)
-  ("K" org-backward-heading-same-level)
-  ("u" org-next-item)
-  ("d" org-previous-item)
-  ("f" org-table-next-field)
-  ("b" org-table-previous-field)
-  ("n" org-next-block)
-  ("p" org-previous-block)
-  ("N" org-next-link)
-  ("P" org-previous-link)
+  ("i" org-insert-link :color blue)
+  ("s" org-store-link)
+  ("a" org-toggle-link-display)
   ("o" hydra-org-organize/body :exit t)
-  ("i" interleave :color blue)
-  ("h" org-insert-heading-respect-content)
+  ("p" interleave :color blue)
+  ("l" org-toggle-latex-fragment)
+  ("m" org-toggle-inline-images)
+  ("h" org-toggle-heading)
+  ("w" org-insert-heading-respect-content)
   ("x" org-cut-subtree)
   ("y" org-copy-subtree)
   ("e" org-export-dispatch :color blue)
   ("t" org-set-tags-command :color blue)
-  ("T" org-todo :color blue)
-  ("s" org-store-link :color blue)
+  ("d" org-todo :color blue)
+  ("c" sk/org-custom-load :color blue)
   ("q" nil :color blue))
 
 ;; provide this configuration

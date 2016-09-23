@@ -441,7 +441,6 @@
   (reftex-mode)
   (turn-on-reftex))
 (add-hook 'LaTeX-mode-hook 'sk/setup-latex)
-(general-nvmap :prefix sk--evil-global-leader "=" 'sk/setup-latex)
 (defun sk/diminish-reftex ()
   "diminish reftex because use-package is unable to do it"
   (interactive)
@@ -455,7 +454,7 @@
 ^^^^^^^^^^----------------------------------------------------------------------------------------------------
  _l_: preview at pt   _i_: fill region    _v_: tex view     _c_: command master    _O_: cmd kill      _q_: quit
  _L_: preview buffer  _b_: fill para      _m_: master file  _o_: compile output    _C_: preview clear
- _f_: fill env        _s_: fill section   _h_: home buffer  _r_: cmd run all
+ _f_: fill env        _s_: fill section   _h_: home buffer  _r_: cmd run all       _x_: setup
 "
   ("l" preview-at-point)
   ("L" preview-buffer :color blue)
@@ -471,6 +470,7 @@
   ("r" TeX-command-run-all :color blue)
   ("O" TeX-kill-job :color blue)
   ("C" preview-clearout-buffer :color blue)
+  ("x" sk/setup-latex :color blue)
   ("q" nil :color blue))
 
 ;; pick out weasel words

@@ -1081,6 +1081,7 @@
     (load-file (concat
 		(getenv "GOPATH") "/src/golang.org/x/tools/cmd/oracle/oracle.el")))
   (add-hook 'go-mode-hook #'sk/go-oracle-load))
+;; go test integration
 
 ;; hydra for go
 (defhydra hydra-go (:color pink :hint nil)
@@ -1088,9 +1089,9 @@
  ^Semantic Nav^      ^Goto^                          ^Playground^    ^Oracle^
 ^^^^^^^^^^-----------------------------------------------------------------------------------------------------------------
  _J_: jump to def    _e_: arguments  _m_: method rec   _b_: buffer     _s_: scope      _<_: callers     _l_: implements  _q_: quit
- _K_: show doc       _d_: function   _g_: imports      _i_: region     _p_: peers      _>_: callees     _o_: points to
+ _K_: show doc       _d_: function   _g_: imports      _i_: region     _p_: peers      _>_: callees     _P_: points to
  _D_: godef desc     _n_: func name  _u_: rm unused    _W_: download   _G_: callgraph  _f_: definition  _r_: referrers
- _w_: jump other     _v_: return val _a_: add import   _t_: format     _S_: callstack  _F_: freevars    _c_: describe
+ _w_: jump other     _v_: return val _a_: add import   _o_: format     _S_: callstack  _F_: freevars    _c_: describe
 "
   ("J" godef-jump)
   ("D" godef-describe :color blue)
@@ -1107,7 +1108,7 @@
   ("b" go-play-buffer :color blue)
   ("i" go-play-region :color blue)
   ("W" go-download-play :color blue)
-  ("t" gofmt :color blue)
+  ("o" gofmt :color blue)
   ("s" go-oracle-set-scope :color blue)
   ("p" go-oracle-peers)
   ("G" go-oracle-callgraph :color blue)
@@ -1117,7 +1118,7 @@
   ("f" go-oracle-definition)
   ("F" go-oracle-freevars)
   ("l" go-oracle-implements)
-  ("o" go-oracle-pointsto)
+  ("P" go-oracle-pointsto)
   ("r" go-oracle-referrers)
   ("c" go-oracle-describe)
   ("q" nil :color blue))
@@ -1130,11 +1131,6 @@
 ;; http://ensime.github.io/
 ;; ;; Haskell
 ;; http://commercialhaskell.github.io/intero/
-;; ;; OCaml
-;; https://github.com/ocaml/tuareg
-;; https://github.com/the-lambda-church/merlin
-;; ;; Elixir
-;; https://github.com/tonini/alchemist.el
 
 ;; provide the entire configuration
 (provide 'sk-programming)

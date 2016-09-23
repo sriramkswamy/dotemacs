@@ -42,12 +42,13 @@
 	       "w" (general-simulate-keys "C-x C-s" t "save buffers")
 	       "v" '(clone-indirect-buffer-other-window :which-key "clone buffer")
 	       "TAB" '(mode-line-other-buffer :which-key "previous buffer"))
-;; other remaps
-(general-nvmap "j" '(evil-next-visual-line :which-key "next line"))
-(general-nvmap "k" '(evil-previous-visual-line :which-key "prev line"))
+;; local leader maps
 (general-nvmap :prefix sk--evil-local-leader
 	       "-" (general-simulate-keys "C-c C-k" t "abort")
 	       "`" (general-simulate-keys "C-c C-g" t "big abort"))
+;; other remaps
+(general-nvmap "j" '(evil-next-visual-line :which-key "next line"))
+(general-nvmap "k" '(evil-previous-visual-line :which-key "prev line"))
 (general-nvmap "`" (general-simulate-keys "C-c C-c" t "C-c C-c"))
 (general-nvmap "g=" '(flyspell-mode :which-key "spellcheck"))
 (general-nvmap "g+" '(flyspell-prog-mode :which-key "programming spellcheck"))
@@ -179,7 +180,7 @@
   :diminish (evil-smartparens-mode . " ()")
   :general
   (general-evil-define-key '(normal visual) smartparens-mode-map :prefix "'"
-			   "" '(nil :which-key "smart nav")
+			   "" '(nil :which-key "smartparens")
 			   "j" '(sp-down-sexp :which-key "down sexp")
 			   "k" '(sp-backward-up-sexp :which-key "back up sexp")
 			   "h" '(sp-backward-down-sexp :which-key "back down sexp")

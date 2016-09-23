@@ -195,8 +195,7 @@
 (general-nmap "w" '(hydra-windows/body :which-key "manage windows"))
 
 ;; bookmark hydra
-(defhydra hydra-bookmarks (:color blue
-                           :hint nil)
+(defhydra hydra-bookmarks (:color blue :hint nil)
   "
  _s_: set  _b_: bookmark   _j_: jump   _d_: delete   _q_: quit
   "

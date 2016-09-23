@@ -12,6 +12,8 @@
   :diminish ivy-mode			; don't clutter the mode-line
   :demand t
   :init
+  (setq ivy-height 10)
+  (setq ivy-fixed-height-minibuffer t)
   (setq ivy-use-virtual-buffers t)
   (setq ivy-virtual-abbreviate 'full)
   (setq ivy-re-builders-alist
@@ -31,7 +33,7 @@
   (general-nvmap :prefix sk--evil-global-leader
 		 "i" '(ivy-resume :which-key "resume ivy"))
   (general-nvmap :prefix sk--evil-local-leader
-		 "q" '(ivy-wgrep-change-to-wgrep-mode :which-key "refactor"))
+		 "q" '(ivy-wgrep-change-to-wgrep-mode :which-key "ivy refactor"))
   (general-nvmap "gt" '(ivy-push-view :which-key "add window config"))
   (general-nvmap "gT" '(ivy-pop-view :which-key "remove window config"))
   :config				; settings once the package is loaded

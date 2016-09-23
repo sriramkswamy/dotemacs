@@ -1081,17 +1081,51 @@
     (load-file (concat
 		(getenv "GOPATH") "/src/golang.org/x/tools/cmd/oracle/oracle.el")))
   (add-hook 'go-mode-hook #'sk/go-oracle-load))
+;; go helpers
+(defun sk/build-go ()
+  "Builds the go file"
+  (interactive)
+  (compile
+   (concat "go build " (buffer-file-name))))
+(defun sk/build-dir-go ()
+  "build go in the current directory"
+  (interactive)
+  (compile "go build"))
+(defun sk/build-project-go ()
+  "build the go project - depends on `projectile'"
+  (interactive)
+  (compile
+   (concat "go build " (projectile-project-root))))
+(defun sk/run-go ()
+  "run the go file"
+  (interactive)
+  (compile
+   (concat "go run " (buffer-file-name))))
+(defun sk/run-bin-go ()
+  "run all the binaries in the project folder - depends on `projectile'"
+  (interactive)
+  (async-shell-command
+   (concat (projectile-project-root) "/bin/*")))
 ;; go test integration
+(defun sk/test-dir-go ()
+  "run tests in the current directory"
+  (interactive)
+  (compile "go test -v"))
+(defun sk/test-project-go ()
+  "test the go project - depends on `projectile'"
+  (interactive)
+  (compile
+   (concat "go test -v " (projectile-project-root))))
 
 ;; hydra for go
 (defhydra hydra-go (:color pink :hint nil)
   "
- ^Semantic Nav^      ^Goto^                          ^Playground^    ^Oracle^
-^^^^^^^^^^-----------------------------------------------------------------------------------------------------------------
- _J_: jump to def    _e_: arguments  _m_: method rec   _b_: buffer     _s_: scope      _<_: callers     _l_: implements  _q_: quit
- _K_: show doc       _d_: function   _g_: imports      _i_: region     _p_: peers      _>_: callees     _P_: points to
- _D_: godef desc     _n_: func name  _u_: rm unused    _W_: download   _G_: callgraph  _f_: definition  _r_: referrers
- _w_: jump other     _v_: return val _a_: add import   _o_: format     _S_: callstack  _F_: freevars    _c_: describe
+ ^Semantic Nav^      ^Goto^                          ^Playground^    ^Oracle^                                      ^Build^
+^^^^^^^^^^---------------------------------------------------------------------------------------------------------------------------------------------------------
+ _J_: jump to def    _e_: arguments  _m_: method rec   _A_: buffer     _s_: scope      _<_: callers     _l_: implements  _c_: current file  _b_: build proj    _q_: quit
+ _K_: show doc       _d_: function   _g_: imports      _i_: region     _p_: peers      _>_: callees     _P_: points to   _r_: run file      _B_: build cur dir
+ _D_: godef desc     _n_: func name  _u_: rm unused    _W_: download   _G_: callgraph  _f_: definition  _E_: referrers   _R_: run all bin   _t_: test
+ _w_: jump other     _v_: return val _a_: add import   _o_: format     _S_: callstack  _F_: freevars    _C_: describe                     _T_: test proj
 "
   ("J" godef-jump)
   ("D" godef-describe :color blue)
@@ -1105,7 +1139,7 @@
   ("g" go-goto-imports)
   ("u" go-remove-unused-imports)
   ("a" go-import-add :color blue)
-  ("b" go-play-buffer :color blue)
+  ("A" go-play-buffer :color blue)
   ("i" go-play-region :color blue)
   ("W" go-download-play :color blue)
   ("o" gofmt :color blue)
@@ -1119,8 +1153,15 @@
   ("F" go-oracle-freevars)
   ("l" go-oracle-implements)
   ("P" go-oracle-pointsto)
-  ("r" go-oracle-referrers)
-  ("c" go-oracle-describe)
+  ("E" go-oracle-referrers)
+  ("C" go-oracle-describe)
+  ("c" sk/build-go :color blue)
+  ("r" sk/run-go :color blue)
+  ("R" sk/run-bin-go :color blue)
+  ("b" sk/build-project-go :color blue)
+  ("B" sk/build-dir-go :color blue)
+  ("t" sk/test-dir-go :color blue)
+  ("T" sk/test-project-go :color blue)
   ("q" nil :color blue))
 
 ;; ;; links for even more language specific configuration

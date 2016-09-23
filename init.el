@@ -353,13 +353,12 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; easy copying between system clipboard and Emacs kill ring
-(use-package simpleclip
+(use-package osx-clipboard
   :ensure t
-  :general
-  (general-nvmap :prefix "\\"
-		 "d" '(simpleclip-cut :which-key "system clipboard cut")
-		 "y" '(simpleclip-copy :which-key "system clipboard copy")
-		 "p" '(simpleclip-paste :which-key "system clipboard paste")))
+  :diminish osx-clipboard-mode
+  :demand t
+  :config
+  (osx-clipboard-mode +1))
 
 ;; cleanup whitespace
 (use-package ws-butler
@@ -728,6 +727,11 @@
     :bind (("C-c l" . company-auctex))
     :config
     (add-to-list 'company-backends 'company-auctex)))
+
+;; project management
+(use-package projectile
+  :ensure t
+  :commands (projectile-project-root))
 
 ;; Shell interaction
 (require 'sk-shell)

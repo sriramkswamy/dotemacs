@@ -72,7 +72,10 @@
 		   "/" '(counsel-ag :which-key "search in dir"))
     ;; key bindings
     (general-nvmap :prefix sk--evil-global-leader
-		   "?" '(counsel-descbinds :which-key "search bindings"))
+		   "," '(counsel-descbinds :which-key "search bindings"))
+	;; color themes
+	(general-nvmap :prefix sk--evil-global-leader
+		   "." '(counsel-load-theme :which-key "search bindings"))
     ;; unicode char in evil-insert-state
     (general-imap "C-v" '(counsel-unicode-char :which-key "unicode char"))
     :config

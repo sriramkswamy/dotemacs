@@ -197,17 +197,17 @@
   ("q" nil :exit t))
 (general-nmap "w" '(hydra-windows/body :which-key "manage windows"))
 
-;; ;; bookmark hydra
-;; (defhydra hydra-bookmarks (:color blue :hint nil)
-;;   "
-;;  _s_: set  _b_: bookmark   _j_: jump   _d_: delete   _q_: quit
-;;   "
-;;   ("s" bookmark-set)
-;;   ("b" bookmark-save)
-;;   ("j" bookmark-jump)
-;;   ("d" bookmark-delete)
-;;   ("q" nil :color blue))
-;; (general-nvmap "+" '(hydra-bookmarks/body :which-key "bookmarks"))
+;; bookmark hydra
+(defhydra hydra-bookmarks (:color blue :hint nil)
+  "
+ _s_: set  _b_: bookmark   _j_: jump   _d_: delete   _q_: quit
+  "
+  ("s" bookmark-set)
+  ("b" bookmark-save)
+  ("j" bookmark-jump)
+  ("d" bookmark-delete)
+  ("q" nil :color blue))
+(general-nvmap "+" '(hydra-bookmarks/body :which-key "bookmarks"))
 
 ;;;;;;;;;;;;;;;;;;;
 ;;    Editing    ;;
@@ -220,8 +220,10 @@
   :general
   (general-imap "C-a" '(yas-insert-snippet :which-key "choose snippet"))
   (general-nvmap :prefix sk--evil-global-leader
-				 "c" '(yas-new-snippet :which-key "new snippet")
-				 "C" '(yas-reload-all :which-key "reload snippets"))
+				 "c" '(nil :which-key "snippets")
+				 "cc" '(yas-reload-all :which-key "reload snippets")
+				 "cv" '(yas-visit-snippet-file :which-key "visit snippets")
+				 "cn" '(yas-new-snippet :which-key "new snippet"))
   :diminish (yas-minor-mode . " γ")
   :config
   (setq yas/triggers-in-field t); Enable nested triggering of snippets
@@ -338,10 +340,16 @@
 ;;    Improve aesthetics      ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; better theme
+;; better themes
 (use-package zenburn-theme
   :ensure t)
-(load-theme 'zenburn t)
+(use-package spacemacs-theme
+  :ensure t)
+;; load one of these themes
+(load-theme 'wombat t)
+;; (load-theme 'leuven t)
+;; (load-theme 'zenburn t)
+;; (load-theme 'spacemacs-dark t)
 
 ;; rainbow paranthesis for easier viewing
 (use-package rainbow-delimiters

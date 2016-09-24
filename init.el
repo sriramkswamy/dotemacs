@@ -24,7 +24,7 @@
 (setq coding-system-for-read 'utf-8)                                           ; use utf-8 by default for reading
 (setq coding-system-for-write 'utf-8)                                          ; use utf-8 by default for writing
 (setq sentence-end-double-space nil)                                           ; sentence SHOULD end with only a point.
-(setq fill-column 80)                                                           ; toggle wrapping text at the 80th character
+(setq fill-column 80)                                                          ; toggle wrapping text at the 80th character
 (setq initial-scratch-message "(hello-human)")                                 ; print a default message in the empty scratch buffer opened at startup
 (menu-bar-mode -1)                                                             ; deactivate the menubar
 (tool-bar-mode -1)                                                             ; deactivate the toolbar
@@ -62,6 +62,11 @@
 (add-to-list 'load-path (expand-file-name "config" user-emacs-directory))      ; load more configuration from the 'config' folder
 (put 'scroll-left 'disabled nil)                                               ; enable sideward scrolling
 (define-key minibuffer-local-map (kbd "C-w") 'backward-kill-word)              ; backward kill word in minibuffer
+
+;; how tabs are seen and added
+(setq-default tab-width 4)
+(setq-default tab-stop-list
+  '(4 8 12 16 20 24 28 32 36 40 44 48 52 56 60 64 68 72 76 80))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Package management    ;;
@@ -418,6 +423,14 @@
   (setq-default TeX-master nil)
   (setq TeX-PDF-mode t)
   :config
+  ;; LaTeX autocompletion
+  (use-package company-auctex
+    :ensure t
+    :demand t
+    :bind (("C-c l" . company-auctex))
+    :config
+    (progn
+      (add-to-list 'company-backends 'company-auctex)))
   ;; Use Skim as viewer, enable source <-> PDF sync
   ;; make latexmk available via C-c C-c
   ;; Note: SyncTeX is setup via ~/.latexmkrc (see below)
@@ -659,6 +672,7 @@
 ;; autocompletion
 (use-package company
   :ensure t
+  :defer 2
   :init
   (setq company-minimum-prefix-length 2
 	company-require-match 0
@@ -688,45 +702,12 @@
   :diminish (company-mode . " ς")
   :config
   (global-company-mode)
-  ;; C++ header completion
-  (use-package company-c-headers
+  ;; fuzzy matching
+  (use-package company-flx
     :ensure t
-    :bind (("C-c c" . company-c-headers))
     :config
-    (add-to-list 'company-backends 'company-c-headers))
-  ;; Python auto completion
-  (use-package company-jedi
-    :ensure t
-    :bind* (("C-c j" . company-jedi))
-    :config
-    (add-to-list 'company-backends 'company-jedi))
-  ;; Tern for JS
-  (use-package company-tern
-    :ensure t
-    :bind (("C-c t" . company-tern))
-    :init
-    (setq company-tern-property-marker "")
-    (setq company-tern-meta-as-single-line t)
-    :config
-    (add-to-list 'company-backends 'company-tern))
-  ;; HTML completion
-  (use-package company-web
-    :ensure t
-    :bind (("C-c w" . company-web-html))
-    :config
-    (add-to-list 'company-backends 'company-web-html))
-  ;; Go completion
-  (use-package company-go
-    :ensure t
-    :bind (("C-c g" . company-go))
-    :config
-    (add-to-list 'company-backends 'company-go))
-  ;; LaTeX autocompletion
-  (use-package company-auctex
-    :ensure t
-    :bind (("C-c l" . company-auctex))
-    :config
-    (add-to-list 'company-backends 'company-auctex)))
+    (with-eval-after-load 'company
+      (company-flx-mode +1))))
 
 ;; project management
 (use-package projectile

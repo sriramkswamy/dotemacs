@@ -8,7 +8,7 @@
   "J" '(find-function-at-point :which-key "find definition")
   "K" '(describe-function :which-key "show doc"))
 (general-nvmap :prefix sk--evil-local-leader
-  "e" '(hydra-elisp/body :which-key "elisp"))
+			   "e" '(hydra-elisp/body :which-key "elisp"))
 
 ;; lisp interaction mode
 (general-evil-define-key '(normal visual) lisp-interaction-mode-map
@@ -54,84 +54,84 @@
   "Compiles the file using the makefile in the current directory"
   (interactive)
   (compile
-    (concat "make")))
+   (concat "make")))
 (defun sk/compile-cpp-make-doc ()
   "Generates the documentation using the makefile in the current directory"
   (interactive)
   (compile
-    (concat "make doc")))
+   (concat "make doc")))
 (defun sk/compile-cpp-build ()
   "Compiles the file using the makefile in the build directory"
   (interactive)
   (compile
-    (concat "make -C build")))
+   (concat "make -C build")))
 (defun sk/compile-cpp-build-doc ()
   "Generates the documentation using the makefile in the build directory"
   (interactive)
   (compile
-    (concat "make -C build doc")))
+   (concat "make -C build doc")))
 (defun sk/compile-cpp-omp-math ()
   "Compiles the file with OpenMP and math libraries"
   (interactive)
   (compile
-    (concat "g++ -Wall -fopenmp -lgsl -lcblas -llapack -O2 -g -std=c++11 " (buffer-file-name) " -o " (file-name-sans-extension buffer-file-name) ".out")))
+   (concat "g++ -Wall -fopenmp -lgsl -lcblas -llapack -O2 -g -std=c++11 " (buffer-file-name) " -o " (file-name-sans-extension buffer-file-name) ".out")))
 (defun sk/compile-cpp-omp-simple ()
   "Compiles the file with OpenMP"
   (interactive)
   (compile
-    (concat "g++ -Wall -fopenmp -g -std=c++11 " (buffer-file-name) " -o " (file-name-sans-extension buffer-file-name) ".out")))
+   (concat "g++ -Wall -fopenmp -g -std=c++11 " (buffer-file-name) " -o " (file-name-sans-extension buffer-file-name) ".out")))
 (defun sk/compile-cpp-mpi-math ()
   "Compiles the file with MPI and math libraries"
   (interactive)
   (compile
-    (concat "/usr/local/openmpi/bin/mpic++ -Wall -lgsl -lcblas -llapack -larmadillo -O2 -g -std=c++11 " (buffer-file-name) " -o " (file-name-sans-extension buffer-file-name) ".out")))
+   (concat "/usr/local/openmpi/bin/mpic++ -Wall -lgsl -lcblas -llapack -larmadillo -O2 -g -std=c++11 " (buffer-file-name) " -o " (file-name-sans-extension buffer-file-name) ".out")))
 (defun sk/compile-cpp-mpi-simple ()
   "Compiles the file with MPI"
   (interactive)
   (compile
-    (concat "/usr/local/openmpi/bin/c++ -Wall -g -std=c++11 " (buffer-file-name) " -o " (file-name-sans-extension buffer-file-name) ".out")))
+   (concat "/usr/local/openmpi/bin/c++ -Wall -g -std=c++11 " (buffer-file-name) " -o " (file-name-sans-extension buffer-file-name) ".out")))
 (defun sk/compile-cpp-hybrid-math ()
   "Compiles the file with OpenMP, MPI and math libraries"
   (interactive)
   (compile
-    (concat "/usr/local/openmpi/bin/c++ -Wall -fopenmp -lgsl -lcblas -llapack -larmadillo -O2 -g -std=c++11 " (buffer-file-name) " -o " (file-name-sans-extension buffer-file-name) ".out")))
+   (concat "/usr/local/openmpi/bin/c++ -Wall -fopenmp -lgsl -lcblas -llapack -larmadillo -O2 -g -std=c++11 " (buffer-file-name) " -o " (file-name-sans-extension buffer-file-name) ".out")))
 (defun sk/compile-cpp-hybrid-simple ()
   "Compiles the file with OpenMP and MPI"
   (interactive)
   (compile
-    (concat "/usr/local/openmpi/bin/c++ -Wall -fopenmp -g -std=c++11 " (buffer-file-name) " -o " (file-name-sans-extension buffer-file-name) ".out")))
+   (concat "/usr/local/openmpi/bin/c++ -Wall -fopenmp -g -std=c++11 " (buffer-file-name) " -o " (file-name-sans-extension buffer-file-name) ".out")))
 (defun sk/compile-cpp-math ()
   "Compiles the file with math libraries"
   (interactive)
   (compile
-    (concat "g++ -Wall -lgsl -lcblas -llapack -larmadillo -O2 -g -std=c++11 " (buffer-file-name) " -o " (file-name-sans-extension buffer-file-name) ".out")))
+   (concat "g++ -Wall -lgsl -lcblas -llapack -larmadillo -O2 -g -std=c++11 " (buffer-file-name) " -o " (file-name-sans-extension buffer-file-name) ".out")))
 (defun sk/compile-cpp-simple ()
   "Compiles the file"
   (interactive)
   (compile
-    (concat "g++ -Wall -g -std=c++11 " (buffer-file-name) " -o " (file-name-sans-extension buffer-file-name) ".out")))
+   (concat "g++ -Wall -g -std=c++11 " (buffer-file-name) " -o " (file-name-sans-extension buffer-file-name) ".out")))
 
 ;; c++ indexer and semantics
 (use-package rtags
   :ensure t
   :general
   (general-evil-define-key '(normal visual) c++-mode-map
-    "J" '(rtags-find-symbol-at-point :which-key "find definition")
-    "K" '(rtags-print-symbol-info :which-key "show doc"))
+	"J" '(rtags-find-symbol-at-point :which-key "find definition")
+	"K" '(rtags-print-symbol-info :which-key "show doc"))
   (general-nvmap :prefix sk--evil-local-leader
-    "c" '(hydra-cpp/body :which-key "c++"))
+				 "c" '(hydra-cpp/body :which-key "c++"))
   :init
   (setq rtags-autostart-diagnostics t)
   (setq rtags-completions-enabled t)
   :config
   ;; C++ header completion
   (use-package company-c-headers
-    :ensure t
-    :demand t
-    :bind (("C-c c" . company-c-headers))
-    :config
-    (progn
-      (add-to-list 'company-backends 'company-c-headers))))
+	:ensure t
+	:demand t
+	:bind (("C-c c" . company-c-headers))
+	:config
+	(progn
+	  (add-to-list 'company-backends 'company-c-headers))))
 
 ;; convert emacs into a c++ ide based on cmake
 (use-package cmake-ide
@@ -191,48 +191,48 @@
   :mode ("\\.py\\'" . python-mode)
   :general
   (general-nvmap :prefix sk--evil-local-leader
-    "p" '(hydra-python/body :which-key "python"))
+				 "p" '(hydra-python/body :which-key "python"))
   :config
   (setq python-shell-interpreter "ipython"
-    python-shell-interpreter-args "--simple-prompt -i")
+		python-shell-interpreter-args "--simple-prompt -i")
   ;; (setq ansi-color-for-comint-mode t)
   ;; (setq python-shell-interpreter "python3")
   (setq python-shell-native-complete nil)
   (add-to-list 'python-shell-completion-native-disabled-interpreters "python3")
   ;; Python auto completion
   (use-package company-jedi
-    :ensure t
-    :demand t
-    :bind* (("C-c j" . company-jedi))
-    :config
-    (progn
-      (add-to-list 'company-backends 'company-jedi)))
+	:ensure t
+	:demand t
+	:bind* (("C-c j" . company-jedi))
+	:config
+	(progn
+	  (add-to-list 'company-backends 'company-jedi)))
   ;; python semantic analyzer
   (use-package anaconda-mode
-    :ensure t
-    :diminish anaconda-mode
-    :diminish anaconda-eldoc-mode
-    :commands (anaconda-mode-find-definitions
-                anaconda-mode-find-assignments
-                anaconda-mode-find-references
-                anaconda-mode-find-file
-                anaconda-mode-show-doc
-                anaconda-mode-go-back)
-    :general
-    (general-evil-define-key '(normal visual) python-mode-map
-      "J" '(anaconda-mode-find-definitions :which-key "find definition")
-      "K" '(anaconda-mode-show-doc :which-key "show doc"))
-    (general-evil-define-key 'normal anaconda-view-mode-map
-      "q" (general-simulate-keys "q" t "quit"))
-    :config
-    (progn
-      (add-hook 'python-mode-hook 'anaconda-mode))))
+	:ensure t
+	:diminish anaconda-mode
+	:diminish anaconda-eldoc-mode
+	:commands (anaconda-mode-find-definitions
+			   anaconda-mode-find-assignments
+			   anaconda-mode-find-references
+			   anaconda-mode-find-file
+			   anaconda-mode-show-doc
+			   anaconda-mode-go-back)
+	:general
+	(general-evil-define-key '(normal visual) python-mode-map
+	  "J" '(anaconda-mode-find-definitions :which-key "find definition")
+	  "K" '(anaconda-mode-show-doc :which-key "show doc"))
+	(general-evil-define-key 'normal anaconda-view-mode-map
+	  "q" (general-simulate-keys "q" t "quit"))
+	:config
+	(progn
+	  (add-hook 'python-mode-hook 'anaconda-mode))))
 
 ;; Format python code
 (use-package py-yapf
   :ensure t
   :commands (py-yapf-buffer
-              py-yapf-region))
+			 py-yapf-region))
 
 ;; sphinx documentation
 (use-package sphinx-doc
@@ -246,24 +246,24 @@
 (use-package virtualenvwrapper
   :ensure t
   :commands (venv-workon
-              venv-deactivate
-              venv-set-location
-              venv-lsvirtualenv
-              venv-cdvirtualenv
-              venv-mkvirtualenv
-              venv-rmvirtualenv
-              venv-cpvirtualenv)
+			 venv-deactivate
+			 venv-set-location
+			 venv-lsvirtualenv
+			 venv-cdvirtualenv
+			 venv-mkvirtualenv
+			 venv-rmvirtualenv
+			 venv-cpvirtualenv)
   :config
   ;; virtualenv packages integration
   (use-package pyenv-mode
-    :ensure t
-    :commands (pyenv-mode-set
-                pyenv-mode-unset)
-    :config
-    (pyenv-mode))
+	:ensure t
+	:commands (pyenv-mode-set
+			   pyenv-mode-unset)
+	:config
+	(pyenv-mode))
   (setq eshell-prompt-function
-    (lambda ()
-      (concat venv-current-name " $ ")))
+		(lambda ()
+		  (concat venv-current-name " $ ")))
   (venv-initialize-interactive-shells)
   (venv-initialize-eshell))
 ;; hydra for python virtualenv
@@ -273,7 +273,7 @@
 ^^^^^^^^^^-----------------------------------------------------------
  _w_: workon      _l_: location    _m_: make    _s_: set    _q_: quit
  _d_: deactivate  _v_: list venv   _r_: remove  _u_: unset
-    _c_: change dir  _p_: copy
+	_c_: change dir  _p_: copy
 "
   ("w" venv-workon)
   ("d" venv-deactivate)
@@ -291,15 +291,15 @@
 (use-package pytest
   :ensure t
   :commands (pytest-one
-              pytest-all
-              pytest-directory
-              pytest-failed
-              pytest-module
-              pytest-pdb-one
-              pytest-pdb-all
-              pytest-pdb-directory
-              pytest-pdb-failed
-              pytest-pdb-module))
+			 pytest-all
+			 pytest-directory
+			 pytest-failed
+			 pytest-module
+			 pytest-pdb-one
+			 pytest-pdb-all
+			 pytest-pdb-directory
+			 pytest-pdb-failed
+			 pytest-pdb-module))
 ;; hydra for python testing
 (defhydra hydra-py-test (:color blue :hint nil)
   "
@@ -356,47 +356,47 @@
 (use-package ess
   :ensure t
   :mode (("\\.r\\'" . R-mode)
-          ("\\.R\\'" . R-mode)
-          ("\\.jl\\'" . julia-mode))
+		 ("\\.R\\'" . R-mode)
+		 ("\\.jl\\'" . julia-mode))
   :commands (ess-r-devtools-load-package
-              ess-display-package-index
-              ess-r-devtools-document-package
-              ess-install-library
-              ess-install.packages
-              ess-r-devtools-install-package
-              ess-r-package-set-package
-              ess-r-devtools-unload-package
-              ess-r-devtools-test-package
-              ess-r-devtools-check-package
-              ess-r-devtools-install-github
-              ess-r-devtools-revdep-check-cmd
-              ess-r-devtools-revdep-check-package
-              R
-              julia
-              ess-switch-to-ESS
-              ess-eval-region-or-function-or-paragraph-and-step
-              ess-eval-buffer
-              ess-eval-buffer-from-beg-to-here
-              ess-eval-buffer-from-here-to-end
-              ess-eval-chunk-and-step
-              ess-show-call-stack
-              ess-load-file
-              ess-r-load-file-namespaced
-              ess-watch
-              ess-eval-region-or-line-and-step
-              ess-load-library
-              ess-help
-              ess-describe-object-at-point
-              ess-display-demos
-              ess-display-vignettes
-              ess-help-web-search
-              ess-display-help-apropos)
+			 ess-display-package-index
+			 ess-r-devtools-document-package
+			 ess-install-library
+			 ess-install.packages
+			 ess-r-devtools-install-package
+			 ess-r-package-set-package
+			 ess-r-devtools-unload-package
+			 ess-r-devtools-test-package
+			 ess-r-devtools-check-package
+			 ess-r-devtools-install-github
+			 ess-r-devtools-revdep-check-cmd
+			 ess-r-devtools-revdep-check-package
+			 R
+			 julia
+			 ess-switch-to-ESS
+			 ess-eval-region-or-function-or-paragraph-and-step
+			 ess-eval-buffer
+			 ess-eval-buffer-from-beg-to-here
+			 ess-eval-buffer-from-here-to-end
+			 ess-eval-chunk-and-step
+			 ess-show-call-stack
+			 ess-load-file
+			 ess-r-load-file-namespaced
+			 ess-watch
+			 ess-eval-region-or-line-and-step
+			 ess-load-library
+			 ess-help
+			 ess-describe-object-at-point
+			 ess-display-demos
+			 ess-display-vignettes
+			 ess-help-web-search
+			 ess-display-help-apropos)
   :general
   (general-evil-define-key '(normal visual) ess-mode-map
-    ;; "J" '(nil :which-key "find definition")
-    "K" '(ess-display-help-on-object :which-key "show doc"))
+	;; "J" '(nil :which-key "find definition")
+	"K" '(ess-display-help-on-object :which-key "show doc"))
   (general-nvmap :prefix sk--evil-local-leader
-    "s" '(hydra-stats/body :which-key "stats"))
+				 "s" '(hydra-stats/body :which-key "stats"))
   :init
   (setq ess-use-ido nil)
   :config
@@ -520,30 +520,30 @@
   :ensure t
   :mode ("\\.m\\'" . matlab-mode)
   :bind (:map matlab-shell-mode-map
-          ("C-c C-c" . term-interrupt-subjob))
+			  ("C-c C-c" . term-interrupt-subjob))
   :init
   (setq matlab-shell-command "/Applications/MATLAB_R2016a.app/bin/matlab"
-    matlab-indent-function t)
+		matlab-indent-function t)
   ;; (setq matlab-mode-install-path '("~/Dropbox/PhD/codes/ttmat"
   ;; 				   "/Applications/MATLAB_R2016a.app/toolbox"))
   (eval-after-load 'matlab
-    '(add-to-list 'matlab-shell-command-switches "-nodesktop -nosplash"))
+	'(add-to-list 'matlab-shell-command-switches "-nodesktop -nosplash"))
   :commands (matlab-shell
-              matlab-show-matlab-shell-buffer
-              matlab-shell-run-region-or-line
-              matlab-shell-run-cell
-              matlab-shell-run-command
-              matlab-shell-topic-browser
-              matlab-shell-describe-command
-              matlab-shell-describe-variable
-              matlab-show-line-info
-              matlab-find-file-on-path)
+			 matlab-show-matlab-shell-buffer
+			 matlab-shell-run-region-or-line
+			 matlab-shell-run-cell
+			 matlab-shell-run-command
+			 matlab-shell-topic-browser
+			 matlab-shell-describe-command
+			 matlab-shell-describe-variable
+			 matlab-show-line-info
+			 matlab-find-file-on-path)
   :general
   (general-evil-define-key '(normal visual) matlab-mode-map
-    "J" '(matlab-find-file-on-path :which-key "find definition")
-    "K" '(matlab-shell-describe-command :which-key "show doc"))
+	"J" '(matlab-find-file-on-path :which-key "find definition")
+	"K" '(matlab-shell-describe-command :which-key "show doc"))
   (general-nvmap :prefix sk--evil-local-leader
-    "m" '(hydra-matlab/body :which-key "matlab")))
+				 "m" '(hydra-matlab/body :which-key "matlab")))
 
 ;; hydra for matlab
 (defhydra hydra-matlab (:color pink :hint nil)
@@ -575,19 +575,19 @@
   :ensure t
   :mode ("\\.html\\'" . web-mode)
   :commands (httpd-start
-              httpd-stop)
+			 httpd-stop)
   :general
   (general-nvmap :prefix sk--evil-local-leader
-    "w" '(hydra-web/body :which-key "web"))
+				 "w" '(hydra-web/body :which-key "web"))
   :config
   ;; HTML completion
   (use-package company-web
-    :ensure t
-    :demand t
-    :bind (("C-c w" . company-web-html))
-    :config
-    (progn
-      (add-to-list 'company-backends 'company-web-html))))
+	:ensure t
+	:demand t
+	:bind (("C-c w" . company-web-html))
+	:config
+	(progn
+	  (add-to-list 'company-backends 'company-web-html))))
 ;; impatient - refresh HTML immediately
 (use-package impatient-mode
   :ensure t
@@ -598,28 +598,28 @@
   :ensure t
   :diminish skewer-mode
   :commands (skewer-mode
-              skewer-html-mode
-              skewer-css-mode
-              run-skewer
-              skewer-repl
-              list-skewer-clients
-              skewer-eval-defun
-              skewer-eval-last-expression
-              skewer-eval-print-last-expression
-              skewer-load-buffer
-              skewer-run-phantomjs
-              skewer-phantomjs-kill
-              skewer-bower-load
-              skewer-bower-refresh))
+			 skewer-html-mode
+			 skewer-css-mode
+			 run-skewer
+			 skewer-repl
+			 list-skewer-clients
+			 skewer-eval-defun
+			 skewer-eval-last-expression
+			 skewer-eval-print-last-expression
+			 skewer-load-buffer
+			 skewer-run-phantomjs
+			 skewer-phantomjs-kill
+			 skewer-bower-load
+			 skewer-bower-refresh))
 ;; beautify content
 (use-package web-beautify
   :ensure t
   :commands (web-beautify-html
-              web-beautify-html-buffer
-              web-beautify-css
-              web-beautify-css-buffer
-              web-beautify-js
-              web-beautify-js-buffer))
+			 web-beautify-html-buffer
+			 web-beautify-css
+			 web-beautify-css-buffer
+			 web-beautify-js
+			 web-beautify-js-buffer))
 
 ;; hydra for web
 (defhydra hydra-web (:color pink :hint nil)
@@ -629,7 +629,7 @@
  _w_: httpd start  _m_: skewer mode        _r_: skewer repl     _d_: eval defun        _p_: phantomjs start     _h_: html region    _t_: js region    _q_: quit
  _W_: httpd stop   _L_: skewer html mode   _R_: run skewer      _l_: load buffer       _P_: phantomjs stop      _H_: html buffer    _T_: js buffer
  _i_: impatient    _M_: skewer css mode    _I_: list clients    _s_: last sexp         _b_: bower load          _c_: css region
-                _S_: print last sexp   _B_: bower refresh       _C_: css buffer
+				_S_: print last sexp   _B_: bower refresh       _C_: css buffer
 "
   ("w" httpd-start)
   ("W" httpd-stop)
@@ -662,59 +662,59 @@
   :mode ("\\.js\\'" . js3-mode)
   :general
   (general-nvmap :prefix sk--evil-local-leader
-    "j" '(hydra-javascript/body :which-key "javscript")))
+				 "j" '(hydra-javascript/body :which-key "javscript")))
 ;; JS semantic navigation
 (use-package tern
   :ensure t
   :diminish tern-mode
   :commands (tern-find-definition
-              tern-get-docs
-              tern-get-type
-              tern-use-server
-              tern-highlight-refs
-              tern-rename-variable)
+			 tern-get-docs
+			 tern-get-type
+			 tern-use-server
+			 tern-highlight-refs
+			 tern-rename-variable)
   :general
   (general-evil-define-key '(normal visual) js3-mode-map
-    "J" '(tern-find-definition :which-key "find definition")
-    "K" '(tern-get-docs :which-key "show doc"))
+	"J" '(tern-find-definition :which-key "find definition")
+	"K" '(tern-get-docs :which-key "show doc"))
   (general-evil-define-key '(normal visual) js-mode-map
-    "J" '(tern-find-definition :which-key "find definition")
-    "K" '(tern-get-docs :which-key "show doc"))
+	"J" '(tern-find-definition :which-key "find definition")
+	"K" '(tern-get-docs :which-key "show doc"))
   :config
   ;; Tern for JS
   (use-package company-tern
-    :ensure t
-    :demand t
-    :bind (("C-c t" . company-tern))
-    :init
-    (setq company-tern-property-marker "")
-    (setq company-tern-meta-as-single-line t)
-    :config
-    (progn
-      (add-to-list 'company-backends 'company-tern)))
+	:ensure t
+	:demand t
+	:bind (("C-c t" . company-tern))
+	:init
+	(setq company-tern-property-marker "")
+	(setq company-tern-meta-as-single-line t)
+	:config
+	(progn
+	  (add-to-list 'company-backends 'company-tern)))
   (progn
-    (add-hook 'js-mode-hook '(lambda () (tern-mode t)))
-    (add-hook 'js3-mode-hook '(lambda () (tern-mode t)))))
+	(add-hook 'js-mode-hook '(lambda () (tern-mode t)))
+	(add-hook 'js3-mode-hook '(lambda () (tern-mode t)))))
 ;; format js code
 (use-package jsfmt
   :ensure t
   :commands (jsfmt
-              jsfmt-ast))
+			 jsfmt-ast))
 ;; nodejs REPL for JS evaluation
 (use-package nodejs-repl
   :ensure t
   :commands (nodejs-repl
-              nodejs-repl-switch-to-repl
-              nodejs-repl-send-last-sexp
-              nodejs-repl-send-buffer
-              nodejs-repl-send-region
-              nodejs-repl-execute
-              nodejs-repl-load-file)
+			 nodejs-repl-switch-to-repl
+			 nodejs-repl-send-last-sexp
+			 nodejs-repl-send-buffer
+			 nodejs-repl-send-region
+			 nodejs-repl-execute
+			 nodejs-repl-load-file)
   :config
   (use-package nvm
-    :ensure t
-    :commands (nvm-use
-                nvm-use-for)))
+	:ensure t
+	:commands (nvm-use
+			   nvm-use-for)))
 
 ;; hydra for javascript
 (defhydra hydra-javascript (:color pink :hint nil)
@@ -783,9 +783,9 @@
   :mode "\\.lua\\'"
   :general
   (general-evil-define-key '(normal visual) lua-mode-map
-    "K" '(lua-search-documentation :which-key "show doc"))
+	"K" '(lua-search-documentation :which-key "show doc"))
   (general-nvmap :prefix sk--evil-local-leader
-    "u" '(hydra-lua/body :which-key "lua")))
+				 "u" '(hydra-lua/body :which-key "lua")))
 
 ;; hydra for lua
 (defhydra hydra-lua (:color pink :hint nil)
@@ -816,7 +816,7 @@
   (setq sml-program-name "sml")
   :general
   (general-nvmap :prefix sk--evil-local-leader
-    "l" '(hydra-sml/body :which-key "sml")))
+				 "l" '(hydra-sml/body :which-key "sml")))
 
 ;; hydra for sml
 (defhydra hydra-sml (:color pink :hint nil)
@@ -842,34 +842,34 @@
   :ensure t
   :ensure racket-mode
   :mode (("\\.scm\\'" . scheme-mode)
-          ("\\.rkt\\'" . racket-mode))
+		 ("\\.rkt\\'" . racket-mode))
   :diminish geiser-mode
   :commands (run-geiser
-              geiser-mode-switch-to-repl
-              geiser-eval-definition
-              geiser-eval-buffer
-              geiser-eval-last-sexp
-              geiser-eval-region
-              geiser-expand-definition
-              geiser-expand-last-sexp
-              geiser-compile-current-buffer
-              geiser-load-file
-              geiser-edit-symbol-at-point
-              geiser-edit-module
-              geiser-doc-symbol-at-point
-              geiser-doc-module
-              geiser-doc-lookup-manual
-              geiser-xref-callers
-              geiser-xref-callees)
+			 geiser-mode-switch-to-repl
+			 geiser-eval-definition
+			 geiser-eval-buffer
+			 geiser-eval-last-sexp
+			 geiser-eval-region
+			 geiser-expand-definition
+			 geiser-expand-last-sexp
+			 geiser-compile-current-buffer
+			 geiser-load-file
+			 geiser-edit-symbol-at-point
+			 geiser-edit-module
+			 geiser-doc-symbol-at-point
+			 geiser-doc-module
+			 geiser-doc-lookup-manual
+			 geiser-xref-callers
+			 geiser-xref-callees)
   :general
   (general-nvmap :prefix sk--evil-local-leader
-    "k" '(hydra-racket-scheme/body :which-key "racket/scheme"))
+				 "k" '(hydra-racket-scheme/body :which-key "racket/scheme"))
   (general-evil-define-key '(normal visual) scheme-mode-map
-    "J" '(geiser-edit-symbol-at-point :which-key "find definition")
-    "K" '(geiser-doc-symbol-at-point :which-key "show doc"))
+	"J" '(geiser-edit-symbol-at-point :which-key "find definition")
+	"K" '(geiser-doc-symbol-at-point :which-key "show doc"))
   (general-evil-define-key '(normal visual) racket-mode-map
-    "J" '(geiser-edit-symbol-at-point :which-key "find definition")
-    "K" '(geiser-doc-symbol-at-point :which-key "show doc")))
+	"J" '(geiser-edit-symbol-at-point :which-key "find definition")
+	"K" '(geiser-doc-symbol-at-point :which-key "show doc")))
 
 ;; hydra for racket/scheme
 (defhydra hydra-racket-scheme (:color pink :hint nil)
@@ -909,14 +909,14 @@
   :ensure t
   :mode ("\\.rb" . ruby-mode)
   :commands (inf-ruby
-              ruby-switch-to-inf
-              ruby-send-definition
-              ruby-send-definition-and-go
-              ruby-send-region
-              ruby-send-region-and-go)
+			 ruby-switch-to-inf
+			 ruby-send-definition
+			 ruby-send-definition-and-go
+			 ruby-send-region
+			 ruby-send-region-and-go)
   :general
   (general-nvmap :prefix sk--evil-local-leader
-    "r" '(hydra-ruby/body :which-key "ruby"))
+				 "r" '(hydra-ruby/body :which-key "ruby"))
   :config
   (add-hook 'ruby-mode-hook 'inf-ruby-mode))
 
@@ -924,11 +924,11 @@
 (use-package rubocop
   :ensure t
   :commands (rubocop-check-current-file
-              rubocop-autocorrect-current-file
-              rubocop-check-directory
-              rubocop-autocorrect-directory
-              rubocop-check-project
-              rubocop-autocorrect-project)
+			 rubocop-autocorrect-current-file
+			 rubocop-check-directory
+			 rubocop-autocorrect-directory
+			 rubocop-check-project
+			 rubocop-autocorrect-project)
   :config
   (rubocop-mode t))
 
@@ -936,33 +936,33 @@
 (use-package robe
   :ensure t
   :commands (robe-method-def
-              robe-jump-to-module
-              robe-jump
-              robe-doc
-              robe-call-at-point
-              robe-start)
+			 robe-jump-to-module
+			 robe-jump
+			 robe-doc
+			 robe-call-at-point
+			 robe-start)
   :general
   (general-evil-define-key '(normal visual) ruby-mode-map
-    "J" '(robe-jump :which-key "find definition")
-    "K" '(robe-doc :which-key "show doc"))
+	"J" '(robe-jump :which-key "find definition")
+	"K" '(robe-doc :which-key "show doc"))
   :config
   (eval-after-load 'company
-    '(push 'company-robe company-backends))
+	'(push 'company-robe company-backends))
   (add-hook 'ruby-mode-hook 'robe-mode))
 
 ;; manage ruby environments
 (use-package bundler
   :ensure t
   :commands (bundle-show
-              bundle-gemfile
-              bundle-exec
-              bundle-version
-              bundle-outdated
-              bundle-install
-              bundle-check
-              bundle-open
-              bundle-update
-              bundle-console))
+			 bundle-gemfile
+			 bundle-exec
+			 bundle-version
+			 bundle-outdated
+			 bundle-install
+			 bundle-check
+			 bundle-open
+			 bundle-update
+			 bundle-console))
 ;; hydra for bundler
 (defhydra hydra-ruby-bundler (:color blue :hint nil)
   "
@@ -989,8 +989,8 @@
   :ensure t
   :diminish ruby-test-mode
   :commands (ruby-test-run
-              ruby-test-run-at-point
-              ruby-test-toggle-implementation-and-specification)
+			 ruby-test-run-at-point
+			 ruby-test-toggle-implementation-and-specification)
   :config
   (ruby-test-mode))
 ;; rspec for tests
@@ -998,18 +998,18 @@
   :ensure t
   :diminish rspec-mode
   :commands (rspec-verify
-              rspec-verify-all
-              rspec-verify-matching
-              rspec-verify-method
-              rspec-verify-single
-              rspec-rerun
-              rspec-continue
-              rspec-run-last-failed
-              rspec-find-spec-or-target-find-example-other-window
-              rspec-find-spec-or-target-other-window
-              rspec-toggle-spec-and-target-find-example
-              rspec-toggle-spec-and-target
-              rspec-toggle-example-pendingness)
+			 rspec-verify-all
+			 rspec-verify-matching
+			 rspec-verify-method
+			 rspec-verify-single
+			 rspec-rerun
+			 rspec-continue
+			 rspec-run-last-failed
+			 rspec-find-spec-or-target-find-example-other-window
+			 rspec-find-spec-or-target-other-window
+			 rspec-toggle-spec-and-target-find-example
+			 rspec-toggle-spec-and-target
+			 rspec-toggle-example-pendingness)
   :config
   (rspec-mode))
 ;; hydra for tests
@@ -1090,48 +1090,48 @@
   :ensure t
   :mode "\\.go\\'"
   :commands (godef-jump
-              godef-jump-other-window
-              godef-describe
-              gofmt
-              go-import-add
-              go-remove-unused-imports
-              go-goto-imports
-              go-goto-arguments
-              go-goto-docstring
-              go-goto-function
-              go-goto-function-name
-              go-goto-return-values
-              go-goto-method-receiver
-              godoc-at-point
-              go-play-buffer
-              go-play-region
-              go-download-play)
+			 godef-jump-other-window
+			 godef-describe
+			 gofmt
+			 go-import-add
+			 go-remove-unused-imports
+			 go-goto-imports
+			 go-goto-arguments
+			 go-goto-docstring
+			 go-goto-function
+			 go-goto-function-name
+			 go-goto-return-values
+			 go-goto-method-receiver
+			 godoc-at-point
+			 go-play-buffer
+			 go-play-region
+			 go-download-play)
   :general
   (general-evil-define-key '(normal visual) go-mode-map
-    "J" '(godef-jump :which-key "find definition")
-    "K" '(godoc-at-point :which-key "show doc"))
+	"J" '(godef-jump :which-key "find definition")
+	"K" '(godoc-at-point :which-key "show doc"))
   (general-nvmap :prefix sk--evil-local-leader
-    "g" '(hydra-go/body :which-key "go"))
+				 "g" '(hydra-go/body :which-key "go"))
   :config
   ;; Go completion
   (use-package company-go
-    :ensure t
-    :demand t
-    :bind (("C-c g" . company-go))
-    :config
-    (progn
-      (add-to-list 'company-backends 'company-go)))
+	:ensure t
+	:demand t
+	:bind (("C-c g" . company-go))
+	:config
+	(progn
+	  (add-to-list 'company-backends 'company-go)))
   (defun sk/go-oracle-load ()
-    (interactive)
-    (load-file (concat
-                 (getenv "GOPATH") "/src/golang.org/x/tools/cmd/oracle/oracle.el")))
+	(interactive)
+	(load-file (concat
+				(getenv "GOPATH") "/src/golang.org/x/tools/cmd/oracle/oracle.el")))
   (add-hook 'go-mode-hook #'sk/go-oracle-load))
 ;; go helpers
 (defun sk/build-go ()
   "Builds the go file"
   (interactive)
   (compile
-    (concat "go build " (buffer-file-name))))
+   (concat "go build " (buffer-file-name))))
 (defun sk/build-dir-go ()
   "build go in the current directory"
   (interactive)
@@ -1140,17 +1140,17 @@
   "build the go project - depends on `projectile'"
   (interactive)
   (compile
-    (concat "go build " (projectile-project-root))))
+   (concat "go build " (projectile-project-root))))
 (defun sk/run-go ()
   "run the go file"
   (interactive)
   (async-shell-command
-    (concat "go run " (buffer-file-name))))
+   (concat "go run " (buffer-file-name))))
 (defun sk/run-bin-go ()
   "run all the binaries in the project folder - depends on `projectile'"
   (interactive)
   (async-shell-command
-    (concat (projectile-project-root) "/bin/*")))
+   (concat (projectile-project-root) "/bin/*")))
 ;; go test integration
 (defun sk/test-dir-go ()
   "run tests in the current directory"
@@ -1160,7 +1160,7 @@
   "test the go project - depends on `projectile'"
   (interactive)
   (compile
-    (concat "go test -v " (projectile-project-root))))
+   (concat "go test -v " (projectile-project-root))))
 
 ;; hydra for go
 (defhydra hydra-go (:color pink :hint nil)

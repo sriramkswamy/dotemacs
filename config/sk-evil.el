@@ -4,19 +4,19 @@
   :demand t
   :diminish undo-tree mode
   :bind* (:map evil-normal-state-map
-	       ("\\" . nil))
+			   ("\\" . nil))
   :bind* (:map evil-visual-state-map
-	       ("\\" . nil))
+			   ("\\" . nil))
   :init				    		; settings to be loaded before the package is loaded
   (setq evil-want-C-u-scroll t)		        ; scroll like Vim when in normal mode
   (setq evil-want-Y-yank-to-eol t)	        ; yank 'Y' like 'D' and 'C'
   (setq evil-move-beyond-eol t)                 ; go beyond the end of line - useful when evaluating functions
   :config				        ; settings after the package is loaded
   (use-package undo-tree
-    :ensure t
-    :diminish undo-tree-mode
-    :general
-    (general-nmap "U" 'undo-tree-visualize))
+	:ensure t
+	:diminish undo-tree-mode
+	:general
+	(general-nmap "U" 'undo-tree-visualize))
   (setq evil-normal-state-modes (append evil-emacs-state-modes evil-motion-state-modes evil-normal-state-modes))
   (setq evil-emacs-state-modes nil)	        ; let there be no emacs state modes until I later add magit
   (setq evil-motion-state-modes nil)	        ; let there be no emacs state modes
@@ -31,25 +31,30 @@
 (general-nvmap "gw" nil)
 ;; global leader maps
 (general-nvmap :prefix sk--evil-global-leader  ; create a global leader map
-	       "q" '(evil-quit :which-key "quit window/emacs")
-	       "k" (general-simulate-keys "C-x k" t "kill buffers")
-	       "r" (general-simulate-keys "C-x b" t "switch buffers")
-	       "f" (general-simulate-keys "C-x C-f" t "find files")
-	       "j" (general-simulate-keys "M-x" t "command")
-	       "J" (general-simulate-keys "M-X" t "major mode command")
-	       "y" (general-simulate-keys "M-y" t "yank ring")
-	       "h" (general-simulate-keys "C-h" t "help")
-	       "w" (general-simulate-keys "C-x C-s" t "save buffers")
-	       "v" '(clone-indirect-buffer-other-window :which-key "clone buffer")
-	       "TAB" '(mode-line-other-buffer :which-key "previous buffer"))
+			   "q" '(evil-quit :which-key "quit window/emacs")
+			   "k" (general-simulate-keys "C-x k" t "kill buffers")
+			   "r" (general-simulate-keys "C-x b" t "switch buffers")
+			   "f" (general-simulate-keys "C-x C-f" t "find files")
+			   "j" (general-simulate-keys "M-x" t "command")
+			   "J" (general-simulate-keys "M-X" t "major mode command")
+			   "y" (general-simulate-keys "M-y" t "yank ring")
+			   "h" (general-simulate-keys "C-h" t "help")
+			   "w" (general-simulate-keys "C-x C-s" t "save buffers")
+			   "v" '(clone-indirect-buffer-other-window :which-key "clone buffer")
+			   "TAB" '(mode-line-other-buffer :which-key "previous buffer"))
 ;; local leader maps
 (general-nvmap :prefix sk--evil-local-leader
-	       "-" (general-simulate-keys "C-c C-k" t "abort")
-	       "`" (general-simulate-keys "C-c C-g" t "big abort"))
+			   "-" (general-simulate-keys "C-c C-k" t "abort")
+			   "`" (general-simulate-keys "C-c C-g" t "big abort"))
 ;; other remaps
 (general-nvmap "j" '(evil-next-visual-line :which-key "next line"))
 (general-nvmap "k" '(evil-previous-visual-line :which-key "prev line"))
 (general-nvmap "`" (general-simulate-keys "C-c C-c" t "C-c C-c"))
+(general-nvmap "+" '(bookmark-set :which-key "bookmark add"))
+(general-nvmap "'" '(bookmark-jump :which-key "bookmark jump"))
+(general-nvmap "\"" '(bookmark-delete :which-key "bookmark delete"))
+(general-nvmap "g>" '(evil-shift-right :which-key "indent"))
+(general-nvmap "g<" '(evil-shift-left :which-key "dedent"))
 (general-nvmap "g=" '(flyspell-mode :which-key "spellcheck"))
 (general-nvmap "g+" '(flyspell-prog-mode :which-key "programming spellcheck"))
 (general-nvmap "g-" '(visual-line-mode :which-key "soft wrap"))
@@ -82,10 +87,10 @@
   :ensure t
   :diminish evil-commentary-mode
   :commands (evil-commentary
-	     evil-commentary-line
-	     evil-commentary-yank
-	     evil-commentary-yank-line
-	     evil-commentary/org-comment-or-uncomment-region)
+			 evil-commentary-line
+			 evil-commentary-yank
+			 evil-commentary-yank-line
+			 evil-commentary/org-comment-or-uncomment-region)
   :general
   (general-nvmap "gc" '(evil-commentary :which-key "comment"))
   (general-nvmap "gy" '(evil-commentary-yank :which-key "yank comment"))
@@ -140,12 +145,12 @@
   :demand t
   :general
   (general-evil-define-key 'normal evil-multiedit-state-map
-    "RET" 'evil-multiedit-toggle-or-restrict-region
-    "M-n" 'evil-multiedit-next
-    "M-p" 'evil-multiedit-prev)
+	"RET" 'evil-multiedit-toggle-or-restrict-region
+	"M-n" 'evil-multiedit-next
+	"M-p" 'evil-multiedit-prev)
   (general-evil-define-key 'normal evil-multiedit-insert-state-map
-    "M-n" 'evil-multiedit-next
-    "M-p" 'evil-multiedit-prev)
+	"M-n" 'evil-multiedit-next
+	"M-p" 'evil-multiedit-prev)
   (general-nvmap "C-n" '(evil-multiedit-match-and-next :which-key "multicursor next"))
   (general-nvmap "C-p" '(evil-multiedit-match-and-prev :which-key "multicursor prev"))
   (general-nvmap "C-y" '(evil-multiedit-match-all :which-key "multicursor all"))
@@ -171,69 +176,87 @@
   :config
   (global-evil-surround-mode 1))
 
-;; evil-smartparens - semantic navigation, especially for lisps
-(use-package evil-smartparens
+;; evil + lispy = lispyville - best lisp based editing system ever
+(use-package lispyville
   :ensure t
   :demand t
-  :diminish smartparens-mode
-  :diminish smartparens-strict-mode
-  :diminish (evil-smartparens-mode . " ()")
-  :general
-  (general-evil-define-key '(normal visual) smartparens-mode-map :prefix "'"
-			   "" '(nil :which-key "smartparens")
-			   "j" '(sp-down-sexp :which-key "down sexp")
-			   "k" '(sp-backward-up-sexp :which-key "back up sexp")
-			   "h" '(sp-backward-down-sexp :which-key "back down sexp")
-			   "l" '(sp-up-sexp :which-key "up sexp")
-			   "f" '(sp-forward-sexp :which-key "forward sexp")
-			   "b" '(sp-backward-sexp :which-key "backward sexp")
-			   "a" '(sp-beginning-of-sexp :which-key "start of sexp")
-			   "e" '(sp-end-of-sexp :which-key "end of sexp")
-			   "n" '(sp-next-sexp :which-key "next sexp")
-			   "p" '(sp-previous-sexp :which-key "previous sexp")
-			   ">" '(sp-forward-barf-sexp :which-key "forward barf")
-			   "<" '(sp-backward-barf-sexp :which-key "forward barf")
-			   ")" '(sp-forward-slurp-sexp :which-key "forward slurp")
-			   "(" '(sp-backward-slurp-sexp :which-key "backward slurp")
-			   "x" '(sp-transpose-sexp :which-key "exchange sexp")
-			   "d" '(sp-kill-sexp :which-key "delete sexp")
-			   "y" '(sp-copy-sexp :which-key "copy sexp")
-			   "u" '(sp-unwrap-sexp :which-key "unwrap sexp")
-			   "U" '(sp-backward-unwrap-sexp :which-key "backward unwrap sexp")
-			   "C" '(sp-convolute-sexp :which-key "convolute sexp")
-			   "r" '(sp-raise-sexp :which-key "raise sexp")
-			   "s" '(sp-split-sexp :which-key "split sexp")
-			   "S" '(sp-splice-sexp :which-key "splice sexp")
-			   "F" '(sp-splice-sexp-killing-forward :which-key "splice forward")
-			   "B" '(sp-splice-sexp-killing-backward :which-key "splice back")
-			   "A" '(sp-splice-sexp-killing-around :which-key "splice around"))
+  :diminish (lispyville-mode . " (")
+  :diminish (lispy-mode . "]")
   :config
-  ;; redefine function with the bindings I want
-  (defun evil-sp--add-bindings ()
-    (when smartparens-strict-mode
-      (evil-define-key 'normal evil-smartparens-mode-map
-	(kbd "d") #'evil-sp-delete
-	(kbd "c") #'evil-sp-change
-	(kbd "y") #'evil-sp-yank
-	(kbd "X") #'evil-sp-backward-delete-char
-	(kbd "x") #'evil-sp-delete-char)
-      (evil-define-key 'visual evil-smartparens-mode-map
-	(kbd "X") #'evil-sp-delete
-	(kbd "x") #'evil-sp-delete))
-    (evil-define-key 'normal evil-smartparens-mode-map
-      (kbd "D") #'evil-sp-delete-line
-      (kbd "Y") #'evil-sp-yank-line
-      (kbd "C") #'evil-sp-change-line)
-    (evil-define-key 'insert evil-smartparens-mode-map
-      (kbd "DEL") 'sp-backward-delete-char)
-    (evil-define-key 'visual evil-smartparens-mode-map
-      (kbd "o") #'evil-sp-override)
-    (evil-normalize-keymaps))
-  (require 'smartparens-config)
-  (smartparens-global-mode)
-  (smartparens-global-strict-mode)
-  (show-smartparens-global-mode)
-  (add-hook 'smartparens-mode-hook 'evil-smartparens-mode))
+  (with-eval-after-load 'lispyville
+	(lispyville-set-key-theme '(operators
+								(escape insert)
+								(slurp/barf-lispy))))
+  (add-hook 'prog-mode-hook #'lispy-mode)
+  (add-hook 'matlab-mode-hook #'lispy-mode)
+  (add-hook 'wgrep-mode-hook #'lispy-mode)
+  (add-hook 'ivy-occur-mode-hook #'lispy-mode)
+  (add-hook 'editorconfig-mode-hook #'lispy-mode)
+  (add-hook 'lispy-mode-hook #'lispyville-mode))
+
+;; ;; evil-smartparens - semantic navigation, especially for lisps
+;; (use-package evil-smartparens
+;;   :ensure t
+;;   :demand t
+;;   :diminish smartparens-mode
+;;   :diminish smartparens-strict-mode
+;;   :diminish (evil-smartparens-mode . " ()")
+;;   :general
+;;   (general-evil-define-key '(normal visual) smartparens-mode-map :prefix "'"
+;; 			   "" '(nil :which-key "smartparens")
+;; 			   "j" '(sp-down-sexp :which-key "down sexp")
+;; 			   "k" '(sp-backward-up-sexp :which-key "back up sexp")
+;; 			   "h" '(sp-backward-down-sexp :which-key "back down sexp")
+;; 			   "l" '(sp-up-sexp :which-key "up sexp")
+;; 			   "f" '(sp-forward-sexp :which-key "forward sexp")
+;; 			   "b" '(sp-backward-sexp :which-key "backward sexp")
+;; 			   "a" '(sp-beginning-of-sexp :which-key "start of sexp")
+;; 			   "e" '(sp-end-of-sexp :which-key "end of sexp")
+;; 			   "n" '(sp-next-sexp :which-key "next sexp")
+;; 			   "p" '(sp-previous-sexp :which-key "previous sexp")
+;; 			   ">" '(sp-forward-barf-sexp :which-key "forward barf")
+;; 			   "<" '(sp-backward-barf-sexp :which-key "forward barf")
+;; 			   ")" '(sp-forward-slurp-sexp :which-key "forward slurp")
+;; 			   "(" '(sp-backward-slurp-sexp :which-key "backward slurp")
+;; 			   "x" '(sp-transpose-sexp :which-key "exchange sexp")
+;; 			   "d" '(sp-kill-sexp :which-key "delete sexp")
+;; 			   "y" '(sp-copy-sexp :which-key "copy sexp")
+;; 			   "u" '(sp-unwrap-sexp :which-key "unwrap sexp")
+;; 			   "U" '(sp-backward-unwrap-sexp :which-key "backward unwrap sexp")
+;; 			   "C" '(sp-convolute-sexp :which-key "convolute sexp")
+;; 			   "r" '(sp-raise-sexp :which-key "raise sexp")
+;; 			   "s" '(sp-split-sexp :which-key "split sexp")
+;; 			   "S" '(sp-splice-sexp :which-key "splice sexp")
+;; 			   "F" '(sp-splice-sexp-killing-forward :which-key "splice forward")
+;; 			   "B" '(sp-splice-sexp-killing-backward :which-key "splice back")
+;; 			   "A" '(sp-splice-sexp-killing-around :which-key "splice around"))
+;;   :config
+;;   ;; redefine function with the bindings I want
+;;   (defun evil-sp--add-bindings ()
+;;     (when smartparens-strict-mode
+;;       (evil-define-key 'normal evil-smartparens-mode-map
+;; 	(kbd "d") #'evil-sp-delete
+;; 	(kbd "c") #'evil-sp-change
+;; 	(kbd "y") #'evil-sp-yank
+;; 	(kbd "X") #'evil-sp-backward-delete-char
+;; 	(kbd "x") #'evil-sp-delete-char)
+;;       (evil-define-key 'visual evil-smartparens-mode-map
+;; 	(kbd "X") #'evil-sp-delete
+;; 	(kbd "x") #'evil-sp-delete))
+;;     (evil-define-key 'normal evil-smartparens-mode-map
+;;       (kbd "D") #'evil-sp-delete-line
+;;       (kbd "Y") #'evil-sp-yank-line
+;;       (kbd "C") #'evil-sp-change-line)
+;;     (evil-define-key 'insert evil-smartparens-mode-map
+;;       (kbd "DEL") 'sp-backward-delete-char)
+;;     (evil-define-key 'visual evil-smartparens-mode-map
+;;       (kbd "o") #'evil-sp-override)
+;;     (evil-normalize-keymaps))
+;;   (require 'smartparens-config)
+;;   (smartparens-global-mode)
+;;   (smartparens-global-strict-mode)
+;;   (show-smartparens-global-mode)
+;;   (add-hook 'smartparens-mode-hook 'evil-smartparens-mode))
 
 ;; provide the configuration
 (provide 'sk-evil)

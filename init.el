@@ -31,11 +31,11 @@
 (scroll-bar-mode -1)                                                           ; deactivate the scrollbar
 (tooltip-mode -1)                                                              ; deactivate the tooltip
 (setq initial-frame-alist                                                      ; initial frame size
-      '((width . 102)                                                          ; characters in a line
-	(height . 54)))                                                        ; number of lines
+	  '((width . 102)                                                          ; characters in a line
+		(height . 54)))                                                        ; number of lines
 (setq default-frame-alist                                                      ; subsequent frame size
-      '((width . 100)                                                          ; characters in a line
-	(height . 52)))                                                        ; number of lines
+	  '((width . 100)                                                          ; characters in a line
+		(height . 52)))                                                        ; number of lines
 (setq-default cursor-type '(bar . 1))                                          ; let the default cursor shape be a bar - '|'
 (blink-cursor-mode -1)                                                         ; don't blink the cursor
 (defun display-startup-echo-area-message () (message "Let the games begin!"))  ; change the default startup echo message
@@ -45,14 +45,14 @@
 (setq-default abbrev-mode t)                                                   ; turn on abbreviations by default
 (setq save-abbrevs 'silently)                                                  ; don't inform when saving new abbreviations
 (setq ediff-window-setup-function 'ediff-setup-windows-plain                   ; have a plain setup for ediff
-      ediff-split-window-function 'split-window-horizontally)                  ; show two vertical windows instead of horizontal ones
+	  ediff-split-window-function 'split-window-horizontally)                  ; show two vertical windows instead of horizontal ones
 (setq recenter-positions '(top middle bottom))                                 ; recenter from the top instead of the middle
 (put 'narrow-to-region 'disabled nil)                                          ; enable narrowing to region
 (put 'narrow-to-defun 'disabled nil)                                           ; enable narrowing to function
 (when (fboundp 'winner-mode)                                                   ; when you can find 'winner-mode'
   (winner-mode 1))                                                             ; activate winner mode
 (setq recentf-max-saved-items 1000                                             ; set the number of recent items to be saved
-      recentf-exclude '("/tmp/" "/ssh:"))                                      ; exclude the temporary and remote files accessed recently
+	  recentf-exclude '("/tmp/" "/ssh:"))                                      ; exclude the temporary and remote files accessed recently
 (setq ns-use-native-fullscreen nil)                                            ; don't use the native fullscreen - more useful in a Mac
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))         ; setup a new custom file
 (when (file-exists-p custom-file)                                              ; if the custom file exists
@@ -66,7 +66,7 @@
 ;; how tabs are seen and added
 (setq-default tab-width 4)
 (setq-default tab-stop-list
-  '(4 8 12 16 20 24 28 32 36 40 44 48 52 56 60 64 68 72 76 80))
+			  '(4 8 12 16 20 24 28 32 36 40 44 48 52 56 60 64 68 72 76 80))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Package management    ;;
@@ -78,8 +78,8 @@
 ;; the following lines tell emacs where on the internet to look up
 ;; for new packages.
 (setq package-archives '(("org"       . "http://orgmode.org/elpa/")
-                         ("gnu"       . "http://elpa.gnu.org/packages/")
-                         ("melpa"     . "https://melpa.org/packages/")))
+						 ("gnu"       . "http://elpa.gnu.org/packages/")
+						 ("melpa"     . "https://melpa.org/packages/")))
 (package-initialize)                      ; initialize the packages
 
 ;; Bootstrap `use-package'
@@ -120,10 +120,10 @@
 (setq sk--emacs-leader "C-c")
 (setq sk--evil-local-leader "m")
 (general-nvmap :prefix sk--evil-local-leader
-	       "" '(nil :which-key "major mode map"))
+			   "" '(nil :which-key "major mode map"))
 (setq sk--evil-global-leader "SPC")
 (general-nvmap :prefix sk--evil-global-leader
-	       "" '(nil :which-key "global map"))
+			   "" '(nil :which-key "global map"))
 
 ;; hint for bindings
 (use-package which-key
@@ -138,21 +138,21 @@
   (which-key-enable-god-mode-support)
   (which-key-mode)
   (which-key-add-key-based-replacements
-    "`" "C-c C-c"
-    "Z" "zoom"
-    "go" "C-x C-e"
-    "gS" "C-j"
-    "m'" "C-c '"
-    "m`" "C-c C-g"
-    "m-" "C-c C-k"
-    "SPC r" "switch buffers"
-    "SPC w" "save buffers"
-    "SPC h" "help"
-    "SPC k" "kill buffers"
-    "SPC y" "kill ring"
-    "SPC j" "exec command"
-    "SPC J" "major-mode command"
-    "SPC f" "find files"))
+	"`" "C-c C-c"
+	"Z" "zoom"
+	"go" "C-x C-e"
+	"gS" "C-j"
+	"m'" "C-c '"
+	"m`" "C-c C-g"
+	"m-" "C-c C-k"
+	"SPC r" "switch buffers"
+	"SPC w" "save buffers"
+	"SPC h" "help"
+	"SPC k" "kill buffers"
+	"SPC y" "kill ring"
+	"SPC j" "exec command"
+	"SPC J" "major-mode command"
+	"SPC f" "find files"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Modal states    ;;
@@ -166,8 +166,7 @@
   :ensure t
   :demand t)
 ;; window movement hydra
-(defhydra hydra-windows (:color red
-                         :hint nil)
+(defhydra hydra-windows (:color red :hint nil)
   "
  ^Move^    ^Size^    ^Change^                    ^Split^           ^Text^
  ^^^^^^^^^^^------------------------------------------------------------------
@@ -190,25 +189,25 @@
   ("w" other-window :color blue)
   ("z" delete-other-windows)
   ("u" (progn
-         (winner-undo)
-         (setq this-command 'winner-undo)))
+		 (winner-undo)
+		 (setq this-command 'winner-undo)))
   ("r" winner-redo)
   ("+" text-scale-increase)
   ("-" text-scale-decrease)
   ("q" nil :exit t))
 (general-nmap "w" '(hydra-windows/body :which-key "manage windows"))
 
-;; bookmark hydra
-(defhydra hydra-bookmarks (:color blue :hint nil)
-  "
- _s_: set  _b_: bookmark   _j_: jump   _d_: delete   _q_: quit
-  "
-  ("s" bookmark-set)
-  ("b" bookmark-save)
-  ("j" bookmark-jump)
-  ("d" bookmark-delete)
-  ("q" nil :color blue))
-(general-nvmap "+" '(hydra-bookmarks/body :which-key "bookmarks"))
+;; ;; bookmark hydra
+;; (defhydra hydra-bookmarks (:color blue :hint nil)
+;;   "
+;;  _s_: set  _b_: bookmark   _j_: jump   _d_: delete   _q_: quit
+;;   "
+;;   ("s" bookmark-set)
+;;   ("b" bookmark-save)
+;;   ("j" bookmark-jump)
+;;   ("d" bookmark-delete)
+;;   ("q" nil :color blue))
+;; (general-nvmap "+" '(hydra-bookmarks/body :which-key "bookmarks"))
 
 ;;;;;;;;;;;;;;;;;;;
 ;;    Editing    ;;
@@ -221,8 +220,8 @@
   :general
   (general-imap "C-a" '(yas-insert-snippet :which-key "choose snippet"))
   (general-nvmap :prefix sk--evil-global-leader
-		 "c" '(yas-new-snippet :which-key "new snippet")
-		 "C" '(yas-reload-all :which-key "reload snippets"))
+				 "c" '(yas-new-snippet :which-key "new snippet")
+				 "C" '(yas-reload-all :which-key "reload snippets"))
   :diminish (yas-minor-mode . " γ")
   :config
   (setq yas/triggers-in-field t); Enable nested triggering of snippets
@@ -240,9 +239,9 @@
   :demand t
   :init				     ; configuration before the package is laded
   (setq avy-keys-alist		     ; what keys to use for clicking
-        `((avy-goto-char-timer . (?j ?k ?l ?f ?s ?d))
-	  (avy-goto-char-2 . (?j ?k ?l ?f ?s ?d ?e ?r ?u ?i))
-          (avy-goto-line . (?j ?k ?l ?f ?s ?d ?e ?r ?u ?i))))
+		`((avy-goto-char-timer . (?j ?k ?l ?f ?s ?d))
+		  (avy-goto-char-2 . (?j ?k ?l ?f ?s ?d ?e ?r ?u ?i))
+		  (avy-goto-line . (?j ?k ?l ?f ?s ?d ?e ?r ?u ?i))))
   (setq avy-style 'pre)			; where the characters should be placed
   (setq avy-background t)		; always highlight the background
   :general				; `general.el' maps
@@ -255,19 +254,19 @@
   (general-mmap "gw" '(avy-goto-char-2 :which-key "jump to 2 char"))
   :config
   (use-package ace-link
-    :ensure t
-    :demand t
-    :general
-    (general-nvmap :prefix "\\"
-		   "\\" '(nil :which-key "link/clipboard")
-		   "h" '(ace-link-help :which-key "help mode link")
-		   "i" '(ace-link-info :which-key "info mode link")
-		   "w" '(ace-link-eww :which-key "eww mode link")
-		   "m" '(ace-link-woman :which-key "woman mode link")
-		   "c" '(ace-link-compilation :which-key "compilation mode link")
-		   "u" '(ace-link-custom :which-key "custom mode link"))
-    :config
-    (ace-link-setup-default)))
+	:ensure t
+	:demand t
+	:general
+	(general-nvmap :prefix "\\"
+				   "\\" '(nil :which-key "link/clipboard")
+				   "h" '(ace-link-help :which-key "help mode link")
+				   "i" '(ace-link-info :which-key "info mode link")
+				   "w" '(ace-link-eww :which-key "eww mode link")
+				   "m" '(ace-link-woman :which-key "woman mode link")
+				   "c" '(ace-link-compilation :which-key "compilation mode link")
+				   "u" '(ace-link-custom :which-key "custom mode link"))
+	:config
+	(ace-link-setup-default)))
 
 ;; file explorer
 (use-package ranger
@@ -275,7 +274,7 @@
   :init
   :general
   (general-nmap :prefix sk--evil-global-leader
-		"n" '(ranger :which-key "file explorer")))
+				"n" '(ranger :which-key "file explorer")))
 
 ;; tags based navigation
 (use-package ggtags
@@ -287,8 +286,7 @@
   :config
   (add-hook 'prog-mode-hook 'ggtags-mode))
 ;; tags hydra
-(defhydra hydra-ggtags (:hint nil
-			      :color red)
+(defhydra hydra-ggtags (:hint nil :color red)
   "
  ^Tags^              ^Find^
 ------------------------------------------------------
@@ -303,7 +301,7 @@
   ("t" ggtags-find-tag-dwim)
   ("q" nil :exit t))
 (general-nmap :prefix sk--evil-global-leader
-	      "t" '(hydra-ggtags/body :which-key "manage tags"))
+			  "t" '(hydra-ggtags/body :which-key "manage tags"))
 
 ;; dumb semantic jump
 (use-package dumb-jump
@@ -327,23 +325,23 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (setq gdb-many-windows t                                                       ; let gdb invoke multiple windows
-      gdb-show-main t)                                                         ; focus on the main window
+	  gdb-show-main t)                                                         ; focus on the main window
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Remote edits - Tramp    ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (setq tramp-default-method "ssh"                                               ; remote log using ssh
-      tramp-backup-directory-alist backup-directory-alist)                     ; use the same backup directory for remote backups
+	  tramp-backup-directory-alist backup-directory-alist)                     ; use the same backup directory for remote backups
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Improve aesthetics      ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; better theme
-(use-package spacemacs-theme
+(use-package zenburn-theme
   :ensure t)
-(load-theme 'spacemacs-dark t)
+(load-theme 'zenburn t)
 
 ;; rainbow paranthesis for easier viewing
 (use-package rainbow-delimiters
@@ -377,13 +375,13 @@
   :ensure t
   :general
   (general-nmap :prefix sk--evil-global-leader
-		"Q" '(restart-emacs :which-key "restart emacs")))
+				"Q" '(restart-emacs :which-key "restart emacs")))
 
 ;; discovering the major mode bindings and details
 (use-package discover-my-major
   :ensure t
   :bind (("C-h B" . discover-my-major)
-         ("C-h M" . discover-my-mode)))
+		 ("C-h M" . discover-my-mode)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Convenience functions    ;;
@@ -402,8 +400,8 @@
   :mode ("\\.markdown\\'" "\\.mkd\\'" "\\.md\\'")
   :config
   (use-package pandoc-mode
-    :ensure t
-    :mode ("\\.markdown\\'" "\\.mkd\\'" "\\.md\\'")))
+	:ensure t
+	:mode ("\\.markdown\\'" "\\.mkd\\'" "\\.md\\'")))
 
 ;; LaTeX support
 (use-package tex-site
@@ -411,10 +409,10 @@
   :ensure auctex
   :ensure auctex-latexmk
   :mode (("\\.tex\\'" . LaTeX-mode)
-	 ("\\.xtx\\'" . LaTeX-mode))
+		 ("\\.xtx\\'" . LaTeX-mode))
   :general
   (general-nvmap :prefix sk--evil-local-leader
-		 "x" '(hydra-latex/body :which-key "latex"))
+				 "x" '(hydra-latex/body :which-key "latex"))
   :init
   (setq reftex-plug-into-AUCTeX t)
   (setq reftex-default-bibliography '("~/Dropbox/PhD/articles/tensors/tensors.bib"))
@@ -425,27 +423,27 @@
   :config
   ;; LaTeX autocompletion
   (use-package company-auctex
-    :ensure t
-    :demand t
-    :bind (("C-c l" . company-auctex))
-    :config
-    (progn
-      (add-to-list 'company-backends 'company-auctex)))
+	:ensure t
+	:demand t
+	:bind (("C-c l" . company-auctex))
+	:config
+	(progn
+	  (add-to-list 'company-backends 'company-auctex)))
   ;; Use Skim as viewer, enable source <-> PDF sync
   ;; make latexmk available via C-c C-c
   ;; Note: SyncTeX is setup via ~/.latexmkrc (see below)
   (add-hook 'LaTeX-mode-hook (lambda ()
-			       (push
-				'("latexmk" "latexmk -xelatex -pdf %s" TeX-run-TeX nil t
-				  :help "Run latexmk on file")
-				TeX-command-list)))
+							   (push
+								'("latexmk" "latexmk -xelatex -pdf %s" TeX-run-TeX nil t
+								  :help "Run latexmk on file")
+								TeX-command-list)))
   (add-hook 'TeX-mode-hook '(lambda () (setq TeX-command-default "latexmk")))
   ;; use Skim as default pdf viewer
   ;; Skim's displayline is used for forward search (from .tex to .pdf)
   ;; option -b highlights the current line; option -g opens Skim in the background
   (setq TeX-view-program-selection '((output-pdf "PDF Viewer")))
   (setq TeX-view-program-list
-	'(("PDF Viewer" "/Applications/Skim.app/Contents/SharedSupport/displayline -b -g %n %o %b"))))
+		'(("PDF Viewer" "/Applications/Skim.app/Contents/SharedSupport/displayline -b -g %n %o %b"))))
 ;; custom function to setup latex mode properly - why isn't the normal use-package definition working?
 (defun sk/setup-latex ()
   "hooks to setup latex properly"
@@ -497,7 +495,7 @@
   (general-nvmap "g[" '(writegood-reading-ease :which-key "grade reading"))
   :config
   (progn
-    (add-hook 'text-mode-hook 'writegood-mode)))
+	(add-hook 'text-mode-hook 'writegood-mode)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Version control    ;;
@@ -510,37 +508,37 @@
   (general-nvmap :prefix sk--evil-global-leader "e" '(magit-status :which-key "git status"))
   (general-nvmap "gb" '(magit-blame :which-key "git blame"))
   (general-evil-define-key '(normal visual) 'magit-blame-mode-map
-    "q" (general-simulate-keys "q" t "quit")
-    "n" (general-simulate-keys "n" t "quit")
-    "p" (general-simulate-keys "p" t "quit")
-    "N" (general-simulate-keys "N" t "quit")
-    "P" (general-simulate-keys "P" t "quit")
-    "t" (general-simulate-keys "t" t "quit")
-    "y" (general-simulate-keys "y" t "quit")
-    "d" (general-simulate-keys "SPC" t "quit")
-    "u" (general-simulate-keys "DEL" t "quit")
-    "c" (general-simulate-keys "RET" t "quit")
-    "RET" (general-simulate-keys "RET" t "quit"))
+	"q" (general-simulate-keys "q" t "quit")
+	"n" (general-simulate-keys "n" t "quit")
+	"p" (general-simulate-keys "p" t "quit")
+	"N" (general-simulate-keys "N" t "quit")
+	"P" (general-simulate-keys "P" t "quit")
+	"t" (general-simulate-keys "t" t "quit")
+	"y" (general-simulate-keys "y" t "quit")
+	"d" (general-simulate-keys "SPC" t "quit")
+	"u" (general-simulate-keys "DEL" t "quit")
+	"c" (general-simulate-keys "RET" t "quit")
+	"RET" (general-simulate-keys "RET" t "quit"))
   :config
   (use-package evil-magit
-    :ensure t
-    :demand t
-    :init
-    (setq evil-magit-want-horizontal-movement t))
+	:ensure t
+	:demand t
+	:init
+	(setq evil-magit-want-horizontal-movement t))
   ;; Github integration - press '@' in Magit status
   (use-package magithub
-    :ensure t))
+	:ensure t))
 
 ;; highlight diffs
 (use-package diff-hl
   :ensure t
   :commands (global-diff-hl-mode
-             diff-hl-mode
-             diff-hl-next-hunk
-             diff-hl-previous-hunk
-             diff-hl-mark-hunk
-             diff-hl-diff-goto-hunk
-             diff-hl-revert-hunk)
+			 diff-hl-mode
+			 diff-hl-next-hunk
+			 diff-hl-previous-hunk
+			 diff-hl-mark-hunk
+			 diff-hl-diff-goto-hunk
+			 diff-hl-revert-hunk)
   :general
   (general-nvmap "[h" '(diff-hl-previous-hunk :which-key "previous hunk"))
   (general-nvmap "]h" '(diff-hl-next-hunk :which-key "next hunk"))
@@ -599,59 +597,59 @@
   :commands (prodigy)
   :general
   (general-nvmap :prefix sk--evil-global-leader
-		 "g" '(prodigy :which-key "background process"))
+				 "g" '(prodigy :which-key "background process"))
   (general-evil-define-key '(normal visual) 'prodigy-mode-map
-    "q" (general-simulate-keys "q" t "quit")
-    "s" (general-simulate-keys "s" t "start")
-    "S" (general-simulate-keys "S" t "stop"))
+	"q" (general-simulate-keys "q" t "quit")
+	"s" (general-simulate-keys "s" t "start")
+	"S" (general-simulate-keys "S" t "stop"))
   :init
   (prodigy-define-tag
-   :name 'blog
-   :ready-message "Serving blog. Ctrl-C to shutdown server")
+	:name 'blog
+	:ready-message "Serving blog. Ctrl-C to shutdown server")
   (prodigy-define-service
-   :name "personal blog build"
-   :command "hexo"
-   :args '("generate")
-   :cwd "/Users/sriramkswamy/Dropbox/blog"
-   :tags '(blog)
-   :kill-signal 'sigkill)
+	:name "personal blog build"
+	:command "hexo"
+	:args '("generate")
+	:cwd "/Users/sriramkswamy/Dropbox/blog"
+	:tags '(blog)
+	:kill-signal 'sigkill)
   (prodigy-define-service
-   :name "personal blog view"
-   :command "hexo"
-   :args '("server")
-   :cwd "/Users/sriramkswamy/Dropbox/blog"
-   :tags '(blog)
-   :kill-signal 'sigkill
-   :kill-process-buffer-on-stop t)
+	:name "personal blog view"
+	:command "hexo"
+	:args '("server")
+	:cwd "/Users/sriramkswamy/Dropbox/blog"
+	:tags '(blog)
+	:kill-signal 'sigkill
+	:kill-process-buffer-on-stop t)
   (prodigy-define-service
-   :name "personal blog publish"
-   :command "hexo"
-   :args '("deploy")
-   :cwd "/Users/sriramkswamy/Dropbox/blog"
-   :tags '(blog)
-   :kill-signal 'sigkill)
+	:name "personal blog publish"
+	:command "hexo"
+	:args '("deploy")
+	:cwd "/Users/sriramkswamy/Dropbox/blog"
+	:tags '(blog)
+	:kill-signal 'sigkill)
   (prodigy-define-service
-   :name "watchandcode blog build"
-   :command "hexo"
-   :args '("generate")
-   :cwd "/Users/sriramkswamy/Downloads/JS/watchandcode"
-   :tags '(blog)
-   :kill-signal 'sigkill)
+	:name "watchandcode blog build"
+	:command "hexo"
+	:args '("generate")
+	:cwd "/Users/sriramkswamy/Downloads/JS/watchandcode"
+	:tags '(blog)
+	:kill-signal 'sigkill)
   (prodigy-define-service
-   :name "watchandcode blog view"
-   :command "hexo"
-   :args '("server")
-   :cwd "/Users/sriramkswamy/Downloads/JS/watchandcode"
-   :tags '(blog)
-   :kill-signal 'sigkill
-   :kill-process-buffer-on-stop t)
+	:name "watchandcode blog view"
+	:command "hexo"
+	:args '("server")
+	:cwd "/Users/sriramkswamy/Downloads/JS/watchandcode"
+	:tags '(blog)
+	:kill-signal 'sigkill
+	:kill-process-buffer-on-stop t)
   (prodigy-define-service
-   :name "watchandcode blog publish"
-   :command "hexo"
-   :args '("deploy")
-   :cwd "/Users/sriramkswamy/Downloads/JS/watchandcode"
-   :tags '(blog)
-   :kill-signal 'sigkill))
+	:name "watchandcode blog publish"
+	:command "hexo"
+	:args '("deploy")
+	:cwd "/Users/sriramkswamy/Downloads/JS/watchandcode"
+	:tags '(blog)
+	:kill-signal 'sigkill))
 
 ;; YAML mode
 (use-package yaml-mode
@@ -675,39 +673,39 @@
   :defer 2
   :init
   (setq company-minimum-prefix-length 2
-	company-require-match 0
-	company-selection-wrap-around t
-	company-dabbrev-downcase nil
-	company-tooltip-limit 20                      ; bigger popup window
-	company-tooltip-align-annotations 't          ; align annotations to the right tooltip border
-	company-idle-delay .2                         ; decrease delay before autocompletion popup shows
-	company-begin-commands '(self-insert-command)) ; start autocompletion only after typing
+		company-require-match 0
+		company-selection-wrap-around t
+		company-dabbrev-downcase nil
+		company-tooltip-limit 20                      ; bigger popup window
+		company-tooltip-align-annotations 't          ; align annotations to the right tooltip border
+		company-idle-delay .2                         ; decrease delay before autocompletion popup shows
+		company-begin-commands '(self-insert-command)) ; start autocompletion only after typing
   (eval-after-load 'company
-    '(add-to-list 'company-backends '(company-files
-				      company-capf)))
+	'(add-to-list 'company-backends '(company-files
+									  company-capf)))
   :general
   (general-imap "C-d" 'company-complete)
-  :bind (("C-c f" . company-files)
-	 ("C-c a" . company-dabbrev)
-	 ("C-c d" . company-ispell)
-	 :map company-active-map
-	 ("C-n"    . company-select-next)
-	 ("C-p"    . company-select-previous)
-	 ([return] . company-complete-selection)
-	 ([tab]    . yas/expand)
-	 ("C-f"    . company-search-filtering)
-	 ("C-w"    . backward-kill-word)
-	 ("C-c"    . company-abort)
-	 ("C-c"    . company-search-abort))
+  :bind* (("C-c f" . company-files)
+		  ("C-c a" . company-dabbrev)
+		  ("C-c d" . company-ispell)
+		  :map company-active-map
+		  ("C-n"    . company-select-next)
+		  ("C-p"    . company-select-previous)
+		  ([return] . company-complete-selection)
+		  ([tab]    . yas/expand)
+		  ("C-f"    . company-search-filtering)
+		  ("C-w"    . backward-kill-word)
+		  ("C-c"    . company-abort)
+		  ("C-c"    . company-search-abort))
   :diminish (company-mode . " ς")
   :config
   (global-company-mode)
   ;; fuzzy matching
   (use-package company-flx
-    :ensure t
-    :config
-    (with-eval-after-load 'company
-      (company-flx-mode +1))))
+	:ensure t
+	:config
+	(with-eval-after-load 'company
+	  (company-flx-mode +1))))
 
 ;; project management
 (use-package projectile
@@ -729,11 +727,11 @@
   :ensure t
   :config
   (defun sk/google-this ()
-    "Google efficiently"
-    (interactive)
-    (if (region-active-p)
-	(google-this-region 1)
-      (google-this-symbol 1)))
+	"Google efficiently"
+	(interactive)
+	(if (region-active-p)
+		(google-this-region 1)
+	  (google-this-symbol 1)))
   :general
   (general-nvmap "gG" '(sk/google-this :which-key "google")))
 
@@ -775,4 +773,4 @@
 (use-package server
   :config
   (unless (server-running-p)
-    (server-start)))
+	(server-start)))

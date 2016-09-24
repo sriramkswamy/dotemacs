@@ -12,3 +12,4 @@ eshell/*
 /smex-items
 /srecode-map.el
 /semanticdb/*
+.python-environments/*

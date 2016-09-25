@@ -13,3 +13,6 @@ eshell/*
 /srecode-map.el
 /semanticdb/*
 .python-environments/*
+/GPATH
+/GRTAGS
+/GTAGS

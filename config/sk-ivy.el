@@ -15,7 +15,9 @@
   ;; set ivy height
   (setq ivy-height 10)
   ;; make sure it always stays that high
-  (setq ivy-fixed-height-minibuffer t)
+  ;; (setq ivy-fixed-height-minibuffer t)
+  ;; if flipped, the candidates are above the input
+  ;; (setq ivy-flip t)
   ;; virtual buffers - combines many good things into one command
   (setq ivy-use-virtual-buffers t)
   ;; full file names - useful when multiple files have same names
@@ -201,7 +203,7 @@
 ^-^-^-^-^-^-+-^-^---------^-^--+-^-^------+-^-^-------+-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^---------------------------
 ^ ^ _k_ ^ ^ | _f_ollow _o_ccur | _i_nsert | _c_: calling %-5s(if ivy-calling \"on\" \"off\") _C_ase-fold: %-10`ivy-case-fold-search
 _h_ ^+^ _l_ | _d_one   _p_roj  | _q_uit   | _m_: matcher %-5s(ivy--matcher-desc)^^^^^^^^^^^^ _t_runcate: %-11`truncate-lines
-^ ^ _j_ ^ ^ | _g_o     _D_efun | _n_arrow | _<_/_>_: shrink/grow^^^^^^^^^^^^^^^^^^^^^^^^^^^^ _J_/_K_: scroll up or down
+^ ^ _j_ ^ ^ | _g_o     _D_efun | _n_arrow | _<_/_>_: shrink/grow^^^^^^^^^^^^^^^^^^^^^^^^^^^^ _C-f_/_C-b_: scroll up or down
 "
   ;; arrows
   ("h" ivy-beginning-of-buffer)
@@ -227,8 +229,8 @@ _h_ ^+^ _l_ | _d_one   _p_roj  | _q_uit   | _m_: matcher %-5s(ivy--matcher-desc)
   ("m" ivy-toggle-fuzzy)
   (">" ivy-minibuffer-grow)
   ("<" ivy-minibuffer-shrink)
-  ("J" ivy-scroll-up-command)
-  ("K" ivy-scroll-down-command)
+  ("C-f" ivy-scroll-up-command)
+  ("C-b" ivy-scroll-down-command)
   ("w" ivy-prev-action)
   ("s" ivy-next-action)
   ("a" ivy-read-action)

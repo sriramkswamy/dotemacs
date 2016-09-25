@@ -62,7 +62,7 @@
 (add-to-list 'load-path (expand-file-name "config" user-emacs-directory))      ; load more configuration from the 'config' folder
 (put 'scroll-left 'disabled nil)                                               ; enable sideward scrolling
 (define-key minibuffer-local-map (kbd "C-w") 'backward-kill-word)              ; backward kill word in minibuffer
-
+(setq enable-recursive-minibuffers t)                                          ; use the minibuffer while using the minibuffer
 ;; how tabs are seen and added
 (setq-default tab-width 4)
 (setq-default tab-stop-list
@@ -275,8 +275,14 @@
   :ensure t
   :init
   :general
-  (general-nmap :prefix sk--evil-global-leader
-				"n" '(ranger :which-key "file explorer")))
+  (general-nvmap :prefix sk--evil-global-leader
+				 "n" '(ranger :which-key "file explorer")))
+
+;; imenu anywhere
+(use-package imenu-anywhere
+  :ensure t
+  :general
+  (general-nvmap "T" '(imenu-anywhere :which-key "imenu anywhere")))
 
 ;; tags based navigation
 (use-package ggtags
@@ -284,7 +290,7 @@
   :defer 2
   :diminish ggtags-mode
   :general
-  (general-nmap "T" '(ggtags-find-tag-regexp :which-key "tags in project"))
+  (general-nvmap "C-]" '(ggtags-find-tag-regexp :which-key "jump to tags"))
   :config
   (add-hook 'prog-mode-hook 'ggtags-mode))
 ;; tags hydra
@@ -294,7 +300,7 @@
 ------------------------------------------------------
  _c_: create tags    _d_: find definition      _q_: quit
  _u_: update tags    _f_: find reference
- _r_: reload         _t_: find tag dwim"
+ _r_: reload         _t_: tags dwim"
   ("c" ggtags-create-tags)
   ("u" ggtags-update-tags)
   ("r" ggtags-reload-tags)
@@ -302,8 +308,8 @@
   ("f" ggtags-find-reference)
   ("t" ggtags-find-tag-dwim)
   ("q" nil :exit t))
-(general-nmap :prefix sk--evil-global-leader
-			  "t" '(hydra-ggtags/body :which-key "manage tags"))
+(general-nvmap :prefix sk--evil-global-leader
+			   "t" '(hydra-ggtags/body :which-key "manage tags"))
 
 ;; dumb semantic jump
 (use-package dumb-jump
@@ -358,6 +364,42 @@
   :config
   (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
   (add-hook 'text-mode-hook 'rainbow-delimiters-mode))
+
+;; highlight changes in the buffer caused by cutting/pasting etc
+(use-package volatile-highlights
+  :ensure t
+  :demand t
+  :diminish volatile-highlights-mode
+  :config
+  (volatile-highlights-mode t))
+
+;; warn me if I go over a character limit
+(use-package column-enforce-mode
+  :ensure t
+  :diminish column-enforce-mode
+  :init
+  (setq column-enforce-column 99)
+  :config
+  (progn
+	(add-hook 'prog-mode-hook 'column-enforce-mode)))
+
+;; highlight indentation levels
+(use-package highlight-indentation
+  :ensure t
+  :general
+  (general-nvmap "g|" '(highlight-indentation-mode :which-key "indent levels"))
+  :commands (highlight-indentation-mode))
+
+;; indicate margins
+(use-package fill-column-indicator
+  :ensure t
+  :commands (fci-mode)
+  :general
+  (general-nvmap "gm" '(fci-mode :which-key "margin"))
+  :init
+  (setq fci-rule-width 5
+		fci-rule-column 79)
+  (setq fci-rule-color "#bebebe"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Convenience packages    ;;

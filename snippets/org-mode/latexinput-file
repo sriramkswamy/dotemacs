@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: latex input file
-# key: linp
-# --
-\input{ $1 }

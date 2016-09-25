@@ -42,8 +42,9 @@
 ^^^^^^^^^^----------------------------------------------------------------------------------------------
  _s_: region     _r_: run        _c_: close          _y_: copy kill    _w_: new window        _q_: quit
  _S_: command    _l_: last cmd   _C_: close other    _p_: paste tmux   _f_: clone frame
-	       _z_: zoom       _h_: clear hist                     _v_: split vertically
-	       _i_: inspect    _I_: interrupt                      _V_: split horizontally"
+			   _z_: zoom       _h_: clear hist                     _v_: split vertically
+			   _i_: inspect    _I_: interrupt                      _V_: split horizontally
+"
   ("s" emamux:run-region)
   ("S" emamux:send-command)
   ("r" emamux:run-command)

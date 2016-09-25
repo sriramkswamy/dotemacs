@@ -1,6 +1,0 @@
-# -*- mode: snippet -*-
-# name: latex chapter
-# key: lcha
-# --
-\chapter${1:*}{ $2 }
-\label{cha:$3}

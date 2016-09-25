@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: latex cite
-# key: lc
-# --
-\cite{$1}

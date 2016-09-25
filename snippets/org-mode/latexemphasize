@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: latex emphasize font
-# key: lef
-# --
-\emph{ $1 }

@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: nikola category
-# key: ncat
-# --
-#+NIKOLA_CATEGORY: ${1:category}

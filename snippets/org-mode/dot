@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: dot on top
-# key: dot
-# --
-\dot{ $1 }

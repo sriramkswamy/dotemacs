@@ -1,6 +1,0 @@
-# -*- mode: snippet; require-final-newline: nil -*-
-# name: texmulticolumn
-# key: lmul
-# binding: direct-keybinding
-# --
-#+ATTR_LATEX: :float multicolumn

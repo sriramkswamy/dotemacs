@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: nikola type
-# key: nty
-# --
-#+NIKOLA_TYPE: ${1:text}

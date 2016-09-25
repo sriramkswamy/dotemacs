@@ -1,6 +1,0 @@
-# -*- mode: snippet; require-final-newline: nil -*-
-# name: individual property
-# key: oprop
-# binding: direct-keybinding
-# --
-:$1: $2

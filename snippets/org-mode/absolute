@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: absolute
-# key: abs
-# --
-\left| $1 \right|

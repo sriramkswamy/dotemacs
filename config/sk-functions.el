@@ -394,7 +394,7 @@ abort completely with `C-g'."
           (message "\"%s\" now expands to \"%s\" %sally"
                    bef aft (if p "loc" "glob")))
       (user-error "No typo at or before point"))))
-(general-imap "C-s" '(sk/ispell-word-then-abbrev :which-key "correct spelling mistake"))
+(general-imap "C-a" '(sk/ispell-word-then-abbrev :which-key "correct spelling mistake"))
 
 ;; Set fonts
 (cond ((eq system-type 'gnu/linux)                                             ; if system is GNU/Linux

@@ -1,6 +1,0 @@
-# -*- mode: snippet; require-final-newline: nil -*-
-# name: margin Latex
-# key: lmar
-# binding: direct-keybinding
-# --
-#+LATEX_HEADER: \usepackage[margin=${1:2}cm]{geometry}

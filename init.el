@@ -218,7 +218,7 @@
   :ensure t
   :commands (yas-insert-snippet yas-new-snippet)
   :general
-  (general-imap "C-a" '(yas-insert-snippet :which-key "choose snippet"))
+  (general-imap "C-s" '(yas-insert-snippet :which-key "choose snippet"))
   (general-nvmap :prefix sk--evil-global-leader
 				 "c" '(nil :which-key "snippets")
 				 "cc" '(yas-reload-all :which-key "reload snippets")
@@ -421,6 +421,8 @@
   :general
   (general-nvmap :prefix sk--evil-local-leader
 				 "x" '(hydra-latex/body :which-key "latex"))
+  (general-tomap "x" '(LaTeX-mark-section :which-key "latex section"))
+  (general-tomap "e" '(LaTeX-mark-environment :which-key "latex env"))
   :init
   (setq reftex-plug-into-AUCTeX t)
   (setq reftex-default-bibliography '("~/Dropbox/PhD/articles/tensors/tensors.bib"))
@@ -433,7 +435,7 @@
   (use-package company-auctex
 	:ensure t
 	:demand t
-	:bind (("C-c l" . company-auctex))
+	:bind (("C-c x" . company-auctex))
 	:config
 	(progn
 	  (add-to-list 'company-backends 'company-auctex)))
@@ -700,7 +702,8 @@
 		  ("C-n"    . company-select-next)
 		  ("C-p"    . company-select-previous)
 		  ([return] . company-complete-selection)
-		  ([tab]    . yas/expand)
+		  ([tab]    . yas-expand)
+		  ("TAB"    . yas-expand)
 		  ("C-f"    . company-search-filtering)
 		  ("C-w"    . backward-kill-word)
 		  ("C-c"    . company-abort)

@@ -1,6 +1,0 @@
-# -*- mode: snippet -*-
-# name: latex table of contents
-# key: ltoc
-# --
-\tableofcontents
-

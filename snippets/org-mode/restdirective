@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: rst directive
-# key: sdir
-# --
-#+ATTR_RST: :directive ${1:name} ${2::title} ${3:directive title}

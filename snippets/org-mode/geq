@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: greater than or equal to
-# key: geq
-# --
-\geq $0

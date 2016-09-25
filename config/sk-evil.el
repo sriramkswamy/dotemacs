@@ -67,6 +67,7 @@
 (general-nvmap "H" '(scroll-right :which-key "scroll left"))
 (general-nvmap "L" '(scroll-left :which-key "scroll right"))
 (general-nvmap "g!" '(async-shell-command :which-key "async command"))
+(general-tomap "a" '(mark-whole-buffer :which-key "all"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Evil editing integration    ;;
@@ -189,16 +190,16 @@
   :general
   (general-evil-define-key '(normal visual) smartparens-mode-map :prefix "\""
 			   "" '(nil :which-key "smartparens")
-			   "j" '(sp-down-sexp :which-key "down sexp")
-			   "k" '(sp-backward-up-sexp :which-key "back up sexp")
-			   "h" '(sp-backward-down-sexp :which-key "back down sexp")
-			   "l" '(sp-up-sexp :which-key "up sexp")
-			   "f" '(sp-forward-sexp :which-key "forward sexp")
-			   "b" '(sp-backward-sexp :which-key "backward sexp")
+			   "f" '(sp-down-sexp :which-key "down sexp")
+			   "b" '(sp-backward-up-sexp :which-key "back up sexp")
+			   "p" '(sp-backward-down-sexp :which-key "back down sexp")
+			   "n" '(sp-up-sexp :which-key "up sexp")
+			   "l" '(sp-forward-sexp :which-key "forward sexp")
+			   "h" '(sp-backward-sexp :which-key "backward sexp")
+			   "j" '(sp-next-sexp :which-key "next sexp")
+			   "k" '(sp-previous-sexp :which-key "previous sexp")
 			   "a" '(sp-beginning-of-sexp :which-key "start of sexp")
 			   "e" '(sp-end-of-sexp :which-key "end of sexp")
-			   "n" '(sp-next-sexp :which-key "next sexp")
-			   "p" '(sp-previous-sexp :which-key "previous sexp")
 			   ">" '(sp-forward-barf-sexp :which-key "forward barf")
 			   "<" '(sp-backward-barf-sexp :which-key "forward barf")
 			   ")" '(sp-forward-slurp-sexp :which-key "forward slurp")
@@ -252,14 +253,14 @@
  ^ ^ _j_ ^ ^    ^ ^ _n_ ^ ^    _)_: slurp forward    _d_: delete       _r_: raise      _B_: backward
  _a_: start _e_: end   _(_: slurp backward   _y_: copy         _s_: split      _A_: around
 "
-  ("h" sp-backward-down-sexp)
-  ("l" sp-up-sexp)
-  ("j" sp-down-sexp)
-  ("k" sp-backward-up-sexp)
-  ("b" sp-backward-sexp)
-  ("f" sp-forward-sexp)
-  ("n" sp-next-sexp)
-  ("p" sp-previous-sexp)
+  ("h" sp-backward-sexp)
+  ("l" sp-forward-sexp)
+  ("j" sp-next-sexp)
+  ("k" sp-previous-sexp)
+  ("n" sp-backward-down-sexp)
+  ("p" sp-up-sexp)
+  ("f" sp-down-sexp)
+  ("b" sp-backward-up-sexp)
   ("a" sp-beginning-of-sexp)
   ("e" sp-end-of-sexp)
   ("<" sp-backward-barf-sexp)

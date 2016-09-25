@@ -1,8 +1,0 @@
-# -*- mode: snippet -*-
-# name: latex itemize
-# key: lit
-# --
-\begin{itemize}
-\item $1
-
-\end{itemize}

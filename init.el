@@ -332,15 +332,15 @@
 ;;    Debugging using GDB    ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(setq gdb-many-windows t                                                       ; let gdb invoke multiple windows
-	  gdb-show-main t)                                                         ; focus on the main window
+(setq gdb-many-windows t         ; let gdb invoke multiple windows
+	  gdb-show-main t)           ; focus on the main window
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Remote edits - Tramp    ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(setq tramp-default-method "ssh"                                               ; remote log using ssh
-	  tramp-backup-directory-alist backup-directory-alist)                     ; use the same backup directory for remote backups
+(setq tramp-default-method "ssh"                           ; remote log using ssh
+	  tramp-backup-directory-alist backup-directory-alist) ; use the same backup directory for remote backups
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Improve aesthetics      ;;
@@ -352,10 +352,10 @@
 (use-package spacemacs-theme
   :ensure t)
 ;; load one of these themes
-(load-theme 'wombat t)
+;; (load-theme 'wombat t)
 ;; (load-theme 'leuven t)
 ;; (load-theme 'zenburn t)
-;; (load-theme 'spacemacs-dark t)
+(load-theme 'spacemacs-dark t)
 
 ;; rainbow paranthesis for easier viewing
 (use-package rainbow-delimiters
@@ -384,11 +384,14 @@
 	(add-hook 'prog-mode-hook 'column-enforce-mode)))
 
 ;; highlight indentation levels
-(use-package highlight-indentation
+(use-package indent-guide
   :ensure t
+  :diminish indent-guide-mode
   :general
-  (general-nvmap "g|" '(highlight-indentation-mode :which-key "indent levels"))
-  :commands (highlight-indentation-mode))
+  (general-nvmap "g|" '(indent-guide-mode :which-key "indent levels"))
+  :commands (indent-guide-mode)
+  :config
+  (add-hook 'python-mode-hook 'indent-guide-mode))
 
 ;; indicate margins
 (use-package fill-column-indicator

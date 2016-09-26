@@ -365,14 +365,6 @@
   (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
   (add-hook 'text-mode-hook 'rainbow-delimiters-mode))
 
-;; highlight changes in the buffer caused by cutting/pasting etc
-(use-package volatile-highlights
-  :ensure t
-  :demand t
-  :diminish volatile-highlights-mode
-  :config
-  (volatile-highlights-mode t))
-
 ;; warn me if I go over a character limit
 (use-package column-enforce-mode
   :ensure t
@@ -451,10 +443,75 @@
 (use-package markdown-mode
   :ensure t
   :mode ("\\.markdown\\'" "\\.mkd\\'" "\\.md\\'")
+  :general
+  (general-nvmap :prefix sk--evil-local-leader
+				 "n" '(hydra-markdown/body :which-key "markdown"))
+  :init
+  (setq markdown-open-command "/Applications/Markoff.app/Contents/MacOS/Markoff")
   :config
   (use-package pandoc-mode
 	:ensure t
-	:mode ("\\.markdown\\'" "\\.mkd\\'" "\\.md\\'")))
+	:diminish pandoc-mode
+	:config
+	(add-hook 'markdown-mode-hook 'pandoc-mode)))
+
+;; hydra for markdown stuff
+(defhydra hydra-markdown (:color pink :hint nil)
+  "
+ ^Markdown^               ^Commands^      ^Insert^                                                     ^Headings^       ^Preview^
+^^^^^^^^^^----------------------------------------------------------------------------------------------------------------------------------------------
+ _j_/_J_: next   _f_: follow  _>_: promote    _l_: link       _m_: image      _c_: code block  _L_: list         _1_: h1  _5_: h5   _e_: export        _m_: markdown        _q_: quit
+ _k_/_K_: prev   _g_: goto    _<_: demote     _r_: ref link   _M_: ref image  _p_: pre         _P_: pre region   _2_: h2  _6_: h6   _v_: preview       _x_: export and preview
+ _h_: up level _d_: kill    _[_: move up    _w_: wiki link  _F_: footnote   _u_: blockquote  _Q_: quote region _3_: h3  _=_: H1   _R_: check refs    _C_: complete buffers
+ _i_: italic   _b_: bold    _]_: move down  _U_: URI        ___: hrule      _B_: kbd         _t_: toggle img   _4_: h4  _-_: H2   _n_: cleanup linum _o_: pandoc
+"
+  ("k" markdown-previous-visible-heading)
+  ("j" markdown-next-visible-heading)
+  ("K" markdown-backward-same-level)
+  ("J" markdown-forward-same-level)
+  ("h" markdown-up-heading)
+  ("i" markdown-insert-italic :color blue)
+  ("f" markdown-follow-thing-at-point)
+  ("g" markdown-jump)
+  ("b" markdown-insert-bold :color blue)
+  ("d" markdown-kill-thing-at-point)
+  ("<" markdown-demote)
+  (">" markdown-promote)
+  ("[" markdown-move-up)
+  ("]" markdown-move-down)
+  ("_" markdown-insert-hr :color blue)
+  ("l" markdown-insert-link :color blue)
+  ("r" markdown-insert-reference-link :color blue)
+  ("w" markdown-insert-wiki-link :color blue)
+  ("U" markdown-insert-uri :color blue)
+  ("F" markdown-insert-footnote :color blue)
+  ("m" markdown-insert-image :color blue)
+  ("M" markdown-insert-reference-image :color blue)
+  ("c" markdown-insert-gfm-code-block :color blue)
+  ("p" markdown-insert-pre :color blue)
+  ("u" markdown-insert-blockquote :color blue)
+  ("B" markdown-insert-kbd :color blue)
+  ("L" markdown-insert-list-item :color blue)
+  ("P" markdown-pre-region :color blue)
+  ("Q" markdown-blockquote-region :color blue)
+  ("t" markdown-toggle-inline-images)
+  ("1" markdown-insert-header-atx-1)
+  ("2" markdown-insert-header-atx-2)
+  ("3" markdown-insert-header-atx-3)
+  ("4" markdown-insert-header-atx-4)
+  ("5" markdown-insert-header-atx-5)
+  ("6" markdown-insert-header-atx-6)
+  ("=" markdown-insert-header-setext-1)
+  ("-" markdown-insert-header-setext-2)
+  ("e" markdown-export :color blue)
+  ("v" markdown-preview :color blue)
+  ("R" markdown-check-refs :color blue)
+  ("n" markdown-cleanup-list-numbers :color blue)
+  ("m" markdown-other-window :color blue)
+  ("x" markdown-export-and-preview :color blue)
+  ("C" markdown-complete-buffer :color blue)
+  ("o" pandoc-main-hydra/body :exit t)
+  ("q" nil :color blue))
 
 ;; LaTeX support
 (use-package tex-site

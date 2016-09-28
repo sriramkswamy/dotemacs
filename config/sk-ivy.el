@@ -149,29 +149,50 @@
 
   ;; bibliography and citations
   (use-package ivy-bibtex
-    :ensure t
-    :general
-    (general-nvmap :prefix sk--evil-global-leader "b" '(ivy-bibtex :which-key "bibliography"))
-    :init
-    ;; where are the bib files
-    (setq bibtex-completion-bibliography
-	  '("~/Dropbox/PhD/articles/tensors/tensors.bib"
-	    "~/Dropbox/PhD/articles/machinelearning/machinelearning.bib"
-	    "~/Dropbox/PhD/articles/association/association.bib"
-	    "~/Dropbox/PhD/articles/lorenz/lorenz.bib"
-	    "~/Dropbox/PhD/articles/multiphysics/multiphysics.bib"))
-    ;; where are the pdfs
-    (setq bibtex-completion-library-path
-	  '("~/Dropbox/PhD/articles/tensors"
-	    "~/Dropbox/PhD/articles/machinelearning"
-	    "~/Dropbox/PhD/articles/association"
-	    "~/Dropbox/PhD/articles/lorenz"
-	    "~/Dropbox/PhD/articles/multiphysics"))
-    ;; where is the notes
-    (setq bibtex-completion-notes-path "~/Dropbox/org/articles.org")
-    ;; some handy visual markers
-    (setq bibtex-completion-pdf-symbol "⌘")
-    (setq bibtex-completion-notes-symbol "✎")))
+	:ensure t
+	:general
+	(general-nvmap :prefix sk--evil-global-leader
+				   "b" '(ivy-bibtex :which-key "bibliography")
+				   "B" '(nil :which-key "switch bib")
+				   "Bd" '(sk/default-bib :which-key "default")
+				   "Bc" '(sk/current-bib :which-key "current dir"))
+	:init
+	;; where is the notes
+	(setq bibtex-completion-notes-path "~/Dropbox/org/articles.org")
+	;; what is the default action
+	(setq ivy-bibtex-default-action 'bibtex-completion-insert-key)
+	;; some handy visual markers
+	(setq bibtex-completion-pdf-symbol "⌘")
+	(setq bibtex-completion-notes-symbol "✎")
+	:config
+	(defun sk/current-bib ()
+	  "Set the bibliography and library to the current directory"
+	  (interactive)
+	  (setq bibtex-completion-bibliography
+			(concat (file-name-directory buffer-file-name) "references/references.bib"))
+	  ;; where are the pdfs
+	  (setq bibtex-completion-library-path
+			(concat (file-name-directory buffer-file-name) "references"))
+	  (message (concat "Bib file is " (file-name-directory
+									   buffer-file-name) "references/references.bib")))
+	(defun sk/default-bib ()
+	  "Set the bibliography and library to the defaults"
+	  (interactive)
+	  ;; where are the bib files
+	  (setq bibtex-completion-bibliography
+			'("~/Dropbox/PhD/articles/tensors/tensors.bib"
+			  "~/Dropbox/PhD/articles/machinelearning/machinelearning.bib"
+			  "~/Dropbox/PhD/articles/association/association.bib"
+			  "~/Dropbox/PhD/articles/lorenz/lorenz.bib"
+			  "~/Dropbox/PhD/articles/multiphysics/multiphysics.bib"))
+	  ;; where are the pdfs
+	  (setq bibtex-completion-library-path
+			'("~/Dropbox/PhD/articles/tensors"
+			  "~/Dropbox/PhD/articles/machinelearning"
+			  "~/Dropbox/PhD/articles/association"
+			  "~/Dropbox/PhD/articles/lorenz"
+			  "~/Dropbox/PhD/articles/multiphysics"))
+	  (message "Default bib files set"))))
 
 ;; wgrep + ag for refactoring - as an alternate to counsel commands
 (use-package ag

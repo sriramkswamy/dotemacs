@@ -765,6 +765,14 @@
   :ensure t
   :commands (nginx-mode))
 
+;; VimL syntax
+(use-package vimrc-mode
+  :ensure t
+  :mode (("\\.vimrc\\'" . vimrc-mode)
+		 ("\\.vim\\'" . vimrc-mode)
+		 ("\\vimrc" . vimrc-mode))
+  :commands (vimrc-mode))
+
 ;; emmet for easy HTML
 (use-package emmet-mode
   :ensure t

@@ -66,7 +66,7 @@
 	   ("C-x 8" . counsel-unicode-char))
     :general
     ;; imenu - maybe use imenu everywhere?
-    (general-nvmap "t" '(counsel-imenu :which-key "tags in file"))
+	(general-nmap "t" '(counsel-imenu :which-key "tags in file"))
     ;; man pages - completing read
     (general-nvmap "M" '(woman :which-key "man pages"))
     ;; search in directory

@@ -61,9 +61,9 @@
 ;; eww mode
 (use-package eww
   :general
-  (general-nvmap "gx" '(eww :which-key "eww open link"))
+  (general-nvmap "g\\" '(eww :which-key "eww open link"))
   (general-nvmap "g:" '(eww-browse-with-external-browser :which-key "browse with external browser"))
-  (general-nvmap "gX" '(eww-list-histories :which-key "eww history"))
+  (general-nvmap "g\"" '(eww-list-histories :which-key "eww history"))
   (general-nvmap "g{" '(eww-back-url :which-key "eww back"))
   (general-nvmap "g}" '(eww-forward-url :which-key "eww forward"))
   :config

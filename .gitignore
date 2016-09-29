@@ -17,3 +17,5 @@ eshell/*
 /GRTAGS
 /GTAGS
 url/*
+/*.desktop
+/persp-confs/*

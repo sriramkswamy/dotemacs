@@ -447,28 +447,5 @@ Its element is a pair of `buffer-name' and `mode-line-format'.")
 (define-key helm-read-file-map (kbd "C-o") '(hydra-helm/body :which-key "helm hydra"))
 (define-key helm-find-files-map (kbd "C-o") '(hydra-helm/body :which-key "helm hydra"))
 
-;; ivy views is great. eyebrowse is the closest alternative
-(use-package eyebrowse
-  :ensure t
-  :general
-  (general-nvmap "gt" '(eyebrowse-next-window-config :which-key "next tab"))
-  (general-nvmap "gT" '(eyebrowse-prev-window-config :which-key "prev tab"))
-  (general-nvmap "g\\" '(eyebrowse-last-window-config :which-key "last tab"))
-  (general-nvmap "g\"" '(eyebrowse-close-window-config :which-key "close tab"))
-  (general-nvmap "g'" '(eyebrowse-rename-window-config :which-key "rename tab"))
-  (general-nvmap "g." '(eyebrowse-switch-to-window-config :which-key "switch tab"))
-  (general-nvmap "g0" '(eyebrowse-switch-to-window-config-0 :which-key "0th tab"))
-  (general-nvmap "g1" '(eyebrowse-switch-to-window-config-1 :which-key "1st tab"))
-  (general-nvmap "g2" '(eyebrowse-switch-to-window-config-2 :which-key "2nd tab"))
-  (general-nvmap "g3" '(eyebrowse-switch-to-window-config-3 :which-key "3rd tab"))
-  (general-nvmap "g4" '(eyebrowse-switch-to-window-config-4 :which-key "4th tab"))
-  (general-nvmap "g5" '(eyebrowse-switch-to-window-config-5 :which-key "5th tab"))
-  (general-nvmap "g6" '(eyebrowse-switch-to-window-config-6 :which-key "6th tab"))
-  (general-nvmap "g7" '(eyebrowse-switch-to-window-config-7 :which-key "7th tab"))
-  (general-nvmap "g8" '(eyebrowse-switch-to-window-config-8 :which-key "8th tab"))
-  (general-nvmap "g9" '(eyebrowse-switch-to-window-config-9 :which-key "9th tab"))
-  :config
-  (eyebrowse-mode t))
-
 ;; provide this behemoth
 (provide 'sk-helm)

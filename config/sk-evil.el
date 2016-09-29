@@ -105,7 +105,7 @@
 (use-package evil-exchange
   :ensure t
   :config
-  (evil-exchange-cx-install))
+  (evil-exchange-install))
 
 ;; argument text object
 (use-package evil-args
@@ -187,35 +187,6 @@
   :diminish smartparens-mode
   :diminish smartparens-strict-mode
   :diminish (evil-smartparens-mode . " ()")
-  :general
-  (general-evil-define-key '(normal visual) smartparens-mode-map :prefix "\""
-			   "" '(nil :which-key "smartparens")
-			   "f" '(sp-down-sexp :which-key "down sexp")
-			   "b" '(sp-backward-up-sexp :which-key "back up sexp")
-			   "p" '(sp-backward-down-sexp :which-key "back down sexp")
-			   "n" '(sp-up-sexp :which-key "up sexp")
-			   "l" '(sp-forward-sexp :which-key "forward sexp")
-			   "h" '(sp-backward-sexp :which-key "backward sexp")
-			   "j" '(sp-next-sexp :which-key "next sexp")
-			   "k" '(sp-previous-sexp :which-key "previous sexp")
-			   "a" '(sp-beginning-of-sexp :which-key "start of sexp")
-			   "e" '(sp-end-of-sexp :which-key "end of sexp")
-			   ">" '(sp-forward-barf-sexp :which-key "forward barf")
-			   "<" '(sp-backward-barf-sexp :which-key "forward barf")
-			   ")" '(sp-forward-slurp-sexp :which-key "forward slurp")
-			   "(" '(sp-backward-slurp-sexp :which-key "backward slurp")
-			   "x" '(sp-transpose-sexp :which-key "exchange sexp")
-			   "d" '(sp-kill-sexp :which-key "delete sexp")
-			   "y" '(sp-copy-sexp :which-key "copy sexp")
-			   "u" '(sp-unwrap-sexp :which-key "unwrap sexp")
-			   "U" '(sp-backward-unwrap-sexp :which-key "backward unwrap sexp")
-			   "c" '(sp-convolute-sexp :which-key "convolute sexp")
-			   "r" '(sp-raise-sexp :which-key "raise sexp")
-			   "s" '(sp-split-sexp :which-key "split sexp")
-			   "S" '(sp-splice-sexp :which-key "splice sexp")
-			   "F" '(sp-splice-sexp-killing-forward :which-key "splice forward")
-			   "B" '(sp-splice-sexp-killing-backward :which-key "splice back")
-			   "A" '(sp-splice-sexp-killing-around :which-key "splice around"))
   :config
   ;; redefine function with the bindings I want
   (defun evil-sp--add-bindings ()

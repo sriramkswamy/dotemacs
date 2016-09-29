@@ -165,37 +165,6 @@
 (use-package hydra
   :ensure t
   :demand t)
-;; window movement hydra
-(defhydra hydra-windows (:color red :hint nil)
-  "
- ^Move^    ^Size^    ^Change^                    ^Split^           ^Text^
- ^^^^^^^^^^^------------------------------------------------------------------
- ^ ^ _k_ ^ ^   ^ ^ _K_ ^ ^   _u_: winner-undo _o_: rotate  _v_: vertical     _+_: zoom in
- _h_ ^+^ _l_   _H_ ^+^ _L_   _r_: winner-redo _w_: other   _s_: horizontal   _-_: zoom out
- ^ ^ _j_ ^ ^   ^ ^ _J_ ^ ^   _c_: close                  _z_: zoom         _q_: quit
-"
-  ("h" windmove-left)
-  ("j" windmove-down)
-  ("k" windmove-up)
-  ("l" windmove-right)
-  ("H" shrink-window-horizontally)
-  ("K" shrink-window)
-  ("J" enlarge-window)
-  ("L" enlarge-window-horizontally)
-  ("v" sk/split-right-and-move)
-  ("s" sk/split-below-and-move)
-  ("c" delete-window)
-  ("o" sk/rotate-windows)
-  ("w" other-window :color blue)
-  ("z" delete-other-windows)
-  ("u" (progn
-		 (winner-undo)
-		 (setq this-command 'winner-undo)))
-  ("r" winner-redo)
-  ("+" text-scale-increase)
-  ("-" text-scale-decrease)
-  ("q" nil :exit t))
-(general-nmap "w" '(hydra-windows/body :which-key "manage windows"))
 
 ;; bookmark hydra
 (defhydra hydra-bookmarks (:color blue :hint nil)
@@ -255,6 +224,11 @@
   (general-omap "gw" '(avy-goto-char-2 :which-key "jump to 2 char"))
   (general-mmap "gw" '(avy-goto-char-2 :which-key "jump to 2 char"))
   :config
+  ;; jump to windows quickly
+  (use-package ace-window
+	:ensure t
+	:commands (ace-window))
+  ;; jump and open links fast
   (use-package ace-link
 	:ensure t
 	:demand t
@@ -269,6 +243,38 @@
 				   "u" '(ace-link-custom :which-key "custom mode link"))
 	:config
 	(ace-link-setup-default)))
+
+;; window movement hydra
+(defhydra hydra-windows (:color red :hint nil)
+  "
+ ^Move^    ^Size^    ^Change^                    ^Split^           ^Text^
+ ^^^^^^^^^^^------------------------------------------------------------------
+ ^ ^ _k_ ^ ^   ^ ^ _K_ ^ ^   _u_: winner-undo _o_: rotate  _v_: vertical     _+_: zoom in
+ _h_ ^+^ _l_   _H_ ^+^ _L_   _r_: winner-redo _w_: other   _s_: horizontal   _-_: zoom out
+ ^ ^ _j_ ^ ^   ^ ^ _J_ ^ ^   _c_: close                  _z_: zoom         _q_: quit
+"
+  ("h" windmove-left)
+  ("j" windmove-down)
+  ("k" windmove-up)
+  ("l" windmove-right)
+  ("H" shrink-window-horizontally)
+  ("K" shrink-window)
+  ("J" enlarge-window)
+  ("L" enlarge-window-horizontally)
+  ("v" sk/split-right-and-move)
+  ("s" sk/split-below-and-move)
+  ("c" delete-window)
+  ("o" sk/rotate-windows)
+  ("w" ace-window :color blue)
+  ("z" delete-other-windows)
+  ("u" (progn
+		 (winner-undo)
+		 (setq this-command 'winner-undo)))
+  ("r" winner-redo)
+  ("+" text-scale-increase)
+  ("-" text-scale-decrease)
+  ("q" nil :exit t))
+(general-nmap "w" '(hydra-windows/body :which-key "manage windows"))
 
 ;; file explorer
 (use-package ranger
@@ -328,6 +334,66 @@
   (general-nvmap "K" '(dash-at-point-with-docset :which-key "show doc"))
   (general-nvmap "gD" '(dash-at-point-with-docset :which-key "dash documentation")))
 
+;; change perspectives - similar to vim tabs
+(use-package persp-mode
+  :ensure t
+  :diminish persp-mode
+  :commands (persp-next
+			 persp-prev
+			 persp-switch
+			 persp-frame-switch
+			 persp-window-switch
+			 persp-rename
+			 persp-copy
+			 persp-kill
+			 persp-save-state-to-file
+			 persp-load-state-from-file
+			 persp-temporarily-display-buffer
+			 persp-switch-to-buffer
+			 persp-add-buffer
+			 persp-import-buffers
+			 persp-import-win-config
+			 persp-remove-buffer
+			 persp-kill-buffer
+			 persp-mode)
+  :general
+  (general-nvmap "\"" '(hydra-persp-mode/body :which-key "perspectives"))
+  :init
+  (setq persp-autokill-buffer-on-remove 'kill-weak)
+  :config
+  (persp-mode 1))
+;; hydra for perspectives
+(defhydra hydra-persp-mode (:color blue :hint nil)
+  "
+ ^Persp^                                                                                         ^Desktop^
+------------------------------------------------------------------------------------------------------------------------
+ _j_: next  _s_: switch         _y_: copy          _l_: load from file    _b_: add buffer _r_: rm buffer   _S_: save      _q_: quit
+ _k_: prev  _w_: switch in win  _d_: delete        _t_: switch w/o adding _i_: import all _K_: kill buffer _A_: save in dir
+ _f_: frame _n_: rename         _p_: save to file  _a_: switch to buffer  _I_: import win _o_: switch off  _R_: read
+  "
+  ("j" persp-next :color red)
+  ("k" persp-prev :color red)
+  ("s" persp-switch)
+  ("f" persp-frame-switch)
+  ("w" persp-window-switch)
+  ("n" persp-rename)
+  ("y" persp-copy)
+  ("d" persp-kill)
+  ("p" persp-save-state-to-file)
+  ("l" persp-load-state-from-file)
+  ("t" persp-temporarily-display-buffer)
+  ("a" persp-switch-to-buffer)
+  ("b" persp-add-buffer)
+  ("i" persp-import-buffers)
+  ("I" persp-import-win-config)
+  ("r" persp-remove-buffer)
+  ("K" persp-kill-buffer)
+  ("o" persp-mode)
+  ("S" desktop-save)
+  ("A" desktop-save-in-desktop-dir)
+  ("R" desktop-read)
+  ("q" nil :color blue))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Debugging using GDB    ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -352,10 +418,21 @@
 (use-package spacemacs-theme
   :ensure t)
 ;; load one of these themes
-;; (load-theme 'wombat t)
+(load-theme 'wombat t)
 ;; (load-theme 'leuven t)
 ;; (load-theme 'zenburn t)
-(load-theme 'spacemacs-dark t)
+;; (load-theme 'spacemacs-dark t)
+
+;; better modeline
+(use-package spaceline
+  :ensure t
+  :demand t
+  :init
+  (setq powerline-default-separator 'arrow-fade)
+  :config
+  (require 'spaceline-config)
+  (spaceline-helm-mode)
+  (spaceline-spacemacs-theme))
 
 ;; rainbow paranthesis for easier viewing
 (use-package rainbow-delimiters
@@ -771,6 +848,7 @@
 ;; error checking
 (use-package flycheck
   :ensure t
+  :diminish flycheck-mode
   :defer 2
   :general
   (general-nmap "[l" '(flycheck-previous-error :which-key "previous error"))

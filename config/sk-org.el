@@ -186,11 +186,6 @@
 	org-outline-path-complete-in-steps nil)
 
   :config
-  ;; worf mode for super fast org navigation
-  (use-package worf
-    :ensure t
-    :config
-    (add-hook 'org-mode-hook 'worf-mode))
   ;; mark inside subtree
   (defun sk/mark-inside-subtree ()
     (interactive)
@@ -268,16 +263,17 @@
 
   :general
   (general-nvmap :prefix sk--evil-global-leader
-		 "o" '(nil :which-key "org")
-		 "oc" '(org-capture :which-key "capture")
-		 "oa" '(org-agenda :which-key "agenda"))
+				 "o" '(nil :which-key "org")
+				 "oc" '(org-capture :which-key "capture")
+				 "oa" '(org-agenda :which-key "agenda"))
   (general-nvmap :prefix sk--evil-local-leader
-		 "o" '(hydra-org/body :which-key "org"))
+				 "o" '(hydra-org/body :which-key "org"))
   (general-nvmap :prefix sk--evil-local-leader
-		 "[" '(org-date-from-calendar :which-key "org date cal")
-		 "]" '(org-goto-calendar :which-key "org goto cal")
-		 "'" (general-simulate-keys "C-c '" t "org special")
-		 "RET" '(org-open-at-point :which-key "org open at point"))
+				 "[" '(org-date-from-calendar :which-key "org date cal")
+				 "]" '(org-goto-calendar :which-key "org goto cal")
+				 "'" (general-simulate-keys "C-c '" t "org special")
+				 "RET" '(org-open-at-point :which-key "org open at point"))
+  (general-nvmap "\\" '(hydra-org-jump/body :which-key "org jump"))
   (general-nmap "gO" '(org-narrow-to-subtree :which-key "org narrow"))
   (general-otomap "o" 'org-mark-subtree)
   (general-itomap "o" 'sk/mark-inside-subtree)
@@ -442,6 +438,30 @@
   ("t" org-set-tags-command :color blue)
   ("d" org-todo :color blue)
   ("c" sk/org-custom-load :color blue)
+  ("q" nil :color blue))
+
+;; hydra for jumping
+(defhydra hydra-org-jump (:color pink :hint nil)
+  "
+ ^Outline^          ^Block^   ^Link^
+ ^^^^^^^^^^^-------------------------------------------------------
+ ^ ^ _k_ ^ ^   ^ ^ _f_ ^ ^   ^ ^ _p_ ^ ^   ^ ^ _u_ ^ ^   _i_: cycle      _q_: quit
+ _h_ ^+^ _l_   ^ ^ ^+^ ^ ^   ^ ^ ^+^ ^ ^   ^ ^ ^+^ ^ ^   _I_: global cycle
+ ^ ^ _j_ ^ ^   ^ ^ _b_ ^ ^   ^ ^ _n_ ^ ^   ^ ^ _d_ ^ ^   _c_: cycle level
+"
+  ("j" outline-next-visible-heading)
+  ("k" outline-previous-visible-heading)
+  ("l" org-down-element)
+  ("h" org-up-element)
+  ("f" org-forward-heading-same-level)
+  ("b" org-backward-heading-same-level)
+  ("n" org-next-block)
+  ("p" org-previous-block)
+  ("u" org-next-link)
+  ("d" org-previous-link)
+  ("i" org-cycle)
+  ("I" org-global-cycle)
+  ("c" org-cycle-level)
   ("q" nil :color blue))
 
 ;; provide this configuration

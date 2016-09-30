@@ -233,14 +233,18 @@
 	:ensure t
 	:demand t
 	:general
-	(general-nvmap :prefix "\\"
-				   "\\" '(nil :which-key "link/clipboard")
-				   "h" '(ace-link-help :which-key "help mode link")
-				   "i" '(ace-link-info :which-key "info mode link")
-				   "w" '(ace-link-eww :which-key "eww mode link")
-				   "m" '(ace-link-woman :which-key "woman mode link")
-				   "c" '(ace-link-compilation :which-key "compilation mode link")
-				   "u" '(ace-link-custom :which-key "custom mode link"))
+	(general-evil-define-key '(normal) info-mode-map
+	  "o" '(ace-link-info :which-key "open link"))
+	(general-evil-define-key '(normal) help-mode-map
+	  "o" '(ace-link-help :which-key "open link"))
+	(general-evil-define-key '(normal) eww-mode-map
+	  "o" '(ace-link-eww :which-key "open link"))
+	(general-evil-define-key '(normal) woman-mode-map
+	  "o" '(ace-link-woman :which-key "open link"))
+	(general-evil-define-key '(normal) compilation-mode-map
+	  "o" '(ace-link-compilation :which-key "open link"))
+	(general-evil-define-key '(normal) custom-mode-map
+	  "o" '(ace-link-custom :which-key "open link"))
 	:config
 	(ace-link-setup-default)))
 

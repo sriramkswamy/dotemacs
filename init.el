@@ -341,7 +341,7 @@
 ;; change perspectives - similar to vim tabs
 (use-package persp-mode
   :ensure t
-  :diminish persp-mode
+  :diminish (persp-mode . " π")
   :commands (persp-next
 			 persp-prev
 			 persp-switch
@@ -419,24 +419,10 @@
 ;; better themes
 (use-package zenburn-theme
   :ensure t)
-(use-package spacemacs-theme
-  :ensure t)
 ;; load one of these themes
 (load-theme 'wombat t)
 ;; (load-theme 'leuven t)
 ;; (load-theme 'zenburn t)
-;; (load-theme 'spacemacs-dark t)
-
-;; better modeline
-(use-package spaceline
-  :ensure t
-  :demand t
-  :init
-  (setq powerline-default-separator 'arrow-fade)
-  :config
-  (require 'spaceline-config)
-  (spaceline-helm-mode)
-  (spaceline-spacemacs-theme))
 
 ;; rainbow paranthesis for easier viewing
 (use-package rainbow-delimiters
@@ -795,7 +781,7 @@
 	"q" (general-simulate-keys "q" t "quit")
 	"s" (general-simulate-keys "s" t "start")
 	"S" (general-simulate-keys "S" t "stop"))
-  :init
+  :config
   (prodigy-define-tag
 	:name 'blog
 	:ready-message "Serving blog. Ctrl-C to shutdown server")
@@ -852,7 +838,6 @@
 ;; error checking
 (use-package flycheck
   :ensure t
-  :diminish flycheck-mode
   :defer 2
   :general
   (general-nmap "[l" '(flycheck-previous-error :which-key "previous error"))
@@ -969,3 +954,10 @@
   :config
   (unless (server-running-p)
 	(server-start)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;    Reduce GC threshold    ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; 1 MB now
+(add-hook 'after-init-hook (lambda () (setq gc-cons-threshold (* 1 1024 1024))))

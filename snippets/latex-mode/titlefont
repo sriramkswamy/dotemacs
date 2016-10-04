@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: title font
+# key: tif
+# --
+\\${1:chapter/section/subsection}font{${2:\centering}}
+$0

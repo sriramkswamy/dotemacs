@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
 # name: big differential
-# key: D
+# key: Dif
 # --
 \mathrm{D} { $1 }

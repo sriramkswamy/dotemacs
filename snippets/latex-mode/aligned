@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: aligned
+# key: ali
+# --
+\begin{equation*}
+\begin{aligned}
+${1:LHS} & = ${2:RHS} \\\\$0
+\end{aligned}
+\end{equation*}

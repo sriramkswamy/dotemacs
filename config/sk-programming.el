@@ -114,6 +114,7 @@
 ;; c++ indexer and semantics
 (use-package rtags
   :ensure t
+  :bind (("C-c c" . company-rtags))
   :general
   (general-evil-define-key '(normal visual) c++-mode-map
 	"J" '(rtags-find-symbol-at-point :which-key "find definition")
@@ -124,14 +125,24 @@
   (setq rtags-autostart-diagnostics t)
   (setq rtags-completions-enabled t)
   :config
-  ;; C++ header completion
-  (use-package company-c-headers
+  ;; General C++ completion
+  (use-package company-irony
 	:ensure t
 	:demand t
-	:bind (("C-c c" . company-c-headers))
+	:diminish irony-mode
+	:bind (("C-c i" . company-irony))
 	:config
 	(progn
-	  (add-to-list 'company-backends 'company-c-headers))))
+	  (add-to-list 'company-backends 'company-irony)
+	  (irony-mode)))
+  ;; C++ header completion
+  (use-package company-irony-c-headers
+	:ensure t
+	:demand t
+	:bind (("C-c h" . company-irony-c-headers))
+	:config
+	(progn
+	  (add-to-list 'company-backends 'company-irony-c-headers))))
 
 ;; convert emacs into a c++ ide based on cmake
 (use-package cmake-ide

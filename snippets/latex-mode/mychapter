@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: my chapter
+# key: mychap
+# --
+\mychapter{${1:chapter number}}{${2:chapter name}}
+\label{cha:${3:label}}
+
+$0

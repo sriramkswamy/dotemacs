@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: new aligned line
+# key: nal
+# --
+& = ${1:RHS} \\\\$0

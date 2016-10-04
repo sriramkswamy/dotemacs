@@ -188,6 +188,7 @@
   :commands (yas-insert-snippet yas-new-snippet)
   :general
   (general-imap "C-s" '(yas-insert-snippet :which-key "choose snippet"))
+  (general-nvmap "g\"" '(yas-minor-mode :which-key "on/off snippets"))
   (general-nvmap :prefix sk--evil-global-leader
 				 "c" '(nil :which-key "snippets")
 				 "cc" '(yas-reload-all :which-key "reload snippets")
@@ -220,9 +221,9 @@
   (general-nvmap "-" '(avy-goto-line :which-key "jump to line"))
   (general-omap "-" '(avy-goto-line :which-key "jump to line"))
   (general-mmap "-" '(avy-goto-line :which-key "jump to line"))
-  (general-nvmap "gw" '(avy-goto-char-2 :which-key "jump to 2 char"))
-  (general-omap "gw" '(avy-goto-char-2 :which-key "jump to 2 char"))
-  (general-mmap "gw" '(avy-goto-char-2 :which-key "jump to 2 char"))
+  (general-nvmap "gs" '(avy-goto-char-2 :which-key "sneak 2 char"))
+  (general-omap "gs" '(avy-goto-char-2 :which-key "sneak 2 char"))
+  (general-mmap "gs" '(avy-goto-char-2 :which-key "sneak 2 char"))
   :config
   ;; jump to windows quickly
   (use-package ace-window
@@ -462,6 +463,23 @@
   (setq fci-rule-width 5
 		fci-rule-column 79)
   (setq fci-rule-color "#bebebe"))
+
+;; toggle line numbers
+(use-package nlinum
+  :ensure t
+  :commands (nlinum-mode
+			 global-nlinum-mode)
+  :general
+  (general-nvmap "g\\" '(nlinum-mode :which-key "line numbers")))
+
+;; visual regexp substitution
+(use-package visual-regexp
+  :ensure t
+  :commands (vr/replace
+			 vr/query-replace)
+  :general
+  (general-nvmap :prefix sk--evil-global-leader
+				 "SPC" 'vr/query-replace))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Convenience packages    ;;
@@ -864,6 +882,7 @@
 									  company-capf)))
   :general
   (general-imap "C-d" 'company-complete)
+  (general-imap "C-/" 'company-mode)
   :bind* (("C-c f" . company-files)
 		  ("C-c a" . company-dabbrev)
 		  ("C-c d" . company-ispell)

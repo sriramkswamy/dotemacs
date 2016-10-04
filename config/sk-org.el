@@ -447,7 +447,7 @@
  ^^^^^^^^^^^-------------------------------------------------------
  ^ ^ _k_ ^ ^   ^ ^ _f_ ^ ^   ^ ^ _p_ ^ ^   ^ ^ _u_ ^ ^   _i_: cycle      _q_: quit
  _h_ ^+^ _l_   ^ ^ ^+^ ^ ^   ^ ^ ^+^ ^ ^   ^ ^ ^+^ ^ ^   _I_: global cycle
- ^ ^ _j_ ^ ^   ^ ^ _b_ ^ ^   ^ ^ _n_ ^ ^   ^ ^ _d_ ^ ^   _c_: cycle level
+ ^ ^ _j_ ^ ^   ^ ^ _b_ ^ ^   ^ ^ _n_ ^ ^   ^ ^ _d_ ^ ^   _o_: ace link
 "
   ("j" outline-next-visible-heading)
   ("k" outline-previous-visible-heading)
@@ -461,7 +461,7 @@
   ("d" org-previous-link)
   ("i" org-cycle)
   ("I" org-global-cycle)
-  ("c" org-cycle-level)
+  ("o" ace-link-org :color blue)
   ("q" nil :color blue))
 
 ;; provide this configuration

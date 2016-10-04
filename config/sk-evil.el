@@ -50,23 +50,24 @@
 (general-nvmap "j" '(evil-next-visual-line :which-key "next line"))
 (general-nvmap "k" '(evil-previous-visual-line :which-key "prev line"))
 (general-nvmap "`" (general-simulate-keys "C-c C-c" t "C-c C-c"))
-(general-nvmap "g>" '(evil-shift-right :which-key "indent"))
-(general-nvmap "g<" '(evil-shift-left :which-key "dedent"))
+;; (general-nvmap "g>" '(evil-shift-right :which-key "indent"))
+;; (general-nvmap "g<" '(evil-shift-left :which-key "dedent"))
 (general-nvmap "g=" '(flyspell-mode :which-key "spellcheck"))
 (general-nvmap "g+" '(flyspell-prog-mode :which-key "programming spellcheck"))
 (general-nvmap "g-" '(visual-line-mode :which-key "soft wrap"))
 (general-nvmap "gn" '(narrow-to-region :which-key "narrow to region"))
 (general-nvmap "gN" '(narrow-to-defun :which-key "narrow to func"))
-(general-nvmap "gs" '(widen :which-key "widen buffer"))
+(general-nvmap "gw" '(widen :which-key "widen buffer"))
 (general-nvmap "go" (general-simulate-keys "C-x C-e" t "eval"))
-(general-nvmap "Z" (general-simulate-keys "C-x 1" t "only window"))
-(general-nvmap "W" '(winner-undo :which-key "undo window confing"))
 (general-nvmap "gW" '(winner-redo :which-key "redo window config"))
 (general-nvmap "gS" (general-simulate-keys "C-j" t "split line"))
 (general-nvmap "gJ" '(evil-join :which-key "join lines"))
+(general-nvmap "g!" '(async-shell-command :which-key "async command"))
+(general-nvmap "g." '(async-shell-command :which-key "camelCase motion"))
 (general-nvmap "H" '(scroll-right :which-key "scroll left"))
 (general-nvmap "L" '(scroll-left :which-key "scroll right"))
-(general-nvmap "g!" '(async-shell-command :which-key "async command"))
+(general-nvmap "Z" (general-simulate-keys "C-x 1" t "only window"))
+(general-nvmap "W" '(winner-undo :which-key "undo window confing"))
 (general-tomap "a" '(mark-whole-buffer :which-key "all"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -180,6 +181,14 @@
   :config
   (global-evil-surround-mode 1))
 
+;; Folding like Vim
+(use-package evil-vimish-fold
+  :ensure t
+  :demand t
+  :diminish evil-vimish-fold-mode
+  :config
+  (evil-vimish-fold-mode 1))
+
 ;; evil-smartparens - semantic navigation, especially for lisps
 (use-package evil-smartparens
   :ensure t
@@ -187,6 +196,8 @@
   :diminish smartparens-mode
   :diminish smartparens-strict-mode
   :diminish (evil-smartparens-mode . " ()")
+  :general
+  (general-nvmap "g'" '(evil-smartparens-mode :which-key "toggle smart nav"))
   :config
   ;; redefine function with the bindings I want
   (defun evil-sp--add-bindings ()

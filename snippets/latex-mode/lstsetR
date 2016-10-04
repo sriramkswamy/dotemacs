@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: lstset for R
+# key: lstr
+# --
+\lstset {frame=tb,
+  language=R,
+  keywordstyle=\color{blue},
+  alsoletter={.}
+}

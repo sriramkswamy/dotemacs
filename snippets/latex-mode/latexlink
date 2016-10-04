@@ -2,4 +2,4 @@
 # name: latex link
 # key: ll
 # --
-\href{\url{${2:url}}{${1:description}}}
+\href{${2:url}}{${1:description}}

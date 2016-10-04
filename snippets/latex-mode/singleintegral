@@ -1,6 +1,6 @@
 # -*- mode: snippet; require-final-newline: nil -*-
 # name: integral single
-# key: in
+# key: int
 # binding: direct-keybinding
 # --
 \int_{ $1 }^{ $2 } $3 \mathrm{d}

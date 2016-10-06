@@ -363,6 +363,9 @@
 			 persp-mode)
   :general
   (general-nvmap "\"" '(hydra-persp-mode/body :which-key "perspectives"))
+  (general-nvmap "gt" '(persp-switch :which-key "perspective switch"))
+  (general-nvmap "gT" '(persp-save-state-to-file :which-key "save state"))
+  (general-nvmap "gV" '(persp-load-state-from-file :which-key "load state"))
   :init
   (setq persp-autokill-buffer-on-remove 'kill-weak)
   :config
@@ -398,6 +401,28 @@
   ("A" desktop-save-in-desktop-dir)
   ("R" desktop-read)
   ("q" nil :color blue))
+
+;; wgrep + ag for refactoring - as an alternate to ivy/helm based commands
+(use-package ag
+  :ensure t
+  :general
+  (general-evil-define-key '(normal visual) ag-mode-map
+	"ge" '(recompile :which-key "ag search project"))
+  (general-nvmap "ge" '(ag-project-at-point :which-key "ag search project"))
+  :config
+  ;; writeable grep
+  (use-package wgrep-ag
+	:ensure t
+	:init
+	(setq wgrep-auto-save-buffer t)
+	:general
+	(general-evil-define-key '(normal visual) ag-mode-map
+	  "gE" '(wgrep-change-to-wgrep-mode :which-key "edit search results")
+	  "g_" '(wgrep-finish-edit :which-key "finish editing"))
+	(general-nvmap
+	 "gE" '(wgrep-change-to-wgrep-mode :which-key "edit search results")
+	 "g_" '(wgrep-finish-edit :which-key "finish editing"))))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Debugging using GDB    ;;

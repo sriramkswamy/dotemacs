@@ -24,29 +24,28 @@
   (setq ivy-virtual-abbreviate 'full)
   ;; fuzzy everywhere except when searching for something
   (setq ivy-re-builders-alist
-	'((swiper . ivy--regex-plus)
-	  (counsel-ag . ivy--regex-plus)
-	  (counsel-grep-or-swiper . ivy--regex-plus)
-	  (t . ivy--regex-fuzzy)))
+		'((swiper . ivy--regex-plus)
+		  (counsel-ag . ivy--regex-plus)
+		  (counsel-grep-or-swiper . ivy--regex-plus)
+		  (t . ivy--regex-fuzzy)))
   :general
   ;; similar to helm - because I got used to that kind of TAB
   (general-define-key :keymaps 'ivy-minibuffer-map
-		      "C-w" 'backward-kill-word
-		      "RET" 'ivy-alt-done
-		      "C-j" 'ivy-immediate-done
-		      "TAB" 'ivy-dispatching-done
-		      "C-t" 'ivy-avy
-		      "S-<return>" 'ivy-restrict-to-matches
-		      "C-S-m" 'ivy-restrict-to-matches)
+					  "C-w" 'backward-kill-word
+					  "RET" 'ivy-alt-done
+					  "C-j" 'ivy-immediate-done
+					  "TAB" 'ivy-dispatching-done
+					  "C-t" 'ivy-avy
+					  "S-<return>" 'ivy-restrict-to-matches
+					  "C-S-m" 'ivy-restrict-to-matches)
   ;; resume ivy
   (general-nvmap :prefix sk--evil-global-leader
-		 "i" '(ivy-resume :which-key "resume ivy"))
+				 "i" '(ivy-resume :which-key "resume ivy")
+				 "v" '(ivy-push-view :which-key "add window config")
+				 "V" '(ivy-pop-view :which-key "del window config"))
   ;; wgrep in ivy occur - invoked from swiper/counsel-grep-or-swiper/counsel-grep
   (general-nvmap :prefix sk--evil-local-leader
-		 "q" '(ivy-wgrep-change-to-wgrep-mode :which-key "ivy refactor"))
-  ;; push/pop current window config
-  (general-nvmap "gt" '(ivy-push-view :which-key "add window config"))
-  (general-nvmap "gT" '(ivy-pop-view :which-key "remove window config"))
+				 "E" '(ivy-wgrep-change-to-wgrep-mode :which-key "edit search results"))
 
   :config
   (ivy-mode 1)
@@ -193,28 +192,6 @@
 			  "~/Dropbox/PhD/articles/lorenz"
 			  "~/Dropbox/PhD/articles/multiphysics"))
 	  (message "Default bib files set"))))
-
-;; wgrep + ag for refactoring - as an alternate to counsel commands
-(use-package ag
-  :ensure t
-  :general
-  (general-evil-define-key '(normal visual) ag-mode-map :prefix sk--evil-local-leader
-			   "Q" '(wgrep-change-to-wgrep-mode :which-key "refactor")
-			   "=" '(wgrep-finish-edit :which-key "finish editing"))
-  (general-nvmap :prefix sk--evil-global-leader
-		 "D" '(ag-files :which-key "refactor in files")
-		 "A" '(ag-project-at-point :which-key "refactor symbol in proj")
-		 "P" '(ag-project :which-key "refactor in project"))
-  :config
-  ;; writeable grep
-  (use-package wgrep-ag
-    :ensure t
-    :init
-    (setq wgrep-auto-save-buffer t)
-    :general
-    (general-nvmap :prefix sk--evil-local-leader
-		   "Q" '(wgrep-change-to-wgrep-mode :which-key "refactor")
-		   "=" '(wgrep-finish-edit :which-key "finish editing"))))
 
 ;; Redefine ivy's hydra
 (defhydra hydra-ivy (:hint nil

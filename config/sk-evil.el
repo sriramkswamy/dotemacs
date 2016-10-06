@@ -12,11 +12,19 @@
   (setq evil-want-Y-yank-to-eol t)	        ; yank 'Y' like 'D' and 'C'
   (setq evil-move-beyond-eol t)                 ; go beyond the end of line - useful when evaluating functions
   :config				        ; settings after the package is loaded
+  ;; required
   (use-package undo-tree
 	:ensure t
 	:diminish undo-tree-mode
 	:general
-	(general-nmap "U" 'undo-tree-visualize))
+	(general-nmap "U" 'undo-tree-visualize)
+	:config
+	;; to mitigate that data corruption bug in undo tree
+	(use-package undohist
+	  :ensure t
+	  :demand t
+	  :config
+	  (undohist-initialize)))
   (setq evil-normal-state-modes (append evil-emacs-state-modes evil-motion-state-modes evil-normal-state-modes))
   (setq evil-emacs-state-modes nil)	        ; let there be no emacs state modes until I later add magit
   (setq evil-motion-state-modes nil)	        ; let there be no emacs state modes

@@ -882,7 +882,7 @@
 									  company-capf)))
   :general
   (general-imap "C-d" 'company-complete)
-  (general-imap "C-/" 'company-mode)
+  (general-imap "C-." 'company-mode)
   :bind* (("C-c f" . company-files)
 		  ("C-c a" . company-dabbrev)
 		  ("C-c d" . company-ispell)

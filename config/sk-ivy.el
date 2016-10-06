@@ -116,7 +116,7 @@
     (defun sk/counsel-ag-project-at-point ()
       "use counsel ag to search for the word at point in the project"
       (interactive)
-      (counsel-ag (thing-at-point 'symbol) (projectile-project-root)))
+	  (counsel-ag (thing-at-point 'symbol) (projectile-project-root)))
     (defun sk/counsel-ag-project ()
       "use counsel ag to search the project"
       (interactive)
@@ -126,7 +126,7 @@
   (use-package flyspell-correct-ivy
     :ensure t
     :general
-    (general-imap "C-z" #'(flyspell-correct-previous-word-generic :which-key "correct spelling mistake"))
+	(general-imap "C-," #'(flyspell-correct-previous-word-generic :which-key "correct spelling mistake"))
     :config
     (require 'flyspell-ivy))
 

@@ -389,7 +389,7 @@ Its element is a pair of `buffer-name' and `mode-line-format'.")
   (use-package flyspell-correct-helm
     :ensure t
     :general
-    (general-imap "C-z" #'(flyspell-correct-previous-word-generic :which-key "correct spelling mistake"))
+	(general-imap "C-," #'(flyspell-correct-previous-word-generic :which-key "correct spelling mistake"))
     :config
     (require 'flyspell-helm))
 

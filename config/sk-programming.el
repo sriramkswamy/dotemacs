@@ -404,7 +404,6 @@
 			 ess-display-help-apropos)
   :general
   (general-evil-define-key '(normal visual) ess-mode-map
-	;; "J" '(nil :which-key "find definition")
 	"K" '(ess-display-help-on-object :which-key "show doc"))
   (general-nvmap :prefix sk--evil-local-leader
 				 "s" '(hydra-stats/body :which-key "stats"))

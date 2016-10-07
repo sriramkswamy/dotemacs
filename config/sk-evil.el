@@ -48,6 +48,7 @@
 			   "y" (general-simulate-keys "M-y" t "yank ring")
 			   "h" (general-simulate-keys "C-h" t "help")
 			   "w" (general-simulate-keys "C-x C-s" t "save buffers")
+			   "\\" '(ibuffer :which-key "ibuffer")
 			   "C" '(clone-indirect-buffer-other-window :which-key "clone buffer")
 			   "TAB" '(mode-line-other-buffer :which-key "previous buffer"))
 ;; local leader maps
@@ -70,8 +71,12 @@
 (general-nvmap "gW" '(winner-redo :which-key "redo window config"))
 (general-nvmap "gS" (general-simulate-keys "C-j" t "split line"))
 (general-nvmap "gJ" '(evil-join :which-key "join lines"))
+(general-nvmap "gV" '(desktop-save :which-key "save desktop"))
+(general-nvmap "gL" '(desktop-read :which-key "load desktop"))
+(general-nvmap "gQ" '(desktop-remove :which-key "remove desktop"))
 (general-nvmap "g!" '(async-shell-command :which-key "async command"))
 (general-nvmap "g." '(subword-mode :which-key "camelCase motion"))
+(general-nvmap "g?" '(what-cursor-position :which-key "cursor position"))
 (general-nvmap "H" '(scroll-right :which-key "scroll left"))
 (general-nvmap "L" '(scroll-left :which-key "scroll right"))
 (general-nvmap "Z" (general-simulate-keys "C-x 1" t "only window"))
@@ -270,8 +275,7 @@
   ("B" sp-splice-sexp-killing-backward)
   ("A" sp-splice-sexp-killing-around)
   ("q" nil :color blue))
-(general-nvmap "'"
-			   '(hydra-smartparens/body :which-key "smartparens"))
+(general-nvmap "'" '(hydra-smartparens/body :which-key "smartparens"))
 
 ;; provide the configuration
 (provide 'sk-evil)

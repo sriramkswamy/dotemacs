@@ -112,6 +112,9 @@
 ;;    General key bindings    ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; Change some default emacs bindings
+(global-set-key (kbd "C-x k") 'kill-this-buffer)
+
 ;; Create consistent keybindings
 (use-package general
   :ensure t
@@ -363,9 +366,15 @@
 			 persp-mode)
   :general
   (general-nvmap "\"" '(hydra-persp-mode/body :which-key "perspectives"))
-  (general-nvmap "gt" '(persp-switch :which-key "perspective switch"))
-  (general-nvmap "gT" '(persp-save-state-to-file :which-key "save state"))
-  (general-nvmap "gV" '(persp-load-state-from-file :which-key "load state"))
+  (general-nvmap "gt" '(persp-switch :which-key "persp switch"))
+  (general-nvmap "gT" '(persp-switch-to-buffer :which-key "persp switch buffer"))
+  (general-nvmap "gC" '(persp-mode :which-key "persp toggle"))
+  (general-nvmap "gQ" '(persp-kill :which-key "persp kill"))
+  (general-nvmap :prefix sk--evil-global-leader
+				 ";" '(persp-prev :which-key "previous persp")
+				 "'" '(persp-next :which-key "next persp")
+				 "v" '(persp-save-state-to-file :which-key "save state")
+				 "V" '(persp-load-state-from-file :which-key "load state"))
   :init
   (setq persp-autokill-buffer-on-remove 'kill-weak)
   :config
@@ -777,8 +786,7 @@
 (use-package git-timemachine
   :ensure t
   :general
-  (general-nmap "gl" '(git-timemachine-toggle :which-key "git timemachine"))
-  (general-nmap "gL" '(git-timemachine-switch-branch :which-key "git timemachine branch")))
+  (general-nmap "gl" '(git-timemachine-toggle :which-key "git timemachine")))
 
 ;; posting gists
 (use-package yagist

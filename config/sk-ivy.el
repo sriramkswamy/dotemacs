@@ -41,8 +41,8 @@
   ;; resume ivy
   (general-nvmap :prefix sk--evil-global-leader
 				 "i" '(ivy-resume :which-key "resume ivy")
-				 "v" '(ivy-push-view :which-key "add window config")
-				 "V" '(ivy-pop-view :which-key "del window config"))
+				 "=" '(ivy-push-view :which-key "add window config")
+				 "-" '(ivy-pop-view :which-key "del window config"))
   ;; wgrep in ivy occur - invoked from swiper/counsel-grep-or-swiper/counsel-grep
   (general-nvmap :prefix sk--evil-local-leader
 				 "E" '(ivy-wgrep-change-to-wgrep-mode :which-key "edit search results"))

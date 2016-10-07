@@ -447,31 +447,5 @@ Its element is a pair of `buffer-name' and `mode-line-format'.")
 (define-key helm-read-file-map (kbd "C-o") '(hydra-helm/body :which-key "helm hydra"))
 (define-key helm-find-files-map (kbd "C-o") '(hydra-helm/body :which-key "helm hydra"))
 
-;; ivy views is great. Use eyebrowse when it's not available
-(use-package eyebrowse
-  :ensure t
-  :commands (eyebrowse-next-window-config
-			 eyebrowse-prev-window-config
-			 eyebrowse-last-window-config
-			 eyebrowse-close-window-config
-			 eyebrowse-rename-window-config
-			 eyebrowse-switch-to-window-config
-			 eyebrowse-switch-to-window-config-0
-			 eyebrowse-switch-to-window-config-1
-			 eyebrowse-switch-to-window-config-2
-			 eyebrowse-switch-to-window-config-3
-			 eyebrowse-switch-to-window-config-4
-			 eyebrowse-switch-to-window-config-5
-			 eyebrowse-switch-to-window-config-6
-			 eyebrowse-switch-to-window-config-7
-			 eyebrowse-switch-to-window-config-8
-			 eyebrowse-switch-to-window-config-9)
-  :general
-  (general-nvmap :prefix sk--evil-global-leader
-				 "v" '(eyebrowse-next-window-config :which-key "next window config")
-				 "V" '(eyebrowse-prev-window-config) :which-key "prev window config")
-  :config
-  (eyebrowse-mode t))
-
 ;; provide this behemoth
 (provide 'sk-helm)

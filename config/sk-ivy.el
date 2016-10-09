@@ -10,6 +10,8 @@
 (use-package ivy
   :ensure t
   :diminish ivy-mode
+  :bind (("C-c x" . counsel-M-x)
+		 ("C-x c" . counsel-M-x))
   :demand t
   :init
   ;; set ivy height

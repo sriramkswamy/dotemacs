@@ -13,6 +13,7 @@
 	     (if (eq (frame-parameter nil 'maximized) 'maximized)
 		 'maximized)
 	   'fullboth)))))
+(bind-key* "C-z" #'sk/toggle-frame-fullscreen-non-native)
 (general-nmap :prefix sk--evil-global-leader
 	      "z" '(sk/toggle-frame-fullscreen-non-native :which-key "fullscreen"))
 

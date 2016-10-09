@@ -36,7 +36,6 @@
 (setq default-frame-alist                                                      ; subsequent frame size
 	  '((width . 100)                                                          ; characters in a line
 		(height . 52)))                                                        ; number of lines
-(setq-default cursor-type '(bar . 1))                                          ; let the default cursor shape be a bar - '|'
 (blink-cursor-mode -1)                                                         ; don't blink the cursor
 (defun display-startup-echo-area-message () (message "Let the games begin!"))  ; change the default startup echo message
 (setq-default truncate-lines t)                                                ; if line exceeds screen, let it
@@ -67,6 +66,13 @@
 (setq-default tab-width 4)
 (setq-default tab-stop-list
 			  '(4 8 12 16 20 24 28 32 36 40 44 48 52 56 60 64 68 72 76 80))
+
+;; I prefer this set of keys to the defaults
+(when (eq system-type 'darwin)
+  (setq mac-command-key-is-meta t)
+  (setq mac-command-modifier 'meta)
+  (setq mac-option-key-is-meta nil)
+  (setq mac-option-modifier nil))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Package management    ;;
@@ -108,12 +114,33 @@
 ;;   (when (memq window-system '(mac ns x))
 ;;     (exec-path-from-shell-initialize)))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;    General key bindings    ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;
+;;    Key bindings    ;;
+;;;;;;;;;;;;;;;;;;;;;;;;
 
+;;   (bind-key "C-c x" 'my-ctrl-c-x-command)
+;;   (bind-key* "<C-return>" 'other-window)
+;;   (bind-key "C-c x" 'my-ctrl-c-x-command some-other-mode-map)
+;;   (unbind-key "C-c x" some-other-mode-map)
+;;    (bind-keys :map dired-mode-map
+;;               ("o" . dired-omit-mode)
+;;               ("a" . some-custom-dired-function))
+;;    (bind-keys :prefix-map my-customize-prefix-map
+;;               :prefix "C-c c"
+;;               ("f" . customize-face)
+;;               ("v" . customize-variable))
+;;    (bind-keys*
+;;     ("C-o" . other-window)
+;;     ("C-M-n" . forward-page)
+;;     ("C-M-p" . backward-page))
 ;; Change some default emacs bindings
-(global-set-key (kbd "C-x k") 'kill-this-buffer)
+(bind-keys*
+ ("M-k" . kill-whole-line)
+ ("C-c SPC" . set-mark-command)
+ ("C-x k" . kill-this-buffer))
+(bind-keys
+ ("C-c x" . execute-extended-command)
+ ("C-x c" . execute-extended-command))
 
 ;; Create consistent keybindings
 (use-package general
@@ -134,9 +161,9 @@
   :demand t
   :diminish which-key-mode
   :general
-  (general-define-key "M-m" 'which-key-show-top-level)
-  (general-nvmap "M-m" 'which-key-show-top-level)
-  (general-iemap "M-m" 'which-key-show-top-level)
+  (general-define-key "C-c ?" 'which-key-show-top-level)
+  (general-nvmap "C-c ?" 'which-key-show-top-level)
+  (general-iemap "C-c ?" 'which-key-show-top-level)
   :config
   (which-key-enable-god-mode-support)
   (which-key-mode)
@@ -162,7 +189,30 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; Evil - Vim emulation
-(require 'sk-evil)
+;; (require 'sk-evil)
+;; (use-package ryo-modal
+;;   :commands ryo-modal-mode
+;;   :demand t
+;;   :load-path "lisp/ryo-modal"
+;;   :bind (("M-m" . ryo-modal-mode)
+;; 		 ("<escape>" . ryo-modal-mode))
+;;   :config
+;;   (ryo-modal-keys
+;;    ("i" ryo-modal-mode)
+;;    ("0" "M-0")
+;;    ("1" "M-1")
+;;    ("2" "M-2")
+;;    ("3" "M-3")
+;;    ("4" "M-4")
+;;    ("5" "M-5")
+;;    ("6" "M-6")
+;;    ("7" "M-7")
+;;    ("8" "M-8")
+;;    ("9" "M-9")
+;;    ("h" backward-char)
+;;    ("j" next-line)
+;;    ("k" previous-line)
+;;    ("l" forward-char)))
 
 ;; hydra
 (use-package hydra
@@ -656,7 +706,6 @@
   (use-package company-auctex
 	:ensure t
 	:demand t
-	:bind (("C-c x" . company-auctex))
 	:config
 	(progn
 	  (add-to-list 'company-backends 'company-auctex)))

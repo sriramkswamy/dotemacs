@@ -249,9 +249,6 @@
          :map god-local-mode-map
 		 ("i" . sk/disable-god-mode)
          ("z" . repeat))
-  :init
-  (setq god-exempt-major-modes nil)
-  (setq god-exempt-predicates nil)
   :config
   (add-to-list 'god-exempt-major-modes 'dired-mode)
   (add-to-list 'god-exempt-major-modes 'magit-status-mode)

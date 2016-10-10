@@ -3,17 +3,16 @@
 ;;;;;;;;;;;;;;;;;;;;;;
 
 (use-package macrostep
-  :ensure t)
-(general-evil-define-key '(normal visual) emacs-lisp-mode-map
-  "J" '(find-function-at-point :which-key "find definition")
-  "K" '(describe-function :which-key "show doc"))
-(general-nvmap :prefix sk--evil-local-leader
-			   "e" '(hydra-elisp/body :which-key "elisp"))
+  :ensure t
+  :bind (:map emacs-lisp-mode-map
+			  ("M-m j" . find-function-at-point)
+			  ("M-m k" . describe-function)))
+(bind-key* "M-\\ e" 'hydra-elisp/body)
 
 ;; lisp interaction mode
-(general-evil-define-key '(normal visual) lisp-interaction-mode-map
-  "J" '(find-function-at-point :which-key "find definition")
-  "K" '(describe-function :which-key "show doc"))
+(bind-keys :map lisp-interaction-mode-map
+           ("M-m j" . find-function-at-point)
+           ("M-m k" . describe-function))
 
 ;; hydra for emacs lisp
 (defhydra hydra-elisp (:color pink :hint nil)
@@ -50,61 +49,73 @@
 
 ;; compile functions
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
+;;;###autoload
 (defun sk/compile-cpp-make ()
   "Compiles the file using the makefile in the current directory"
   (interactive)
   (compile
    (concat "make")))
+;;;###autoload
 (defun sk/compile-cpp-make-doc ()
   "Generates the documentation using the makefile in the current directory"
   (interactive)
   (compile
    (concat "make doc")))
+;;;###autoload
 (defun sk/compile-cpp-build ()
   "Compiles the file using the makefile in the build directory"
   (interactive)
   (compile
    (concat "make -C build")))
+;;;###autoload
 (defun sk/compile-cpp-build-doc ()
   "Generates the documentation using the makefile in the build directory"
   (interactive)
   (compile
    (concat "make -C build doc")))
+;;;###autoload
 (defun sk/compile-cpp-omp-math ()
   "Compiles the file with OpenMP and math libraries"
   (interactive)
   (compile
    (concat "g++ -Wall -fopenmp -lgsl -lcblas -llapack -O2 -g -std=c++11 " (buffer-file-name) " -o " (file-name-sans-extension buffer-file-name) ".out")))
+;;;###autoload
 (defun sk/compile-cpp-omp-simple ()
   "Compiles the file with OpenMP"
   (interactive)
   (compile
    (concat "g++ -Wall -fopenmp -g -std=c++11 " (buffer-file-name) " -o " (file-name-sans-extension buffer-file-name) ".out")))
+;;;###autoload
 (defun sk/compile-cpp-mpi-math ()
   "Compiles the file with MPI and math libraries"
   (interactive)
   (compile
    (concat "/usr/local/openmpi/bin/mpic++ -Wall -lgsl -lcblas -llapack -larmadillo -O2 -g -std=c++11 " (buffer-file-name) " -o " (file-name-sans-extension buffer-file-name) ".out")))
+;;;###autoload
 (defun sk/compile-cpp-mpi-simple ()
   "Compiles the file with MPI"
   (interactive)
   (compile
    (concat "/usr/local/openmpi/bin/c++ -Wall -g -std=c++11 " (buffer-file-name) " -o " (file-name-sans-extension buffer-file-name) ".out")))
+;;;###autoload
 (defun sk/compile-cpp-hybrid-math ()
   "Compiles the file with OpenMP, MPI and math libraries"
   (interactive)
   (compile
    (concat "/usr/local/openmpi/bin/c++ -Wall -fopenmp -lgsl -lcblas -llapack -larmadillo -O2 -g -std=c++11 " (buffer-file-name) " -o " (file-name-sans-extension buffer-file-name) ".out")))
+;;;###autoload
 (defun sk/compile-cpp-hybrid-simple ()
   "Compiles the file with OpenMP and MPI"
   (interactive)
   (compile
    (concat "/usr/local/openmpi/bin/c++ -Wall -fopenmp -g -std=c++11 " (buffer-file-name) " -o " (file-name-sans-extension buffer-file-name) ".out")))
+;;;###autoload
 (defun sk/compile-cpp-math ()
   "Compiles the file with math libraries"
   (interactive)
   (compile
    (concat "g++ -Wall -lgsl -lcblas -llapack -larmadillo -O2 -g -std=c++11 " (buffer-file-name) " -o " (file-name-sans-extension buffer-file-name) ".out")))
+;;;###autoload
 (defun sk/compile-cpp-simple ()
   "Compiles the file"
   (interactive)
@@ -114,13 +125,11 @@
 ;; c++ indexer and semantics
 (use-package rtags
   :ensure t
-  :bind (("C-c c" . company-rtags))
-  :general
-  (general-evil-define-key '(normal visual) c++-mode-map
-	"J" '(rtags-find-symbol-at-point :which-key "find definition")
-	"K" '(rtags-print-symbol-info :which-key "show doc"))
-  (general-nvmap :prefix sk--evil-local-leader
-				 "c" '(hydra-cpp/body :which-key "c++"))
+  :bind* (("C-c y c" . company-rtags)
+		  ("M-\\ c" . hydra-cpp/body))
+  :bind (:map c++-mode-map
+			  ("M-m j" . rtags-find-symbol-at-point)
+			  ("M-m k" . rtags-print-symbol-info))
   :init
   (setq rtags-autostart-diagnostics t)
   (setq rtags-completions-enabled t)
@@ -130,7 +139,7 @@
 	:ensure t
 	:demand t
 	:diminish irony-mode
-	:bind (("C-c i" . company-irony))
+	:bind (("C-c y i" . company-irony))
 	:config
 	(progn
 	  (add-to-list 'company-backends 'company-irony)
@@ -139,7 +148,7 @@
   (use-package company-irony-c-headers
 	:ensure t
 	:demand t
-	:bind (("C-c h" . company-irony-c-headers))
+	:bind (("C-c y h" . company-irony-c-headers))
 	:config
 	(progn
 	  (add-to-list 'company-backends 'company-irony-c-headers))))
@@ -200,9 +209,7 @@
 (use-package python
   :ensure t
   :mode ("\\.py\\'" . python-mode)
-  :general
-  (general-nvmap :prefix sk--evil-local-leader
-				 "p" '(hydra-python/body :which-key "python"))
+  :bind* (("M-\\ p" . hydra-python/body))
   :config
   (setq python-shell-interpreter "ipython"
 		python-shell-interpreter-args "--simple-prompt -i")
@@ -214,7 +221,7 @@
   (use-package company-jedi
 	:ensure t
 	:demand t
-	:bind* (("C-c j" . company-jedi))
+	:bind* (("C-c y j" . company-jedi))
 	:config
 	(progn
 	  (add-to-list 'company-backends 'company-jedi)))
@@ -229,12 +236,9 @@
 			   anaconda-mode-find-file
 			   anaconda-mode-show-doc
 			   anaconda-mode-go-back)
-	:general
-	(general-evil-define-key '(normal visual) python-mode-map
-	  "J" '(anaconda-mode-find-definitions :which-key "find definition")
-	  "K" '(anaconda-mode-show-doc :which-key "show doc"))
-	(general-evil-define-key 'normal anaconda-view-mode-map
-	  "q" (general-simulate-keys "q" t "quit"))
+	:bind (:map python-mode-map
+				("M-m j" . anaconda-mode-find-definitions)
+				("M-m k" . anaconda-mode-show-doc))
 	:config
 	(progn
 	  (add-hook 'python-mode-hook 'anaconda-mode))))
@@ -402,11 +406,9 @@
 			 ess-display-vignettes
 			 ess-help-web-search
 			 ess-display-help-apropos)
-  :general
-  (general-evil-define-key '(normal visual) ess-mode-map
-	"K" '(ess-display-help-on-object :which-key "show doc"))
-  (general-nvmap :prefix sk--evil-local-leader
-				 "s" '(hydra-stats/body :which-key "stats"))
+  :bind (:map ess-mode-map
+			  ("M-m k" . ess-display-help-on-object))
+  :bind* (("M-\\ s" . hydra-stats/body))
   :init
   (setq ess-use-ido nil)
   :config
@@ -548,12 +550,10 @@
 			 matlab-shell-describe-variable
 			 matlab-show-line-info
 			 matlab-find-file-on-path)
-  :general
-  (general-evil-define-key '(normal visual) matlab-mode-map
-	"J" '(matlab-find-file-on-path :which-key "find definition")
-	"K" '(matlab-shell-describe-command :which-key "show doc"))
-  (general-nvmap :prefix sk--evil-local-leader
-				 "m" '(hydra-matlab/body :which-key "matlab")))
+  :bind (:map matlab-mode-map
+			  ("M-m j" . matlab-find-file-on-path)
+			  ("M-m k" . matlab-shell-describe-command))
+  :bind* (("M-\\ m" . hydra-matlab/body)))
 
 ;; hydra for matlab
 (defhydra hydra-matlab (:color pink :hint nil)
@@ -586,15 +586,13 @@
   :mode ("\\.html\\'" . web-mode)
   :commands (httpd-start
 			 httpd-stop)
-  :general
-  (general-nvmap :prefix sk--evil-local-leader
-				 "w" '(hydra-web/body :which-key "web"))
+  :bind* (("M-\\ w" . hydra-web/body))
   :config
   ;; HTML completion
   (use-package company-web
 	:ensure t
 	:demand t
-	:bind (("C-c w" . company-web-html))
+	:bind (("C-c y w" . company-web-html))
 	:config
 	(progn
 	  (add-to-list 'company-backends 'company-web-html))))
@@ -670,9 +668,7 @@
 (use-package js3-mode
   :ensure t
   :mode ("\\.js\\'" . js3-mode)
-  :general
-  (general-nvmap :prefix sk--evil-local-leader
-				 "j" '(hydra-javascript/body :which-key "javscript")))
+  :bind* (("M-\\ j" . hydra-javascript/body)))
 ;; JS semantic navigation
 (use-package tern
   :ensure t
@@ -683,19 +679,18 @@
 			 tern-use-server
 			 tern-highlight-refs
 			 tern-rename-variable)
-  :general
-  (general-evil-define-key '(normal visual) js3-mode-map
-	"J" '(tern-find-definition :which-key "find definition")
-	"K" '(tern-get-docs :which-key "show doc"))
-  (general-evil-define-key '(normal visual) js-mode-map
-	"J" '(tern-find-definition :which-key "find definition")
-	"K" '(tern-get-docs :which-key "show doc"))
+  :bind (:map js3-mode-map
+			  ("M-m j" . tern-find-definition)
+			  ("M-m k" . tern-get-docs))
+  :bind (:map js-mode-map
+			  ("M-m j" . tern-find-definition)
+			  ("M-m k" . tern-get-docs))
   :config
   ;; Tern for JS
   (use-package company-tern
 	:ensure t
 	:demand t
-	:bind (("C-c t" . company-tern))
+	:bind (("C-c y t" . company-tern))
 	:init
 	(setq company-tern-property-marker "")
 	(setq company-tern-meta-as-single-line t)
@@ -787,10 +782,9 @@
 (use-package emmet-mode
   :ensure t
   :diminish (emmet-mode . " ε")
-  :general
-  (general-imap "C-o" 'emmet-expand-line)
-  (general-imap "C-y" 'emmet-prev-edit-point)
-  (general-imap "C-e" 'emmet-next-edit-point))
+  :bind* (("C-c i" . emmet-expand-line)
+		  ("C-c ]" . emmet-next-edit-point)
+		  ("C-c [" . emmet-prev-edit-point)))
 
 ;;;;;;;;;;;;;;;
 ;;    Lua    ;;
@@ -799,11 +793,9 @@
 (use-package lua-mode
   :ensure t
   :mode "\\.lua\\'"
-  :general
-  (general-evil-define-key '(normal visual) lua-mode-map
-	"K" '(lua-search-documentation :which-key "show doc"))
-  (general-nvmap :prefix sk--evil-local-leader
-				 "u" '(hydra-lua/body :which-key "lua")))
+  :bind* (("M-\\ u" . hydra-lua/body))
+  :bind (:map lua-mode-map
+			  ("M-m k" . lua-search-documentation)))
 
 ;; hydra for lua
 (defhydra hydra-lua (:color pink :hint nil)
@@ -832,9 +824,7 @@
   :mode "\\.sml\\'"
   :init
   (setq sml-program-name "sml")
-  :general
-  (general-nvmap :prefix sk--evil-local-leader
-				 "l" '(hydra-sml/body :which-key "sml")))
+  :bind* (("M-\\ l" . hydra-sml/body)))
 
 ;; hydra for sml
 (defhydra hydra-sml (:color pink :hint nil)
@@ -879,15 +869,13 @@
 			 geiser-doc-lookup-manual
 			 geiser-xref-callers
 			 geiser-xref-callees)
-  :general
-  (general-nvmap :prefix sk--evil-local-leader
-				 "k" '(hydra-racket-scheme/body :which-key "racket/scheme"))
-  (general-evil-define-key '(normal visual) scheme-mode-map
-	"J" '(geiser-edit-symbol-at-point :which-key "find definition")
-	"K" '(geiser-doc-symbol-at-point :which-key "show doc"))
-  (general-evil-define-key '(normal visual) racket-mode-map
-	"J" '(geiser-edit-symbol-at-point :which-key "find definition")
-	"K" '(geiser-doc-symbol-at-point :which-key "show doc")))
+  :bind* (("M-\\ k" . hydra-racket-scheme/body))
+  :bind (:map scheme-mode-map
+			  ("M-m j" . geiser-edit-symbol-at-point)
+			  ("M-m k" . geiser-doc-symbol-at-point))
+  :bind (:map racket-mode-map
+			  ("M-m j" . geiser-edit-symbol-at-point)
+			  ("M-m k" . geiser-doc-symbol-at-point)))
 
 ;; hydra for racket/scheme
 (defhydra hydra-racket-scheme (:color pink :hint nil)
@@ -932,9 +920,7 @@
 			 ruby-send-definition-and-go
 			 ruby-send-region
 			 ruby-send-region-and-go)
-  :general
-  (general-nvmap :prefix sk--evil-local-leader
-				 "r" '(hydra-ruby/body :which-key "ruby"))
+  :bind* (("M-\\ r" . hydra-ruby/body))
   :config
   (add-hook 'ruby-mode-hook 'inf-ruby-mode))
 
@@ -959,10 +945,9 @@
 			 robe-doc
 			 robe-call-at-point
 			 robe-start)
-  :general
-  (general-evil-define-key '(normal visual) ruby-mode-map
-	"J" '(robe-jump :which-key "find definition")
-	"K" '(robe-doc :which-key "show doc"))
+  :bind (:map ruby-mode-map
+			  ("M-m j" . robe-jump)
+			  ("M-m k" . robe-doc))
   :config
   (eval-after-load 'company
 	'(push 'company-robe company-backends))
@@ -1124,18 +1109,16 @@
 			 go-play-buffer
 			 go-play-region
 			 go-download-play)
-  :general
-  (general-evil-define-key '(normal visual) go-mode-map
-	"J" '(godef-jump :which-key "find definition")
-	"K" '(godoc-at-point :which-key "show doc"))
-  (general-nvmap :prefix sk--evil-local-leader
-				 "g" '(hydra-go/body :which-key "go"))
+  :bind (:map go-mode-map
+			  ("M-m j" . godef-jump)
+			  ("M-m k" . godoc-at-point))
+  :bind* (("M-\\ g" . hydra-go/body))
   :config
   ;; Go completion
   (use-package company-go
 	:ensure t
 	:demand t
-	:bind (("C-c g" . company-go))
+	:bind (("C-c y g" . company-go))
 	:config
 	(progn
 	  (add-to-list 'company-backends 'company-go)))
@@ -1145,35 +1128,42 @@
 				(getenv "GOPATH") "/src/golang.org/x/tools/cmd/oracle/oracle.el")))
   (add-hook 'go-mode-hook #'sk/go-oracle-load))
 ;; go helpers
+;;;###autoload
 (defun sk/build-go ()
   "Builds the go file"
   (interactive)
   (compile
    (concat "go build " (buffer-file-name))))
+;;;###autoload
 (defun sk/build-dir-go ()
   "build go in the current directory"
   (interactive)
   (compile "go build"))
+;;;###autoload
 (defun sk/build-project-go ()
   "build the go project - depends on `projectile'"
   (interactive)
   (compile
    (concat "go build " (projectile-project-root))))
+;;;###autoload
 (defun sk/run-go ()
   "run the go file"
   (interactive)
   (async-shell-command
    (concat "go run " (buffer-file-name))))
+;;;###autoload
 (defun sk/run-bin-go ()
   "run all the binaries in the project folder - depends on `projectile'"
   (interactive)
   (async-shell-command
    (concat (projectile-project-root) "/bin/*")))
 ;; go test integration
+;;;###autoload
 (defun sk/test-dir-go ()
   "run tests in the current directory"
   (interactive)
   (compile "go test -v"))
+;;;###autoload
 (defun sk/test-project-go ()
   "test the go project - depends on `projectile'"
   (interactive)

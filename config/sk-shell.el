@@ -2,19 +2,7 @@
 (defun sk/call-terminal ()
   (interactive)
   (shell-command "open -a /Applications/Utilities/Terminal.app"))
-(general-nvmap "Q" '(sk/call-terminal :which-key "open macOS terminal"))
-
-;; send stuff to any buffer
-(add-to-list 'load-path (concat user-emacs-directory "lisp/isend-mode"))
-(require 'isend)
-(general-nvmap :prefix sk--evil-global-leader
-	       "[" '(isend-associate :which-key "associate buffer")
-	       "]" '(isend-send :which-key "send to buffer"))
-;; diminish isend
-(defun sk/diminish-isend ()
-  (interactive)
-  (diminish 'isend-mode ""))
-(add-hook 'isend-mode-hook 'sk/diminish-isend)
+(bind-key* "C-c Q" 'sk/call-terminal)
 
 ;; interact with tmux
 (use-package emamux
@@ -62,13 +50,13 @@
   ("v" emamux:split-window-horizontally)
   ("V" emamux:split-window)
   ("q" nil :color blue))
-(general-nvmap :prefix sk--evil-global-leader "x" '(hydra-emamux/body :which-key "tmux interaction"))
+(bind-key* "C-c ;" 'hydra-emamux/body)
 ;; zoom into the tmux pane (tmux > 1.8)
 ;; tmux resize-pane -Z
 (defun sk/zoom-tmux ()
   (interactive)
   (shell-command "tmux resize-pane -Z"))
-(general-nvmap "gz" '(sk/zoom-tmux :which-key "zoom tmux pane"))
+(bind-key* "C-c z" 'sk/zoom-tmux)
 
 ;; quickly launch and run stuff
 (use-package quickrun
@@ -93,8 +81,7 @@
   ("a" quickrun-with-arg)
   ("c" quickrun-compile-only)
   ("q" nil :color blue))
-(general-nvmap :prefix sk--evil-global-leader
-	       "m" '(hydra-quickrun/body :which-key "quick run/compile"))
+(bind-key* "C-c q" 'hydra-quickrun/body)
 
 ;; provide the shell settings
 (provide 'sk-shell)

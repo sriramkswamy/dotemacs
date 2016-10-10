@@ -261,34 +261,35 @@
   (add-to-list 'org-structure-template-alist '("t" "#+TITLE: ?"))
   (add-to-list 'org-structure-template-alist '("v" "#+BEGIN_VERBATIM\n?\n#+END_VERBATIM"))
 
-  :general
-  (general-nvmap :prefix sk--evil-global-leader
-				 "o" '(nil :which-key "org")
-				 "oc" '(org-capture :which-key "capture")
-				 "oa" '(org-agenda :which-key "agenda"))
-  (general-nvmap :prefix sk--evil-local-leader
-				 "o" '(hydra-org/body :which-key "org"))
-  (general-nvmap :prefix sk--evil-local-leader
-				 "[" '(org-date-from-calendar :which-key "org date cal")
-				 "]" '(org-goto-calendar :which-key "org goto cal")
-				 "'" (general-simulate-keys "C-c '" t "org special")
-				 "RET" '(org-open-at-point :which-key "org open at point"))
-  (general-nvmap "\\" '(hydra-org-jump/body :which-key "org jump"))
-  (general-nmap "gO" '(org-narrow-to-subtree :which-key "org narrow"))
-  (general-otomap "o" 'org-mark-subtree)
-  (general-itomap "o" 'sk/mark-inside-subtree)
-  (general-evil-define-key '(normal visual) org-agenda-mode-map
-    "q" (general-simulate-keys "q" t "quit")
-    "t" (general-simulate-keys "T" t "tags")
-    "T" (general-simulate-keys "t" t "todo")
-    "r" (general-simulate-keys "g" t "refresh")
-    "a" (general-simulate-keys "a" t "archive")
-    "b" (general-simulate-keys "b" t "previous week")
-    "e" (general-simulate-keys "f" t "next week")
-    "w" (general-simulate-keys "w" t "weekly week")
-    "v" (general-simulate-keys "m" t "mark")
-    "u" (general-simulate-keys "u" t "unmark")
-    "f" (general-simulate-keys "/" t "filter")))
+  :bind* (("C-c a" . org-agenda)
+		  ("C-c c" . org-capture)
+		  ("M-\\ o" . hydra-org-jump/body)
+		  ("C-r i u" . sk/mark-inside-subtree)
+		  ("C-r a u" . org-mark-subtree))
+  :bind (:map org-mode-map
+			  ("M-m o" . hydra-org-organize/body)
+			  ("M-m l" . org-insert-link)
+			  ("M-m s" . org-store-link)
+			  ("M-m L" . org-toggle-link-display)
+			  ("M-m i" . org-toggle-inline-images)
+			  ("M-m x" . org-toggle-latex-fragment)
+			  ("M-m h" . org-toggle-heading)
+			  ("M-m H" . org-insert-heading-respect-content)
+			  ("M-m c" . sk/org-custom-load)
+			  ("M-m w" . org-cut-subtree)
+			  ("M-m y" . org-copy-subtree)
+			  ("M-m e" . org-export-dispatch)
+			  ("M-m t" . org-set-tags-command)
+			  ("M-m d" . org-todo)
+			  ("M-m n" . org-narrow-to-subtree)
+			  ("M-m j" . hydra-org-jump/body)
+			  ("M-m a" . org-archive)
+			  ("M-m r" . org-refile)
+			  ("M-m v" . org-reveal)
+			  ("M-m <" . org-promote)
+			  ("M-m >" . org-demote)
+			  ("M-m [" . org-date-from-calendar)
+			  ("M-m ]" . org-goto-calendar)))
 
 ;; diminish org indent mode
 (defun sk/diminish-org-indent ()
@@ -388,14 +389,13 @@
 (add-hook 'org-mode-hook 'sk/org-template-hook)
 
 ;; organizing subtrees
-(defhydra hydra-org-organize (:color red
-                              :hint nil)
+(defhydra hydra-org-organize (:color red :hint nil)
   "
- ^Subtree^               ^Heading^             ^Item^
-^^^^^^^^^^^^^-----------------------------------------------------------------
- ^ ^ _k_ ^ ^   _a_: archive    ^ ^ _p_ ^ ^   _<_: promote  _u_: up   _q_: quit
- _h_ ^+^ _l_   _r_: refile     _b_ ^+^ _f_   _>_: demote   _d_: down
- ^ ^ _j_ ^ ^   _v_: reveal     ^ ^ _n_ ^ ^
+ ^Subtree^  ^Heading^ ^Item^
+^^^^^^^^^^^^^-----------------------------------
+ ^ ^ _k_ ^ ^    ^ ^ _p_ ^ ^   _u_: up   _q_: quit
+ _h_ ^+^ _l_    _b_ ^+^ _f_   _d_: down
+ ^ ^ _j_ ^ ^    ^ ^ _n_ ^ ^
 "
   ("h" org-shiftmetaleft)
   ("l" org-shiftmetaright)
@@ -405,39 +405,8 @@
   ("f" org-metaright)
   ("n" org-shiftmetadown)
   ("p" org-shiftmetaup)
-  ("<" org-promote)
-  (">" org-demote)
   ("d" org-move-item-down)
   ("u" org-move-item-up)
-  ("a" org-archive-subtree :color blue)
-  ("r" org-refile :color blue)
-  ("v" org-reveal :color blue)
-  ("q" nil :color blue))
-
-;; hydra for org files
-(defhydra hydra-org (:color pink :hint nil)
-  "
- ^Link^        ^Inline^      ^Organize^          ^Subtree^     ^Meta^
- ^^^^^^^^^^^------------------------------------------------------------------------
- _s_: store    _l_: latex    _o_: organize       _x_: cut      _t_: tags    _q_ quit
- _i_: insert   _m_: images   _p_: interleave     _y_: copy     _d_: todo
- _a_: display  _h_: heading  _w_: heading dwim   _e_: export   _c_: custom load
-"
-  ("i" org-insert-link :color blue)
-  ("s" org-store-link)
-  ("a" org-toggle-link-display)
-  ("o" hydra-org-organize/body :exit t)
-  ("p" interleave :color blue)
-  ("l" org-toggle-latex-fragment)
-  ("m" org-toggle-inline-images)
-  ("h" org-toggle-heading)
-  ("w" org-insert-heading-respect-content)
-  ("x" org-cut-subtree)
-  ("y" org-copy-subtree)
-  ("e" org-export-dispatch :color blue)
-  ("t" org-set-tags-command :color blue)
-  ("d" org-todo :color blue)
-  ("c" sk/org-custom-load :color blue)
   ("q" nil :color blue))
 
 ;; hydra for jumping
@@ -445,9 +414,9 @@
   "
  ^Outline^          ^Block^   ^Link^
  ^^^^^^^^^^^-------------------------------------------------------
- ^ ^ _k_ ^ ^   ^ ^ _f_ ^ ^   ^ ^ _p_ ^ ^   ^ ^ _u_ ^ ^   _i_: cycle      _q_: quit
+ ^ ^ _k_ ^ ^   ^ ^ _b_ ^ ^   ^ ^ _p_ ^ ^   ^ ^ _u_ ^ ^   _i_: cycle      _q_: quit
  _h_ ^+^ _l_   ^ ^ ^+^ ^ ^   ^ ^ ^+^ ^ ^   ^ ^ ^+^ ^ ^   _I_: global cycle
- ^ ^ _j_ ^ ^   ^ ^ _b_ ^ ^   ^ ^ _n_ ^ ^   ^ ^ _d_ ^ ^   _o_: ace link
+ ^ ^ _j_ ^ ^   ^ ^ _f_ ^ ^   ^ ^ _n_ ^ ^   ^ ^ _d_ ^ ^   _o_: ace link
 "
   ("j" outline-next-visible-heading)
   ("k" outline-previous-visible-heading)

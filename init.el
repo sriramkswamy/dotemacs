@@ -74,6 +74,37 @@
   (setq mac-option-key-is-meta nil)
   (setq mac-option-modifier nil))
 
+;; dired settings
+(setq dired-dwim-target t                                                    ; do what i mean
+	  dired-recursive-copies 'top                                            ; copy recursively
+	  dired-recursive-deletes 'top                                           ; delete recursively
+	  dired-listing-switches "-alh")
+(add-hook 'dired-mode-hook 'dired-hide-details-mode)
+
+;; doc-view settings
+(setq doc-view-continuous t)
+
+;; Interpret ESC as <escape> in terminal unless pressed very fast
+(defvar sk/fast-keyseq-timeout 200)
+
+(defun sk/-tty-ESC-filter (map)
+  (if (and (equal (this-single-command-keys) [?\e])
+		   (sit-for (/ sk/fast-keyseq-timeout 1000.0)))
+	  [escape] map))
+
+(defun sk/-lookup-key (map key)
+  (catch 'found
+	(map-keymap (lambda (k b) (if (equal key k) (throw 'found b))) map)))
+
+(defun sk/catch-tty-ESC ()
+  "Setup key mappings of current terminal to turn a tty's ESC into `escape'."
+  (when (memq (terminal-live-p (frame-terminal)) '(t pc))
+	(let ((esc-binding (sk/-lookup-key input-decode-map ?\e)))
+	  (define-key input-decode-map
+		[?\e] `(menu-item "" ,esc-binding :filter sk/-tty-ESC-filter)))))
+
+(sk/catch-tty-ESC)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Package management    ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -135,19 +166,23 @@
 ;;     ("C-M-p" . backward-page))
 ;; Change some default emacs bindings
 (bind-keys*
+ ("C-j" . electric-newline-and-maybe-indent)
  ("M-k" . kill-whole-line)
- ("C-c SPC" . set-mark-command)
- ("C-x k" . kill-this-buffer))
-(bind-keys
- ("C-c x" . execute-extended-command)
- ("C-x c" . execute-extended-command))
+ ("M-j" . join-line)
+ ("C-x w" . winner-undo)
+ ("C-x W" . winner-redo)
+ ("C-c m" . set-mark-command)
+ ("C-x k" . kill-this-buffer)
+ ("C-x C-b" . ibuffer)
+ ("C-c g f" . find-file-at-point)
+ ("C-c '" . woman)
+ ("C-c x" . overwrite-mode))
 
 ;; Create consistent keybindings
 (use-package general
   :ensure t
   :config
   (general-evil-setup))
-(setq sk--emacs-leader "C-c")
 (setq sk--evil-local-leader "m")
 (general-nvmap :prefix sk--evil-local-leader
 			   "" '(nil :which-key "major mode map"))
@@ -160,29 +195,33 @@
   :ensure t
   :demand t
   :diminish which-key-mode
-  :general
-  (general-define-key "C-c ?" 'which-key-show-top-level)
-  (general-nvmap "C-c ?" 'which-key-show-top-level)
-  (general-iemap "C-c ?" 'which-key-show-top-level)
+  :bind* (("C-c ?" . which-key-show-top-level))
   :config
   (which-key-enable-god-mode-support)
   (which-key-mode)
   (which-key-add-key-based-replacements
-	"`" "C-c C-c"
-	"Z" "zoom"
-	"go" "C-x C-e"
-	"gS" "C-j"
-	"m'" "C-c '"
-	"m`" "C-c C-g"
-	"m-" "C-c C-k"
-	"SPC r" "switch buffers"
-	"SPC w" "save buffers"
-	"SPC h" "help"
-	"SPC k" "kill buffers"
-	"SPC y" "kill ring"
-	"SPC j" "exec command"
-	"SPC J" "major-mode command"
-	"SPC f" "find files"))
+	"C-x ESC" "complex command"
+	"C-x RET" "file encoding"
+	"C-x 4" "window"
+	"C-x 5" "frame"
+	"C-x 6" "2C prefix"
+	"C-x 8" "unicode"
+	"C-x @" "event"
+	"C-x X" "edebug"
+	"C-x C-a" "edebug set"
+	"C-x n" "narrow"
+	"C-x r" "rect/reg/bookmarks"
+	"C-x a" "abbrev"
+	"C-x a i" "inverse"
+	"M-s h" "highlight"
+	"C-c g" "git/goto"
+	"C-c !" "flycheck"
+	"C-c &" "yasnippets"
+	"C-c o" "options"
+	"C-c y" "company"
+	"C-c w" "align"
+	"C-c ," "bibliography"
+	"C-c k" "convenience defuns"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Modal states    ;;
@@ -190,29 +229,61 @@
 
 ;; Evil - Vim emulation
 ;; (require 'sk-evil)
-;; (use-package ryo-modal
-;;   :commands ryo-modal-mode
-;;   :demand t
-;;   :load-path "lisp/ryo-modal"
-;;   :bind (("M-m" . ryo-modal-mode)
-;; 		 ("<escape>" . ryo-modal-mode))
-;;   :config
-;;   (ryo-modal-keys
-;;    ("i" ryo-modal-mode)
-;;    ("0" "M-0")
-;;    ("1" "M-1")
-;;    ("2" "M-2")
-;;    ("3" "M-3")
-;;    ("4" "M-4")
-;;    ("5" "M-5")
-;;    ("6" "M-6")
-;;    ("7" "M-7")
-;;    ("8" "M-8")
-;;    ("9" "M-9")
-;;    ("h" backward-char)
-;;    ("j" next-line)
-;;    ("k" previous-line)
-;;    ("l" forward-char)))
+;; God mode - Modal Emacs
+;; wrapper functions for god mode
+(defun sk/disable-god-mode ()
+  "Disables god mode"
+  (interactive)
+  (god-local-mode -1))
+(defun sk/enable-god-mode ()
+  "Enable god mode"
+  (interactive)
+  (god-local-mode 1))
+
+;; god mode installation
+(use-package god-mode
+  :ensure t
+  :demand t
+  :diminish (god-local-mode . " ψ")
+  :bind (("<escape>" . sk/enable-god-mode)
+         :map god-local-mode-map
+		 ("i" . sk/disable-god-mode)
+         ("z" . repeat))
+  :init
+  (setq god-exempt-major-modes nil)
+  (setq god-exempt-predicates nil)
+  :config
+  (add-to-list 'god-exempt-major-modes 'dired-mode)
+  (add-to-list 'god-exempt-major-modes 'magit-status-mode)
+  (add-to-list 'god-exempt-major-modes 'magit-popup-mode)
+  (add-to-list 'god-exempt-major-modes 'ag-mode)
+  (add-to-list 'god-exempt-major-modes 'occur-mode)
+  (add-to-list 'god-exempt-major-modes 'ivy-occur-mode)
+  (add-to-list 'god-exempt-major-modes 'help-mode)
+  (add-to-list 'god-exempt-major-modes 'view-mode)
+  (add-to-list 'god-exempt-major-modes 'special-mode)
+  (add-to-list 'god-exempt-major-modes 'deft-mode)
+  (add-to-list 'god-exempt-major-modes 'package-menu-mode)
+  (add-to-list 'god-exempt-major-modes 'debugger-mode)
+  (add-to-list 'god-exempt-major-modes 'man-mode)
+  (add-to-list 'god-exempt-major-modes 'info-mode)
+  (add-to-list 'god-exempt-major-modes 'eww-mode)
+  (add-to-list 'god-exempt-major-modes 'doc-view-mode)
+  ;; don't use this on overwrite mode
+  (defun god-toggle-on-overwrite ()
+  "Toggle god-mode on overwrite-mode."
+  (if (bound-and-true-p overwrite-mode)
+      (god-local-mode-pause)
+    (god-local-mode-resume)))
+  (add-hook 'overwrite-mode-hook 'god-toggle-on-overwrite)
+  ;; change cursor shape
+  (defun sk/update-cursor ()
+  (setq cursor-type (if (or god-local-mode buffer-read-only)
+                        'box
+                      'bar)))
+  (add-hook 'god-mode-enabled-hook 'sk/update-cursor)
+  (add-hook 'god-mode-disabled-hook 'sk/update-cursor)
+  (god-mode))
 
 ;; hydra
 (use-package hydra
@@ -222,14 +293,44 @@
 ;; bookmark hydra
 (defhydra hydra-bookmarks (:color blue :hint nil)
   "
- _s_: set  _b_: bookmark   _j_: jump   _d_: delete   _q_: quit
+ ^Bookmark^               ^Registers^
+^^^^^^--------------------------------------------------------------------
+ _s_: set   _b_: bookmark   _r_: jump to    _t_: point to    _f_: frameset to  _q_: quit
+ _j_: jump  _d_: delete     _i_: insert to  _a_: increment   _w_: copy to
   "
   ("s" bookmark-set)
   ("b" bookmark-save)
   ("j" bookmark-jump)
   ("d" bookmark-delete)
+  ("r" jump-to-register)
+  ("i" insert-register)
+  ("t" point-to-register)
+  ("a" increment-register)
+  ("f" frameset-to-register)
+  ("w" copy-to-register)
   ("q" nil :color blue))
-(general-nvmap "+" '(hydra-bookmarks/body :which-key "bookmarks"))
+(bind-key* "C-x r" 'hydra-bookmarks/body)
+
+;; rectangle mark mode
+(defhydra hydra-rectangle (:pre (rectangle-mark-mode 1) :color pink :hint nil)
+  "
+ _c_: clear    _o_: open    _k_: kill    _y_: yank    _r_: reset    _q_: quit
+ _d_: delete   _s_: string  _w_: copy    _n_: number  _x_: deactivate
+  "
+  ("c" clear-rectangle)
+  ("d" delete-rectangle)
+  ("o" open-rectangle)
+  ("s" string-rectangle)
+  ("k" kill-rectangle)
+  ("w" copy-rectangle-as-kill)
+  ("y" yank-rectangle)
+  ("n" rectangle-number-lines)
+  ("x" sk/remove-mark)
+  ("r" (if (region-active-p)
+		   (deactivate-mark)
+		 (rectangle-mark-mode 1)) nil)
+  ("q" nil :color blue))
+(bind-key* "C-x m" 'hydra-rectangle/body)
 
 ;;;;;;;;;;;;;;;;;;;
 ;;    Editing    ;;
@@ -239,14 +340,8 @@
 (use-package yasnippet
   :ensure t
   :commands (yas-insert-snippet yas-new-snippet)
-  :general
-  (general-imap "C-s" '(yas-insert-snippet :which-key "choose snippet"))
-  (general-nvmap "g\"" '(yas-minor-mode :which-key "on/off snippets"))
-  (general-nvmap :prefix sk--evil-global-leader
-				 "c" '(nil :which-key "snippets")
-				 "cc" '(yas-reload-all :which-key "reload snippets")
-				 "cv" '(yas-visit-snippet-file :which-key "visit snippets")
-				 "cn" '(yas-new-snippet :which-key "new snippet"))
+  :bind* (("M-u" . yas-insert-snippet)
+		  ("C-c o y" . yas-minor-mode))
   :diminish (yas-minor-mode . " γ")
   :config
   (setq yas/triggers-in-field t); Enable nested triggering of snippets
@@ -254,51 +349,308 @@
   (add-hook 'snippet-mode-hook '(lambda () (setq-local require-final-newline nil)))
   (yas-global-mode))
 
+;; multiple cursors
+(use-package multiple-cursors
+  :ensure t
+  :commands (mc/edit-lines
+			 mc/edit-ends-of-lines
+			 mc/edit-beginnings-of-lines
+			 mc/mark-more-like-this-extended
+			 mc/mark-next-like-this
+			 mc/mark-previous-like-this
+			 mc/unmark-next-like-this
+			 mc/unmark-previous-like-this
+			 mc/skip-to-next-like-this
+			 mc/skip-to-previous-like-this
+			 mc/mark-sgml-tag-pair
+			 mc/mark-all-like-this
+			 mc/mark-all-in-region
+			 mc/mark-all-in-region-regexp
+			 mc/insert-letters
+			 mc/insert-numbers
+			 mc/vertical-align-with-space
+			 mc/vertical-align
+			 mc/sort-regions
+			 mc/reverse-regions)
+  :bind* (("C-," . mc/mark-all-like-this)
+          ("C->" . mc/mark-next-like-this)
+		  ("C-<" . mc/mark-previous-like-this)
+		  ("C-;" . mc/skip-to-previous-like-this)
+		  ("C-'" . mc/skip-to-next-like-this)
+		  ("C-:" . mc/unmark-previous-like-this)
+		  ("C-\"". mc/unmark-next-like-this)
+          ("C-}" . mc/edit-ends-of-lines)
+          ("C-{" . mc/edit-beginnings-of-lines)))
+
+(use-package iedit
+  :ensure t
+  :commands (iedit-mode
+			 iedit-rectangle-mode)
+  :bind* (("C-." . iedit-mode)))
+
+;; wrapper functions for expand regions
+(defun sk/mark-inside-org-code ()
+  "Select inside an Org code block without the org specific syntax"
+  (interactive)
+  (er/mark-org-code-block)
+  (next-line 1)
+  (exchange-point-and-mark)
+  (previous-line 1)
+  (end-of-line 1))
+
+(defun sk/mark-around-LaTeX-environment ()
+  "Select around a LaTeX environment with both the begin and end keywords"
+  (interactive)
+  (er/mark-LaTeX-inside-environment)
+  (previous-line 1)
+  (exchange-point-and-mark)
+  (next-line 1)
+  (end-of-line 1))
+
+(defun sk/mark-around-word ()
+  "Mark the word and the adjacent whitespace"
+  (interactive)
+  (er/mark-word)
+  (exchange-point-and-mark)
+  (forward-char 1))
+
+(defun sk/mark-around-text-paragraph ()
+  "Mark the paragraph and the newline"
+  (interactive)
+  (er/mark-text-paragraph)
+  (exchange-point-and-mark)
+  (next-line 1))
+
+(defun sk/mark-inside-LaTeX-math ()
+  "Mark inside the latex math"
+  (interactive)
+  (er/mark-LaTeX-math)
+  (forward-char 1)
+  (exchange-point-and-mark)
+  (backward-char 1))
+
+(defun sk/mark-inside-python-block ()
+  "Mark inside a python block"
+  (interactive)
+  (er/mark-python-block)
+  (next-line 1))
+
+(defun sk/mark-inside-ruby-block ()
+  "Mark inside a ruby/julia block"
+  (interactive)
+  (er/mark-ruby-block-up)
+  (next-line 1)
+  (exchange-point-and-mark)
+  (previous-line 1))
+
+(defun sk/mark-around-symbol ()
+  "Mark around a symbol including the nearby whitespace"
+  (interactive)
+  (er/mark-symbol)
+  (exchange-point-and-mark)
+  (forward-char 1))
+
+;; expand regions
+(use-package expand-region
+  :ensure t
+  :bind* (("C-=" . er/expand-region)
+		  ("C-r a a" . mark-whole-buffer)
+		  ("C-r i a" . mark-whole-buffer)
+		  ("C-r i p" . er/mark-text-paragraph)
+		  ("C-r a p" . sk/mark-around-text-paragraph)
+		  ("C-r i s" . er/mark-text-sentence)
+		  ("C-r a s" . er/mark-text-sentence)
+		  ("C-r i y" . er/mark-symbol)
+		  ("C-r a y" . sk/mark-around-symbol)
+		  ("C-r i c" . er/mark-comment)
+		  ("C-r a c" . er/mark-comment)
+		  ("C-r i w" . er/mark-word)
+		  ("C-r a w" . sk/mark-around-word)
+		  ("C-r i f" . er/mark-defun)
+		  ("C-r a f" . er/mark-defun)
+		  ("C-r i q" . er/mark-inside-quotes)
+		  ("C-r a q" . er/mark-outside-quotes)
+		  ("C-r i o" . sk/mark-inside-org-code)
+		  ("C-r a o" . er/mark-org-code-block)
+		  ("C-r i e" . er/mark-LaTeX-inside-environment)
+		  ("C-r a e" . sk/mark-around-LaTeX-environment)
+		  ("C-r i r" . er/mark-method-call)
+		  ("C-r a r" . er/mark-method-call)
+		  ("C-r i d" . sk/mark-inside-ruby-block)
+		  ("C-r a d" . er/ruby-block-up)
+		  ("C-r i g" . er/mark-inside-python-string)
+		  ("C-r a g" . er/mark-outside-python-string)
+		  ("C-r i m" . sk/mark-inside-python-block)
+		  ("C-r a m" . er/mark-outer-python-block)
+		  ("C-r i M" . er/mark-python-statement)
+		  ("C-r a M" . er/mark-python-block-and-decorator)
+		  ("C-r i $" . er/mark-LaTeX-math)
+		  ("C-r a $" . sk/mark-inside-LaTeX-math)
+		  ("C-r i b" . er/mark-inside-pairs)
+		  ("C-r a b" . er/mark-outside-pairs)
+		  ("C-r C-a C-a" . mark-whole-buffer)
+		  ("C-r C-i C-a" . mark-whole-buffer)
+		  ("C-r C-i C-p" . er/mark-text-paragraph)
+		  ("C-r C-a C-p" . sk/mark-around-text-paragraph)
+		  ("C-r C-i C-s" . er/mark-text-sentence)
+		  ("C-r C-a C-s" . er/mark-text-sentence)
+		  ("C-r C-i C-y" . er/mark-symbol)
+		  ("C-r C-a C-y" . sk/mark-around-symbol)
+		  ("C-r C-i C-c" . er/mark-comment)
+		  ("C-r C-a C-c" . er/mark-comment)
+		  ("C-r C-i C-w" . er/mark-word)
+		  ("C-r C-a C-w" . sk/mark-around-word)
+		  ("C-r C-i C-f" . er/mark-defun)
+		  ("C-r C-a C-f" . er/mark-defun)
+		  ("C-r C-i C-q" . er/mark-inside-quotes)
+		  ("C-r C-a C-q" . er/mark-outside-quotes)
+		  ("C-r C-i C-o" . sk/mark-inside-org-code)
+		  ("C-r C-a C-o" . er/mark-org-code-block)
+		  ("C-r C-i C-e" . er/mark-LaTeX-inside-environment)
+		  ("C-r C-a C-e" . sk/mark-around-LaTeX-environment)
+		  ("C-r C-i C-r" . er/mark-method-call)
+		  ("C-r C-a C-r" . er/mark-method-call)
+		  ("C-r C-i C-d" . sk/mark-inside-ruby-block)
+		  ("C-r C-a C-d" . er/ruby-block-up)
+		  ("C-r C-i C-g" . er/mark-inside-python-string)
+		  ("C-r C-a C-g" . er/mark-outside-python-string)
+		  ("C-r C-i C-m" . sk/mark-inside-python-block)
+		  ("C-r C-a C-m" . er/mark-outer-python-block)
+		  ("C-r C-i C-M" . er/mark-python-statement)
+		  ("C-r C-a C-M" . er/mark-python-block-and-decorator)
+		  ("C-r C-i C-$" . er/mark-LaTeX-math)
+		  ("C-r C-a C-$" . sk/mark-inside-LaTeX-math)
+		  ("C-r C-i C-b" . er/mark-inside-pairs)
+		  ("C-r C-a C-b" . er/mark-outside-pairs)))
+
+;; surrounding changing based on expand region
+(use-package embrace
+  :ensure t
+  :bind* (("C-c s" . embrace-commander)))
+
+;; undo history
+(use-package undo-tree
+  :ensure t
+  :diminish undo-tree-mode
+  :bind* (("C-/" . undo-tree-undo)
+		  ("M-/" . undo-tree-redo)
+		  ("C-x u" . undo-tree-visualize))
+  :config
+  (undo-tree-mode)
+  ;; to mitigate that data corruption bug in undo tree
+  (use-package undohist
+	:ensure t
+	:demand t
+	:config
+	(undohist-initialize)))
+
+;; commenting easily
+(use-package comment-dwim-2
+  :ensure t
+  :bind* (("M-;" . comment-dwim-2)))
+
 ;;;;;;;;;;;;;;;;;;;;;;
 ;;    Navigation    ;;
 ;;;;;;;;;;;;;;;;;;;;;;
 
-;; Avy - simulating a mouse click
-(use-package avy		     ; avy - a replacement to ace-jump
-  :ensure t			     ; ensure the package is loaded
+;; moving across marks
+(use-package back-button
+  :ensure t
+  :diminish back-button-mode
+  :commands (back-button-local-backward
+			 back-button-local-forward
+			 back-button-global-backward
+			 back-button-global-forward)
+  :config
+  (back-button-mode))
+;; hydra for marks
+(defhydra hydra-marks (:color red :hint nil)
+  "
+ _m_: mark _j_: local next   _k_: local prev   _q_: quit
+		 _l_: global next  _h_: global prev
+  "
+  ("m" set-mark-command)
+  ("k" back-button-local-backward)
+  ("j" back-button-local-forward)
+  ("h" back-button-global-backward)
+  ("l" back-button-global-forward)
+  ("q" nil :color blue))
+(bind-key* "C-c m" 'hydra-marks/body)
+
+;; smartparens - safe operators
+(use-package smartparens
+  :ensure t
   :demand t
-  :init				     ; configuration before the package is laded
-  (setq avy-keys-alist		     ; what keys to use for clicking
-		`((avy-goto-char-timer . (?j ?k ?l ?f ?s ?d))
+  :diminish smartparens-mode
+  :diminish smartparens-strict-mode
+  :diminish (smartparens-mode . " ()")
+  :config
+  (require 'smartparens-config)
+  (smartparens-global-mode)
+  (smartparens-global-strict-mode)
+  (show-smartparens-global-mode))
+;; smartparens hydra
+(defhydra hydra-smartparens (:color red :hint nil)
+  "
+ ^Move^              ^Edit^                                              ^Splice^
+^^^^^^^^^^^^^--------------------------------------------------------------------------------------------------
+ ^ ^ _k_ ^ ^    ^ ^ _p_ ^ ^    _<_: barf backward    _u_: unwrap       _x_: transpose  _S_: splice   _q_: quit
+ _h_ ^+^ _l_    _b_ ^+^ _f_    _>_: barf forward     _U_: unwrap back  _c_: convolute  _F_: forward
+ ^ ^ _j_ ^ ^    ^ ^ _n_ ^ ^    _)_: slurp forward    _d_: delete       _r_: raise      _B_: backward
+ _a_: start _e_: end   _(_: slurp backward   _y_: copy         _s_: split      _A_: around
+"
+  ("h" sp-backward-sexp)
+  ("l" sp-forward-sexp)
+  ("j" sp-next-sexp)
+  ("k" sp-previous-sexp)
+  ("p" sp-backward-down-sexp)
+  ("n" sp-up-sexp)
+  ("f" sp-down-sexp)
+  ("b" sp-backward-up-sexp)
+  ("a" sp-beginning-of-sexp)
+  ("e" sp-end-of-sexp)
+  ("<" sp-backward-barf-sexp)
+  (">" sp-forward-barf-sexp)
+  ("(" sp-backward-slurp-sexp)
+  (")" sp-forward-slurp-sexp)
+  ("u" sp-unwrap-sexp)
+  ("U" sp-backward-unwrap-sexp)
+  ("d" sp-kill-sexp)
+  ("y" sp-copy-sexp)
+  ("x" sp-transpose-sexp)
+  ("c" sp-convolute-sexp)
+  ("r" sp-raise-sexp)
+  ("s" sp-split-sexp)
+  ("S" sp-splice-sexp)
+  ("F" sp-splice-sexp-killing-forward)
+  ("B" sp-splice-sexp-killing-backward)
+  ("A" sp-splice-sexp-killing-around)
+  ("q" nil :color blue))
+(bind-key* "C-c j" 'hydra-smartparens/body)
+
+;; Avy - simulating a mouse click
+(use-package avy
+  :ensure t
+  :demand t
+  :bind* (("C-t" . avy-goto-char-in-line)
+		  ("M-t" . avy-goto-char-2)
+		  ("M-l" . avy-goto-line))
+  :init
+  (setq avy-keys-alist
+		`((avy-goto-char-in-line . (?j ?k ?l ?f ?s ?d))
 		  (avy-goto-char-2 . (?j ?k ?l ?f ?s ?d ?e ?r ?u ?i))
 		  (avy-goto-line . (?j ?k ?l ?f ?s ?d ?e ?r ?u ?i))))
-  (setq avy-style 'pre)			; where the characters should be placed
-  (setq avy-background t)		; always highlight the background
-  :general				; `general.el' maps
-  (general-nvmap "-" nil)
-  (general-nvmap "-" '(avy-goto-line :which-key "jump to line"))
-  (general-omap "-" '(avy-goto-line :which-key "jump to line"))
-  (general-mmap "-" '(avy-goto-line :which-key "jump to line"))
-  (general-nvmap "gs" '(avy-goto-char-2 :which-key "sneak 2 char"))
-  (general-omap "gs" '(avy-goto-char-2 :which-key "sneak 2 char"))
-  (general-mmap "gs" '(avy-goto-char-2 :which-key "sneak 2 char"))
+  (setq avy-style 'pre)
+  (setq avy-background t)
   :config
   ;; jump to windows quickly
   (use-package ace-window
 	:ensure t
-	:commands (ace-window))
+	:bind (("C-x o" . ace-window)))
   ;; jump and open links fast
   (use-package ace-link
 	:ensure t
 	:demand t
-	:general
-	(general-evil-define-key '(normal) info-mode-map
-	  "o" '(ace-link-info :which-key "open link"))
-	(general-evil-define-key '(normal) help-mode-map
-	  "o" '(ace-link-help :which-key "open link"))
-	(general-evil-define-key '(normal) eww-mode-map
-	  "o" '(ace-link-eww :which-key "open link"))
-	(general-evil-define-key '(normal) woman-mode-map
-	  "o" '(ace-link-woman :which-key "open link"))
-	(general-evil-define-key '(normal) compilation-mode-map
-	  "o" '(ace-link-compilation :which-key "open link"))
-	(general-evil-define-key '(normal) custom-mode-map
-	  "o" '(ace-link-custom :which-key "open link"))
 	:config
 	(ace-link-setup-default)))
 
@@ -332,29 +684,19 @@
   ("+" text-scale-increase)
   ("-" text-scale-decrease)
   ("q" nil :exit t))
-(general-nmap "w" '(hydra-windows/body :which-key "manage windows"))
-
-;; file explorer
-(use-package ranger
-  :ensure t
-  :init
-  :general
-  (general-nvmap :prefix sk--evil-global-leader
-				 "n" '(ranger :which-key "file explorer")))
+(bind-key* "C-x O" 'hydra-windows/body)
 
 ;; imenu anywhere
 (use-package imenu-anywhere
   :ensure t
-  :general
-  (general-nvmap "T" '(imenu-anywhere :which-key "imenu anywhere")))
+  :bind* (("C-c t" . imenu-anywhere)))
 
 ;; tags based navigation
 (use-package ggtags
   :ensure t
   :defer 2
   :diminish ggtags-mode
-  :general
-  (general-nvmap "C-]" '(ggtags-find-tag-regexp :which-key "jump to tags"))
+  :bind* (("M-=" . hydra-ggtags/body))
   :config
   (add-hook 'prog-mode-hook 'ggtags-mode))
 ;; tags hydra
@@ -372,14 +714,11 @@
   ("f" ggtags-find-reference)
   ("t" ggtags-find-tag-dwim)
   ("q" nil :exit t))
-(general-nvmap :prefix sk--evil-global-leader
-			   "t" '(hydra-ggtags/body :which-key "manage tags"))
 
 ;; dumb semantic jump
 (use-package dumb-jump
   :ensure t
-  :general
-  (general-nvmap "J" '(dumb-jump-go :which-key "find definition"))
+  :bind (("M-[" . dumb-jump-go))
   :init
   (setq dumb-jump-selector 'ivy)
   :config
@@ -388,9 +727,8 @@
 ;; dash documentation
 (use-package dash-at-point
   :ensure t
-  :general
-  (general-nvmap "K" '(dash-at-point-with-docset :which-key "show doc"))
-  (general-nvmap "gD" '(dash-at-point-with-docset :which-key "dash documentation")))
+  :bind (("M-'" . dash-at-point-with-docset))
+  :bind* (("C-M-h" . dash-at-point-with-docset)))
 
 ;; change perspectives - similar to vim tabs
 (use-package persp-mode
@@ -464,24 +802,16 @@
 ;; wgrep + ag for refactoring - as an alternate to ivy/helm based commands
 (use-package ag
   :ensure t
-  :general
-  (general-evil-define-key '(normal visual) ag-mode-map
-	"ge" '(recompile :which-key "ag search project"))
-  (general-nvmap "ge" '(ag-project-at-point :which-key "ag search project"))
-  :config
-  ;; writeable grep
-  (use-package wgrep-ag
-	:ensure t
-	:init
-	(setq wgrep-auto-save-buffer t)
-	:general
-	(general-evil-define-key '(normal visual) ag-mode-map
-	  "gE" '(wgrep-change-to-wgrep-mode :which-key "edit search results")
-	  "g_" '(wgrep-finish-edit :which-key "finish editing"))
-	(general-nvmap
-	 "gE" '(wgrep-change-to-wgrep-mode :which-key "edit search results")
-	 "g_" '(wgrep-finish-edit :which-key "finish editing"))))
-
+  :bind* (("M-s a" . ag-project-at-point)
+		  ("M-s g" . ag)))
+;; writeable grep
+(use-package wgrep-ag
+  :ensure t
+  :init
+  (setq wgrep-auto-save-buffer t)
+  :bind* (("M-s e" . wgrep-change-to-wgrep-mode)
+		  ("M-s f" . wgrep-finish-edit)
+		  ("M-s k" . wgrep-abort-changes)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Debugging using GDB    ;;
@@ -501,13 +831,9 @@
 ;;    Improve aesthetics      ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; better themes
-(use-package zenburn-theme
-  :ensure t)
 ;; load one of these themes
 (load-theme 'wombat t)
 ;; (load-theme 'leuven t)
-;; (load-theme 'zenburn t)
 
 ;; rainbow paranthesis for easier viewing
 (use-package rainbow-delimiters
@@ -531,18 +857,14 @@
 (use-package indent-guide
   :ensure t
   :diminish indent-guide-mode
-  :general
-  (general-nvmap "g|" '(indent-guide-mode :which-key "indent levels"))
-  :commands (indent-guide-mode)
+  :bind* (("C-c |" . indent-guide-mode))
   :config
   (add-hook 'python-mode-hook 'indent-guide-mode))
 
 ;; indicate margins
 (use-package fill-column-indicator
   :ensure t
-  :commands (fci-mode)
-  :general
-  (general-nvmap "gm" '(fci-mode :which-key "margin"))
+  :bind* (("C-c \\" . fci-mode))
   :init
   (setq fci-rule-width 5
 		fci-rule-column 79)
@@ -553,17 +875,17 @@
   :ensure t
   :commands (nlinum-mode
 			 global-nlinum-mode)
-  :general
-  (general-nvmap "g\\" '(nlinum-mode :which-key "line numbers")))
+  :bind* (("C-c o n" . nlinum-mode)))
 
 ;; visual regexp substitution
 (use-package visual-regexp
   :ensure t
-  :commands (vr/replace
-			 vr/query-replace)
-  :general
-  (general-nvmap :prefix sk--evil-global-leader
-				 "SPC" 'vr/query-replace))
+  :bind* (("M-s v" . vr/query-replace))
+  :config
+  ;; change the regexp syntax
+  (use-package visual-regexp-steroids
+	:ensure t
+	:bind* (("M-s V" . vr/select-query-replace))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Convenience packages    ;;
@@ -587,9 +909,7 @@
 ;; restart emacs from emacs
 (use-package restart-emacs
   :ensure t
-  :general
-  (general-nmap :prefix sk--evil-global-leader
-				"Q" '(restart-emacs :which-key "restart emacs")))
+  :bind* (("C-x c" . restart-emacs)))
 
 ;; discovering the major mode bindings and details
 (use-package discover-my-major
@@ -612,9 +932,7 @@
 (use-package markdown-mode
   :ensure t
   :mode ("\\.markdown\\'" "\\.mkd\\'" "\\.md\\'")
-  :general
-  (general-nvmap :prefix sk--evil-local-leader
-				 "n" '(hydra-markdown/body :which-key "markdown"))
+  :bind* (("M-\\ n" . hydra-markdown/body))
   :init
   (setq markdown-open-command "/Applications/Markoff.app/Contents/MacOS/Markoff")
   :config
@@ -689,11 +1007,10 @@
   :ensure auctex-latexmk
   :mode (("\\.tex\\'" . LaTeX-mode)
 		 ("\\.xtx\\'" . LaTeX-mode))
-  :general
-  (general-nvmap :prefix sk--evil-local-leader
-				 "x" '(hydra-latex/body :which-key "latex"))
-  (general-tomap "x" '(LaTeX-mark-section :which-key "latex section"))
-  (general-tomap "e" '(LaTeX-mark-environment :which-key "latex env"))
+  :bind* (("M-\\ x" . hydra-latex/body)
+		  ("C-r i x" . LaTeX-mark-section)
+		  ("C-r a x" . LaTeX-mark-section)
+		  ("C-r a e" . LaTeX-mark-environment))
   :init
   (setq reftex-plug-into-AUCTeX t)
   (setq reftex-default-bibliography '("~/Dropbox/PhD/articles/tensors/tensors.bib"))
@@ -770,9 +1087,8 @@
 (use-package writegood-mode
   :ensure t
   :diminish writegood-mode
-  :general
-  (general-nvmap "g]" '(writegood-grade-level :which-key "grade writing"))
-  (general-nvmap "g[" '(writegood-reading-ease :which-key "grade reading"))
+  :bind* (("C-c {" . writegood-grade-level)
+		  ("C-c }" . writegood-reading-ease))
   :config
   (progn
 	(add-hook 'text-mode-hook 'writegood-mode)))
@@ -784,27 +1100,9 @@
 ;; best git wrapper ever
 (use-package magit
   :ensure t
-  :general
-  (general-nvmap :prefix sk--evil-global-leader "e" '(magit-status :which-key "git status"))
-  (general-nvmap "gb" '(magit-blame :which-key "git blame"))
-  (general-evil-define-key '(normal visual) 'magit-blame-mode-map
-	"q" (general-simulate-keys "q" t "quit")
-	"n" (general-simulate-keys "n" t "quit")
-	"p" (general-simulate-keys "p" t "quit")
-	"N" (general-simulate-keys "N" t "quit")
-	"P" (general-simulate-keys "P" t "quit")
-	"t" (general-simulate-keys "t" t "quit")
-	"y" (general-simulate-keys "y" t "quit")
-	"d" (general-simulate-keys "SPC" t "quit")
-	"u" (general-simulate-keys "DEL" t "quit")
-	"c" (general-simulate-keys "RET" t "quit")
-	"RET" (general-simulate-keys "RET" t "quit"))
+  :bind* (("C-c e" . magit-status)
+		  ("C-c g b" . magit-blame))
   :config
-  (use-package evil-magit
-	:ensure t
-	:demand t
-	:init
-	(setq evil-magit-want-horizontal-movement t))
   ;; Github integration - press '@' in Magit status
   (use-package magithub
 	:ensure t))
@@ -812,6 +1110,9 @@
 ;; highlight diffs
 (use-package diff-hl
   :ensure t
+  :bind* (("C-c h" . hydra-diff-hl/body)
+		  ("C-r i h" . diff-hl-mark-hunk)
+		  ("C-r a h" . diff-hl-mark-hunk))
   :commands (global-diff-hl-mode
 			 diff-hl-mode
 			 diff-hl-next-hunk
@@ -819,38 +1120,40 @@
 			 diff-hl-mark-hunk
 			 diff-hl-diff-goto-hunk
 			 diff-hl-revert-hunk)
-  :general
-  (general-nvmap "[h" '(diff-hl-previous-hunk :which-key "previous hunk"))
-  (general-nvmap "]h" '(diff-hl-next-hunk :which-key "next hunk"))
-  (general-tomap "h" '(diff-hl-mark-hunk :which-key "hunk"))
-  (general-nvmap "gh" '(diff-hl-diff-goto-hunk :which-key "goto hunk"))
-  (general-nvmap "gH" '(diff-hl-revert-hunk :which-key "revert hunk"))
   :config
   (global-diff-hl-mode)
   (diff-hl-flydiff-mode)
   (diff-hl-margin-mode)
   (diff-hl-dired-mode))
+;; hydra for diffs
+(defhydra hydra-diff-hl (:color red :hint nil)
+  "
+ _g_: goto  _j_: next  _k_: previous _r_: revert _q_:quit
+  "
+  ("k" diff-hl-previous-hunk)
+  ("j" diff-hl-next-hunk)
+  ("g" diff-hl-diff-goto-hunk :color blue)
+  ("r" diff-hl-revert-hunk)
+  ("q" nil :color blue))
+(bind-key* "C-c h" 'hydra-diff-hl/body)
 
 ;; git timemachine
 (use-package git-timemachine
   :ensure t
-  :general
-  (general-nmap "gl" '(git-timemachine-toggle :which-key "git timemachine")))
+  :bind* (("C-c g t" . git-timemachine-toggle)))
 
 ;; posting gists
 (use-package yagist
   :ensure t
   :init
   (setq yagist-encrypt-risky-config t)
-  :general
-  (general-nmap "gp" '(yagist-region-or-buffer :which-key "create gist"))
-  (general-nmap "gP" '(yagist-region-or-buffer-private :which-key "create private gist")))
+  :bind*(("C-c g p" . yagist-region-or-buffer)
+		 ("C-c g P" . yagist-region-or-buffer-private)))
 
 ;; browse remote packages
 (use-package browse-at-remote
   :ensure t
-  :general
-  (general-nmap "gI" '(browse-at-remote :which-key "browse remote")))
+  :bind* (("C-c g r" . browse-at-remote)))
 
 ;;;;;;;;;;;;;;;
 ;;    Org    ;;
@@ -873,14 +1176,7 @@
 ;; start services
 (use-package prodigy
   :ensure t
-  :commands (prodigy)
-  :general
-  (general-nvmap :prefix sk--evil-global-leader
-				 "g" '(prodigy :which-key "background process"))
-  (general-evil-define-key '(normal visual) 'prodigy-mode-map
-	"q" (general-simulate-keys "q" t "quit")
-	"s" (general-simulate-keys "s" t "start")
-	"S" (general-simulate-keys "S" t "stop"))
+  :bind* (("C-c b" . prodigy))
   :config
   (prodigy-define-tag
 	:name 'blog
@@ -938,18 +1234,36 @@
 ;; error checking
 (use-package flycheck
   :ensure t
-  :defer 2
-  :general
-  (general-nmap "[l" '(flycheck-previous-error :which-key "previous error"))
-  (general-nmap "]l" '(flycheck-next-error :which-key "next error"))
-  (general-nmap :prefix sk--evil-global-leader "l" '(flycheck-list-errors :which-key "list errors"))
+  :commands (flycheck-buffer
+			 flycheck-previous-error
+			 flycheck-next-error
+			 flycheck-list-errors
+			 flycheck-explain-error-at-point
+			 flycheck-display-error-at-point
+			 flycheck-select-checker
+			 flycheck-verify-setup)
   :config
   (global-flycheck-mode))
+;; hydra for flycheck
+(defhydra hydra-flycheck (:color red :hint nil)
+  "
+ _j_: next     _l_: list    _d_: display  _s_: select  _q_: quit
+ _k_: previous _e_: explain _c_: check    _v_: verify
+  "
+  ("k" flycheck-next-error)
+  ("j" flycheck-previous-error)
+  ("l" flycheck-list-errors :color blue)
+  ("e" flycheck-explain-error-at-point)
+  ("d" flycheck-display-error-at-point)
+  ("c" flycheck-buffer)
+  ("s" flycheck-select-checker)
+  ("v" flycheck-verify-setup)
+  ("q" nil :color blue))
+(bind-key* "C-c l" 'hydra-flycheck/body)
 
 ;; autocompletion
 (use-package company
   :ensure t
-  :defer 2
   :init
   (setq company-minimum-prefix-length 2
 		company-require-match 0
@@ -962,31 +1276,23 @@
   (eval-after-load 'company
 	'(add-to-list 'company-backends '(company-files
 									  company-capf)))
-  :general
-  (general-imap "C-d" 'company-complete)
-  (general-imap "C-." 'company-mode)
-  :bind* (("C-c f" . company-files)
-		  ("C-c a" . company-dabbrev)
-		  ("C-c d" . company-ispell)
+  :bind* (("C-]" . company-complete)
+		  ("C-c o c" . company-mode))
+  :bind* (("C-c y f" . company-files)
+		  ("C-c y a" . company-dabbrev)
+		  ("C-c y d" . company-ispell)
 		  :map company-active-map
 		  ("C-n"    . company-select-next)
 		  ("C-p"    . company-select-previous)
 		  ([return] . company-complete-selection)
 		  ([tab]    . yas-expand)
 		  ("TAB"    . yas-expand)
-		  ("C-f"    . company-search-filtering)
 		  ("C-w"    . backward-kill-word)
 		  ("C-c"    . company-abort)
 		  ("C-c"    . company-search-abort))
   :diminish (company-mode . " ς")
   :config
-  (global-company-mode)
-  ;; fuzzy matching
-  (use-package company-flx
-	:ensure t
-	:config
-	(with-eval-after-load 'company
-	  (company-flx-mode +1))))
+  (global-company-mode))
 
 ;; project management
 (use-package projectile
@@ -1013,8 +1319,7 @@
 	(if (region-active-p)
 		(google-this-region 1)
 	  (google-this-symbol 1)))
-  :general
-  (general-nvmap "gG" '(sk/google-this :which-key "google")))
+  :bind* (("C-c G" . sk/google-this)))
 
 ;; creepy function
 (defun hello-human ()

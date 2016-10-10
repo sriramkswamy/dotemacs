@@ -22,3 +22,4 @@ url/*
 /.#recentf
 /irony/*
 undohist/*
+/var/*

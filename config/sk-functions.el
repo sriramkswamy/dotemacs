@@ -14,8 +14,6 @@
 		 'maximized)
 	   'fullboth)))))
 (bind-key* "C-z" #'sk/toggle-frame-fullscreen-non-native)
-(general-nmap :prefix sk--evil-global-leader
-	      "z" '(sk/toggle-frame-fullscreen-non-native :which-key "fullscreen"))
 
 ;; smarter start of line
 (defun sk/smarter-move-beginning-of-line (arg)
@@ -79,10 +77,9 @@ point reaches the beginning or end of the buffer, stop there."
             (setq arg 0))
         (forward-word)))))
 ;; map the function
-(general-nmap :prefix "["
-	      "s" '(sk/flyspell-goto-previous-error :which-key "previous spell error"))
-(general-nmap :prefix "]"
-	      "s" '(flyspell-goto-next-error :which-key "next spell error"))
+(bind-keys*
+ ("C-c <" . sk/flyspell-goto-previous-error)
+ ("C-c >" . sk/flyspell-goto-next-error))
 
 ;; window movements
 (defun sk/split-below-and-move ()
@@ -95,6 +92,10 @@ point reaches the beginning or end of the buffer, stop there."
   (interactive)
   (split-window-right)
   (other-window 1))
+;; map these to defaults
+(bind-keys*
+ ("C-x 3" . sk/split-right-and-move)
+ ("C-x 2" . sk/split-below-and-move))
 
 ;; rotate window config
 (defun sk/rotate-windows ()
@@ -121,51 +122,13 @@ point reaches the beginning or end of the buffer, stop there."
              (setq i (1+ i)))))))
 
 ;; scroll adjacent windows
-(defun sk/other-window-down ()
-  "Scrolls down in adjoining window"
-  (interactive)
-  (other-window 1)
-  (scroll-up-command)
-  (other-window 1))
 (defun sk/other-window-up ()
   "Scrolls up in adjoining window"
   (interactive)
   (other-window 1)
   (scroll-down-command)
   (other-window 1))
-(general-nmap "[v" '(sk/other-window-up :which-key "scroll other window up"))
-(general-nmap "]v" '(sk/other-window-down :which-key "scroll other window down"))
-
-;; turn the adjoining pdf
-(defun sk/other-pdf-next ()
-  "Turns the next page in adjoining PDF file"
-  (interactive)
-  (other-window 1)
-  (doc-view-next-page)
-  (other-window 1))
-(defun sk/other-pdf-previous ()
-  "Turns the previous page in adjoining PDF file"
-  (interactive)
-  (other-window 1)
-  (doc-view-previous-page)
-  (other-window 1))
-(general-nmap "[D" 'sk/other-pdf-previous)
-(general-nmap "]D" 'sk/other-pdf-next)
-;; scrolling the adjoining pdf
-(defun sk/other-pdf-down ()
-  "Turns the next page in adjoining PDF file"
-  (interactive)
-  (other-window 1)
-  (doc-view-scroll-down-or-previous-page 10)
-  (other-window 1))
-(defun sk/other-pdf-up ()
-  "Turns the previous page in adjoining PDF file"
-  (interactive)
-  (other-window 1)
-  (doc-view-scroll-up-or-next-page 10)
-  (other-window 1))
-(general-nmap "[d" '(sk/other-pdf-down :which-key "scroll down other pdf"))
-(general-nmap "]d" '(sk/other-pdf-up :which-key "scroll up other pdf"))
+(bind-key* "C-x M-v" 'sk/other-window-up)
 
 ;; browse the current HTML file in browser
 (defun sk/browse-current-file ()
@@ -175,53 +138,53 @@ point reaches the beginning or end of the buffer, stop there."
     (if (and (fboundp 'tramp-tramp-file-p)
              (tramp-tramp-file-p file-name))
         (error "Cannot open tramp file")
-      (browse-url (concat "file://" file-name)))))
-(general-nmap "gB" '(sk/browse-current-file :which-key "open in browser"))
+	  (browse-url (concat "file://" file-name)))))
+(bind-key* "C-c g B" 'sk/browse-current-file)
 
 ;; alignment functions
-(general-nvmap "gA" '(nil :which-key "align region"))
 (defun sk/align-whitespace (start end)
   "Align columns by whitespace"
   (interactive "r")
   (align-regexp start end
                 "\\(\\s-*\\)\\s-" 1 0 t))
-(general-nvmap "gAs" '(sk/align-whitespace :which-key "by whitespace"))
 (defun sk/align-ampersand (start end)
   "Align columns by ampersand"
   (interactive "r")
   (align-regexp start end
                 "\\(\\s-*\\)&" 1 1 t))
-(general-nvmap "gAa" '(sk/align-ampersand :which-key "by ampersand"))
 (defun sk/align-quote-space (start end)
   "Align columns by quote and space"
   (interactive "r")
   (align-regexp start end
                 "\\(\\s-*\\).*\\s-\"" 1 0 t))
-(general-nvmap "gAq" '(sk/align-quote-space :which-key "by quotes"))
 (defun sk/align-equals (start end)
   "Align columns by equals sign"
   (interactive "r")
   (align-regexp start end
                 "\\(\\s-*\\)=" 1 0 t))
-(general-nvmap "gA=" '(sk/align-equals :which-key "by equal"))
 (defun sk/align-comma (start end)
   "Align columns by comma"
   (interactive "r")
   (align-regexp start end
                 "\\(\\s-*\\)," 1 1 t))
-(general-nvmap "gA," '(sk/align-comma :which-key "by comma"))
 (defun sk/align-dot (start end)
   "Align columns by dot"
   (interactive "r")
   (align-regexp start end
                 "\\(\\s-*\\)\\\." 1 1 t))
-(general-nvmap "gA." '(sk/align-dot :which-key "by dot"))
 (defun sk/align-colon (start end)
   "Align columns by equals sign"
   (interactive "r")
   (align-regexp start end
                 "\\(\\s-*\\):" 1 0 t))
-(general-nvmap "gA:" '(sk/align-colon :which-key "by colon"))
+(bind-keys*
+ ("C-c w SPC" . sk/align-whitespace)
+ ("C-c w a" . sk/align-ampersand)
+ ("C-c w q" . sk/align-quote-space)
+ ("C-c w =" . sk/align-equals)
+ ("C-c w ," . sk/align-comma)
+ ("C-c w :" . sk/align-colon)
+ ("C-c w ." . sk/align-dot))
 
 ;; rename buffer and file
 (defun sk/rename-current-buffer-file ()
@@ -240,7 +203,6 @@ point reaches the beginning or end of the buffer, stop there."
           (set-buffer-modified-p nil)
           (message "File '%s' successfully renamed to '%s'"
                    name (file-name-nondirectory new-name)))))))
-(general-nvmap "gR" '(sk/rename-current-buffer-file :which-key "rename file"))
 
 ;; delete buffer and file
 (defun sk/delete-current-buffer-file ()
@@ -255,14 +217,18 @@ point reaches the beginning or end of the buffer, stop there."
         (delete-file filename)
         (kill-buffer buffer)
         (message "File '%s' successfully removed" filename)))))
-(general-nvmap "gK" '(sk/delete-current-buffer-file :which-key "delete file"))
 
 ;; copy the file path
 (defun sk/copy-current-file-path ()
   "Add current file path to kill ring. Limits the filename to project root if possible."
   (interactive)
   (kill-new buffer-file-name))
-(general-nvmap "gY" '(sk/copy-current-file-path :which-key "copy file path"))
+
+;; map them convenience functions
+(bind-keys*
+ ("C-c k r" . sk/rename-current-buffer-file)
+ ("C-c k d" . sk/delete-current-buffer-file)
+ ("C-c k p" . sk/copy-current-file-path))
 
 ;; Transpose words forward
 (defun sk/transpose-words-forward ()
@@ -278,24 +244,9 @@ point reaches the beginning or end of the buffer, stop there."
   (interactive)
   (transpose-words 1)
   (backward-word 1))
-(general-nmap "]w" '(sk/transpose-words-forward :which-key "exchange word forward"))
-(general-nmap "[w" '(sk/transpose-words-backward :which-key "exchange word backward"))
-
-;; Transpose chars forward
-(defun sk/transpose-chars-forward ()
-  "Transpose chars forward"
-  (interactive)
-  (forward-char 1)
-  (transpose-chars 1)
-  (backward-char 1))
-;; Transpose chars backward
-(defun sk/transpose-chars-backward ()
-  "Transpose chars backward"
-  (interactive)
-  (transpose-chars 1)
-  (backward-char 1))
-(general-nmap "]c" '(sk/transpose-chars-forward :which-key "exchange char forward"))
-(general-nmap "[c" '(sk/transpose-chars-backward :which-key "exchange char backward"))
+(bind-keys*
+ ("C-c F" . sk/transpose-words-forward)
+ ("C-c B" . sk/transpose-words-backward))
 
 ;; Correct the DOuble capitals
 (defun sk/dcaps-to-scaps ()
@@ -357,8 +308,9 @@ Single Capitals as you type."
   (interactive "*p")
   (sk/move-text-internal (- arg))
   (next-line 1))
-(general-nmap "[e" '(sk/move-text-up :which-key "exchange line up"))
-(general-nmap "]e" '(sk/move-text-down :which-key "exchange line down"))
+(bind-keys*
+ ("C-c U" . sk/move-text-up)
+ ("C-c D" . sk/move-text-down))
 
 ;; Autocorrect
 (defun sk/simple-get-word ()
@@ -395,7 +347,7 @@ abort completely with `C-g'."
           (message "\"%s\" now expands to \"%s\" %sally"
                    bef aft (if p "loc" "glob")))
       (user-error "No typo at or before point"))))
-(general-imap "C-a" '(sk/ispell-word-then-abbrev :which-key "correct spelling mistake"))
+(bind-key* "C-c =" 'sk/ispell-word-then-abbrev)
 
 ;; Set fonts
 (cond ((eq system-type 'gnu/linux)                                             ; if system is GNU/Linux
@@ -406,51 +358,62 @@ abort completely with `C-g'."
        (set-frame-font "Lucida Sans Typewriter")))                             ; set the font to Lucida Sans Typewriter
 
 ;; Some convenience functions for changing fonts
+;;;###autoload
 (defun sk/courier-font ()
   "Change font to Courier"
   (interactive)
   (set-face-attribute 'default nil :font "Courier")
     (set-frame-width (selected-frame) 97))
+;;;###autoload
 (defun sk/georgia-font ()
   "Change font to Georgia"
   (interactive)
   (set-face-attribute 'default nil :font "Georgia" :height 160))
+;;;###autoload
 (defun sk/hack-font ()
   "Change font to Hack"
   (interactive)
   (set-face-attribute 'default nil :font "Hack"))
+;;;###autoload
 (defun sk/monaco-font ()
   "Change font to Monaco"
   (interactive)
   (set-face-attribute 'default nil :font "Monaco"))
+;;;###autoload
 (defun sk/consolas-font ()
   "Change font to Consolas"
   (interactive)
   (set-face-attribute 'default nil :font "Consolas"))
+;;;###autoload
 (defun sk/deja-vu-font ()
   "Change font to DejaVu Sans Mono"
   (interactive)
   (set-face-attribute 'default nil :font "DejaVu Sans Mono"))
 
 ;; Some easy functions for font types
+;;;###autoload
 (defun sk/tiny-type ()
   "Reduce the font size to tiny"
   (interactive)
   (set-face-attribute 'default nil  :height 150))
+;;;###autoload
 (defun sk/miniscule-type ()
   "Reduce the font size to miniscule"
   (interactive)
   (set-face-attribute 'default nil  :height 140))
+;;;###autoload
 (defun sk/small-type ()
   "Reduce the font size to small"
   (interactive)
   (set-face-attribute 'default nil  :height 190)
   (set-frame-width (selected-frame) 89))
+;;;###autoload
 (defun sk/medium-type ()
   "Reduce the font size to medium"
   (interactive)
   (set-face-attribute 'default nil  :height 215)
   (set-frame-width (selected-frame) 89))
+;;;###autoload
 (defun sk/large-type ()
   "Reduce the font size to large"
   (interactive)
@@ -469,37 +432,169 @@ abort completely with `C-g'."
                              (switch-to-buffer nil)))
               (message "No Compilation Errors!")))))
 
-;; blank lines
-(defun sk/blank-line-up ()
-  "create empty line up"
+;; vi like above and below
+(defun sk/open-line-below ()
   (interactive)
-  (save-excursion
-    (beginning-of-line 1)
-    (open-line 1)))
-(defun sk/blank-line-down ()
-  "create empty line down"
+  (end-of-line)
+  (newline)
+  (indent-for-tab-command))
+(defun sk/open-line-above ()
   (interactive)
-  (save-excursion
-    (end-of-line 1)
-    (newline)))
-(general-nmap "[o" '(sk/blank-line-up :which-key "blank line up"))
-(general-nmap "]o" '(sk/blank-line-down :which-key "blank line down"))
+  (beginning-of-line)
+  (newline)
+  (forward-line -1)
+  (indent-for-tab-command))
+(bind-keys
+ ("C-o" . sk/open-line-above)
+ ("M-o" . sk/open-line-below))
 
-;; blank chars
-(defun sk/blank-char-before ()
-  "create empty char before"
+;; backward kill word or region
+(defun sk/kill-region-or-backward-word ()
   (interactive)
+  (if (region-active-p)
+	  (kill-region (region-beginning) (region-end))
+	(backward-kill-word 1)))
+(bind-key* "C-w" 'sk/kill-region-or-backward-word)
+
+;; save region or current line
+(defun sk/copy-whole-lines (arg)
+  "Copy lines (as many as prefix argument) in the kill ring"
+  (interactive "p")
+  (kill-ring-save (line-beginning-position)
+				  (line-beginning-position (+ 1 arg)))
+  (message "%d line%s copied" arg (if (= 1 arg) "" "s")))
+(defun sk/copy-region-or-line (arg)
+  (interactive "p")
+  (if (region-active-p)
+	  (kill-ring-save (region-beginning) (region-end))
+	(sk/copy-whole-lines arg)))
+(bind-key* "M-w" 'sk/copy-region-or-line)
+
+;; duplicate region or line
+(defun sk/duplicate-region (&optional num start end)
+  "Duplicates the region bounded by START and END NUM times.
+If no START and END is provided, the current region-beginning and
+region-end is used."
+  (interactive "p")
   (save-excursion
-    (insert " "))
- (forward-char 1))
-(defun sk/blank-char-after ()
-  "create empty char after"
+	(let* ((start (or start (region-beginning)))
+		   (end (or end (region-end)))
+		   (region (buffer-substring start end)))
+	  (goto-char end)
+	  (dotimes (i num)
+		(insert region)))))
+(defun sk/duplicate-current-line (&optional num)
+  "Duplicate the current line NUM times."
+  (interactive "p")
+  (if (bound-and-true-p paredit-mode)
+	  (paredit-sk/duplicate-current-line)
+	(save-excursion
+	  (when (eq (point-at-eol) (point-max))
+		(goto-char (point-max))
+		(newline)
+		(forward-char -1))
+	  (sk/duplicate-region num (point-at-bol) (1+ (point-at-eol))))))
+(defun sk/duplicate-current-line-or-region (arg)
+  "Duplicates the current line or region ARG times.
+If there's no region, the current line will be duplicated."
+  (interactive "p")
+  (if (region-active-p)
+	  (let ((beg (region-beginning))
+			(end (region-end)))
+		(sk/duplicate-region arg beg end))
+	(sk/duplicate-current-line arg)))
+(bind-key* "C-c k k" 'sk/duplicate-line-or-region)
+
+;; Deactivate mark
+(defun sk/remove-mark ()
+  "Deactivate the region"
   (interactive)
+  (if (region-active-p)
+	  (deactivate-mark)))
+(bind-key* "C-x x" 'sk/remove-mark)
+
+;; toggle case
+(defun sk/toggle-letter-case ()
+  "Toggle the letter case of current word or text selection.
+Toggles from 3 cases: UPPER CASE, lower case, Title Case,
+in that cyclic order."
+  (interactive)
+  (let (pos1 pos2 (deactivate-mark nil) (case-fold-search nil))
+	(if (and transient-mark-mode mark-active)
+		(setq pos1 (region-beginning)
+			  pos2 (region-end))
+	  (setq pos1 (car (bounds-of-thing-at-point 'word))
+			pos2 (cdr (bounds-of-thing-at-point 'word))))
+
+	(when (not (eq last-command this-command))
+	  (save-excursion
+		(goto-char pos1)
+		(cond
+		 ((looking-at "[[:lower:]][[:lower:]]") (put this-command 'state
+													 "all lower"))
+		 ((looking-at "[[:upper:]][[:upper:]]") (put this-command 'state
+													 "all caps") )
+		 ((looking-at "[[:upper:]][[:lower:]]") (put this-command 'state
+													 "init caps") )
+		 (t (put this-command 'state "all lower") ))))
+
+	(cond
+	 ((string= "all lower" (get this-command 'state))
+	  (upcase-initials-region pos1 pos2) (put this-command 'state "init caps"))
+	 ((string= "init caps" (get this-command 'state))
+	  (upcase-region pos1 pos2) (put this-command 'state "all caps"))
+	 ((string= "all caps" (get this-command 'state))
+	  (downcase-region pos1 pos2) (put this-command 'state "all lower")))))
+(bind-key* "M-c" 'sk/toggle-letter-case)
+
+;; increase or decrease number at point
+(defun sk/incs (s &optional num)
+  (let* ((inc (or num 1))
+		 (new-number (number-to-string (+ inc (string-to-number s))))
+		 (zero-padded? (s-starts-with? "0" s)))
+	(if zero-padded?
+		(s-pad-left (length s) "0" new-number)
+	  new-number)))
+
+(defun sk/change-number-at-point (arg)
+  (interactive "p")
+  (unless (or (looking-at "[0-9]")
+			  (looking-back "[0-9]"))
+	(sk/goto-closest-number))
   (save-excursion
-    (forward-char 1)
-    (insert " ")))
-(general-nmap "[b" '(sk/blank-char-before :which-key "blank char before"))
-(general-nmap "]b" '(sk/blank-char-after :which-key "blank char after"))
+	(while (looking-back "[0-9]")
+	  (forward-char -1))
+	(re-search-forward "[0-9]+" nil)
+	(replace-match (sk/incs (match-string 0) arg) nil nil)))
+
+(defun sk/subtract-number-at-point (arg)
+  (interactive "p")
+  (sk/change-number-at-point (- arg)))
+
+(bind-keys*
+ ("C-c +" . sk/change-number-at-point)
+ ("C-c -" . sk/subtract-number-at-point))
+
+;; select line
+(defun sk/select-inside-line ()
+  "Select the current line"
+  (interactive)
+  (sk/smarter-move-beginning-of-line 1)
+  (set-mark (line-end-position))
+  (exchange-point-and-mark))
+
+(defun sk/select-around-line ()
+  "Select line including the newline character"
+  (interactive)
+  (sk/select-inside-line)
+  (next-line 1)
+  (sk/smarter-move-beginning-of-line 1))
+
+(bind-keys*
+ ("C-r i l" . sk/select-inside-line)
+ ("C-r a l" . sk/select-around-line)
+ ("C-r C-i C-l" . sk/select-inside-line)
+ ("C-r C-a C-l" . sk/select-around-line))
 
 ;; provide this configuration
 (provide 'sk-functions)

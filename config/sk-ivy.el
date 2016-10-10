@@ -10,9 +10,6 @@
 (use-package ivy
   :ensure t
   :diminish ivy-mode
-  :bind (("C-c x" . counsel-M-x)
-		 ("C-x c" . counsel-M-x))
-  :demand t
   :init
   ;; set ivy height
   (setq ivy-height 10)
@@ -30,180 +27,158 @@
 		  (counsel-ag . ivy--regex-plus)
 		  (counsel-grep-or-swiper . ivy--regex-plus)
 		  (t . ivy--regex-fuzzy)))
-  :general
-  ;; similar to helm - because I got used to that kind of TAB
-  (general-define-key :keymaps 'ivy-minibuffer-map
-					  "C-w" 'backward-kill-word
-					  "RET" 'ivy-alt-done
-					  "C-j" 'ivy-immediate-done
-					  "TAB" 'ivy-dispatching-done
-					  "C-t" 'ivy-avy
-					  "S-<return>" 'ivy-restrict-to-matches
-					  "C-S-m" 'ivy-restrict-to-matches)
-  ;; resume ivy
-  (general-nvmap :prefix sk--evil-global-leader
-				 "i" '(ivy-resume :which-key "resume ivy")
-				 "=" '(ivy-push-view :which-key "add window config")
-				 "-" '(ivy-pop-view :which-key "del window config"))
-  ;; wgrep in ivy occur - invoked from swiper/counsel-grep-or-swiper/counsel-grep
-  (general-nvmap :prefix sk--evil-local-leader
-				 "E" '(ivy-wgrep-change-to-wgrep-mode :which-key "edit search results"))
-
+  :bind (("C-x b" . ivy-switch-buffer))
+  :bind (:map ivy-minibuffer-map
+			  ("C-w" . backward-kill-word)
+			  ("RET" . ivy-alt-done)
+			  ("TAB" . ivy-dispatching-done)
+			  ("C-c C-j" . ivy-immediate-done)
+			  ("C-c C-t" . ivy-avy)
+			  ("C-S-m" . ivy-restrict-to-matches)
+			  ("S-<return>" . ivy-restrict-to-matches))
+  :bind* (("C-c r" . ivy-resume)
+		  ("C-c v" . ivy-push-view)
+		  ("C-c V" . ivy-pop-view)
+		  ("M-s i" . ivy-wgrep-change-to-wgrep-mode))
   :config
-  (ivy-mode 1)
   ;; the hydra in ivy
   (use-package ivy-hydra
-    :ensure t)
+	:ensure t)
+  (ivy-mode 1)
+  (counsel-mode 1))
 
-  ;; wrapper around ivy for many functions
-  (use-package counsel
-    :ensure t
-    :diminish counsel-mode
-    :bind (("M-x" . counsel-M-x)
-	   ("M-y" . counsel-yank-pop)
-	   ("C-x C-f" . counsel-find-file)
-	   ("C-h v" . counsel-describe-variable)
-	   ("C-h f" . counsel-describe-function)
-	   ("C-x 8" . counsel-unicode-char))
-    :general
-    ;; imenu - maybe use imenu everywhere?
-	(general-nmap "t" '(counsel-imenu :which-key "tags in file"))
-    ;; man pages - completing read
-    (general-nvmap "M" '(woman :which-key "man pages"))
-    ;; search in directory
-    (general-nvmap :prefix sk--evil-global-leader
-		   "/" '(counsel-ag :which-key "search in dir"))
-    ;; key bindings
-    (general-nvmap :prefix sk--evil-global-leader
-		   "," '(counsel-descbinds :which-key "search bindings"))
-	;; color themes
-	(general-nvmap :prefix sk--evil-global-leader
-		   "." '(counsel-load-theme :which-key "search bindings"))
-    ;; unicode char in evil-insert-state
-    (general-imap "C-v" '(counsel-unicode-char :which-key "unicode char"))
-    :config
-    (counsel-mode 1))
+;; wrapper around ivy for many functions
+(use-package counsel
+  :ensure t
+  :diminish counsel-mode
+  :bind (("M-x" . counsel-M-x)
+		 ("M-y" . counsel-yank-pop)
+		 ("C-x C-f" . counsel-find-file)
+		 ("C-h v" . counsel-describe-variable)
+		 ("C-h f" . counsel-describe-function)
+		 ("C-x 8" . counsel-unicode-char))
+  :bind* (("M-s c" . counsel-ag)
+		  ("C-c ." . counsel-load-theme))
+  :config
+  (ivy-mode 1)
+  (counsel-mode 1))
 
-  ;; search the buffer or all buffer
-  (use-package swiper
-    :ensure t
-    :general
-    ;; swiper all buffers
-    (general-nvmap "g/" '(swiper-all :which-key "search in all buffers"))
-    ;; replace normal evil search with swiper
-    (general-nvmap "/" '(counsel-grep-or-swiper :which-key "search in buffer"))
-    ;; swiper with word-at-point
-    (general-nvmap "#" '(sk/swiper-at-point :which-key "search word in buffer"))
-    ;; bind C-s too
-    (general-define-key "C-s" '(counsel-grep-or-swiper :which-key "search"))
-    :config
-    (defun sk/swiper-at-point ()
-      "use swiper to search for a word at point"
-      (interactive)
-      (swiper (thing-at-point 'word))))
+;; project files
+(use-package counsel-projectile
+  :ensure t
+  :bind* (("M-s p" . sk/counsel-ag-project)
+		  ("M-s j" . sk/counsel-ag-project-at-point)
+		  ("C-c p" . counsel-projectile-find-file-or-buffer))
+  :init
+  (setq projectile-completion-system 'ivy)
+  :config
+  (defun sk/counsel-ag-project-at-point ()
+	"use counsel ag to search for the word at point in the project"
+	(interactive)
+	(counsel-ag (thing-at-point 'symbol) (projectile-project-root)))
+  (defun sk/counsel-ag-project ()
+	"use counsel ag to search the project"
+	(interactive)
+	(counsel-ag "" (projectile-project-root)))
+  (ivy-mode 1)
+  (counsel-mode 1))
 
-  ;; project files
-  (use-package counsel-projectile
-    :ensure t
-    :general
-    ;; map to some handy wrapper functions based on projectile
-    (general-nvmap :prefix sk--evil-global-leader
-		   "d" '(counsel-projectile-find-file-or-buffer :which-key "project files")
-		   "a" '(sk/counsel-ag-project-at-point :which-key "search symbol in proj")
-		   "p" '(sk/counsel-ag-project :which-key "search in project"))
-    :init
-    (setq projectile-completion-system 'ivy)
-    :config
-    (defun sk/counsel-ag-project-at-point ()
-      "use counsel ag to search for the word at point in the project"
-      (interactive)
-	  (counsel-ag (thing-at-point 'symbol) (projectile-project-root)))
-    (defun sk/counsel-ag-project ()
-      "use counsel ag to search the project"
-      (interactive)
-      (counsel-ag "" (projectile-project-root))))
+;; search the buffer or all buffer
+(use-package swiper
+  :ensure t
+  :bind* (("M-s s" . swiper-all)
+		  ("C-s" . counsel-grep-or-swiper)
+		  ("M-s r" . sk/swiper-at-point))
+  :config
+  (defun sk/swiper-at-point ()
+	"use swiper to search for a word at point"
+	(interactive)
+	(swiper (thing-at-point 'word)))
+  (ivy-mode 1)
+  (counsel-mode 1))
 
-  ;; correct spellings
-  (use-package flyspell-correct-ivy
-    :ensure t
-    :general
-	(general-imap "C-," #'(flyspell-correct-previous-word-generic :which-key "correct spelling mistake"))
-    :config
-    (require 'flyspell-ivy))
+;; correct spellings
+(use-package flyspell-correct-ivy
+  :ensure t
+  :bind* (("C-c /" . flyspell-correct-previous-word-generic))
+  :config
+  (require 'flyspell-ivy)
+  (ivy-mode 1)
+  (counsel-mode 1))
 
-  ;; search using spotlight
-  (use-package spotlight
-    :ensure t
-    :general
-    (general-nvmap :prefix sk--evil-global-leader
-		   "s" '(spotlight :which-key "search desktop")))
+;; search using spotlight
+(use-package spotlight
+  :ensure t
+  :bind* (("C-c f" . spotlight))
+  :config
+  (ivy-mode 1)
+  (counsel-mode 1))
 
-  ;; to narrow down org files - because helm has helm-org-rifle. This is the closest
-  (use-package deft
-    :ensure t
-    :init
-    (setq deft-extensions '("org" "txt"))
-    (setq deft-directory "~/Dropbox/org")
-    :general
-    (general-nvmap :prefix sk--evil-global-leader
-		   "of" '(deft :which-key "find in org files")))
+;; to narrow down org files - because helm has helm-org-rifle. This is the closest
+(use-package deft
+  :ensure t
+  :init
+  (setq deft-extensions '("org" "txt"))
+  (setq deft-directory "~/Dropbox/org")
+  :bind* (("C-c d" . deft))
+  :config
+  (ivy-mode 1)
+  (counsel-mode 1))
 
-  ;; bibliography and citations
-  (use-package ivy-bibtex
-	:ensure t
-	:general
-	(general-nvmap :prefix sk--evil-global-leader
-				   "b" '(ivy-bibtex :which-key "bibliography")
-				   "B" '(nil :which-key "switch bib")
-				   "Bd" '(sk/default-bib :which-key "default")
-				   "Bc" '(sk/current-bib :which-key "current dir"))
-	:init
-	;; where is the notes
-	(setq bibtex-completion-notes-path "~/Dropbox/org/articles.org")
-	;; what is the default action
-	(setq ivy-bibtex-default-action 'bibtex-completion-insert-key)
-	;; some handy visual markers
-	(setq bibtex-completion-pdf-symbol "⌘")
-	(setq bibtex-completion-notes-symbol "✎")
-	:config
-	(defun sk/current-bib ()
-	  "Set the bibliography and library to the current directory"
-	  (interactive)
-	  (setq bibtex-completion-bibliography
-			(concat (file-name-directory buffer-file-name) "references/references.bib"))
-	  ;; where are the pdfs
-	  (setq bibtex-completion-library-path
-			(concat (file-name-directory buffer-file-name) "references"))
-	  (message (concat "Bib file is " (file-name-directory
-									   buffer-file-name) "references/references.bib")))
-	(defun sk/default-bib ()
-	  "Set the bibliography and library to the defaults"
-	  (interactive)
-	  ;; where are the bib files
-	  (setq bibtex-completion-bibliography
-			'("~/Dropbox/PhD/articles/tensors/tensors.bib"
-			  "~/Dropbox/PhD/articles/machinelearning/machinelearning.bib"
-			  "~/Dropbox/PhD/articles/association/association.bib"
-			  "~/Dropbox/PhD/articles/lorenz/lorenz.bib"
-			  "~/Dropbox/PhD/articles/multiphysics/multiphysics.bib"))
-	  ;; where are the pdfs
-	  (setq bibtex-completion-library-path
-			'("~/Dropbox/PhD/articles/tensors"
-			  "~/Dropbox/PhD/articles/machinelearning"
-			  "~/Dropbox/PhD/articles/association"
-			  "~/Dropbox/PhD/articles/lorenz"
-			  "~/Dropbox/PhD/articles/multiphysics"))
-	  (message "Default bib files set"))))
+;; bibliography and citations
+(use-package ivy-bibtex
+  :ensure t
+  :bind* (("C-c n" . ivy-bibtex)
+		  ("C-c , d" . sk/default-bib)
+		  ("C-c , c" . sk/current-bib))
+  :init
+  ;; where is the notes
+  (setq bibtex-completion-notes-path "~/Dropbox/org/articles.org")
+  ;; what is the default action
+  (setq ivy-bibtex-default-action 'bibtex-completion-insert-key)
+  ;; some handy visual markers
+  (setq bibtex-completion-pdf-symbol "⌘")
+  (setq bibtex-completion-notes-symbol "✎")
+  :config
+  (defun sk/current-bib ()
+	"Set the bibliography and library to the current directory"
+	(interactive)
+	(setq bibtex-completion-bibliography
+		  (concat (file-name-directory buffer-file-name) "references/references.bib"))
+	;; where are the pdfs
+	(setq bibtex-completion-library-path
+		  (concat (file-name-directory buffer-file-name) "references"))
+	(message (concat "Bib file is " (file-name-directory
+									 buffer-file-name) "references/references.bib")))
+  (defun sk/default-bib ()
+	"Set the bibliography and library to the defaults"
+	(interactive)
+	;; where are the bib files
+	(setq bibtex-completion-bibliography
+		  '("~/Dropbox/PhD/articles/tensors/tensors.bib"
+			"~/Dropbox/PhD/articles/machinelearning/machinelearning.bib"
+			"~/Dropbox/PhD/articles/association/association.bib"
+			"~/Dropbox/PhD/articles/lorenz/lorenz.bib"
+			"~/Dropbox/PhD/articles/multiphysics/multiphysics.bib"))
+	;; where are the pdfs
+	(setq bibtex-completion-library-path
+		  '("~/Dropbox/PhD/articles/tensors"
+			"~/Dropbox/PhD/articles/machinelearning"
+			"~/Dropbox/PhD/articles/association"
+			"~/Dropbox/PhD/articles/lorenz"
+			"~/Dropbox/PhD/articles/multiphysics"))
+	(message "Default bib files set"))
+  (ivy-mode 1)
+  (counsel-mode 1))
 
 ;; Redefine ivy's hydra
-(defhydra hydra-ivy (:hint nil
-		     :color pink)
+(defhydra hydra-ivy (:hint nil :color pink)
   "
 ^ ^ ^ ^ ^ ^ | ^Call^      ^ ^  | ^Cancel^ | ^Options^ | Action _w_/_s_/_a_: %-14s(ivy-action-name)
 ^-^-^-^-^-^-+-^-^---------^-^--+-^-^------+-^-^-------+-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^---------------------------
 ^ ^ _k_ ^ ^ | _f_ollow _o_ccur | _i_nsert | _c_: calling %-5s(if ivy-calling \"on\" \"off\") _C_ase-fold: %-10`ivy-case-fold-search
 _h_ ^+^ _l_ | _d_one   _p_roj  | _q_uit   | _m_: matcher %-5s(ivy--matcher-desc)^^^^^^^^^^^^ _t_runcate: %-11`truncate-lines
-^ ^ _j_ ^ ^ | _g_o     _D_efun | _n_arrow | _<_/_>_: shrink/grow^^^^^^^^^^^^^^^^^^^^^^^^^^^^ _C-f_/_C-b_: scroll up or down
+^ ^ _j_ ^ ^ | _g_o     _D_efun | _n_arrow | _<_/_>_: shrink/grow^^^^^^^^^^^^^^^^^^^^^^^^^^^^ _v_/_V_: scroll up or down
 "
   ;; arrows
   ("h" ivy-beginning-of-buffer)
@@ -229,8 +204,8 @@ _h_ ^+^ _l_ | _d_one   _p_roj  | _q_uit   | _m_: matcher %-5s(ivy--matcher-desc)
   ("m" ivy-toggle-fuzzy)
   (">" ivy-minibuffer-grow)
   ("<" ivy-minibuffer-shrink)
-  ("C-f" ivy-scroll-up-command)
-  ("C-b" ivy-scroll-down-command)
+  ("v" ivy-scroll-up-command)
+  ("V" ivy-scroll-down-command)
   ("w" ivy-prev-action)
   ("s" ivy-next-action)
   ("a" ivy-read-action)
@@ -240,33 +215,6 @@ _h_ ^+^ _l_ | _d_one   _p_roj  | _q_uit   | _m_: matcher %-5s(ivy--matcher-desc)
   ("D" (ivy-exit-with-action
 	(lambda (_) (find-function 'hydra-ivy/body)))
        :exit t))
-
-;; hydra for ivy occur - because evil and ivy-occur-mode mess up often
-(defhydra hydra-ivy-occur (:color red :hint nil)
-  "
- ^Occur^                                     ^Compile^
-^^^^^^^^^^----------------------------------------------------------------------------------------------
- _j_: next    _a_: action  _<_: end of buffer    _n_: next file      _h_: prev error  _q_: quit
- _k_: prev    _s_: press   _>_: start of buffer  _p_: prev file      _l_: next error
- _f_: follow  _o_: occur                       _c_: compile error  _d_: display error
-"
-  ("j" ivy-occur-next-line)
-  ("k" ivy-occur-previous-line)
-  ("a" ivy-occur-read-action)
-  ("s" ivy-occur-press)
-  ("f" ivy-occur-toggle-calling)
-  ("o" ivy-occur-dispatch :color blue)
-  ("<" beginning-of-buffer)
-  (">" end-of-buffer)
-  ("n" compilation-next-file)
-  ("p" compilation-previous-file)
-  ("h" previous-error-no-select)
-  ("l" next-error-no-select)
-  ("c" compilation-next-error)
-  ("d" compilation-display-error)
-  ("q" nil :color blue))
-(general-nvmap :prefix sk--evil-local-leader
-	       "y" '(hydra-ivy-occur/body :which-key "ivy occur"))
 
 ;; provide the configuration
 (provide 'sk-ivy)

@@ -1,4 +1,5 @@
 (setq-default cursor-type '(bar . 1))                                          ; let the default cursor shape be a bar - '|'
+
 ;; evil - vim emulation
 (use-package evil				; extensible vi layer - evil
   :ensure t				        ; ensure the package is present

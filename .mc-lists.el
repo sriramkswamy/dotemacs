@@ -19,6 +19,7 @@
 		sk/disable-god-mode
 		sk/enable-god-mode
 		sk/kill-region-or-backward-word
+		sk/mark-around-word
 		sk/remove-mark
 		sk/smarter-move-beginning-of-line
 		sp-backward-delete-char

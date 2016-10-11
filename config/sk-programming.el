@@ -5,33 +5,27 @@
 (use-package macrostep
   :ensure t
   :bind (:map emacs-lisp-mode-map
-			  ("C-\\ j" . find-function-at-point)
-			  ("C-\\ C-j" . find-function-at-point)
-			  ("C-\\ k" . describe-function)
-			  ("C-\\ C-k" . describe-function)))
+			  ("C-\\" . hydra-elisp/body)))
 (bind-keys*
  ("M-\\ e" . hydra-elisp/body)
  ("M-\\ C-e" . hydra-elisp/body))
 
 ;; lisp interaction mode
 (bind-keys :map lisp-interaction-mode-map
-		   ("C-\\ j" . find-function-at-point)
-		   ("C-\\ C-j" . find-function-at-point)
-		   ("C-\\ k" . describe-function)
-		   ("C-\\ C-k" . describe-function))
+		   ("C-\\" . hydra-elisp/body))
 
 ;; hydra for emacs lisp
 (defhydra hydra-elisp (:color pink :hint nil)
   "
  ^Macro^                        ^Eval^                          ^Run^            ^Describe^       ^Find^
 ^^^^^^^^^^-----------------------------------------------------------------------------------------------------------------------
- _e_: expand       _n_: next      _d_: defun   _x_: exp             _r_: run ielm    _K_: function    _V_: variable    _q_: quit
- _c_: collapse     _p_: previous  _b_: buffer  _s_: last sexp                      _v_: variable    _L_: library
- _C_: collapse all              _i_: region  _S_: print last sexp                _l_: library     _J_: function
+ _e_: expand       _n_: next      _d_: defun   _x_: exp             _r_: run ielm    _k_: function    _f_: variable    _q_: quit
+ _c_: collapse     _p_: previous  _b_: buffer  _s_: last sexp                      _v_: variable    _y_: library
+ _a_: collapse all              _i_: region  _t_: print last sexp                _l_: library     _j_: function
 "
   ("e" macrostep-expand)
   ("c" macrostep-collapse)
-  ("C" macrostep-collapse-all)
+  ("a" macrostep-collapse-all)
   ("n" macrostep-next-macro)
   ("p" macrostep-prev-macro)
   ("d" eval-defun :color blue)
@@ -39,14 +33,14 @@
   ("i" eval-region)
   ("x" eval-expression :color blue)
   ("s" eval-last-sexp)
-  ("S" eval-print-last-sexp)
+  ("t" eval-print-last-sexp)
   ("r" ielm :color blue)
-  ("K" describe-function :color blue)
+  ("k" describe-function :color blue)
   ("v" describe-variable :color blue)
   ("l" describe-library :color blue)
-  ("J" find-function :color blue)
-  ("V" find-variable :color blue)
-  ("L" find-library :color blue)
+  ("j" find-function :color blue)
+  ("f" find-variable :color blue)
+  ("y" find-library :color blue)
   ("q" nil :color blue))
 
 ;;;;;;;;;;;;;;;;;
@@ -135,10 +129,7 @@
 		  ("M-\\ c" . hydra-cpp/body)
 		  ("M-\\ C-c" . hydra-cpp/body))
   :bind (:map c++-mode-map
-			  ("C-\\ j" . rtags-find-symbol-at-point)
-			  ("C-\\ C-j" . rtags-find-symbol-at-point)
-			  ("C-\\ k" . rtags-print-symbol-info)
-			  ("C-\\ C-k" . rtags-print-symbol-info))
+			  ("C-\\" . hydra-cpp/body))
   :init
   (setq rtags-autostart-diagnostics t)
   (setq rtags-completions-enabled t)
@@ -174,18 +165,18 @@
   "
  ^Semantic Navigation^                                                        ^Compilation^
 ^^^^^^^^^^---------------------------------------------------------------------------------------------------------------------------------------------------------------
- _J_: symbol           _v_: virtuals      _]_: stack forward    _i_: diagnostics    _b_: build       _c_: compile with math        _o_: openmp with math        _q_: quit
- _s_: find symbol      _S_: dependencies  _[_: stack back       _f_: fixit          _B_: make        _C_: compile without math     _O_: openmp without math
- _r_: references       _K_: info          _n_: next match       _P_: preprocess	    _d_: build doc   _h_: hybrid with math         _m_: mpi with math
- _R_: find references  _t_: type          _p_: prev match       _N_: rename	    _D_: make doc    _H_: hybrid without math      _M_: mpi without math
+ _j_: symbol           _v_: virtuals      _]_: stack forward    _i_: diagnostics    _cb_: build       _cwc_: compile with math        _cwo_: openmp with math        _q_: quit
+ _s_: find symbol      _d_: dependencies  _[_: stack back       _f_: fixit          _cm_: make        _coc_: compile without math     _coo_: openmp without math
+ _r_: references       _k_: info          _n_: next match       _o_: preprocess	    _cd_: build doc   _cwb_: hybrid with math         _cwm_: mpi with math
+ _a_: find references  _t_: type          _p_: prev match       _m_: rename	    _cl_: make doc    _cob_: hybrid without math      _com_: mpi without math
 "
-  ("J" rtags-find-symbol-at-point)
+  ("j" rtags-find-symbol-at-point)
   ("s" rtags-find-symbol :color blue)
   ("r" rtags-find-references-at-point)
-  ("R" rtags-find-references :color blue)
+  ("a" rtags-find-references :color blue)
   ("v" rtags-find-virtuals-at-point)
-  ("S" rtags-print-dependencies :color blue)
-  ("K" rtags-print-symbol-info :color blue)
+  ("d" rtags-print-dependencies :color blue)
+  ("k" rtags-print-symbol-info :color blue)
   ("t" rtags-symbol-type)
   ("e" rtags-print-enum-value-at-point)
   ("]" rtags-location-stack-forward)
@@ -194,20 +185,20 @@
   ("p" rtags-previous-match)
   ("i" rtags-diagnostics :color blue)
   ("f" rtags-fixit)
-  ("P" rtags-preprocess-file)
-  ("N" rtags-rename-symbol :color blue)
-  ("b" sk/compile-cpp-build :color blue)
-  ("B" sk/compile-cpp-make :color blue)
-  ("d" sk/compile-cpp-build-doc :color blue)
-  ("D" sk/compile-cpp-make-doc :color blue)
-  ("c" sk/compile-cpp-math :color blue)
-  ("C" sk/compile-cpp-simple :color blue)
-  ("o" sk/compile-cpp-omp-math :color blue)
-  ("O" sk/compile-cpp-omp-simple :color blue)
-  ("m" sk/compile-cpp-mpi-math :color blue)
-  ("M" sk/compile-cpp-mpi-simple :color blue)
-  ("h" sk/compile-cpp-hybrid-math :color blue)
-  ("H" sk/compile-cpp-hybrid-simple :color blue)
+  ("o" rtags-preprocess-file)
+  ("m" rtags-rename-symbol :color blue)
+  ("cb" sk/compile-cpp-build :color blue)
+  ("cm" sk/compile-cpp-make :color blue)
+  ("cd" sk/compile-cpp-build-doc :color blue)
+  ("cl" sk/compile-cpp-make-doc :color blue)
+  ("cwc" sk/compile-cpp-math :color blue)
+  ("coc" sk/compile-cpp-simple :color blue)
+  ("cwo" sk/compile-cpp-omp-math :color blue)
+  ("coo" sk/compile-cpp-omp-simple :color blue)
+  ("cwm" sk/compile-cpp-mpi-math :color blue)
+  ("com" sk/compile-cpp-mpi-simple :color blue)
+  ("cwb" sk/compile-cpp-hybrid-math :color blue)
+  ("cob" sk/compile-cpp-hybrid-simple :color blue)
   ("q" nil :color blue))
 
 ;;;;;;;;;;;;;;;;;;
@@ -218,6 +209,8 @@
 (use-package python
   :ensure t
   :mode ("\\.py\\'" . python-mode)
+  :bind (:map python-mode-map
+			  ("C-\\ r" . hydra-python/body))
   :bind* (("M-\\ p" . hydra-python/body)
 		  ("M-\\ C-p" . hydra-python/body))
   :config
@@ -226,34 +219,30 @@
   ;; (setq ansi-color-for-comint-mode t)
   ;; (setq python-shell-interpreter "python3")
   (setq python-shell-native-complete nil)
-  (add-to-list 'python-shell-completion-native-disabled-interpreters "python3")
-  ;; Python auto completion
-  (use-package company-jedi
-	:ensure t
-	:demand t
-	:bind* (("C-c y j" . company-jedi))
-	:config
-	(progn
-	  (add-to-list 'company-backends 'company-jedi)))
-  ;; python semantic analyzer
-  (use-package anaconda-mode
-	:ensure t
-	:diminish anaconda-mode
-	:diminish anaconda-eldoc-mode
-	:commands (anaconda-mode-find-definitions
-			   anaconda-mode-find-assignments
-			   anaconda-mode-find-references
-			   anaconda-mode-find-file
-			   anaconda-mode-show-doc
-			   anaconda-mode-go-back)
-	:bind (:map python-mode-map
-				("C-\\ j" . anaconda-mode-find-definitions)
-				("C-\\ C-j" . anaconda-mode-find-definitions)
-				("C-\\ k" . anaconda-mode-show-doc)
-				("C-\\ C-k" . anaconda-mode-show-doc))
-	:config
-	(progn
-	  (add-hook 'python-mode-hook 'anaconda-mode))))
+  (add-to-list 'python-shell-completion-native-disabled-interpreters "python3"))
+
+;; python semantic analyzer
+(use-package anaconda-mode
+  :ensure t
+  :diminish anaconda-mode
+  :diminish anaconda-eldoc-mode
+  :commands (anaconda-mode-find-definitions
+			 anaconda-mode-find-assignments
+			 anaconda-mode-find-references
+			 anaconda-mode-find-file
+			 anaconda-mode-show-doc
+			 anaconda-mode-go-back)
+  :config
+  (anaconda-mode))
+
+;; Python auto completion
+(use-package company-jedi
+  :ensure t
+  :demand t
+  :bind* (("C-c y j" . company-jedi))
+  :config
+  (progn
+	(add-to-list 'company-backends 'company-jedi)))
 
 ;; Format python code
 (use-package py-yapf
@@ -299,8 +288,8 @@
  ^Virtualenv^                               ^Pyenv^
 ^^^^^^^^^^-----------------------------------------------------------
  _w_: workon      _l_: location    _m_: make    _s_: set    _q_: quit
- _d_: deactivate  _v_: list venv   _r_: remove  _u_: unset
-	_c_: change dir  _p_: copy
+ _d_: deactivate  _v_: list venv   _r_: remove  _u_: unset  _h_: head
+ _c_: change dir  _p_: copy
 "
   ("w" venv-workon)
   ("d" venv-deactivate)
@@ -312,6 +301,7 @@
   ("p" venv-cpvirtualenv)
   ("s" pyenv-set)
   ("u" pyenv-unset)
+  ("h" hydra-python/body :exit t)
   ("q" nil :color blue))
 
 ;; python testing
@@ -332,48 +322,57 @@
   "
  ^Tests^                ^PDB^
 ^^^^^^^^^^------------------------------------------------
- _o_: one  _d_: dir       _O_: one  _D_: dir      _q_: quit
- _a_: all  _f_: failed    _A_: all  _F_: failed
-   _m_: module            _M_: module
+ _o_: one  _d_: dir       _po_: one  _pd_: dir      _q_: quit
+ _a_: all  _f_: failed    _pa_: all  _pf_: failed   _h_: head
+ _m_: module            _pm_: module
 "
   ("o" pytest-one)
   ("a" pytest-all)
   ("d" pytest-directory)
   ("f" pytest-failed)
   ("m" pytest-module)
-  ("O" pytest-pdb-one)
-  ("A" pytest-pdb-all)
-  ("D" pytest-pdb-directory)
-  ("F" pytest-pdb-failed)
-  ("M" pytest-pdb-module)
+  ("po" pytest-pdb-one)
+  ("pa" pytest-pdb-all)
+  ("pd" pytest-pdb-directory)
+  ("pf" pytest-pdb-failed)
+  ("pm" pytest-pdb-module)
+  ("h" hydra-python/body :exit t)
   ("q" nil :color blue))
 
 ;; hydra for python
-(defhydra hydra-python (:color pink :hint nil)
+(defhydra hydra-python (:pre (anaconda-mode) :color pink :hint nil)
   "
  ^Semantic Navigation^         ^Eval^         ^REPL^        ^Miscellaneous^
 ^^^^^^^^^^---------------------------------------------------------------------------------------------------------
- _J_: definition    _K_: doc     _d_: def       _r_: run      _v_: virtualenv    _x_: sphinx        _q_: quit
- _a_: assignments   _f_: file    _b_: buffer    _R_: switch   _t_: tests         _y_: yapf region
- _e_: references    _[_: back    _i_: region                                 _Y_: yapf buffer
+ _j_: definition    _k_: doc     _d_: def       _r_: run      _v_: virtualenv    _x_: sphinx        _q_: quit
+ _a_: assignments   _[_: back    _b_: buffer    _]_: switch   _t_: tests         _y_: yapf region
+ _e_: references               _i_: region                                 _f_: yapf buffer
 "
-  ("J" anaconda-mode-find-definitions)
+  ("j" anaconda-mode-find-definitions)
   ("a" anaconda-mode-find-assignments)
   ("e" anaconda-mode-find-references)
-  ("K" anaconda-mode-show-doc :color blue)
-  ("f" anaconda-mode-find-file :color blue)
+  ("k" anaconda-mode-show-doc :color blue)
   ("[" anaconda-mode-go-back)
   ("d" python-shell-send-defun)
   ("b" python-shell-send-buffer :color blue)
   ("i" python-shell-send-region)
   ("r" run-python :color blue)
-  ("R" python-shell-switch-to-shell :color blue)
+  ("]" python-shell-switch-to-shell :color blue)
   ("v" hydra-py-venv/body :exit t)
   ("t" hydra-py-test/body :exit t)
   ("x" sphinx-doc :color blue)
   ("y" py-yapf-region)
-  ("Y" py-yapf-buffer :color blue)
+  ("f" py-yapf-buffer :color blue)
   ("q" nil :color blue))
+
+;; which key replacements
+(which-key-add-major-mode-key-based-replacements 'python-mode
+  "C-\\ v" "virtualenv"
+  "C-\\ C-v" "virtualenv"
+  "C-\\ t" "test"
+  "C-\\ C-t" "test"
+  "C-\\ t p" "pdb"
+  "C-\\ C-t C-p" "pdb")
 
 ;;;;;;;;;;;;;;;;;
 ;;    Stats    ;;
@@ -419,8 +418,7 @@
 			 ess-help-web-search
 			 ess-display-help-apropos)
   :bind (:map ess-mode-map
-			  ("C-\\ k" . ess-display-help-on-object)
-			  ("C-\\ C-k" . ess-display-help-on-object))
+			  ("C-\\" . hydra-stats/body))
   :bind* (("M-\\ s" . hydra-stats/body)
 		  ("M-\\ C-s" . hydra-stats/body))
   :init
@@ -433,23 +431,24 @@
   "
  ^Package^      ^Devtools^                             ^Revdep^
 ^^^^^^^^^^------------------------------------------------------------------------------
- _i_: index     _I_: install    _s_: set     _g_: github   _C_: check cmd     _q_: quit
- _l_: variable  _L_: load       _u_: unload  _h_: check    _P_: check package
+ _x_: index     _i_: install    _s_: set     _w_: github   _c_: check cmd     _q_: quit
+ _l_: library   _a_: load       _u_: unload  _e_: check    _k_: check package _h_: head
  _p_: install   _d_: document   _t_: test
 "
-  ("i" ess-display-package-index)
+  ("x" ess-display-package-index)
   ("l" ess-install-library)
   ("p" ess-install.packages)
-  ("I" ess-r-devtools-install-package)
-  ("L" ess-r-devtools-load-package)
+  ("i" ess-r-devtools-install-package)
+  ("a" ess-r-devtools-load-package)
   ("d" ess-r-devtools-document-package)
   ("s" ess-r-package-set-package)
   ("u" ess-r-devtools-unload-package)
   ("t" ess-r-devtools-test-package)
-  ("g" ess-r-devtools-install-github)
-  ("h" ess-r-devtools-check-package)
-  ("C" ess-r-devtools-revdep-check-cmd)
-  ("P" ess-r-devtools-revdep-check-package)
+  ("w" ess-r-devtools-install-github)
+  ("e" ess-r-devtools-check-package)
+  ("c" ess-r-devtools-revdep-check-cmd)
+  ("k" ess-r-devtools-revdep-check-package)
+  ("h" hydra-stats/body :exit t)
   ("q" nil :color blue))
 
 ;; hydra for stats roxy
@@ -458,7 +457,7 @@
  ^Roxy Entry^                     ^Preview^
 ^^^^^^^^^^------------------------------------------------
  _n_: next    _t_: toggle region    _h_: html    _q_: quit
- _p_: prev    _a_: show all         _x_: text
+ _p_: prev    _a_: show all         _x_: text    _h_: head
  _u_: update  _c_: cycle            _r_: Rd
 "
   ("n" ess-roxy-next-entry)
@@ -467,9 +466,10 @@
   ("t" ess-roxy-toggle-roxy-region)
   ("a" ess-roxy-show-all :color blue)
   ("c" ess-roxy-cycle-example)
-  ("h" ess-roxy-preview-HTML :color blue)
+  ("p" ess-roxy-preview-HTML :color blue)
   ("x" ess-roxy-preview-text :color blue)
   ("r" ess-roxy-preview-Rd :color blue)
+  ("h" hydra-stats/body :exit t)
   ("q" nil :color blue))
 
 ;; hydra for stats debug
@@ -477,28 +477,29 @@
   "
  ^Breakpoint^                               ^Debug^
 ^^^^^^^^^^------------------------------------------------------------------------------------------------------------
- _s_: set       _l_: logger       _n_: next     _w_: watch      _G_: tracebug help  _i_: goto input     _q_: quit
- _u_: kill      _c_: conditional  _p_: prev     _a_: call stack _f_: flag           _r_: error activate
- _U_: kill all  _e_: eval env     _t_: toggle   _g_: tracebug   _F_: unflag         _b_: traceback
+ _s_: set       _l_: logger       _n_: next     _w_: watch      _b_: tracebug help  _i_: goto input     _q_: quit
+ _u_: kill      _c_: conditional  _p_: prev     _a_: call stack _f_: flag           _r_: error activate _h_: head
+ _k_: kill all  _v_: eval env     _t_: toggle   _e_: tracebug   _d_: unflag         _o_: traceback
 "
   ("s" ess-bp-set)
   ("u" ess-bp-kill)
-  ("U" ess-bp-kill-all)
+  ("k" ess-bp-kill-all)
   ("l" ess-bp-set-logger)
   ("c" ess-bp-set-conditional)
-  ("e" ess-r-set-evaluation-env :color blue)
+  ("v" ess-r-set-evaluation-env :color blue)
   ("n" ess-bp-next)
   ("p" ess-bp-previous)
   ("t" ess-bp-toggle-state)
   ("w" ess-watch :color blue)
   ("a" ess-show-call-stack :color blue)
-  ("g" ess-toggle-tracebug :color blue)
-  ("G" ess-tracebug-show-help :color blue)
+  ("e" ess-toggle-tracebug :color blue)
+  ("b" ess-tracebug-show-help :color blue)
   ("f" ess-debug-flag-for-debugging)
-  ("F" ess-debug-unflag-for-debugging)
+  ("d" ess-debug-unflag-for-debugging)
   ("i" ess-debug-goto-input-event-marker :color blue)
   ("r" ess-debug-toggle-error-action)
-  ("b" ess-show-traceback :color blue)
+  ("o" ess-show-traceback :color blue)
+  ("h" hydra-stats/body :exit t)
   ("q" nil :color blue))
 
 ;; hydra for stats
@@ -506,36 +507,45 @@
   "
  ^Eval/REPL^                                                    ^Describe/Doc^                  ^Misc^
 ^^^^^^^^^^-----------------------------------------------------------------------------------------------------------------------
- _r_: R repl          _d_: func/para     _l_: load file             _h_: help       _w_: web search   _p_: packages    _q_: quit
- _u_: julia repl      _i_: region/line   _L_: load library          _o_: obj at pt  _a_: apropos      _x_: execute
- _R_: switch to repl  _b_: buffer        _f_: load file namespace   _D_: demos      _O_: dump obj     _s_: style
- _c_: chunk           _g_: to beg        _G_: to end                _v_: vignettes  _e_: debug        _y_: roxy
+ _r_: R repl          _d_: func/para     _f_: load file             _k_: help       _w_: web search   _p_: packages    _q_: quit
+ _j_: julia repl      _i_: region/line   _l_: load library          _o_: obj at pt  _a_: apropos      _x_: execute
+ _]_: switch to repl  _b_: buffer        _n_: load file namespace   _e_: demos      _z_: dump obj     _t_: style
+ _c_: chunk           _<_: to beg        _>_: to end                _v_: vignettes  _u_: debug        _y_: roxy
 "
   ("r" R :color blue)
-  ("u" julia :color blue)
-  ("R" ess-switch-to-ESS :color blue)
+  ("j" julia :color blue)
+  ("]" ess-switch-to-ESS :color blue)
   ("d" ess-eval-function-or-paragraph-and-step)
   ("i" ess-eval-region-or-line-and-step)
   ("b" ess-eval-buffer)
-  ("g" ess-eval-buffer-from-beg-to-here)
-  ("G" ess-eval-buffer-from-here-to-end)
+  ("<" ess-eval-buffer-from-beg-to-here)
+  (">" ess-eval-buffer-from-here-to-end)
   ("c" ess-eval-chunk-and-step)
-  ("l" ess-load-file)
-  ("L" ess-load-library)
-  ("f" ess-r-load-file-namespaced)
-  ("O" ess-dump-object-into-edit-buffer :color blue)
-  ("h" ess-help :color blue)
+  ("f" ess-load-file)
+  ("l" ess-load-library)
+  ("n" ess-r-load-file-namespaced)
+  ("z" ess-dump-object-into-edit-buffer :color blue)
+  ("k" ess-help :color blue)
   ("o" ess-describe-object-at-point :color blue)
-  ("D" ess-display-demos :color blue)
+  ("e" ess-display-demos :color blue)
   ("v" ess-display-vignettes :color blue)
   ("w" ess-help-web-search :color blue)
   ("a" ess-display-help-apropos :color blue)
-  ("e" hydra-stats-debug/body :exit t)
   ("x" ess-execute :color blue)
-  ("s" ess-set-style :color blue)
+  ("t" ess-set-style :color blue)
+  ("u" hydra-stats-debug/body :exit t)
   ("p" hydra-stats-packages/body :exit t)
   ("y" hydra-stats-roxy/body :exit t)
   ("q" nil :color blue))
+
+;; which key replacements
+(which-key-add-major-mode-key-based-replacements 'ess-mode
+  "C-\\ u" "debug"
+  "C-\\ C-u" "debug"
+  "C-\\ p" "package"
+  "C-\\ C-p" "package"
+  "C-\\ y" "roxy"
+  "C-\\ C-y" "roxy")
 
 ;;;;;;;;;;;;;;;;;;
 ;;    MATLAB    ;;
@@ -565,10 +575,7 @@
 			 matlab-show-line-info
 			 matlab-find-file-on-path)
   :bind (:map matlab-mode-map
-			  ("C-\\ j" . matlab-find-file-on-path)
-			  ("C-\\ C-j" . matlab-find-file-on-path)
-			  ("C-\\ k" . matlab-shell-describe-command)
-			  ("C-\\ C-k" . matlab-shell-describe-command))
+			  ("C-\\" . hydra-matlab/body))
   :bind* (("M-\\ m" . hydra-matlab/body)
 		  ("M-\\ C-m" . hydra-matlab/body)))
 
@@ -577,20 +584,20 @@
   "
  ^Describe^                      ^Run^                ^REPL^
 ^^^^^^^^^^-------------------------------------------------------------------
- _K_: command    _t_: topic        _i_: region/line     _r_: matlab    _q_: quit
- _v_: variable   _J_: file on path _f_: cell            _R_: switch
+ _k_: command    _t_: topic        _i_: region/line     _r_: matlab    _q_: quit
+ _v_: variable   _j_: file on path _f_: cell            _]_: switch
  _l_: line                       _c_: command
 "
-  ("K" matlab-shell-describe-command)
+  ("k" matlab-shell-describe-command)
   ("v" matlab-shell-describe-variable)
   ("l" matlab-show-line-info)
   ("t" matlab-shell-topic-browser :color blue)
-  ("J" matlab-find-file-on-path :color blue)
+  ("j" matlab-find-file-on-path :color blue)
   ("i" matlab-shell-run-region-or-line)
   ("f" matlab-shell-run-cell)
   ("c" matlab-shell-run-command :color blue)
   ("r" matlab-shell :color blue)
-  ("R" matlab-show-matlab-shell-buffer :color blue)
+  ("]" matlab-show-matlab-shell-buffer :color blue)
   ("q" nil :color blue))
 
 ;;;;;;;;;;;;;;;
@@ -603,7 +610,10 @@
   :mode ("\\.html\\'" . web-mode)
   :commands (httpd-start
 			 httpd-stop)
-  :bind* (("M-\\ w" . hydra-web/body))
+  :bind (:map web-mode-map
+			  ("C-\\" . hydra-web/body))
+  :bind* (("M-\\ w" . hydra-web/body)
+		  ("M-\\ C-w" . hydra-web/body))
   :config
   ;; HTML completion
   (use-package company-web
@@ -651,40 +661,44 @@
   "
  ^Server^          ^Skewer^                                                                               ^Format^
 ^^^^^^^^^^-------------------------------------------------------------------------------------------------------------------------------------------------------
- _w_: httpd start  _m_: skewer mode        _r_: skewer repl     _d_: eval defun        _p_: phantomjs start     _h_: html region    _t_: js region    _q_: quit
- _W_: httpd stop   _L_: skewer html mode   _R_: run skewer      _l_: load buffer       _P_: phantomjs stop      _H_: html buffer    _T_: js buffer
- _i_: impatient    _M_: skewer css mode    _I_: list clients    _s_: last sexp         _b_: bower load          _c_: css region
-				_S_: print last sexp   _B_: bower refresh       _C_: css buffer
+ _w_: httpd start  _mm_: skewer mode        _r_: skewer repl     _d_: eval defun        _j_: phantomjs start     _fh_: html region    _fj_: js region    _q_: quit
+ _z_: httpd stop   _mh_: skewer html mode   _u_: run skewer      _l_: load buffer       _p_: phantomjs stop      _fl_: html buffer    _fb_: js buffer
+ _n_: impatient    _mc_: skewer css mode    _i_: list clients    _s_: last sexp         _b_: bower load          _fc_: css region
+				 _t_: print last sexp     _e_: bower refresh                                               _fs_: css buffer
 "
   ("w" httpd-start)
-  ("W" httpd-stop)
-  ("i" impatient-mode)
-  ("m" skewer-mode :color blue)
-  ("L" skewer-html-mode :color blue)
-  ("M" skewer-css-mode :color blue)
+  ("z" httpd-stop)
+  ("n" impatient-mode)
+  ("mm" skewer-mode :color blue)
+  ("mh" skewer-html-mode :color blue)
+  ("mc" skewer-css-mode :color blue)
   ("r" skewer-repl :color blue)
-  ("R" run-skewer :color blue)
-  ("I" list-skewer-clients)
+  ("u" run-skewer :color blue)
+  ("i" list-skewer-clients)
   ("l" skewer-load-buffer)
   ("d" skewer-eval-defun)
   ("s" skewer-eval-last-expression)
-  ("S" skewer-eval-print-last-expression)
-  ("p" skewer-run-phantomjs)
-  ("P" skewer-phantomjs-kill)
+  ("t" skewer-eval-print-last-expression)
+  ("j" skewer-run-phantomjs)
+  ("p" skewer-phantomjs-kill)
   ("b" skewer-bower-load)
-  ("B" skewer-bower-refresh)
-  ("h" web-beautify-html)
-  ("H" web-beautify-html-buffer)
-  ("c" web-beautify-css)
-  ("C" web-beautify-css-buffer)
-  ("t" web-beautify-js)
-  ("T" web-beautify-js-buffer)
+  ("e" skewer-bower-refresh)
+  ("fh" web-beautify-html)
+  ("fl" web-beautify-html-buffer)
+  ("fc" web-beautify-css)
+  ("fs" web-beautify-css-buffer)
+  ("fj" web-beautify-js)
+  ("fb" web-beautify-js-buffer)
   ("q" nil :color blue))
 
 ;; js3 mode for javascript
 (use-package js3-mode
   :ensure t
   :mode ("\\.js\\'" . js3-mode)
+  :bind (:map js3-mode-map
+			  ("C-\\" . hydra-javascript/body)
+		 :map js-mode-map
+			  ("C-\\" . hydra-javascript/body))
   :bind* (("M-\\ j" . hydra-javascript/body)
 		  ("M-\\ C-j" . hydra-javascript/body)))
 ;; JS semantic navigation
@@ -697,16 +711,6 @@
 			 tern-use-server
 			 tern-highlight-refs
 			 tern-rename-variable)
-  :bind (:map js3-mode-map
-			  ("C-\\ j" . tern-find-definition)
-			  ("C-\\ C-j" . tern-find-definition)
-			  ("C-\\ k" . tern-get-docs)
-			  ("C-\\ C-k" . tern-get-docs))
-  :bind (:map js-mode-map
-			  ("C-\\ j" . tern-find-definition)
-			  ("C-\\ C-j" . tern-find-definition)
-			  ("C-\\ k" . tern-get-docs)
-			  ("C-\\ C-k" . tern-get-docs))
   :config
   ;; Tern for JS
   (use-package company-tern
@@ -748,28 +752,28 @@
   "
  ^Semantic Navigation^                 ^REPL/Eval^                        ^Misc^
 ^^^^^^^^^^--------------------------------------------------------------------------------------------------
- _t_: type            _J_: definition    _r_: node repl       _s_: last sexp  _v_: nvm use        _q_: quit
- _u_: use server      _K_: docs          _R_: switch to repl  _i_: region     _V_: nvm use for
- _h_: highlight refs                   _l_: load file       _b_: buffer     _f_: format
- _N_: rename                           _x_: execute                       _F_: ast format
+ _t_: type            _j_: definition    _r_: node repl       _s_: last sexp  _v_: nvm use        _q_: quit
+ _u_: use server      _k_: docs          _]_: switch to repl  _i_: region     _n_: nvm use for
+ _m_: highlight refs                   _l_: load file       _b_: buffer     _f_: format
+ _e_: rename                           _x_: execute                       _a_: ast format
 "
   ("t" tern-get-type)
   ("u" tern-use-server)
-  ("h" tern-highlight-refs)
-  ("N" tern-rename-variable)
-  ("J" tern-find-definition)
-  ("K" tern-get-docs)
+  ("m" tern-highlight-refs)
+  ("e" tern-rename-variable)
+  ("j" tern-find-definition)
+  ("k" tern-get-docs)
   ("r" nodejs-repl :color blue)
-  ("R" nodejs-repl-switch-to-repl :color blue)
+  ("]" nodejs-repl-switch-to-repl :color blue)
   ("s" nodejs-repl-send-last-sexp)
   ("i" nodejs-repl-send-region)
   ("b" nodejs-repl-send-buffer :color blue)
   ("x" nodejs-repl-execute :color blue)
   ("l" nodejs-repl-load-file :color blue)
   ("v" nvm-use :color blue)
-  ("V" nvm-use-for :color blue)
+  ("n" nvm-use-for :color blue)
   ("f" jsfmt)
-  ("F" jsfmt-ast)
+  ("a" jsfmt-ast)
   ("q" nil :color blue))
 
 ;; coffee script syntax highlighting
@@ -818,8 +822,7 @@
   :bind* (("M-\\ u" . hydra-lua/body)
 		  ("M-\\ C-u" . hydra-lua/body))
   :bind (:map lua-mode-map
-			  ("C-\\ k" . lua-search-documentation)
-			  ("C-\\ C-k" . lua-search-documentation)))
+			  ("C-\\" . hydra-lua/body)))
 
 ;; hydra for lua
 (defhydra hydra-lua (:color pink :hint nil)
@@ -827,12 +830,12 @@
  ^Eval^
 ^^^^^^^^^^--------------------------------------------------------
  _r_: run lua        _i_: send region   _d_: send defun    _q_: quit
- _R_: switch to lua  _b_: send buffer   _l_: send line
- _K_: lua-search-documentation
+ _]_: switch to lua  _b_: send buffer   _l_: send line
+ _k_: lua-search-documentation
 "
   ("r" lua-start-process :color blue)
-  ("R" lua-show-process-buffer :color blue)
-  ("K" lua-search-documentation :color blue)
+  ("]" lua-show-process-buffer :color blue)
+  ("k" lua-search-documentation :color blue)
   ("i" lua-send-region)
   ("b" lua-send-buffer :color blue)
   ("d" lua-send-defun :color blue)
@@ -848,6 +851,8 @@
   :mode "\\.sml\\'"
   :init
   (setq sml-program-name "sml")
+  :bind (:map sml-mode-map
+			  ("C-\\" . hydra-sml/body))
   :bind* (("M-\\ l" . hydra-sml/body)
 		  ("M-\\ C-l" . hydra-sml/body)))
 
@@ -857,10 +862,10 @@
  ^Eval^
 ^^^^^^^^^^--------------------------------------------------------
  _r_: run sml        _i_: send region   _c_: compile    _q_: quit
- _R_: switch to sml  _b_: send buffer   _l_: load file
+ _]_: switch to sml  _b_: send buffer   _l_: load file
 "
   ("r" sml-prog-proc-switch-to :color blue)
-  ("R" sml-prog-proc-switch-to :color blue)
+  ("]" sml-prog-proc-switch-to :color blue)
   ("i" sml-prog-proc-send-region)
   ("b" sml-prog-proc-send-buffer :color blue)
   ("c" sml-prog-proc-compile :color blue)
@@ -897,44 +902,38 @@
   :bind* (("M-\\ k" . hydra-racket-scheme/body)
 		  ("M-\\ C-k" . hydra-racket-scheme/body))
   :bind (:map scheme-mode-map
-			  ("C-\\ j" . geiser-edit-symbol-at-point)
-			  ("C-\\ C-j" . geiser-edit-symbol-at-point)
-			  ("C-\\ k" . geiser-doc-symbol-at-point)
-			  ("C-\\ C-k" . geiser-doc-symbol-at-point))
+			  ("C-\\" . hydra-racket-scheme/body))
   :bind (:map racket-mode-map
-			  ("C-\\ j" . geiser-edit-symbol-at-point)
-			  ("C-\\ C-j" . geiser-edit-symbol-at-point)
-			  ("C-\\ k" . geiser-doc-symbol-at-point)
-			  ("C-\\ C-k" . geiser-doc-symbol-at-point)))
+			  ("C-\\" . hydra-racket-scheme/body)))
 
 ;; hydra for racket/scheme
 (defhydra hydra-racket-scheme (:color pink :hint nil)
   "
  ^Semantic Navigation^                                         ^Eval^
 ^^^^^^^^^^-------------------------------------------------------------------------------------------------------------------------------------------------------
- _J_: symbol at point     _e_: edit module    _x_: xref callers    _r_: run geiser      _d_: eval defun     _D_: expand defun     _c_: compile    _q_: quit
- _K_: doc symbol at pt    _m_: doc module     _X_: xref callees    _R_: switch to repl  _b_: eval buffer    _s_: eval last sexp   _l_: load
- _L_: insert lambda       _M_: doc manual                                           _i_: eval region    _S_: expand last sexp
+ _j_: symbol at point     _e_: edit module    _c_: xref callers    _r_: run geiser      _d_: eval defun     _u_: expand defun     _p_: compile    _q_: quit
+ _k_: doc symbol at pt    _m_: doc module     _v_: xref callees    _]_: switch to repl  _b_: eval buffer    _s_: eval last sexp   _f_: load
+ _l_: insert lambda       _o_: doc manual     _t_: add to path                        _i_: eval region    _x_: expand last sexp
 "
-  ("J" geiser-edit-symbol-at-point)
-  ("K" geiser-doc-symbol-at-point)
+  ("j" geiser-edit-symbol-at-point)
+  ("k" geiser-doc-symbol-at-point)
   ("r" run-geiser :color blue)
-  ("R" geiser-mode-switch-to-repl :color blue)
+  ("]" geiser-mode-switch-to-repl :color blue)
   ("i" geiser-eval-region)
   ("d" geiser-eval-definition)
-  ("D" geiser-expand-definition)
+  ("u" geiser-expand-definition)
   ("b" geiser-eval-buffer :color blue)
   ("s" geiser-eval-last-sexp)
-  ("S" geiser-expand-last-sexp)
-  ("c" geiser-compile-current-buffer :color blue)
-  ("l" geiser-load-file :color blue)
-  ("L" geiser-insert-lambda :color blue)
+  ("x" geiser-expand-last-sexp)
+  ("p" geiser-compile-current-buffer :color blue)
+  ("f" geiser-load-file :color blue)
+  ("l" geiser-insert-lambda :color blue)
   ("e" geiser-edit-module :color blue)
-  ("a" geiser-add-to-load-path :color blue)
+  ("t" geiser-add-to-load-path :color blue)
   ("m" geiser-doc-module :color blue)
-  ("M" geiser-doc-lookup-manual :color blue)
-  ("x" geiser-xref-callers)
-  ("X" geiser-xref-callees)
+  ("o" geiser-doc-lookup-manual :color blue)
+  ("c" geiser-xref-callers)
+  ("v" geiser-xref-callees)
   ("q" nil :color blue))
 
 ;;;;;;;;;;;;;;;;
@@ -950,6 +949,8 @@
 			 ruby-send-definition-and-go
 			 ruby-send-region
 			 ruby-send-region-and-go)
+  :bind (:map ruby-mode-map
+			  ("C-\\" . hydra-ruby/body))
   :bind* (("M-\\ r" . hydra-ruby/body)
 		  ("M-\\ C-r" . hydra-ruby/body))
   :config
@@ -976,11 +977,6 @@
 			 robe-doc
 			 robe-call-at-point
 			 robe-start)
-  :bind (:map ruby-mode-map
-			  ("C-\\ j" . robe-jump)
-			  ("C-\\ C-j" . robe-jump)
-			  ("C-\\ k" . robe-doc)
-			  ("C-\\ C-k" . robe-doc))
   :config
   (eval-after-load 'company
 	'(push 'company-robe company-backends))
@@ -1004,8 +1000,8 @@
   "
  ^Bundle^
 ^^^^^^^^^^---------------------------------------------------------
- _s_: show    _v_: version    _h_: check    _c_: console  _q_: quit
- _g_: gemfile _d_: outdated   _o_: open
+ _s_: show    _v_: version    _k_: check    _c_: console  _q_: quit
+ _g_: gemfile _d_: outdated   _o_: open                 _h_: head
  _e_: exec    _i_: install    _u_: update
 "
   ("s" bundle-show)
@@ -1014,10 +1010,11 @@
   ("v" bundle-version)
   ("d" bundle-outdated)
   ("i" bundle-install)
-  ("h" bundle-check)
+  ("k" bundle-check)
   ("o" bundle-open)
   ("u" bundle-update)
   ("c" bundle-console)
+  ("h" hydra-ruby/body :exit t)
   ("q" nil :color blue))
 
 ;; ruby testing
@@ -1053,26 +1050,27 @@
   "
  ^Tests^         ^Spec^
 ^^^^^^^^^^---------------------------------------------------------
- _t_: run          _v_: verify         _M_: verify matching  _f_: last failed  _a_: target               _p_: pending    _q_: quit
- _T_: run at point _V_: verify all     _r_: rerun            _S_: single       _A_: target other window
- _s_: toggle spec  _m_: verify method  _c_: continue         _e_: example      _E_: example other window
+ _t_: run          _v_: verify         _t_: verify matching  _f_: last failed  _a_: target               _p_: pending    _q_: quit
+ _i_: run at point _e_: verify all     _r_: rerun            _l_: single       _n_: target other window                _h_: head
+ _s_: toggle spec  _m_: verify method  _c_: continue         _x_: example      _o_: example other window
 "
   ("t" ruby-test-run)
-  ("T" ruby-test-run-at-point)
+  ("i" ruby-test-run-at-point)
   ("s" ruby-test-toggle-implementation-and-specification)
   ("v" rspec-verify)
-  ("V" rspec-verify-all)
+  ("e" rspec-verify-all)
   ("m" rspec-verify-method)
-  ("M" rspec-verify-matching)
+  ("t" rspec-verify-matching)
   ("r" rspec-rerun)
   ("c" rspec-continue)
   ("f" rspec-run-last-failed)
-  ("S" rspec-verify-single)
-  ("e" rspec-toggle-spec-and-target-find-example)
-  ("E" rspec-find-spec-or-target-find-example-other-window)
+  ("l" rspec-verify-single)
+  ("x" rspec-toggle-spec-and-target-find-example)
+  ("o" rspec-find-spec-or-target-find-example-other-window)
   ("a" rspec-toggle-spec-and-target)
-  ("A" rspec-find-spec-or-target-other-window)
+  ("n" rspec-find-spec-or-target-other-window)
   ("p" rspec-toggle-example-pendingness)
+  ("h" hydra-ruby/body :exit t)
   ("q" nil :color blue))
 
 ;; rails coding
@@ -1088,31 +1086,31 @@
 ;; hydra for ruby
 (defhydra hydra-ruby (:color pink :hint nil)
   "
- ^Semantic Navigation^       ^Static analysis^                               ^Eval^                                           ^Misc^
+ ^Semantic Navigation^       ^Static analysis^                                 ^Eval^                                           ^Misc^
 ^^^^^^^^^^-------------------------------------------------------------------------------------------------------------------------------------------------------
- _m_: method def   _K_: doc    _f_: check file        _p_: check project         _r_: ruby repl        _d_: send defun              _t_: tests     _q_:quit
- _M_: module def   _e_: robe   _F_: autcorrect file   _P_: autocorrect project   _R_: switch to repl   _D_: send defun and go       _b_: bundler
- _c_: call at pt             _e_: check dir                                                      _i_: send region             _l_: rails
- _J_: jump                   _E_: autocorrect dir                                                _I_: send region and go
+ _m_: method def   _k_: doc    _f_: check file         _p_: check project          _r_: ruby repl        _d_: send defun              _t_: tests     _q_:quit
+ _u_: module def   _s_: robe   _af_: autcorrect file   _ap_: autocorrect project   _]_: switch to repl   _}_: send defun and go       _b_: bundler
+ _c_: call at pt             _e_: check dir                                                        _i_: send region             _l_: rails
+ _j_: jump                   _ae_: autocorrect dir                                                 _>_: send region and go
 "
   ("m" robe-method-def)
-  ("M" robe-module-def)
+  ("u" robe-module-def)
   ("c" robe-call-at-point)
-  ("J" robe-jump)
-  ("K" robe-show-doc)
-  ("e" robe-start :color blue)
+  ("j" robe-jump)
+  ("k" robe-show-doc)
+  ("s" robe-start :color blue)
   ("f" rubocop-check-current-file :color blue)
-  ("F" rubocop-autocorrect-current-file :color blue)
+  ("af" rubocop-autocorrect-current-file :color blue)
   ("e" rubocop-check-directory :color blue)
-  ("E" rubocop-autocorrect-directory :color blue)
+  ("ae" rubocop-autocorrect-directory :color blue)
   ("p" rubocop-check-project :color blue)
-  ("P" rubocop-autocorrect-project :color blue)
+  ("ap" rubocop-autocorrect-project :color blue)
   ("r" inf-ruby :color blue)
-  ("R" ruby-switch-to-inf :color blue)
+  ("]" ruby-switch-to-inf :color blue)
   ("d" ruby-send-definition)
-  ("D" ruby-send-definition-and-go :color blue)
+  ("}" ruby-send-definition-and-go :color blue)
   ("i" ruby-send-region)
-  ("I" ruby-send-region-and-go :color blue)
+  (">" ruby-send-region-and-go :color blue)
   ("t" hydra-ruby-tests/body :exit t)
   ("b" hydra-ruby-bundler/body :exit t)
   ("l" hydra-projectile-rails/body :exit t)
@@ -1143,10 +1141,7 @@
 			 go-play-region
 			 go-download-play)
   :bind (:map go-mode-map
-			  ("C-\\ j" . godef-jump)
-			  ("C-\\ C-j" . godef-jump)
-			  ("C-\\ k" . godoc-at-point)
-			  ("C-\\ C-k" . godoc-at-point))
+			  ("C-\\" . hydra-go/body))
   :bind* (("M-\\ o" . hydra-go/body)
 		  ("M-\\ C-o" . hydra-go/body))
   :config
@@ -1211,14 +1206,14 @@
   "
  ^Semantic Nav^      ^Goto^                          ^Playground^    ^Oracle^                                      ^Build^
 ^^^^^^^^^^---------------------------------------------------------------------------------------------------------------------------------------------------------
- _J_: jump to def    _e_: arguments  _m_: method rec   _A_: buffer     _s_: scope      _<_: callers     _l_: implements  _c_: current file  _b_: build proj    _q_: quit
- _K_: show doc       _d_: function   _g_: imports      _i_: region     _p_: peers      _>_: callees     _P_: points to   _r_: run file      _B_: build cur dir
- _D_: godef desc     _n_: func name  _u_: rm unused    _W_: download   _G_: callgraph  _f_: definition  _E_: referrers   _R_: run all bin   _t_: test
+ _j_: jump to def    _e_: arguments  _m_: method rec   _A_: buffer     _s_: scope      _<_: callers     _l_: implements  _c_: current file  _b_: build proj    _q_: quit
+ _k_: show doc       _d_: function   _g_: imports      _i_: region     _p_: peers      _>_: callees     _P_: points to   _r_: run file      _B_: build cur dir
+ _?_: godef desc     _n_: func name  _u_: rm unused    _W_: download   _G_: callgraph  _f_: definition  _E_: referrers   _R_: run all bin   _t_: test
  _w_: jump other     _v_: return val _a_: add import   _o_: format     _S_: callstack  _F_: freevars    _C_: describe                     _T_: test proj
 "
-  ("J" godef-jump)
-  ("D" godef-describe :color blue)
-  ("K" godoc-at-point :color blue)
+  ("j" godef-jump)
+  ("?" godef-describe :color blue)
+  ("k" godoc-at-point :color blue)
   ("w" godef-jump-other-window)
   ("e" go-goto-arguments)
   ("d" go-goto-function)

@@ -85,23 +85,23 @@
 (setq doc-view-continuous t)
 
 ;; Interpret ESC as <escape> in terminal unless pressed very fast
-(defvar sk/fast-keyseq-timeout 200)
+(defvar sk/fast-keyseq-timeout 100)
 
-(defun sk/-tty-ESC-filter (map)
+(defun sk/tty-ESC-filter (map)
   (if (and (equal (this-single-command-keys) [?\e])
 		   (sit-for (/ sk/fast-keyseq-timeout 1000.0)))
 	  [escape] map))
 
-(defun sk/-lookup-key (map key)
+(defun sk/lookup-key (map key)
   (catch 'found
 	(map-keymap (lambda (k b) (if (equal key k) (throw 'found b))) map)))
 
 (defun sk/catch-tty-ESC ()
   "Setup key mappings of current terminal to turn a tty's ESC into `escape'."
   (when (memq (terminal-live-p (frame-terminal)) '(t pc))
-	(let ((esc-binding (sk/-lookup-key input-decode-map ?\e)))
+	(let ((esc-binding (sk/lookup-key input-decode-map ?\e)))
 	  (define-key input-decode-map
-		[?\e] `(menu-item "" ,esc-binding :filter sk/-tty-ESC-filter)))))
+		[?\e] `(menu-item "" ,esc-binding :filter sk/tty-ESC-filter)))))
 
 (sk/catch-tty-ESC)
 
@@ -170,8 +170,8 @@
  ("M-k" . kill-whole-line)
  ("M-j" . join-line)
  ("M-m" . toggle-input-method)
- ("C-x w" . winner-undo)
- ("C-x W" . winner-redo)
+ ("C-x w" . delete-frame)
+ ("C-x W" . make-frame)
  ("C-c m" . set-mark-command)
  ("C-x k" . kill-this-buffer)
  ("C-c g f" . find-file-at-point)
@@ -182,6 +182,10 @@
  ("C-`" . kmacro-end-or-call-macro-repeat)
  ("C-~" . kmacro-name-last-macro)
  ("C-^" . mode-line-other-buffer)
+ ("C-x C-y" . delete-blank-lines)
+ ("C-x C-o" . other-window)
+ ("C-x C-j" . winner-undo)
+ ("C-x C-a" . winner-redo)
  ("C-c o f" . flyspell-mode)
  ("C-c o p" . flyspell-prog-mode)
  ("C-c o v" . visual-line-mode)
@@ -480,12 +484,12 @@
 		  ("C-r a r" . er/mark-method-call)
 		  ("C-r i d" . sk/mark-inside-ruby-block)
 		  ("C-r a d" . er/ruby-block-up)
-		  ("C-r i g" . er/mark-inside-python-string)
-		  ("C-r a g" . er/mark-outside-python-string)
+		  ("C-r i ;" . er/mark-inside-python-string)
+		  ("C-r a ;" . er/mark-outside-python-string)
 		  ("C-r i m" . sk/mark-inside-python-block)
 		  ("C-r a m" . er/mark-outer-python-block)
-		  ("C-r i M" . er/mark-python-statement)
-		  ("C-r a M" . er/mark-python-block-and-decorator)
+		  ("C-r i :" . er/mark-python-statement)
+		  ("C-r a :" . er/mark-python-block-and-decorator)
 		  ("C-r i $" . er/mark-LaTeX-math)
 		  ("C-r a $" . sk/mark-inside-LaTeX-math)
 		  ("C-r i b" . er/mark-inside-pairs)
@@ -514,12 +518,12 @@
 		  ("C-r C-a C-r" . er/mark-method-call)
 		  ("C-r C-i C-d" . sk/mark-inside-ruby-block)
 		  ("C-r C-a C-d" . er/ruby-block-up)
-		  ("C-r C-i C-g" . er/mark-inside-python-string)
-		  ("C-r C-a C-g" . er/mark-outside-python-string)
+		  ("C-r C-i C-;" . er/mark-inside-python-string)
+		  ("C-r C-a C-;" . er/mark-outside-python-string)
 		  ("C-r C-i C-m" . sk/mark-inside-python-block)
 		  ("C-r C-a C-m" . er/mark-outer-python-block)
-		  ("C-r C-i C-M" . er/mark-python-statement)
-		  ("C-r C-a C-M" . er/mark-python-block-and-decorator)
+		  ("C-r C-i C-:" . er/mark-python-statement)
+		  ("C-r C-a C-:" . er/mark-python-block-and-decorator)
 		  ("C-r C-i C-$" . er/mark-LaTeX-math)
 		  ("C-r C-a C-$" . sk/mark-inside-LaTeX-math)
 		  ("C-r C-i C-b" . er/mark-inside-pairs)
@@ -578,6 +582,13 @@
   ("l" back-button-global-forward)
   ("q" nil :color blue))
 (bind-key* "C-c m" 'hydra-marks/body)
+
+;; neotree for folder tree
+(use-package neotree
+  :ensure t
+  :init
+  (setq neo-theme 'arrow)
+  :bind* (("C-c v" . neotree-toggle)))
 
 ;; smartparens - safe operators
 (use-package smartparens
@@ -649,7 +660,7 @@
   ;; jump to windows quickly
   (use-package ace-window
 	:ensure t
-	:bind (("C-x o" . ace-window)))
+	:bind (("C-x C-o" . ace-window)))
   ;; jump and open links fast
   (use-package ace-link
 	:ensure t
@@ -689,19 +700,13 @@
   ("q" nil :exit t))
 (bind-key* "C-x O" 'hydra-windows/body)
 
-;; imenu anywhere
-(use-package imenu-anywhere
-  :ensure t
-  :bind* (("C-c t" . imenu-anywhere)))
-
 ;; tags based navigation
 (use-package ggtags
   :ensure t
-  :defer 2
   :diminish ggtags-mode
-  :bind* (("M-=" . hydra-ggtags/body))
-  :config
-  (add-hook 'prog-mode-hook 'ggtags-mode))
+  :bind* (("M-=" . hydra-ggtags/body)
+		  ("M-]" . ggtags-find-tag-regexp)
+		  ("M-." . ggtags-update-tags)))
 ;; tags hydra
 (defhydra hydra-ggtags (:hint nil :color red)
   "
@@ -1150,7 +1155,9 @@
   :ensure t
   :bind* (("C-c h" . hydra-diff-hl/body)
 		  ("C-r i h" . diff-hl-mark-hunk)
-		  ("C-r a h" . diff-hl-mark-hunk))
+		  ("C-r C-i C-h" . diff-hl-mark-hunk)
+		  ("C-r a h" . diff-hl-mark-hunk)
+		  ("C-r C-a C-h" . diff-hl-mark-hunk))
   :commands (global-diff-hl-mode
 			 diff-hl-mode
 			 diff-hl-next-hunk
@@ -1272,6 +1279,7 @@
 ;; error checking
 (use-package flycheck
   :ensure t
+  :defer 2
   :commands (flycheck-buffer
 			 flycheck-previous-error
 			 flycheck-next-error
@@ -1288,8 +1296,8 @@
  _j_: next     _l_: list    _d_: display  _s_: select  _q_: quit
  _k_: previous _e_: explain _c_: check    _v_: verify
   "
-  ("k" flycheck-next-error)
-  ("j" flycheck-previous-error)
+  ("j" flycheck-next-error)
+  ("k" flycheck-previous-error)
   ("l" flycheck-list-errors :color blue)
   ("e" flycheck-explain-error-at-point)
   ("d" flycheck-display-error-at-point)
@@ -1370,9 +1378,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; ivy
-(require 'sk-ivy)
+;; (require 'sk-ivy)
 ;; helm
-;; (require 'sk-helm)
+(require 'sk-helm)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Included packages    ;;

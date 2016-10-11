@@ -23,3 +23,6 @@ url/*
 /irony/*
 undohist/*
 /var/*
+/config/GPATH
+/config/GRTAGS
+/config/GTAGS

@@ -245,7 +245,7 @@ Its element is a pair of `buffer-name' and `mode-line-format'.")
 ;; helm for narrowing
 (use-package helm
   :ensure t
-  :demand t
+  :defer 1
   :diminish helm-mode
   :commands (helm-mode
 			 helm-ido-like
@@ -254,7 +254,9 @@ Its element is a pair of `buffer-name' and `mode-line-format'.")
 			 describe-variable)
   :bind* (("C-c '" . helm-man-woman)
 		  ("C-c r" . helm-resume)
+		  ("C-c q" . helm-quickrun)
 		  ("C-c f" . helm-for-files)
+		  ("C-c t" . helm-semantic-or-imenu)
 		  ("C-c #" . helm-colors)
 		  ("C-c `" . helm-all-mark-rings)
 		  ("C-c C-\\" . helm-top))

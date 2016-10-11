@@ -9,7 +9,7 @@
 ;; ivy for everything
 (use-package ivy
   :ensure t
-  :demand t
+  :defer 1
   :diminish ivy-mode
   :init
   ;; set ivy height
@@ -38,8 +38,6 @@
 			  ("C-S-m" . ivy-restrict-to-matches)
 			  ("S-<return>" . ivy-restrict-to-matches))
   :bind* (("C-c r" . ivy-resume)
-		  ("C-c v" . ivy-push-view)
-		  ("C-c V" . ivy-pop-view)
 		  ("M-s i" . ivy-wgrep-change-to-wgrep-mode)
 		  ("M-s C-i" . ivy-wgrep-change-to-wgrep-mode))
   :config
@@ -61,6 +59,7 @@
 		 ("C-x 8" . counsel-unicode-char))
   :bind* (("M-s c" . counsel-ag)
 		  ("M-s C-c" . counsel-ag)
+		  ("C-c t" . counsel-imenu)
 		  ("C-c ." . counsel-load-theme))
   :config
   (ivy-mode 1)

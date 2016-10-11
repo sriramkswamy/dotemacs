@@ -9,7 +9,9 @@
 			  ("C-\\ C-j" . find-function-at-point)
 			  ("C-\\ k" . describe-function)
 			  ("C-\\ C-k" . describe-function)))
-(bind-key* "M-\\ e" 'hydra-elisp/body)
+(bind-keys*
+ ("M-\\ e" . hydra-elisp/body)
+ ("M-\\ C-e" . hydra-elisp/body))
 
 ;; lisp interaction mode
 (bind-keys :map lisp-interaction-mode-map
@@ -130,7 +132,8 @@
 (use-package rtags
   :ensure t
   :bind* (("C-c y c" . company-rtags)
-		  ("M-\\ c" . hydra-cpp/body))
+		  ("M-\\ c" . hydra-cpp/body)
+		  ("M-\\ C-c" . hydra-cpp/body))
   :bind (:map c++-mode-map
 			  ("C-\\ j" . rtags-find-symbol-at-point)
 			  ("C-\\ C-j" . rtags-find-symbol-at-point)
@@ -215,7 +218,8 @@
 (use-package python
   :ensure t
   :mode ("\\.py\\'" . python-mode)
-  :bind* (("M-\\ p" . hydra-python/body))
+  :bind* (("M-\\ p" . hydra-python/body)
+		  ("M-\\ C-p" . hydra-python/body))
   :config
   (setq python-shell-interpreter "ipython"
 		python-shell-interpreter-args "--simple-prompt -i")
@@ -417,7 +421,8 @@
   :bind (:map ess-mode-map
 			  ("C-\\ k" . ess-display-help-on-object)
 			  ("C-\\ C-k" . ess-display-help-on-object))
-  :bind* (("M-\\ s" . hydra-stats/body))
+  :bind* (("M-\\ s" . hydra-stats/body)
+		  ("M-\\ C-s" . hydra-stats/body))
   :init
   (setq ess-use-ido nil)
   :config
@@ -564,7 +569,8 @@
 			  ("C-\\ C-j" . matlab-find-file-on-path)
 			  ("C-\\ k" . matlab-shell-describe-command)
 			  ("C-\\ C-k" . matlab-shell-describe-command))
-  :bind* (("M-\\ m" . hydra-matlab/body)))
+  :bind* (("M-\\ m" . hydra-matlab/body)
+		  ("M-\\ C-m" . hydra-matlab/body)))
 
 ;; hydra for matlab
 (defhydra hydra-matlab (:color pink :hint nil)
@@ -679,7 +685,8 @@
 (use-package js3-mode
   :ensure t
   :mode ("\\.js\\'" . js3-mode)
-  :bind* (("M-\\ j" . hydra-javascript/body)))
+  :bind* (("M-\\ j" . hydra-javascript/body)
+		  ("M-\\ C-j" . hydra-javascript/body)))
 ;; JS semantic navigation
 (use-package tern
   :ensure t
@@ -808,7 +815,8 @@
 (use-package lua-mode
   :ensure t
   :mode "\\.lua\\'"
-  :bind* (("M-\\ u" . hydra-lua/body))
+  :bind* (("M-\\ u" . hydra-lua/body)
+		  ("M-\\ C-u" . hydra-lua/body))
   :bind (:map lua-mode-map
 			  ("C-\\ k" . lua-search-documentation)
 			  ("C-\\ C-k" . lua-search-documentation)))
@@ -840,7 +848,8 @@
   :mode "\\.sml\\'"
   :init
   (setq sml-program-name "sml")
-  :bind* (("M-\\ l" . hydra-sml/body)))
+  :bind* (("M-\\ l" . hydra-sml/body)
+		  ("M-\\ C-l" . hydra-sml/body)))
 
 ;; hydra for sml
 (defhydra hydra-sml (:color pink :hint nil)
@@ -885,7 +894,8 @@
 			 geiser-doc-lookup-manual
 			 geiser-xref-callers
 			 geiser-xref-callees)
-  :bind* (("M-\\ k" . hydra-racket-scheme/body))
+  :bind* (("M-\\ k" . hydra-racket-scheme/body)
+		  ("M-\\ C-k" . hydra-racket-scheme/body))
   :bind (:map scheme-mode-map
 			  ("C-\\ j" . geiser-edit-symbol-at-point)
 			  ("C-\\ C-j" . geiser-edit-symbol-at-point)
@@ -940,7 +950,8 @@
 			 ruby-send-definition-and-go
 			 ruby-send-region
 			 ruby-send-region-and-go)
-  :bind* (("M-\\ r" . hydra-ruby/body))
+  :bind* (("M-\\ r" . hydra-ruby/body)
+		  ("M-\\ C-r" . hydra-ruby/body))
   :config
   (add-hook 'ruby-mode-hook 'inf-ruby-mode))
 
@@ -1136,7 +1147,8 @@
 			  ("C-\\ C-j" . godef-jump)
 			  ("C-\\ k" . godoc-at-point)
 			  ("C-\\ C-k" . godoc-at-point))
-  :bind* (("M-\\ g" . hydra-go/body))
+  :bind* (("M-\\ o" . hydra-go/body)
+		  ("M-\\ C-o" . hydra-go/body))
   :config
   ;; Go completion
   (use-package company-go

@@ -9,6 +9,7 @@
 ;; ivy for everything
 (use-package ivy
   :ensure t
+  :demand t
   :diminish ivy-mode
   :init
   ;; set ivy height
@@ -59,6 +60,7 @@
 		 ("C-h f" . counsel-describe-function)
 		 ("C-x 8" . counsel-unicode-char))
   :bind* (("M-s c" . counsel-ag)
+		  ("M-s C-c" . counsel-ag)
 		  ("C-c ." . counsel-load-theme))
   :config
   (ivy-mode 1)

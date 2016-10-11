@@ -181,7 +181,12 @@
  ("C-)" . kmacro-end-macro)
  ("C-`" . kmacro-end-or-call-macro-repeat)
  ("C-~" . kmacro-name-last-macro)
- ("C-^" . mode-line-other-buffer))
+ ("C-^" . mode-line-other-buffer)
+ ("C-c o f" . flyspell-mode)
+ ("C-c o p" . flyspell-prog-mode)
+ ("C-c o v" . visual-line-mode)
+ ("C-c o b" . display-battery-mode)
+ ("C-c o t" . display-time-mode))
 (bind-keys
  ("C-x b" . ibuffer)
  ("C-x C-0" . delete-window)
@@ -252,9 +257,6 @@
 		 ("i" . sk/disable-god-mode)
          ("z" . repeat))
   :config
-  (add-to-list 'god-exempt-major-modes 'dired-mode)
-  (add-to-list 'god-exempt-major-modes 'magit-status-mode)
-  (add-to-list 'god-exempt-major-modes 'magit-popup-mode)
   (add-to-list 'god-exempt-major-modes 'ag-mode)
   (add-to-list 'god-exempt-major-modes 'occur-mode)
   (add-to-list 'god-exempt-major-modes 'ivy-occur-mode)
@@ -268,6 +270,7 @@
   (add-to-list 'god-exempt-major-modes 'info-mode)
   (add-to-list 'god-exempt-major-modes 'eww-mode)
   (add-to-list 'god-exempt-major-modes 'doc-view-mode)
+  (add-to-list 'god-exempt-major-modes 'org-agenda-mode)
   ;; don't use this on overwrite mode
   (defun god-toggle-on-overwrite ()
   "Toggle god-mode on overwrite-mode."
@@ -580,9 +583,10 @@
 (use-package smartparens
   :ensure t
   :demand t
-  :diminish smartparens-mode
   :diminish smartparens-strict-mode
   :diminish (smartparens-mode . " ()")
+  :bind* (("C-c o s" . smartparens-strict-mode)
+		  ("C-c o S" . smartparens-mode))
   :config
   (require 'smartparens-config)
   (smartparens-global-mode)
@@ -733,6 +737,8 @@
 (use-package persp-mode
   :ensure t
   :diminish (persp-mode . " π")
+  :init
+  (setq persp-auto-save-opt 0)
   :commands (persp-next
 			 persp-prev
 			 persp-switch
@@ -802,6 +808,8 @@
 (use-package eyebrowse
   :ensure t
   :diminish eyebrowse-mode
+  :init
+  (setq eyebrowse-wrap-around t)
   :bind* (("C-0" . eyebrowse-switch-to-window-config-0)
 		  ("C-1" . eyebrowse-switch-to-window-config-1)
 		  ("C-2" . eyebrowse-switch-to-window-config-2)
@@ -1365,7 +1373,6 @@
 (require 'sk-ivy)
 ;; helm
 ;; (require 'sk-helm)
-;; (helm-ido-like)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Included packages    ;;

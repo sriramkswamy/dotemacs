@@ -263,7 +263,8 @@
 
   :bind* (("C-c a" . org-agenda)
 		  ("C-c c" . org-capture)
-		  ("M-\\ o" . hydra-org-jump/body)
+		  ("M-\\ a" . hydra-org-jump/body)
+		  ("M-\\ C-a" . hydra-org-jump/body)
 		  ("C-r i u" . sk/mark-inside-subtree)
 		  ("C-r a u" . org-mark-subtree))
   :bind (:map org-mode-map
@@ -286,8 +287,8 @@
 			  ("C-\\ a" . org-archive)
 			  ("C-\\ r" . org-refile)
 			  ("C-\\ v" . org-reveal)
-			  ("C-\\ <" . org-promote)
-			  ("C-\\ >" . org-demote)
+			  ("C-\\ <" . outline-promote)
+			  ("C-\\ >" . outline-demote)
 			  ("C-\\ [" . org-date-from-calendar)
 			  ("C-\\ ]" . org-goto-calendar)
 			  ("C-\\ C-o" . hydra-org-organize/body)
@@ -309,8 +310,8 @@
 			  ("C-\\ C-a" . org-archive)
 			  ("C-\\ C-r" . org-refile)
 			  ("C-\\ C-v" . org-reveal)
-			  ("C-\\ C-<" . org-promote)
-			  ("C-\\ C->" . org-demote)
+			  ("C-\\ C-<" . outline-promote)
+			  ("C-\\ C->" . outline-demote)
 			  ("C-\\ C-[" . org-date-from-calendar)
 			  ("C-\\ C-]" . org-goto-calendar)))
 

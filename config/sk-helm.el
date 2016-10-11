@@ -6,11 +6,24 @@
 (use-package smex	; much improved M-x
   :ensure t)
 
+;; Add support for flx
+(use-package helm-flx
+  :ensure t
+  :commands (helm-flx-mode)
+  :config
+  (helm-flx-mode 1))
+
+;; Make helm fuzzier
+(use-package helm-fuzzier
+  :ensure t
+  :commands (helm-fuzzier-mode)
+  :config
+  (helm-fuzzier-mode 1))
+
 ;;; snippets taken from https://github.com/compunaut/helm-ido-like-guide
 ;;; define some functions to be used in helm later
 ;; initialize
 (defun helm-ido-like-activate-helm-modes ()
-  (require 'helm-config)
   (helm-mode 1)
   (helm-flx-mode 1)
   (helm-fuzzier-mode 1))
@@ -234,40 +247,44 @@ Its element is a pair of `buffer-name' and `mode-line-format'.")
   :ensure t
   :demand t
   :diminish helm-mode
-  :general
-  (general-nvmap "t" '(helm-semantic-or-imenu :which-key "tags in file"))
-  (general-nvmap "M" '(helm-man-woman :which-key "man pages"))
-  (general-nvmap :prefix sk--evil-global-leader
-		 "i" '(helm-resume :which-key "resume helm")
-		 "s" '(helm-for-files :which-key "search desktop")
-		 "#" '(helm-colors :which-key "color picker")
-		 "`" '(helm-all-mark-rings :which-key "mark rings")
-		 "\\" '(helm-top :which-key "system top"))
-  (general-imap "C-v" '(helm-ucs :which-key "unicode char"))
+  :commands (helm-mode
+			 helm-ido-like
+			 persp-mode
+			 describe-function
+			 describe-variable)
+  :bind* (("C-c '" . helm-man-woman)
+		  ("C-c r" . helm-resume)
+		  ("C-c f" . helm-for-files)
+		  ("C-c #" . helm-colors)
+		  ("C-c `" . helm-all-mark-rings)
+		  ("C-c C-\\" . helm-top))
   :bind (("M-x"     . helm-M-x)
-	 ("M-y"     . helm-show-kill-ring)
-	 ("C-x C-f" . helm-find-files)
-	 ("C-h a"   . helm-apropos)
-	 ("C-x b"   . helm-mini)
-	 ("C-x 8"   . helm-ucs))
+		 ("M-y"     . helm-show-kill-ring)
+		 ("C-x C-f" . helm-find-files)
+		 ("C-h a"   . helm-apropos)
+		 ("C-x C-b"   . helm-mini)
+		 ("C-x 8"   . helm-ucs))
   :bind (:map helm-map
-	      ("<return>"   . helm-maybe-exit-minibuffer)
-	      ("RET"        . helm-maybe-exit-minibuffer)
-	      ("C-w"        . backward-kill-word)
-	      ("<tab>"      . helm-select-action)
-	      ("C-i"        . helm-select-action))
+			  ("C-o" . hydra-helm/body)
+			  ("<return>"   . helm-maybe-exit-minibuffer)
+			  ("RET"        . helm-maybe-exit-minibuffer)
+			  ("C-w"        . backward-kill-word)
+			  ("<tab>"      . helm-select-action)
+			  ("C-i"        . helm-select-action))
   :bind (:map helm-find-files-map
-	      ("<return>"    . helm-execute-persistent-action)
-	      ("RET"         . helm-execute-persistent-action)
-	      ("C-w"         . backward-kill-word)
-	      ("<tab>"       . helm-select-action)
-	      ("C-i"         . helm-select-action))
+			  ("C-o" . hydra-helm/body)
+			  ("<return>"    . helm-execute-persistent-action)
+			  ("RET"         . helm-execute-persistent-action)
+			  ("C-w"         . backward-kill-word)
+			  ("<tab>"       . helm-select-action)
+			  ("C-i"         . helm-select-action))
   :bind (:map helm-read-file-map
-	      ("<return>"    . helm-execute-persistent-action)
-	      ("RET"         . helm-execute-persistent-action)
-	      ("C-w"         . backward-kill-word)
-	      ("<tab>"       . helm-select-action)
-	      ("C-i"         . helm-select-action))
+			  ("C-o" . hydra-helm/body)
+			  ("<return>"    . helm-execute-persistent-action)
+			  ("RET"         . helm-execute-persistent-action)
+			  ("C-w"         . backward-kill-word)
+			  ("<tab>"       . helm-select-action)
+			  ("C-i"         . helm-select-action))
 
   :init
   ;; use silver searcher when available
@@ -297,114 +314,153 @@ Its element is a pair of `buffer-name' and `mode-line-format'.")
   (helm-autoresize-mode 1)
 
   ;; require basic config
-  (require 'helm-config)
   (helm-mode 1)
+  (helm-ido-like))
 
-  ;; better smex integration
-  (use-package helm-smex
-    :ensure t
-    :bind* (("M-x" . helm-smex)
-            ("M-X" . helm-smex-major-mode-commands)))
+;; better smex integration
+(use-package helm-smex
+  :ensure t
+  :bind (("M-x" . helm-smex)
+		 ("M-X" . helm-smex-major-mode-commands))
+  :config
+  (helm-mode 1)
+  (helm-ido-like))
 
-  ;; Make helm fuzzier
-  (use-package helm-fuzzier
-    :ensure t
-    :config
-    (helm-fuzzier-mode 1))
+;; Add helm-bibtex
+(use-package helm-bibtex
+  :ensure t
+  :bind* (("C-c n" . helm-bibtex)
+		  ("C-c , d" . sk/default-bib)
+		  ("C-c , c" . sk/current-bib))
+  :init
+  (setq bibtex-completion-bibliography
+		'("~/Dropbox/PhD/articles/tensors/tensors.bib"
+		  "~/Dropbox/PhD/articles/machinelearning/machinelearning.bib"
+		  "~/Dropbox/PhD/articles/association/association.bib"
+		  "~/Dropbox/PhD/articles/lorenz/lorenz.bib"
+		  "~/Dropbox/PhD/articles/multiphysics/multiphysics.bib"))
+  (setq bibtex-completion-library-path
+		'("~/Dropbox/PhD/articles/tensors"
+		  "~/Dropbox/PhD/articles/machinelearning"
+		  "~/Dropbox/PhD/articles/association"
+		  "~/Dropbox/PhD/articles/lorenz"
+		  "~/Dropbox/PhD/articles/multiphysics"))
+  (setq bibtex-completion-notes-path "~/Dropbox/org/articles.org")
+  (setq helm-bibtex-full-frame nil)
+  (setq bibtex-completion-pdf-symbol "⌘")
+  (setq bibtex-completion-notes-symbol "✎")
+  :config
+  (defun sk/current-bib ()
+	"Set the bibliography and library to the current directory"
+	(interactive)
+	(setq bibtex-completion-bibliography
+		  (concat (file-name-directory buffer-file-name) "references/references.bib"))
+	;; where are the pdfs
+	(setq bibtex-completion-library-path
+		  (concat (file-name-directory buffer-file-name) "references"))
+	(message (concat "Bib file is " (file-name-directory
+									 buffer-file-name) "references/references.bib")))
+  (defun sk/default-bib ()
+	"Set the bibliography and library to the defaults"
+	(interactive)
+	;; where are the bib files
+	(setq bibtex-completion-bibliography
+		  '("~/Dropbox/PhD/articles/tensors/tensors.bib"
+			"~/Dropbox/PhD/articles/machinelearning/machinelearning.bib"
+			"~/Dropbox/PhD/articles/association/association.bib"
+			"~/Dropbox/PhD/articles/lorenz/lorenz.bib"
+			"~/Dropbox/PhD/articles/multiphysics/multiphysics.bib"))
+	;; where are the pdfs
+	(setq bibtex-completion-library-path
+		  '("~/Dropbox/PhD/articles/tensors"
+			"~/Dropbox/PhD/articles/machinelearning"
+			"~/Dropbox/PhD/articles/association"
+			"~/Dropbox/PhD/articles/lorenz"
+			"~/Dropbox/PhD/articles/multiphysics"))
+	(message "Default bib files set"))
+  (helm-mode 1)
+  (helm-ido-like))
 
-  ;; Add support for flx
-  (use-package helm-flx
-    :ensure t
-    :config
-    (helm-flx-mode 1))
+;; to search in projects - the silver searcher
+(use-package helm-ag
+  :ensure t
+  :bind* (("M-s p" . sk/helm-do-ag-project-root)
+		  ("M-s C-p" . sk/helm-do-ag-project-root)
+		  ("M-s j" . sk/helm-do-ag-project-root-at-point)
+		  ("M-s C-j" . sk/helm-do-ag-project-root-at-point)
+		  ("M-s c" . sk/helm-do-ag)
+		  ("M-s C-c" . sk/helm-do-ag))
+  :config
+  (helm-mode 1)
+  (helm-ido-like))
 
-  ;; Add helm-bibtex
-  (use-package helm-bibtex
-    :ensure t
-    :general
-    (general-nvmap :prefix sk--evil-global-leader "b" '(helm-bibtex :which-key "bibliography"))
-    :init
-    (setq bibtex-completion-bibliography
-	  '("~/Dropbox/PhD/articles/tensors/tensors.bib"
-	    "~/Dropbox/PhD/articles/machinelearning/machinelearning.bib"
-	    "~/Dropbox/PhD/articles/association/association.bib"
-	    "~/Dropbox/PhD/articles/lorenz/lorenz.bib"
-	    "~/Dropbox/PhD/articles/multiphysics/multiphysics.bib"))
-    (setq bibtex-completion-library-path
-	  '("~/Dropbox/PhD/articles/tensors"
-	    "~/Dropbox/PhD/articles/machinelearning"
-	    "~/Dropbox/PhD/articles/association"
-	    "~/Dropbox/PhD/articles/lorenz"
-	    "~/Dropbox/PhD/articles/multiphysics"))
-    (setq bibtex-completion-notes-path "~/Dropbox/org/articles.org")
-    (setq helm-bibtex-full-frame nil)
-    (setq bibtex-completion-pdf-symbol "⌘")
-    (setq bibtex-completion-notes-symbol "✎"))
+;; to search in files
+(use-package helm-swoop
+  :ensure t
+  :bind* (("C-s" . helm-swoop-without-pre-input)
+		  ("M-s s" . helm-multi-swoop-all)
+		  ("M-s C-s" . helm-multi-swoop-all)
+		  ("M-s r" . helm-swoop)
+		  ("M-s C-r" . helm-swoop)
+		  ("C-c X" . helm-multi-swoop--edit-cancel))
+  :init
+  (setq helm-swoop-split-with-multiple-windows nil
+		helm-swoop-split-direction 'split-window-vertically
+		helm-swoop-split-window-function 'helm-default-display-buffer)
+  :config
+  (helm-mode 1)
+  (helm-ido-like))
 
-  ;; to search in projects - the silver searcher
-  (use-package helm-ag
-    :ensure t
-    :general
-    (general-nvmap :prefix sk--evil-global-leader
-		   "/" '(sk/helm-do-ag :which-key "search in dir")
-		   "a" '(sk/helm-do-ag-project-root-at-point :which-key "search symbol in proj")
-		   "p" '(sk/helm-do-ag-project-root :which-key "search in project")))
+;; to help with projectile
+(use-package helm-projectile
+  :ensure t
+  :bind* (("C-c p" . helm-projectile))
+  :init
+  (setq projectile-completion-system 'helm)
+  :config
+  (helm-mode 1)
+  (helm-ido-like))
 
-  ;; to search in files
-  (use-package helm-swoop
-    :ensure t
-    :bind (("C-s" . helm-swoop-without-pre-input))
-    :general
-    (general-nvmap "#" '(helm-swoop :which-key "search word in buffer"))
-    (general-nvmap "/" '(helm-swoop-without-pre-input :which-key "search in buffer"))
-    (general-nvmap "g/" '(helm-multi-swoop-all :which-key "search in all buffers"))
-    :init
-    (setq helm-swoop-split-with-multiple-windows nil
-          helm-swoop-split-direction 'split-window-vertically
-          helm-swoop-split-window-function 'helm-default-display-buffer))
+;; to describe bindings
+(use-package helm-descbinds
+  :ensure t
+  :bind (("C-h b" . helm-descbinds))
+  :config
+  (helm-mode 1)
+  (helm-ido-like))
 
-  ;; to help with projectile
-  (use-package helm-projectile
-    :ensure t
-    :general
-    (general-nvmap :prefix sk--evil-global-leader
-		   "d" '(helm-projectile :which-key "project files"))
-    :init
-    (setq projectile-completion-system 'helm))
+;; correct spellings
+(use-package flyspell-correct-helm
+  :ensure t
+  :bind* (("C-c /" . flyspell-correct-previous-word-generic))
+  :config
+  (require 'flyspell-helm)
+  (helm-mode 1)
+  (helm-ido-like))
 
-  ;; to describe bindings
-  (use-package helm-descbinds
-    :ensure t
-    :general
-    (general-nvmap :prefix sk--evil-global-leader
-		   "," '(helm-descbinds :which-key "search bindings")))
+;; Select snippets with helm
+(use-package helm-c-yasnippet
+  :ensure t
+  :bind* (("M-u" . helm-yas-complete))
+  :config
+  (helm-mode 1)
+  (helm-ido-like))
 
-  ;; List errors with helm
-  (use-package helm-flycheck
-    :ensure t
-    :general
-    (general-nvmap :prefix sk--evil-global-leader "l" '(helm-flycheck :which-key "list errors")))
+;; for awesome org navigation
+(use-package helm-org-rifle
+  :ensure t
+  :bind* (("C-c d" . sk/helm-org-rifle))
+  :config
+  (helm-mode 1)
+  (helm-ido-like))
 
-  ;; correct spellings
-  (use-package flyspell-correct-helm
-    :ensure t
-    :general
-	(general-imap "C-," #'(flyspell-correct-previous-word-generic :which-key "correct spelling mistake"))
-    :config
-    (require 'flyspell-helm))
-
-  ;; Select snippets with helm
-  (use-package helm-c-yasnippet
-    :ensure t
-    :general
-	(general-imap "C-s" '(helm-yas-complete :which-key "choose snippet")))
-
-  ;; for awesome org navigation
-  (use-package helm-org-rifle
-    :ensure t
-    :general
-    (general-nvmap :prefix sk--evil-global-leader
-		   "of" '(sk/helm-org-rifle :which-key "find in org files"))))
+;; for theme selection
+(use-package helm-themes
+  :ensure t
+  :bind* (("C-c ." . helm-themes))
+  :config
+  (helm-mode 1)
+  (helm-ido-like))
 
 ;; helm hydra
 (defhydra hydra-helm (:hint nil :color pink)
@@ -443,9 +499,6 @@ Its element is a pair of `buffer-name' and `mode-line-format'.")
 	("w" helm-toggle-resplit-and-swap-windows)
 	("e" helm-swoop-edit)
         ("f" helm-follow-mode))
-(define-key helm-map (kbd "C-o") '(hydra-helm/body :which-key "helm hydra"))
-(define-key helm-read-file-map (kbd "C-o") '(hydra-helm/body :which-key "helm hydra"))
-(define-key helm-find-files-map (kbd "C-o") '(hydra-helm/body :which-key "helm hydra"))
 
 ;; provide this behemoth
 (provide 'sk-helm)

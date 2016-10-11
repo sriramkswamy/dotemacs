@@ -9,6 +9,7 @@
 		electric-newline-and-maybe-indent
 		embrace-commander
 		er/mark-outside-quotes
+		eval-last-sexp
 		eval-print-last-sexp
 		god-local-mode
 		god-mode-self-insert

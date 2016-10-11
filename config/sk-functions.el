@@ -95,7 +95,9 @@ point reaches the beginning or end of the buffer, stop there."
 ;; map these to defaults
 (bind-keys*
  ("C-x 3" . sk/split-right-and-move)
- ("C-x 2" . sk/split-below-and-move))
+ ("C-x C-3" . sk/split-right-and-move)
+ ("C-x 2" . sk/split-below-and-move)
+ ("C-x C-2" . sk/split-below-and-move))
 
 ;; rotate window config
 (defun sk/rotate-windows ()
@@ -503,7 +505,7 @@ If there's no region, the current line will be duplicated."
 			(end (region-end)))
 		(sk/duplicate-region arg beg end))
 	(sk/duplicate-current-line arg)))
-(bind-key* "C-c k k" 'sk/duplicate-line-or-region)
+(bind-key* "C-c k k" 'sk/duplicate-current-line-or-region)
 
 ;; Deactivate mark
 (defun sk/remove-mark ()

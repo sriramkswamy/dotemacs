@@ -1,3 +1,15 @@
+;; Create consistent keybindings
+(use-package general
+  :ensure t
+  :config
+  (general-evil-setup))
+(setq sk--evil-local-leader "m")
+(general-nvmap :prefix sk--evil-local-leader
+			   "" '(nil :which-key "major mode map"))
+(setq sk--evil-global-leader "SPC")
+(general-nvmap :prefix sk--evil-global-leader
+			   "" '(nil :which-key "global map"))
+
 (setq-default cursor-type '(bar . 1))                                          ; let the default cursor shape be a bar - '|'
 
 ;; evil - vim emulation

@@ -169,26 +169,26 @@
  ("C-j" . electric-newline-and-maybe-indent)
  ("M-k" . kill-whole-line)
  ("M-j" . join-line)
+ ("M-m" . toggle-input-method)
  ("C-x w" . winner-undo)
  ("C-x W" . winner-redo)
  ("C-c m" . set-mark-command)
  ("C-x k" . kill-this-buffer)
- ("C-x C-b" . ibuffer)
  ("C-c g f" . find-file-at-point)
  ("C-c '" . woman)
- ("C-c x" . overwrite-mode))
-
-;; Create consistent keybindings
-(use-package general
-  :ensure t
-  :config
-  (general-evil-setup))
-(setq sk--evil-local-leader "m")
-(general-nvmap :prefix sk--evil-local-leader
-			   "" '(nil :which-key "major mode map"))
-(setq sk--evil-global-leader "SPC")
-(general-nvmap :prefix sk--evil-global-leader
-			   "" '(nil :which-key "global map"))
+ ("C-c x" . overwrite-mode)
+ ("C-(" . kmacro-start-macro)
+ ("C-)" . kmacro-end-macro)
+ ("C-`" . kmacro-end-or-call-macro-repeat)
+ ("C-~" . kmacro-name-last-macro)
+ ("C-^" . mode-line-other-buffer))
+(bind-keys
+ ("C-x b" . ibuffer)
+ ("C-x C-0" . delete-window)
+ ("C-x C-1" . delete-other-windows)
+ ("C-x C-2" . split-window-below)
+ ("C-x C-3" . split-window-right)
+ ("C-x C-b" . switch-to-buffer))
 
 ;; hint for bindings
 (use-package which-key
@@ -221,6 +221,8 @@
 	"C-c y" "company"
 	"C-c w" "align"
 	"C-c ," "bibliography"
+	"M-\\" "language hydras"
+	"C-\\" "major mode"
 	"C-c k" "convenience defuns"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;
@@ -749,17 +751,17 @@
 			 persp-remove-buffer
 			 persp-kill-buffer
 			 persp-mode)
-  :general
-  (general-nvmap "\"" '(hydra-persp-mode/body :which-key "perspectives"))
-  (general-nvmap "gt" '(persp-switch :which-key "persp switch"))
-  (general-nvmap "gT" '(persp-switch-to-buffer :which-key "persp switch buffer"))
-  (general-nvmap "gC" '(persp-mode :which-key "persp toggle"))
-  (general-nvmap "gQ" '(persp-kill :which-key "persp kill"))
-  (general-nvmap :prefix sk--evil-global-leader
-				 ";" '(persp-prev :which-key "previous persp")
-				 "'" '(persp-next :which-key "next persp")
-				 "v" '(persp-save-state-to-file :which-key "save state")
-				 "V" '(persp-load-state-from-file :which-key "load state"))
+  :bind* (("M--" . hydra-persp-mode/body)
+		  ("M-0" . persp-next)
+		  ("M-9" . persp-prev)
+		  ("M-1" . persp-kill)
+		  ("M-2" . persp-switch-to-buffer)
+		  ("M-3" . persp-switch)
+		  ("M-4" . persp-mode)
+		  ("M-5" . persp-save-state-to-file)
+		  ("M-8" . persp-rename)
+		  ("M-7" . persp-load-state-from-file)
+		  ("M-6" . persp-temporarily-display-buffer))
   :init
   (setq persp-autokill-buffer-on-remove 'kill-weak)
   :config
@@ -796,19 +798,48 @@
   ("R" desktop-read)
   ("q" nil :color blue))
 
+;; switch window configs
+(use-package eyebrowse
+  :ensure t
+  :diminish eyebrowse-mode
+  :bind* (("C-0" . eyebrowse-switch-to-window-config-0)
+		  ("C-1" . eyebrowse-switch-to-window-config-1)
+		  ("C-2" . eyebrowse-switch-to-window-config-2)
+		  ("C-3" . eyebrowse-switch-to-window-config-3)
+		  ("C-4" . eyebrowse-switch-to-window-config-4)
+		  ("C-5" . eyebrowse-switch-to-window-config-5)
+		  ("C-6" . eyebrowse-switch-to-window-config-6)
+		  ("C-7" . eyebrowse-switch-to-window-config-7)
+		  ("C-8" . eyebrowse-switch-to-window-config-8)
+		  ("C-9" . eyebrowse-switch-to-window-config-9)
+		  ("C--" . eyebrowse-switch-to-window-config)
+		  ("C-!" . eyebrowse-close-window-config)
+		  ("C-#" . eyebrowse-prev-window-config)
+		  ("C-*" . eyebrowse-next-window-config)
+		  ("C-$" . eyebrowse-last-window-config)
+		  ("C-&" . eyebrowse-create-window-config)
+		  ("C-%" . eyebrowse-rename-window-config))
+  :config
+  (eyebrowse-mode t))
+
 ;; wgrep + ag for refactoring - as an alternate to ivy/helm based commands
 (use-package ag
   :ensure t
   :bind* (("M-s a" . ag-project-at-point)
-		  ("M-s g" . ag)))
+		  ("M-s C-a" . ag-project-at-point)
+		  ("M-s d" . ag)
+		  ("M-s C-d" . ag)))
 ;; writeable grep
 (use-package wgrep-ag
   :ensure t
   :init
   (setq wgrep-auto-save-buffer t)
   :bind* (("M-s e" . wgrep-change-to-wgrep-mode)
+		  ("M-s C-e" . wgrep-change-to-wgrep-mode)
 		  ("M-s f" . wgrep-finish-edit)
-		  ("M-s k" . wgrep-abort-changes)))
+		  ("M-s C-f" . wgrep-finish-edit)
+		  ("M-s k" . wgrep-abort-changes)
+		  ("M-s C-k" . wgrep-abort-changes)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Debugging using GDB    ;;
@@ -877,12 +908,14 @@
 ;; visual regexp substitution
 (use-package visual-regexp
   :ensure t
-  :bind* (("M-s v" . vr/query-replace))
+  :bind* (("M-s v" . vr/query-replace)
+		  ("M-s C-v" . vr/query-replace))
   :config
   ;; change the regexp syntax
   (use-package visual-regexp-steroids
 	:ensure t
-	:bind* (("M-s V" . vr/select-query-replace))))
+	:bind* (("M-s V" . vr/select-query-replace)
+			("M-s M-v" . vr/select-query-replace))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Convenience packages    ;;

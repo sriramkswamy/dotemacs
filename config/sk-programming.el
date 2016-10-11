@@ -5,14 +5,18 @@
 (use-package macrostep
   :ensure t
   :bind (:map emacs-lisp-mode-map
-			  ("M-m j" . find-function-at-point)
-			  ("M-m k" . describe-function)))
+			  ("C-\\ j" . find-function-at-point)
+			  ("C-\\ C-j" . find-function-at-point)
+			  ("C-\\ k" . describe-function)
+			  ("C-\\ C-k" . describe-function)))
 (bind-key* "M-\\ e" 'hydra-elisp/body)
 
 ;; lisp interaction mode
 (bind-keys :map lisp-interaction-mode-map
-           ("M-m j" . find-function-at-point)
-           ("M-m k" . describe-function))
+		   ("C-\\ j" . find-function-at-point)
+		   ("C-\\ C-j" . find-function-at-point)
+		   ("C-\\ k" . describe-function)
+		   ("C-\\ C-k" . describe-function))
 
 ;; hydra for emacs lisp
 (defhydra hydra-elisp (:color pink :hint nil)
@@ -128,8 +132,10 @@
   :bind* (("C-c y c" . company-rtags)
 		  ("M-\\ c" . hydra-cpp/body))
   :bind (:map c++-mode-map
-			  ("M-m j" . rtags-find-symbol-at-point)
-			  ("M-m k" . rtags-print-symbol-info))
+			  ("C-\\ j" . rtags-find-symbol-at-point)
+			  ("C-\\ C-j" . rtags-find-symbol-at-point)
+			  ("C-\\ k" . rtags-print-symbol-info)
+			  ("C-\\ C-k" . rtags-print-symbol-info))
   :init
   (setq rtags-autostart-diagnostics t)
   (setq rtags-completions-enabled t)
@@ -237,8 +243,10 @@
 			   anaconda-mode-show-doc
 			   anaconda-mode-go-back)
 	:bind (:map python-mode-map
-				("M-m j" . anaconda-mode-find-definitions)
-				("M-m k" . anaconda-mode-show-doc))
+				("C-\\ j" . anaconda-mode-find-definitions)
+				("C-\\ C-j" . anaconda-mode-find-definitions)
+				("C-\\ k" . anaconda-mode-show-doc)
+				("C-\\ C-k" . anaconda-mode-show-doc))
 	:config
 	(progn
 	  (add-hook 'python-mode-hook 'anaconda-mode))))
@@ -407,7 +415,8 @@
 			 ess-help-web-search
 			 ess-display-help-apropos)
   :bind (:map ess-mode-map
-			  ("M-m k" . ess-display-help-on-object))
+			  ("C-\\ k" . ess-display-help-on-object)
+			  ("C-\\ C-k" . ess-display-help-on-object))
   :bind* (("M-\\ s" . hydra-stats/body))
   :init
   (setq ess-use-ido nil)
@@ -551,8 +560,10 @@
 			 matlab-show-line-info
 			 matlab-find-file-on-path)
   :bind (:map matlab-mode-map
-			  ("M-m j" . matlab-find-file-on-path)
-			  ("M-m k" . matlab-shell-describe-command))
+			  ("C-\\ j" . matlab-find-file-on-path)
+			  ("C-\\ C-j" . matlab-find-file-on-path)
+			  ("C-\\ k" . matlab-shell-describe-command)
+			  ("C-\\ C-k" . matlab-shell-describe-command))
   :bind* (("M-\\ m" . hydra-matlab/body)))
 
 ;; hydra for matlab
@@ -680,11 +691,15 @@
 			 tern-highlight-refs
 			 tern-rename-variable)
   :bind (:map js3-mode-map
-			  ("M-m j" . tern-find-definition)
-			  ("M-m k" . tern-get-docs))
+			  ("C-\\ j" . tern-find-definition)
+			  ("C-\\ C-j" . tern-find-definition)
+			  ("C-\\ k" . tern-get-docs)
+			  ("C-\\ C-k" . tern-get-docs))
   :bind (:map js-mode-map
-			  ("M-m j" . tern-find-definition)
-			  ("M-m k" . tern-get-docs))
+			  ("C-\\ j" . tern-find-definition)
+			  ("C-\\ C-j" . tern-find-definition)
+			  ("C-\\ k" . tern-get-docs)
+			  ("C-\\ C-k" . tern-get-docs))
   :config
   ;; Tern for JS
   (use-package company-tern
@@ -795,7 +810,8 @@
   :mode "\\.lua\\'"
   :bind* (("M-\\ u" . hydra-lua/body))
   :bind (:map lua-mode-map
-			  ("M-m k" . lua-search-documentation)))
+			  ("C-\\ k" . lua-search-documentation)
+			  ("C-\\ C-k" . lua-search-documentation)))
 
 ;; hydra for lua
 (defhydra hydra-lua (:color pink :hint nil)
@@ -871,11 +887,15 @@
 			 geiser-xref-callees)
   :bind* (("M-\\ k" . hydra-racket-scheme/body))
   :bind (:map scheme-mode-map
-			  ("M-m j" . geiser-edit-symbol-at-point)
-			  ("M-m k" . geiser-doc-symbol-at-point))
+			  ("C-\\ j" . geiser-edit-symbol-at-point)
+			  ("C-\\ C-j" . geiser-edit-symbol-at-point)
+			  ("C-\\ k" . geiser-doc-symbol-at-point)
+			  ("C-\\ C-k" . geiser-doc-symbol-at-point))
   :bind (:map racket-mode-map
-			  ("M-m j" . geiser-edit-symbol-at-point)
-			  ("M-m k" . geiser-doc-symbol-at-point)))
+			  ("C-\\ j" . geiser-edit-symbol-at-point)
+			  ("C-\\ C-j" . geiser-edit-symbol-at-point)
+			  ("C-\\ k" . geiser-doc-symbol-at-point)
+			  ("C-\\ C-k" . geiser-doc-symbol-at-point)))
 
 ;; hydra for racket/scheme
 (defhydra hydra-racket-scheme (:color pink :hint nil)
@@ -946,8 +966,10 @@
 			 robe-call-at-point
 			 robe-start)
   :bind (:map ruby-mode-map
-			  ("M-m j" . robe-jump)
-			  ("M-m k" . robe-doc))
+			  ("C-\\ j" . robe-jump)
+			  ("C-\\ C-j" . robe-jump)
+			  ("C-\\ k" . robe-doc)
+			  ("C-\\ C-k" . robe-doc))
   :config
   (eval-after-load 'company
 	'(push 'company-robe company-backends))
@@ -1110,8 +1132,10 @@
 			 go-play-region
 			 go-download-play)
   :bind (:map go-mode-map
-			  ("M-m j" . godef-jump)
-			  ("M-m k" . godoc-at-point))
+			  ("C-\\ j" . godef-jump)
+			  ("C-\\ C-j" . godef-jump)
+			  ("C-\\ k" . godoc-at-point)
+			  ("C-\\ C-k" . godoc-at-point))
   :bind* (("M-\\ g" . hydra-go/body))
   :config
   ;; Go completion

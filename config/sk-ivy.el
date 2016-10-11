@@ -27,7 +27,7 @@
 		  (counsel-ag . ivy--regex-plus)
 		  (counsel-grep-or-swiper . ivy--regex-plus)
 		  (t . ivy--regex-fuzzy)))
-  :bind (("C-x b" . ivy-switch-buffer))
+  :bind (("C-x C-b" . ivy-switch-buffer))
   :bind (:map ivy-minibuffer-map
 			  ("C-w" . backward-kill-word)
 			  ("RET" . ivy-alt-done)
@@ -39,7 +39,8 @@
   :bind* (("C-c r" . ivy-resume)
 		  ("C-c v" . ivy-push-view)
 		  ("C-c V" . ivy-pop-view)
-		  ("M-s i" . ivy-wgrep-change-to-wgrep-mode))
+		  ("M-s i" . ivy-wgrep-change-to-wgrep-mode)
+		  ("M-s C-i" . ivy-wgrep-change-to-wgrep-mode))
   :config
   ;; the hydra in ivy
   (use-package ivy-hydra
@@ -67,7 +68,9 @@
 (use-package counsel-projectile
   :ensure t
   :bind* (("M-s p" . sk/counsel-ag-project)
+		  ("M-s C-p" . sk/counsel-ag-project)
 		  ("M-s j" . sk/counsel-ag-project-at-point)
+		  ("M-s C-j" . sk/counsel-ag-project-at-point)
 		  ("C-c p" . counsel-projectile-find-file-or-buffer))
   :init
   (setq projectile-completion-system 'ivy)
@@ -87,8 +90,10 @@
 (use-package swiper
   :ensure t
   :bind* (("M-s s" . swiper-all)
+		  ("M-s C-s" . swiper-all)
 		  ("C-s" . counsel-grep-or-swiper)
-		  ("M-s r" . sk/swiper-at-point))
+		  ("M-s r" . sk/swiper-at-point)
+		  ("M-s C-r" . sk/swiper-at-point))
   :config
   (defun sk/swiper-at-point ()
 	"use swiper to search for a word at point"

@@ -417,7 +417,7 @@ Its element is a pair of `buffer-name' and `mode-line-format'.")
 (use-package helm-projectile
   :ensure t
   :bind* (("C-c p" . helm-projectile)
-		  ("C-1" . projectile-find-other-file-other-window))
+		  ("C-|" . projectile-find-other-file-other-window))
   :init
   (setq projectile-completion-system 'helm)
   :config

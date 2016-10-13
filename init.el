@@ -168,11 +168,10 @@
 (bind-keys*
  ("C-j" . electric-newline-and-maybe-indent)
  ("M-k" . kill-whole-line)
- ("M-j" . join-line)
  ("M-m" . toggle-input-method)
  ("C-x w" . delete-frame)
  ("C-x W" . make-frame)
- ("C-c m" . set-mark-command)
+ ("C-c m" . rectangle-mark-mode)
  ("C-x k" . kill-this-buffer)
  ("C-c g f" . find-file-at-point)
  ("C-c '" . woman)
@@ -182,6 +181,7 @@
  ("C-`" . kmacro-end-or-call-macro-repeat)
  ("C-~" . kmacro-name-last-macro)
  ("C-^" . mode-line-other-buffer)
+ ("C-c j" . join-line)
  ("C-x C-y" . delete-blank-lines)
  ("C-x C-o" . other-window)
  ("C-x C-j" . winner-undo)
@@ -318,7 +318,7 @@
 (bind-key* "C-x r" 'hydra-bookmarks/body)
 
 ;; rectangle mark mode
-(defhydra hydra-rectangle (:pre (rectangle-mark-mode 1) :color pink :hint nil)
+(defhydra hydra-rectangle (:color pink :hint nil)
   "
  _c_: clear    _o_: open    _k_: kill    _y_: yank    _r_: reset    _q_: quit
  _d_: delete   _s_: string  _w_: copy    _n_: number  _x_: deactivate
@@ -569,19 +569,6 @@
 			 back-button-global-forward)
   :config
   (back-button-mode))
-;; hydra for marks
-(defhydra hydra-marks (:color red :hint nil)
-  "
- _m_: mark _j_: local next   _k_: local prev   _q_: quit
-		 _l_: global next  _h_: global prev
-  "
-  ("m" set-mark-command)
-  ("k" back-button-local-backward)
-  ("j" back-button-local-forward)
-  ("h" back-button-global-backward)
-  ("l" back-button-global-forward)
-  ("q" nil :color blue))
-(bind-key* "C-c m" 'hydra-marks/body)
 
 ;; neotree for folder tree
 (use-package neotree
@@ -597,7 +584,8 @@
   :diminish smartparens-strict-mode
   :diminish (smartparens-mode . " ()")
   :bind* (("C-c o s" . smartparens-strict-mode)
-		  ("C-c o S" . smartparens-mode))
+		  ("C-c o S" . smartparens-mode)
+		  ("C-1" . hydra-smartparens/body))
   :config
   (require 'smartparens-config)
   (smartparens-global-mode)
@@ -640,7 +628,6 @@
   ("B" sp-splice-sexp-killing-backward)
   ("A" sp-splice-sexp-killing-around)
   ("q" nil :color blue))
-(bind-key* "C-c j" 'hydra-smartparens/body)
 
 ;; Avy - simulating a mouse click
 (use-package avy
@@ -809,10 +796,10 @@
 		  ("M-9" . eyebrowse-switch-to-window-config-9)
 		  ("C--" . eyebrowse-switch-to-window-config)
 		  ("C-!" . eyebrowse-close-window-config)
-		  ("C-#" . eyebrowse-prev-window-config)
-		  ("C-*" . eyebrowse-next-window-config)
-		  ("C-$" . eyebrowse-last-window-config)
-		  ("C-&" . eyebrowse-create-window-config)
+		  ("M-#" . eyebrowse-prev-window-config)
+		  ("M-*" . eyebrowse-next-window-config)
+		  ("M-+" . eyebrowse-last-window-config)
+		  ("C-+" . eyebrowse-create-window-config)
 		  ("C-%" . eyebrowse-rename-window-config))
   :config
   (eyebrowse-mode t))
@@ -1161,7 +1148,8 @@
 		  ("C-r i h" . diff-hl-mark-hunk)
 		  ("C-r C-i C-h" . diff-hl-mark-hunk)
 		  ("C-r a h" . diff-hl-mark-hunk)
-		  ("C-r C-a C-h" . diff-hl-mark-hunk))
+		  ("C-r C-a C-h" . diff-hl-mark-hunk)
+		  ("M-j" . hydra-diff-hl-mark/body))
   :commands (global-diff-hl-mode
 			 diff-hl-mode
 			 diff-hl-next-hunk
@@ -1175,16 +1163,22 @@
   (diff-hl-margin-mode)
   (diff-hl-dired-mode))
 ;; hydra for diffs
-(defhydra hydra-diff-hl (:color red :hint nil)
+(defhydra hydra-diff-hl-mark (:color red :hint nil)
   "
- _g_: goto  _j_: next  _k_: previous _r_: revert _q_:quit
+ ^Hunk^                   ^Mark^
+^^^^^^^^------------------------------------------------------------
+ _g_: goto   _j_: next      _h_: local prev   _f_: global next  _q_: quit
+ _r_: revert _k_: previous  _l_: local next   _b_: global back
   "
   ("k" diff-hl-previous-hunk)
   ("j" diff-hl-next-hunk)
   ("g" diff-hl-diff-goto-hunk :color blue)
   ("r" diff-hl-revert-hunk)
+  ("h" back-button-local-backward)
+  ("l" back-button-local-forward)
+  ("b" back-button-global-backward)
+  ("f" back-button-global-forward)
   ("q" nil :color blue))
-(bind-key* "C-c h" 'hydra-diff-hl/body)
 
 ;; git timemachine
 (use-package git-timemachine

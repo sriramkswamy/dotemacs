@@ -598,5 +598,13 @@ in that cyclic order."
  ("C-r C-i C-l" . sk/select-inside-line)
  ("C-r C-a C-l" . sk/select-around-line))
 
+;; split ielm
+(defun sk/ielm ()
+  "open ielm REPL in a split window"
+  (interactive)
+  (split-window-horizontally)
+  (ielm)
+  (other-window 1))
+
 ;; provide this configuration
 (provide 'sk-functions)

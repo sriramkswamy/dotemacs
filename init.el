@@ -957,7 +957,18 @@
 (use-package markdown-mode
   :ensure t
   :mode ("\\.markdown\\'" "\\.mkd\\'" "\\.md\\'")
-  :bind* (("M-\\ n" . hydra-markdown/body))
+  :bind* (("C-\\ n" . hydra-markdown/body))
+  :bind (:map markdown-mode-map
+			  ("M-\\" . hydra-markdown/body)
+			  ("C-0" . markdown-insert-link)
+			  ("C-9" . markdown-insert-reference-link-dwim)
+			  ("C-8" . markdown-insert-header-dwim)
+			  ("C-2" . markdown-jump)
+			  ("C-3" . markdown-insert-image)
+			  ("C-4" . markdown-gfm-code-block)
+			  ("C-5" . markdown-insert-italic)
+			  ("C-6" . markdown-insert-bold)
+			  ("C-7" . markdown-insert-blockquote))
   :init
   (setq markdown-open-command "/Applications/Markoff.app/Contents/MacOS/Markoff")
   :config
@@ -1032,7 +1043,18 @@
   :ensure auctex-latexmk
   :mode (("\\.tex\\'" . LaTeX-mode)
 		 ("\\.xtx\\'" . LaTeX-mode))
-  :bind* (("M-\\ x" . hydra-latex/body)
+  :bind (:map LaTeX-mode-map
+			  ("M-\\" . hydra-latex/body)
+			  ("C-0" . preview-at-point)
+			  ("C-9" . preview-clearout-buffer)
+			  ("C-2" . LaTeX-fill-region)
+			  ("C-3" . LaTeX-fill-paragraph)
+			  ("C-4" . TeX-command-master)
+			  ("C-5" . LaTeX-fill-section)
+			  ("C-6" . LaTeX-fill-environment)
+			  ("C-7" . sk/setup-latex)
+			  ("C-8" . LaTeX-environment))
+  :bind* (("C-\\ x" . hydra-latex/body)
 		  ("C-r i x" . LaTeX-mark-section)
 		  ("C-r a x" . LaTeX-mark-section)
 		  ("C-r a e" . LaTeX-mark-environment))

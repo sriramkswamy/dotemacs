@@ -8,7 +8,7 @@
 			  ("M-\\" . hydra-elisp/body)
 			  ("C-2" . eval-region)
 			  ("C-3" . eval-last-sexp)
-			  ("C-4" . ielm)
+			  ("C-4" . sk/ielm)
 			  ("C-5" . eval-buffer)
 			  ("C-6" . eval-defun)
 			  ("C-7" . describe-variable)
@@ -24,7 +24,7 @@
 		   ("M-\\" . hydra-elisp/body)
 		   ("C-2" . eval-region)
 		   ("C-3" . eval-last-sexp)
-		   ("C-4" . ielm)
+		   ("C-4" . sk/ielm)
 		   ("C-5" . eval-buffer)
 		   ("C-6" . eval-defun)
 		   ("C-7" . describe-variable)
@@ -52,7 +52,7 @@
   ("x" eval-expression :color blue)
   ("s" eval-last-sexp)
   ("t" eval-print-last-sexp)
-  ("r" ielm :color blue)
+  ("r" sk/ielm :color blue)
   ("k" describe-function :color blue)
   ("v" describe-variable :color blue)
   ("l" describe-library :color blue)
@@ -637,13 +637,20 @@
 			  ("C-9" . matlab-shell-describe-command)
 			  ("C-2" . matlab-shell-run-region-or-line)
 			  ("C-3" . matlab-shell-run-command)
-			  ("C-4" . matlab-shell)
+			  ("C-4" . sk/matlab-shell)
 			  ("C-5" . matlab-shell-save-and-go)
 			  ("C-6" . matlab-shell-run-cell)
 			  ("C-7" . matlab-show-matlab-shell-buffer)
 			  ("C-8" . matlab-shell-describe-variable))
   :bind* (("C-\\ m" . hydra-matlab/body)
-		  ("C-\\ C-m" . hydra-matlab/body)))
+		  ("C-\\ C-m" . hydra-matlab/body))
+  :config
+  (defun sk/matlab ()
+	"open matlab REPL in a split window"
+	(interactive)
+	(split-window-horizontally)
+	(matlab-shell)
+	(other-window 1)))
 
 ;; hydra for matlab
 (defhydra hydra-matlab (:color pink :hint nil)
@@ -663,7 +670,7 @@
   ("f" matlab-shell-run-cell)
   ("b" matlab-shell-save-and-go)
   ("c" matlab-shell-run-command :color blue)
-  ("r" matlab-shell :color blue)
+  ("r" sk/matlab-shell :color blue)
   ("]" matlab-show-matlab-shell-buffer :color blue)
   ("q" nil :color blue))
 
@@ -921,11 +928,18 @@
 			  ("C-9" . lua-search-documentation)
 			  ("C-2" . lua-send-region)
 			  ("C-3" . lua-send-line)
-			  ("C-4" . lua-start-process)
+			  ("C-4" . sk/lua)
 			  ("C-5" . lua-send-buffer)
 			  ("C-6" . lua-send-defun)
 			  ("C-7" . lua-show-process-buffer)
-			  ("C-8" . run-lua)))
+			  ("C-8" . run-lua))
+  :config
+  (defun sk/lua ()
+	"open lua REPL in a split window"
+	(interactive)
+	(split-window-horizontally)
+	(lua-start-process)
+	(other-window 1)))
 
 ;; hydra for lua
 (defhydra hydra-lua (:color pink :hint nil)
@@ -936,7 +950,7 @@
  _]_: switch to lua  _b_: send buffer   _l_: send line
  _k_: lua-search-documentation
 "
-  ("r" lua-start-process :color blue)
+  ("r" sk/lua :color blue)
   ("]" lua-show-process-buffer :color blue)
   ("k" lua-search-documentation :color blue)
   ("i" lua-send-region)

@@ -474,14 +474,14 @@
 	"open R REPL in other window"
 	(interactive)
 	(split-window-horizontally)
-	(R)
-	(other-window 1))
+	(other-window 1)
+	(R))
   (defun sk/julia ()
 	"open julia REPL in other window"
 	(interactive)
 	(split-window-horizontally)
-	(julia)
-	(other-window 1)))
+	(other-window 1)
+	(julia)))
 
 ;; hydra for stats package
 (defhydra hydra-stats-packages (:color blue :hint nil)
@@ -612,45 +612,58 @@
 (use-package matlab-mode
   :ensure t
   :mode ("\\.m\\'" . matlab-mode)
+  :diminish mlint-minor-mode
   :bind (:map matlab-shell-mode-map
 			  ("C-c C-c" . term-interrupt-subjob))
+  :bind* (("C-\\ m" . hydra-matlab/body)
+		  ("C-\\ C-m" . hydra-matlab/body))
   :init
   (setq matlab-shell-command "/Applications/MATLAB_R2016a.app/bin/matlab"
 		matlab-indent-function t)
-  ;; (setq matlab-mode-install-path '("~/Dropbox/PhD/codes/ttmat"
-  ;; 				   "/Applications/MATLAB_R2016a.app/toolbox"))
+  (setq matlab-mode-install-path '("~/Dropbox/PhD/codes/ttmat"
+								   "/Applications/MATLAB_R2016a.app/toolbox"))
   (eval-after-load 'matlab
 	'(add-to-list 'matlab-shell-command-switches "-nodesktop -nosplash"))
-  :commands (matlab-shell
-			 matlab-show-matlab-shell-buffer
-			 matlab-shell-run-region-or-line
-			 matlab-shell-run-cell
-			 matlab-shell-run-command
-			 matlab-shell-topic-browser
-			 matlab-shell-describe-command
-			 matlab-shell-describe-variable
-			 matlab-show-line-info
-			 matlab-find-file-on-path)
-  :bind (:map matlab-mode-map
-			  ("M-\\" . hydra-matlab/body)
-			  ("C-0" . matlab-find-file-on-path)
-			  ("C-9" . matlab-shell-describe-command)
-			  ("C-2" . matlab-shell-run-region-or-line)
-			  ("C-3" . matlab-shell-run-command)
-			  ("C-4" . sk/matlab-shell)
-			  ("C-5" . matlab-shell-save-and-go)
-			  ("C-6" . matlab-shell-run-cell)
-			  ("C-7" . matlab-show-matlab-shell-buffer)
-			  ("C-8" . matlab-shell-describe-variable))
-  :bind* (("C-\\ m" . hydra-matlab/body)
-		  ("C-\\ C-m" . hydra-matlab/body))
   :config
-  (defun sk/matlab ()
-	"open matlab REPL in a split window"
-	(interactive)
-	(split-window-horizontally)
-	(matlab-shell)
-	(other-window 1)))
+  (require 'matlab-load)
+  (require 'mlint))
+;; better repl
+(defun sk/matlab-shell ()
+  "open matlab REPL in a split window"
+  (interactive)
+  (split-window-horizontally)
+  (other-window 1)
+  (matlab-shell))
+;; matlab mode bindings
+(defun sk/matlab-bindings ()
+  "bindings for matlab-mode becuase it doesn't get evaluated with use-package for some reason"
+  (bind-keys
+   ("M-\\" . hydra-matlab/body)
+   ("C-0" . matlab-find-file-on-path)
+   ("C-9" . matlab-shell-describe-command)
+   ("C-2" . matlab-shell-run-region-or-line)
+   ("C-3" . mlint-prev-buffer)
+   ("C-4" . sk/matlab-shell)
+   ("C-5" . matlab-shell-save-and-go)
+   ("C-6" . matlab-shell-describe-variable)
+   ("C-7" . matlab-show-matlab-shell-buffer)
+   ("C-8" . mlint-next-buffer)))
+(add-hook 'matlab-mode-hook #'sk/matlab-bindings)
+;; setup matlab properly
+(defun sk/matlab-setup ()
+  "setup matlab mode properly"
+  ;; mlint settings
+  (setq-default matlab-show-mlint-warnings t)
+  (setq-default mlint-verbose t)
+  (setq-default mlint-programs '("/Applications/MATLAB_R2016a.app/bin/maci64/mlint"))
+  (mlint-minor-mode 1)
+  ;; switch on god mode by default
+  (god-local-mode))
+(add-hook 'matlab-mode-hook #'sk/matlab-setup)
+(defun sk/diminish-mlint-minor ()
+  (interactive)
+  (diminish 'mlint-minor-mode ""))
+(add-hook 'mlint-minor-mode-hook 'sk/diminish-mlint-minor)
 
 ;; hydra for matlab
 (defhydra hydra-matlab (:color pink :hint nil)

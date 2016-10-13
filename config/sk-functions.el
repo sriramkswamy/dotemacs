@@ -505,7 +505,7 @@ If there's no region, the current line will be duplicated."
 			(end (region-end)))
 		(sk/duplicate-region arg beg end))
 	(sk/duplicate-current-line arg)))
-(bind-key* "C-c k k" 'sk/duplicate-current-line-or-region)
+(bind-key* "C-c h" 'sk/duplicate-current-line-or-region)
 
 ;; Deactivate mark
 (defun sk/remove-mark ()

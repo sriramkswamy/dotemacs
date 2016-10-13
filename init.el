@@ -1144,8 +1144,7 @@
 ;; highlight diffs
 (use-package diff-hl
   :ensure t
-  :bind* (("C-c h" . hydra-diff-hl/body)
-		  ("C-r i h" . diff-hl-mark-hunk)
+  :bind* (("C-r i h" . diff-hl-mark-hunk)
 		  ("C-r C-i C-h" . diff-hl-mark-hunk)
 		  ("C-r a h" . diff-hl-mark-hunk)
 		  ("C-r C-a C-h" . diff-hl-mark-hunk)

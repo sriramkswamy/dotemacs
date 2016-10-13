@@ -5,14 +5,32 @@
 (use-package macrostep
   :ensure t
   :bind (:map emacs-lisp-mode-map
-			  ("C-\\" . hydra-elisp/body)))
+			  ("M-\\" . hydra-elisp/body)
+			  ("C-2" . eval-region)
+			  ("C-3" . eval-last-sexp)
+			  ("C-4" . ielm)
+			  ("C-5" . eval-buffer)
+			  ("C-6" . eval-defun)
+			  ("C-7" . describe-variable)
+			  ("C-8" . find-variable)
+			  ("C-9" . describe-function)
+			  ("C-0" . find-function)))
 (bind-keys*
- ("M-\\ e" . hydra-elisp/body)
- ("M-\\ C-e" . hydra-elisp/body))
+ ("C-\\ e" . hydra-elisp/body)
+ ("C-\\ C-e" . hydra-elisp/body))
 
 ;; lisp interaction mode
 (bind-keys :map lisp-interaction-mode-map
-		   ("C-\\" . hydra-elisp/body))
+		   ("M-\\" . hydra-elisp/body)
+		   ("C-2" . eval-region)
+		   ("C-3" . eval-last-sexp)
+		   ("C-4" . ielm)
+		   ("C-5" . eval-buffer)
+		   ("C-6" . eval-defun)
+		   ("C-7" . describe-variable)
+		   ("C-8" . find-variable)
+		   ("C-9" . describe-function)
+		   ("C-0" . find-function))
 
 ;; hydra for emacs lisp
 (defhydra hydra-elisp (:color pink :hint nil)
@@ -126,10 +144,19 @@
 (use-package rtags
   :ensure t
   :bind* (("C-c y c" . company-rtags)
-		  ("M-\\ c" . hydra-cpp/body)
-		  ("M-\\ C-c" . hydra-cpp/body))
+		  ("C-\\ c" . hydra-cpp/body)
+		  ("C-\\ C-c" . hydra-cpp/body))
   :bind (:map c++-mode-map
-			  ("C-\\" . hydra-cpp/body))
+			  ("M-\\" . hydra-cpp/body)
+			  ("C-0" . rtags-find-symbol-at-point)
+			  ("C-9" . rtags-print-symbol-info)
+			  ("C-2" . rtags-find-references-at-point)
+			  ("C-3" . rtags-find-virtuals-at-point)
+			  ("C-4" . sk/compile-cpp-build)
+			  ("C-5" . rtags-diagnostics)
+			  ("C-6" . rtags-preprocess-file)
+			  ("C-7" . rtags-print-dependencies)
+			  ("C-8" . rtags-symbol-type))
   :init
   (setq rtags-autostart-diagnostics t)
   (setq rtags-completions-enabled t)
@@ -210,9 +237,18 @@
   :ensure t
   :mode ("\\.py\\'" . python-mode)
   :bind (:map python-mode-map
-			  ("C-\\ r" . hydra-python/body))
-  :bind* (("M-\\ p" . hydra-python/body)
-		  ("M-\\ C-p" . hydra-python/body))
+			  ("M-\\" . hydra-python/body)
+			  ("C-0" . anaconda-mode-find-definitions)
+			  ("C-9" . anaconda-mode-show-doc)
+			  ("C-2" . python-shell-send-region)
+			  ("C-3" . anaconda-mode-find-references)
+			  ("C-4" . run-python)
+			  ("C-5" . python-shell-send-buffer)
+			  ("C-6" . python-shell-send-defun)
+			  ("C-7" . python-shell-switch-to-shell)
+			  ("C-8" . anaconda-mode-find-assignments))
+  :bind* (("C-\\ p" . hydra-python/body)
+		  ("C-\\ C-p" . hydra-python/body))
   :config
   (setq python-shell-interpreter "ipython"
 		python-shell-interpreter-args "--simple-prompt -i")
@@ -418,13 +454,34 @@
 			 ess-help-web-search
 			 ess-display-help-apropos)
   :bind (:map ess-mode-map
-			  ("C-\\" . hydra-stats/body))
-  :bind* (("M-\\ s" . hydra-stats/body)
-		  ("M-\\ C-s" . hydra-stats/body))
+			  ("M-\\" . hydra-stats/body)
+			  ("C-2" . ess-eval-region-or-line-and-step)
+			  ("C-3" . ess-eval-chunk-and-step)
+			  ("C-4" . sk/R)
+			  ("C-5" . ess-eval-buffer)
+			  ("C-6" . ess-eval-function-or-paragraph-and-step)
+			  ("C-7" . ess-swith-to-ESS)
+			  ("C-8" . ess-describe-object-at-point)
+			  ("C-9" . ess-help)
+			  ("C-0" . ess-dump-object-into-edit-buffer))
+  :bind* (("C-\\ s" . hydra-stats/body)
+		  ("C-\\ C-s" . hydra-stats/body))
   :init
   (setq ess-use-ido nil)
   :config
-  (require 'ess-site))
+  (require 'ess-site)
+  (defun sk/R ()
+	"open R REPL in other window"
+	(interactive)
+	(split-window-horizontally)
+	(R)
+	(other-window 1))
+  (defun sk/julia ()
+	"open julia REPL in other window"
+	(interactive)
+	(split-window-horizontally)
+	(julia)
+	(other-window 1)))
 
 ;; hydra for stats package
 (defhydra hydra-stats-packages (:color blue :hint nil)
@@ -512,8 +569,8 @@
  _]_: switch to repl  _b_: buffer        _n_: load file namespace   _e_: demos      _z_: dump obj     _t_: style
  _c_: chunk           _<_: to beg        _>_: to end                _v_: vignettes  _u_: debug        _y_: roxy
 "
-  ("r" R :color blue)
-  ("j" julia :color blue)
+  ("r" sk/R :color blue)
+  ("j" sk/julia :color blue)
   ("]" ess-switch-to-ESS :color blue)
   ("d" ess-eval-function-or-paragraph-and-step)
   ("i" ess-eval-region-or-line-and-step)
@@ -575,9 +632,18 @@
 			 matlab-show-line-info
 			 matlab-find-file-on-path)
   :bind (:map matlab-mode-map
-			  ("C-\\" . hydra-matlab/body))
-  :bind* (("M-\\ m" . hydra-matlab/body)
-		  ("M-\\ C-m" . hydra-matlab/body)))
+			  ("M-\\" . hydra-matlab/body)
+			  ("C-0" . matlab-find-file-on-path)
+			  ("C-9" . matlab-shell-describe-command)
+			  ("C-2" . matlab-shell-run-region-or-line)
+			  ("C-3" . matlab-shell-run-command)
+			  ("C-4" . matlab-shell)
+			  ("C-5" . matlab-shell-save-and-go)
+			  ("C-6" . matlab-shell-run-cell)
+			  ("C-7" . matlab-show-matlab-shell-buffer)
+			  ("C-8" . matlab-shell-describe-variable))
+  :bind* (("C-\\ m" . hydra-matlab/body)
+		  ("C-\\ C-m" . hydra-matlab/body)))
 
 ;; hydra for matlab
 (defhydra hydra-matlab (:color pink :hint nil)
@@ -586,7 +652,7 @@
 ^^^^^^^^^^-------------------------------------------------------------------
  _k_: command    _t_: topic        _i_: region/line     _r_: matlab    _q_: quit
  _v_: variable   _j_: file on path _f_: cell            _]_: switch
- _l_: line                       _c_: command
+ _l_: line                       _c_: command         _b_: buffer
 "
   ("k" matlab-shell-describe-command)
   ("v" matlab-shell-describe-variable)
@@ -595,6 +661,7 @@
   ("j" matlab-find-file-on-path :color blue)
   ("i" matlab-shell-run-region-or-line)
   ("f" matlab-shell-run-cell)
+  ("b" matlab-shell-save-and-go)
   ("c" matlab-shell-run-command :color blue)
   ("r" matlab-shell :color blue)
   ("]" matlab-show-matlab-shell-buffer :color blue)
@@ -611,9 +678,18 @@
   :commands (httpd-start
 			 httpd-stop)
   :bind (:map web-mode-map
-			  ("C-\\" . hydra-web/body))
-  :bind* (("M-\\ w" . hydra-web/body)
-		  ("M-\\ C-w" . hydra-web/body))
+			  ("M-\\" . hydra-web/body)
+			  ("C-0" . httpd-start)
+			  ("C-9" . httpd-stop)
+			  ("C-2" . skewer-html-mode)
+			  ("C-3" . skewer-css-mode)
+			  ("C-4" . skewer-repl)
+			  ("C-5" . skewer-mode)
+			  ("C-6" . web-beautify-html-buffer)
+			  ("C-7" . web-beautify-css-buffer)
+			  ("C-8" . web-beautify-js-buffer))
+  :bind* (("C-\\ w" . hydra-web/body)
+		  ("C-\\ C-w" . hydra-web/body))
   :config
   ;; HTML completion
   (use-package company-web
@@ -696,11 +772,29 @@
   :ensure t
   :mode ("\\.js\\'" . js3-mode)
   :bind (:map js3-mode-map
-			  ("C-\\" . hydra-javascript/body)
-		 :map js-mode-map
-			  ("C-\\" . hydra-javascript/body))
-  :bind* (("M-\\ j" . hydra-javascript/body)
-		  ("M-\\ C-j" . hydra-javascript/body)))
+			  ("M-\\" . hydra-javascript/body)
+			  ("C-0" . tern-find-definition)
+			  ("C-9" . tern-get-docs)
+			  ("C-2" . nodejs-repl-send-region)
+			  ("C-3" . nodejs-repl-send-last-sexp)
+			  ("C-4" . nodejs-repl)
+			  ("C-5" . nodejs-repl-send-buffer)
+			  ("C-6" . nodejs-repl-load-file)
+			  ("C-7" . nodejs-repl-switch-to-repl)
+			  ("C-8" . tern-get-type))
+  :bind (:map js-mode-map
+			  ("M-\\" . hydra-javascript/body)
+			  ("C-0" . tern-find-definition)
+			  ("C-9" . tern-get-docs)
+			  ("C-2" . nodejs-repl-send-region)
+			  ("C-3" . nodejs-repl-send-last-sexp)
+			  ("C-4" . nodejs-repl)
+			  ("C-5" . nodejs-repl-send-buffer)
+			  ("C-6" . nodejs-repl-load-file)
+			  ("C-7" . nodejs-repl-switch-to-repl)
+			  ("C-8" . tern-get-type))
+  :bind* (("C-\\ j" . hydra-javascript/body)
+		  ("C-\\ C-j" . hydra-javascript/body)))
 ;; JS semantic navigation
 (use-package tern
   :ensure t
@@ -819,10 +913,19 @@
 (use-package lua-mode
   :ensure t
   :mode "\\.lua\\'"
-  :bind* (("M-\\ u" . hydra-lua/body)
-		  ("M-\\ C-u" . hydra-lua/body))
+  :bind* (("C-\\ u" . hydra-lua/body)
+		  ("C-\\ C-u" . hydra-lua/body))
   :bind (:map lua-mode-map
-			  ("C-\\" . hydra-lua/body)))
+			  ("M-\\" . hydra-lua/body)
+			  ("C-0" . ggtags-find-tag-dwim)
+			  ("C-9" . lua-search-documentation)
+			  ("C-2" . lua-send-region)
+			  ("C-3" . lua-send-line)
+			  ("C-4" . lua-start-process)
+			  ("C-5" . lua-send-buffer)
+			  ("C-6" . lua-send-defun)
+			  ("C-7" . lua-show-process-buffer)
+			  ("C-8" . run-lua)))
 
 ;; hydra for lua
 (defhydra hydra-lua (:color pink :hint nil)
@@ -852,9 +955,18 @@
   :init
   (setq sml-program-name "sml")
   :bind (:map sml-mode-map
-			  ("C-\\" . hydra-sml/body))
-  :bind* (("M-\\ l" . hydra-sml/body)
-		  ("M-\\ C-l" . hydra-sml/body)))
+			  ("M-\\" . hydra-sml/body)
+			  ("C-0" . ggtags-find-tag-dwim)
+			  ("C-9" . woman)
+			  ("C-2" . sml-prog-proc-send-region)
+			  ("C-3" . sml-prog-proc-compile)
+			  ("C-4" . sml-prog-proc-switch-to)
+			  ("C-5" . sml-prog-proc-send-buffer)
+			  ("C-6" . sml-prog-proc-load-file)
+			  ("C-7" . sml-prog-proc-switch-to)
+			  ("C-8" . run-sml))
+  :bind* (("C-\\ l" . hydra-sml/body)
+		  ("C-\\ C-l" . hydra-sml/body)))
 
 ;; hydra for sml
 (defhydra hydra-sml (:color pink :hint nil)
@@ -899,12 +1011,30 @@
 			 geiser-doc-lookup-manual
 			 geiser-xref-callers
 			 geiser-xref-callees)
-  :bind* (("M-\\ k" . hydra-racket-scheme/body)
-		  ("M-\\ C-k" . hydra-racket-scheme/body))
+  :bind* (("C-\\ k" . hydra-racket-scheme/body)
+		  ("C-\\ C-k" . hydra-racket-scheme/body))
   :bind (:map scheme-mode-map
-			  ("C-\\" . hydra-racket-scheme/body))
+			  ("M-\\" . hydra-racket-scheme/body)
+			  ("C-0" . geiser-edit-symbol-at-point)
+			  ("C-9" . geiser-doc-symbol-at-point)
+			  ("C-2" . geiser-eval-region)
+			  ("C-3" . geiser-eval-last-sexp)
+			  ("C-4" . run-geiser)
+			  ("C-5" . geiser-eval-buffer)
+			  ("C-6" . geiser-eval-definition)
+			  ("C-7" . geiser-mode-switch-to-repl)
+			  ("C-8" . geiser-load-file))
   :bind (:map racket-mode-map
-			  ("C-\\" . hydra-racket-scheme/body)))
+			  ("M-\\" . hydra-racket-scheme/body)
+			  ("C-0" . geiser-edit-symbol-at-point)
+			  ("C-9" . geiser-doc-symbol-at-point)
+			  ("C-2" . geiser-eval-region)
+			  ("C-3" . geiser-eval-last-sexp)
+			  ("C-4" . run-geiser)
+			  ("C-5" . geiser-eval-buffer)
+			  ("C-6" . geiser-eval-definition)
+			  ("C-7" . geiser-mode-switch-to-repl)
+			  ("C-8" . geiser-load-file)))
 
 ;; hydra for racket/scheme
 (defhydra hydra-racket-scheme (:color pink :hint nil)
@@ -950,9 +1080,18 @@
 			 ruby-send-region
 			 ruby-send-region-and-go)
   :bind (:map ruby-mode-map
-			  ("C-\\" . hydra-ruby/body))
-  :bind* (("M-\\ r" . hydra-ruby/body)
-		  ("M-\\ C-r" . hydra-ruby/body))
+			  ("M-\\" . hydra-ruby/body)
+			  ("C-0" . robe-jump)
+			  ("C-9" . robe-show-doc)
+			  ("C-2" . ruby-send-region)
+			  ("C-3" . robe-start)
+			  ("C-4" . inf-ruby)
+			  ("C-5" . ruby-send-definition)
+			  ("C-6" . robe-call-at-point)
+			  ("C-7" . ruby-switch-to-inf)
+			  ("C-8" . hydra-projectile-rails/body))
+  :bind* (("C-\\ r" . hydra-ruby/body)
+		  ("C-\\ C-r" . hydra-ruby/body))
   :config
   (add-hook 'ruby-mode-hook 'inf-ruby-mode))
 
@@ -1141,9 +1280,18 @@
 			 go-play-region
 			 go-download-play)
   :bind (:map go-mode-map
-			  ("C-\\" . hydra-go/body))
-  :bind* (("M-\\ o" . hydra-go/body)
-		  ("M-\\ C-o" . hydra-go/body))
+			  ("M-\\" . hydra-go/body)
+			  ("C-0" . godef-jump)
+			  ("C-9" . godoc-at-point)
+			  ("C-2" . go-oracle-referrers)
+			  ("C-3" . go-goto-imports)
+			  ("C-4" . sk/run-go)
+			  ("C-5" . sk/build-go)
+			  ("C-6" . go-goto-function-name)
+			  ("C-7" . sk/test-dir-go)
+			  ("C-8" . gofmt))
+  :bind* (("C-\\ o" . hydra-go/body)
+		  ("C-\\ C-o" . hydra-go/body))
   :config
   ;; Go completion
   (use-package company-go

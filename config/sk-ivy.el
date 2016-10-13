@@ -72,7 +72,8 @@
 		  ("M-s C-p" . sk/counsel-ag-project)
 		  ("M-s j" . sk/counsel-ag-project-at-point)
 		  ("M-s C-j" . sk/counsel-ag-project-at-point)
-		  ("C-c p" . counsel-projectile-find-file-or-buffer))
+		  ("C-c p" . counsel-projectile-find-file-or-buffer)
+		  ("C-1" . projectile-find-other-file-other-window))
   :init
   (setq projectile-completion-system 'ivy)
   :config

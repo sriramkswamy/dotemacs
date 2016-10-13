@@ -416,7 +416,8 @@ Its element is a pair of `buffer-name' and `mode-line-format'.")
 ;; to help with projectile
 (use-package helm-projectile
   :ensure t
-  :bind* (("C-c p" . helm-projectile))
+  :bind* (("C-c p" . helm-projectile)
+		  ("C-1" . projectile-find-other-file-other-window))
   :init
   (setq projectile-completion-system 'helm)
   :config
@@ -467,14 +468,14 @@ Its element is a pair of `buffer-name' and `mode-line-format'.")
 ;; helm hydra
 (defhydra hydra-helm (:hint nil :color pink)
         "
-										 ╭ ───────┐
+																				 ╭ ───────┐
    Navigation   Other  Sources     Mark             Do             Help          │  Helm  │
   ╭──────────────────────────────────────────────────────────────────────────────┴────────╯
-	^_k_^         _K_       _p_   [_v_] mark         [_y_] yank         [_H_] helm help    [_q_] quit
+		^_k_^         _K_       _p_   [_v_] mark         [_y_] yank         [_H_] helm help    [_q_] quit
         ^^↑^^         ^↑^       ^↑^   [_V_] toggle all   [_d_] delete       [_s_] source help
     _h_ ←   → _l_     _c_       ^ ^   [_u_] unmark all   [_f_] follow: %(helm-attr 'follow)
         ^^↓^^         ^↓^       ^↓^    ^ ^               [_w_] toggle windows
-	^_j_^         _J_       _n_    ^ ^               [_e_] swoop edit
+		^_j_^         _J_       _n_    ^ ^               [_e_] swoop edit
   --------------------------------------------------------------------------------
         "
         ("<tab>" helm-select-action)

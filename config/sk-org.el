@@ -263,57 +263,21 @@
 
   :bind* (("C-c a" . org-agenda)
 		  ("C-c c" . org-capture)
-		  ("M-\\ a" . hydra-org-jump/body)
-		  ("M-\\ C-a" . hydra-org-jump/body)
+		  ("C-\\ a" . hydra-org-jump/body)
+		  ("C-\\ C-a" . hydra-org-jump/body)
 		  ("C-r i u" . sk/mark-inside-subtree)
 		  ("C-r a u" . org-mark-subtree))
   :bind (:map org-mode-map
-			  ("C-\\ o" . hydra-org-organize/body)
-			  ("C-\\ l" . org-insert-link)
-			  ("C-\\ s" . org-store-link)
-			  ("C-\\ L" . org-toggle-link-display)
-			  ("C-\\ i" . org-toggle-inline-images)
-			  ("C-\\ x" . org-toggle-latex-fragment)
-			  ("C-\\ h" . org-toggle-heading)
-			  ("C-\\ H" . org-insert-heading-respect-content)
-			  ("C-\\ c" . sk/org-custom-load)
-			  ("C-\\ w" . org-cut-subtree)
-			  ("C-\\ y" . org-copy-subtree)
-			  ("C-\\ e" . org-export-dispatch)
-			  ("C-\\ t" . org-set-tags-command)
-			  ("C-\\ d" . org-todo)
-			  ("C-\\ n" . org-narrow-to-subtree)
-			  ("C-\\ j" . hydra-org-jump/body)
-			  ("C-\\ a" . org-archive)
-			  ("C-\\ r" . org-refile)
-			  ("C-\\ v" . org-reveal)
-			  ("C-\\ <" . outline-promote)
-			  ("C-\\ >" . outline-demote)
-			  ("C-\\ [" . org-date-from-calendar)
-			  ("C-\\ ]" . org-goto-calendar)
-			  ("C-\\ C-o" . hydra-org-organize/body)
-			  ("C-\\ C-l" . org-insert-link)
-			  ("C-\\ C-s" . org-store-link)
-			  ("C-\\ C-L" . org-toggle-link-display)
-			  ("C-\\ C-i" . org-toggle-inline-images)
-			  ("C-\\ C-x" . org-toggle-latex-fragment)
-			  ("C-\\ C-h" . org-toggle-heading)
-			  ("C-\\ C-H" . org-insert-heading-respect-content)
-			  ("C-\\ C-c" . sk/org-custom-load)
-			  ("C-\\ C-w" . org-cut-subtree)
-			  ("C-\\ C-y" . org-copy-subtree)
-			  ("C-\\ C-e" . org-export-dispatch)
-			  ("C-\\ C-t" . org-set-tags-command)
-			  ("C-\\ C-d" . org-todo)
-			  ("C-\\ C-n" . org-narrow-to-subtree)
-			  ("C-\\ C-j" . hydra-org-jump/body)
-			  ("C-\\ C-a" . org-archive)
-			  ("C-\\ C-r" . org-refile)
-			  ("C-\\ C-v" . org-reveal)
-			  ("C-\\ C-<" . outline-promote)
-			  ("C-\\ C->" . outline-demote)
-			  ("C-\\ C-[" . org-date-from-calendar)
-			  ("C-\\ C-]" . org-goto-calendar)))
+			  ("M-\\" . hydra-org-jump/body)
+			  ("C-0" . org-insert-link)
+			  ("C-9" . org-store-link)
+			  ("C-2" . org-toggle-inline-images)
+			  ("C-3" . org-toggle-latex-fragment)
+			  ("C-4" . org-export-dispatch)
+			  ("C-5" . sk/org-custom-load)
+			  ("C-6" . org-set-tags-command)
+			  ("C-7" . org-insert-heading-respect-content)
+			  ("C-8" . org-toggle-heading)))
 
 ;; diminish org indent mode
 (defun sk/diminish-org-indent ()
@@ -415,32 +379,41 @@
 ;; organizing subtrees
 (defhydra hydra-org-organize (:color red :hint nil)
   "
- ^Subtree^  ^Heading^ ^Item^
-^^^^^^^^^^^^^-----------------------------------
- ^ ^ _k_ ^ ^    ^ ^ _p_ ^ ^   _u_: up   _q_: quit
- _h_ ^+^ _l_    _b_ ^+^ _f_   _d_: down
- ^ ^ _j_ ^ ^    ^ ^ _n_ ^ ^
+ ^Subtree^                        ^Heading^  ^Item^      ^Outline^
+^^^^^^^^^^^^^-----------------------------------------------------------------------
+ ^ ^ _k_ ^ ^   _a_: archive  _c_: cut      ^ ^ _p_ ^ ^   _u_: up     _<_: promote  _q_: quit
+ _h_ ^+^ _l_   _r_: refile   _w_: copy     _b_ ^+^ _f_   _d_: down   _>_: demote   _o_: org
+ ^ ^ _j_ ^ ^   _v_: reveal   _i_: narrow   ^ ^ _n_ ^ ^
 "
   ("h" org-shiftmetaleft)
   ("l" org-shiftmetaright)
   ("j" org-metadown)
   ("k" org-metaup)
+  ("a" org-archive :color blue)
+  ("r" org-refile :color blue)
+  ("v" org-reveal :color blue)
+  ("c" org-cut-subtree :color blue)
+  ("w" org-copy-subtree :color blue)
+  ("i" org-narrow-to-subtree :color blue)
   ("b" org-metaleft)
   ("f" org-metaright)
   ("n" org-shiftmetadown)
   ("p" org-shiftmetaup)
   ("d" org-move-item-down)
   ("u" org-move-item-up)
+  ("<" outline-promote)
+  (">" outline-demote)
+  ("o" hydra-org-jump/body :exit t)
   ("q" nil :color blue))
 
 ;; hydra for jumping
 (defhydra hydra-org-jump (:color pink :hint nil)
   "
- ^Outline^          ^Block^   ^Link^
- ^^^^^^^^^^^-------------------------------------------------------
- ^ ^ _k_ ^ ^   ^ ^ _b_ ^ ^   ^ ^ _p_ ^ ^   ^ ^ _u_ ^ ^   _i_: cycle      _q_: quit
- _h_ ^+^ _l_   ^ ^ ^+^ ^ ^   ^ ^ ^+^ ^ ^   ^ ^ ^+^ ^ ^   _I_: global cycle
- ^ ^ _j_ ^ ^   ^ ^ _f_ ^ ^   ^ ^ _n_ ^ ^   ^ ^ _d_ ^ ^   _o_: ace link
+ ^Outline^          ^Block^          ^Link^              ^Auxiliary^
+ ^^^^^^^^^^^-------------------------------------------------------------------------------
+ ^ ^ _k_ ^ ^   ^ ^ _b_ ^ ^   ^ ^ _p_ ^ ^   ^ ^ _u_ ^ ^   _i_: cycle          _r_: reorganize  _q_: quit
+ _h_ ^+^ _l_   ^ ^ ^+^ ^ ^   ^ ^ ^+^ ^ ^   ^ ^ ^+^ ^ ^   _c_: global cycle   _[_: date from cal
+ ^ ^ _j_ ^ ^   ^ ^ _f_ ^ ^   ^ ^ _n_ ^ ^   ^ ^ _d_ ^ ^   _o_: ace link       _]_: goto cal
 "
   ("j" outline-next-visible-heading)
   ("k" outline-previous-visible-heading)
@@ -453,8 +426,11 @@
   ("u" org-next-link)
   ("d" org-previous-link)
   ("i" org-cycle)
-  ("I" org-global-cycle)
+  ("c" org-global-cycle)
   ("o" ace-link-org :color blue)
+  ("r" hydra-org-organize/body :exit t)
+  ("[" org-date-from-calendar :color blue)
+  ("]" org-goto-calendar :color blue)
   ("q" nil :color blue))
 
 ;; provide this configuration

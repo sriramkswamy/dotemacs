@@ -13,6 +13,7 @@
 		eval-print-last-sexp
 		god-local-mode
 		god-mode-self-insert
+		helm-keyboard-quit
 		hydra-mc/mc/mark-next-like-this
 		hydra-mc/nil
 		kill-region
@@ -29,4 +30,5 @@
 
 (setq mc/cmds-to-run-once
       '(
+		avy-goto-char-2
 		))

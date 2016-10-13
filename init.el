@@ -673,8 +673,8 @@
   "
  ^Move^    ^Size^    ^Change^                    ^Split^           ^Text^
  ^^^^^^^^^^^------------------------------------------------------------------
- ^ ^ _k_ ^ ^   ^ ^ _K_ ^ ^   _u_: winner-undo _o_: rotate  _v_: vertical     _+_: zoom in
- _h_ ^+^ _l_   _H_ ^+^ _L_   _r_: winner-redo _w_: other   _s_: horizontal   _-_: zoom out
+ ^ ^ _k_ ^ ^   ^ ^ _K_ ^ ^   _u_: winner-undo _r_: rotate  _v_: vertical     _+_: zoom in
+ _h_ ^+^ _l_   _H_ ^+^ _L_   _r_: winner-redo _o_: other   _s_: horizontal   _-_: zoom out
  ^ ^ _j_ ^ ^   ^ ^ _J_ ^ ^   _c_: close                  _z_: zoom         _q_: quit
 "
   ("h" windmove-left)
@@ -688,8 +688,8 @@
   ("v" sk/split-right-and-move)
   ("s" sk/split-below-and-move)
   ("c" delete-window)
-  ("o" sk/rotate-windows)
-  ("w" ace-window :color blue)
+  ("r" sk/rotate-windows)
+  ("o" ace-window :color blue)
   ("z" delete-other-windows)
   ("u" (progn
 		 (winner-undo)
@@ -698,13 +698,14 @@
   ("+" text-scale-increase)
   ("-" text-scale-decrease)
   ("q" nil :exit t))
-(bind-key* "C-x O" 'hydra-windows/body)
+(bind-key* "C-x C-o" 'hydra-windows/body)
 
 ;; tags based navigation
 (use-package ggtags
   :ensure t
   :diminish ggtags-mode
   :bind* (("M-=" . hydra-ggtags/body)
+		  ("M-[" . ggtags-create-tags)
 		  ("M-]" . ggtags-find-tag-regexp)
 		  ("M-." . ggtags-update-tags)))
 ;; tags hydra
@@ -722,15 +723,6 @@
   ("f" ggtags-find-reference)
   ("t" ggtags-find-tag-dwim)
   ("q" nil :exit t))
-
-;; dumb semantic jump
-(use-package dumb-jump
-  :ensure t
-  :bind (("M-[" . dumb-jump-go))
-  :init
-  (setq dumb-jump-selector 'ivy)
-  :config
-  (dumb-jump-mode))
 
 ;; dash documentation
 (use-package dash-at-point
@@ -762,17 +754,7 @@
 			 persp-remove-buffer
 			 persp-kill-buffer
 			 persp-mode)
-  :bind* (("M--" . hydra-persp-mode/body)
-		  ("M-0" . persp-next)
-		  ("M-9" . persp-prev)
-		  ("M-1" . persp-kill)
-		  ("M-2" . persp-switch-to-buffer)
-		  ("M-3" . persp-switch)
-		  ("M-4" . persp-mode)
-		  ("M-5" . persp-save-state-to-file)
-		  ("M-8" . persp-rename)
-		  ("M-7" . persp-load-state-from-file)
-		  ("M-6" . persp-temporarily-display-buffer))
+  :bind* (("M--" . hydra-persp-mode/body))
   :init
   (setq persp-autokill-buffer-on-remove 'kill-weak)
   :config
@@ -815,16 +797,16 @@
   :diminish eyebrowse-mode
   :init
   (setq eyebrowse-wrap-around t)
-  :bind* (("C-0" . eyebrowse-switch-to-window-config-0)
-		  ("C-1" . eyebrowse-switch-to-window-config-1)
-		  ("C-2" . eyebrowse-switch-to-window-config-2)
-		  ("C-3" . eyebrowse-switch-to-window-config-3)
-		  ("C-4" . eyebrowse-switch-to-window-config-4)
-		  ("C-5" . eyebrowse-switch-to-window-config-5)
-		  ("C-6" . eyebrowse-switch-to-window-config-6)
-		  ("C-7" . eyebrowse-switch-to-window-config-7)
-		  ("C-8" . eyebrowse-switch-to-window-config-8)
-		  ("C-9" . eyebrowse-switch-to-window-config-9)
+  :bind* (("M-0" . eyebrowse-switch-to-window-config-0)
+		  ("M-1" . eyebrowse-switch-to-window-config-1)
+		  ("M-2" . eyebrowse-switch-to-window-config-2)
+		  ("M-3" . eyebrowse-switch-to-window-config-3)
+		  ("M-4" . eyebrowse-switch-to-window-config-4)
+		  ("M-5" . eyebrowse-switch-to-window-config-5)
+		  ("M-6" . eyebrowse-switch-to-window-config-6)
+		  ("M-7" . eyebrowse-switch-to-window-config-7)
+		  ("M-8" . eyebrowse-switch-to-window-config-8)
+		  ("M-9" . eyebrowse-switch-to-window-config-9)
 		  ("C--" . eyebrowse-switch-to-window-config)
 		  ("C-!" . eyebrowse-close-window-config)
 		  ("C-#" . eyebrowse-prev-window-config)

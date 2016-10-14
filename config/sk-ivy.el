@@ -70,10 +70,9 @@
   :ensure t
   :bind* (("M-s p" . sk/counsel-ag-project)
 		  ("M-s C-p" . sk/counsel-ag-project)
-		  ("M-s j" . sk/counsel-ag-project-at-point)
-		  ("M-s C-j" . sk/counsel-ag-project-at-point)
-		  ("C-c p" . counsel-projectile-find-file-or-buffer)
-		  ("C-|" . projectile-find-other-file-other-window))
+		  ("M-s s" . sk/counsel-ag-project-at-point)
+		  ("M-s C-s" . sk/counsel-ag-project-at-point)
+		  ("C-c p" . counsel-projectile-find-file-or-buffer))
   :init
   (setq projectile-completion-system 'ivy)
   :config
@@ -85,17 +84,18 @@
 	"use counsel ag to search the project"
 	(interactive)
 	(counsel-ag "" (projectile-project-root)))
+  (projectile-mode)
   (ivy-mode 1)
   (counsel-mode 1))
 
 ;; search the buffer or all buffer
 (use-package swiper
   :ensure t
-  :bind* (("M-s s" . swiper-all)
-		  ("M-s C-s" . swiper-all)
+  :bind* (("M-s l" . swiper-all)
+		  ("M-s C-l" . swiper-all)
 		  ("C-s" . counsel-grep-or-swiper)
-		  ("M-s r" . sk/swiper-at-point)
-		  ("M-s C-r" . sk/swiper-at-point))
+		  ("M-s j" . sk/swiper-at-point)
+		  ("M-s C-j" . sk/swiper-at-point))
   :config
   (defun sk/swiper-at-point ()
 	"use swiper to search for a word at point"

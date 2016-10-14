@@ -388,8 +388,8 @@ Its element is a pair of `buffer-name' and `mode-line-format'.")
   :ensure t
   :bind* (("M-s p" . sk/helm-do-ag-project-root)
 		  ("M-s C-p" . sk/helm-do-ag-project-root)
-		  ("M-s j" . sk/helm-do-ag-project-root-at-point)
-		  ("M-s C-j" . sk/helm-do-ag-project-root-at-point)
+		  ("M-s s" . sk/helm-do-ag-project-root-at-point)
+		  ("M-s C-s" . sk/helm-do-ag-project-root-at-point)
 		  ("M-s c" . sk/helm-do-ag)
 		  ("M-s C-c" . sk/helm-do-ag))
   :config
@@ -400,10 +400,10 @@ Its element is a pair of `buffer-name' and `mode-line-format'.")
 (use-package helm-swoop
   :ensure t
   :bind* (("C-s" . helm-swoop-without-pre-input)
-		  ("M-s s" . helm-multi-swoop-all)
-		  ("M-s C-s" . helm-multi-swoop-all)
-		  ("M-s r" . helm-swoop)
-		  ("M-s C-r" . helm-swoop)
+		  ("M-s l" . helm-multi-swoop-all)
+		  ("M-s C-l" . helm-multi-swoop-all)
+		  ("M-s j" . helm-swoop)
+		  ("M-s C-j" . helm-swoop)
 		  ("C-c X" . helm-multi-swoop--edit-cancel))
   :init
   (setq helm-swoop-split-with-multiple-windows nil
@@ -416,11 +416,11 @@ Its element is a pair of `buffer-name' and `mode-line-format'.")
 ;; to help with projectile
 (use-package helm-projectile
   :ensure t
-  :bind* (("C-c p" . helm-projectile)
-		  ("C-|" . projectile-find-other-file-other-window))
+  :bind* (("C-c p" . helm-projectile))
   :init
   (setq projectile-completion-system 'helm)
   :config
+  (projectile-mode)
   (helm-mode 1)
   (helm-ido-like))
 

@@ -798,7 +798,7 @@
 		  ("M-8" . eyebrowse-switch-to-window-config-8)
 		  ("M-9" . eyebrowse-switch-to-window-config-9)
 		  ("C--" . eyebrowse-switch-to-window-config)
-		  ("C-!" . eyebrowse-close-window-config)
+		  ("M-!" . eyebrowse-close-window-config)
 		  ("M-#" . eyebrowse-prev-window-config)
 		  ("M-*" . eyebrowse-next-window-config)
 		  ("M-+" . eyebrowse-last-window-config)
@@ -1355,7 +1355,17 @@
 ;; project management
 (use-package projectile
   :ensure t
-  :commands (projectile-project-root))
+  :diminish projectile-mode
+  :commands (projectile-project-root)
+  :bind* (("C-*" . projectile-find-other-file)
+		  ("C-#" . projectile-find-other-file-other-window)
+		  ("C-!" . projectile-commander)
+		  ("C-$" . projectile-run-eshell)
+		  ("C-&" . projectile-run-async-shell-command-in-root))
+  :init
+  (setq projectile-keymap-prefix (kbd "C-x p"))
+  :config
+  (projectile-mode))
 
 ;; Shell interaction
 (require 'sk-shell)

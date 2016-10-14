@@ -245,10 +245,7 @@ point reaches the beginning or end of the buffer, stop there."
   "Transpose words backward"
   (interactive)
   (transpose-words 1)
-  (backward-word 1))
-(bind-keys*
- ("C-c F" . sk/transpose-words-forward)
- ("C-c B" . sk/transpose-words-backward))
+  (backward-word 2))
 
 ;; Correct the DOuble capitals
 (defun sk/dcaps-to-scaps ()
@@ -310,9 +307,6 @@ Single Capitals as you type."
   (interactive "*p")
   (sk/move-text-internal (- arg))
   (next-line 1))
-(bind-keys*
- ("C-c U" . sk/move-text-up)
- ("C-c D" . sk/move-text-down))
 
 ;; Autocorrect
 (defun sk/simple-get-word ()
@@ -513,7 +507,7 @@ If there's no region, the current line will be duplicated."
   (interactive)
   (if (region-active-p)
 	  (deactivate-mark)))
-(bind-key* "C-x x" 'sk/remove-mark)
+(bind-key* "M-g" 'sk/remove-mark)
 
 ;; toggle case
 (defun sk/toggle-letter-case ()

@@ -2,7 +2,7 @@
 (defun sk/call-terminal ()
   (interactive)
   (shell-command "open -a /Applications/Utilities/Terminal.app"))
-(bind-key* "C-c Q" 'sk/call-terminal)
+(bind-key* "C-c :" 'sk/call-terminal)
 
 ;; interact with tmux
 (use-package emamux

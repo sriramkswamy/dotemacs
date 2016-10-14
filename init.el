@@ -173,9 +173,10 @@
  ("C-x f" . make-frame-command)
  ("C-c m" . rectangle-mark-mode)
  ("C-x k" . kill-this-buffer)
+ ("M-:" . goto-line)
+ ("M-\"" . move-to-column)
  ("C-c g f" . find-file-at-point)
  ("C-c '" . woman)
- ("C-c x" . overwrite-mode)
  ("C-(" . kmacro-start-macro)
  ("C-)" . kmacro-end-macro)
  ("C-`" . kmacro-end-or-call-macro-repeat)
@@ -193,6 +194,8 @@
  ("C-c o t" . display-time-mode))
 (bind-keys
  ("C-x b" . ibuffer)
+ ("M-n" . next-error)
+ ("M-p" . previous-error)
  ("C-x C-0" . delete-window)
  ("C-x C-1" . delete-other-windows)
  ("C-x C-2" . split-window-below)
@@ -842,7 +845,10 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; load one of these themes
-(load-theme 'wombat t)
+(use-package zenburn-theme
+  :ensure t)
+(load-theme 'zenburn t)
+;; (load-theme 'wombat t)
 ;; (load-theme 'leuven t)
 
 ;; rainbow paranthesis for easier viewing
@@ -867,14 +873,14 @@
 (use-package indent-guide
   :ensure t
   :diminish indent-guide-mode
-  :bind* (("C-c |" . indent-guide-mode))
+  :bind* (("C-c o i" . indent-guide-mode))
   :config
   (add-hook 'python-mode-hook 'indent-guide-mode))
 
 ;; indicate margins
 (use-package fill-column-indicator
   :ensure t
-  :bind* (("C-c \\" . fci-mode))
+  :bind* (("C-c o m" . fci-mode))
   :init
   (setq fci-rule-width 5
 		fci-rule-column 79)
@@ -923,18 +929,27 @@
   :ensure t
   :bind* (("C-x c" . restart-emacs)))
 
-;; discovering the major mode bindings and details
-(use-package discover-my-major
-  :ensure t
-  :bind (("C-h B" . discover-my-major)
-		 ("C-h M" . discover-my-mode)))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Convenience functions    ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; VERY useful
 (require 'sk-functions)
+;; hydra for some of these functions
+(defhydra hydra-exchange (:color red :hint nil)
+  "
+ ^Words^         ^Line^       ^Change^
+^^^^^^^^------------------------------------------------------------
+  _j_: next      _h_: back    _r_: overwrite  _q_: quit
+  _k_: previous  _l_: forward
+  "
+  ("k" sk/move-text-up)
+  ("j" sk/move-text-down)
+  ("h" sk/transpose-words-backward)
+  ("l" sk/transpose-words-forward)
+  ("r" overwrite-mode :color blue)
+  ("q" nil :color blue))
+(bind-key* "C-c x" 'hydra-exchange/body)
 
 ;;;;;;;;;;;;;;;;;;;
 ;;    Writing    ;;
@@ -1362,7 +1377,7 @@
 	(if (region-active-p)
 		(google-this-region 1)
 	  (google-this-symbol 1)))
-  :bind* (("C-c G" . sk/google-this)))
+  :bind* (("C-c \\" . sk/google-this)))
 
 ;; creepy function
 (defun hello-human ()

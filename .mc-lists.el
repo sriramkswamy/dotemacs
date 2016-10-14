@@ -16,6 +16,7 @@
 		helm-keyboard-quit
 		hydra-mc/mc/mark-next-like-this
 		hydra-mc/nil
+		keyboard-quit
 		kill-region
 		sk/disable-god-mode
 		sk/enable-god-mode

@@ -4,7 +4,7 @@
 
 ;; eshell
 (use-package eshell
-  :bind* (("C-c u" . eshell))
+  :bind* (("C-c u" . sk/eshell))
   :init
   (setq eshell-glob-case-insensitive t
 		eshell-scroll-to-bottom-on-input 'this
@@ -15,7 +15,13 @@
 		eshell-aliases-file (concat user-emacs-directory ".eshell-aliases")
 		eshell-last-dir-ring-size 512)
   :config
-  (add-hook 'shell-mode-hook 'goto-address-mode))
+  (add-hook 'shell-mode-hook 'goto-address-mode)
+  ;; eshell in a vertical split
+  (defun sk/eshell ()
+	"eshell vertical split"
+	(interactive)
+	(split-window-horizontally)
+	(eshell)))
 
 ;; diminish auto-revert mode
 (defun sk/diminish-auto-revert ()

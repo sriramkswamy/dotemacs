@@ -4,6 +4,8 @@
 (setq mc/cmds-to-run-for-all
       '(
 		avy-goto-char-in-line
+		backward-sexp
+		backward-up-list
 		counsel-M-x
 		dumb-jump-go
 		electric-newline-and-maybe-indent

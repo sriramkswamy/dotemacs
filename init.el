@@ -262,7 +262,7 @@
   :bind (("<escape>" . sk/enable-god-mode)
          :map god-local-mode-map
 		 ("i" . sk/disable-god-mode)
-         ("z" . repeat))
+		 ("z" . repeat))
   :config
   (add-to-list 'god-exempt-major-modes 'ag-mode)
   (add-to-list 'god-exempt-major-modes 'occur-mode)

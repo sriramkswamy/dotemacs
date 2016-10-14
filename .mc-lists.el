@@ -31,4 +31,5 @@
 (setq mc/cmds-to-run-once
       '(
 		avy-goto-char-2
+		end-of-buffer
 		))

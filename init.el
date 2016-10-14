@@ -170,7 +170,7 @@
  ("M-k" . kill-whole-line)
  ("M-m" . toggle-input-method)
  ("C-x w" . delete-frame)
- ("C-x W" . make-frame)
+ ("C-x f" . make-frame-command)
  ("C-c m" . rectangle-mark-mode)
  ("C-x k" . kill-this-buffer)
  ("C-c g f" . find-file-at-point)

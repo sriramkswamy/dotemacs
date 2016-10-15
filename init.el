@@ -209,6 +209,9 @@
   :diminish which-key-mode
   :bind* (("C-c ?" . which-key-show-top-level))
   :config
+  ;; Emacs 26 breaks which-key; see https://github.com/justbur/emacs-which-key/issues/146
+  (defalias 'display-buffer-in-major-side-window 'window--make-major-side-window)
+  ;; turn on which key and add some names for default/common prefixes
   (which-key-enable-god-mode-support)
   (which-key-mode)
   (which-key-add-key-based-replacements
@@ -905,9 +908,26 @@
 	:bind* (("M-s V" . vr/select-query-replace)
 			("M-s M-v" . vr/select-query-replace))))
 
+;; restrict text to certain places - in my case the center of the screen
+(use-package visual-fill-column
+  :ensure t
+  :defer t
+  :bind (("C-c o o" . visual-fill-column-mode))
+  :config
+  (setq-default visual-fill-column-center-text t
+				visual-fill-column-width 100
+				visual-fill-column-fringes-outside-margins nil))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Convenience packages    ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; PDF tools for better pdf viewing
+(use-package pdf-tools
+  :ensure t
+  :mode ("\\.pdf\\'" . pdf-view-mode)
+  :config
+  (pdf-tools-install))
 
 ;; easy copying between system clipboard and Emacs kill ring
 (use-package osx-clipboard

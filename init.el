@@ -319,7 +319,7 @@
   :commands (yas-insert-snippet yas-new-snippet)
   :bind* (("C-]" . yas-insert-snippet)
 		  ("C-c o y" . yas-minor-mode))
-  :diminish (yas-minor-mode . " γ")
+  :diminish yas-minor-mode
   :config
   (setq yas/triggers-in-field t); Enable nested triggering of snippets
   (setq yas-prompt-functions '(yas-completing-prompt))
@@ -555,6 +555,17 @@
 (load-theme 'zenburn t)
 ;; (load-theme 'wombat t)
 ;; (load-theme 'leuven t)
+
+;; better modeline
+(use-package spaceline
+  :ensure t
+  :demand t
+  :init
+  (setq powerline-default-separator 'bar)
+  :config
+  (require 'spaceline-config)
+  (spaceline-spacemacs-theme)
+  (spaceline-helm-mode))
 
 ;; rainbow paranthesis for easier viewing
 (use-package rainbow-delimiters
@@ -1014,6 +1025,7 @@
 (use-package flycheck
   :ensure t
   :defer 2
+  :diminish flycheck-mode
   :commands (flycheck-buffer
 			 flycheck-previous-error
 			 flycheck-next-error
@@ -1070,7 +1082,7 @@
 		  ("C-w"    . backward-kill-word)
 		  ("C-c"    . company-abort)
 		  ("C-c"    . company-search-abort))
-  :diminish (company-mode . " ς")
+  :diminish company-mode
   :config
   (global-company-mode))
 

@@ -210,7 +210,7 @@
   :demand t
   :diminish smartparens-mode
   :diminish smartparens-strict-mode
-  :diminish (evil-smartparens-mode . " ()")
+  :diminish evil-smartparens-mode
   :general
   (general-nvmap "g'" '(evil-smartparens-mode :which-key "toggle smart nav"))
   :config

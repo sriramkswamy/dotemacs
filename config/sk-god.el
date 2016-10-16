@@ -264,7 +264,7 @@
   :ensure t
   :demand t
   :diminish smartparens-strict-mode
-  :diminish (smartparens-mode . " ()")
+  :diminish smartparens-mode
   :bind* (("C-c o s" . smartparens-strict-mode)
 		  ("C-c o S" . smartparens-mode)
 		  ("C-1" . hydra-smartparens/body))

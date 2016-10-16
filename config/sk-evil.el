@@ -1,15 +1,3 @@
-;; Create consistent keybindings
-(use-package general
-  :ensure t
-  :config
-  (general-evil-setup))
-(setq sk--evil-local-leader "m")
-(general-nvmap :prefix sk--evil-local-leader
-			   "" '(nil :which-key "major mode map"))
-(setq sk--evil-global-leader "SPC")
-(general-nvmap :prefix sk--evil-global-leader
-			   "" '(nil :which-key "global map"))
-
 (setq-default cursor-type '(bar . 1))                                          ; let the default cursor shape be a bar - '|'
 
 ;; evil - vim emulation
@@ -55,7 +43,7 @@
 (general-nvmap :prefix sk--evil-global-leader  ; create a global leader map
 			   "q" '(evil-quit :which-key "quit window/emacs")
 			   "k" (general-simulate-keys "C-x k" t "kill buffers")
-			   "r" (general-simulate-keys "C-x b" t "switch buffers")
+			   "r" (general-simulate-keys "C-x C-b" t "switch buffers")
 			   "f" (general-simulate-keys "C-x C-f" t "find files")
 			   "j" (general-simulate-keys "M-x" t "command")
 			   "J" (general-simulate-keys "M-X" t "major mode command")

@@ -145,6 +145,11 @@
 ;;   (when (memq window-system '(mac ns x))
 ;;     (exec-path-from-shell-initialize)))
 
+;; better package menu
+(use-package paradox
+  :ensure t
+  :commands (paradox-list-packages))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Key bindings    ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;
@@ -337,16 +342,30 @@
   (setq neo-theme 'arrow)
   :bind* (("C-c v" . neotree-toggle)))
 
+;; f and t like vim
+(use-package iy-go-to-char
+  :ensure t
+  :bind* (("C-r f" . iy-go-to-char)
+		  ("C-r C-f" . iy-go-to-char)
+		  ("C-r d" . iy-go-to-char-backward)
+		  ("C-r C-d" . iy-go-to-char-backward)
+		  ("C-r t" . iy-go-up-to-char)
+		  ("C-r C-t" . iy-go-up-to-char)
+		  ("C-r r" . iy-go-up-to-char-backward)
+		  ("C-r C-r" . iy-go-up-to-char-backward)
+		  ("C-'" . iy-go-to-char-done)
+		  ("C-;" . iy-go-to-or-up-to-continue-backward)))
+
 ;; Avy - simulating a mouse click
 (use-package avy
   :ensure t
   :demand t
-  :bind* (("C-t" . avy-goto-char-in-line)
-		  ("M-t" . avy-goto-char-2)
+  :bind* (("C-t" . avy-goto-char-2)
+		  ("M-t" . avy-goto-char-timer)
 		  ("M-l" . avy-goto-line))
   :init
   (setq avy-keys-alist
-		`((avy-goto-char-in-line . (?j ?k ?l ?f ?s ?d))
+		`((avy-goto-char-timer . (?j ?k ?l ?f ?s ?d))
 		  (avy-goto-char-2 . (?j ?k ?l ?f ?s ?d ?e ?r ?u ?i))
 		  (avy-goto-line . (?j ?k ?l ?f ?s ?d ?e ?r ?u ?i))))
   (setq avy-style 'pre)

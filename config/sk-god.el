@@ -74,10 +74,8 @@
   :bind* (("C-," . mc/mark-all-like-this)
 		  ("C->" . mc/mark-next-like-this)
 		  ("C-<" . mc/mark-previous-like-this)
-		  ("C-;" . mc/skip-to-previous-like-this)
-		  ("C-'" . mc/skip-to-next-like-this)
-		  ("C-:" . mc/unmark-previous-like-this)
-		  ("C-\"". mc/unmark-next-like-this)
+		  ("C-:" . mc/skip-to-previous-like-this)
+		  ("C-\"". mc/skip-to-next-like-this)
 		  ("C-}" . mc/edit-ends-of-lines)
 		  ("C-{" . mc/edit-beginnings-of-lines)))
 

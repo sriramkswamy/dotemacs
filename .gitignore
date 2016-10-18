@@ -26,3 +26,4 @@ undohist/*
 /config/GPATH
 /config/GRTAGS
 /config/GTAGS
+/local.el

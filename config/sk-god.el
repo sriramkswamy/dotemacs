@@ -18,7 +18,8 @@
 		 ;; ("DEL" . ivy-keyboard-quit)
 		 ("i" . sk/disable-god-mode)
 		 ("z" . repeat))
-  :bind* (("ESC ESC" . sk/enable-god-mode))
+  :bind* (("ESC ESC" . sk/enable-god-mode)
+		  ("M-g" . sk/enable-god-mode))
   :config
   (add-to-list 'god-exempt-major-modes 'ag-mode)
   (add-to-list 'god-exempt-major-modes 'occur-mode)

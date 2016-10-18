@@ -507,7 +507,7 @@ If there's no region, the current line will be duplicated."
   (interactive)
   (if (region-active-p)
 	  (deactivate-mark)))
-(bind-key* "M-g" 'sk/remove-mark)
+(bind-key* "M-h" 'sk/remove-mark)
 
 ;; toggle case
 (defun sk/toggle-letter-case ()

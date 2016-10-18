@@ -13,15 +13,12 @@
   :ensure t
   :demand t
   :diminish (god-local-mode . " ψ")
-  :bind (("<escape>" . sk/enable-god-mode)
-		 :map god-local-mode-map
-		 ;; only in gui
-		 ("<escape>" . keyboard-quit)
-		 ("<backspace>" . helm-keyboard-quit)
-		 ;; ("<backspace>" . ivy-keyboard-quit)
-		 ;; everywhere
+  :bind (:map god-local-mode-map
+		 ("DEL" . helm-keyboard-quit)
+		 ;; ("DEL" . ivy-keyboard-quit)
 		 ("i" . sk/disable-god-mode)
 		 ("z" . repeat))
+  :bind* (("ESC ESC" . sk/enable-god-mode))
   :config
   (add-to-list 'god-exempt-major-modes 'ag-mode)
   (add-to-list 'god-exempt-major-modes 'occur-mode)

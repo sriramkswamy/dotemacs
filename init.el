@@ -84,27 +84,6 @@
 ;; doc-view settings
 (setq doc-view-continuous t)
 
-;; Interpret ESC as <escape> in terminal unless pressed very fast
-(defvar sk/fast-keyseq-timeout 100)
-
-(defun sk/tty-ESC-filter (map)
-  (if (and (equal (this-single-command-keys) [?\e])
-		   (sit-for (/ sk/fast-keyseq-timeout 1000.0)))
-	  [escape] map))
-
-(defun sk/lookup-key (map key)
-  (catch 'found
-	(map-keymap (lambda (k b) (if (equal key k) (throw 'found b))) map)))
-
-(defun sk/catch-tty-ESC ()
-  "Setup key mappings of current terminal to turn a tty's ESC into `escape'."
-  (when (memq (terminal-live-p (frame-terminal)) '(t pc))
-	(let ((esc-binding (sk/lookup-key input-decode-map ?\e)))
-	  (define-key input-decode-map
-		[?\e] `(menu-item "" ,esc-binding :filter sk/tty-ESC-filter)))))
-
-(sk/catch-tty-ESC)
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Package management    ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

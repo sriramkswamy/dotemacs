@@ -20,6 +20,17 @@
   :config
   (helm-fuzzier-mode 1))
 
+;; backspace at the beginning quits helm
+(defun helm-backspace ()
+  "Forward to `backward-delete-char'.
+On error (read-only), quit without selecting."
+  (interactive)
+  (condition-case nil
+	  (backward-delete-char 1)
+	(error
+	 (helm-keyboard-quit))))
+(define-key helm-map (kbd "DEL") 'helm-backspace)
+
 ;;; snippets taken from https://github.com/compunaut/helm-ido-like-guide
 ;;; define some functions to be used in helm later
 ;; initialize

@@ -15,6 +15,11 @@
   :diminish (god-local-mode . " ψ")
   :bind (("<escape>" . sk/enable-god-mode)
 		 :map god-local-mode-map
+		 ;; only in gui
+		 ("<escape>" . keyboard-quit)
+		 ("<backspace>" . helm-keyboard-quit)
+		 ;; ("<backspace>" . ivy-keyboard-quit)
+		 ;; everywhere
 		 ("i" . sk/disable-god-mode)
 		 ("z" . repeat))
   :config

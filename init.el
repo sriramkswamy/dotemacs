@@ -797,17 +797,6 @@
   :ensure auctex-latexmk
   :mode (("\\.tex\\'" . LaTeX-mode)
 		 ("\\.xtx\\'" . LaTeX-mode))
-  :bind (:map LaTeX-mode-map
-			  ("M-\\" . hydra-latex/body)
-			  ("C-0" . preview-at-point)
-			  ("C-9" . preview-clearout-buffer)
-			  ("C-2" . LaTeX-fill-region)
-			  ("C-3" . LaTeX-fill-paragraph)
-			  ("C-4" . TeX-command-master)
-			  ("C-5" . LaTeX-fill-section)
-			  ("C-6" . LaTeX-fill-environment)
-			  ("C-7" . sk/setup-latex)
-			  ("C-8" . LaTeX-environment))
   :bind* (("C-\\ x" . hydra-latex/body)
 		  ("C-r i x" . LaTeX-mark-section)
 		  ("C-r a x" . LaTeX-mark-section)
@@ -820,13 +809,16 @@
   (setq-default TeX-master nil)
   (setq TeX-PDF-mode t)
   :config
-  ;; LaTeX autocompletion
-  (use-package company-auctex
-	:ensure t
-	:demand t
-	:config
-	(progn
-	  (add-to-list 'company-backends 'company-auctex)))
+  (require 'tex)
+  (require 'tex-buf)
+  (require 'tex-bar)
+  (require 'tex-fold)
+  (require 'tex-font)
+  (require 'tex-site)
+  (require 'tex-wizard)
+  (require 'latex)
+  (require 'font-latex)
+  (require 'preview)
   ;; Use Skim as viewer, enable source <-> PDF sync
   ;; make latexmk available via C-c C-c
   ;; Note: SyncTeX is setup via ~/.latexmkrc (see below)
@@ -857,6 +849,22 @@
   (interactive)
   (diminish 'reftex-mode))
 (add-hook 'reftex-mode-hook 'sk/diminish-reftex)
+;; because auctex is a hack
+(defun sk/latex-bindings ()
+  "as usual, auctex cannot work with use package properly"
+  (interactive)
+  (bind-keys
+   ("M-\\" . hydra-latex/body)
+   ("C-0" . preview-at-point)
+   ("C-9" . preview-clearout-buffer)
+   ("C-2" . LaTeX-fill-region)
+   ("C-3" . LaTeX-fill-paragraph)
+   ("C-4" . TeX-command-master)
+   ("C-5" . LaTeX-fill-section)
+   ("C-6" . LaTeX-fill-environment)
+   ("C-7" . sk/setup-latex)
+   ("C-8" . LaTeX-environment)))
+(add-hook 'LaTeX-mode-hook 'sk/latex-bindings)
 
 ;; hydra for latex
 (defhydra hydra-latex (:color pink :hint nil)

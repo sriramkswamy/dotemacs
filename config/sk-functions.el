@@ -600,5 +600,12 @@ in that cyclic order."
   (ielm)
   (other-window 1))
 
+;; easier way to make desktops
+(defun sk/make-desktop ()
+  "opens dired in the desktop directory to make a new folder"
+  (interactive)
+  (dired (concat user-emacs-directory "desktops")))
+(bind-key* "C-x g" 'sk/make-desktop)
+
 ;; provide this configuration
 (provide 'sk-functions)

@@ -27,3 +27,4 @@ undohist/*
 /config/GRTAGS
 /config/GTAGS
 /local.el
+desktops/*

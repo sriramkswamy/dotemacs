@@ -29,7 +29,6 @@ On error (read-only), quit without selecting."
 	  (backward-delete-char 1)
 	(error
 	 (helm-keyboard-quit))))
-(define-key helm-map (kbd "DEL") 'helm-backspace)
 
 ;;; snippets taken from https://github.com/compunaut/helm-ido-like-guide
 ;;; define some functions to be used in helm later
@@ -228,7 +227,8 @@ Its element is a pair of `buffer-name' and `mode-line-format'.")
   (helm-ido-like-header-lines-maybe)
   (helm-ido-like-load-file-nav)
   (helm-ido-like-load-fuzzy-enhancements)
-  (helm-ido-like-fix-fuzzy-files))
+  (helm-ido-like-fix-fuzzy-files)
+  (define-key helm-map (kbd "DEL") 'helm-backspace))
 
 ;; Search through my org files
 (defun sk/helm-org-rifle ()

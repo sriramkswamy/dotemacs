@@ -178,6 +178,9 @@
  ("C-x f" . make-frame-command)
  ("C-c m" . rectangle-mark-mode)
  ("C-x k" . kill-this-buffer)
+ ("C-x y" . desktop-read)
+ ("C-x t" . desktop-save)
+ ("C-x j" . desktop-change-dir)
  ("M-:" . goto-line)
  ("M-\"" . move-to-column)
  ("C-c g f" . find-file-at-point)
@@ -444,67 +447,6 @@
   :bind (("M-'" . dash-at-point-with-docset))
   :bind* (("C-M-h" . dash-at-point-with-docset)))
 
-;; change perspectives - similar to vim tabs
-(use-package persp-mode
-  :ensure t
-  :diminish (persp-mode . " π")
-  :init
-  (setq persp-auto-save-opt 0)
-  :commands (persp-next
-			 persp-prev
-			 persp-switch
-			 persp-frame-switch
-			 persp-window-switch
-			 persp-rename
-			 persp-copy
-			 persp-kill
-			 persp-save-state-to-file
-			 persp-load-state-from-file
-			 persp-temporarily-display-buffer
-			 persp-switch-to-buffer
-			 persp-add-buffer
-			 persp-import-buffers
-			 persp-import-win-config
-			 persp-remove-buffer
-			 persp-kill-buffer
-			 persp-mode)
-  :bind* (("M--" . hydra-persp-mode/body))
-  :init
-  (setq persp-autokill-buffer-on-remove 'kill-weak)
-  :config
-  (persp-mode 1))
-;; hydra for perspectives
-(defhydra hydra-persp-mode (:color blue :hint nil)
-  "
- ^Persp^                                                                                         ^Desktop^
-------------------------------------------------------------------------------------------------------------------------
- _j_: next  _s_: switch         _y_: copy          _l_: load from file    _b_: add buffer _r_: rm buffer   _S_: save      _q_: quit
- _k_: prev  _w_: switch in win  _d_: delete        _t_: switch w/o adding _i_: import all _K_: kill buffer _A_: save in dir
- _f_: frame _n_: rename         _p_: save to file  _a_: switch to buffer  _I_: import win _o_: switch off  _R_: read
-  "
-  ("j" persp-next :color red)
-  ("k" persp-prev :color red)
-  ("s" persp-switch)
-  ("f" persp-frame-switch)
-  ("w" persp-window-switch)
-  ("n" persp-rename)
-  ("y" persp-copy)
-  ("d" persp-kill)
-  ("p" persp-save-state-to-file)
-  ("l" persp-load-state-from-file)
-  ("t" persp-temporarily-display-buffer)
-  ("a" persp-switch-to-buffer)
-  ("b" persp-add-buffer)
-  ("i" persp-import-buffers)
-  ("I" persp-import-win-config)
-  ("r" persp-remove-buffer)
-  ("K" persp-kill-buffer)
-  ("o" persp-mode)
-  ("S" desktop-save)
-  ("A" desktop-save-in-desktop-dir)
-  ("R" desktop-read)
-  ("q" nil :color blue))
-
 ;; switch window configs
 (use-package eyebrowse
   :ensure t
@@ -525,7 +467,7 @@
 		  ("M-!" . eyebrowse-close-window-config)
 		  ("M-#" . eyebrowse-prev-window-config)
 		  ("M-*" . eyebrowse-next-window-config)
-		  ("M-+" . eyebrowse-last-window-config)
+		  ("M--" . eyebrowse-last-window-config)
 		  ("C-+" . eyebrowse-create-window-config)
 		  ("C-%" . eyebrowse-rename-window-config))
   :config

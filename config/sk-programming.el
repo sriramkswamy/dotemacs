@@ -187,6 +187,12 @@
   :config
   (cmake-ide-setup))
 
+;; cmake files syntax
+(use-package cmake-mode
+  :ensure t
+  :mode (("\\.cmake\\'" . cmake-mode)
+		 ("CMakeLists.txt" . cmake-mode)))
+
 ;; hydra for cpp
 (defhydra hydra-cpp (:color pink :hint nil)
   "
@@ -1120,7 +1126,18 @@
   :bind* (("C-\\ r" . hydra-ruby/body)
 		  ("C-\\ C-r" . hydra-ruby/body))
   :config
-  (add-hook 'ruby-mode-hook 'inf-ruby-mode))
+  (add-hook 'ruby-mode-hook 'inf-ruby-mode)
+  ;; rails coding
+  (use-package projectile-rails
+	:ensure t
+	:demand t
+	:diminish projectile-rails-mode
+	:commands (hydra-projectile-rails/body)
+	:init
+	(setq projectile-rails-expand-snippet nil)
+	:config
+	(add-hook 'projectile-mode-hook 'projectile-rails-on)
+	(projectile-rails-mode)))
 
 ;; ruby static code analyzer
 (use-package rubocop
@@ -1238,16 +1255,6 @@
   ("p" rspec-toggle-example-pendingness)
   ("h" hydra-ruby/body :exit t)
   ("q" nil :color blue))
-
-;; rails coding
-(use-package projectile-rails
-  :ensure t
-  :commands (hydra-projectile-rails/body)
-  :init
-  (setq projectile-rails-expand-snippet nil)
-  :config
-  (add-hook 'projectile-mode-hook 'projectile-rails-on)
-  (projectile-rails-mode))
 
 ;; hydra for ruby
 (defhydra hydra-ruby (:color pink :hint nil)

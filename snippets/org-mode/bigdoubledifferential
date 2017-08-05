@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: big double differential
-# key: DD
-# --
-\mathrm{D}^2 { $1 }

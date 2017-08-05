@@ -1,6 +1,5 @@
-# -*- mode: snippet; require-final-newline: nil -*-
-# name: Chi
-# key: chii
-# binding: direct-keybinding
+# -*- mode: snippet -*-
+# name: chi
+# key: ch
 # --
 \chi

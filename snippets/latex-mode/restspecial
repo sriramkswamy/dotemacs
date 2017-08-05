@@ -1,7 +1,0 @@
-# -*- mode: snippet -*-
-# name: rst special
-# key: sspe
-# --
-#+BEGIN_${1:special}
-
-#+END_$1

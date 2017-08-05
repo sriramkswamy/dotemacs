@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: math caligraphic
+# key: cal
+# --
+\mathcal{$1}$0

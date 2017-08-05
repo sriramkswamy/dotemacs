@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: reveal slide numbering
-# key: rnum
-# --
-#+OPTIONS: reveal_slide_number:${1:nil/h/v}

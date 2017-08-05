@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: list of tables
+# key: lot
+# --
+\listoftables
+
+$0

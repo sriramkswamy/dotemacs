@@ -1,8 +1,8 @@
-# -*- mode: snippet; require-final-newline: nil -*-
-# name: Matrix with square brackets
-# key: bmat
-# binding: direct-keybinding
+# -*- mode: snippet -*-
+# name: matrix
+# key: mat
 # --
-\begin{bmatrix}
-$1
-\end{bmatrix}
+\begin{${1:$$(yas-choose-value '("bmatrix" "pmatrix"))}}
+  $2
+\end{$1}
+$0

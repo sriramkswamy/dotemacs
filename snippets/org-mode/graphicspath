@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: graphics path
-# key: grp
-# --
-\graphicspath{$1}

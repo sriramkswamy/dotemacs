@@ -1,5 +1,6 @@
 # -*- mode: snippet -*-
-# name: hline
-# key: hl
+# name: horizontal line
+# key: hline
 # --
 \hline
+$0

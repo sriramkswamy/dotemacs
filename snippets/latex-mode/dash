@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
 # name: dash
-# key: -
+# key: --
 # --
----
+--- $0

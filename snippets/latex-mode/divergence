@@ -1,6 +1,5 @@
-# -*- mode: snippet; require-final-newline: nil -*-
-# name: Divergence
+# -*- mode: snippet -*-
+# name: divergence
 # key: div
-# binding: direct-keybinding
 # --
-\nabla \cdot $1
+\nabla \cdot {$1}$0

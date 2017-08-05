@@ -1,6 +1,5 @@
-# -*- mode: snippet; require-final-newline: nil -*-
-# name: Partial fraction
+# -*- mode: snippet -*-
+# name: partial fraction
 # key: pf
-# binding: direct-keybinding
 # --
-\frac{\partial{ $1 }}{\partial{ $2 }}
+\frac{\partial{$1}}{\partial{$2}}$0

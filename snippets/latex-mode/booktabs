@@ -1,0 +1,16 @@
+# -*- mode: snippet -*-
+# name: booktabs
+# key: btab
+# --
+\begin{table}[${1:h}]
+  \centering
+  \begin{tabular}{$2}
+	\toprule
+	$3
+	\midrule
+	$4
+	\bottomrule
+  \end{tabular}
+  \caption{$5}
+  ${0:$$(reftex-label)}
+\end{table}

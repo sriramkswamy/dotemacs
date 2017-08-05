@@ -2,4 +2,4 @@
 # name: tilde
 # key: til
 # --
-\tilde{ $1 }
+\tilde{$1}$0

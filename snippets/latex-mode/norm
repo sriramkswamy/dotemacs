@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: norm of an object
+# key: norm
+# --
+\left\Vert $1 \right\Vert $0

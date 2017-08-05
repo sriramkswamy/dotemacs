@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: small evaluated at
-# key: seval
-# --
-{\rvert}_{ $1 }^{ $2 }$0

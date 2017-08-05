@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: renewcommand
+# key: rnc
+# --
+\renewcommand{{${2:\arraystretch}}{$1}}$0

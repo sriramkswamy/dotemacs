@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: function
+# key: func
+# --
+function [${1:returns}] = ${2:$$(unless yas-modified-p (file-name-base (buffer-file-name)))} (${3:arguments})
+$0
+end

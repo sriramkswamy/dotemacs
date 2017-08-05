@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: reveal transition
-# key: rtr
-# --
-#+REVEAL_TRANS: ${1:default/cube/page/concave/zoom/linear/fade/none}

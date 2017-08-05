@@ -1,7 +1,0 @@
-# -*- mode: snippet; require-final-newline: nil -*-
-# name: vspace
-# key: vs
-# binding: direct-keybinding
-# --
-\vspace{0.25cm}
-

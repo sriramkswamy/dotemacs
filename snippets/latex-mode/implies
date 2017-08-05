@@ -1,6 +1,5 @@
-# -*- mode: snippet; require-final-newline: nil -*-
+# -*- mode: snippet -*-
 # name: implies
 # key: imp
-# binding: direct-keybinding
 # --
-\implies
+\implies $0

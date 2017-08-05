@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
 # name: usepackage
-# key: usep
+# key: use
 # --
-\usepackage{$1}
+\usepackage${2:[$0]}{$1}

@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: similar
+# name: similar symbol
 # key: sim
 # --
-\sim
+\sim $0

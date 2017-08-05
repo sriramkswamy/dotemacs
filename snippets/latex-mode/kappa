@@ -1,6 +1,5 @@
-# -*- mode: snippet; require-final-newline: nil -*-
-# name: Kappa
-# key: kap
-# binding: direct-keybinding
+# -*- mode: snippet -*-
+# name: kappa
+# key: ka
 # --
 \kappa

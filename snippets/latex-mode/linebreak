@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: linebreak
+# key: lb
+# --
+ \\\\
+$0

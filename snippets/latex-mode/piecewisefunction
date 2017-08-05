@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: piecewise function
+# key: pwise
+# --
+$1 =
+\begin{cases}
+	\hfill $2 \hfill & \text{, \hspace{0.25cm} $3} \\\\
+	\hfill $4 \hfill & \text{, \hspace{0.25cm} $5} \\\\
+\end{cases}

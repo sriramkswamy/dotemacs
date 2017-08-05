@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: exports
+# key: :x
+# --
+:exports ${1:both}$0

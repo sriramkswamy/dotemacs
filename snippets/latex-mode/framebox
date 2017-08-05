@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: framebox
+# key: frabox
+# --
+\begin{center}
+  \framebox{$1}
+\end{center}
+$0

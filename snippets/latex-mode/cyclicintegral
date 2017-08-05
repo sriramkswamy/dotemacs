@@ -2,4 +2,4 @@
 # name: cyclic integral
 # key: cin
 # --
-\oint_{ $1 } \! { $2 } \, \mathrm{d} { $3 }
+\oint_{$1} \! {$2} \, \mathrm{d} {$3} $0

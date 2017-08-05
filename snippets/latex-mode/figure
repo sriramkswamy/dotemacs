@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: figure
+# key: fig
+# --
+\begin{figure}[$1]
+${5:\centering}
+  $4
+  \caption{$2}
+${0:$$(reftex-label)}
+\end{figure}

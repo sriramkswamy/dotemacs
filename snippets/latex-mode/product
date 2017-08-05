@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: product
+# key: prod
+# --
+\prod\limits_{$1}^{$2} {$3} $0

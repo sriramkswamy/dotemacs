@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: nikola hide title
-# key: ntit
-# --
-#+NIKOLA_HIDETITLE: True

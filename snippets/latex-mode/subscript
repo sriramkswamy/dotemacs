@@ -1,5 +1,5 @@
-# -*- mode: snippet; require-final-newline: nil -*-
+# -*- mode: snippet -*-
 # name: subscript
-# key: sub
+# key: dd
 # --
-{ $1 }_{ $2 }
+{$1}_{$2}$0

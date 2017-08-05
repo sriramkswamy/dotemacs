@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: text in math mode
+# name: text
 # key: tx
 # --
-\text{$1}
+\text{$1}$0

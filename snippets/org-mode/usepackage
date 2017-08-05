@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: usepackage
-# key: usep
-# --
-\usepackage{$1}

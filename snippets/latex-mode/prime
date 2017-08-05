@@ -2,4 +2,7 @@
 # name: prime
 # key: pri
 # --
-\prime
+${1:$$(yas-choose-value '("\\\\prime"
+                          "\\\\dprime"
+						  "\\\\tprime"
+						  "\\\\qprime"))}$0

@@ -1,6 +1,5 @@
-# -*- mode: snippet; require-final-newline: nil -*-
-# name: Theta
-# key: the
-# binding: direct-keybinding
+# -*- mode: snippet -*-
+# name: theta
+# key: tha
 # --
 \theta

@@ -2,4 +2,4 @@
 # name: tangent
 # key: tan
 # --
-\tan{ $1 }
+\tan{$1}

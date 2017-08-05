@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: curl
-# key: cu
-# --
-\nable \times { $1 }

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: scaled square brackets
+# key: ssq
+# --
+\left[ $1 \right]$0

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: expoenential
+# key: exp
+# --
+\exp{$1}$0

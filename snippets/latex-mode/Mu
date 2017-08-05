@@ -1,6 +1,5 @@
-# -*- mode: snippet; require-final-newline: nil -*-
-# name: Mu
+# -*- mode: snippet -*-
+# name: mu
 # key: muu
-# binding: direct-keybinding
 # --
 \mu

@@ -1,6 +1,5 @@
-# -*- mode: snippet; require-final-newline: nil -*-
-# name: For all values of
+# -*- mode: snippet -*-
+# name: for all
 # key: fora
-# binding: direct-keybinding
 # --
 \forall

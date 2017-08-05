@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
 # name: right arrow
-# key: rar
+# key: rarr
 # --
-\rightarrow
+\rightarrow $0

@@ -1,8 +1,8 @@
-# -*- mode: snippet; require-final-newline: nil -*-
+# -*- mode: snippet -*-
 # name: equation
-# key: eqn
-# binding: direct-keybinding
+# key: eq
 # --
-\begin{${1:$$(yas-choose-value '("equation" "eqnarray"))}}
-$0
-\end{$1}
+\begin{equation}
+	$1
+	${0:$$(reftex-label)}
+\end{equation}

@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: input file
+# key: inp
+# --
+\input{$1}
+$0

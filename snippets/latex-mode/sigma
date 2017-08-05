@@ -1,6 +1,5 @@
-# -*- mode: snippet; require-final-newline: nil -*-
-# name: Sigma
+# -*- mode: snippet -*-
+# name: sigma
 # key: sig
-# binding: direct-keybinding
 # --
 \sigma

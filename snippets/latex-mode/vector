@@ -2,4 +2,4 @@
 # name: vector
 # key: vec
 # --
-\vec{ $1 }
+\vec{$1}$0

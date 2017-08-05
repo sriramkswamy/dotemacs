@@ -1,6 +1,5 @@
-# -*- mode: snippet; require-final-newline: nil -*-
-# name: proportional
+# -*- mode: snippet -*-
+# name: proportional symbol
 # key: prop
-# binding: direct-keybinding
 # --
-\propto
+\propto $0

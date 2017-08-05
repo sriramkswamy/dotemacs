@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: rst margin
-# key: smar
-# --
-#+ATTR_RST: :margin ${1:4/8}

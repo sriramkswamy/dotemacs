@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
 # name: alternating unit tensor
-# key: aut
+# key: alt
 # --
-\epsilon_{ ${1:ijk} }
+\epsilon_{${1:ijk}} $0

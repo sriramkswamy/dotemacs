@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: select size
+# key: ss
+# --
+\\${1:$$(yas-choose-value '("small"
+							"huge"
+							"large"
+							"footnotesize"
+							"scriptsize"))}$0

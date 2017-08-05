@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: new column
+# key: nc
+# --
+${1:L}{${2:4}cm}$0

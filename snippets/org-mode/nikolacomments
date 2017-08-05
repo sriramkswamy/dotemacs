@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: nikola comments
-# key: ncom
-# --
-#+NIKOLA_NOCOMMENTS: ${1:True}

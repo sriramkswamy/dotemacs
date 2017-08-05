@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: equivalent or same as
+# key: same
+# --
+\equiv $0

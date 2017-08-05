@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: subsection
+# key: su
+# --
+\subsection${1:*}{$2}
+${0:$$(reftex-label)}

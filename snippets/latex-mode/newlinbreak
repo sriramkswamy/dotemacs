@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: new line break
+# key: nl
+# --
+\\\\$0

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: bold face
+# key: bf
+# --
+**${1:Text}** $0

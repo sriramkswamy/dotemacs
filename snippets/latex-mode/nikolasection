@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: nikola section
-# key: nsec
-# --
-#+NIKOLA_SECTION: ${1:section}

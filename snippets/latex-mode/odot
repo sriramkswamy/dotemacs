@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: circle dot
+# key: odot
+# --
+\odot $0

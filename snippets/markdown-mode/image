@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: image
+# key: img
+# --
+![${1:Alt Text}](${2:URL} $3) $0

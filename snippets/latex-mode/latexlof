@@ -1,6 +1,0 @@
-# -*- mode: snippet -*-
-# name: latex list of figures
-# key: llof
-# --
-\listoffigures
-

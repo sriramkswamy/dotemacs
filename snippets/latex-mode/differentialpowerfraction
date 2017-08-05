@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: differential power fraction
+# key: dff
+# --
+\frac{\mathrm{d}^{${1:2}}{$2}}{\mathrm{d}{$3}^{${4:2}}}$0

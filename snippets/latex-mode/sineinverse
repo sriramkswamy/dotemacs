@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: sine inverse
+# key: sini
+# --
+\sin^{-${2:1}}{$1}

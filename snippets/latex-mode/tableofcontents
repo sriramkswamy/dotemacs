@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: table of contents
+# key: toc
+# --
+\tableofcontents
+
+$0

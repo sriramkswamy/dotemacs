@@ -1,5 +1,7 @@
 # -*- mode: snippet -*-
 # name: description
-# key: des
+# key: desc
 # --
-\item[ $1 ] $2
+\begin{description}
+	\item[$1] $0
+\end{description}

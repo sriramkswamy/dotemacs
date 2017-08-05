@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: tangle
+# key: :t
+# --
+:tangle ${1:$$(unless yas-modified-p (completing-read "Tangle into: " 'read-file-name-internal))}$0

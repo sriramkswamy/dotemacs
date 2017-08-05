@@ -1,6 +1,5 @@
-# -*- mode: snippet; require-final-newline: nil -*-
-# name: integral single
-# key: in
-# binding: direct-keybinding
+# -*- mode: snippet -*-
+# name: single integral
+# key: int
 # --
-\int_{ $1 }^{ $2 } $3 \mathrm{d}
+\int_{$1}^{$2} \! {$3} \, \mathrm{d}{$4} $0

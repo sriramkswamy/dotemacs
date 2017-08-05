@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: reveal background transition property
-# key: rbpt
-# --
-:reveal_background_trans: ${1:default/cube/page/concave/zoom/linear/fade/none}

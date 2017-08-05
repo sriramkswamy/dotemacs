@@ -1,6 +1,5 @@
-# -*- mode: snippet; require-final-newline: nil -*-
-# name: Nabla
+# -*- mode: snippet -*-
+# name: nabla
 # key: nab
-# binding: direct-keybinding
 # --
 \nabla

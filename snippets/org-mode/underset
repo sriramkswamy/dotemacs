@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: underset
-# key: uset
-# --
-\underset{${2:underset}}{\text{${1:text}}}$0

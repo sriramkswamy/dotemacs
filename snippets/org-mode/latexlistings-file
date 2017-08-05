@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: listings input
-# key: lsti
-# --
-\lstinputlisting{$1}

@@ -2,4 +2,4 @@
 # name: curl
 # key: cu
 # --
-\nable \times { $1 }
+\nabla \times {$1}$0

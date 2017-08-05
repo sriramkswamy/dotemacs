@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
 # name: gradient
-# key: gra
+# key: grad
 # --
-\nabla { $1 }
+\nabla {$1}$0

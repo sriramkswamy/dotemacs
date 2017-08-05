@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: bibliography
+# key: bib
+# --
+\bibliography{${1:$$(unless yas-modified-p (completing-read "Bibliography: " 'read-file-name-internal))}}
+\bibliographystyle{${2:$$(yas-choose-value '("plain" "ieee"))}}

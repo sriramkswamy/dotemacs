@@ -1,7 +1,0 @@
-# -*- mode: snippet -*-
-# name: rst fragments in org
-# key: srsb
-# --
-#+BEGIN_RST
-
-#+END_RST

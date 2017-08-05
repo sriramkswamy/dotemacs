@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: nikola link
-# key: nlink
-# --
-#+NIKOLA_LINK: ${1:url}

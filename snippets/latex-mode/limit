@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: limits
+# name: limit
 # key: lim
 # --
-\lim_{{ $1 } \to { $2 }} { $3 }
+\lim_{{$1} \to {$2}} {$3} $0

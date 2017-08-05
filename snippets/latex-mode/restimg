@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: rst image
-# key: simg
-# --
-#+ATTR_RST: :alt ${1:alternate text} ${2::align} ${3:right/left/center}

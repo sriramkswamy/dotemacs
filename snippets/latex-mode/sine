@@ -2,4 +2,4 @@
 # name: sine
 # key: sin
 # --
-\sin{ $1 }
+\sin{$1}

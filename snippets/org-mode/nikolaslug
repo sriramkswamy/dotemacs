@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: nikola slug
-# key: nslug
-# --
-#+NIKOLA_SLUG: ${1:slug}

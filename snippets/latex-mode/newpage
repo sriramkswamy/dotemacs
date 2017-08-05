@@ -1,6 +1,7 @@
 # -*- mode: snippet -*-
-# name: newpage
+# name: new page
 # key: np
 # --
 \newpage
 
+$0

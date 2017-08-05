@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: partial power
+# key: parp
+# --
+\partial^{${1:2}}{$2}$0

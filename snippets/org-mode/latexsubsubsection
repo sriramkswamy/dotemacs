@@ -1,6 +1,0 @@
-# -*- mode: snippet -*-
-# name: sub sub section
-# key: lssub
-# --
-\subsubsection${1:*}{ $2 }
-\label{ssub:$3}

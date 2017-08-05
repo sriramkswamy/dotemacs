@@ -2,4 +2,4 @@
 # name: evaluated at
 # key: eval
 # --
-{\biggr \rvert}_{ $1 }^{ $2 }
+{\biggr \rvert}_{$1}^{$2} $0

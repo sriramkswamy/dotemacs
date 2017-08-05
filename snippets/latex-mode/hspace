@@ -1,6 +1,5 @@
-# -*- mode: snippet; require-final-newline: nil -*-
-# name: hspace
+# -*- mode: snippet -*-
+# name: horizontal space
 # key: hs
-# binding: direct-keybinding
 # --
-\hspace{0.25cm}
+\hspace{0.25cm} $0

@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: math bottom symbols
+# key: mbot
+# --
+${1:$$(yas-choose-value '("\\\\wideutilde"
+                          "\\\\underbar"
+						  "\\\\underline"
+						  "\\\\underrightarrow"
+						  "\\\\underleftarrow"
+						  "\\\\underleftrightarrow"))}{$2}$0

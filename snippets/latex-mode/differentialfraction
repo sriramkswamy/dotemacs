@@ -1,6 +1,5 @@
-# -*- mode: snippet; require-final-newline: nil -*-
+# -*- mode: snippet -*-
 # name: differential fraction
 # key: df
-# binding: direct-keybinding
 # --
-\frac{ \mathrm{d} { $1 } }{ \mathrm{d} { $2 } }
+\frac{\mathrm{d}{$1}}{\mathrm{d}{$2}}$0

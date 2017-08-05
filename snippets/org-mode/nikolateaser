@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: nikola teasers
-# key: ntea
-# --
-#+RST: .. TEASER_END${1: text}

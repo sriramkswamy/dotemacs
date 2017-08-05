@@ -1,0 +1,13 @@
+# -*- mode: snippet -*-
+# name: algorithm
+# key: algo
+# --
+\begin{algorithm}
+\label{$1}
+  \caption{$2}
+  \begin{algorithmic}[1]
+    \Procedure{${3:My procedure}}{}
+    \State $0
+    \EndProcedure
+  \end{algorithmic}
+\end{algorithm}

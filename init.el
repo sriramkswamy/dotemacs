@@ -277,7 +277,17 @@
 
 ;;; Core
 
+;; Macros
 (require 'sk-repl-macros)
+
+;; functions
+(require 'sk-buffer-defuns)
+(require 'sk-dired-defuns)
+(require 'sk-display-defuns)
+(require 'sk-doc-defuns)
+(require 'sk-editing-defuns)
+(require 'sk-navigation-defuns)
+(require 'sk-search-defuns)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Key bindings    ;;

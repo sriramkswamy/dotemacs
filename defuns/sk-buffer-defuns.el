@@ -153,4 +153,4 @@ Else call `ediff-buffers'."
       (call-interactively #'ediff-buffers)))))
 
 ;; provide this configuration
-(provide 'sk-buffer-functions)
+(provide 'sk-buffer-defuns)

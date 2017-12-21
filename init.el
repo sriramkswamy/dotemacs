@@ -71,6 +71,21 @@
   ;; (setq mac-option-modifier 'meta)
   )
 
+;; Set fonts
+(cond ((eq system-type 'gnu/linux)                 ; if system is GNU/Linux
+       (set-frame-font "DejaVu Sans Mono"))        ; set the font to DejaVu Sans Mono
+      ((eq system-type 'darwin)                    ; if system is macOS
+	   (mac-auto-operator-composition-mode)        ; ligature support
+       (set-frame-font "Fira Code"))               ; set the font to Monaco
+      ((eq system-type 'windows-nt)                ; if system is Windows
+       (set-frame-font "Lucida Sans Typewriter"))) ; set the font to Lucida Sans Typewriter
+
+;; dummy function
+(defun sk/nothing ()
+  "Sends a message saying nothing here"
+  (interactive)
+  (message "Nothing here!"))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Package management    ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -218,18 +233,6 @@
    gdb-delete-breakpoint
    gdb))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;    Built-in key bindings    ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; immutable bindings
-(bind-keys*
- ("C-j"		. electric-newline-and-maybe-indent))
-
-;; mutable bindings
-(bind-keys
- ("C-x C-b"	. ibuffer))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Third party packages    ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -241,6 +244,10 @@
 ;; extra macros
 (add-to-list 'load-path
              (expand-file-name "macros" user-emacs-directory))
+
+;; extra major/minor modes
+(add-to-list 'load-path
+             (expand-file-name "modes" user-emacs-directory))
 
 ;; language specific setup
 (add-to-list 'load-path
@@ -271,6 +278,18 @@
 ;;; Core
 
 (require 'sk-repl-macros)
+
+;;;;;;;;;;;;;;;;;;;;;;;;
+;;    Key bindings    ;;
+;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; immutable bindings
+(bind-keys*
+ ("C-j"		. electric-newline-and-maybe-indent))
+
+;; mutable bindings
+(bind-keys
+ ("C-x C-b"	. ibuffer))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Reduce GC threshold    ;;

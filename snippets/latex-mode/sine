@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: sine
-# key: sin
-# --
-\sin{$1}

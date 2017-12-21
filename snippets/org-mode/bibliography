@@ -1,6 +1,0 @@
-# -*- mode: snippet -*-
-# name: org mode bibliography
-# key: ob
-# --
-bibliography:$1
-bibliographystyle:${2:unsrt}

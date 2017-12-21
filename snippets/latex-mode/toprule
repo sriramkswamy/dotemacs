@@ -1,6 +1,0 @@
-# -*- mode: snippet -*-
-# name: toprule
-# key: tr
-# --
-\toprule
-$0

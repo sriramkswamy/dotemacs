@@ -1,7 +1,0 @@
-# -*- mode: snippet -*-
-# name: hexo block code
-# key: hb
-# --
-\`\`\` [${1:lang}] [${2:name}]
-$0
-\`\`\`

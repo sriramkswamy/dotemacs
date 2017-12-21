@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: evaluated at
-# key: eval
-# --
-{\biggr \rvert}_{$1}^{$2} $0

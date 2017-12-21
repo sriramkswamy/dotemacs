@@ -1,6 +1,0 @@
-# -*- mode: snippet -*-
-# name: new description
-# key: nd
-# --
-\item[$1] $2
-$3

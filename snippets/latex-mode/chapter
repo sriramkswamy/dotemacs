@@ -1,6 +1,0 @@
-# -*- mode: snippet -*-
-# name: chapter
-# key: cha
-# --
-\chapter${1:*}{$2}
-${0:$$(reftex-label)}

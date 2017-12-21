@@ -1,8 +1,0 @@
-# -*- mode: snippet -*-
-# name: prime
-# key: pri
-# --
-${1:$$(yas-choose-value '("\\\\prime"
-                          "\\\\dprime"
-						  "\\\\tprime"
-						  "\\\\qprime"))}$0

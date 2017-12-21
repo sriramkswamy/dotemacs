@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: reveal root
-# key: rro
-# --
-#+REVEAL_ROOT: ${1:http://cdn.jsdelivr.net/reveal.js/3.0.0/}

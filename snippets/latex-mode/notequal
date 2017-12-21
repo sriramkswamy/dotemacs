@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: not equal to
-# key: neq
-# --
-\neq $0

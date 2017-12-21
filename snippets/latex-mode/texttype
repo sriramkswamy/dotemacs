@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: text fonts
-# key: tf
-# --
-${1:$$(yas-choose-value '("\\\\textit" "\\\\texttt" "\\\\textbf"))}{$2}$0

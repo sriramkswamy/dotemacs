@@ -1,9 +1,0 @@
-# -*- mode: snippet -*-
-# name: classdef
-# key: cl
-# --
-classdef ${1:ClassName}
-
-    $0
-
-end

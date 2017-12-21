@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: kroenecker delta
-# key: kron
-# --
-\delta_{${1:ij}} $0

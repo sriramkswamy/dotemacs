@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: differential power
-# key: difp
-# --
-\mathrm{d}^{${1:2}}{$2}$0

@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: reveal slide footer
-# key: rfoot
-# --
-#+REVEAL_SLIDE_FOOTER: ${1:footer}

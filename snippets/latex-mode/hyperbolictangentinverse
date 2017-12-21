@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: hyperbolic tangent inverse
-# key: tanhi
-# --
-\tanh^{-${2:1}}{$1}

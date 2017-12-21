@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: exports
-# key: :ex
-# --
-:exports ${1:$$(yas-choose-value '("code" "results" "both"))}$0

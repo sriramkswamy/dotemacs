@@ -1,6 +1,0 @@
-# -*- mode: snippet -*-
-# name: graphicspath
-# key: grapp
-# --
-\graphicspath{$1}
-$0

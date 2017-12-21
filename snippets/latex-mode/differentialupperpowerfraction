@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: upper differential power fraction
-# key: DFF
-# --
-\frac{\mathrm{D}^{${1:2}}{$2}}{\mathrm{D}{$3}^{${4:2}}}$0

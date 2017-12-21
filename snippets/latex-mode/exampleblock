@@ -1,8 +1,0 @@
-# -*- mode: snippet -*-
-# name: example
-# key: eg
-# --
-\begin{exampleblock} {$1}
-  $2
-\end{exampleblock}
-$0

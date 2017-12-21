@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: file
-# key: :f
-# --
-:file ${1}$0

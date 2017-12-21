@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: scaled curly braces
-# key: ssb
-# --
-\left\\{ $1 \right\\}$0

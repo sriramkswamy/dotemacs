@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: hyperbolic sine inverse
-# key: sinhi
-# --
-\sinh^{-${2:1}}{$1}

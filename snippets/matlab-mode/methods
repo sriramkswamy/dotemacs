@@ -1,9 +1,0 @@
-# -*- mode: snippet -*-
-# name: methods
-# key: meth
-# --
-methods (Access = ${1:public})
-
-    $0
-
-end

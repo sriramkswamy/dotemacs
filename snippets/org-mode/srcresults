@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: results
-# key: :r
-# --
-:results ${1:$$(yas-choose-value '("output" "graphics" "drawer" "value" "file" "value graphics"))}$0

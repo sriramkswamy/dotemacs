@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: natural log
-# key: ln
-# --
-\ln{$1}$0

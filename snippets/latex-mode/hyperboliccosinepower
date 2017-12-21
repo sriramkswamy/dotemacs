@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: hyperbolic cosine power
-# key: coshp
-# --
-\cosh^{${2:2}}{$1}

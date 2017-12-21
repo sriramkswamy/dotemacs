@@ -1,8 +1,0 @@
-# -*- mode: snippet -*-
-# name: math fonts
-# key: mf
-# --
-${1:$$(yas-choose-value '("\\\\mathrm"
-						  "\\\\mathbb"
-						  "\\\\mathcal"
-						  "\\\\mathit"))}{$2} $0

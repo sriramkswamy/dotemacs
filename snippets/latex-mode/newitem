@@ -1,6 +1,0 @@
-# -*- mode: snippet -*-
-# name: new item
-# key: nt
-# --
-\item $1
-$0

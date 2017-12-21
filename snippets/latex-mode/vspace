@@ -1,6 +1,0 @@
-# -*- mode: snippet -*-
-# name: vspace
-# key: vs
-# --
-\vspace{0.25cm}
-$0

@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: reference link
-# key: rlink
-# --
-[${1:Link Text}][$2] $0

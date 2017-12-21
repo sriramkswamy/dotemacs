@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: tangent power
-# key: tanp
-# --
-\tan^{${1:2}}{$2}

@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: reveal title slide background repeat
-# key: rtbr
-# --
-#+REVEAL_TITLE_SLIDE_BACKGROUND_REPEAT: ${1:repeat}

@@ -1,8 +1,0 @@
-# -*- mode: snippet -*-
-# name: emphasis box
-# key: box
-# --
-\begin{empheq}[box=\widefbox]{equation${1:*}}
-  $2
-\end{empheq}
-$0

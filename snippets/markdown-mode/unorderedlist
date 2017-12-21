@@ -1,6 +1,0 @@
-# -*- mode: snippet -*-
-# name: unordered list
-# key: ul
-# --
-+ ${1:Text}
-+$0

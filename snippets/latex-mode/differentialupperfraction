@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: upper differential fraction
-# key: DF
-# --
-\frac{\mathrm{D}{$1}}{\mathrm{D}{$2}}$0

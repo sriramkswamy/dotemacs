@@ -238,6 +238,10 @@
 (add-to-list 'load-path
              (expand-file-name "defuns" user-emacs-directory))
 
+;; extra macros
+(add-to-list 'load-path
+             (expand-file-name "macros" user-emacs-directory))
+
 ;; language specific setup
 (add-to-list 'load-path
              (expand-file-name "lang" user-emacs-directory))
@@ -263,6 +267,10 @@
   :config
   ;; (exec-path-from-shell-copy-env "PYTHONPATH")
   (exec-path-from-shell-initialize))
+
+;;; Core
+
+(require 'sk-repl-macros)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Reduce GC threshold    ;;

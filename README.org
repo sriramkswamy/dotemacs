@@ -1,3 +1,7 @@
 #+TITLE: Emacs Configuration
 
 Emacs configuration.
+
+```sh
+git clone --recurse-submodules https://github.com/sriramkswamy/dotemacs.git .emacs.d
+```

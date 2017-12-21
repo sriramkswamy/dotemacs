@@ -46,7 +46,6 @@
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))		  	; setup a new custom file
 (when (file-exists-p custom-file)											  	; if the custom file exists
   (load custom-file :noerror :nomessage))									  	; load the custom file but don't show any messages or errors
-(add-to-list 'load-path (expand-file-name "config" user-emacs-directory))	  	; load more configuration from the 'config' folder
 (put 'scroll-left 'disabled nil)											  	; enable sideward scrolling
 (define-key minibuffer-local-map (kbd "C-w") 'backward-kill-word)			  	; backward kill word in minibuffer
 (setq enable-recursive-minibuffers t)										  	; use the minibuffer while using the minibuffer
@@ -121,6 +120,11 @@
         dired-recursive-copies 'top
         dired-recursive-deletes 'top
         dired-listing-switches "-alh"))
+
+;; dired library for additional functions
+(use-package dired-x
+  :commands
+  (dired-jump))
 
 ;; pdf/image viewing
 (use-package doc-view
@@ -213,6 +217,52 @@
    gdb-toggle-breakpoint
    gdb-delete-breakpoint
    gdb))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;    Built-in key bindings    ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; immutable bindings
+(bind-keys*
+ ("C-j"		. electric-newline-and-maybe-indent))
+
+;; mutable bindings
+(bind-keys
+ ("C-x C-b"	. ibuffer))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;    Third party packages    ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; extra functions
+(add-to-list 'load-path
+             (expand-file-name "defuns" user-emacs-directory))
+
+;; language specific setup
+(add-to-list 'load-path
+             (expand-file-name "lang" user-emacs-directory))
+
+;; other configuration
+(add-to-list 'load-path
+             (expand-file-name "config" user-emacs-directory))
+
+;; string manipulation library
+(use-package s
+  :ensure t)
+
+;; list library
+(use-package dash
+  :ensure t)
+
+;; Make sure the path is set right
+(use-package exec-path-from-shell
+  :ensure t
+  :demand t
+  :init
+  (setq exec-path-from-shell-check-startup-files nil)
+  :config
+  ;; (exec-path-from-shell-copy-env "PYTHONPATH")
+  (exec-path-from-shell-initialize))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Reduce GC threshold    ;;

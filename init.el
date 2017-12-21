@@ -10,8 +10,6 @@
 (setq delete-old-versions -1)												  	; delete excess backup versions silently
 (setq version-control t)													  	; use version control for backups
 (setq backup-directory-alist `(("." . "~/.emacs.d/backups")))				  	; which directory to put backups file
-(setq vc-make-backup-files t)												  	; make backups file even when in version controlled dir
-(setq vc-follow-symlinks t)													  	; don't ask for confirmation when opening symlinked file
 (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))	; transform backups file name
 (setq inhibit-startup-screen t)												  	; inhibit useless and old-school startup screen
 (setq visible-bell nil)														  	; no visible bell for errors
@@ -37,9 +35,6 @@
 (setq large-file-warning-threshold (* 15 1024 1024))						  	; increase threshold for large files
 (fset 'yes-or-no-p 'y-or-n-p)												  	; prompt for 'y' or 'n' instead of 'yes' or 'no'
 (setq-default abbrev-mode t)												  	; turn on abbreviations by default
-(setq save-abbrevs 'silently)												  	; don't inform when saving new abbreviations
-(setq ediff-window-setup-function 'ediff-setup-windows-plain				  	; have a plain setup for ediff
-	  ediff-split-window-function 'split-window-horizontally)				  	; show two vertical windows instead of horizontal ones
 (setq recenter-positions '(top middle bottom))								  	; recenter from the top instead of the middle
 (put 'narrow-to-region 'disabled nil)										  	; enable narrowing to region
 (put 'narrow-to-defun 'disabled nil)										  	; enable narrowing to function
@@ -51,8 +46,6 @@
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))		  	; setup a new custom file
 (when (file-exists-p custom-file)											  	; if the custom file exists
   (load custom-file :noerror :nomessage))									  	; load the custom file but don't show any messages or errors
-(savehist-mode)																  	; keep persistent history
-(subword-mode 1)															  	; move correctly over camelCase words
 (add-to-list 'load-path (expand-file-name "config" user-emacs-directory))	  	; load more configuration from the 'config' folder
 (put 'scroll-left 'disabled nil)											  	; enable sideward scrolling
 (define-key minibuffer-local-map (kbd "C-w") 'backward-kill-word)			  	; backward kill word in minibuffer
@@ -110,6 +103,116 @@
   ;; Following line is not needed if use-package.el is in ~/.emacs.d
   (add-to-list 'load-path (concat user-emacs-directory "use-package/"))
   (require 'use-package))
+
+;; Keep the mode-line clean
+(use-package diminish
+  :ensure t
+  :demand t)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;    Built-in packages    ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; directory listing
+(use-package dired
+  :hook (dired-mode . dired-hide-details-mode)
+  :init
+  (setq dired-dwim-target t
+        dired-recursive-copies 'top
+        dired-recursive-deletes 'top
+        dired-listing-switches "-alh"))
+
+;; pdf/image viewing
+(use-package doc-view
+  :hook ((doc-view-mode . doc-view-fir-page-to-window)
+         (doc-view-minor-mode . doc-view-fir-page-to-window))
+  :init
+  (setq doc-view-continuous t))
+
+;; builtin version control
+(use-package vc
+  :init
+  (setq vc-make-backup-files t
+        vc-follow-symlinks t))
+
+;; diff management
+(use-package ediff
+  :init
+  (setq ediff-window-setup-function 'ediff-setup-windows-plain
+        ediff-split-window-function 'split-window-horizontally))
+
+;; abbrev
+(use-package abbrev
+  :diminish abbrev-mode
+  :init
+  (setq save-abbrevs 'silently)
+  :config
+  (if (file-exists-p abbrev-file-name)
+      (quietly-read-abbrev-file)))
+
+;; subword navigation
+(use-package subword
+  :hook (prog-mode . subword-mode)
+  :config
+  (subword-mode 1))
+
+;; visual line - soft wrap
+(use-package visual-line
+  :hook (text-mode . visual-line-mode)
+  :diminish (visual-line-mode . " ω")
+  :commands
+  (visual-line-mode))
+
+;; auto revert mode
+(use-package autorevert
+  :demand t
+  :diminish auto-revert-mode)
+
+;; builtin support for folding
+(use-package hs-minor
+  :hook ((text-mode . hs-minor-mode)
+         (prog-mode . hs-minor-mode))
+  :diminish hs-minor-mode)
+
+;; documentation helper
+(use-package eldoc
+  :hook (prog-mode . eldoc-mode)
+  :diminish eldoc-mode)
+
+;; spell check
+(use-package flyspell
+  :hook ((text-mode . flyspell-mode)
+         (org . flyspell-mode))
+  :diminish (flyspell-mode . " φ"))
+
+;; save history
+(use-package savehist
+  :demand t
+  :config
+  (savehist-mode 1))
+
+;; debugging gdb
+(use-package gud
+  :init
+  (setq gdb-many-windows t
+        gdb-show-main t)
+  :commands
+  (gud-run
+   gud-down
+   gud-up
+   gud-next
+   gud-step
+   gud-next
+   gud-finish
+   gud-cont
+   gud-goto-info
+   gud-basic-call
+   gud-print
+   gud-refresh
+   gud-find-c-expr
+   gdb-toggle-breakpoint
+   gdb-delete-breakpoint
+   gdb))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Reduce GC threshold    ;;

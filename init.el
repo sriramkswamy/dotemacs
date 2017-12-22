@@ -334,6 +334,9 @@
 ;; editing
 (require 'sk-edit)
 
+;; version control
+(require 'sk-versions)
+
 ;; modality
 (require 'sk-ryo-modal)
 

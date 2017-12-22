@@ -289,6 +289,25 @@
 (require 'sk-navigation-defuns)
 (require 'sk-search-defuns)
 
+;;;;;;;;;;;;;;;;;;;;;;;;;
+;;    Core packages    ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; hint for bindings
+(use-package which-key
+  :ensure t
+  :demand t
+  :diminish which-key-mode
+  :bind* (("C-c ?" . which-key-show-top-level))
+  :config
+  ;; workaround for emacs 26
+  (if (version< emacs-version "26")
+	  (message "Tracking stable Emacs")
+	(defalias 'display-buffer-in-major-side-window 'window--make-major-side-window))
+  ;; turn on which key and add some names for default/common prefixes
+  (which-key-enable-god-mode-support)
+  (which-key-mode))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Key bindings    ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;

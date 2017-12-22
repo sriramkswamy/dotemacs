@@ -38,11 +38,6 @@
 
   :config
 
-  ;; LSP support
-  (use-package company-lsp
-	:ensure t
-	:bind* (("C-j C-l"	. company-lsp)))
-
   ;; set default backends
   (setq company-backends
 		'((;; Generic backends
@@ -56,6 +51,12 @@
 		   company-eclim          ; eclim
            company-capf)))
   (global-company-mode))
+
+;; LSP support
+(use-package company-lsp
+  :ensure t
+  :after (company)
+  :bind* (("C-j C-l"	. company-lsp)))
 
 ;;; some language specific functions to add to hooks later
 

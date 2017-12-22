@@ -346,6 +346,36 @@
 ;; narrowing framework
 (require 'sk-narrow)
 
+;; select a good theme
+(use-package doom-themes
+  :ensure t
+  :config
+  (load-theme 'doom-one t))
+
+;; restart emacs from emacs
+(use-package restart-emacs
+  :ensure t
+  :bind* (("C-x C" . restart-emacs)))
+
+;; treemacs for folder tree
+(use-package treemacs
+  :ensure t
+  :init
+  (setq treemacs-follow-after-init          t
+        treemacs-width                      35
+        treemacs-indentation                2
+        treemacs-collapse-dirs              (if (executable-find "python") 3 0)
+        treemacs-silent-refresh             nil
+        treemacs-change-root-without-asking nil
+        treemacs-sorting                    'alphabetic-desc
+        treemacs-show-hidden-files          t
+        treemacs-never-persist              nil
+        treemacs-is-never-other-window      nil
+        treemacs-goto-tag-strategy          'refetch-index)
+  :commands
+  (treemacs-toggle
+   treemacs))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Key bindings    ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;

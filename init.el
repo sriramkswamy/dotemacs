@@ -409,11 +409,18 @@
 
 ;; immutable bindings
 (bind-keys*
- ("C-j"		. electric-newline-and-maybe-indent))
+ ("C-j"   . electric-newline-and-maybe-indent)
+ ("C-w"   . sk/kill-region-or-backward-word)
+ ("M-w"   . sk/copy-region-or-line)
+ ("M-c"   . sk/toggle-letter-case)
+ ("M-h"   . sk/remove-mark)
+ ("C-x k" . sk/kill-buffer))
 
 ;; mutable bindings
 (bind-keys
- ("C-x C-b"	. ibuffer))
+ ("C-o"     . sk/open-line-above)
+ ("M-o"     . sk/open-line-below)
+ ("C-x C-b" . ibuffer))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Reduce GC threshold    ;;

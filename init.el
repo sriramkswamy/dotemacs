@@ -403,6 +403,9 @@
   :config
   (dumb-jump-mode))
 
+;; modality
+(require 'sk-ryo-modal)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Key bindings    ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;

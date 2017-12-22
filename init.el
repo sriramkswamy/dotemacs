@@ -361,6 +361,12 @@
   :config
   (ace-link-setup-default))
 
+;; moving across changes
+(use-package goto-chg
+  :ensure t
+  :commands (goto-last-change
+			 goto-last-change-reverse))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Key bindings    ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;

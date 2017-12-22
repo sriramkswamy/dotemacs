@@ -216,6 +216,8 @@
                  ("C" string-inflection-all-cycle :name "change case")
                  (";" goto-last-change :name "last change")
                  ("," goto-last-change-reverse :name "last change reverse")
+                 ("SPC" "C-c C-c" :name "dwim")
+                 ("F" "C-c C-f" :name "follow mode")
                  ("g" "M-<" :name "start of buffer" :norepeat t)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -225,6 +227,12 @@
 ;; text object/operator relationship
 (let ((text-objects
        '(;; single-char style text object
+         ("h" sk/mark-previous-char :name "previous char(s)")
+         ("j" sk/mark-next-line :name "next line(s)")
+         ("k" sk/mark-previous-line :name "previous line(s)")
+         ("l" sk/mark-next-char :name "next char(s)")
+         ("b" sk/mark-backward-word :name "to start of word")
+         ("e" mark-word :name "to end of word")
          ("f" sk/mark-to-char :name "to char")
          ("F" sk/mark-to-char-backward :name "to char back")
          ("t" sk/mark-up-to-char :name "till char")
@@ -300,7 +308,17 @@
 
 ;; operator based extra maps
 (ryo-modal-keys
+ ;; d based maps
  ("d u" sk/ediff-dwim :name "diff update"))
+
+;; operator based option maps
+(ryo-modal-keys
+ ;; v based maps
+ ("v o x" set-frame-font :name "select font")
+ ;; c based maps
+ ("c o s" smartparens-strict-mode :name "smartparens strict mode")
+ ("c o S" smartparens-mode :name "smartparens mode")
+ ("c o u" undo-tree-mode :name "undo tree mode"))
 
 ;; provide ryo bindings
 (provide 'sk-ryo-bindings)

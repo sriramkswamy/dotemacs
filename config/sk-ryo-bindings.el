@@ -2,23 +2,6 @@
 ;;    Regular bindings    ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; ryo modal emacs emulation
-(ryo-modal-keys
-  (:norepeat t)
-  (":" "C-x" :name "C-x maps")
-  ("\"" "C-c" :name "C-c maps"))
-
-;; ryo modal general mappings
-(ryo-modal-keys
-  (:norepeat t)
-  ("?" which-key-show-top-level :name "which key"))
-
-;; ryo modal editing maps to not repeat
-(ryo-modal-keys
-  (:norepeat t)
-  ("i" sk/disable-ryo-modal-mode :name "insert")
-  ("u" undo :name "undo"))
-
 ;; ryo modal digit mappings
 (ryo-modal-keys
    (:norepeat t)
@@ -32,6 +15,47 @@
    ("7" "M-7" :name "7")
    ("8" "M-8" :name "8")
    ("9" "M-9" :name "9"))
+
+;; ryo modal emacs emulation
+(ryo-modal-keys
+  (:norepeat t)
+  (":" "C-x" :name "C-x maps")
+  ("\"" "C-c" :name "C-c maps")
+  ("\\" "C-u" :name "C-u maps"))
+
+;; ryo modal general mappings
+(ryo-modal-keys
+  (:norepeat t)
+  ("z z" recenter-top-bottom :name "recenter")
+  ("+" bookmark-set :name "add bookmark")
+  ("Z" sk/toggle-frame-fullscreen-non-native :name "fullscreen")
+  ("?" which-key-show-top-level :name "which key"))
+
+;; ryo modal navigation mappings
+(ryo-modal-keys
+  (:norepeat t)
+  ("DEL" mode-line-other-buffer :name "last buffer")
+  ("W" dired-jump :name "open dir"))
+
+;; ryo modal insert editing maps
+(ryo-modal-keys
+  ("i" sk/disable-ryo-modal-mode :name "insert")
+  ("a" forward-char :name "append" :exit t)
+  ("I" sk/smarter-move-beginning-of-line :name "insert start of line" :exit t)
+  ("A" move-end-of-line :name "append end of line" :exit t))
+
+;; ryo modal selection maps
+(ryo-modal-keys
+  (:norepeat t)
+  ("X" "C-x C-x" :name "prev selection/exchange selection")
+  ("V" "C-SPC" :name "start select"))
+
+;; ryo modal editing maps
+(ryo-modal-keys
+  ("x" "C-d" :name "delete char")
+  ("u" "C-/" :name "undo" :norepeat t)
+  ("U" "M-/" :name "redo" :norepeat t))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Operator/Text-object bindings    ;;

@@ -279,17 +279,18 @@
 (use-package dash
   :ensure t)
 
-;; Make sure the path is set right
-(use-package exec-path-from-shell
+;; Make sure the path is set right for macOS
+(when (memq window-system '(mac ns))
+  (use-package exec-path-from-shell
   :ensure t
-  :demand t
+  :bind* (("C-x x" . exec-path-from-shell-initialize)
+          ("C-x y" . exec-path-from-shell-copy-env))
   :init
-  (setq exec-path-from-shell-check-startup-files nil)
-  :config
-  ;; (exec-path-from-shell-copy-env "PYTHONPATH")
-  (exec-path-from-shell-initialize))
+  (setq exec-path-from-shell-check-startup-files nil)))
 
-;;; Core
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;    Core functions    ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; Macros
 (require 'sk-repl-macros)

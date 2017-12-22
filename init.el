@@ -393,6 +393,9 @@
 ;; emacs lisp support
 (require 'sk-elisp)
 
+;; org support
+(require 'sk-org)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Key bindings    ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;

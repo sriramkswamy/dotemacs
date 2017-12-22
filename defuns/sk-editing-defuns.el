@@ -71,6 +71,36 @@
   (next-line 1)
   (sk/smarter-move-beginning-of-line 1))
 
+(defun sk/mark-next-line (&optional count)
+  "marks to the next `count' lines"
+  (interactive)
+  (set-mark (point))
+  (next-line count))
+
+(defun sk/mark-previous-line (&optional count)
+  "marks to the previous `count' lines"
+  (interactive)
+  (set-mark (point))
+  (previous-line count))
+
+(defun sk/mark-next-char (&optional count)
+  "marks to the next `count' chars"
+  (interactive)
+  (set-mark (point))
+  (forward-char count))
+
+(defun sk/mark-previous-char (&optional count)
+  "marks to the previous `count' chars"
+  (interactive)
+  (set-mark (point))
+  (backward-char count))
+
+(defun sk/mark-backward-word ()
+  "marks to the beginning of word from current position"
+  (interactive)
+  (set-mark (point))
+  (backward-word))
+
 (defun sk/mark-around-markdown-code-block ()
   "Marks a markdown code-block."
   (interactive)

@@ -1,6 +1,8 @@
 ;; vim style char navigation
 (use-package iy-go-to-char
   :ensure t
+  :init
+  (setq iy-go-to-char-continue-when-repeating nil)
   :commands
   (iy-go-to-char
    iy-go-to-char-backward

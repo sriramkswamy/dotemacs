@@ -1,3 +1,36 @@
+;; vim style char navigation
+(use-package iy-go-to-char
+  :ensure t
+  :commands
+  (iy-go-to-char
+   iy-go-to-char-backward
+   iy-go-up-to-char
+   iy-go-up-to-char-backward
+   iy-go-to-or-up-to-continue
+   iy-go-to-or-up-to-continue-backward))
+
+;; wrapper functions based on iy-go-to-char
+(defun sk/mark-to-char ()
+  "mark to char using iy-go-to-char"
+  (interactive)
+  (set-mark (point))
+  (call-interactively #'iy-go-to-char))
+(defun sk/mark-to-char-backward ()
+  "mark to char using iy-go-to-char-backward"
+  (interactive)
+  (set-mark (point))
+  (call-interactively #'iy-go-to-char-backward))
+(defun sk/mark-up-to-char ()
+  "mark to char using iy-up-go-to-char"
+  (interactive)
+  (set-mark (point))
+  (call-interactively #'iy-up-go-to-char))
+(defun sk/mark-up-to-char-backward ()
+  "mark to char using iy-up-go-to-char-backward"
+  (interactive)
+  (set-mark (point))
+  (call-interactively #'iy-up-go-to-char-backward))
+
 ;; simulating mouse click
 (use-package avy
   :ensure t

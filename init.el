@@ -367,6 +367,26 @@
   :commands (goto-last-change
 			 goto-last-change-reverse))
 
+;; smart beginning and end in buffers
+(use-package beginend
+  :ensure t
+  :hook ((dired-mode . beginend-global-mode)
+         (text-mode . beginend-global-mode)
+         (prog-mode . beginend-global-mode))
+  :diminish ((beginend-global-mode . "")
+             (beginend-prog-mode . ""))
+  :config
+  (beginend-global-mode))
+
+;; moving across marks
+(use-package back-button
+  :ensure t
+  :commands
+  (back-button-local-backward
+   back-button-local-forward
+   back-button-global-backward
+   back-button-global-forward))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Key bindings    ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;

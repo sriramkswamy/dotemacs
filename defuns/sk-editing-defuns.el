@@ -325,6 +325,13 @@ abort completely with `C-g'."
 	  (kill-region (region-beginning) (region-end))
 	(backward-kill-word 1)))
 
+;; kill line or region
+(defun sk/kill-region-or-line ()
+  (interactive)
+  (if (region-active-p)
+	  (kill-region (region-beginning) (region-end))
+	(kill-whole-line)))
+
 ;; save region or current line
 (defun sk/copy-whole-lines (arg)
   "Copy lines (as many as prefix argument) in the kill ring"

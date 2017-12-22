@@ -110,6 +110,38 @@
   ("w _" widen :name "widen window")
   ("w w" "C-x o" :name "other window"))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;    Leader bindings    ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; mapping with leader
+(ryo-modal-key "SPC"
+               '(("w" "C-x C-s" :name "save buffer" :norepeat t)
+                 ("e" magit-status :name "git status" :norepeat t)
+                 ("f" "C-x C-f" :name "open file" :norepeat t)
+                 ("g" "C-g" :name "interrupt" :norepeat t)
+                 ("h" "C-h" :name "help" :norepeat t)
+                 ("y" "M-y" :name "copy history" :norepeat t)
+                 ("k" "C-x b" :name "switch buffer" :norepeat t)
+				 ("m" sk/ediff-dwim :name "diff" :norepeat t)
+				 ("x" ibuffer :name "interactive buffer" :norepeat t)
+                 ("j" "M-x" :name "commands" :norepeat t)))
+
+;; mapping with global prefix
+(ryo-modal-key "g"
+               '(("A" describe-char :name "describe char")
+				 ("b" magit-blame :name "git blame")
+				 ("f" ffap :name "find file at point")
+				 ("W" wdired-change-to-wdired-mode :name "writeable dir")
+				 ("O" package-install :name "install package")
+				 ("`" async-shell-command :name "run shell command")
+				 ("M" list-packages :name "list packages")
+				 ("V" sk/browse-current-file :name "view file in browser")
+				 ("N" sk/rename-current-buffer-file :name "rename file")
+				 ("K" sk/delete-current-buffer-file :name "remove file")
+				 ("Y" sk/copy-current-file-path :name "copy file path")
+                 ("." sk/duplicate-current-line-or-region :name "duplicate line/region")
+                 ("g" "M-<" :name "start of buffer")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Operator/Text-object bindings    ;;

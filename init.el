@@ -57,6 +57,7 @@
 ;; line number after emacs 26
 (if (version< emacs-version "26")
 	(message "Line number mode not activated")
+  (setq display-line-numbers-type 'relative)
   (global-display-line-numbers-mode))
 
 ;; how tabs are seen and added

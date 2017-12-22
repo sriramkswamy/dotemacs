@@ -6,12 +6,6 @@
   :commands
   (magit-blame))
 
-;; Github integration - press '@' in Magit status
-(use-package magithub
-  :ensure t
-  :ensure-system-package (hub)
-  :after (magit))
-
 ;; magit diff or generic ediff
 (defun sk/ediff (arg)
   "Magit ediff normally or generic ediff if called with universal argument"

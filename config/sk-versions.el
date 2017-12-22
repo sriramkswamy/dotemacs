@@ -36,5 +36,33 @@
   (diff-hl-margin-mode)
   (diff-hl-dired-mode))
 
+;; git timemachine
+(use-package git-timemachine
+  :ensure t
+  :commands
+  (git-timemachine-toggle))
+
+;; posting gists
+(use-package yagist
+  :ensure t
+  :init
+  (setq yagist-encrypt-risky-config t)
+  :commands
+  (yagist-region-or-buffer))
+
+;; browse remote packages
+(use-package browse-at-remote
+  :ensure t
+  :commands
+  (browse-at-remote))
+
+;; posting gists
+(defun sk/post-gist (arg)
+  "post the gist. Toggle privacy with ARG"
+  (interactive "p")
+  (if (equal arg '(4))
+	  (yagist-region-or-buffer-private)
+	(yagist-region-or-buffer)))
+
 ;; provide version control configuration
 (provide 'sk-versions)

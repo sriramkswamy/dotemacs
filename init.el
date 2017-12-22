@@ -340,11 +340,11 @@
 ;; semi modality
 (require 'sk-hydra)
 
-;; modality
-(require 'sk-ryo-modal)
-
 ;; narrowing framework
 (require 'sk-narrow)
+
+;; modality
+(require 'sk-ryo-modal)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Key bindings    ;;

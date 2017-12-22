@@ -363,7 +363,7 @@
   :ensure t
   :init
   (setq treemacs-follow-after-init          t
-        treemacs-width                      35
+        treemacs-width                      25
         treemacs-indentation                2
         treemacs-collapse-dirs              (if (executable-find "python") 3 0)
         treemacs-silent-refresh             nil

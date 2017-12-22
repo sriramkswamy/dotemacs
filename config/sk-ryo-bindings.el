@@ -186,13 +186,14 @@
                  ("f" "C-x C-f" :name "open file" :norepeat t)
                  ("g" "C-g" :name "interrupt" :norepeat t)
                  ("r" counsel-recentf :name "recent files" :norepeat t)
-                 ("d" counsel-fzf :name "fuzzy files" :norepeat t)
+                 ("d" project-find-file :name "project files" :norepeat t)
                  ("s" spotlight :name "desktop files" :norepeat t)
                  ("p" sk/counsel-ag-project :name "grep project" :norepeat t)
                  ("a" ivy-switch-view :name "switch views" :norepeat t)
                  ("y" "M-y" :name "copy history" :norepeat t)
                  ("k" "C-x b" :name "switch buffer" :norepeat t)
 				 ("x" ibuffer :name "interactive buffer" :norepeat t)
+				 ("n" treemacs-toggle :name "file tree" :norepeat t)
                  ("j" "M-x" :name "commands" :norepeat t)))
 
 ;; mapping with global prefix

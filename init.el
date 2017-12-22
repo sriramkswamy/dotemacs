@@ -328,6 +328,9 @@
   (which-key-enable-god-mode-support)
   (which-key-mode))
 
+;; modality
+(require 'sk-ryo-modal)
+
 ;; navigation
 (require 'sk-nav)
 
@@ -342,9 +345,6 @@
 
 ;; narrowing framework
 (require 'sk-narrow)
-
-;; modality
-(require 'sk-ryo-modal)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Key bindings    ;;
@@ -364,6 +364,10 @@
  ("C-o"     . sk/open-line-above)
  ("M-o"     . sk/open-line-below)
  ("C-x C-b" . ibuffer))
+
+;; modal bindings and hints
+(require 'sk-ryo-bindings)
+(require 'sk-ryo-which-key)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Reduce GC threshold    ;;

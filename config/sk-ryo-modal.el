@@ -79,11 +79,7 @@
   :config
   ;; cursor when not in ryo modal mode
   (defconst ryo-modal-default-cursor-color "#7f7f7f"
-  	"Default color of cursor.")
-
-  ;; additional maps and hints
-  (require 'sk-ryo-bindings)
-  (require 'sk-ryo-which-key))
+  	"Default color of cursor."))
 
 ;; provide the modal configuration
 (provide 'sk-ryo-modal)

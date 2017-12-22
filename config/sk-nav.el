@@ -72,7 +72,7 @@
 ;; jump and open links fast
 (use-package ace-link
   :ensure t
-  :after (avy)
+  :after (avy ace-window)
   :config
   (ace-link-setup-default))
 
@@ -111,7 +111,7 @@
 ;; dumb jumping
 (use-package dumb-jump
   :ensure t
-  :ensure-system-package ("ag")
+  :ensure-system-package (ag)
   :commands
   (dumb-jump-go
    dumb-jump-goto-file-line)

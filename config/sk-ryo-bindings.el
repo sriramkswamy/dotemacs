@@ -198,7 +198,7 @@
 (ryo-modal-key "SPC"
                '(("w" "C-x C-s" :name "save buffer" :norepeat t)
                  ("e" magit-status :name "git status" :norepeat t)
-                 ("f" "C-x C-f" :name "open file" :norepeat t)
+                 ("f" counsel-fzf :name "open file" :norepeat t)
                  ("g" "C-g" :name "interrupt" :norepeat t)
                  ("r" counsel-recentf :name "recent files" :norepeat t)
                  ("d" counsel-git :name "project files" :norepeat t)
@@ -332,6 +332,8 @@
 
 ;; operator based extra maps
 (ryo-modal-keys
+ ;; c based maps
+ ("c d" "C-x C-f" :name "change/create directory/file")
  ;; d based maps
  ("d u" sk/ediff-dwim :name "diff update"))
 

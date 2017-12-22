@@ -253,14 +253,6 @@
   (ivy-mode 1)
   (counsel-mode 1))
 
-;; counsel based navigation functions
-(defun sk/find-file (arg)
-  "Normal find file or counsel's find file jump"
-  (interactive "P")
-  (if arg
-	  (counsel-file-jump)
-	(counsel-find-file)))
-
 ;; project based grep at point
 (defun sk/counsel-ag-project-at-point ()
   "use counsel ag to search for the word at point in the project"

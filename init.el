@@ -289,6 +289,8 @@
 (when (memq window-system '(mac ns))
   (use-package exec-path-from-shell
 	:ensure t
+	:ensure-system-package
+	(brew ."/usr/bin/ruby -e \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)\"")
 	:bind* (("C-x x" . exec-path-from-shell-initialize)
 			("C-x y" . exec-path-from-shell-copy-env))
 	:init
@@ -395,6 +397,9 @@
 
 ;; org support
 (require 'sk-org)
+
+;; latex support
+(require 'sk-latex)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Key bindings    ;;

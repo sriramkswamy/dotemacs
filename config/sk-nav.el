@@ -58,9 +58,7 @@
 ;; jump to windows quickly
 (use-package ace-window
   :ensure t
-  :after (avy)
-  :commands
-  (ace-window))
+  :bind* (("C-x o" . ace-window)))
 
 ;; jump and open links fast
 (use-package ace-link

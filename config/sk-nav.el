@@ -75,6 +75,8 @@
 (use-package ace-link
   :ensure t
   :after (avy ace-window)
+  :commands
+  (ace-link-org)
   :config
   (ace-link-setup-default))
 

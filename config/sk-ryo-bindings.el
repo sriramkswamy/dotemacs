@@ -101,6 +101,8 @@
  (:norepeat t)
  ("f" iy-go-to-char :name "to char")
  ("F" iy-go-to-char-backward :name "to char back")
+ (";" iy-go-to-or-up-to-continue :name "continue char")
+ ("," iy-go-to-or-up-to-continue-backward :name "continue char back")
  ("'" avy-goto-char-timer :name "char timer"))
 
 ;; ryo modal narrowing maps

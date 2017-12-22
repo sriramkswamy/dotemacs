@@ -16,6 +16,7 @@
 ;; ryo modal editing maps to not repeat
 (ryo-modal-keys
   (:norepeat t)
+  ("i" sk/disable-ryo-modal-mode :name "insert")
   ("u" undo :name "undo"))
 
 ;; ryo modal digit mappings

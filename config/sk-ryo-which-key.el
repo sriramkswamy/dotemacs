@@ -26,6 +26,7 @@
 
 ;; movement
 (which-key-add-key-based-replacements
+  "s" "smart/scroll"
   "w" "window")
 
 ;; prefixes

@@ -27,13 +27,21 @@
 (ryo-modal-keys
   (:norepeat t)
   ("z z" recenter-top-bottom :name "recenter")
-  ("+" bookmark-set :name "add bookmark")
+  ("+" sk/counsel-bookmarks :name "add/see bookmarks")
+  ("H" "C-h" :name "help")
   ("Z" sk/toggle-frame-fullscreen-non-native :name "fullscreen")
   ("?" which-key-show-top-level :name "which key"))
 
 ;; ryo modal navigation mappings
 (ryo-modal-keys
   (:norepeat t)
+  ("g z" flyspell-correct-previous-word-generic :name "correct spelling")
+  ("g [" xref-find-references :name "xref references")
+  ("g ]" xref-find-definitions :name "xref definitions")
+  ("g \\" xref-pop-marker-stack :name "xref back")
+  ("g (" ggtags-create-tags :name "create tags")
+  ("g )" ggtags-update-tags :name "update tags")
+  ("s s" hydra-smartparens/body :name "smartparens")
   ("DEL" mode-line-other-buffer :name "last buffer")
   ("W" dired-jump :name "open dir"))
 
@@ -41,6 +49,8 @@
 (ryo-modal-keys
   ("i" sk/disable-ryo-modal-mode :name "insert")
   ("a" forward-char :name "append" :exit t)
+  ("o" sk/open-line-below :name "open" :exit t)
+  ("O" sk/open-line-above :name "open up" :exit t)
   ("I" sk/smarter-move-beginning-of-line :name "insert start of line" :exit t)
   ("A" move-end-of-line :name "append end of line" :exit t))
 
@@ -52,6 +62,7 @@
 
 ;; ryo modal editing maps
 (ryo-modal-keys
+  ("S" embrace-commander :name "surround")
   ("x" "C-d" :name "delete char")
   ("u" "C-/" :name "undo" :norepeat t)
   ("U" "M-/" :name "redo" :norepeat t))
@@ -72,10 +83,6 @@
   ("G" "M->" :name "end of buffer")
   ("0" "C-a" :name "start of line")
   ("$" "C-e" :name "end of line")
-  ("H" "C-x >" :name "scroll left")
-  ("J" "C-v" :name "scroll down")
-  ("K" "M-v" :name "scroll up")
-  ("L" "C-x <" :name "scroll right")
   ("h" "C-b" :name "prev char")
   ("j" "C-n" :name "next line")
   ("k" "C-p" :name "prev line")
@@ -88,10 +95,48 @@
   ("F" iy-go-to-char-backward :name "to char back")
   ("'" avy-goto-char-timer :name "char timer"))
 
+;; ryo modal narrowing maps
+(ryo-modal-keys
+  (:norepeat t)
+  ("t" sk/counsel-imenu-org-goto :name "tags")
+  ("T" ggtags-find-tag-regexp :name "find tags")
+  ("L" ivy-resume :name "last narrowing")
+  ("-" ivy-push-view :name "create view")
+  ("_" ivy-pop-view :name "delete view"))
+
+;; ryo modal bibliography mappings
+(ryo-modal-keys
+  (:norepeat t)
+  ("B" sk/default-bib :name "default bib")
+  ("g B" sk/current-bib :name "bib in project"))
+
 ;; ryo modal search mappings
 (ryo-modal-keys
   (:norepeat t)
+  ("*" sk/swiper-at-point :name "search word under cursor")
+  ("#" sk/counsel-ag-project-at-point :name "grep word under cursor")
+  ("E" ivy-occur :name "edit search results")
+  ("g *" counsel-colors-emacs :name "search emacs colors")
+  ("g #" counsel-colors-web :name "search web colors")
+  ("g x" wgrep-save-all-buffers :name "save edited grep results")
+  ("g X" wgrep-abort-changes :name "abort edited grep results")
+  ("g E" ivy-wgrep-change-to-wgrep-mode :name "edit grep results")
+  ("g s" sk/counsel-ag-directory :name "search dir")
+  ("g G" counsel-git-log :name "git log")
+  ("SPC ," counsel-descbinds :name "bindings" :norepeat t)
+  ("SPC ." counsel-load-theme :name "themes" :norepeat t)
+  ("J" dumb-jump-go :name "dumb jump")
+  ("K" dash-at-point-with-docset :name "dash doc")
   ("/" "C-s" :name "search in buffer"))
+
+;; ryo scroll maps
+(ryo-modal-keys
+  ("g j" diff-hl-next-hunk :name "next diff")
+  ("g k" diff-hl-previous-hunk :name "previous diff")
+  ("s h" "C-x >" :name "scroll left")
+  ("s j" "C-v" :name "scroll down")
+  ("s k" "M-v" :name "scroll up")
+  ("s l" "C-x <" :name "scroll right"))
 
 ;; ryo modal window navigation maps
 (ryo-modal-keys
@@ -117,6 +162,15 @@
   ("w _" widen :name "widen window")
   ("w w" "C-x o" :name "other window"))
 
+;; ryo modal mark navigation
+(ryo-modal-keys
+  (:norepeat t)
+  ("g m" counsel-mark-ring :name "search marks")
+  ("<down>" back-button-local-forward :name "local mark next")
+  ("<up>" back-button-local-backward :name "local mark prev")
+  ("<right>" back-button-global-forward :name "global mark next")
+  ("<left>" back-button-global-backward :name "global mark prev"))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Leader bindings    ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -127,28 +181,38 @@
                  ("e" magit-status :name "git status" :norepeat t)
                  ("f" "C-x C-f" :name "open file" :norepeat t)
                  ("g" "C-g" :name "interrupt" :norepeat t)
-                 ("h" "C-h" :name "help" :norepeat t)
+                 ("r" counsel-recentf :name "recent files" :norepeat t)
+                 ("d" counsel-fzf :name "fuzzy files" :norepeat t)
+                 ("s" spotlight :name "desktop files" :norepeat t)
+                 ("p" sk/counsel-ag-project :name "grep project" :norepeat t)
+                 ("a" ivy-switch-view :name "switch views" :norepeat t)
                  ("y" "M-y" :name "copy history" :norepeat t)
                  ("k" "C-x b" :name "switch buffer" :norepeat t)
-				 ("m" sk/ediff-dwim :name "diff" :norepeat t)
 				 ("x" ibuffer :name "interactive buffer" :norepeat t)
                  ("j" "M-x" :name "commands" :norepeat t)))
 
 ;; mapping with global prefix
 (ryo-modal-key "g"
-               '(("A" describe-char :name "describe char")
-				 ("b" magit-blame :name "git blame")
-				 ("f" ffap :name "find file at point")
-				 ("W" wdired-change-to-wdired-mode :name "writeable dir")
-				 ("O" package-install :name "install package")
-				 ("`" async-shell-command :name "run shell command")
-				 ("M" list-packages :name "list packages")
-				 ("V" sk/browse-current-file :name "view file in browser")
-				 ("N" sk/rename-current-buffer-file :name "rename file")
-				 ("K" sk/delete-current-buffer-file :name "remove file")
+               '(("A" describe-char :name "describe char" :norepeat t)
+                 ("D" dash-at-point-with-docset :name "dash doc" :norepeat t)
+				 ("b" magit-blame :name "git blame" :norepeat t)
+				 ("T" git-timemachine-toggle :name "git time machine" :norepeat t)
+				 ("P" sk/post-gist :name "gist post" :norepeat t)
+				 ("R" browse-at-remote :name "git remote" :norepeat t)
+				 ("f" ffap :name "find file at point" :norepeat t)
+				 ("W" wdired-change-to-wdired-mode :name "writeable dir" :norepeat t)
+				 ("O" package-install :name "install package" :norepeat t)
+				 ("`" async-shell-command :name "run shell command" :norepeat t)
+				 ("M" list-packages :name "list packages" :norepeat t)
+				 ("V" sk/browse-current-file :name "view file in browser" :norepeat t)
+				 ("N" sk/rename-current-buffer-file :name "rename file" :norepeat t)
+				 ("K" sk/delete-current-buffer-file :name "remove file" :norepeat t)
 				 ("Y" sk/copy-current-file-path :name "copy file path")
                  ("." sk/duplicate-current-line-or-region :name "duplicate line/region")
-                 ("g" "M-<" :name "start of buffer")))
+                 ("C" string-inflection-all-cycle :name "change case")
+                 (";" goto-last-change :name "last change")
+                 ("," goto-last-change-reverse :name "last change reverse")
+                 ("g" "M-<" :name "start of buffer" :norepeat t)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Operator/Text-object bindings    ;;
@@ -165,12 +229,49 @@
           ;; inner-around style text object
           ("i w" er/mark-word :name "word")
           ("a w" sk/mark-around-word :name "word")
+          ("i h" diff-hl-mark-hunk :name "diff")
+          ("a h" diff-hl-mark-hunk :name "diff")
+          ("i p" er/mark-text-paragraph :name "para")
+          ("a p" mark-paragraph :name "para")
+          ("i l" sk/select-inside-line :name "line")
+          ("a l" sk/select-around-line :name "line")
+          ("i s" er/mark-text-sentence :name "sentence")
+          ("a s" er/mark-text-sentence :name "sentence")
+          ("i y" er/mark-symbol :name "symbol")
+          ("a y" sk/mark-around-symbol :name "symbol")
+          ("i c" er/mark-comment :name "comment")
+          ("a c" er/mark-comment :name "comment")
+          ("i f" er/mark-defun :name "function")
+          ("a f" er/mark-defun :name "function")
+          ("i q" er/mark-inside-quotes :name "quotes")
+          ("a q" er/mark-outside-quotes :name "quotes")
+          ("i o" sk/mark-inside-org-code :name "org code")
+          ("a o" er/mark-org-code-block :name "org code")
+          ("i u" sk/mark-inside-subtree :name "subtree")
+          ("a u" org-mark-subtree :name "subtree")
+          ("i e" er/mark-LaTeX-inside-environment :name "latex env")
+          ("a e" LaTeX-mark-environment :name "latex env")
+          ("i m" er/mark-method-call :name "method call")
+          ("a m" er/mark-method-call :name "method call")
+          ("i r" sk/mark-inside-ruby-block :name "ruby style block")
+          ("a r" er/ruby-block-up :name "ruby style block")
+          ("i g" er/mark-inside-python-string :name "python string")
+          ("a g" er/mark-outside-python-string :name "python string")
+          ("i d" sk/mark-inside-python-block :name "python block")
+          ("a d" er/mark-outer-python-block :name "python block")
+          ("i x" sk/mark-inside-LaTeX-math :name "latex math")
+          ("a x" er/mark-LaTeX-math :name "latex math")
+          ("i b" er/mark-inside-pairs :name "pairs")
+          ("a b" er/mark-outside-pairs :name "pairs")
+          ("i i" sk/select-indent-tree :name "indent")
+          ("a i" sk/select-indent-tree :name "indent")
           ("a a" mark-whole-buffer :name "all")
           ("i a" mark-whole-buffer :name "all"))))
 (eval `(ryo-modal-keys
         ;; complex operators
         ("c y" ,text-objects :then '(sk/cut-region-or-line-to-clipboard) :exit t)
         ("d y" ,text-objects :then '(sk/cut-region-or-line-to-clipboard))
+        ("g c" ,text-objects :then '(comment-dwim-2))
         ;; basic operators
         ("v" ,text-objects)
         ("c" ,text-objects :then '(kill-region) :exit t)
@@ -193,9 +294,13 @@
   ("c y y" sk/cut-region-or-line-to-clipboard :name "line/region" :exit t)
   ("d y y" sk/cut-region-or-line-to-clipboard :name "line/region")
   ;; basic operator repeats
-  ("c c" sk/kill-region-or-backward-word :name "line/region" :exit t)
-  ("d d" sk/kill-region-or-backward-word :name "line/region")
+  ("c c" sk/kill-region-or-line :name "line/region" :exit t)
+  ("d d" sk/kill-region-or-line :name "line/region")
   ("y y" sk/copy-region-or-line :name "line/region"))
+
+;; operator based extra maps
+(ryo-modal-keys
+  ("d u" sk/ediff-dwim :name "diff update"))
 
 ;; provide ryo bindings
 (provide 'sk-ryo-bindings)

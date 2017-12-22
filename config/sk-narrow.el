@@ -46,8 +46,6 @@
 			  ("C-SPC"		. ivy-toggle-calling)
 			  ("C-c b"	    . ivy-avy)
 			  ("C-s"		. ivy-restrict-to-matches))
-  :bind* (("C-c r" . ivy-resume)
-		  ("M-s i" . ivy-wgrep-change-to-wgrep-mode))
   :config
   (define-key read-expression-map (kbd "C-r") 'counsel-minibuffer-history)
   ;; the hydra in ivy
@@ -79,8 +77,6 @@
 		 ("C-h a" . counsel-apropos)
 		 ("C-h f" . counsel-describe-function)
 		 ("C-x 8" . counsel-unicode-char))
-  :bind* (("M-s c" . counsel-ag)
-		  ("C-c t" . sk/counsel-imenu-org-goto))
   :commands (counsel-faces
 			 counsel-recentf
 			 counsel-package

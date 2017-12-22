@@ -123,6 +123,10 @@
   :ensure t
   :demand t)
 
+;; extensions for use-package
+(use-package use-package-ensure-system-package
+  :ensure t)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Built-in packages    ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

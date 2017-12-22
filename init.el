@@ -330,6 +330,8 @@
 ;; navigation
 (require 'sk-nav)
 
+;; editing
+(require 'sk-edit)
 
 ;; modality
 (require 'sk-ryo-modal)

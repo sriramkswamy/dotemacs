@@ -324,9 +324,10 @@
  ;; v based maps
  ("v o x" set-frame-font :name "select font")
  ;; c based maps
- ("c o s" smartparens-strict-mode :name "smartparens strict mode")
- ("c o S" smartparens-mode :name "smartparens mode")
- ("c o u" undo-tree-mode :name "undo tree mode"))
+ ("c o c" company-mode :name "completion")
+ ("c o s" smartparens-strict-mode :name "smartparens strict")
+ ("c o S" smartparens-mode :name "smartparens")
+ ("c o u" undo-tree-mode :name "undo tree"))
 
 ;; provide ryo bindings
 (provide 'sk-ryo-bindings)

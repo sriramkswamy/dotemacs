@@ -387,6 +387,9 @@
 ;; linting/checking
 (require 'sk-linter)
 
+;; auto completion
+(require 'sk-complete)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Key bindings    ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;

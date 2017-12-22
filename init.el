@@ -387,6 +387,22 @@
    back-button-global-backward
    back-button-global-forward))
 
+;; dash documentation
+(use-package dash-at-point
+  :ensure t
+  :commands
+  (dash-at-point-with-docset))
+
+;; dumb jumping
+(use-package dumb-jump
+  :ensure t
+  :ensure-system-package ("ag")
+  :commands
+  (dumb-jump-go
+   dumb-jump-goto-file-line)
+  :config
+  (dumb-jump-mode))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Key bindings    ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;

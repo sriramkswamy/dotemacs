@@ -40,6 +40,7 @@
    avy-goto-char-2-above
    avy-goto-char-2-below
    avy-goto-char-in-line
+   avy-goto-char-timer
    avy-goto-line)
   :init
   (setq avy-keys-alist
@@ -48,12 +49,20 @@
 		  (avy-goto-char-in-line	. (?j ?k ?l ?f ?s ?d ?e ?r ?u ?i))
 		  (avy-goto-char-2-above	. (?j ?k ?l ?f ?s ?d ?e ?r ?u ?i))
 		  (avy-goto-char-2-below	. (?j ?k ?l ?f ?s ?d ?e ?r ?u ?i))
+		  (avy-goto-char-timer  	. (?j ?k ?l ?f ?s ?d ?e ?r ?u ?i))
 		  (avy-goto-line			. (?j ?k ?l ?f ?s ?d ?e ?r ?u ?i))))
   ;; (setq avy-style 'pre)
   (setq avy-background t)
   (defface avy-lead-face-0
 	'((t (:foreground "white" :background "color-21")))
 	"Face used for first non-terminating leading chars."))
+
+;; wrapper around avy
+(defun sk/mark-avy-char-timer ()
+  "mark to char using avy-char-timer"
+  (interactive)
+  (set-mark (point))
+  (call-interactively #'avy-goto-char-timer))
 
 ;; jump to windows quickly
 (use-package ace-window

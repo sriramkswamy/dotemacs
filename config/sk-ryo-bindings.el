@@ -81,6 +81,13 @@
   ("k" "C-p" :name "prev line")
   ("l" "C-f" :name "next char"))
 
+;; ryo modal motion maps
+(ryo-modal-keys
+  (:norepeat t)
+  ("f" iy-go-to-char :name "to char")
+  ("F" iy-go-to-char-backward :name "to char back")
+  ("'" avy-goto-char-timer :name "char timer"))
+
 ;; ryo modal search mappings
 (ryo-modal-keys
   (:norepeat t)
@@ -154,6 +161,7 @@
           ("F" sk/mark-to-char-backward :name "to char back")
           ("t" sk/mark-up-to-char :name "till char")
           ("T" sk/mark-up-to-char-backward :name "till char back")
+          ("'" sk/mark-avy-char-timer :name "till char timer")
           ;; inner-around style text object
           ("i w" er/mark-word :name "word")
           ("a w" sk/mark-around-word :name "word")

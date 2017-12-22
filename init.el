@@ -18,7 +18,8 @@
 (setq coding-system-for-write 'utf-8)										  	; use utf-8 by default for writing
 (setq sentence-end-double-space nil)										  	; sentence SHOULD end with only a point.
 (setq-default fill-column 80)													; toggle wrapping text at the 80th character
-(setq initial-scratch-message "(hello-human)")								  	; print a default message in the empty scratch buffer opened at startup
+(setq initial-major-mode 'fundamental-mode)                                     ; set the mode of the initial scratch buffer
+(setq initial-scratch-message "")           								  	; print nothing and leave screen at insert mode
 (menu-bar-mode -1)															  	; deactivate the menubar
 (tool-bar-mode -1)															  	; deactivate the toolbar
 (scroll-bar-mode -1)														  	; deactivate the scrollbar

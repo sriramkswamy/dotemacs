@@ -56,6 +56,60 @@
   ("u" "C-/" :name "undo" :norepeat t)
   ("U" "M-/" :name "redo" :norepeat t))
 
+;; ryo modal macro maps to not repeat
+(ryo-modal-keys
+  (:norepeat t)
+  ("q" "C-x (" :name "start macro")
+  ("Q" "C-x )" :name "stop macro")
+  ("@" kmacro-end-or-call-macro-repeat :name "call macro")
+  ("g @" kmacro-end-or-call-macro-repeat :name "name macro")
+  ("g ~" kmacro-bind-to-key :name "map macro")
+  ("g q" "C-x q" :name "query macro"))
+
+;; ryo modal movement maps
+(ryo-modal-keys
+  (:norepeat t)
+  ("G" "M->" :name "end of buffer")
+  ("0" "C-a" :name "start of line")
+  ("$" "C-e" :name "end of line")
+  ("H" "C-x >" :name "scroll left")
+  ("J" "C-v" :name "scroll down")
+  ("K" "M-v" :name "scroll up")
+  ("L" "C-x <" :name "scroll right")
+  ("h" "C-b" :name "prev char")
+  ("j" "C-n" :name "next line")
+  ("k" "C-p" :name "prev line")
+  ("l" "C-f" :name "next char"))
+
+;; ryo modal search mappings
+(ryo-modal-keys
+  (:norepeat t)
+  ("/" "C-s" :name "search in buffer"))
+
+;; ryo modal window navigation maps
+(ryo-modal-keys
+  (:norepeat t)
+  ("w a" switch-to-buffer-other-window :name "switch other window")
+  ("w d" clone-indirect-buffer-other-window :name "clone window")
+  ("w z" sk/recenter-other-window :name "recenter other window")
+  ("w h" windmove-left :name "focus left")
+  ("w j" windmove-down :name "focus down")
+  ("w k" windmove-up :name "focus up")
+  ("w l" windmove-right :name "focus right")
+  ("w [" shrink-window-horizontally :name "reduce width")
+  ("w {" shrink-window :name "reduce height")
+  ("w }" enlarge-window :name "increase height")
+  ("w ]" enlarge-window-horizontally :name "increase width")
+  ("w x" sk/rotate-windows :name "exchange")
+  ("w q" delete-window :name "close")
+  ("w o" delete-other-windows :name "only window")
+  ("w f" find-file-other-window :name "find file other window")
+  ("w v" sk/split-right-and-move :name "vertical split")
+  ("w s" sk/split-below-and-move :name "split horizontal")
+  ("w =" balance-windows :name "balance windows")
+  ("w _" widen :name "widen window")
+  ("w w" "C-x o" :name "other window"))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Operator/Text-object bindings    ;;

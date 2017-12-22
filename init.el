@@ -343,18 +343,21 @@
 ;; modality
 (require 'sk-ryo-modal)
 
+;; narrowing framework
+(require 'sk-narrow)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Key bindings    ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; immutable bindings
 (bind-keys*
- ("C-j"   . electric-newline-and-maybe-indent)
- ("C-w"   . sk/kill-region-or-backward-word)
- ("M-w"   . sk/copy-region-or-line)
- ("M-c"   . sk/toggle-letter-case)
- ("M-h"   . sk/remove-mark)
- ("C-x k" . sk/kill-buffer))
+ ("C-w"     . sk/kill-region-or-backward-word)
+ ("M-w"     . sk/copy-region-or-line)
+ ("M-c"     . sk/toggle-letter-case)
+ ("M-h"     . sk/remove-mark)
+ ("C-x k"   . sk/kill-buffer)
+ ("C-x C-f" . sk/find-file))
 
 ;; mutable bindings
 (bind-keys

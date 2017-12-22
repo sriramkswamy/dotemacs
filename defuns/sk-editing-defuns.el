@@ -101,6 +101,18 @@
   (set-mark (point))
   (backward-word))
 
+(defun sk/mark-forward-para ()
+  "marks to the end of word from current position"
+  (interactive)
+  (set-mark (point))
+  (forward-paragraph))
+
+(defun sk/mark-backward-para ()
+  "marks to the beginning of para from current position"
+  (interactive)
+  (set-mark (point))
+  (backward-paragraph))
+
 (defun sk/mark-around-markdown-code-block ()
   "Marks a markdown code-block."
   (interactive)

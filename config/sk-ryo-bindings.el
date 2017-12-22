@@ -241,6 +241,8 @@
          ("l" sk/mark-next-char :name "next char(s)")
          ("b" sk/mark-backward-word :name "to start of word")
          ("e" mark-word :name "to end of word")
+         ("{" sk/mark-backward-para :name "to start of para")
+         ("}" sk/mark-forward-para :name "to end of para")
          ("f" sk/mark-to-char :name "to char")
          ("F" sk/mark-to-char-backward :name "to char back")
          ("t" sk/mark-up-to-char :name "till char")

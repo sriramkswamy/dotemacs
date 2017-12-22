@@ -67,7 +67,7 @@
 (ryo-modal-keys
  ("p" "C-y" :name "paste")
  ("S" embrace-commander :name "surround")
- ("x" "C-d" :name "delete char")
+ ("x" delete-char :name "delete char")
  ("u" "C-/" :name "undo" :norepeat t)
  ("U" "M-/" :name "redo" :norepeat t))
 
@@ -296,7 +296,10 @@
           ("v" ,text-objects)
           ("c" ,text-objects :then '(kill-region) :exit t)
           ("d" ,text-objects :then '(kill-region))
-          ("y" ,text-objects :then '(copy-region-as-kill)))))
+          ("y" ,text-objects :then '(copy-region-as-kill))))
+  (eval `(ryo-modal-major-mode-keys
+		  'emacs-lisp-mode
+		  ("m s" ,text-objects :then '(eval-region)))))
 
 ;; capital versions of operators
 (ryo-modal-keys

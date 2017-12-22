@@ -390,6 +390,9 @@
 ;; auto completion
 (require 'sk-complete)
 
+;; emacs lisp support
+(require 'sk-elisp)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Key bindings    ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;

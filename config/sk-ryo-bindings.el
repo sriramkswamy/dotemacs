@@ -149,14 +149,45 @@
 
 ;; text object/operator relationship
 (let ((text-objects
-        '(
-          ("a" mark-whole-buffer :name "all")
-        )))
+        '(;; single-char style text object
+          ("f" sk/mark-to-char :name "to char")
+          ("F" sk/mark-to-char-backward :name "to char back")
+          ("t" sk/mark-up-to-char :name "till char")
+          ("T" sk/mark-up-to-char-backward :name "till char back")
+          ;; inner-around style text object
+          ("i w" er/mark-word :name "word")
+          ("a w" sk/mark-around-word :name "word")
+          ("a a" mark-whole-buffer :name "all")
+          ("i a" mark-whole-buffer :name "all"))))
 (eval `(ryo-modal-keys
+        ;; complex operators
+        ("c y" ,text-objects :then '(sk/cut-region-or-line-to-clipboard) :exit t)
+        ("d y" ,text-objects :then '(sk/cut-region-or-line-to-clipboard))
+        ;; basic operators
+        ("v" ,text-objects)
         ("c" ,text-objects :then '(kill-region) :exit t)
         ("d" ,text-objects :then '(kill-region))
-        ("y" ,text-objects :then '(copy-region-as-kill))
-        ("v" ,text-objects))))
+        ("y" ,text-objects :then '(copy-region-as-kill)))))
+
+;; capital versions of operators
+(if (fboundp 'sp-kill-hybrid-sexp)
+    (ryo-modal-keys
+        ("C" sp-kill-hybrid-sexp :name "change rest of line" :exit t)
+        ("D" sp-kill-hybrid-sexp :name "delete rest of line"))
+  (ryo-modal-keys
+    ("C" kill-line :name "change rest of line" :exit t)
+    ("D" kill-line :name "change rest of line")))
+(ryo-modal-key "Y" 'sk/copy-to-end-of-line :name "copy rest of line")
+
+;; repeating style operator mappings
+(ryo-modal-keys
+  ;; complex operator repeats
+  ("c y y" sk/cut-region-or-line-to-clipboard :name "line/region" :exit t)
+  ("d y y" sk/cut-region-or-line-to-clipboard :name "line/region")
+  ;; basic operator repeats
+  ("c c" sk/kill-region-or-backward-word :name "line/region" :exit t)
+  ("d d" sk/kill-region-or-backward-word :name "line/region")
+  ("y y" sk/copy-region-or-line :name "line/region"))
 
 ;; provide ryo bindings
 (provide 'sk-ryo-bindings)

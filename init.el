@@ -351,7 +351,7 @@
 (use-package doom-themes
   :ensure t
   :config
-  (load-theme 'doom-one t))
+  (load-theme 'doom-one-light t))
 
 ;; restart emacs from emacs
 (use-package restart-emacs

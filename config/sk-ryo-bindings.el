@@ -25,12 +25,11 @@
 
 ;; ryo modal general mappings
 (ryo-modal-keys
-  (:norepeat t)
   ("z z" recenter-top-bottom :name "recenter")
-  ("+" sk/counsel-bookmarks :name "add/see bookmarks")
-  ("H" "C-h" :name "help")
-  ("Z" sk/toggle-frame-fullscreen-non-native :name "fullscreen")
-  ("?" which-key-show-top-level :name "which key"))
+  ("+" sk/counsel-bookmarks :name "add/see bookmarks" :norepeat t)
+  ("H" "C-h" :name "help" :norepeat t)
+  ("Z" sk/toggle-frame-fullscreen-non-native :name "fullscreen" :norepeat t)
+  ("?" which-key-show-top-level :name "which key" :norepeat t))
 
 ;; ryo modal navigation mappings
 (ryo-modal-keys
@@ -83,6 +82,10 @@
   ("G" "M->" :name "end of buffer")
   ("0" "C-a" :name "start of line")
   ("$" "C-e" :name "end of line")
+  ("e" "M-f" :name "next word")
+  ("b" "M-b" :name "prev word")
+  ("{" "M-{" :name "next para")
+  ("}" "M-}" :name "prev para")
   ("h" "C-b" :name "prev char")
   ("j" "C-n" :name "next line")
   ("k" "C-p" :name "prev line")

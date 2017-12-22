@@ -24,12 +24,12 @@
   "mark to char using iy-up-go-to-char"
   (interactive)
   (set-mark (point))
-  (call-interactively #'iy-up-go-to-char))
+  (call-interactively #'iy-go-up-to-char))
 (defun sk/mark-up-to-char-backward ()
   "mark to char using iy-up-go-to-char-backward"
   (interactive)
   (set-mark (point))
-  (call-interactively #'iy-up-go-to-char-backward))
+  (call-interactively #'iy-go-up-to-char-backward))
 
 ;; simulating mouse click
 (use-package avy

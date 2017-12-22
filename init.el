@@ -337,6 +337,9 @@
 ;; version control
 (require 'sk-versions)
 
+;; semi modality
+(require 'sk-hydra)
+
 ;; modality
 (require 'sk-ryo-modal)
 

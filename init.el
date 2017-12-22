@@ -377,6 +377,16 @@
   (treemacs-toggle
    treemacs))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;    Language support    ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; emacs semantic support
+(require 'sk-semantic)
+
+;; linting/checking
+(require 'sk-linter)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Key bindings    ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;
@@ -394,6 +404,8 @@
 (bind-keys
  ("C-o"     . sk/open-line-above)
  ("M-o"     . sk/open-line-below)
+ ("M-n" . sk/nothing)
+ ("M-p" . sk/nothing)
  ("C-x C-b" . ibuffer)
  ("C-c C-c" . sk/nothing)
  ("C-c C-f" . sk/nothing))

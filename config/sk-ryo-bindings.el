@@ -34,6 +34,10 @@
 ;; ryo modal navigation mappings
 (ryo-modal-keys
  (:norepeat t)
+ ("n" "M-n" :name "next history")
+ ("N" "M-p" :name "previous history")
+ ("[" flycheck-previous-error :name "previous error")
+ ("]" flycheck-next-error :name "next error")
  ("g z" flyspell-correct-previous-word-generic :name "correct spelling")
  ("g [" xref-find-references :name "xref references")
  ("g ]" xref-find-definitions :name "xref definitions")
@@ -190,6 +194,7 @@
                  ("s" spotlight :name "desktop files" :norepeat t)
                  ("p" sk/counsel-ag-project :name "grep project" :norepeat t)
                  ("a" ivy-switch-view :name "switch views" :norepeat t)
+                 ("l" flycheck-list-errors :name "list errors" :norepeat t)
                  ("y" "M-y" :name "copy history" :norepeat t)
                  ("k" "C-x b" :name "switch buffer" :norepeat t)
 				 ("x" ibuffer :name "interactive buffer" :norepeat t)
@@ -217,8 +222,10 @@
                  ("C" string-inflection-all-cycle :name "change case")
                  (";" goto-last-change :name "last change")
                  ("," goto-last-change-reverse :name "last change reverse")
-                 ("SPC" "C-c C-c" :name "dwim")
                  ("F" "C-c C-f" :name "follow mode")
+                 ("SPC" "C-c C-c" :name "dwim")
+                 ("RET" flycheck-select-checker :name "select linters")
+                 ("TAB" flycheck-verify-setup :name "verify linting")
                  ("g" "M-<" :name "start of buffer" :norepeat t)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

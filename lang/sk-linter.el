@@ -1,7 +1,8 @@
 ;; error checking
 (use-package flycheck
   :ensure t
-  :hook (prog-mode . global-flycheck-mode)
+  :hook ((prog-mode . flycheck-mode)
+		 (lisp-interaction-mode . flycheck-mode))
   :commands (flycheck-buffer
 			 flycheck-previous-error
 			 flycheck-next-error

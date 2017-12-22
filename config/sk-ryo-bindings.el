@@ -201,7 +201,7 @@
                  ("f" "C-x C-f" :name "open file" :norepeat t)
                  ("g" "C-g" :name "interrupt" :norepeat t)
                  ("r" counsel-recentf :name "recent files" :norepeat t)
-                 ("d" project-find-file :name "project files" :norepeat t)
+                 ("d" counsel-git :name "project files" :norepeat t)
                  ("s" spotlight :name "desktop files" :norepeat t)
                  ("p" sk/counsel-ag-project :name "grep project" :norepeat t)
                  ("a" ivy-switch-view :name "switch views" :norepeat t)
@@ -340,6 +340,7 @@
  ;; v based maps
  ("v o x" set-frame-font :name "select font")
  ;; c based maps
+ ("c o n" display-line-numbers-mode :name "line numbers")
  ("c o c" company-mode :name "completion")
  ("c o s" smartparens-strict-mode :name "smartparens strict")
  ("c o S" smartparens-mode :name "smartparens")

@@ -91,25 +91,25 @@
   (counsel-mode 1))
 
 (defun sk/counsel-imenu-org-goto ()
-	"use imenu in everything except org-mode"
-	(interactive)
-	(if (eq major-mode 'org-mode)
-		(counsel-org-goto)
-	  (counsel-imenu)))
+  "use imenu in everything except org-mode"
+  (interactive)
+  (if (eq major-mode 'org-mode)
+	  (counsel-org-goto)
+	(counsel-imenu)))
 
 (defun sk/counsel-ag-directory ()
-	"use counsel ag to search for the the current directory"
-	(interactive)
-	(if (eq (file-remote-p default-directory) nil)
-		(counsel-ag)
-	  (call-interactively #'rgrep)))
+  "use counsel ag to search for the the current directory"
+  (interactive)
+  (if (eq (file-remote-p default-directory) nil)
+	  (counsel-ag)
+	(call-interactively #'rgrep)))
 
 (defun sk/counsel-org-folder ()
-	"use counsel ag to search for the the current directory"
-	(interactive)
-	(if (eq (file-remote-p default-directory) nil)
-		(counsel-ag "" org-directory)
-	  (call-interactively #'rgrep)))
+  "use counsel ag to search for the the current directory"
+  (interactive)
+  (if (eq (file-remote-p default-directory) nil)
+	  (counsel-ag "" org-directory)
+	(call-interactively #'rgrep)))
 
 ;; search the buffer or all buffer
 (use-package swiper
@@ -263,18 +263,18 @@
 
 ;; project based grep at point
 (defun sk/counsel-ag-project-at-point ()
-"use counsel ag to search for the word at point in the project"
-(interactive)
-(if (eq (file-remote-p default-directory) nil)
-    (counsel-ag (thing-at-point 'symbol) (vc-root-dir))
+  "use counsel ag to search for the word at point in the project"
+  (interactive)
+  (if (eq (file-remote-p default-directory) nil)
+      (counsel-ag (thing-at-point 'symbol) (vc-root-dir))
     (counsel-git-grep (thing-at-point 'symbol))))
 
 ;; project based grep
 (defun sk/counsel-ag-project ()
-"use counsel ag to search the project"
-(interactive)
-(if (eq (file-remote-p default-directory) nil)
-    (counsel-ag "" (vc-root-dir))
+  "use counsel ag to search the project"
+  (interactive)
+  (if (eq (file-remote-p default-directory) nil)
+      (counsel-ag "" (vc-root-dir))
     (counsel-git-grep)))
 
 ;; redefine ivy's dispatching hydra

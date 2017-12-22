@@ -146,7 +146,8 @@
   :diminish smartparens-strict-mode
   :diminish smartparens-mode
   :commands
-  (smartparens-strict-mode
+  (sp-kill-hybrid-sexp
+   smartparens-strict-mode
    smartparens-mode)
   :config
   (require 'smartparens-config)

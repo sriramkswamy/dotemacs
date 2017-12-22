@@ -288,11 +288,11 @@
 ;; Make sure the path is set right for macOS
 (when (memq window-system '(mac ns))
   (use-package exec-path-from-shell
-  :ensure t
-  :bind* (("C-x x" . exec-path-from-shell-initialize)
-          ("C-x y" . exec-path-from-shell-copy-env))
-  :init
-  (setq exec-path-from-shell-check-startup-files nil)))
+	:ensure t
+	:bind* (("C-x x" . exec-path-from-shell-initialize)
+			("C-x y" . exec-path-from-shell-copy-env))
+	:init
+	(setq exec-path-from-shell-check-startup-files nil)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Core functions    ;;
@@ -394,7 +394,9 @@
 (bind-keys
  ("C-o"     . sk/open-line-above)
  ("M-o"     . sk/open-line-below)
- ("C-x C-b" . ibuffer))
+ ("C-x C-b" . ibuffer)
+ ("C-c C-c" . sk/nothing)
+ ("C-c C-f" . sk/nothing))
 
 ;; modal bindings and hints
 (require 'sk-ryo-bindings)

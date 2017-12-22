@@ -63,8 +63,8 @@
 
   :bind (("<escape>" . sk/enable-ryo-modal-mode)
          :map ryo-modal-mode-map
-              ("<escape>" . sk/remove-mark)
-              ("."        . ryo-modal-repeat))
+         ("<escape>" . sk/remove-mark)
+         ("."        . ryo-modal-repeat))
 
   :init
   ;; remove ryo key word from which-key

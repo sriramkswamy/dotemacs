@@ -75,6 +75,11 @@
   (interactive)
   (push-mark (point))
   (call-interactively #'avy-goto-char-timer))
+(defun sk/mark-avy-goto-line ()
+  "mark to char using avy-goto-line"
+  (interactive)
+  (push-mark (point))
+  (call-interactively #'avy-goto-line))
 
 ;; jump to windows quickly
 (use-package ace-window
@@ -131,6 +136,18 @@
    dumb-jump-goto-file-line)
   :config
   (dumb-jump-mode))
+
+;; folding
+(use-package vimish-fold
+  :ensure t
+  :commands
+  (vimish-fold-toggle
+   vimish-fold
+   vimish-fold-unfold
+   vimish-fold-delete
+   vimish-fold-refold)
+  :config
+  (vimish-fold-global-mode 1))
 
 ;; provide navigation related packages
 (provide 'sk-nav)

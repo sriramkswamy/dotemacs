@@ -56,7 +56,7 @@
   "r q i" "inside"
   "r q a" "outside"
 
-  "r" "eshell run"
+  "r" "run (default eshell)"
   "r i" "inside"
   "r a" "outside"
 

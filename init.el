@@ -57,7 +57,7 @@
 ;; line number after emacs 26
 (if (version< emacs-version "26")
 	(message "Line number mode not activated")
-  (setq display-line-numbers-type 'relative)
+  ;; (setq display-line-numbers-type 'relative)
   (global-display-line-numbers-mode))
 
 ;; how tabs are seen and added
@@ -192,12 +192,6 @@
 (use-package autorevert
   :demand t
   :diminish auto-revert-mode)
-
-;; builtin support for folding
-(use-package hs-minor
-  :hook ((text-mode . hs-minor-mode)
-         (prog-mode . hs-minor-mode))
-  :diminish hs-minor-mode)
 
 ;; documentation helper
 (use-package eldoc

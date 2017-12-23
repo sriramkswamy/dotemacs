@@ -5,7 +5,6 @@
 ;; ryo modal digit mappings
 (ryo-modal-keys
  (:norepeat t)
- ("0" "M-0" :name "0")
  ("1" "M-1" :name "1")
  ("2" "M-2" :name "2")
  ("3" "M-3" :name "3")
@@ -46,6 +45,7 @@
  ("g )" ggtags-update-tags :name "update tags")
  ("s s" hydra-smartparens/body :name "smartparens")
  ("DEL" mode-line-other-buffer :name "last buffer")
+ ("TAB" vimish-fold-toggle :name "toggle folds")
  ("W" dired-jump :name "open dir"))
 
 ;; ryo modal insert editing maps
@@ -103,7 +103,7 @@
  ("F" iy-go-to-char-backward :name "to char back")
  (";" iy-go-to-or-up-to-continue :name "continue char")
  ("," iy-go-to-or-up-to-continue-backward :name "continue char back")
- ("'" avy-goto-char-timer :name "char timer"))
+ ("'" avy-goto-line :name "goto line"))
 
 ;; ryo modal narrowing maps
 (ryo-modal-keys
@@ -268,7 +268,7 @@
          ("T" sk/mark-up-to-char-backward :name "till char back")
          (";" sk/mark-continue :name "continue")
          ("," sk/mark-continue-backward :name "continue back")
-         ("'" sk/mark-avy-char-timer :name "till char timer")
+         ("'" sk/mark-avy-goto-line :name "till line")
          ;; inner-around style text object
          ("i w" er/mark-word :name "word")
          ("a w" sk/mark-around-word :name "word")
@@ -323,6 +323,8 @@
           ("r o" ,text-objects :then '(sk/term-send-line-or-region))
           ("r" ,text-objects :then '(sk/eshell-send-region-or-line))
           ;; basic operators
+          ("=" ,text-objects :then '(indent-region))
+          ("z" ,text-objects :then '(vimish-fold))
           ("v" ,text-objects)
           ("c" ,text-objects :then '(kill-region) :exit t)
           ("d" ,text-objects :then '(kill-region))
@@ -343,7 +345,9 @@
  ("c y y" sk/cut-region-or-line-to-clipboard :name "line/region" :exit t)
  ("d y y" sk/cut-region-or-line-to-clipboard :name "line/region")
  ("g c c" comment-dwim-2 :name "line/region")
+ ("v r r" rectangle-mark-mode :name "rectangle mark")
  ;; basic operator repeats
+ ("= =" sk/select-inside-line :then '(indent-region) :name "line")
  ("c c" sk/kill-region-or-line :name "line/region" :exit t)
  ("d d" sk/kill-region-or-line :name "line/region")
  ("y y" sk/copy-region-or-line :name "line/region"))

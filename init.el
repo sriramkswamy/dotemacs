@@ -401,6 +401,9 @@
 ;; latex support
 (require 'sk-latex)
 
+;; matlab support
+;; (require 'sk-matlab)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Key bindings    ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;

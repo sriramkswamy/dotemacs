@@ -335,6 +335,9 @@
           ("c" ,text-objects :then '(kill-region) :exit t)
           ("d" ,text-objects :then '(kill-region))
           ("y" ,text-objects :then '(copy-region-as-kill))))
+  ;; (eval `(ryo-modal-major-mode-keys
+  ;; 		  'matlab-mode
+  ;; 		  ("m s" ,text-objects :then '(matlab-shell-run-region))))
   (eval `(ryo-modal-major-mode-keys
 		  'emacs-lisp-mode
 		  ("m s" ,text-objects :then '(eval-region)))))

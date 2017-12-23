@@ -24,6 +24,50 @@
   "y a" "around"
   "y y" "copy line/region")
 
+;; complex operators
+(which-key-add-key-based-replacements
+  "v r" "rectangle mark"
+  "v r i" "inside"
+  "v r a" "around"
+
+  "g c" "comment"
+  "g c i" "inside"
+  "g c a" "outside"
+
+  "c y" "change to clipboard"
+  "c y a" "inside"
+  "c y i" "around"
+
+  "d y" "delete to clipboard"
+  "d y i" "inside"
+  "d y a" "around")
+
+;; repl operators
+(which-key-add-key-based-replacements
+  "r w" "shell run"
+  "r w i" "inside"
+  "r w a" "around"
+
+  "r o" "term run"
+  "r o i" "inside"
+  "r o a" "outside"
+
+  "r q" "quickrun"
+  "r q i" "inside"
+  "r q a" "outside"
+
+  "r" "eshell run"
+  "r i" "inside"
+  "r a" "outside"
+
+  "r u" "tmux run"
+  "r u a" "inside"
+  "r u i" "around"
+
+  "r s" "tmux send"
+  "r s i" "inside"
+  "r s a" "around")
+
 ;; movement
 (which-key-add-key-based-replacements
   "c o" "change option")

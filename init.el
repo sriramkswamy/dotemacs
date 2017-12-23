@@ -379,6 +379,9 @@
   (treemacs-toggle
    treemacs))
 
+;; shell/tmux configuration
+(require 'sk-shell)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Language support    ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;

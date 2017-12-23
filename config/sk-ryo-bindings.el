@@ -157,6 +157,14 @@
  ("s k" "M-v" :name "scroll up")
  ("s l" "C-x <" :name "scroll right"))
 
+;; ryo modal repl maps
+(ryo-modal-keys
+ (:norepeat t)
+ ("r m" sk/call-terminal :name "terminal")
+ ("r n" sk/shell :name "shell")
+ ("r v" sk/term :name "term")
+ ("r y" sk/eshell :name "eshell"))
+
 ;; ryo modal window navigation maps
 (ryo-modal-keys
  (:norepeat t)
@@ -304,9 +312,16 @@
          ("i a" mark-whole-buffer :name "all"))))
   (eval `(ryo-modal-keys
           ;; complex operators
+          ("v r" ,text-objects :then '(rectangle-mark-mode) :exit t)
           ("c y" ,text-objects :then '(sk/cut-region-or-line-to-clipboard) :exit t)
           ("d y" ,text-objects :then '(sk/cut-region-or-line-to-clipboard))
           ("g c" ,text-objects :then '(comment-dwim-2))
+          ("r s" ,text-objects :then '(emamux:send-region))
+          ("r u" ,text-objects :then '(emamux:run-region))
+          ("r w" ,text-objects :then '(sk/shell-send-region-or-line))
+          ("r q" ,text-objects :then '(quickrun-region))
+          ("r o" ,text-objects :then '(sk/term-send-line-or-region))
+          ("r" ,text-objects :then '(sk/eshell-send-region-or-line))
           ;; basic operators
           ("v" ,text-objects)
           ("c" ,text-objects :then '(kill-region) :exit t)
@@ -333,12 +348,23 @@
  ("d d" sk/kill-region-or-line :name "line/region")
  ("y y" sk/copy-region-or-line :name "line/region"))
 
+;; operator based extra repl maps
+(ryo-modal-keys
+ ("r r" sk/eshell-send-region-or-line :name "region")
+ ("r w r" sk/shell-send-region-or-line :name "region")
+ ("r q r" quickrun-region :name "region")
+ ("r o r" sk/term-send-line-or-region :name "region")
+ ("r u r" emamux:run-region :name "region")
+ ("r s r" emamux:send-region :name "region"))
+
 ;; operator based extra maps
 (ryo-modal-keys
  ;; c based maps
  ("c d" "C-x C-f" :name "change/create directory/file")
  ;; d based maps
- ("d u" sk/ediff-dwim :name "diff update"))
+ ("d u" sk/ediff-dwim :name "diff update")
+ ;; y based maps
+ ("y p" sk/paste-from-clipboard :name "paste from clipboard"))
 
 ;; operator based option maps
 (ryo-modal-keys

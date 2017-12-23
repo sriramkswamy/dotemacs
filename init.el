@@ -54,12 +54,6 @@
 (setq-default ibuffer-expert t)												    ; don't ask confirmation when deleting unmodified buffers
 (setq frame-resize-pixelwise t)												    ; resize based on pixels to remove annoying gaps
 
-;; line number after emacs 26
-(if (version< emacs-version "26")
-	(message "Line number mode not activated")
-  ;; (setq display-line-numbers-type 'relative)
-  (global-display-line-numbers-mode))
-
 ;; how tabs are seen and added
 (setq-default tab-width 4)
 (setq-default tab-stop-list
@@ -246,6 +240,15 @@
 			  ("a f" . ibuffer-mark-by-file-name-regexp)
 			  ("a d" . ibuffer-mark-dired-buffers)
 			  ("a h" . ibuffer-mark-hel-buffers)))
+
+;; line number after emacs 26
+(if (version< emacs-version "26")
+	(message "Line number mode not activated")
+  (use-package display-line-numbers
+	:init
+	;; (setq display-line-numbers-type 'relative)
+	:hook ((prog-mode . display-line-numbers-mode)
+		   (text-mode . display-line-numbers-mode))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Third party packages    ;;

@@ -24,7 +24,7 @@
 
 ;; ryo modal general mappings
 (ryo-modal-keys
- ("z z" recenter-top-bottom :name "recenter")
+ ("SPC SPC" recenter-top-bottom :name "recenter")
  ("+" sk/counsel-bookmarks :name "add/see bookmarks" :norepeat t)
  ("H" "C-h" :name "help" :norepeat t)
  ("Z" sk/toggle-frame-fullscreen-non-native :name "fullscreen" :norepeat t)
@@ -66,8 +66,10 @@
 ;; ryo modal editing maps
 (ryo-modal-keys
  ("p" "C-y" :name "paste")
+ ("P" yank-rectangle :name "paste rectangle")
  ("S" embrace-commander :name "surround")
  ("x" delete-char :name "delete char")
+ ("~" sk/toggle-letter-case :name "toggle case")
  ("u" "C-/" :name "undo" :norepeat t)
  ("U" "M-/" :name "redo" :norepeat t))
 
@@ -224,6 +226,8 @@
 (ryo-modal-key "g"
                '(("A" describe-char :name "describe char" :norepeat t)
                  ("D" dash-at-point-with-docset :name "dash doc" :norepeat t)
+                 ("S" electric-newline-and-maybe-indent :name "split line")
+                 ("J" join-line :name "join line")
 				 ("b" magit-blame :name "git blame" :norepeat t)
 				 ("T" git-timemachine-toggle :name "git time machine" :norepeat t)
 				 ("P" sk/post-gist :name "gist post" :norepeat t)
@@ -312,7 +316,8 @@
          ("i a" mark-whole-buffer :name "all"))))
   (eval `(ryo-modal-keys
           ;; complex operators
-          ("v r" ,text-objects :then '(rectangle-mark-mode) :exit t)
+          ("r" ,text-objects :then '(sk/eshell-send-region-or-line))
+          ("v r" ,text-objects :then '(rectangle-mark-mode))
           ("c y" ,text-objects :then '(sk/cut-region-or-line-to-clipboard) :exit t)
           ("d y" ,text-objects :then '(sk/cut-region-or-line-to-clipboard))
           ("g c" ,text-objects :then '(comment-dwim-2))
@@ -321,7 +326,8 @@
           ("r w" ,text-objects :then '(sk/shell-send-region-or-line))
           ("r q" ,text-objects :then '(quickrun-region))
           ("r o" ,text-objects :then '(sk/term-send-line-or-region))
-          ("r" ,text-objects :then '(sk/eshell-send-region-or-line))
+		  ("g u" ,text-objects :then '(downcase-region))
+          ("g U" ,text-objects :then '(upcase-region))
           ;; basic operators
           ("=" ,text-objects :then '(indent-region))
           ("z" ,text-objects :then '(vimish-fold))
@@ -346,8 +352,12 @@
  ("d y y" sk/cut-region-or-line-to-clipboard :name "line/region")
  ("g c c" comment-dwim-2 :name "line/region")
  ("v r r" rectangle-mark-mode :name "rectangle mark")
+ ("g u u" sk/select-inside-line :then '(downcase-region) :name "downcase line")
+ ("g U U" sk/select-inside-line :then '(upcase-region) :name "upcase line")
  ;; basic operator repeats
  ("= =" sk/select-inside-line :then '(indent-region) :name "line")
+ ("z z" vimish-fold :name "fold region")
+ ("v v" er/expand-region :name "expand region")
  ("c c" sk/kill-region-or-line :name "line/region" :exit t)
  ("d d" sk/kill-region-or-line :name "line/region")
  ("y y" sk/copy-region-or-line :name "line/region"))
@@ -376,10 +386,13 @@
 (ryo-modal-keys
  ;; c based maps
  ("c d" "C-x C-f" :name "change/create directory/file")
+ ("c r" string-rectangle :name "change rectangle")
  ;; d based maps
  ("d u" sk/ediff-dwim :name "diff update")
+ ("d r" kill-rectangle :name "delete rectangle")
  ;; y based maps
- ("y p" sk/paste-from-clipboard :name "paste from clipboard"))
+ ("y p" sk/paste-from-clipboard :name "paste from clipboard")
+ ("y r" copy-rectangle-as-kill :name "copy rectangle"))
 
 ;; operator based option maps
 (ryo-modal-keys

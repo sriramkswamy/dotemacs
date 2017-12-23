@@ -361,6 +361,17 @@
  ("r u r" emamux:run-region :name "region")
  ("r s r" emamux:send-region :name "region"))
 
+;; operator based extra fold maps
+(ryo-modal-keys
+ ("z d" vimish-fold-delete :name "delete")
+ ("z m" vimish-fold-delete-all :name "deleta all")
+ ("z n" vimish-fold-next-fold :name "next")
+ ("z p" vimish-fold-previous-fold :name "previous")
+ ("z o" vimish-fold-unfold :name "open")
+ ("z c" vimish-fold-refold :name "close")
+ ("z u" vimish-fold-unfold-all :name "unfold all")
+ ("z r" vimish-fold-refold-all :name "refold all"))
+
 ;; operator based extra maps
 (ryo-modal-keys
  ;; c based maps

@@ -141,11 +141,17 @@
 (use-package vimish-fold
   :ensure t
   :commands
-  (vimish-fold-toggle
-   vimish-fold
+  (vimish-fold
+   vimish-fold-toggle
+   vimish-fold-toggle-all
    vimish-fold-unfold
+   vimish-fold-unfold-all
    vimish-fold-delete
-   vimish-fold-refold)
+   vimish-fold-delete-all
+   vimish-fold-refold
+   vimish-fold-refold-all
+   vimish-fold-next-fold
+   vimish-fold-previous-fold)
   :config
   (vimish-fold-global-mode 1))
 

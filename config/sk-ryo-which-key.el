@@ -17,7 +17,11 @@
   "v i" "inside"
   "v a" "around"
   "v v" "expand region"
-
+  
+  "z" "fold"
+  "z i" "inside"
+  "z a" "around"
+  
   "y" "copy"
   "Y" "copy rest of line"
   "y i" "inside"

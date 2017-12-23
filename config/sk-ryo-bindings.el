@@ -258,6 +258,8 @@
          ("F" sk/mark-to-char-backward :name "to char back")
          ("t" sk/mark-up-to-char :name "till char")
          ("T" sk/mark-up-to-char-backward :name "till char back")
+         (";" sk/mark-continue :name "continue")
+         ("," sk/mark-continue-backward :name "continue back")
          ("'" sk/mark-avy-char-timer :name "till char timer")
          ;; inner-around style text object
          ("i w" er/mark-word :name "word")
@@ -325,6 +327,7 @@
  ;; complex operator repeats
  ("c y y" sk/cut-region-or-line-to-clipboard :name "line/region" :exit t)
  ("d y y" sk/cut-region-or-line-to-clipboard :name "line/region")
+ ("g c c" comment-dwim-2 :name "line/region")
  ;; basic operator repeats
  ("c c" sk/kill-region-or-line :name "line/region" :exit t)
  ("d d" sk/kill-region-or-line :name "line/region")

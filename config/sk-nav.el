@@ -20,18 +20,28 @@
 (defun sk/mark-to-char-backward ()
   "mark to char using iy-go-to-char-backward"
   (interactive)
-  (set-mark (point))
+  (push-mark (point))
   (call-interactively #'iy-go-to-char-backward))
 (defun sk/mark-up-to-char ()
   "mark to char using iy-up-go-to-char"
   (interactive)
-  (set-mark (point))
+  (push-mark (point))
   (call-interactively #'iy-go-up-to-char))
 (defun sk/mark-up-to-char-backward ()
   "mark to char using iy-up-go-to-char-backward"
   (interactive)
-  (set-mark (point))
+  (push-mark (point))
   (call-interactively #'iy-go-up-to-char-backward))
+(defun sk/mark-continue ()
+  "mark to char using iy-up-go-to-char-backward"
+  (interactive)
+  (push-mark (point))
+  (iy-go-to-or-up-to-continue 1))
+(defun sk/mark-continue-backward ()
+  "mark to char using iy-up-go-to-char-backward"
+  (interactive)
+  (push-mark (point))
+  (iy-go-to-or-up-to-continue-backward 1))
 
 ;; simulating mouse click
 (use-package avy
@@ -63,7 +73,7 @@
 (defun sk/mark-avy-char-timer ()
   "mark to char using avy-char-timer"
   (interactive)
-  (set-mark (point))
+  (push-mark (point))
   (call-interactively #'avy-goto-char-timer))
 
 ;; jump to windows quickly

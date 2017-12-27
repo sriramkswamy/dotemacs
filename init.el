@@ -414,7 +414,8 @@
  ("M-w"     . sk/copy-region-or-line)
  ("M-c"     . sk/toggle-letter-case)
  ("M-h"     . sk/remove-mark)
- ("C-x k"   . sk/kill-buffer))
+ ("C-x k"   . sk/kill-buffer)
+ ("C-x w"   . save-buffers-kill-terminal))
 
 ;; mutable bindings
 (bind-keys

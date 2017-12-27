@@ -20,7 +20,7 @@
  (:norepeat t)
  (":" "C-x" :name "C-x maps")
  ("\"" "C-c" :name "C-c maps")
- ("\\" "C-u" :name "C-u maps"))
+ ("`" "C-u" :name "C-u maps"))
 
 ;; ryo modal general mappings
 (ryo-modal-keys
@@ -251,6 +251,10 @@
                  ("TAB" flycheck-verify-setup :name "verify linting")
                  ("g" "M-<" :name "start of buffer" :norepeat t)))
 
+;; mapping with mode leader
+(ryo-modal-key "m"
+               '(("SPC" org-store-link :name "org store link" :norepeat t)))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Operator/Text-object bindings    ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -403,6 +407,7 @@
  ("v o x" set-frame-font :name "select font")
  ;; c based maps
  ("c o n" display-line-numbers-mode :name "line numbers")
+ ("c o o" tool-bar-mode :name "tool bar")
  ("c o c" company-mode :name "completion")
  ("c o s" smartparens-strict-mode :name "smartparens strict")
  ("c o S" smartparens-mode :name "smartparens")

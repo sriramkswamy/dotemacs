@@ -21,7 +21,7 @@
 (setq initial-major-mode 'fundamental-mode)                                     ; set the mode of the initial scratch buffer
 (setq initial-scratch-message "")           								  	; print nothing and leave screen at insert mode
 (menu-bar-mode -1)															  	; deactivate the menubar
-(tool-bar-mode -1)															  	; deactivate the toolbar
+;; (tool-bar-mode -1)															  	; deactivate the toolbar
 (scroll-bar-mode -1)														  	; deactivate the scrollbar
 (tooltip-mode -1)															  	; deactivate the tooltip
 (setq initial-frame-alist													  	; initial frame size
@@ -347,10 +347,9 @@
 (require 'sk-narrow)
 
 ;; select a good theme
-(use-package doom-themes
-  :ensure t
-  :config
-  (load-theme 'doom-one-light t))
+(if (display-graphic-p)
+	(load-theme 'leuven t)
+  (load-theme 'tango-dark t))
 
 ;; restart emacs from emacs
 (use-package restart-emacs

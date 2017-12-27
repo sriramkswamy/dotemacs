@@ -22,6 +22,7 @@
 (setq initial-scratch-message "")           								  	; print nothing and leave screen at insert mode
 (menu-bar-mode -1)															  	; deactivate the menubar
 ;; (tool-bar-mode -1)															  	; deactivate the toolbar
+(display-time-mode 1)   														; display time
 (scroll-bar-mode -1)														  	; deactivate the scrollbar
 (tooltip-mode -1)															  	; deactivate the tooltip
 (setq initial-frame-alist													  	; initial frame size
@@ -172,13 +173,19 @@
 ;; subword navigation
 (use-package subword
   :hook (prog-mode . subword-mode)
+  :diminish subword-mode
   :config
   (subword-mode 1))
 
 ;; visual line - soft wrap
+(defun sk/diminish-visual-line ()
+  "diminish visual line mode"
+  (interactive)
+  (diminish 'visual-line-mode " ω"))
+
 (use-package visual-line
-  :hook (text-mode . visual-line-mode)
-  :diminish (visual-line-mode . " ω")
+  :hook ((text-mode . visual-line-mode)
+		 (visual-line-mode . sk/diminish-visual-line))
   :commands
   (visual-line-mode))
 

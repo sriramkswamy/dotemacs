@@ -420,7 +420,6 @@
  ("c o o" tool-bar-mode :name "tool bar")
  ("c o r" scroll-bar-mode :name "scroll bar")
  ("c o t" display-time-mode :name "time")
- ("c o b" display-battery-mode :name "battery")
  ("c o d" diminish :name "diminish")
  ("c o w" visual-line-mode :name "word wrap")
  ("c o c" company-mode :name "completion")
@@ -428,5 +427,9 @@
  ("c o S" smartparens-mode :name "smartparens")
  ("c o u" undo-tree-mode :name "undo tree"))
 
+(if (fboundp 'fancy-battery-mode)
+	(ryo-modal-key "c o b" 'fancy-battery-mode :name "battery")
+  (ryo-modal-key "c o b" 'display-battery-mode :name "battery"))
+ 
 ;; provide ryo bindings
 (provide 'sk-ryo-bindings)

@@ -1,8 +1,15 @@
+(defun sk/spaceline-flycheck ()
+  "diminsih flycheck if spaceline is present"
+  (interactive)
+  (when (fboundp 'spaceline-compile)
+	(diminish 'flycheck-mode "")))
+
 ;; error checking
 (use-package flycheck
   :ensure t
   :hook ((prog-mode . flycheck-mode)
-		 (lisp-interaction-mode . flycheck-mode))
+		 (lisp-interaction-mode . flycheck-mode)
+		 (flycheck-mode . sk/spaceline-flycheck))
   :commands (flycheck-buffer
 			 flycheck-previous-error
 			 flycheck-next-error

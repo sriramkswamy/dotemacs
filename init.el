@@ -351,6 +351,26 @@
 	(load-theme 'leuven t)
   (load-theme 'tango-dark t))
 
+;; better modeline
+(use-package spaceline
+  :ensure t
+  :demand t
+  :init
+  (setq powerline-default-separator 'bar)
+  (require 'spaceline-config)
+  :config
+  (spaceline-spacemacs-theme)
+  (spaceline-helm-mode))
+
+;; fancy battery
+(use-package fancy-battery
+  :ensure t
+  :after (spaceline)
+  :init
+  (setq fancy-battery-show-percentage t)
+  :config
+  (fancy-battery-mode))
+
 ;; restart emacs from emacs
 (use-package restart-emacs
   :ensure t

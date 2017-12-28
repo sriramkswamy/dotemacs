@@ -261,6 +261,14 @@
       (counsel-ag (thing-at-point 'symbol) (vc-root-dir))
     (counsel-git-grep (thing-at-point 'symbol))))
 
+;; fzf based project fiel search
+(defun sk/counsel-fzf-project ()
+  "use counsel fzf to search the project files"
+  (interactive)
+  (if (eq (file-remote-p default-directory) nil)
+      (counsel-fzf "" (vc-root-dir))
+    (counsel-find-file)))
+
 ;; project based grep
 (defun sk/counsel-ag-project ()
   "use counsel ag to search the project"

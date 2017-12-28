@@ -25,8 +25,8 @@
 (scroll-bar-mode -1)														  	; deactivate the scrollbar
 (tooltip-mode -1)															  	; deactivate the tooltip
 (setq initial-frame-alist													  	; initial frame size
-	  '((width . 102)														  	; characters in a line
-		(height . 54)))														  	; number of lines
+	  '((width . 100)														  	; characters in a line
+		(height . 52)))														  	; number of lines
 (setq default-frame-alist													  	; subsequent frame size
 	  '((width . 100)														  	; characters in a line
 		(height . 52)))														  	; number of lines

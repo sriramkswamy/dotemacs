@@ -45,6 +45,7 @@
   :diminish mlint-minor-mode
   :hook ((matlab-mode . mlint-minor-mode)
          (mlint-minor-mode . sk/diminish-mlint-minor)
+         (matlab-mode . display-line-numbers-mode)
          (matlab-mode . sk/gud-mode)
          (matlab-mode . sk/enable-ryo-modal-mode)
 		 (matlab-mode . sk/matlab-shell-buffer-name))

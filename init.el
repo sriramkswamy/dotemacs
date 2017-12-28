@@ -53,6 +53,7 @@
 (setq echo-keystrokes 0.05)													  	; when to echo keystrokes
 (setq-default ibuffer-expert t)												    ; don't ask confirmation when deleting unmodified buffers
 (setq frame-resize-pixelwise t)												    ; resize based on pixels to remove annoying gaps
+(setq imenu-auto-rescan t)												        ; rescan automatically for new tags
 
 ;; how tabs are seen and added
 (setq-default tab-width 4)
@@ -296,12 +297,15 @@
 (when (memq window-system '(mac ns))
   (use-package exec-path-from-shell
 	:ensure t
+	:defer t
 	:ensure-system-package
 	(brew ."/usr/bin/ruby -e \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)\"")
 	:bind* (("C-x x" . exec-path-from-shell-initialize)
 			("C-x y" . exec-path-from-shell-copy-env))
 	:init
-	(setq exec-path-from-shell-check-startup-files nil)))
+	(setq exec-path-from-shell-check-startup-files nil)
+	:config
+	(exec-path-from-shell-initialize)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Core functions    ;;

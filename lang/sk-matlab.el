@@ -25,35 +25,22 @@
   (other-window 1)
   (bookmark-jump "mshell"))
 
-;; setup matlab properly
-(defun sk/matlab-setup ()
-  "setup matlab mode properly"
-  (interactive)
-  ;; mlint settings
-  (setq-default matlab-show-mlint-warnings t)
-  (setq-default mlint-verbose t)
-  (setq-default mlint-programs '("/Applications/MATLAB_R2016a.app/bin/maci64/mlint"))
-  (mlint-minor-mode 1)
-  (rainbow-delimiters-mode)
-  (if (fboundp 'indent-guide-mode)
-	  (indent-guide-mode 1))
-  ;; start ryo-modal-mode
-  (sk/enable-ryo-modal-mode))
-
 ;; add gud mode
 (defun sk/gud-mode ()
   "add gud mode"
   (interactive)
-  (require 'gdb)
+  ;; (require 'gdb)
   (require 'gud))
 
 ;; the matlab mode
-(use-package matlab
-  :load-path "lang/matlab-mode/"
+(use-package matlab-mode
+  ;; :load-path "lang/matlab-mode/"
+  :ensure t
   :mode ("\\.m\\'" . matlab-mode)
   :diminish mlint-minor-mode
-  :hook ((matlab-mode . sk/matlab-setup)
+  :hook ((matlab-mode . mlint-minor-mode)
          (matlab-mode . sk/gud-mode)
+         (matlab-mode . sk/enable-ryo-modal-mode)
 		 (matlab-mode . sk/matlab-shell-buffer-name))
   :bind (:map matlab-shell-mode-map
 			  ("C-c C-c" . term-interrupt-subjob))
@@ -80,9 +67,14 @@
   (setq matlab-mode-install-path '("/Applications/MATLAB_R2016a.app/toolbox"))
   (eval-after-load 'matlab
 	'(add-to-list 'matlab-shell-command-switches "-nodesktop -nosplash"))
+  (setq-default matlab-show-mlint-warnings t)
+  (setq-default mlint-verbose t)
+  (setq-default mlint-programs '("/Applications/MATLAB_R2016a.app/bin/maci64/mlint"))
+
   :config
   (require 'matlab-load)
-  (require 'mlint))
+  (require 'mlint)
+  (mlint-minor-mode 1))
 
 ;; hydra for mlint
 (defhydra hydra-mlint (:color pink :hint nil)
@@ -187,8 +179,8 @@
  ("m y" sk/matlab-shell-genpath :name "add general path")
 
  ;; matlab functions bindings
- ("m g s" gud-break :then '(sk/breakpoint-icon-set) :name "set break")
- ("m g x" gud-remove :then '(sk/breakpoint-icon-remove) :name "delete break")
+ ("m g s" gdb-toggle-breakpoint :then '(sk/breakpoint-icon-set) :name "set break")
+ ("m g x" gdb-delete-breakpoint :then '(sk/breakpoint-icon-remove) :name "delete break")
  ("m g a" sk/matlab-dbclear-all-nil :name "clear all")
  ("m g l" sk/matlab-dbstatus-nil :name "status")
  ("m g q" gud-finish :name "quit")
@@ -219,11 +211,6 @@
  ("m f m" sk/matlab-mesh-nil :name "mesh plot")
  ("m h" sk/matlab-doc-nil :name "help doc")
  ("m u" sk/matlab-clear-all-nil :name "clear all"))
-
-;; bindings
-(ryo-modal-major-mode-keys
- 'matlab-shell-mode
- "DEL" mode-line-previous-buffer :name "last buffer")
 
 ;; ryo major mode
 (which-key-add-major-mode-key-based-replacements 'matlab-mode
@@ -330,8 +317,8 @@
  ("r s j" find-file-at-point :name "jump to file")
 
  ;; matlab functions bindings
- ("r s g s" sk/matlab-dbstop-tmux :then (sk/breakpoint-icon-set) :name "set breakpoint")
- ("r s g x" sk/matlab-dbclear-tmux :then (sk/breakpoint-icon-remove) :name "delete breakpoint")
+ ("r s g s" sk/matlab-dbstop-tmux :then '(sk/breakpoint-icon-set) :name "set breakpoint")
+ ("r s g x" sk/matlab-dbclear-tmux :then '(sk/breakpoint-icon-remove) :name "delete breakpoint")
  ("r s g a" sk/matlab-dbclear-all-tmux :name "clear all")
  ("r s g l" sk/matlab-dbstatus-tmux :name "status")
  ("r s g q" sk/matlab-dbquit-tmux :name "quit")

@@ -22,7 +22,6 @@
 (setq initial-scratch-message "")           								  	; print nothing and leave screen at insert mode
 (menu-bar-mode -1)															  	; deactivate the menubar
 ;; (tool-bar-mode -1)															  	; deactivate the toolbar
-(display-time-mode 1)   														; display time
 (scroll-bar-mode -1)														  	; deactivate the scrollbar
 (tooltip-mode -1)															  	; deactivate the tooltip
 (setq initial-frame-alist													  	; initial frame size
@@ -188,6 +187,11 @@
 		 (visual-line-mode . sk/diminish-visual-line))
   :commands
   (visual-line-mode))
+
+;; auto fill mode
+(use-package simple
+  :demand t
+  :diminish auto-fill-mode)
 
 ;; auto revert mode
 (use-package autorevert
@@ -358,21 +362,9 @@
 	(load-theme 'leuven t)
   (load-theme 'tango-dark t))
 
-;; better modeline
-(use-package spaceline
-  :ensure t
-  :demand t
-  :init
-  (setq powerline-default-separator 'bar)
-  (require 'spaceline-config)
-  :config
-  (spaceline-spacemacs-theme)
-  (spaceline-helm-mode))
-
 ;; fancy battery
 (use-package fancy-battery
   :ensure t
-  :after (spaceline)
   :init
   (setq fancy-battery-show-percentage t)
   :config
@@ -428,7 +420,7 @@
 (require 'sk-latex)
 
 ;; matlab support
-;; (require 'sk-matlab)
+(require 'sk-matlab)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Key bindings    ;;

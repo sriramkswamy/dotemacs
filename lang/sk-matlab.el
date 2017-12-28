@@ -25,6 +25,12 @@
   (other-window 1)
   (bookmark-jump "mshell"))
 
+;; diminish mlint mode line indicator
+(defun sk/diminish-mlint-minor ()
+  "diminish mlint minor mode"
+  (interactive)
+  (diminish 'mlint-minor-mode ""))
+
 ;; add gud mode
 (defun sk/gud-mode ()
   "add gud mode"
@@ -34,11 +40,11 @@
 
 ;; the matlab mode
 (use-package matlab-mode
-  ;; :load-path "lang/matlab-mode/"
-  :ensure t
+  :load-path "lang/matlab-mode/"
   :mode ("\\.m\\'" . matlab-mode)
   :diminish mlint-minor-mode
   :hook ((matlab-mode . mlint-minor-mode)
+         (mlint-minor-mode . sk/diminish-mlint-minor)
          (matlab-mode . sk/gud-mode)
          (matlab-mode . sk/enable-ryo-modal-mode)
 		 (matlab-mode . sk/matlab-shell-buffer-name))

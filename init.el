@@ -190,8 +190,7 @@
 
 ;; auto fill mode
 (use-package simple
-  :demand t
-  :diminish auto-fill-mode)
+  :diminish auto-fill-function)
 
 ;; auto revert mode
 (use-package autorevert

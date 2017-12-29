@@ -322,6 +322,7 @@
 (require 'sk-editing-defuns)
 (require 'sk-navigation-defuns)
 (require 'sk-search-defuns)
+(require 'sk-debug-defuns)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Core packages    ;;

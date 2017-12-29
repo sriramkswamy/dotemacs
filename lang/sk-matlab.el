@@ -1,6 +1,4 @@
 ;; install matlab from OCIO first
-(require 'gud)
-
 ;; better repl name
 (defun sk/matlab-shell-buffer-name ()
   "set a better shell name for MATLAB"
@@ -30,13 +28,6 @@
   "diminish mlint minor mode"
   (interactive)
   (diminish 'mlint-minor-mode ""))
-
-;; add gud mode
-(defun sk/gud-mode ()
-  "add gud mode"
-  (interactive)
-  ;; (require 'gdb)
-  (require 'gud))
 
 ;; the matlab mode
 (use-package matlab-mode
@@ -186,21 +177,21 @@
  ("m y" sk/matlab-shell-genpath :name "add general path")
 
  ;; matlab functions bindings
- ("m g s" gdb-toggle-breakpoint :then '(sk/breakpoint-icon-set) :name "set break")
- ("m g x" gdb-delete-breakpoint :then '(sk/breakpoint-icon-remove) :name "delete break")
+ ("m g s" sk/gud-break :name "set break")
+ ("m g x" sk/gud-remove :name "delete break")
  ("m g a" sk/matlab-dbclear-all-nil :name "clear all")
  ("m g l" sk/matlab-dbstatus-nil :name "status")
- ("m g q" gud-finish :name "quit")
- ("m g n" gud-next :name "next")
- ("m g i" gud-step :name "step in")
+ ("m g q" sk/gud-finish :name "quit")
+ ("m g n" sk/gud-next :name "next")
+ ("m g i" sk/gud-step :name "step in")
  ("m g o" sk/matlab-dbstep-out-nil :name "step out")
- ("m g c" gud-cont :name "continue")
+ ("m g c" sk/gud-cont :name "continue")
  ("m g e" sk/matlab-dbstop-error-nil :name "stop on error")
  ("m g w" sk/matlab-dbstop-warning-nil :name "stop on warning")
- ("m g u" gud-up :name "up")
- ("m g p" gud-print :name "print")
- ("m g r" gud-refresh :name "refresh")
- ("m g f" gud-find-c-expr :name "find c expression")
+ ("m g u" sk/gud-up :name "up")
+ ("m g p" sk/gud-print :name "print")
+ ("m g r" sk/gud-refresh :name "refresh")
+ ("m g f" sk/gud-find-c-expr :name "find c expression")
 
  ("m b" sk/matlab-workspace-nil :name "workspace")
  ("m a" sk/matlab-whos-nil :name "list all variables")

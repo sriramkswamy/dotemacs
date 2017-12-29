@@ -113,6 +113,18 @@
   (set-mark (point))
   (backward-paragraph))
 
+(defun sk/mark-beginning-buffer ()
+  "marks to the beginning of buffer from current position"
+  (interactive)
+  (set-mark (point))
+  (beginning-of-buffer))
+
+(defun sk/mark-end-buffer ()
+  "marks to the end of buffer from current position"
+  (interactive)
+  (set-mark (point))
+  (end-of-buffer))
+
 (defun sk/mark-around-markdown-code-block ()
   "Marks a markdown code-block."
   (interactive)

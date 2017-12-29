@@ -38,6 +38,14 @@
   "g c i" "inside"
   "g c a" "outside"
 
+  "g u" "downcase"
+  "g u i" "inside"
+  "g u a" "outside"
+
+  "g U" "upcase"
+  "g U i" "inside"
+  "g U a" "outside"
+
   "c y" "change to clipboard"
   "c y a" "inside"
   "c y i" "around"

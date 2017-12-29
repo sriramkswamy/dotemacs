@@ -66,7 +66,7 @@
   ;; (setq avy-style 'pre)
   (setq avy-background t)
   (defface avy-lead-face-0
-	'((t (:foreground "white" :background "color-21")))
+	'((t (:foreground "white" :background "DarkGrey")))
 	"Face used for first non-terminating leading chars."))
 
 ;; wrapper around avy

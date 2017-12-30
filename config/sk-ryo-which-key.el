@@ -124,30 +124,35 @@
 
 ;; repl operators
 (which-key-add-key-based-replacements
-  "r w" "shell run"
-  "r w i" "inside"
-  "r w a" "around"
-  "r w g" "global"
+  "w r" "shell run"
+  "w r i" "inside"
+  "w r a" "around"
+  "w r g" "global"
 
-  "r o" "term run"
-  "r o i" "inside"
-  "r o a" "outside"
-  "r o g" "global"
+  "w t" "term run"
+  "w t i" "inside"
+  "w t a" "outside"
+  "w t g" "global"
 
   "r q" "quickrun"
   "r q i" "inside"
   "r q a" "outside"
   "r q g" "global"
 
-  "r" "run (default eshell)"
-  "r i" "inside"
-  "r a" "outside"
-  "r g" "global"
+  "r Q" "quickrun replace"
+  "r Q i" "inside"
+  "r Q a" "outside"
+  "r Q g" "global"
 
-  "r u" "tmux run"
-  "r u a" "inside"
-  "r u i" "around"
-  "r u g" "global"
+  "w e" "run (default eshell)"
+  "w e i" "inside"
+  "w e a" "outside"
+  "w e g" "global"
+
+  "r z" "tmux run"
+  "r z a" "inside"
+  "r z i" "around"
+  "r z g" "global"
 
   "r s" "tmux send"
   "r s i" "inside"
@@ -163,13 +168,22 @@
 ;; movement
 (which-key-add-key-based-replacements
   "s" "smart/scroll"
-  "w" "window")
+  
+  "w" "window"
+  "w n" "narrow"
+  "w n i" "inside"
+  "w n a" "around"
+  "w n g" "global")
 
 ;; prefixes
 (which-key-add-key-based-replacements
   "m" "mode"
   "g" "global"
   "SPC" "leader")
+
+;; leader prefixes
+(which-key-add-key-based-replacements
+  "SPC t" "terminal")
 
 ;; general functions
 (which-key-add-key-based-replacements

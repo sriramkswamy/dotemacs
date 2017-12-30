@@ -9,8 +9,8 @@
 (setq gc-cons-threshold (* 500 1024 1024))									  	; increase the threshold for garbage collection - 100 MB
 (setq delete-old-versions -1)												  	; delete excess backup versions silently
 (setq version-control t)													  	; use version control for backups
-(setq backup-directory-alist `(("." . "~/.emacs-backups")))				  	; which directory to put backups file
-(setq auto-save-file-name-transforms '((".*" "~/.emacs-auto-save-list/" t)))	; transform backups file name
+(setq backup-directory-alist `(("." . "~/.emacs.d/backups")))				  	; which directory to put backups file
+(setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))	; transform backups file name
 (setq inhibit-startup-screen t)												  	; inhibit useless and old-school startup screen
 (setq visible-bell nil)														  	; no visible bell for errors
 (setq ring-bell-function 'ignore)											  	; silent bell when you make a mistake
@@ -257,7 +257,7 @@
 	(message "Line number mode not activated")
   (use-package display-line-numbers
 	:init
-	;; (setq display-line-numbers-type 'relative)
+	(setq display-line-numbers-type 'relative)
 	:hook ((prog-mode . display-line-numbers-mode)
 		   (text-mode . display-line-numbers-mode))))
 

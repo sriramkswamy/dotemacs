@@ -124,7 +124,8 @@
   
   "m s" "eval"
   "m s i" "inside"
-  "m s a" "around")
+  "m s a" "around"
+  "m s g" "global")
 
 ;; which key hints
 (which-key-add-major-mode-key-based-replacements 'lisp-interaction-mode

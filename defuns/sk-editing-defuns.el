@@ -71,47 +71,47 @@
   (next-line 1)
   (sk/smarter-move-beginning-of-line 1))
 
-(defun sk/mark-next-line (&optional count)
+(defun sk/mark-next-line (count)
   "marks to the next `count' lines"
-  (interactive)
+  (interactive "p")
   (set-mark (point))
   (next-line count))
 
-(defun sk/mark-previous-line (&optional count)
+(defun sk/mark-previous-line (count)
   "marks to the previous `count' lines"
-  (interactive)
+  (interactive "p")
   (set-mark (point))
   (previous-line count))
 
-(defun sk/mark-next-char (&optional count)
+(defun sk/mark-next-char (count)
   "marks to the next `count' chars"
-  (interactive)
+  (interactive "p")
   (set-mark (point))
   (forward-char count))
 
-(defun sk/mark-previous-char (&optional count)
+(defun sk/mark-previous-char (count)
   "marks to the previous `count' chars"
-  (interactive)
+  (interactive "p")
   (set-mark (point))
   (backward-char count))
 
-(defun sk/mark-backward-word ()
+(defun sk/mark-backward-word (count)
   "marks to the beginning of word from current position"
-  (interactive)
+  (interactive "p")
   (set-mark (point))
-  (backward-word))
+  (backward-word count))
 
-(defun sk/mark-forward-para ()
+(defun sk/mark-forward-para (count)
   "marks to the end of word from current position"
-  (interactive)
+  (interactive "p")
   (set-mark (point))
-  (forward-paragraph))
+  (forward-paragraph count))
 
-(defun sk/mark-backward-para ()
+(defun sk/mark-backward-para (count)
   "marks to the beginning of para from current position"
-  (interactive)
+  (interactive "p")
   (set-mark (point))
-  (backward-paragraph))
+  (backward-paragraph count))
 
 (defun sk/mark-beginning-buffer ()
   "marks to the beginning of buffer from current position"
@@ -380,11 +380,11 @@ abort completely with `C-g'."
 	(backward-kill-word 1)))
 
 ;; kill line or region
-(defun sk/kill-region-or-line ()
-  (interactive)
+(defun sk/kill-region-or-line (arg)
+  (interactive "p")
   (if (region-active-p)
 	  (kill-region (region-beginning) (region-end))
-	(kill-whole-line)))
+	(kill-whole-line arg)))
 
 ;; save region or current line
 (defun sk/copy-whole-lines (arg)

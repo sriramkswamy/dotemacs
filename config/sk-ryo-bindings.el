@@ -24,7 +24,7 @@
 
 ;; ryo modal general mappings
 (ryo-modal-keys
- ("SPC SPC" recenter-top-bottom :name "recenter")
+ ("z z" recenter-top-bottom :name "recenter")
  ("+" sk/counsel-bookmarks :name "add/see bookmarks" :norepeat t)
  ("H" "C-h" :name "help" :norepeat t)
  ("Z" sk/toggle-frame-fullscreen-non-native :name "fullscreen" :norepeat t)
@@ -162,10 +162,10 @@
 ;; ryo modal repl maps
 (ryo-modal-keys
  (:norepeat t)
- ("r m" sk/call-terminal :name "terminal")
- ("r n" sk/shell :name "shell")
- ("r v" sk/term :name "term")
- ("r y" sk/eshell :name "eshell"))
+ ("SPC t t" sk/call-terminal :name "system")
+ ("SPC t r" sk/shell :name "shell")
+ ("SPC t w" sk/term :name "term")
+ ("SPC t e" sk/eshell :name "eshell"))
 
 ;; ryo modal window navigation maps
 (ryo-modal-keys
@@ -188,7 +188,9 @@
  ("w v" sk/split-right-and-move :name "vertical split")
  ("w s" sk/split-below-and-move :name "split horizontal")
  ("w =" balance-windows :name "balance windows")
- ("w _" widen :name "widen window")
+ ("w N" widen :name "widen window")
+ ("w u" winner-undo :name "undo window config")
+ ("w U" winner-redo :name "redo window config")
  ("w w" "C-x o" :name "other window"))
 
 ;; ryo modal mark navigation
@@ -221,6 +223,7 @@
 				 ("x" ibuffer :name "interactive buffer" :norepeat t)
 				 ("n" treemacs-toggle :name "file tree" :norepeat t)
 				 ("z" prodigy :name "background services" :norepeat t)
+				 ("q" quickrun :name "quickrun" :norepeat t)
                  ("j" "M-x" :name "commands" :norepeat t)))
 
 ;; mapping with global prefix
@@ -260,8 +263,8 @@
 ;;    Operator/Text-object bindings    ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; text object/operator relationship
-(let ((text-objects
+;; text objects
+(defvar text-objects
        '(;; single-char style text object
          ("h" sk/mark-previous-char :name "previous char(s)")
          ("j" sk/mark-next-line :name "next line(s)")
@@ -320,21 +323,25 @@
          ("i i" sk/select-indent-tree :name "indent")
          ("a i" sk/select-indent-tree :name "indent")
          ("a a" mark-whole-buffer :name "all")
-         ("i a" mark-whole-buffer :name "all"))))
-  (eval `(ryo-modal-keys
+         ("i a" mark-whole-buffer :name "all")))
+
+;; common operators
+(eval `(ryo-modal-keys
           ;; complex operators
-          ("r" ,text-objects :then '(sk/eshell-send-region-or-line))
           ("v r" ,text-objects :then '(rectangle-mark-mode))
           ("c y" ,text-objects :then '(sk/cut-region-or-line-to-clipboard) :exit t)
           ("d y" ,text-objects :then '(sk/cut-region-or-line-to-clipboard))
           ("g c" ,text-objects :then '(comment-dwim-2))
+          ("w e" ,text-objects :then '(sk/eshell-send-region-or-line))
           ("r s" ,text-objects :then '(emamux:send-region))
-          ("r u" ,text-objects :then '(emamux:run-region))
-          ("r w" ,text-objects :then '(sk/shell-send-region-or-line))
+          ("r z" ,text-objects :then '(emamux:run-region))
+          ("w r" ,text-objects :then '(sk/shell-send-region-or-line))
           ("r q" ,text-objects :then '(quickrun-region))
-          ("r o" ,text-objects :then '(sk/term-send-line-or-region))
+          ("r Q" ,text-objects :then '(quickrun-replace-region))
+          ("w t" ,text-objects :then '(sk/term-send-line-or-region))
 		  ("g u" ,text-objects :then '(downcase-region))
           ("g U" ,text-objects :then '(upcase-region))
+          ("w n" ,text-objects :then '(narrow-to-region))
           ;; alignment
           ("g l SPC" ,text-objects :then '(sk/align-whitespace))
           ("g l s" ,text-objects :then '(sk/align-semicolon))
@@ -354,12 +361,11 @@
           ("c" ,text-objects :then '(kill-region) :exit t)
           ("d" ,text-objects :then '(kill-region))
           ("y" ,text-objects :then '(copy-region-as-kill))))
-  ;; (eval `(ryo-modal-major-mode-keys
-  ;; 		  'matlab-mode
-  ;; 		  ("m s" ,text-objects :then '(matlab-shell-run-region))))
-  (eval `(ryo-modal-major-mode-keys
+
+;; elisp mode specific operators
+(eval `(ryo-modal-major-mode-keys
 		  'emacs-lisp-mode
-		  ("m s" ,text-objects :then '(eval-region)))))
+		  ("m s" ,text-objects :then '(eval-region))))
 
 ;; capital versions of operators
 (ryo-modal-keys
@@ -376,6 +382,7 @@
  ("v r r" rectangle-mark-mode :name "rectangle mark")
  ("g u u" downcase-region :name "downcase")
  ("g U U" upcase-region :name "upcase")
+ ("w n n" narrow-to-region :name "narrow")
  ;; alignment
  ("g l SPC SPC" sk/align-whitespace :name "align whitespace")
  ("g l s s" sk/align-semicolon :name "align semicolon")
@@ -390,7 +397,7 @@
  ("g l l" align-regexp :name "align regexp")
  ;; basic operator repeats
  ("= =" sk/select-inside-line :then '(indent-region) :name "line")
- ("z z" vimish-fold :name "fold region")
+ ("z r" vimish-fold :name "fold region")
  ("v v" er/expand-region :name "expand region")
  ("c c" sk/kill-region-or-line :name "line/region" :exit t)
  ("d d" sk/kill-region-or-line :name "line/region")
@@ -398,23 +405,24 @@
 
 ;; operator based extra repl maps
 (ryo-modal-keys
- ("r r" sk/eshell-send-region-or-line :name "region")
- ("r w r" sk/shell-send-region-or-line :name "region")
- ("r q r" quickrun-region :name "region")
- ("r o r" sk/term-send-line-or-region :name "region")
- ("r u r" emamux:run-region :name "region")
- ("r s r" emamux:send-region :name "region"))
+ ("w e e" sk/eshell-send-region-or-line :name "region")
+ ("w r r" sk/shell-send-region-or-line :name "region")
+ ("r q q" quickrun-region :name "region")
+ ("r Q Q" quickrun-replace-region :name "region")
+ ("w t t" sk/term-send-line-or-region :name "region")
+ ("r z z" emamux:run-region :name "region")
+ ("r s s" emamux:send-region :name "region"))
 
 ;; operator based extra fold maps
 (ryo-modal-keys
  ("z d" vimish-fold-delete :name "delete")
  ("z m" vimish-fold-delete-all :name "deleta all")
  ("z n" vimish-fold-next-fold :name "next")
- ("z p" vimish-fold-previous-fold :name "previous")
+ ("z N" vimish-fold-previous-fold :name "previous")
  ("z o" vimish-fold-unfold :name "open")
  ("z c" vimish-fold-refold :name "close")
  ("z u" vimish-fold-unfold-all :name "unfold all")
- ("z r" vimish-fold-refold-all :name "refold all"))
+ ("z p" vimish-fold-refold-all :name "refold all"))
 
 ;; operator based extra maps
 (ryo-modal-keys

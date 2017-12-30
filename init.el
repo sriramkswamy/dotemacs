@@ -411,6 +411,9 @@
 ;; linting/checking
 (require 'sk-linter)
 
+;; debugging
+(require 'sk-debug)
+
 ;; auto completion
 (require 'sk-complete)
 

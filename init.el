@@ -430,6 +430,12 @@
 ;;    Extra services    ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; mode specific scratch buffer
+(use-package scratch
+  :ensure t
+  :commands
+  (scratch))
+
 ;; start background processes
 (use-package prodigy
   :ensure t

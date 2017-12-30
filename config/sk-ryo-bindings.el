@@ -208,7 +208,8 @@
 
 ;; mapping with leader
 (ryo-modal-key "SPC"
-               '(("w" "C-x C-s" :name "save buffer" :norepeat t)
+               '(("SPC" scratch :name "scratch" :norepeat t)
+				 ("w" "C-x C-s" :name "save buffer" :norepeat t)
                  ("e" magit-status :name "git status" :norepeat t)
                  ("f" "C-x C-f" :name "open file" :norepeat t)
                  ("g" "C-g" :name "interrupt" :norepeat t)

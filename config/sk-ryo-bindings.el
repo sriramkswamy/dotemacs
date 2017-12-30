@@ -220,6 +220,7 @@
                  ("k" "C-x b" :name "switch buffer" :norepeat t)
 				 ("x" ibuffer :name "interactive buffer" :norepeat t)
 				 ("n" treemacs-toggle :name "file tree" :norepeat t)
+				 ("z" prodigy :name "background services" :norepeat t)
                  ("j" "M-x" :name "commands" :norepeat t)))
 
 ;; mapping with global prefix

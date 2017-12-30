@@ -426,6 +426,61 @@
 ;; matlab support
 (require 'sk-matlab)
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;    Extra services    ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; start background processes
+(use-package prodigy
+  :ensure t
+  :commands (prodigy)
+  :config
+  (prodigy-define-tag
+	:name 'latexmk
+	:ready-message "=== Watching for updated files. Use ctrl/C to stop ...")
+  (prodigy-define-service
+	:name "beamer slides current"
+	:command "latexmk"
+	:args '("-pdf" "-pvc" "./slides.tex")
+	:cwd (directory-file-name default-directory)
+	:tags '(latexmk)
+	:kill-signal 'sigkill)
+  (prodigy-define-service
+	:name "beamer notes current"
+	:command "latexmk"
+	:args '("-pdf" "-pvc" "./notes.tex")
+	:cwd (directory-file-name default-directory)
+	:tags '(latexmk)
+	:kill-signal 'sigkill)
+  (prodigy-define-service
+	:name "beamer slides parent"
+	:command "latexmk"
+	:args '("-pdf" "-pvc" "./slides.tex")
+	:cwd (file-name-directory (directory-file-name default-directory))
+	:tags '(latexmk)
+	:kill-signal 'sigkill)
+  (prodigy-define-service
+	:name "beamer notes parent"
+	:command "latexmk"
+	:args '("-pdf" "-pvc" "./notes.tex")
+	:cwd (file-name-directory (directory-file-name default-directory))
+	:tags '(latexmk)
+	:kill-signal 'sigkill)
+  (prodigy-define-service
+	:name "beamer notes project"
+	:command "latexmk"
+	:args '("-pdf" "-pvc" "./notes.tex")
+	:cwd (file-name-directory (vc-root-dir))
+	:tags '(latexmk)
+	:kill-signal 'sigkill)
+  (prodigy-define-service
+	:name "beamer slides project"
+	:command "latexmk"
+	:args '("-pdf" "-pvc" "./slides.tex")
+	:cwd (file-name-directory (vc-root-dir))
+	:tags '(latexmk)
+	:kill-signal 'sigkill))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Key bindings    ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;

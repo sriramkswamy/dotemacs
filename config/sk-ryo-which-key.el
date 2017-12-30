@@ -144,7 +144,7 @@
   "r Q a" "outside"
   "r Q g" "global"
 
-  "w e" "run (default eshell)"
+  "w e" "eshell run"
   "w e i" "inside"
   "w e a" "outside"
   "w e g" "global"

@@ -33,6 +33,63 @@
   "y g" "global"
   "y y" "copy line/region")
 
+;; alignment
+(which-key-add-key-based-replacements
+  "g l SPC" "align whitespace"
+  "g l SPC i" "inside"
+  "g l SPC a" "around"
+  "g l SPC g" "global"
+  
+  "g l s" "align semicolon"
+  "g l s i" "inside"
+  "g l s a" "around"
+  "g l s g" "global"
+  
+  "g l &" "align ampersand"
+  "g l & i" "inside"
+  "g l & a" "around"
+  "g l & g" "global"
+  
+  "g l q" "align quote"
+  "g l q i" "inside"
+  "g l q a" "around"
+  "g l q g" "global"
+  
+  "g l =" "align equal"
+  "g l = i" "inside"
+  "g l = a" "around"
+  "g l = g" "global"
+  
+  "g l c" "align comma"
+  "g l c i" "inside"
+  "g l c a" "around"
+  "g l c g" "global"
+  
+  "g l ." "align dot"
+  "g l . i" "inside"
+  "g l . a" "around"
+  "g l . g" "global"
+  
+  "g l :" "align colon"
+  "g l : i" "inside"
+  "g l : a" "around"
+  "g l : g" "global"
+  
+  "g l %" "align percent"
+  "g l % i" "inside"
+  "g l % a" "around"
+  "g l % g" "global"
+  
+  "g l #" "align hash"
+  "g l # i" "inside"
+  "g l # a" "around"
+  "g l # g" "global"
+  
+  "g l" "align"
+  "g l i" "inside"
+  "g l a" "around"
+  "g l g" "global")
+
 ;; complex operators
 (which-key-add-key-based-replacements
   "v r" "rectangle mark"

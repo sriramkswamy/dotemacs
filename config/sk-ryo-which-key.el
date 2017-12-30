@@ -177,6 +177,7 @@
 
 ;; prefixes
 (which-key-add-key-based-replacements
+  "r" "repl"
   "m" "mode"
   "g" "global"
   "SPC" "leader")

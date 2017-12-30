@@ -29,6 +29,14 @@
   (interactive)
   (diminish 'mlint-minor-mode ""))
 
+;; matlab operator bindings
+(defun sk/matlab-operator ()
+  "operator text object bindings for matlab"
+  (interactive)
+  (eval `(ryo-modal-major-mode-keys
+		  'matlab-mode
+		  ("m s" ,text-objects :then '(matlab-shell-run-region)))))
+
 ;; the matlab mode
 (use-package matlab-mode
   :load-path "lang/matlab-mode/"
@@ -39,6 +47,7 @@
          (matlab-mode . display-line-numbers-mode)
          (matlab-mode . sk/gud-mode)
          (matlab-mode . sk/enable-ryo-modal-mode)
+         (matlab-mode . sk/matlab-operator)
 		 (matlab-mode . sk/matlab-shell-buffer-name))
   :bind (:map matlab-shell-mode-map
 			  ("C-c C-c" . term-interrupt-subjob))
@@ -305,49 +314,57 @@
 ;; setup matlab bindings
 (ryo-modal-major-mode-keys
  'matlab-mode
- ("r s w" sk/matlab-tmux-who :name "describe variable")
- ("r s m" sk/matlab-tmux-run :name "run")
- ("r s c" emamux:send-command :name "command")
- ("r s r" sk/matlab-tmux :name "run matlab")
- ("r s /" sk/matlab-tmux-addpath :name "add path")
- ("r s y" sk/matlab-tmux-genpath :name "add gen path")
- ("r s d" sk/matlab-help-tmux :name "doc")
- ("r s j" find-file-at-point :name "jump to file")
+ ("r w" sk/matlab-tmux-who :name "describe variable")
+ ("r m" sk/matlab-tmux-run :name "run")
+ ("r c" emamux:send-command :name "command")
+ ("r r" sk/matlab-tmux :name "run matlab")
+ ("r /" sk/matlab-tmux-addpath :name "add path")
+ ("r y" sk/matlab-tmux-genpath :name "add gen path")
+ ("r d" sk/matlab-help-tmux :name "doc")
+ ("r j" find-file-at-point :name "jump to file")
 
  ;; matlab functions bindings
- ("r s g s" sk/matlab-dbstop-tmux :then '(sk/breakpoint-icon-set) :name "set breakpoint")
- ("r s g x" sk/matlab-dbclear-tmux :then '(sk/breakpoint-icon-remove) :name "delete breakpoint")
- ("r s g a" sk/matlab-dbclear-all-tmux :name "clear all")
- ("r s g l" sk/matlab-dbstatus-tmux :name "status")
- ("r s g q" sk/matlab-dbquit-tmux :name "quit")
- ("r s g n" sk/matlab-dbstep-tmux :name "next")
- ("r s g i" sk/matlab-dbstep-in-tmux :name "step in")
- ("r s g o" sk/matlab-dbstep-out-tmux :name "step out")
- ("r s g c" sk/matlab-dbcont-tmux :name "continue")
- ("r s g e" sk/matlab-dbstop-error-tmux :name "stop on error")
- ("r s g w" sk/matlab-dbstop-warning-tmux :name "stop on warning")
+ ("r g s" sk/matlab-dbstop-tmux :then '(sk/breakpoint-icon-set) :name "set breakpoint")
+ ("r g x" sk/matlab-dbclear-tmux :then '(sk/breakpoint-icon-remove) :name "delete breakpoint")
+ ("r g a" sk/matlab-dbclear-all-tmux :name "clear all")
+ ("r g l" sk/matlab-dbstatus-tmux :name "status")
+ ("r g q" sk/matlab-dbquit-tmux :name "quit")
+ ("r g n" sk/matlab-dbstep-tmux :name "next")
+ ("r g i" sk/matlab-dbstep-in-tmux :name "step in")
+ ("r g o" sk/matlab-dbstep-out-tmux :name "step out")
+ ("r g c" sk/matlab-dbcont-tmux :name "continue")
+ ("r g e" sk/matlab-dbstop-error-tmux :name "stop on error")
+ ("r g w" sk/matlab-dbstop-warning-tmux :name "stop on warning")
 
- ("r s b" sk/matlab-workspace-tmux :name "workspace")
- ("r s a" sk/matlab-whos-tmux :name "list all variables")
- ("r s v" sk/matlab-openvar-tmux :name "open variable")
- ("r s p" sk/matlab-edit-tmux :name "preview in matlab")
- ("r s x" sk/matlab-size-tmux :name "size")
- ("r s l" sk/matlab-length-tmux :name "length")
- ("r s k" sk/matlab-numel-tmux :name "number of elements")
- ("r s n" sk/matlab-fieldnames-tmux :name "fieldnames")
- ("r s o" sk/matlab-ndim-tmux :name "number of dimensions")
- ("r s e" sk/matlab-mean-tmux :name "mean")
- ("r s =" sk/matlab-sum-tmux :name "sum")
- ("r s +" sk/matlab-cumsum-tmux :name "cumulative sum")
- ("r s f p" sk/matlab-plot-tmux :name "plot")
- ("r s f m" sk/matlab-mesh-tmux :name "mesh plot")
- ("r s h" sk/matlab-doc-tmux :name "help")
- ("r s u" sk/matlab-clear-all-tmux :name "clear all"))
+ ("r b" sk/matlab-workspace-tmux :name "workspace")
+ ("r a" sk/matlab-whos-tmux :name "list all variables")
+ ("r v" sk/matlab-openvar-tmux :name "open variable")
+ ("r p" sk/matlab-edit-tmux :name "preview in matlab")
+ ("r x" sk/matlab-size-tmux :name "size")
+ ("r l" sk/matlab-length-tmux :name "length")
+ ("r k" sk/matlab-numel-tmux :name "number of elements")
+ ("r n" sk/matlab-fieldnames-tmux :name "fieldnames")
+ ("r o" sk/matlab-ndim-tmux :name "number of dimensions")
+ ("r e" sk/matlab-mean-tmux :name "mean")
+ ("r =" sk/matlab-sum-tmux :name "sum")
+ ("r +" sk/matlab-cumsum-tmux :name "cumulative sum")
+ ("r f p" sk/matlab-plot-tmux :name "plot")
+ ("r f m" sk/matlab-mesh-tmux :name "mesh plot")
+ ("r h" sk/matlab-doc-tmux :name "help")
+ ("r u" sk/matlab-clear-all-tmux :name "clear all"))
 
-;; ryo major mode
+;; which key hints
 (which-key-add-major-mode-key-based-replacements 'matlab-mode
-  "r s g" "debug"
-  "r s f" "plot")
+  "r g" "debug"
+  "r f" "plot"
+
+  "m g" "debug"
+  "m g f" "fast"
+  
+  "m s" "eval"
+  "m s i" "inside"
+  "m s a" "around"
+  "m s g" "global")
 
 ;; provide matlab configuration
 (provide 'sk-matlab)

@@ -429,6 +429,9 @@
 ;; matlab support
 (require 'sk-matlab)
 
+;; python support
+(require 'sk-python)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Extra services    ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;

@@ -356,10 +356,10 @@
 ;; which key hints
 (which-key-add-major-mode-key-based-replacements 'matlab-mode
   "r g" "debug"
-  "r f" "plot"
+  "r f" "figure"
 
   "m g" "debug"
-  "m g f" "fast"
+  "m f" "figure"
   
   "m s" "eval"
   "m s i" "inside"

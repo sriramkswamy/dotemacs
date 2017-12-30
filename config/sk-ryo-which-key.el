@@ -102,6 +102,11 @@
   "g c a" "outside"
   "g c g" "global"
 
+  "g y" "copy to clipboard"
+  "g y i" "inside"
+  "g y a" "outside"
+  "g y g" "global"
+
   "g u" "downcase"
   "g u i" "inside"
   "g u a" "outside"

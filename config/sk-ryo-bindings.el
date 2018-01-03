@@ -395,6 +395,9 @@
         ("w t" ,text-objects :then '(sk/term-send-line-or-region))
 		("g u" ,text-objects :then '(downcase-region))
         ("g U" ,text-objects :then '(upcase-region))
+        ("g w" ,text-objects :then '(fill-region-as-paragraph))
+        ("c v" ,text-objects :then '(query-replace))
+        ("d v" ,text-objects :then '(query-replace-regexp))
         ("w n" ,text-objects :then '(narrow-to-region))
         ("w SPC" ,text-objects :then '(ws-butler-clean-region))))
 
@@ -419,6 +422,9 @@
  ("g y y" sk/copy-line-or-region-to-clipboard :name "line/region")
  ("g u u" downcase-region :name "downcase")
  ("g U U" upcase-region :name "upcase")
+ ("g w w" fill-paragraph :name "fill para")
+ ("c v v" query-replace :name "replace")
+ ("d v v" query-replace-regexp :name "replace regexp")
  ("w n n" narrow-to-region :name "narrow")
  ("w SPC SPC" ws-butler-maybe-trim-eob-lines :name "trim whitespace")
  ;; alignment

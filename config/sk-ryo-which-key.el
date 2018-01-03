@@ -117,6 +117,11 @@
   "g U a" "outside"
   "g U g" "global"
 
+  "g w" "fill para"
+  "g w i" "inside"
+  "g w a" "outside"
+  "g w g" "global"
+
   "c y" "change to clipboard"
   "c y a" "inside"
   "c y i" "around"
@@ -148,6 +153,16 @@
   "r Q i" "inside"
   "r Q a" "outside"
   "r Q g" "global"
+
+  "c v" "replace"
+  "c v i" "inside"
+  "c v a" "outside"
+  "c v g" "global"
+
+  "d v" "replace regexp"
+  "d v i" "inside"
+  "d v a" "outside"
+  "d v g" "global"
 
   "w e" "eshell run"
   "w e i" "inside"

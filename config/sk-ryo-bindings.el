@@ -105,7 +105,7 @@
  ("F" iy-go-to-char-backward :name "to char back")
  (";" iy-go-to-or-up-to-continue :name "continue char")
  ("," iy-go-to-or-up-to-continue-backward :name "continue char back")
- ("'" avy-goto-line :name "goto line"))
+ ("'" avy-goto-char-timer :name "goto char(s)"))
 
 ;; ryo modal narrowing maps
 (ryo-modal-keys
@@ -283,7 +283,7 @@
          ("T" sk/mark-up-to-char-backward :name "till char back")
          (";" sk/mark-continue :name "continue")
          ("," sk/mark-continue-backward :name "continue back")
-         ("'" sk/mark-avy-goto-line :name "till line")
+         ("'" sk/mark-avy-char-timer :name "till char(s)")
          ;; inner-around style text object
          ("i w" er/mark-word :name "word")
          ("a w" sk/mark-around-word :name "word")
@@ -344,6 +344,7 @@
 		  ("g u" ,text-objects :then '(downcase-region))
           ("g U" ,text-objects :then '(upcase-region))
           ("w n" ,text-objects :then '(narrow-to-region))
+          ("w SPC" ,text-objects :then '(ws-butler-clean-region))
           ;; alignment
           ("g l SPC" ,text-objects :then '(sk/align-whitespace))
           ("g l s" ,text-objects :then '(sk/align-semicolon))
@@ -386,6 +387,7 @@
  ("g u u" downcase-region :name "downcase")
  ("g U U" upcase-region :name "upcase")
  ("w n n" narrow-to-region :name "narrow")
+ ("w SPC SPC" ws-butler-maybe-trim-eob-lines :name "trim whitespace")
  ;; alignment
  ("g l SPC SPC" sk/align-whitespace :name "align whitespace")
  ("g l s s" sk/align-semicolon :name "align semicolon")

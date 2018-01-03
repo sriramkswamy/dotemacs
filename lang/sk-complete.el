@@ -1,4 +1,7 @@
-;; complete anything
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;    Completion framework    ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (use-package company
   :ensure t
   :hook ((prog-mode-hook . company-mode)
@@ -182,6 +185,12 @@
   (push 'company-matlab-shell company-backends))
 (if (fboundp 'matlab-shell-mode)
 	(add-hook 'matlab-shell-mode-hook 'sk/company-matlab-shell))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;    Completion suggestions    ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; install ycmd first - https://github.com/Valloric/ycmd
 
 ;; provide the config
 (provide 'sk-complete)

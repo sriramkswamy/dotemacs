@@ -436,6 +436,17 @@
 ;;    Extra services    ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; trailing whitespace management
+(use-package ws-butler
+  :ensure t
+  :diminish ws-butler-mode
+  :commands
+  (ws-butler-mode
+   ws-butler-global-mode
+   ws-butler-clean-region
+   ws-butler-maybe-trim-eob-lines)
+  :hook ((after-init . ws-butler-global-mode)))
+
 ;; mode specific scratch buffer
 (use-package scratch
   :ensure t

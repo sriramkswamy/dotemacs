@@ -178,7 +178,12 @@
   "w n" "narrow"
   "w n i" "inside"
   "w n a" "around"
-  "w n g" "global")
+  "w n g" "global"
+
+  "w SPC" "whitespace"
+  "w SPC i" "inside"
+  "w SPC a" "around"
+  "w SPC g" "global")
 
 ;; prefixes
 (which-key-add-key-based-replacements

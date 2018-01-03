@@ -92,11 +92,11 @@
 	  (set-variable 'ycmd-global-config
 					"/Users/sriramkswamy/.emacs.d/.ycm_extra_conf.py"))))
   (setq ycmd-force-semantic-completion t)
-  :hook ((c++-mode . global-ycmd-mode)
-		 (c-mode . global-ycmd-mode)
-		 (python-mode . global-ycmd-mode)
-		 (org-mode . global-ycmd-mode)
-		 (markdown-mode . global-ycmd-mode)
+  :hook ((c++-mode . ycmd-mode)
+		 (c-mode . ycmd-mode)
+		 (python-mode . ycmd-mode)
+		 (org-mode . ycmd-mode)
+		 (markdown-mode . ycmd-mode)
 		 (ycmd-mode . ycmd-eldoc-setup))
 
   :commands

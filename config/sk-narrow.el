@@ -44,7 +44,7 @@
 			  ("C-x <"		. ivy-next-line-and-call)
 			  ("C-r"		. ivy-immediate-done)
 			  ("C-SPC"		. ivy-toggle-calling)
-			  ("C-c '"	    . ivy-avy)
+			  ("C-c g"	    . ivy-avy)
 			  ("C-s"		. ivy-restrict-to-matches))
   :config
   (define-key read-expression-map (kbd "C-r") 'counsel-minibuffer-history)

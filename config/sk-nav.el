@@ -80,8 +80,8 @@
   (defface avy-lead-face-0
 	'((t (:foreground "white" :background "DarkGrey")))
 	"Face used for first non-terminating leading chars.")
-  :bind (("C-c \"" . sk/mark-avy-char-timer)
-		 ("C-c '" . avy-goto-char-timer)))
+  :bind (("C-c G" . sk/mark-avy-char-timer)
+		 ("C-c g" . avy-goto-char-timer)))
 
 ;; jump to windows quickly
 (use-package ace-window

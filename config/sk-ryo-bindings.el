@@ -215,7 +215,6 @@
                  ("g" "C-g" :name "interrupt" :norepeat t)
                  ("r" counsel-recentf :name "recent files" :norepeat t)
                  ("d" sk/counsel-fzf-project :name "project files" :norepeat t)
-                 ("s" spotlight :name "desktop files" :norepeat t)
                  ("p" sk/counsel-ag-project :name "grep project" :norepeat t)
                  ("a" ivy-switch-view :name "switch views" :norepeat t)
                  ("l" flycheck-list-errors :name "list errors" :norepeat t)
@@ -226,6 +225,13 @@
 				 ("z" prodigy :name "background services" :norepeat t)
 				 ("q" quickrun :name "quickrun" :norepeat t)
                  ("j" "M-x" :name "commands" :norepeat t)))
+
+;; use locate or spotlight depending on the system
+(cond
+ ((eq system-type 'darwin)
+  (ryo-modal-key "SPC s" 'spotlight :name "desktop search"))
+ ((eq system-type 'gnu/linux)
+  (ryo-modal-key "SPC s" 'counsel-locate :name "desktop search")))
 
 ;; mapping with global prefix
 (ryo-modal-key "g"
@@ -328,24 +334,15 @@
 
 ;; common operators
 (eval `(ryo-modal-keys
-          ;; complex operators
-          ("v r" ,text-objects :then '(rectangle-mark-mode))
-          ("c y" ,text-objects :then '(sk/cut-region-or-line-to-clipboard) :exit t)
-          ("d y" ,text-objects :then '(sk/cut-region-or-line-to-clipboard))
-          ("g y" ,text-objects :then '(sk/copy-line-or-region-to-clipboard))
-          ("g c" ,text-objects :then '(comment-dwim-2))
-          ("w e" ,text-objects :then '(sk/eshell-send-region-or-line))
-          ("r s" ,text-objects :then '(emamux:send-region))
-          ("r z" ,text-objects :then '(emamux:run-region))
-          ("w r" ,text-objects :then '(sk/shell-send-region-or-line))
-          ("r q" ,text-objects :then '(quickrun-region))
-          ("r Q" ,text-objects :then '(quickrun-replace-region))
-          ("w t" ,text-objects :then '(sk/term-send-line-or-region))
-		  ("g u" ,text-objects :then '(downcase-region))
-          ("g U" ,text-objects :then '(upcase-region))
-          ("w n" ,text-objects :then '(narrow-to-region))
-          ("w SPC" ,text-objects :then '(ws-butler-clean-region))
-          ;; alignment
+          ("=" ,text-objects :then '(indent-region))
+          ("z" ,text-objects :then '(vimish-fold))
+          ("v" ,text-objects)
+          ("c" ,text-objects :then '(kill-region) :exit t)
+          ("d" ,text-objects :then '(kill-region))
+          ("y" ,text-objects :then '(copy-region-as-kill))))
+
+;; alignment
+(eval `(ryo-modal-keys
           ("g l SPC" ,text-objects :then '(sk/align-whitespace))
           ("g l s" ,text-objects :then '(sk/align-semicolon))
           ("g l &" ,text-objects :then '(sk/align-ampersand))
@@ -356,14 +353,26 @@
           ("g l :" ,text-objects :then '(sk/align-colon))
           ("g l %" ,text-objects :then '(sk/align-percent))
           ("g l #" ,text-objects :then '(sk/align-hash))
-          ("g l" ,text-objects :then '(align-regexp))
-          ;; basic operators
-          ("=" ,text-objects :then '(indent-region))
-          ("z" ,text-objects :then '(vimish-fold))
-          ("v" ,text-objects)
-          ("c" ,text-objects :then '(kill-region) :exit t)
-          ("d" ,text-objects :then '(kill-region))
-          ("y" ,text-objects :then '(copy-region-as-kill))))
+          ("g l" ,text-objects :then '(align-regexp))))
+
+;; complex operators
+(eval `(ryo-modal-keys
+        ("v r" ,text-objects :then '(rectangle-mark-mode))
+        ("c y" ,text-objects :then '(sk/cut-region-or-line-to-clipboard) :exit t)
+        ("d y" ,text-objects :then '(sk/cut-region-or-line-to-clipboard))
+        ("g y" ,text-objects :then '(sk/copy-line-or-region-to-clipboard))
+        ("g c" ,text-objects :then '(comment-dwim-2))
+        ("w e" ,text-objects :then '(sk/eshell-send-region-or-line))
+        ("r s" ,text-objects :then '(emamux:send-region))
+        ("r z" ,text-objects :then '(emamux:run-region))
+        ("w r" ,text-objects :then '(sk/shell-send-region-or-line))
+        ("r q" ,text-objects :then '(quickrun-region))
+        ("r Q" ,text-objects :then '(quickrun-replace-region))
+        ("w t" ,text-objects :then '(sk/term-send-line-or-region))
+		("g u" ,text-objects :then '(downcase-region))
+        ("g U" ,text-objects :then '(upcase-region))
+        ("w n" ,text-objects :then '(narrow-to-region))
+        ("w SPC" ,text-objects :then '(ws-butler-clean-region))))
 
 ;; elisp mode specific operators
 (eval `(ryo-modal-major-mode-keys

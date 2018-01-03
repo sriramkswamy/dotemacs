@@ -300,13 +300,6 @@
 ;; completion mappings
 (bind-key "C-r" 'counsel-company)
 
-;; ;; use locate or spotlight depending on the system
-;; (cond
-;;  ((eq system-type 'darwin)
-;;   (ryo-modal-key "SPC s" 'spotlight :name "desktop search"))
-;;  ((eq system-type 'gnu/linux)
-;;   (ryo-modal-key "SPC s" 'counsel-locate :name "desktop search")))
-
 ;; save ivy-views in desktop variables
 (require 'desktop)
 (add-to-list 'desktop-globals-to-save 'ivy-views)

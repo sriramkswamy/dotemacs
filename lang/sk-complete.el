@@ -4,18 +4,18 @@
 
 (use-package company
   :ensure t
-  :hook ((prog-mode-hook . company-mode)
-		 (org-mode-hook . company-mode)
-		 (LaTeX-mode-hook . company-mode)
-		 (markdown-mode-hook . company-mode))
+  :demand t
+  :hook ((prog-mode-hook . global-company-mode)
+		 (text-mode-hook . global-company-mode)
+		 (org-mode-hook . global-company-mode)
+		 (matlab-mode-hook . global-company-mode)
+		 (markdown-mode-hook . global-company-mode))
   :init
-  (setq company-minimum-prefix-length 1
+  (setq company-minimum-prefix-length 0
 		company-require-match 0
 		company-selection-wrap-around t
-		company-tooltip-limit 20                       ; bigger popup window
-		company-tooltip-align-annotations 't           ; align annotations to the right tooltip border
-		company-idle-delay .2                          ; decrease delay before autocompletion popup shows
-		company-begin-commands '(self-insert-command)) ; start autocompletion only after typing
+		company-tooltip-limit 10
+		company-idle-delay 0.05)
   (setq company-dabbrev-ignore-buffers "\\.pdf\\'"
 		company-dabbrev-downcase nil
 		company-dabbrev-code-modes t
@@ -27,6 +27,7 @@
 		  ("C-j C-f"	. company-files)
 		  ("C-j C-s"	. company-ispell)
 		  ("C-j C-c"	. company-clang)
+		  ("C-j C-e"	. company-elisp)
 		  ("C-j C-a"	. company-dabbrev))
   :bind (:map company-active-map
 			  ("C-n"    . company-select-next)
@@ -40,13 +41,13 @@
   :diminish (company-mode . " ς")
 
   :config
-
   ;; set default backends
   (setq company-backends
 		'((;; Generic backends
 		   company-files          ; files & directory
            company-keywords       ; keywords
 		   company-dabbrev-code   ; code abbrev
+		   company-elisp          ; emacs-lisp code
 		   ;; company-etags          ; etags
 		   ;; company-gtags          ; gtags
 		   company-semantic       ; semantic

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: absolute value
+# key: abs
+# --
+\left\vert $1 \right\vert $0

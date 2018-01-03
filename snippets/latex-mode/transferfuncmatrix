@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: transfer function matrix
+# key: tfmat
+# --
+${1:M} =
+\left[
+\begin{array}{${2:cc|c}}
+$0
+\end{array}
+\right]

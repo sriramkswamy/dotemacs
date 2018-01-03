@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: horizontal space
+# key: hs
+# --
+\hspace{0.25cm} $0

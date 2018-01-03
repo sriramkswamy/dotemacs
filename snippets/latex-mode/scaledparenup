@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: scaled parenthesis exponent
+# key: sspu
+# --
+\left( $1 \right)^{$2}$0

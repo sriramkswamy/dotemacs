@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: sub figure
+# key: sfig
+# --
+\begin{subfigure}[${1:b}]{${2:0.5}\textwidth}
+  ${6:\centering}
+  $5
+  \caption{$3}
+${0:$$(reftex-label)}
+\end{subfigure}

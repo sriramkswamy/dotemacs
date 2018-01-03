@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: new variable
+# key: var
+# --
+${1:name}=${2:value}

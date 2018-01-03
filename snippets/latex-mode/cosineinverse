@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: cosine inverse
+# key: cosi
+# --
+\cos^{-${2:1}}{$1}

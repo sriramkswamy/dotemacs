@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: environment
+# key: beg
+# --
+\begin{$1}
+$2
+\end{$1}
+$0

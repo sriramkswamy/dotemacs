@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: therefore
+# key: t4
+# --
+\therefore $0

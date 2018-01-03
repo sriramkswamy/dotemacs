@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: hyperlink
+# key: link
+# --
+\href{$2}{$1}$0

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: figure
+# key: fig
+# --
+fig.${1:$$(yas-choose-value '("height=" "width=" "align=" "show="))}$0

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: triple integral
+# key: intt
+# --
+\iiint\limits_{$1} \! {$2} \, \mathrm{d}{$3} $0

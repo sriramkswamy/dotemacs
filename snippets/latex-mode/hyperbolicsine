@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: hyperbolic sine
+# key: sinh
+# --
+\sinh{$1}

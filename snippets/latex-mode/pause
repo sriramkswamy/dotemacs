@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: pause
+# key: pau
+# --
+\pause
+$0

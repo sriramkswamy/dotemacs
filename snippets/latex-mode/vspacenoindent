@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: vspacenoindent
+# key: voi
+# --
+\vspace{0.25cm}
+\noindent
+$0

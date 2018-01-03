@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: sub and superscript
+# key: du
+# --
+{$1}_{$2}^{$3}$0

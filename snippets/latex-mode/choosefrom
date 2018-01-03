@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: choose from
+# key: choo
+# --
+{{$1} \choose {$2}}$0

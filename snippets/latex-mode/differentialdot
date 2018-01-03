@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: differential dot
+# key: ddo
+# --
+${1:$$(yas-choose-value '("\\\\dot"
+						  "\\\\ddot"))} {$0}

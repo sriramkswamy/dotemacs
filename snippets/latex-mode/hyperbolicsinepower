@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: hyperbolic sine power
+# key: sinhp
+# --
+\sinh^{${2:2}}{$1}

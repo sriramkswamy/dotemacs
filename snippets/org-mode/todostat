@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: TODO Status
+# key: otos
+# binding: direct-keybinding
+# --
+#+SEQ_TODO: $1

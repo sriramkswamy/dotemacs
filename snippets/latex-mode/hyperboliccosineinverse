@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: hyperbolic cosine inverse
+# key: coshi
+# --
+\cosh^{-${2:1}}{$1}

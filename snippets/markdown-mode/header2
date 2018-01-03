@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: Header 2
+# key: h2
+# --
+## $1
+
+$0

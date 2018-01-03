@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: left arrow
+# key: larr
+# --
+\leftarrow $0

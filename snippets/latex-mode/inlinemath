@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: inline math
+# key: mi
+# --
+$$1$ $0

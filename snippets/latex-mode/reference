@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: reference
+# key: ref
+# --
+${0:$$(sk/reftex-reference)}

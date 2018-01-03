@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: include graphics
+# key: incl
+# --
+\includegraphics[scale=${1:1}]{$2}$0

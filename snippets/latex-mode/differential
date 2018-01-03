@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: differential
+# key: dif
+# --
+\mathrm{d}{$1}$0

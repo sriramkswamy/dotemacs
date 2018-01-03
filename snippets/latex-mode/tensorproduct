@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: tensor product
+# key: tenp
+# --
+\bigotimes\limits_{$1}^{$2} {$3} $0

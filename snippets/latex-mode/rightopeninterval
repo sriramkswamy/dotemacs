@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: right open interval
+# key: rop
+# --
+\left[ $1 \right)$0

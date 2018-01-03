@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: hyperbolic tangent
+# key: tanh
+# --
+\tanh{$1}

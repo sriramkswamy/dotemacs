@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: text
+# key: tx
+# --
+\text{$1}$0

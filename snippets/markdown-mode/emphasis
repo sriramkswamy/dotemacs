@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: emphasis
+# key: em
+# --
+_${1:Text}_ $0

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: lstinputlisting
+# key: lsi
+# --
+\lstinputlisting{$1}

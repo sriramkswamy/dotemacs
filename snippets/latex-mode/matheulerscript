@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: math eulerian script
+# key: eul
+# --
+\mathscr{$1}$0

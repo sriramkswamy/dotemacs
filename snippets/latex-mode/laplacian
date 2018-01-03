@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: laplacian
+# key: lap
+# --
+\nabla^{2}

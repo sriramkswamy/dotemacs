@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: sine power
+# key: sinp
+# --
+\sin^{${1:2}}{$2}

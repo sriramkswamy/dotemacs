@@ -1,0 +1,18 @@
+# -*- mode: snippet -*-
+# name: math top symbols
+# key: mtop
+# --
+${1:$$(yas-choose-value '("\\\\dot"
+						  "\\\\ddot"
+						  "\\\\dddot"
+						  "\\\\acute"
+						  "\\\\grave"
+						  "\\\\tilde"
+						  "\\\\hat"
+						  "\\\\widehat"
+						  "\\\\bar"
+						  "\\\\overbar"
+						  "\\\\overline"
+						  "\\\\vec"
+						  "\\\\overleftarrow"
+						  "\\\\overleftrightarrow"))}{$2}$0

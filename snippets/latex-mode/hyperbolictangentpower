@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: hyperbolic tangent power
+# key: tanhp
+# --
+\tanh^{${2:2}}{$1}

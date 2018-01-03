@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: midrule
+# key: mr
+# --
+\midrule
+$0

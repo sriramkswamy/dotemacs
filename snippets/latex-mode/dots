@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: dots
+# key: dots
+# --
+${1:$$(yas-choose-value '("\\\\cdot"
+  						  "\\\\cdots"
+  						  "\\\\ldot"
+  						  "\\\\ldots"
+						  "\\\\vdot"
+						  "\\\\vdots"
+						  "\\\\ddots"))} $0

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: gradient
+# key: grad
+# --
+\nabla {$1}$0

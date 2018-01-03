@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: cyclic integral
+# key: cin
+# --
+\oint_{$1} \! {$2} \, \mathrm{d} {$3} $0

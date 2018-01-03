@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: uncover
+# key: unc
+# --
+\uncover<$1> {
+	$0
+}

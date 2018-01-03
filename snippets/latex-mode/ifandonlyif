@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: if and only if
+# key: iff
+# --
+\Leftrightarrow $0

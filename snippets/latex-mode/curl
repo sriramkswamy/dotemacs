@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: curl
+# key: cu
+# --
+\nabla \times {$1}$0

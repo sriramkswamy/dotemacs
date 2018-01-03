@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: scaled angular brackets
+# key: ssa
+# --
+\langle $1 \rangle$0

@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: bottomrule
+# key: br
+# --
+\bottomrule
+$0

@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: properties
+# key: prop
+# --
+properties (Access = ${1:public})
+
+    $0
+
+end

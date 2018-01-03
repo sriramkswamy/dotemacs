@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: partial
+# key: par
+# --
+\partial{$1}$0

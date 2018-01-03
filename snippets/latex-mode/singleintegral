@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: single integral
+# key: int
+# --
+\int_{$1}^{$2} \! {$3} \, \mathrm{d}{$4} $0

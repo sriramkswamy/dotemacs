@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: belongs to
+# key: in
+# --
+\in $0

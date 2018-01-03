@@ -1,0 +1,14 @@
+# -*- mode: snippet -*-
+# name: multipart function
+# key: multif
+# --
+\begin{equation${2:*}}
+  $1 =
+  \left\{
+	\begin{array}{ll}
+	  x  & \mbox{if } x \geq 0 \\
+	  -x & \mbox{if } x < 0
+	\end{array}
+  \right}
+  =
+\end{equation$2}

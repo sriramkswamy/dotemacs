@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: super and subscript
+# key: ud
+# --
+{$1}^{$2}_{$3}$0

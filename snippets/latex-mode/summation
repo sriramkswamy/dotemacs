@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: summation
+# key: sum
+# --
+\sum\limits_{$1}^{$2} {$3} $0

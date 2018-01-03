@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: plus or minus
+# key: pm
+# --
+\pm $0

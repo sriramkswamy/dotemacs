@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: cosine power
+# key: cosp
+# --
+\cos^{${1:2}}{$2}

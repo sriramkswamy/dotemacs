@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: spacing
+# key: sp
+# --
+\\${1:@}$0

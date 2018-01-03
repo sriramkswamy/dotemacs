@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: not in
+# key: nin
+# --
+\not\in $0

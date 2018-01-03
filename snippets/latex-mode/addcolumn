@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: add column
+# key: acol
+# --
+${1:L}{${2:4}cm}${3:|}$0

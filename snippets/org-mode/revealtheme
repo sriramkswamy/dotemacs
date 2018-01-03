@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: reveal theme
+# key: rth
+# --
+#+REVEAL_THEME: ${1:beige/black/blood/league/moon/night/serif/simple/sky/solarized/white}

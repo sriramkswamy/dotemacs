@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: list of figures
+# key: lof
+# --
+\listoffigures
+
+$0

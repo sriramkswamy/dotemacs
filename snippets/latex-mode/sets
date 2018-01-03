@@ -1,0 +1,16 @@
+# -*- mode: snippet -*-
+# name: sets
+# key: set
+# --
+${1:$$(yas-choose-value '("\\\\subset"
+  						  "\\\\subseteq"
+  						  "\\\\not\\\\subset"
+  						  "\\\\nsubseteq"
+						  "\\\\sqsubset"
+						  "\\\\sqsubseteq"
+						  "\\\\supset"
+						  "\\\\supseteq"
+						  "\\\\not\\\\supset"
+						  "\\\\nsupseteq"
+						  "\\\\sqsubset"
+						  "\\\\sqsupseteq"))} $0

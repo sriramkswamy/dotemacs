@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: tangent
+# key: tan
+# --
+\tan{$1}

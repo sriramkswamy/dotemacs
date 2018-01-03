@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: cite
+# key: ci
+# --
+${0:$$(reftex-citation)}

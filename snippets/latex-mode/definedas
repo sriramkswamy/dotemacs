@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: defined as
+# key: def
+# --
+\triangleq $0

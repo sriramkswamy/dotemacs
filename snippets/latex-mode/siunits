@@ -1,0 +1,23 @@
+# -*- mode: snippet -*-
+# name: si units
+# key: si
+# --
+\si{${1:$$(yas-choose-value '("\\\\kilo\\\\gram"
+							  "\\\\metre\\\\per\\\\second"
+							  "\\\\joule"
+							  "\\\\metre"
+							  "\\\\second"
+							  "\\\\centi\\\\metre"
+							  "\\\\gram"
+							  "\\\\per"
+							  "\\\\kilo"
+							  "\\\\kelvin"
+							  "\\\\square"
+							  "\\\\cubic"
+							  "\\\\degree"
+							  "\\\\newton"
+							  "\\\\hour"
+							  "\\\\pascal"
+							  "\\\\kilo\\\\pascal"
+							  "\\\\watt\\\\per\\\\metre\\\\per\\\\kelvin"
+							  "\\\\watt\\\\per\\\\square\\\\metre\\\\per\\\\kelvin"))}}$0

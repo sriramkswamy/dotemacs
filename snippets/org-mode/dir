@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: dir
+# key: :d
+# --
+:dir ${1:$$(unless yas-modified-p (completing-read "Bibliography: " 'read-file-name-internal))}$0

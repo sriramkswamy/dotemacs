@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: heading3
+# key: h3
+# --
+*** $0

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: hyperbolic cosine
+# key: cosh
+# --
+\cosh{$1}

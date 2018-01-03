@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: star power
+# key: st
+# --
+^{*}$0

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: tensor
+# key: tens
+# --
+\stackrel{\leftrightarrow}{$1}$0

@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: aligned equation
+# key: ali
+# --
+\begin{aligned}
+  ${1:LHS} & = ${2:RHS} \\\\$0
+\end{aligned}

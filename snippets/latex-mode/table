@@ -1,0 +1,14 @@
+# -*- mode: snippet -*-
+# name: table
+# key: tabl
+# --
+\begin{table}[$1]
+  \centering
+  \begin{tabular}{${2:L}{${3:4}cm}${4:L}{${5:4}cm}$6}
+    \toprule
+    $9
+    \bottomrule
+  \end{tabular}
+  \caption{$7}
+  ${0:$$(reftex-label)}
+\end{table}

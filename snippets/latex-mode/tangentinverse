@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: tangent inverse
+# key: tani
+# --
+\tan^{-${2:1}}{$1}

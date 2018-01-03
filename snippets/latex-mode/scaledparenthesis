@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: scaled paranthesis
+# key: ssp
+# --
+\left( $1 \right)$0

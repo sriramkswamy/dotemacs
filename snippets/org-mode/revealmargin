@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: reveal margin
+# key: rmar
+# --
+#+REVEAL_MARGIN: ${1:number}

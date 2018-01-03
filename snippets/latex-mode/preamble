@@ -1,0 +1,74 @@
+# -*- mode: snippet -*-
+# name: preamble
+# key: pre
+# --
+\documentclass[${2:12}pt,a4paper]{${1:article}}
+
+\usepackage[utf8]{inputenc}
+\usepackage[left=2cm, right=2cm, top=2cm, bottom=2cm]{geometry}
+\usepackage{booktabs}
+\usepackage{cancel}
+\usepackage{caption}
+\usepackage{cleveref}
+\usepackage{colortbl}
+\usepackage{csquotes}
+\usepackage{mathpazo}
+\usepackage{multirow}
+\usepackage{listings}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.10}
+\usepackage{helvet}
+\usepackage{grffile}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{cite}
+\usepackage{array}
+\usepackage{setspace}
+\usepackage{tikz}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage[mathscr]{eucal}
+\usepackage{amssymb}
+\usepackage{siunitx}
+\usepackage{chemmacros}
+\usepackage{esint}
+\usepackage{subcaption}
+\usepackage{titlesec}
+\usepackage{epstopdf}
+\usepackage{empheq}
+\usepackage{bm}
+
+\newcommand*\widefbox[1]{\fbox{\hspace{2em}#1\hspace{2em}}}
+
+\definecolor{dark-red}{rgb}{0.4,0.15,0.15}
+\definecolor{dark-blue}{rgb}{0.15,0.15,0.4}
+\definecolor{medium-blue}{rgb}{0,0,0.5}
+\definecolor{mygreen}{RGB}{28,172,0} % color values Red, Green, Blue
+\definecolor{mylilas}{RGB}{170,55,241}
+
+\hypersetup{colorlinks,linkcolor={dark-red},citecolor={dark-blue},urlcolor={medium-blue}}
+
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\\\arraybackslash\hspace{0pt}}m{#1}}
+
+\titleformat{\chapter}[block]
+{\normalfont\huge\bfseries}{\thechapter.}{1em}{\Huge}
+\titlespacing*{\chapter}{0pt}{-19pt}{0pt}
+
+\newcommand{\mychapter}[2]
+{\setcounter{chapter}{#1}
+ \setcounter{section}{0}
+ \chapter*{#2}
+ \addcontentsline{toc}{chapter}{#2}
+}
+
+\pagenumbering{${3:gobble}}
+
+\begin{document}
+
+$0
+
+\end{document}

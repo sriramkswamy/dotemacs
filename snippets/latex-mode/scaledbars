@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: scaled bars
+# key: ssd
+# --
+\left| $1 \right|$0

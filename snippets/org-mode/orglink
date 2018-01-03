@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: org link
+# key: ol
+# --
+[[${2:link}][${1:description}]]$0

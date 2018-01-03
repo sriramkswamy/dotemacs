@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: partial power fraction
+# key: pff
+# --
+\frac{\partial^{${1:2}} {$2}}{\partial {$3}^{${4:2}}}$0

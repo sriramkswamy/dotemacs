@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: matrix
+# key: mat
+# --
+\begin{${1:$$(yas-choose-value '("bmatrix" "pmatrix"))}}
+  $2
+\end{$1}$0

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: divergence
+# key: div
+# --
+\nabla \cdot {$1}$0

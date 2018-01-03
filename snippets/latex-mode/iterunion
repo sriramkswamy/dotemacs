@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: iterative union
+# key: uni
+# --
+\bigcup_{$1}^{$2} {$3}$0

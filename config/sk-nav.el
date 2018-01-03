@@ -43,6 +43,18 @@
   (push-mark (point))
   (iy-go-to-or-up-to-continue-backward 1))
 
+;; wrapper around avy
+(defun sk/mark-avy-char-timer ()
+  "mark to char using avy-char-timer"
+  (interactive)
+  (push-mark (point))
+  (call-interactively #'avy-goto-char-timer))
+(defun sk/mark-avy-goto-line ()
+  "mark to char using avy-goto-line"
+  (interactive)
+  (push-mark (point))
+  (call-interactively #'avy-goto-line))
+
 ;; simulating mouse click
 (use-package avy
   :ensure t
@@ -67,19 +79,9 @@
   (setq avy-background t)
   (defface avy-lead-face-0
 	'((t (:foreground "white" :background "DarkGrey")))
-	"Face used for first non-terminating leading chars."))
-
-;; wrapper around avy
-(defun sk/mark-avy-char-timer ()
-  "mark to char using avy-char-timer"
-  (interactive)
-  (push-mark (point))
-  (call-interactively #'avy-goto-char-timer))
-(defun sk/mark-avy-goto-line ()
-  "mark to char using avy-goto-line"
-  (interactive)
-  (push-mark (point))
-  (call-interactively #'avy-goto-line))
+	"Face used for first non-terminating leading chars.")
+  :bind (("C-c \"" . sk/mark-avy-char-timer)
+		 ("C-c '" . avy-goto-char-timer)))
 
 ;; jump to windows quickly
 (use-package ace-window

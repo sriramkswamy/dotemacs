@@ -105,7 +105,7 @@
  ("F" iy-go-to-char-backward :name "to char back")
  (";" iy-go-to-or-up-to-continue :name "continue char")
  ("," iy-go-to-or-up-to-continue-backward :name "continue char back")
- ("'" avy-goto-char-timer :name "goto char(s)"))
+ ("'" "C-c '" :name "goto char(s)"))
 
 ;; ryo modal narrowing maps
 (ryo-modal-keys
@@ -313,7 +313,7 @@
          ("T" sk/mark-up-to-char-backward :name "till char back")
          (";" sk/mark-continue :name "continue")
          ("," sk/mark-continue-backward :name "continue back")
-         ("'" sk/mark-avy-char-timer :name "till char(s)")
+         ("'" "C-c \"" :name "till char(s)")
          ;; inner-around style text object
          ("i w" er/mark-word :name "word")
          ("a w" sk/mark-around-word :name "word")

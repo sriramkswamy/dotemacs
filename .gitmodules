@@ -1,3 +1,6 @@
 [submodule "use-package"]
 	path = use-package
 	url = https://github.com/jwiegley/use-package.git
+[submodule "ycmd"]
+	path = ycmd
+	url = https://github.com/Valloric/ycmd

@@ -432,6 +432,9 @@
 ;; python support
 (require 'sk-python)
 
+;; clang based languages support
+(require 'sk-clang)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Extra services    ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;

@@ -233,6 +233,30 @@
  ((eq system-type 'gnu/linux)
   (ryo-modal-key "SPC s" 'counsel-locate :name "desktop search")))
 
+;; mapping with leader and a key
+(ryo-modal-key "SPC h"
+               '(("h" ycmd-goto :name "goto" :norepeat t)
+				 ("o" ycmd-open :name "open" :norepeat t)
+                 ("c" ycmd-close :name "close" :norepeat t)
+                 ("f" ycmd-fixit :name "fixit" :norepeat t)
+                 ("s" ycmd-setup :name "setup" :norepeat t)
+                 ("t" ycmd-get-type :name "get type" :norepeat t)
+                 ("g" ycmd-goto-type :name "goto type" :norepeat t)
+                 ("p" ycmd-get-parent :name "parent" :norepeat t)
+                 ("i" ycmd-goto-include :name "include" :norepeat t)
+                 ("a" ycmd-goto-imprecise :name "any goto" :norepeat t)
+                 ("r" ycmd-goto-references :name "references" :norepeat t)
+                 ("e" ycmd-refactor-rename :name "refactor/rename" :norepeat t)
+				 ("l" ycmd-goto-implementation :name "implementation" :norepeat t)
+				 ("k" ycmd-goto-declaration :name "declaration" :norepeat t)
+				 ("j" ycmd-goto-definition :name "jump to def" :norepeat t)
+				 ("d" ycmd-show-documentation :name "documentation" :norepeat t)
+				 ("o" ycmd-load-conf-file :name "conf file" :norepeat t)
+				 ("y" ycmd-toggle-log-enabled :name "toggle log" :norepeat t)
+				 ("u" ycmd-show-debug-info :name "debug info" :norepeat t)
+				 ("n" ycmd-toggle-force-semantic-completion :name "force semantic completion" :norepeat t)
+				 ("x" ycmd-clear-compilation-flag-cache :name "clear compilation cache" :norepeat t)))
+
 ;; mapping with global prefix
 (ryo-modal-key "g"
                '(("A" describe-char :name "describe char" :norepeat t)
@@ -470,7 +494,7 @@
  ("c o t" display-time-mode :name "time")
  ("c o d" diminish :name "diminish")
  ("c o w" visual-line-mode :name "word wrap")
- ("c o c" company-mode :name "completion")
+ ("c o c" ycmd-mode :name "completion add source")
  ("c o s" smartparens-strict-mode :name "smartparens strict")
  ("c o S" smartparens-mode :name "smartparens")
  ("c o y" yas-minor-mode :name "local snippets")

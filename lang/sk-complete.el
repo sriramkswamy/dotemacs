@@ -56,142 +56,92 @@
            company-capf)))
   (global-company-mode))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;    Completion suggestions    ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 ;; LSP support
 (use-package company-lsp
   :ensure t
   :after (company)
   :bind* (("C-j C-l"	. company-lsp)))
 
-;;; some language specific functions to add to hooks later
-
-;; elisp
-(defun sk/company-elisp ()
-  "Add backends for elisp completion in company mode"
-  (interactive)
-  (require 'company)
-  (push 'company-elisp company-backends))
-;; push company backend
-(add-hook 'elisp-mode-hook 'sk/company-elisp)
-(add-hook 'lisp-interaction-mode-hook 'sk/company-elisp)
-
-;; C
-(defun sk/company-c ()
-  "Add backends for C completion in company mode"
-  (interactive)
-  (require 'company)
-  ;; (push 'company-ycmd company-backends)
-  ;; (push 'company-clang company-backends)
-  (push 'company-rtags company-backends))
-;; push company backend
-;; (add-hook 'c-mode-hook 'sk/company-c)
-
-;; C++
-(defun sk/company-cpp ()
-  "Add backends for C++ completion in company mode"
-  (interactive)
-  (require 'company)
-  ;; (push 'company-ycmd company-backends)
-  ;; (push 'company-clang company-backends)
-  (push 'company-rtags company-backends))
-;; push company backend
-;; (add-hook 'c++-mode-hook 'sk/company-cpp)
-
-;; Python
-(defun sk/company-python ()
-  "Add backends for python completion in company mode"
-  (interactive)
-  (require 'company)
-  (push 'company-lsp company-backends)
-  (push 'company-anaconda company-backends))
-;; push company backend
-(add-hook 'python-mode-hook 'sk/company-python)
-
-;; Cython
-(defun sk/company-cython ()
-  "Add backends for cython completion in company mode"
-  (interactive)
-  (require 'company)
-  (push 'company-lsp company-backends)
-  (push 'company-anaconda company-backends))
-;; push company backend
-(add-hook 'cython-mode-hook 'sk/company-cython)
-
-;; ESS
-(defun sk/company-ess ()
-  "Add backends for ESS completion in company mode"
-  (interactive)
-  (require 'company)
-  (push 'company-ess company-backends))
-;; push company backend
-(add-hook 'ess-mode-hook 'sk/company-ess)
-
-;; Org mode
-(defun sk/company-org ()
-  "Add backends for Org completion in company mode"
-  (interactive)
-  (require 'company)
-  ;; (push 'company-ispell company-backends)
-  (push 'company-dabbrev company-backends))
-;; push company backend
-(add-hook 'org-mode-hook 'sk/company-org)
-
-;; Markdown mode
-(defun sk/company-markdown ()
-  "Add backends for Markdown completion in company mode"
-  (interactive)
-  (require 'company)
-  ;; (push 'company-ispell company-backends)
-  (push 'company-dabbrev company-backends))
-;; push company backend
-(add-hook 'markdown-mode-hook 'sk/company-markdown)
-
-;; LaTeX mode
-(defun sk/company-latex ()
-  "Add backends for LaTeX completion in company mode"
-  (interactive)
-  (require 'company)
-  ;; (push 'company-auctex company-backends)
-  ;; (push 'company-ispell company-backends)
-  (push 'company-dabbrev company-backends))
-;; push company backend
-(add-hook 'latex-mode-hook 'sk/company-latex)
-
-;; web mode
-(defun sk/company-web ()
-  "Add backends for web completion in company mode"
-  (interactive)
-  (require 'company)
-  (push 'company-nxml company-backends)
-  (push 'company-css-html-tags company-backends)
-  (push 'company-css company-backends))
-;; push company backend
-(add-hook 'web-mode-hook 'sk/company-web)
-
-;; shell mode
-(defun sk/company-shell ()
-  "Add backends for shell completion in company mode"
-  (interactive)
-  (require 'company)
-  (push 'company-shell company-backends))
-;; push company backend
-(add-hook 'shell-mode-hook 'sk/company-shell)
-(add-hook 'term-mode-hook 'sk/company-shell)
-(add-hook 'eshell-mode-hook 'sk/company-shell)
-
-;; matlab shell mode
-(defun sk/company-matlab-shell ()
-  "Add backends for shell completion in company mode"
-  (interactive)
-  (require 'company)
-  (push 'company-matlab-shell company-backends))
-(if (fboundp 'matlab-shell-mode)
-	(add-hook 'matlab-shell-mode-hook 'sk/company-matlab-shell))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;    Completion suggestions    ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 ;; install ycmd first - https://github.com/Valloric/ycmd
+;; cd ycmd, git submodule update --init --recursive and ./build.py --system-libclang --all
+
+(use-package ycmd
+  :ensure t
+  :diminish ycmd-mode
+  :init
+  ;; FIXME: set based on location
+  (cond
+   ((eq system-type 'darwin)
+	(progn
+	  (set-variable 'ycmd-server-command
+					'("python" "/Users/sriramkswamy/.emacs.d/ycmd/ycmd"))
+	  (set-variable 'ycmd-extra-conf-whitelist
+					"/Users/sriramkswamy/.emacs.d/.ycm_extra_conf.py")
+	  (set-variable 'ycmd-global-config
+					"/Users/sriramkswamy/.emacs.d/.ycm_extra_conf.py")))
+   ((eq system-type 'gnu/linux)
+	(progn
+	  (set-variable 'ycmd-server-command
+					'("python" "/Users/sriramkswamy/.emacs.d/ycmd/ycmd"))
+	  (set-variable 'ycmd-extra-conf-whitelist
+					"/Users/sriramkswamy/.emacs.d/.ycm_extra_conf.py")
+	  (set-variable 'ycmd-global-config
+					"/Users/sriramkswamy/.emacs.d/.ycm_extra_conf.py"))))
+  (setq ycmd-force-semantic-completion t)
+  :hook ((c++-mode . global-ycmd-mode)
+		 (c-mode . global-ycmd-mode)
+		 (python-mode . global-ycmd-mode)
+		 (org-mode . global-ycmd-mode)
+		 (markdown-mode . global-ycmd-mode)
+		 (ycmd-mode . ycmd-eldoc-setup))
+
+  :commands
+  (ycmd-goto
+   ycmd-open
+   ycmd-close
+   ycmd-fixit
+   ycmd-setup
+   ycmd-version
+   ycmd-completer
+   ycmd-get-type
+   ycmd-goto-type
+   ycmd-get-parent
+   ycmd-eldoc-setup
+   ycmd-goto-include
+   ycmd-parse-buffer
+   ycmd-goto-imprecise
+   ycmd-goto-references
+   ycmd-refactor-rename
+   ycmd-goto-implementation
+   ycmd-load-conf-file
+   ycmd-toggle-log-enabled
+   ycmd-restart-semantic-server
+   ycmd-display-completions
+   ycmd-goto-definition
+   ycmd-goto-declaration
+   ycmd-show-documentation
+   ycmd-clear-compilation-flag-cache
+   ycmd-toggle-force-semantic-completion
+   ycmd-show-debug-info
+   ycmd-mode
+   ycmd-mode-menu
+   ycmd-view-mode
+   ycmd-eldoc-mode
+   ycmd-fixit-mode))
+
+(use-package company-ycmd
+  :ensure t
+  :after (ycmd)
+  :hook ((ycmd-mode . company-ycmd-setup)))
+
+(use-package flycheck-ycmd
+  :ensure t
+  :after (ycmd)
+  :hook ((ycmd-mode . flycheck-ycmd-setup)))
 
 ;; provide the config
 (provide 'sk-complete)

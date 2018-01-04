@@ -122,6 +122,16 @@
   "g w a" "outside"
   "g w g" "global"
 
+  "g e" "grep"
+  "g e i" "inside"
+  "g e a" "outside"
+  "g e g" "global"
+
+  "g s" "search"
+  "g s i" "inside"
+  "g s a" "outside"
+  "g s g" "global"
+
   "c y" "change to clipboard"
   "c y a" "inside"
   "c y i" "around"

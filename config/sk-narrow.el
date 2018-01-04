@@ -98,10 +98,18 @@
 	(counsel-imenu)))
 
 (defun sk/counsel-ag-directory ()
-  "use counsel ag to search for the the current directory"
+  "use counsel ag to search for the input in the current directory"
   (interactive)
   (if (eq (file-remote-p default-directory) nil)
 	  (counsel-ag)
+	(call-interactively #'rgrep)))
+
+(defun sk/counsel-ag-directory-selection (start end)
+  "use counsel ag to search for the selection in the current directory"
+  (interactive "r")
+  (if (eq (file-remote-p default-directory) nil)
+	  (counsel-ag (buffer-substring-no-properties start end)
+				  default-directory)
 	(call-interactively #'rgrep)))
 
 (defun sk/counsel-org-folder ()
@@ -111,6 +119,18 @@
 	  (counsel-ag "" org-directory)
 	(call-interactively #'rgrep)))
 
+;; search word under cursor
+(defun sk/swiper-at-point ()
+  "use swiper to search for a word at point"
+  (interactive)
+  (swiper (thing-at-point 'symbol)))
+
+;; search in all files
+(defun sk/swiper-all-at-point ()
+  "use swiper to search for a word at point in all buffers"
+  (interactive)
+  (swiper-all (thing-at-point 'symbol)))
+
 ;; search the buffer or all buffer
 (use-package swiper
   :ensure t
@@ -119,10 +139,6 @@
   (swiper-all
    sk/swiper-at-point)
   :config
-  (defun sk/swiper-at-point ()
-	"use swiper to search for a word at point"
-	(interactive)
-	(swiper (thing-at-point 'symbol)))
   (ivy-mode 1)
   (counsel-mode 1))
 
@@ -261,7 +277,18 @@
       (counsel-ag (thing-at-point 'symbol) (vc-root-dir))
     (counsel-git-grep (thing-at-point 'symbol))))
 
-;; fzf based project fiel search
+;; project based grep at point
+(defun sk/counsel-ag-project-selection (start end)
+  "use counsel ag to search for the selection in the project"
+  (interactive "r")
+  (if (eq (file-remote-p default-directory) nil)
+	  (if (region-active-p)
+		  (counsel-ag (buffer-substring-no-properties start end)
+					  (vc-root-dir))
+		(counsel-ag (thing-at-point 'symbol) (vc-root-dir)))
+    (counsel-git-grep (thing-at-point 'symbol))))
+
+;; fzf based project file search
 (defun sk/counsel-fzf-project ()
   "use counsel fzf to search the project files"
   (interactive)

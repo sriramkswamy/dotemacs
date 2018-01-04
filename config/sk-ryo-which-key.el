@@ -20,6 +20,11 @@
   "v a" "around"
   "v g" "global"
   "v v" "expand region"
+
+  "=" "indent"
+  "= i" "inside"
+  "= a" "around"
+  "= g" "global"
   
   "z" "fold"
   "z i" "inside"

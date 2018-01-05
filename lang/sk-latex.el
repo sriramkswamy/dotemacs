@@ -12,6 +12,11 @@
   :diminish reftex-mode
   :hook ((auctex-mode . sk/setup-ryo-latex-bindings)
 		 (auctex-mode . sk/company-auctex))
+  :bind* (("C-j a e" . company-auctex-environments)
+		  ("C-j a l" . company-auctex-labels)
+		  ("C-j a b" . company-auctex-bibs)
+		  ("C-j a s" . company-auctex-symbols)
+		  ("C-j a m" . company-auctex-macros))
   
   :commands
   (LaTeX-mark-section

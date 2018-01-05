@@ -25,12 +25,17 @@
 		company-dabbrev-other-buffers 'all
 		company-dabbrev-code-everywhere t)
 
-  :bind* (("C-d"		. company-complete)
-		  ("C-j C-f"	. company-files)
-		  ("C-j C-s"	. company-ispell)
-		  ("C-j C-e"	. company-elisp)
-		  ("C-j C-y"	. company-yasnippet)
-		  ("C-j C-a"	. company-dabbrev))
+  :bind* (("C-t"	. company-complete)
+		  ("C-j f"	. company-files)
+		  ("C-j s"	. company-ispell)
+		  ("C-j e"	. company-elisp)
+		  ("C-j y"	. company-yasnippet)
+		  ("C-j c"	. company-dabbrev-code)
+		  ("C-j d"	. company-dabbrev))
+  :bind (:map prog-mode-map
+			  ("C-d" . company-dabbrev-code))
+  :bind (:map text-mode-map
+			  ("C-d" . company-dabbrev))
   :bind (:map company-active-map
 			  ("C-n"    . company-select-next)
 			  ("C-p"    . company-select-previous)
@@ -181,7 +186,7 @@
 		'((;; list of backends
 		   ;; company-files          ; files & directory
            company-yasnippet      ; snippets
-           company-keywords       ; keywords
+           ;; company-keywords       ; keywords
 		   company-dabbrev-code   ; code words
 		   ;; company-ycmd           ; python ycmd completion
 		   ;; company-lsp            ; python lsp completion
@@ -212,7 +217,7 @@
 (use-package company-lsp
   :ensure t
   :after (company)
-  :bind* (("C-j C-l"	. company-lsp)))
+  :bind* (("C-j l"	. company-lsp)))
 
 ;; install ycmd first - https://github.com/Valloric/ycmd
 ;; cd ycmd, git submodule update --init --recursive and ./build.py --system-libclang --all

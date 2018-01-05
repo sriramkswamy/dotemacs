@@ -144,7 +144,9 @@
   :ensure t
   :hook ((c++-mode . sk/company-clang)
 		 (c-mode . sk/company-clang))
-  :bind* (("C-j C-c" . company-rtags)))
+  :bind* (("C-j r" . company-rtags))
+  :bind (:map c++-mode-map
+			  ("C-d" . company-rtags)))
 
 ;; provide configuration for all c based languages
 (provide 'sk-clang)

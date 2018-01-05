@@ -161,9 +161,9 @@
 (use-package company-anaconda
   :ensure t
   :after (anaconda-mode)
-  :bind* (("C-j C-p"	. company-anaconda))
+  :bind* (("C-j p"	. company-anaconda))
   :bind (:map python-mode-map
-			  ("C-o" . company-anaconda)))
+			  ("C-d" . company-anaconda)))
 
 ;; format python code
 (use-package py-yapf

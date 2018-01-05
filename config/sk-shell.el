@@ -35,7 +35,11 @@
 (use-package company-shell
   :ensure t
   :hook ((shell-mode-hook . sk/company-shell))
-  :bind* (("C-j C-s" . company-shell)))
+  :bind* (("C-j s" . company-shell))
+  :bind (:map shell-mode-map
+			  ("C-d" . company-shell))
+  :bind (:map eshell-mode-map
+			  ("C-d" . company-shell)))
 
 ;; zoom into the tmux pane (tmux > 1.8)
 ;; tmux resize-pane -Z

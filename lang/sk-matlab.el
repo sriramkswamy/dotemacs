@@ -52,7 +52,8 @@
 		 (matlab-mode . sk/company-matlab)
 		 (matlab-shell-mode . sk/company-matlab-shell))
   :bind (:map matlab-shell-mode-map
-			  ("C-c C-c" . term-interrupt-subjob))
+			  ("C-c C-c" . term-interrupt-subjob)
+			  ("C-d" . company-matlab-shell))
 
   :commands
   (matlab-shell-describe-command

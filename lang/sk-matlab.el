@@ -48,7 +48,9 @@
          (matlab-mode . sk/gud-mode)
          (matlab-mode . sk/enable-ryo-modal-mode)
          (matlab-mode . sk/matlab-operator)
-		 (matlab-mode . sk/matlab-shell-buffer-name))
+		 (matlab-mode . sk/matlab-shell-buffer-name)
+		 (matlab-mode . sk/company-matlab)
+		 (matlab-shell-mode . sk/company-matlab-shell))
   :bind (:map matlab-shell-mode-map
 			  ("C-c C-c" . term-interrupt-subjob))
 

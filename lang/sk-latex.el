@@ -7,9 +7,11 @@
 
 (use-package latex
   :ensure auctex
+  :ensure company-auctex
   :defer t
   :diminish reftex-mode
-  :hook ((latex-mode . sk/setup-ryo-latex-bindings))
+  :hook ((auctex-mode . sk/setup-ryo-latex-bindings)
+		 (auctex-mode . sk/company-auctex))
   
   :commands
   (LaTeX-mark-section

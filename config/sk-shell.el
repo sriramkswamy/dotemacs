@@ -34,6 +34,7 @@
 ;; Shell auto completion
 (use-package company-shell
   :ensure t
+  :hook ((shell-mode-hook . sk/company-shell))
   :bind* (("C-j C-s" . company-shell)))
 
 ;; zoom into the tmux pane (tmux > 1.8)
@@ -96,7 +97,8 @@
   (eshell))
 
 (use-package eshell
-  :hook (shell-mode . goto-address-mode)
+  :hook ((shell-mode-hook . sk/company-shell)
+		 (shell-mode . goto-address-mode))
   :init
   ;; eshell
   (setq eshell-glob-case-insensitive t

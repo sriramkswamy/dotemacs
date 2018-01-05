@@ -7,11 +7,13 @@
   :demand t
   :hook ((prog-mode-hook . global-company-mode)
 		 (text-mode-hook . global-company-mode)
+		 (prog-mode-hook . sk/company-prog-fallback)
+		 (text-mode-hook . sk/company-text-fallback)
 		 (org-mode-hook . global-company-mode)
 		 (matlab-mode-hook . global-company-mode)
 		 (markdown-mode-hook . global-company-mode))
   :init
-  (setq company-minimum-prefix-length 0
+  (setq company-minimum-prefix-length 1
 		company-require-match 0
 		company-selection-wrap-around t
 		company-tooltip-limit 10
@@ -26,8 +28,8 @@
   :bind* (("C-d"		. company-complete)
 		  ("C-j C-f"	. company-files)
 		  ("C-j C-s"	. company-ispell)
-		  ("C-j C-c"	. company-clang)
 		  ("C-j C-e"	. company-elisp)
+		  ("C-j C-y"	. company-yasnippet)
 		  ("C-j C-a"	. company-dabbrev))
   :bind (:map company-active-map
 			  ("C-n"    . company-select-next)
@@ -41,20 +43,166 @@
   :diminish (company-mode . " ς")
 
   :config
-  ;; set default backends
+  ;; set default backends and list all possible backends
   (setq company-backends
-		'((;; Generic backends
+		'((;; generic backends
 		   company-files          ; files & directory
            company-keywords       ; keywords
-		   company-dabbrev-code   ; code abbrev
-		   company-elisp          ; emacs-lisp code
+		   company-dabbrev-code   ; code words
+		   company-dabbrev        ; words
+		   ;; code backends
+		   ;; company-elisp          ; emacs-lisp code
+		   ;; company-semantic       ; semantic
+		   ;; company-shell       ; shell
+		   ;; company-eclim          ; eclim
+		   ;; company-clang          ; clang
+		   ;; company-rtags          ; rtags
+		   ;; company-ycmd           ; ycmd
+		   ;; company-matlab         ; matlab
+		   ;; company-matlab-shell   ; matlab-shell
+		   ;; company-anaconda       ; anaconda
+           ;; tag backends
 		   ;; company-etags          ; etags
 		   ;; company-gtags          ; gtags
-		   company-semantic       ; semantic
 		   ;; company-bbdb           ; bbdb
-		   company-eclim          ; eclim
-           company-capf)))
+		   ;; completion at point
+		   company-capf)))
   (global-company-mode))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;    Language completions    ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; prog fallback
+(defun sk/company-prog-fallback ()
+  "Add backends for default completions in programming mode"
+  (interactive)
+  (require 'company)
+  (setq company-backends
+		'((;; list of backends
+		   company-files          ; files & directory
+           company-yasnippet      ; snippets
+           company-keywords       ; keywords
+		   company-dabbrev-code   ; code words
+		   company-capf))))
+
+;; text fallback
+(defun sk/company-text-fallback ()
+  "Add backends for default completion in text modes"
+  (interactive)
+  (require 'company)
+  (setq company-backends
+		'((;; list of backends
+		   company-files          ; files & directory
+           company-yasnippet      ; snippets
+		   company-dabbrev        ; words
+		   company-ispell         ; spelling
+		   company-capf))))
+
+;; elisp
+(defun sk/company-elisp ()
+  "Add backends for elisp completion in company mode"
+  (interactive)
+  (require 'company)
+  (setq company-backends
+		'((;; list of backends
+		   company-files          ; files & directory
+           company-yasnippet      ; snippets
+		   company-keywords       ; keywords
+		   company-dabbrev-code   ; code words
+		   company-elisp          ; emacs-lisp code
+		   company-capf))))
+
+;; matlab
+(defun sk/company-matlab ()
+  "Add backends for matlab completion in company mode"
+  (interactive)
+  (require 'company)
+  (setq company-backends
+		'((;; list of backends
+		   company-files          ; files & directory
+           company-yasnippet      ; snippets
+           company-keywords       ; keywords
+		   company-dabbrev-code   ; code words
+		   company-capf))))
+
+;; shell
+(defun sk/company-shell ()
+  "Add backends for shell completion in company mode"
+  (interactive)
+  (require 'company)
+  (setq company-backends
+		'((;; list of backends
+		   company-files          ; files & directory
+           company-yasnippet      ; snippets
+           ;; company-keywords       ; keywords
+		   ;; company-dabbrev-code   ; code words
+		   company-shell          ; matlab shell commands
+		   company-capf))))
+
+;; matlab shell
+(defun sk/company-matlab-shell ()
+  "Add backends for matlab-shell completion in company mode"
+  (interactive)
+  (require 'company)
+  (setq company-backends
+		'((;; list of backends
+		   company-files          ; files & directory
+           company-yasnippet      ; snippets
+           ;; company-keywords       ; keywords
+		   ;; company-dabbrev-code   ; code words
+		   company-matlab-shell   ; matlab shell commands
+		   company-capf))))
+
+;; auctex
+(defun sk/company-auctex ()
+  "Add backends for latex completion"
+  (interactive)
+  (require 'company)
+  (setq company-backends
+		'((;; list of backends
+		   company-files			   ; files & directory
+           company-yasnippet		   ; snippets
+		   company-dabbrev			   ; words
+		   company-ispell			   ; spelling
+		   company-auctex-labels	   ; latex labels
+		   company-auctex-macros	   ; latex macros
+		   company-auctex-symbols	   ; latex symbols
+		   company-auctex-environments ; latex environments
+		   company-auctex-bibs		   ; latex bibs
+		   company-capf))))
+
+;; python
+(defun sk/company-python ()
+  "Add backends for python completion in company mode"
+  (interactive)
+  (require 'company)
+  (setq company-backends
+		'((;; list of backends
+		   ;; company-files          ; files & directory
+           company-yasnippet      ; snippets
+           company-keywords       ; keywords
+		   company-dabbrev-code   ; code words
+		   ;; company-ycmd           ; python ycmd completion
+		   ;; company-lsp            ; python lsp completion
+		   company-anaconda       ; python anaconda completion
+		   company-capf))))
+
+;; clang
+(defun sk/company-clang ()
+  "Add backends for clang completion in company mode"
+  (interactive)
+  (require 'company)
+  (setq company-backends
+		'((;; list of backends
+		   ;; company-files          ; files & directory
+           company-yasnippet      ; snippets
+           company-keywords       ; keywords
+		   company-dabbrev-code   ; code words
+		   ;; company-ycmd           ; python ycmd completion
+		   ;; company-lsp            ; python lsp completion
+		   ;; company-rtags          ; clang rtags completion
+		   company-capf))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Completion suggestions    ;;
@@ -74,30 +222,20 @@
   :diminish ycmd-mode
   :init
   ;; FIXME: set based on location
-  (cond
-   ((eq system-type 'darwin)
-	(progn
-	  (set-variable 'ycmd-server-command
-					'("python" "/Users/sriramkswamy/.emacs.d/ycmd/ycmd"))
-	  (set-variable 'ycmd-extra-conf-whitelist
-					"/Users/sriramkswamy/.emacs.d/.ycm_extra_conf.py")
-	  (set-variable 'ycmd-global-config
-					"/Users/sriramkswamy/.emacs.d/.ycm_extra_conf.py")))
-   ((eq system-type 'gnu/linux)
-	(progn
-	  (set-variable 'ycmd-server-command
-					'("python" "/Users/sriramkswamy/.emacs.d/ycmd/ycmd"))
-	  (set-variable 'ycmd-extra-conf-whitelist
-					"/Users/sriramkswamy/.emacs.d/.ycm_extra_conf.py")
-	  (set-variable 'ycmd-global-config
-					"/Users/sriramkswamy/.emacs.d/.ycm_extra_conf.py"))))
+  (set-variable 'ycmd-server-command
+				(list "python" (file-truename (concat user-emacs-directory "ycmd/ycmd"))))
+  ;; (set-variable 'ycmd-extra-conf-whitelist
+  ;; 					(file-truename (concat user-emacs-directory "ycmd/.ycm_extra_conf.py")))
+  (set-variable 'ycmd-global-config
+				(file-truename (concat user-emacs-directory "ycmd/.ycm_extra_conf.py")))
   (setq ycmd-force-semantic-completion t)
-  :hook ((c++-mode . ycmd-mode)
-		 (c-mode . ycmd-mode)
-		 (python-mode . ycmd-mode)
-		 (org-mode . ycmd-mode)
-		 (markdown-mode . ycmd-mode)
-		 (ycmd-mode . ycmd-eldoc-setup))
+
+  ;; :hook ((c++-mode . ycmd-mode)
+  ;; 		 (c-mode . ycmd-mode)
+  ;; 		 (python-mode . ycmd-mode)
+  ;; 		 (org-mode . ycmd-mode)
+  ;; 		 (markdown-mode . ycmd-mode)
+  ;; 		 (ycmd-mode . ycmd-eldoc-setup))
 
   :commands
   (ycmd-goto

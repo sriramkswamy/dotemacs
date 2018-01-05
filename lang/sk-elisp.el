@@ -39,6 +39,12 @@
    macrostep-next-macro
    macrostep-prev-macro))
 
+(use-package emacs-lisp-mode
+  :hook ((emacs-lisp-mode . sk/company-elisp)))
+
+(use-package lisp-interaction-mode
+  :hook ((lisp-interaction-mode . sk/company-elisp)))
+
 (ryo-modal-major-mode-keys
  'emacs-lisp-mode
  ;; macrostep

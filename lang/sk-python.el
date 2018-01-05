@@ -114,9 +114,12 @@
 (use-package python
   :ensure t
   :mode ("\\.py\\'" . python-mode)
-  :hook ((python-mode . sk/python-operator))
-  ;; :hook ((python-mode . lsp-mode)
-  ;; 		 (python-mode . lsp-python-enable))
+  :hook ((python-mode . sk/python-operator)
+		 ;; (python-mode . lsp-mode)
+		 ;; (python-mode . lsp-python-enable)
+		 ;; (python-mode . ycmd-mode)
+		 (python-mode . sk/company-python))
+
   :commands
   (python-shell-send-string
    python-shell-send-region

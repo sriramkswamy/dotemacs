@@ -1,7 +1,7 @@
 ;; best git wrapper ever
 (use-package magit
   :ensure t
-  :ensure-system-package (git)
+  :ensure-system-package git
   :bind* ("C-x g" . magit-status)
   :commands
   (magit-blame))

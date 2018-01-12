@@ -132,7 +132,7 @@
 ;; dumb jumping
 (use-package dumb-jump
   :ensure t
-  :ensure-system-package (ag)
+  :ensure-system-package ag
   :commands
   (dumb-jump-go
    dumb-jump-goto-file-line)

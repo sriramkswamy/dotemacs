@@ -115,8 +115,8 @@
   :ensure t
   :mode ("\\.py\\'" . python-mode)
   :hook ((python-mode . sk/python-operator)
-		 ;; (python-mode . lsp-mode)
-		 ;; (python-mode . lsp-python-enable)
+		 (python-mode . lsp-mode)
+		 (python-mode . lsp-python-enable)
 		 ;; (python-mode . ycmd-mode)
 		 (python-mode . sk/company-python))
 
@@ -132,7 +132,7 @@
   (setq python-shell-interpreter "python3")
   (setq python-shell-native-complete nil)
   ;; (add-to-list 'python-shell-completion-native-disabled-interpreters "python3")
-  
+
   ;; language server protocol
   (require 'lsp-mode)
   (require 'lsp-common)

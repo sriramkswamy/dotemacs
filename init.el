@@ -465,6 +465,13 @@
 	:name 'latexmk
 	:ready-message "=== Watching for updated files. Use ctrl/C to stop ...")
   (prodigy-define-service
+	:name "beamer slides+notes current"
+	:command "latexmk"
+	:args '("-pdf" "-pvc" "./both.tex")
+	:cwd (directory-file-name default-directory)
+	:tags '(latexmk)
+	:kill-signal 'sigkill)
+  (prodigy-define-service
 	:name "beamer slides current"
 	:command "latexmk"
 	:args '("-pdf" "-pvc" "./slides.tex")
@@ -479,6 +486,13 @@
 	:tags '(latexmk)
 	:kill-signal 'sigkill)
   (prodigy-define-service
+	:name "beamer slides+notes parent"
+	:command "latexmk"
+	:args '("-pdf" "-pvc" "./both.tex")
+	:cwd (file-name-directory (directory-file-name default-directory))
+	:tags '(latexmk)
+	:kill-signal 'sigkill)
+  (prodigy-define-service
 	:name "beamer slides parent"
 	:command "latexmk"
 	:args '("-pdf" "-pvc" "./slides.tex")
@@ -490,6 +504,13 @@
 	:command "latexmk"
 	:args '("-pdf" "-pvc" "./notes.tex")
 	:cwd (file-name-directory (directory-file-name default-directory))
+	:tags '(latexmk)
+	:kill-signal 'sigkill)
+  (prodigy-define-service
+	:name "beamer slides+notes project"
+	:command "latexmk"
+	:args '("-pdf" "-pvc" "./both.tex")
+	:cwd (file-name-directory (vc-root-dir))
 	:tags '(latexmk)
 	:kill-signal 'sigkill)
   (prodigy-define-service

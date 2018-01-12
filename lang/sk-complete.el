@@ -202,11 +202,12 @@
 		'((;; list of backends
 		   ;; company-files          ; files & directory
            company-yasnippet      ; snippets
-           company-keywords       ; keywords
-		   company-dabbrev-code   ; code words
+           ;; company-keywords       ; keywords
+		   ;; company-dabbrev-code   ; code words
 		   ;; company-ycmd           ; python ycmd completion
 		   ;; company-lsp            ; python lsp completion
-		   ;; company-rtags          ; clang rtags completion
+		   company-rtags          ; clang rtags completion
+		   ;; company-irony          ; clang irony completion
 		   company-capf))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

@@ -297,7 +297,7 @@
 (when (memq window-system '(mac ns))
   (use-package exec-path-from-shell
 	:ensure t
-	:defer t
+	:defer 1
 	:ensure-system-package
 	(brew ."/usr/bin/ruby -e \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)\"")
 	:bind* (("C-x x" . exec-path-from-shell-initialize)
@@ -545,8 +545,8 @@
 (bind-keys
  ("C-o"     . sk/open-line-above)
  ("M-o"     . sk/open-line-below)
- ("M-n" . sk/nothing)
- ("M-p" . sk/nothing)
+ ("M-n"		. sk/nothing)
+ ("M-p"		. sk/nothing)
  ("C-x C-b" . ibuffer)
  ("C-c C-c" . sk/nothing)
  ("C-c C-f" . sk/nothing))
@@ -561,4 +561,3 @@
 
 ;; 1 MB now
 (add-hook 'after-init-hook (lambda () (setq gc-cons-threshold (* 1 1024 1024))))
-

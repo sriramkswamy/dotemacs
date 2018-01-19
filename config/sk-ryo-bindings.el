@@ -223,6 +223,7 @@
 				 ("n" treemacs-toggle :name "file tree" :norepeat t)
 				 ("z" prodigy :name "background services" :norepeat t)
 				 ("q" quickrun :name "quickrun" :norepeat t)
+				 ("b" hydra-debug/body :name "begin debugging" :norepeat t)
                  ("j" "M-x" :name "commands" :norepeat t)))
 
 ;; use locate or spotlight depending on the system

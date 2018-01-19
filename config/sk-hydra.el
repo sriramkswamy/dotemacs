@@ -41,5 +41,31 @@
   ("A" sp-splice-sexp-killing-around)
   ("q" nil :color blue))
 
+;; hydra for debugging
+(defhydra hydra-debug (:pre (sk/gud-mode) :color red :hint nil)
+  "
+ ^Debuggers^   ^Breakpoints^    ^Navigation^             ^Quit^
+^^^^^^^^^^^^^--------------------------------------------------------------------------
+ _g_: gdb      _b_: toggle      _j_: next  _i_: step in    _k_: kill debug
+ _p_: pdb      _r_: remove      _s_: step  _o_: step out   _q_: quit hydra
+                            _c_: cont  _f_: finish
+"
+  ;; debuggers
+  ("g" realgud:gdb)
+  ("p" realgud:pdb)
+  ;; breakpoints
+  ("b" sk/gud-break)
+  ("r" sk/gud-remove)
+  ;; navigation
+  ("j" sk/gud-next)
+  ("s" sk/gud-step)
+  ("i" sk/gud-down)
+  ("o" sk/gud-up)
+  ("c" sk/gud-cont)
+  ("f" sk/gud-finish)
+  ;; quit
+  ("k" gdb-exit :color blue)
+  ("q" nil :color blue))
+
 ;; provide hydra
 (provide 'sk-hydra)

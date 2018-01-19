@@ -3,6 +3,7 @@
   "add gud mode"
   (interactive)
   ;; (require 'gdb)
+  (require 'realgud)
   (require 'gud))
 
 ;; gud set breakpoint

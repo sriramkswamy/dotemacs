@@ -110,7 +110,7 @@
 		eshell-buffer-shorthand t
 		eshell-history-size 1024
 		eshell-cmpl-ignore-case t
-		eshell-prompt-function (lambda () (concat eshell-prompt-function " $ "))
+		eshell-prompt-function (lambda () (concat " $ "))
 		eshell-aliases-file (concat user-emacs-directory ".eshell-aliases")
 		eshell-last-dir-ring-size 512))
 

@@ -198,7 +198,7 @@
   ;; settings
   (setq eshell-prompt-function
 		(lambda ()
-		  (concat eshell-prompt-function venv-current-name " $ ")))
+		  (concat venv-current-name " $ ")))
   (venv-initialize-interactive-shells)
   (venv-initialize-eshell))
 

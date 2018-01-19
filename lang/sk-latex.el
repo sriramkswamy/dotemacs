@@ -51,6 +51,13 @@
   :mode (("\\.tex\\'" . latex-mode)
 		 ("\\.xtx\\'" . latex-mode))
   
+  :bind (:map TeX-mode-map
+			  ("C-d" . company-auctex-symbols))
+  :bind (:map latex-mode-map
+			  ("C-d" . company-auctex-symbols))
+  :bind (:map LaTeX-mode-map
+			  ("C-d" . company-auctex-symbols))
+
   :init
   (setq reftex-plug-into-AUCTeX t)
   (setq reftex-default-bibliography

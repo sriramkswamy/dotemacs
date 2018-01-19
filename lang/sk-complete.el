@@ -168,8 +168,8 @@
 		'((;; list of backends
 		   company-files			   ; files & directory
            company-yasnippet		   ; snippets
-		   company-dabbrev			   ; words
-		   company-ispell			   ; spelling
+		   ;; company-dabbrev			   ; words
+		   ;; company-ispell			   ; spelling
 		   company-auctex-labels	   ; latex labels
 		   company-auctex-macros	   ; latex macros
 		   company-auctex-symbols	   ; latex symbols

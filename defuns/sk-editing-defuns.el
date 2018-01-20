@@ -74,14 +74,20 @@
 (defun sk/mark-next-line (count)
   "marks to the next `count' lines"
   (interactive "p")
+  (beginning-of-line)
   (set-mark (point))
-  (next-line count))
+  (next-line count)
+  (end-of-line)
+  (forward-char))
 
 (defun sk/mark-previous-line (count)
   "marks to the previous `count' lines"
   (interactive "p")
+  (end-of-line)
   (set-mark (point))
-  (previous-line count))
+  (previous-line (+ count 1))
+  (next-line)
+  (beginning-of-line))
 
 (defun sk/mark-next-char (count)
   "marks to the next `count' chars"

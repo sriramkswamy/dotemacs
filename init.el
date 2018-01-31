@@ -549,6 +549,7 @@
  ("M-p"		. sk/nothing)
  ("C-x C-b" . ibuffer)
  ("C-c C-c" . sk/nothing)
+ ("C-c '"	. sk/nothing)
  ("C-c C-f" . sk/nothing))
 
 ;; modal bindings and hints

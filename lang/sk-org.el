@@ -499,7 +499,6 @@
  ("m y" org-copy-subtree :name "copy subtree")
  ("m d" org-cut-subtree :name "delete subtree")
  ("m i" org-insert-link :name "insert link")
- ("m t" org-toggle-link-display :name "toggle links")
  ("m r" org-add-note :name "add note")
  ("m z" org-footnote-new :name "add footnote")
  ("m w" org-insert-heading :name "insert heading" :exit t)
@@ -509,22 +508,29 @@
  ("m c i" org-clock-in :name "clock in")
  ("m c o" org-clock-out :name "clock out")
 
+ ;; toggle things
+ ("m t l" org-toggle-link-display :name "links")
+ ("m t t" org-toggle-latex-fragment :name "tex")
+ ("m t i" org-toggle-inline-images :name "images")
+ ("m t o" org-toggle-inline-images :name "ordered property")
+
  ;; misc
  ("m a a" org-set-tags-command :name "tags")
  ("m a t" org-todo :name "todo")
  ("m a d" org-deadline :name "deadline")
  ("m a s" org-schedule :name "schedule")
+;  ("m x" org-reftex-citation :name "reftex")
  ("m m" org-export-dispatch :name "export")
- ("m x" org-toggle-latex-fragment :name "toggle latex")
  ("m u" interleave :name "interleave")
- ("m g" org-toggle-inline-images :name "toggle images")
  ("m o" org-babel-tangle :name "tangle")
- 
+
+ ;; custom
  ("m q" sk/org-create-checkbox :name "create checkbox"))
 
 (which-key-add-major-mode-key-based-replacements 'org-mode
   "m e" "edit heading"
   "m s" "subtree/item"
+  "m t" "toggle"
   "m c" "cal/clock"
   "m a" "add")
 

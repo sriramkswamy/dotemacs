@@ -20,7 +20,8 @@
  (:norepeat t)
  (":" "C-x" :name "C-x maps")
  ("\"" "C-c" :name "C-c maps")
- ("`" "C-u" :name "C-u maps"))
+ ("`" "C-u" :name "C-u maps")
+ ("m =" "C-c '" :name "C-c edit special"))
 
 ;; ryo modal general mappings
 (ryo-modal-keys

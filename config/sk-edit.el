@@ -160,5 +160,11 @@
   :ensure t
   :commands (string-inflection-all-cycle))
 
+;; fill programming modes
+(use-package prog-fill
+  :ensure t
+  :commands
+  (prog-fill))
+
 ;; provide editing related packages
 (provide 'sk-edit)

@@ -260,7 +260,7 @@
 
 ;; mapping with global prefix
 (ryo-modal-key "g"
-               '(("A" describe-char :name "describe char" :norepeat t)
+               '(("A" prog-fill :name "program fill" :norepeat t)
                  ("D" dash-at-point-with-docset :name "dash doc" :norepeat t)
                  ("S" electric-newline-and-maybe-indent :name "split line")
                  ("J" join-line :name "join line")
@@ -274,6 +274,7 @@
 				 ("W" wdired-change-to-wdired-mode :name "writeable dir" :norepeat t)
 				 ("O" package-install :name "install package" :norepeat t)
 				 ("`" async-shell-command :name "run shell command" :norepeat t)
+				 ("a" describe-char :name "describe char" :norepeat t)
 				 ("M" list-packages :name "list packages" :norepeat t)
 				 ("V" sk/browse-current-file :name "view file in browser" :norepeat t)
 				 ("N" sk/rename-current-buffer-file :name "rename file" :norepeat t)

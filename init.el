@@ -363,8 +363,8 @@
 
 ;; select a good theme
 (if (display-graphic-p)
-	(load-theme 'tsdh-light t)
-  (load-theme 'tsdh-dark t))
+	(load-theme 'whiteboard t)
+  (load-theme 'wheatgrass t))
 
 ;; fancy battery
 (use-package fancy-battery

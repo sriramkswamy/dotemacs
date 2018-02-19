@@ -25,10 +25,10 @@
 (scroll-bar-mode -1)														  	; deactivate the scrollbar
 (tooltip-mode -1)															  	; deactivate the tooltip
 (setq initial-frame-alist													  	; initial frame size
-	  '((width . 100)														  	; characters in a line
+      '((width . 100)														  	; characters in a line
 		(height . 52)))														  	; number of lines
 (setq default-frame-alist													  	; subsequent frame size
-	  '((width . 100)														  	; characters in a line
+      '((width . 100)														  	; characters in a line
 		(height . 52)))														  	; number of lines
 (blink-cursor-mode -1)														  	; don't blink the cursor
 (defun display-startup-echo-area-message () (message "Let the games begin!")) 	; change the default startup echo message
@@ -42,7 +42,7 @@
 (when (fboundp 'winner-mode)												  	; when you can find 'winner-mode'
   (winner-mode 1))															  	; activate winner mode
 (setq recentf-max-saved-items 1000											  	; set the number of recent items to be saved
-	  recentf-exclude '("/tmp/" "/ssh:"))									  	; exclude the temporary and remote files accessed recently
+      recentf-exclude '("/tmp/" "/ssh:"))									  	; exclude the temporary and remote files accessed recently
 (setq ns-use-native-fullscreen nil)											  	; don't use the native fullscreen - more useful in a Mac
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))		  	; setup a new custom file
 (when (file-exists-p custom-file)											  	; if the custom file exists
@@ -62,17 +62,16 @@
 
 ;; how to interpret the command key and the option key on a Mac
 (when (eq system-type 'darwin)
-  ;; (setq mac-command-key-is-meta nil)
-  (setq mac-command-modifier 'meta)
-  ;; (setq mac-option-key-is-meta t)
-  ;; (setq mac-option-modifier 'meta)
-  )
+  (setq mac-command-key-is-meta nil)
+  ;; (setq mac-command-modifier 'meta)
+  (setq mac-option-key-is-meta t)
+  (setq mac-option-modifier 'meta))
 
 ;; Set fonts
 (cond ((eq system-type 'gnu/linux)                 ; if system is GNU/Linux
        (set-frame-font "DejaVu Sans Mono"))        ; set the font to DejaVu Sans Mono
       ((eq system-type 'darwin)                    ; if system is macOS
-	   (mac-auto-operator-composition-mode)        ; ligature support
+       (mac-auto-operator-composition-mode)        ; ligature support
        (set-frame-font "Fira Code"))               ; set the font to Monaco
       ((eq system-type 'windows-nt)                ; if system is Windows
        (set-frame-font "Lucida Sans Typewriter"))) ; set the font to Lucida Sans Typewriter
@@ -254,11 +253,11 @@
 
 ;; line number after emacs 26
 (if (version< emacs-version "26")
-	(message "Line number mode not activated")
+    (message "Line number mode not activated")
   (use-package display-line-numbers
-	:init
-	(setq display-line-numbers-type 'relative)
-	:hook ((prog-mode . display-line-numbers-mode)
+    :init
+    (setq display-line-numbers-type 'relative)
+    :hook ((prog-mode . display-line-numbers-mode)
 		   (text-mode . display-line-numbers-mode))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -296,16 +295,16 @@
 ;; Make sure the path is set right for macOS
 (when (memq window-system '(mac ns))
   (use-package exec-path-from-shell
-	:ensure t
-	:defer 1
-	:ensure-system-package
-	(brew ."/usr/bin/ruby -e \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)\"")
-	:bind* (("C-x x" . exec-path-from-shell-initialize)
+    :ensure t
+    :defer 1
+    :ensure-system-package
+    (brew ."/usr/bin/ruby -e \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)\"")
+    :bind* (("C-x x" . exec-path-from-shell-initialize)
 			("C-x y" . exec-path-from-shell-copy-env))
-	:init
-	(setq exec-path-from-shell-check-startup-files nil)
-	:config
-	(exec-path-from-shell-initialize)))
+    :init
+    (setq exec-path-from-shell-check-startup-files nil)
+    :config
+    (exec-path-from-shell-initialize)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Core functions    ;;
@@ -337,8 +336,8 @@
   :config
   ;; workaround for emacs 26
   (if (version< emacs-version "26")
-	  (message "Tracking stable Emacs")
-	(defalias 'display-buffer-in-major-side-window 'window--make-major-side-window))
+      (message "Tracking stable Emacs")
+    (defalias 'display-buffer-in-major-side-window 'window--make-major-side-window))
   ;; turn on which key and add some names for default/common prefixes
   (which-key-enable-god-mode-support)
   (which-key-mode))
@@ -363,7 +362,7 @@
 
 ;; select a good theme
 (if (display-graphic-p)
-	(load-theme 'whiteboard t)
+    (load-theme 'whiteboard t)
   (load-theme 'wheatgrass t))
 
 ;; fancy battery

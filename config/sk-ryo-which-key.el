@@ -45,10 +45,10 @@
   "g l SPC a" "around"
   "g l SPC g" "global"
   
-  "g l s" "align semicolon"
-  "g l s i" "inside"
-  "g l s a" "around"
-  "g l s g" "global"
+  "g l d" "align semicolon"
+  "g l d i" "inside"
+  "g l d a" "around"
+  "g l d g" "global"
   
   "g l &" "align ampersand"
   "g l & i" "inside"

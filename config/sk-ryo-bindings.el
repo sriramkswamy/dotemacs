@@ -44,7 +44,6 @@
  ("g \\" xref-pop-marker-stack :name "xref back")
  ("g (" ggtags-create-tags :name "create tags")
  ("g )" ggtags-update-tags :name "update tags")
- ("s s" hydra-smartparens/body :name "smartparens")
  ("DEL" mode-line-other-buffer :name "last buffer")
  ("TAB" vimish-fold-toggle :name "toggle folds")
  ("W" dired-jump :name "open dir"))
@@ -68,7 +67,6 @@
 (ryo-modal-keys
  ("p" "C-y" :name "paste")
  ("P" yank-rectangle :name "paste rectangle")
- ("S" embrace-commander :name "surround")
  ("x" delete-char :name "delete char")
  ("~" sk/toggle-letter-case :name "toggle case")
  ("u" "C-/" :name "undo" :norepeat t)
@@ -106,7 +104,7 @@
  ("F" iy-go-to-char-backward :name "to char back")
  (";" iy-go-to-or-up-to-continue :name "continue char")
  ("," iy-go-to-or-up-to-continue-backward :name "continue char back")
- ("'" "C-c g" :name "goto char(s)"))
+ ("s" "C-c g" :name "goto char(s)"))
 
 ;; ryo modal narrowing maps
 (ryo-modal-keys
@@ -144,20 +142,34 @@
 ;; ryo scroll maps
 (ryo-modal-keys
  ("g j" diff-hl-next-hunk :name "next diff")
- ("g k" diff-hl-previous-hunk :name "previous diff")
- ("s p" sk/other-window-up :name "scroll up other window")
- ("s n" scroll-other-window :name "scroll down other window")
- ("s f" sk/other-doc-down :name "next page other window")
- ("s b" sk/other-doc-up :name "previous page other window")
- ("s a" sk/doc-revert-other-window :name "revert pdf other window")
- ("s o" sk/other-doc-fit :name "fit pdf other window")
- ("s u" sk/interleave-other-window-previous :name "interleave up other window")
- ("s d" sk/interleave-other-window-next :name "interleave down other window")
- ("s i" sk/interleave-other-window-note :name "interleave note")
- ("s h" "C-x >" :name "scroll left")
- ("s j" "C-v" :name "scroll down")
- ("s k" "M-v" :name "scroll up")
- ("s l" "C-x <" :name "scroll right"))
+ ("g k" diff-hl-previous-hunk :name "previous diff"))
+
+;; ryo scroll hydra
+(ryo-modal-key
+ "S" :hydra
+ '(hydra-scroll (:hint nil)
+				"
+^Window^                      ^Doc^                           ^Notes^         ^Quit^
+^^^^^^^^^^^^^-------------------------------------------------------------------------------
+ _k_: up     _p_: other up      _b_: prev page  _a_: other revert _i_: note       _s_: smart
+ _j_: down   _n_: other down    _f_: next page  _o_: other fit    _u_: notes up   _q_: quit
+ _h_: left   _l_: right                                       _d_: notes down
+"
+				("p" sk/other-window-up)
+				("n" scroll-other-window)
+				("f" sk/other-doc-down)
+				("b" sk/other-doc-up)
+				("a" sk/doc-revert-other-window :color blue)
+				("o" sk/other-doc-fit :color blue)
+				("u" sk/interleave-other-window-previous)
+				("d" sk/interleave-other-window-next)
+				("i" sk/interleave-other-window-note :color blue)
+ 				("h" scroll-right)
+				("j" scroll-up-command)
+				("k" scroll-down-command)
+				("l" scroll-left)
+				("s" hydra-smartparens/body :color blue)
+				("q" nil :color blue)))
 
 ;; ryo modal repl maps
 (ryo-modal-keys
@@ -306,7 +318,7 @@
          ("k" sk/mark-previous-line :name "previous line(s)")
          ("l" sk/mark-next-char :name "next char(s)")
          ("b" sk/mark-backward-word :name "to start of word")
-         ("e" mark-word :name "to end of word")
+         ("e" sk/mark-forward-word :name "to end of word")
          ("{" sk/mark-backward-para :name "to start of para")
          ("}" sk/mark-forward-para :name "to end of para")
          ("g g" sk/mark-beginning-buffer :name "to beginning of buffer")
@@ -317,7 +329,7 @@
          ("T" sk/mark-up-to-char-backward :name "till char back")
          (";" sk/mark-continue :name "continue")
          ("," sk/mark-continue-backward :name "continue back")
-         ("'" "C-c G" :name "till char(s)")
+         ("s" "C-c G" :name "till char(s)")
          ;; inner-around style text object
          ("i w" er/mark-word :name "word")
          ("a w" sk/mark-around-word :name "word")
@@ -372,7 +384,7 @@
 ;; alignment
 (eval `(ryo-modal-keys
           ("g l SPC" ,text-objects :then '(sk/align-whitespace))
-          ("g l s" ,text-objects :then '(sk/align-semicolon))
+          ("g l d" ,text-objects :then '(sk/align-semicolon))
           ("g l &" ,text-objects :then '(sk/align-ampersand))
           ("g l q" ,text-objects :then '(sk/align-quote-space))
           ("g l =" ,text-objects :then '(sk/align-equals))
@@ -437,7 +449,7 @@
  ("w SPC SPC" ws-butler-maybe-trim-eob-lines :name "trim whitespace")
  ;; alignment
  ("g l SPC SPC" sk/align-whitespace :name "align whitespace")
- ("g l s s" sk/align-semicolon :name "align semicolon")
+ ("g l d d" sk/align-semicolon :name "align semicolon")
  ("g l & &" sk/align-ampersand :name "align ampersand")
  ("g l q q" sk/align-quote-space :name "align quote")
  ("g l = =" sk/align-equals :name "align equal")
@@ -484,6 +496,7 @@
  ("d u" sk/ediff-dwim :name "diff update")
  ("d r" kill-rectangle :name "delete rectangle")
  ;; y based maps
+ ("y s" embrace-commander :name "surround")
  ("y p" sk/paste-from-clipboard :name "paste from clipboard")
  ("y r" copy-rectangle-as-kill :name "copy rectangle"))
 

@@ -101,6 +101,12 @@
   (set-mark (point))
   (backward-char count))
 
+(defun sk/mark-forward-word (count)
+  "marks to the end of word from current position"
+  (interactive "p")
+  (mark-word)
+  (exchange-point-and-mark))
+
 (defun sk/mark-backward-word (count)
   "marks to the beginning of word from current position"
   (interactive "p")

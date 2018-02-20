@@ -117,7 +117,7 @@
 ;; Keep the mode-line clean
 (use-package diminish
   :ensure t
-  :demand t)
+  :defer t)
 
 ;; extensions for use-package
 (use-package use-package-ensure-system-package
@@ -194,7 +194,7 @@
 
 ;; auto revert mode
 (use-package autorevert
-  :demand t
+  :defer t
   :diminish auto-revert-mode)
 
 ;; documentation helper
@@ -210,7 +210,7 @@
 
 ;; save history
 (use-package savehist
-  :demand t
+  :defer t
   :config
   (savehist-mode 1))
 
@@ -341,6 +341,13 @@
   ;; turn on which key and add some names for default/common prefixes
   (which-key-enable-god-mode-support)
   (which-key-mode))
+
+;; key chord for when necessary
+(use-package use-package-chords
+  :ensure t
+  :demand t
+  :config
+  (key-chord-mode 1))
 
 ;; modality
 (require 'sk-ryo-modal)

@@ -53,7 +53,7 @@
 ;; use-package config
 (use-package ryo-modal
   :ensure t
-  :demand t
+  :chords (("  " . sk/enable-ryo-modal-mode))
   :diminish (ryo-modal-mode . " μ")
 
   :hook ((text-mode        . sk/enable-ryo-modal-mode)

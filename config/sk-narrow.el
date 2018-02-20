@@ -13,6 +13,8 @@
 (use-package ivy
   :ensure t
   :demand t
+  :commands
+  (sk/enable-ryo-modal-mode)
   :diminish ivy-mode
   :init
   ;; set ivy height

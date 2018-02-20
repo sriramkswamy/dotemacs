@@ -1,7 +1,7 @@
 ;; hydra
 (use-package hydra
   :ensure t
-  :demand t)
+  :defer t)
 
 ;; smartparens hydra
 (defhydra hydra-smartparens (:color red :hint nil)

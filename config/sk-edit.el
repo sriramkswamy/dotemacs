@@ -88,6 +88,59 @@
   :config
   (require 'sk-expand-defuns))
 
+;; multiple cursors
+(use-package multiple-cursors
+  :ensure t
+  :commands
+  (mc/mark-pop
+   mc/mmlte--up
+   mc/edit-lines
+   mc/mmlte--down
+   mc/mmlte--left
+   mc/mmlte--right
+   mc/sort-regions
+   mc/cycle-forward
+   mc/keyboard-quit
+   mc/cycle-backward
+   mc/insert-letters
+   mc/insert-numbers
+   mc/repeat-command
+   mc/vertical-align
+   mc/reverse-regions
+   mc/mark-all-dwim
+   mc/mark-next-lines
+   mc/mark-previous-lines
+   mc/edit-ends-of-lines
+   mc/mark-all-in-region
+   mc/mark-all-like-this
+   mc/mark-sgml-tag-pair
+   mc/add-cursor-on-click
+   mc/mark-next-like-this
+   mc/unmark-next-like-this
+   mc/toggle-cursor-on-click
+   mc/mark-previous-like-this
+   mc/edit-beginnings-of-lines
+   mc/unmark-previous-like-this
+   mc/vertical-align-with-space
+   mc/skip-to-next-like-this
+   mc/mark-all-like-this-dwim
+   mc/mark-all-words-like-this
+   mc/mark-next-like-this-word
+   mc/mark-next-word-like-this
+   mc/mark-all-in-region-regexp
+   mc/mark-all-symbols-like-this
+   mc/mark-next-like-this-symbol
+   mc/mark-next-symbol-like-this
+   mc/skip-to-previous-like-this
+   mc/mark-more-like-this-extended
+   mc/mark-previous-like-this-word
+   mc/mark-previous-word-like-this
+   mc/mark-previous-like-this-symbol
+   mc/mark-previous-symbol-like-this
+   mc/mark-all-like-this-in-defun
+   mc/mark-all-words-like-this-in-defun
+   mc/mark-all-symbols-like-this-in-defun))
+
 ;; work on indentation
 (use-package indent-tools
   :ensure t

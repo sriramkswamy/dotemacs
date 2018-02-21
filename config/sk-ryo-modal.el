@@ -64,7 +64,10 @@
   :bind (("<escape>" . sk/enable-ryo-modal-mode)
          :map ryo-modal-mode-map
          ("<escape>" . sk/remove-mark)
-         ("."        . ryo-modal-repeat))
+         ("."        . repeat)
+		 (">"        . mc/mark-next-like-this)
+		 ("<"        . mc/mark-previous-like-this)
+		 ("'"        . mc/edit-lines))
 
   :init
   ;; remove ryo key word from which-key

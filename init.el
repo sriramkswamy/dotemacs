@@ -347,6 +347,7 @@
   :ensure t
   :demand t
   :config
+  ;; (key-chord-define-global "  " 'sk/enable-ryo-modal-mode)
   (key-chord-mode 1))
 
 ;; modality

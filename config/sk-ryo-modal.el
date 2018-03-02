@@ -64,14 +64,14 @@
   :bind (("<escape>" . sk/enable-ryo-modal-mode)
          :map ryo-modal-mode-map
          ("<escape>" . sk/remove-mark)
-         ("."        . repeat)
+         ("."        . ryo-modal-repeat)
 		 (">"        . mc/mark-next-like-this)
 		 ("<"        . mc/mark-previous-like-this)
 		 ("'"        . mc/edit-lines))
 
   :init
   ;; remove ryo key word from which-key
-  (push '((nil . "ryo:") . (nil . "")) which-key-replacement-alist)
+  (push '((nil . "ryo:\\w+:") . (nil . "")) which-key-replacement-alist)
 
   ;; default cursor shape
   (setq-default cursor-type '(bar . 2))

@@ -3,13 +3,21 @@
 
 (setq mc/cmds-to-run-for-all
       '(
+		iy-go-to-char--command
 		ryo:04a1830bad47c97c575a7afb01ebd040:line/region
 		ryo:1cf9c664ed81221b6fc344af519fce32:prev\ word
+		ryo:1d69d4d933b4d946c12c557c0cc424e9:line/region
+		ryo:3b5ff6385e5bc8f7bc61550b52b5d807:end\ of\ line
+		ryo:53b30d6e93958ac24aaa9cd3e8900c05:prev\ line
 		ryo:848b1d4c3d1ae485709df48d826047bd:word
 		ryo:8628beab3b735c231dec1454d5e52aaa:next\ like\ this
+		ryo:8d526cc7c75e2989b0c245f4e7fbf884:append\ end\ of\ line
+		ryo:9c18ac4c2959ab93895fdf9ea12e378b:to\ end\ of\ word
+		ryo:b0149f53ca1e7fbb80ec479545786acc:insert
 		ryo:dff4676e9e13ff5ff13e695aac818e69:next\ word
 		ryo:efc40336295ecb767ca17f53da17c18d:start\ of\ line
 		sk/enable-ryo-modal-mode
+		sk/kill-region-or-backward-word
 		sk/remove-mark
 		sp-backward-delete-char
 		))

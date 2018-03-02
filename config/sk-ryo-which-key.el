@@ -40,6 +40,7 @@
 
 ;; alignment
 (which-key-add-key-based-replacements
+  "g l" "align"
   "g l SPC" "align whitespace"
   "g l SPC i" "inside"
   "g l SPC a" "around"

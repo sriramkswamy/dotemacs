@@ -74,6 +74,17 @@
 		   company-capf)))
   (global-company-mode))
 
+;; ;; use a child frame
+;; (use-package company-childframe
+;;   :ensure t
+;;   :diminish company-childframe-mode
+;;   :after company
+;;   :config
+;;   (company-childframe-mode 1)
+;;   (require 'desktop)
+;;   (push '(company-childframe-mode . nil)
+;;       desktop-minor-mode-table))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Language completions    ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

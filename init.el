@@ -369,9 +369,10 @@
 (require 'sk-narrow)
 
 ;; select a good theme
-(if (display-graphic-p)
-    (load-theme 'whiteboard t)
-  (load-theme 'wheatgrass t))
+(use-package nord-theme
+  :ensure t
+  :demand t)
+(load-theme 'nord t)
 
 ;; fancy battery
 (use-package fancy-battery

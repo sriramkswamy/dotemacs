@@ -369,10 +369,13 @@
 (require 'sk-narrow)
 
 ;; select a good theme
-(use-package nord-theme
-  :ensure t
-  :demand t)
-(load-theme 'nord t)
+(use-package flatui-theme
+  :ensure t)
+(use-package flatui-dark-theme
+  :ensure t)
+(use-package ample-theme
+  :ensure t)
+(load-theme 'ample t)
 
 ;; fancy battery
 (use-package fancy-battery

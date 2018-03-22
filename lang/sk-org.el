@@ -232,7 +232,7 @@
 								 "Articles" ; name
 								 entry	    ; type
 								 (file+headline "~/Dropbox/org/phd.org" "Articles") ; target
-								 "* %? %^G\n:PROPERTIES:\n:Created: %U\n:END:\n%i" ; template
+								 "* %? %^G\n:PROPERTIES:\n:Created: %U\n:Linked: %A\n:END:\n%i" ; template
 								 :prepend t	 ; properties
 								 :empty-lines 1	 ; properties
 								 :created t	 ; properties
@@ -287,7 +287,7 @@
 								 "Work"	; name
 								 entry	; type
 								 (file+headline "~/Dropbox/org/phd.org" "Tasks")	; target
-								 "* TODO %^{Title} %^G\n%i\n%?" ; template
+								 "* TODO %^{Title} %^G\n:PROPERTIES:\n:Created: %U\n:Linked: %A\n:END:\n%i\n%?" ; template
 								 :prepend t	 ; properties
 								 :empty-lines 1	 ; properties
 								 :created t	 ; properties
@@ -321,7 +321,7 @@
 								 "Errands" ; name
 								 entry	   ; type
 								 (file "~/Dropbox/org/personal.org") ; target
-								 "* TODO %^{Title} %^G\n%i\n%?" ; template
+								 "* TODO %^{Title} %^G\n:PROPERTIES:\n:Created: %U\n:END:\n%i\n%?" ; template
 								 :prepend t	 ; properties
 								 :empty-lines 1	 ; properties
 								 :created t	 ; properties
@@ -329,25 +329,16 @@
 
 								;; To capture random thoughts
 								("t"	    ; key
-								 "Thoughts" ; name
+								 "Todo" ; name
 								 entry	    ; type
-								 (file+headline "~/Dropbox/org/personal.org" "Thoughts") ; target
-								 "* %^{Title} %^G\n%i\n%?" ; template
+								 (file "~/Dropbox/org/personal.org") ; target
+								 "TODO %^{Title} %^G\n:PROPERTIES:\n:Created: %U\n:Linked: %A\n:END:\n%i\n%?" ; template
 								 :prepend t	 ; properties
 								 :empty-lines 1	 ; properties
 								 :created t	 ; properties
 								 :kill-buffer t) ; properties
 
-								;; To capture things regarding my course
-								("o"	   ; key
-								 "Courses" ; name
-								 entry	   ; type
-								 (file "~/Dropbox/org/phd.org") ; target
-								 "* COURSES %^{Title} %^G\n%i\n%?" ; template
-								 :prepend t        ; properties
-								 :empty-lines 1    ; properties
-								 :created t        ; properties
-								 :kill-buffer t))) ; properties
+								))
 
   ;; refiling
   (setq org-refile-targets '((nil :maxlevel . 9)

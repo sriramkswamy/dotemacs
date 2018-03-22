@@ -152,8 +152,8 @@
 ^Window^                      ^Doc^                           ^Notes^         ^Quit^
 ^^^^^^^^^^^^^-------------------------------------------------------------------------------
  _k_: up     _p_: other up      _b_: prev page  _a_: other revert _i_: note       _s_: smart
- _j_: down   _n_: other down    _f_: next page  _o_: other fit    _u_: notes up   _q_: quit
- _h_: left   _l_: right                                       _d_: notes down
+ _j_: down   _n_: other down    _f_: next page  _o_: other fit    _u_: notes up   _v_: ivy
+ _h_: left   _l_: right                                       _d_: notes down _q_: quit
 "
 				("p" sk/other-window-up)
 				("n" scroll-other-window)
@@ -169,6 +169,7 @@
 				("k" scroll-down-command)
 				("l" scroll-left)
 				("s" hydra-smartparens/body :color blue)
+				("v" hydra-ivy/body :color blue)
 				("q" nil :color blue)))
 
 ;; ryo modal repl maps

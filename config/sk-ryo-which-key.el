@@ -203,7 +203,7 @@
 
 ;; movement
 (which-key-add-key-based-replacements
-  "s" "smart/scroll"
+  "S" "smart/scroll"
   
   "w" "window"
   "w n" "narrow"

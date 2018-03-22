@@ -142,8 +142,7 @@
    interleave
    org-toggle-inline-images
    org-babel-tangle
-   sk/org-create-checkbox 
-   )
+   sk/org-create-checkbox)
   :hook ((org-mode . visual-line-mode)
 		 (org-mode . flyspell-mode)
 		 (org-mode . sk/org-template-hook))
@@ -151,8 +150,6 @@
   :init
   ;; Set to the location of your Org files on your local system
   (setq org-directory "~/Dropbox/org")
-  ;; Set to <your Dropbox root directory>/MobileOrg.
-  (setq org-mobile-directory "~/Dropbox/Apps/MobileOrg")
   ;; hide markup
   (setq org-hide-emphasis-markers t)
   ;; minimal outlines
@@ -216,9 +213,8 @@
 						  "~/Dropbox/org/personal.org"
 						  "~/Dropbox/org/notes.org"
 						  "~/Dropbox/org/blog.org"
-						  "~/Dropbox/org/phd.org"
+						  "~/Dropbox/org/work.org"
 						  "~/Dropbox/org/potato.org"
-						  "~/Dropbox/org/life.org"
 						  ))
   ;; deadline handling
   (setq org-deadline-warning-days 7
@@ -231,7 +227,7 @@
 								("a"	    ; key
 								 "Articles" ; name
 								 entry	    ; type
-								 (file+headline "~/Dropbox/org/phd.org" "Articles") ; target
+								 (file+headline "~/Dropbox/org/notes.org" "Articles") ; target
 								 "* %? %^G\n:PROPERTIES:\n:Created: %U\n:Linked: %A\n:END:\n%i" ; template
 								 :prepend t	 ; properties
 								 :empty-lines 1	 ; properties
@@ -286,7 +282,7 @@
 								("w"	; key
 								 "Work"	; name
 								 entry	; type
-								 (file+headline "~/Dropbox/org/phd.org" "Tasks")	; target
+								 (file+headline "~/Dropbox/org/work.org" "Tasks")	; target
 								 "* TODO %^{Title} %^G\n:PROPERTIES:\n:Created: %U\n:Linked: %A\n:END:\n%i\n%?" ; template
 								 :prepend t	 ; properties
 								 :empty-lines 1	 ; properties
@@ -297,7 +293,7 @@
 								("m"	   ; key
 								 "Meeting" ; name
 								 entry	   ; type
-								 (file+datetree "~/Dropbox/org/phd.org" "Meeting") ; target
+								 (file+olp+datetree "~/Dropbox/org/work.org" "Meeting") ; target
 								 "* %^{Title} %^G\n:PROPERTIES:\n:Created: %U\n:END:\n%i\n** Agenda:\n%?\n\n** Minutes of the meeting:\n" ; template
 								 :prepend t	 ; properties
 								 :empty-lines 1	 ; properties
@@ -316,18 +312,7 @@
 								 :created t	 ; properties
 								 :kill-buffer t) ; properties
 
-								;; To capture tons of errands
-								("e"	   ; key
-								 "Errands" ; name
-								 entry	   ; type
-								 (file "~/Dropbox/org/personal.org") ; target
-								 "* TODO %^{Title} %^G\n:PROPERTIES:\n:Created: %U\n:END:\n%i\n%?" ; template
-								 :prepend t	 ; properties
-								 :empty-lines 1	 ; properties
-								 :created t	 ; properties
-								 :kill-buffer t) ; properties
-
-								;; To capture random thoughts
+								;; To capture random todos
 								("t"	    ; key
 								 "Todo" ; name
 								 entry	    ; type

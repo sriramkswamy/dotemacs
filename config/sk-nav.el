@@ -157,5 +157,15 @@
   :config
   (vimish-fold-global-mode 1))
 
+;; improve desktop
+(use-package desktop+
+  :ensure t
+  :after desktop
+  :commands
+  (desktop-load
+   desktop-create
+   desktop-create-auto
+   desktop-load-auto))
+
 ;; provide navigation related packages
 (provide 'sk-nav)

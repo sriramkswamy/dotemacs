@@ -533,10 +533,10 @@
  ("c o Y" yas-global-mode :name "global snippets")
  ("c o u" undo-tree-mode :name "undo tree")
  ;; d based maps
- ("d o o" desktop-change-dir :name "open session")
- ("d o n" sk/make-desktop :name "new session")
- ("d o j" sk/desktop-jump :name "jump sessions")
- ("d o s" desktop-save :name "save session")
+ ("d o o" desktop+-load-auto :name "open session")
+ ("d o n" desktop+-create :name "new session")
+ ("d o j" desktop+-load :name "jump sessions")
+ ("d o s" desktop+-create-auto :name "save session")
  ("d o m" desktop-save-mode :name "auto save session")
  ("d o d" desktop-remove :name "delete session")
  ;; y based maps

@@ -94,6 +94,7 @@
   :commands
   (org-mobile-push
    org-mobile-pull
+   org-refile
    org-shiftleft
    org-shiftdown
    org-shiftup
@@ -475,7 +476,8 @@
  ("m y" org-copy-subtree :name "copy subtree")
  ("m d" org-cut-subtree :name "delete subtree")
  ("m i" org-insert-link :name "insert link")
- ("m r" org-add-note :name "add note")
+ ("m r" org-refile :name "refile")
+ ("m o" org-add-note :name "add note")
  ("m z" org-footnote-new :name "add footnote")
  ("m w" org-insert-heading :name "insert heading" :exit t)
  ("m v" org-insert-heading-respect-content :name "insert heading dwim" :exit t)
@@ -498,7 +500,7 @@
 ;  ("m x" org-reftex-citation :name "reftex")
  ("m m" org-export-dispatch :name "export")
  ("m u" interleave :name "interleave")
- ("m o" org-babel-tangle :name "tangle")
+ ("m g" org-babel-tangle :name "tangle")
 
  ;; custom
  ("m q" sk/org-create-checkbox :name "create checkbox"))

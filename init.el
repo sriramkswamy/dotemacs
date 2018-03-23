@@ -563,9 +563,8 @@
  ("C-c '"	. sk/nothing)
  ("C-c C-f" . sk/nothing))
 
-;; modal bindings and hints
+;; modal bindings
 (require 'sk-ryo-bindings)
-(require 'sk-ryo-which-key)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Reduce GC threshold    ;;

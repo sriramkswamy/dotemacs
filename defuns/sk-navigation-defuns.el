@@ -168,5 +168,15 @@ point reaches the beginning or end of the buffer, stop there."
 	  (call-interactively #'select-frame-by-name)
 	(other-frame 1)))
 
+;; emulating % - https://superuser.com/a/354236
+(defun sk/goto-matching-paren ()
+  "If point is sitting on a parenthetic character, jump to its match."
+  (interactive)
+  (cond ((looking-at "\\s\(") (forward-list 1))
+        ((progn
+           (backward-char 1)
+           (looking-at "\\s\)"))
+		 (forward-char 1) (backward-list 1))))
+
 ;; provide these functions
 (provide 'sk-navigation-defuns)

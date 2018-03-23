@@ -151,6 +151,9 @@
   :init
   ;; Set to the location of your Org files on your local system
   (setq org-directory "~/Dropbox/org")
+  ;; Set to the location of your Mobile Org files on your local system
+  (setq org-mobile-inbox-for-pull "~/Dropbox/Apps/MobileOrg/mobileorg.org")
+  (setq org-mobile-directory "~/Dropbox/Apps/MobileOrg")
   ;; hide markup
   (setq org-hide-emphasis-markers t)
   ;; minimal outlines
@@ -213,9 +216,7 @@
   (setq org-agenda-files (list
 						  "~/Dropbox/org/personal.org"
 						  "~/Dropbox/org/notes.org"
-						  "~/Dropbox/org/blog.org"
-						  "~/Dropbox/org/work.org"
-						  "~/Dropbox/org/potato.org"
+                          "~/Dropbox/org/work.org"
 						  ))
   ;; deadline handling
   (setq org-deadline-warning-days 7
@@ -261,7 +262,7 @@
 								("b"	; key
 								 "Blog" ; name
 								 entry	; type
-								 (file+headline "~/Dropbox/org/blog.org" "Blog") ; target
+								 (file+headline "~/Dropbox/org/notes.org" "Blog") ; target
 								 "* %? %^G\n:PROPERTIES:\n:Created: %U\n:Linked: %A\n:END:\n%i" ; template
 								 :prepend t	 ; properties
 								 :empty-lines 1	 ; properties
@@ -272,7 +273,7 @@
 								("g"	 ; key
 								 "Gubby" ; name
 								 entry	 ; type
-								 (file+headline "~/Dropbox/org/potato.org" "Gubby") ; target
+								 (file+headline "~/Dropbox/org/personal.org" "Gubby") ; target
 								 "* %? %^G\n:PROPERTIES:\n:Created: %U\n:Linked: %A\n:END:\n%i" ; template
 								 :prepend t	 ; properties
 								 :empty-lines 1	 ; properties
@@ -315,9 +316,9 @@
 
 								;; To capture random todos
 								("t"	    ; key
-								 "Todo" ; name
+								 "Todos" ; name
 								 entry	    ; type
-								 (file "~/Dropbox/org/personal.org") ; target
+								 (file+headline "~/Dropbox/org/personal.org" "Todos") ; target
 								 "TODO %^{Title} %^G\n:PROPERTIES:\n:Created: %U\n:Linked: %A\n:END:\n%i\n%?" ; template
 								 :prepend t	 ; properties
 								 :empty-lines 1	 ; properties

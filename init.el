@@ -375,7 +375,7 @@
   :ensure t)
 (use-package ample-theme
   :ensure t)
-(load-theme 'ample t)
+(load-theme 'ample-flat t)
 
 ;; fancy battery
 (use-package fancy-battery

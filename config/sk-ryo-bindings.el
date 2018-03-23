@@ -239,7 +239,8 @@
 				 ("z" prodigy :name "background services" :norepeat t)
 				 ("q" quickrun :name "quickrun" :norepeat t)
 				 ("b" hydra-debug/body :name "begin debugging" :norepeat t)
-				 ("o" sk/counsel-org-folder :name "org folder" :norepeat t)
+				 ("o" sk/counsel-org-folder :name "inside org folder" :norepeat t)
+				 ("c" org-capture :name "capture" :norepeat t)
 				 ("j" "M-x" :name "commands" :norepeat t)))
 
 ;; use locate or spotlight depending on the system
@@ -291,7 +292,6 @@
 				 ("`" async-shell-command :name "run shell command" :norepeat t)
 				 ("a" describe-char :name "describe char" :norepeat t)
 				 ("o" org-agenda :name "agenda" :norepeat t)
-				 ("n" org-capture :name "new capture" :norepeat t)
 				 ("p" list-packages :name "list packages" :norepeat t)
 				 ("V" sk/browse-current-file :name "view file in browser" :norepeat t)
 				 ("N" sk/rename-current-buffer-file :name "rename file" :norepeat t)

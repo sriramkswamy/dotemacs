@@ -76,8 +76,11 @@
   ;; default cursor shape
   (setq-default cursor-type '(bar . 2))
   ;; cursor for ryo modal mode
-  (defvar ryo-modal-cursor-color "LightGrey"
-  	"The cursor color used in `ryo-modal-mode'.  If nil then use default color."))
+  (defvar ryo-modal-cursor-color "DarkGrey"
+  	"The cursor color used in `ryo-modal-mode'.  If nil then use default color.")
+
+  :config
+  (sk/enable-ryo-modal-mode))
 
 ;; provide the modal configuration
 (provide 'sk-ryo-modal)

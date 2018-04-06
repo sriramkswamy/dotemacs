@@ -74,7 +74,7 @@
 		 ("M-y" . counsel-yank-pop)
 		 ("C-x C-f" . counsel-find-file)
 		 ("C-h j" . counsel-describe-face)
-		 ("C-h u" . counsel-set-variable)
+		 ("C-h h" . counsel-set-variable)
 		 ("C-h v" . counsel-describe-variable)
 		 ("C-h a" . counsel-apropos)
 		 ("C-h f" . counsel-describe-function)

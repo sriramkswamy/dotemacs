@@ -368,14 +368,17 @@
 ;; narrowing framework
 (require 'sk-narrow)
 
-;; select a good theme
+;; select a good theme based on a scheme
 (use-package flatui-theme
-  :ensure t)
+  :ensure t
+  :hook (prog-mode . sk/flatui-theme))
 (use-package flatui-dark-theme
-  :ensure t)
-(use-package ample-theme
-  :ensure t)
-(load-theme 'ample-flat t)
+  :ensure t
+  :hook (prog-mode . sk/flatui-theme))
+(use-package eziam-theme
+  :ensure t
+  :hook (text-mode . sk/eziam-theme))
+(load-theme 'flatui t)
 
 ;; fancy battery
 (use-package fancy-battery

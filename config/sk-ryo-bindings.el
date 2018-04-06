@@ -28,7 +28,7 @@
  ("z z" recenter-top-bottom :name "recenter")
  ("%" sk/goto-matching-paren :name "matching paren")
  ("+" sk/counsel-bookmarks :name "add/see bookmarks" :norepeat t)
- ("H" "C-h" :name "help" :norepeat t)
+ ("SPC h" "C-h" :name "help" :norepeat t)
  ("Z" sk/toggle-frame-fullscreen-non-native :name "fullscreen" :norepeat t)
  ("?" which-key-show-top-level :name "which key" :norepeat t))
 
@@ -251,7 +251,7 @@
   (ryo-modal-key "SPC s" 'counsel-locate :name "desktop search")))
 
 ;; mapping with leader and a key
-(ryo-modal-key "SPC h"
+(ryo-modal-key "SPC i"
                '(("h" ycmd-goto :name "goto" :norepeat t)
 				 ("o" ycmd-open :name "open" :norepeat t)
                  ("c" ycmd-close :name "close" :norepeat t)

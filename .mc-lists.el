@@ -6,16 +6,28 @@
 		iy-go-to-char--command
 		ryo:04a1830bad47c97c575a7afb01ebd040:line/region
 		ryo:1cf9c664ed81221b6fc344af519fce32:prev\ word
+		ryo:1cfaf336c571fd5dc56b11f0501d658c:next\ line
 		ryo:1d69d4d933b4d946c12c557c0cc424e9:line/region
+		ryo:3b4de6bfee978cda9fbfd533eb6b619e:prev\ char
 		ryo:3b5ff6385e5bc8f7bc61550b52b5d807:end\ of\ line
+		ryo:4aaf04fe48afa26e80280149dac22e08:next\ char
 		ryo:53b30d6e93958ac24aaa9cd3e8900c05:prev\ line
+		ryo:5c413f1850bc4e67b899d6f007f99154:undo
+		ryo:66a291f2c332a7f93d3ab5d1908e29df:start\ of\ buffer
+		ryo:6d4202fc8a4bc64f4ae366cad016d448:open
+		ryo:7f33085e6ca233c78a85c73419b5d27b:next\ para
 		ryo:848b1d4c3d1ae485709df48d826047bd:word
 		ryo:8628beab3b735c231dec1454d5e52aaa:next\ like\ this
 		ryo:8d526cc7c75e2989b0c245f4e7fbf884:append\ end\ of\ line
+		ryo:914d0a2ad8701c2b7e34a57fab70e4ab:end\ of\ buffer
+		ryo:9aa38e17efbb2434c1e52d95c6145109:append
 		ryo:9c18ac4c2959ab93895fdf9ea12e378b:to\ end\ of\ word
+		ryo:ab2e3db597a537266eeaf6ea5bd6402f:open\ up
 		ryo:b0149f53ca1e7fbb80ec479545786acc:insert
 		ryo:dff4676e9e13ff5ff13e695aac818e69:next\ word
 		ryo:efc40336295ecb767ca17f53da17c18d:start\ of\ line
+		ryo:f702bcc409103f4740210958b21e5b8a:prev\ para
+		ryo:fe92aee84503d2040efde07672f5034c:insert\ start\ of\ line
 		sk/enable-ryo-modal-mode
 		sk/kill-region-or-backward-word
 		sk/remove-mark

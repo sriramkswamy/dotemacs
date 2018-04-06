@@ -565,6 +565,7 @@
 
 ;; modal bindings
 (require 'sk-ryo-bindings)
+(require 'sk-ryo-which-key)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Reduce GC threshold    ;;

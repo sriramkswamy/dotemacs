@@ -14,7 +14,7 @@
                 },
                 "rules": [
                     {
-                        "description": "Change left_command to command. (Post control+tab if pressed alone)",
+                        "description": "Change left_command to command. (Post command+option+control+shift+n if pressed alone)",
                         "manipulators": [
                             {
                                 "from": {
@@ -32,7 +32,7 @@
                                 ],
                                 "to_if_alone": [
                                     {
-                                        "key_code": "tab",
+                                        "key_code": "return_or_enter",
                                         "modifiers": [
                                             "left_control"
                                         ]
@@ -43,7 +43,7 @@
                         ]
                     },
                     {
-                        "description": "Change right_command to command+shift. (Post control+shift+tab if pressed alone)",
+                        "description": "Change right_command to command+shift. (Post command+option+shift+control+return if pressed alone)",
                         "manipulators": [
                             {
                                 "from": {
@@ -58,15 +58,17 @@
                                     {
                                         "key_code": "right_command",
                                         "modifiers": [
-                                            "left_shift"
+                                            "left_command"
                                         ]
                                     }
                                 ],
                                 "to_if_alone": [
                                     {
-                                        "key_code": "tab",
+                                        "key_code": "return_or_enter",
                                         "modifiers": [
-                                            "right_control",
+                                            "left_command",
+                                            "left_option",
+                                            "left_control",
                                             "left_shift"
                                         ]
                                     }
@@ -76,7 +78,7 @@
                         ]
                     },
                     {
-                        "description": "Change left_option to option. (Post command+option+control+shift+n if pressed alone)",
+                        "description": "Change left_option to option. (Post control+tab if pressed alone)",
                         "manipulators": [
                             {
                                 "from": {
@@ -94,7 +96,7 @@
                                 ],
                                 "to_if_alone": [
                                     {
-                                        "key_code": "return_or_enter",
+                                        "key_code": "tab",
                                         "modifiers": [
                                             "left_control"
                                         ]
@@ -105,7 +107,7 @@
                         ]
                     },
                     {
-                        "description": "Change right_option to command+option. (Post command+option+shift+control+return if pressed alone)",
+                        "description": "Change right_option to command+option. (Post control+shift+tab if pressed alone)",
                         "manipulators": [
                             {
                                 "from": {
@@ -120,17 +122,15 @@
                                     {
                                         "key_code": "right_option",
                                         "modifiers": [
-                                            "left_command"
+                                            "left_shift"
                                         ]
                                     }
                                 ],
                                 "to_if_alone": [
                                     {
-                                        "key_code": "return_or_enter",
+                                        "key_code": "tab",
                                         "modifiers": [
-                                            "left_command",
-                                            "left_option",
-                                            "left_control",
+                                            "right_control",
                                             "left_shift"
                                         ]
                                     }

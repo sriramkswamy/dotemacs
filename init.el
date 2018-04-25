@@ -371,7 +371,18 @@
 ;; select a good theme based on a scheme
 (use-package flatui-theme
   :ensure t)
-(load-theme 'flatui t)
+(use-package flatui-dark-theme
+  :ensure t)
+(use-package heaven-and-hell
+  :ensure t
+  :init
+  (setq heaven-and-hell-themes
+        '((light . flatui)
+          (dark  . flatui-dark)))
+  :hook (after-init . heaven-and-hell-init-hook)
+  :commands
+  (heaven-and-hell-load-default-theme
+   heaven-and-hell-toggle-theme))
 
 ;; fancy battery
 (use-package fancy-battery

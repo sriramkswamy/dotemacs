@@ -186,6 +186,8 @@
 		   company-auctex-symbols	   ; latex symbols
 		   company-auctex-environments ; latex environments
 		   company-auctex-bibs		   ; latex bibs
+		   company-reftex-citations    ; reftex citations
+		   company-reftex-labels       ; reftex labels
 		   company-capf))))
 
 ;; python

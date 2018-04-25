@@ -8,6 +8,7 @@
 (use-package latex
   :ensure auctex
   :ensure company-auctex
+  :ensure company-reftex
   :defer t
   :diminish reftex-mode
   :hook ((auctex-mode . sk/setup-ryo-latex-bindings)

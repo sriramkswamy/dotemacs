@@ -137,6 +137,18 @@
   (set-mark (point))
   (end-of-buffer))
 
+(defun sk/mark-beginning-line ()
+  "marks to the beginning of line from current position"
+  (interactive)
+  (set-mark (point))
+  (sk/smarter-move-beginning-of-line 1))
+
+(defun sk/mark-end-line ()
+  "marks to the end of line from current position"
+  (interactive)
+  (set-mark (point))
+  (end-of-line))
+
 (defun sk/mark-around-markdown-code-block ()
   "Marks a markdown code-block."
   (interactive)

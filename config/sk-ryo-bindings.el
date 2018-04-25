@@ -318,6 +318,8 @@
 ;; text objects
 (defvar text-objects
        '(;; single-char style text object
+         ("0" sk/mark-beginning-line :name "beginning of line")
+         ("$" sk/mark-end-line :name "end of line")
          ("h" sk/mark-previous-char :name "previous char(s)")
          ("j" sk/mark-next-line :name "next line(s)")
          ("k" sk/mark-previous-line :name "previous line(s)")
@@ -532,6 +534,7 @@
  ("c o y" yas-minor-mode :name "local snippets")
  ("c o Y" yas-global-mode :name "global snippets")
  ("c o u" undo-tree-mode :name "undo tree")
+ ("c o a" heaven-and-hell-toggle-theme :name "alter theme")
  ;; d based maps
  ("d o o" desktop+-load-auto :name "open session")
  ("d o n" desktop+-create :name "new session")

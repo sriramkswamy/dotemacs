@@ -225,7 +225,6 @@
 
 ;; leader prefixes
 (which-key-add-key-based-replacements
-  "SPC t" "terminal"
   "SPC i" "info ycmd")
 
 ;; general functions

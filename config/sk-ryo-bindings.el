@@ -176,10 +176,10 @@
 ;; ryo modal repl maps
 (ryo-modal-keys
  (:norepeat t)
- ("SPC t t" sk/call-terminal :name "system")
- ("SPC t r" sk/shell :name "shell")
- ("SPC t w" sk/term :name "term")
- ("SPC t e" sk/eshell :name "eshell"))
+ ("SPC u" sk/call-terminal :name "terminal")
+ ("SPC v s" sk/shell :name "shell")
+ ("SPC v t" sk/term :name "term")
+ ("SPC t" sk/eshell :name "eshell"))
 
 ;; ryo modal window navigation maps
 (ryo-modal-keys
@@ -499,9 +499,11 @@
 (ryo-modal-keys
  ;; c based maps
  ("c r" string-rectangle :name "change rectangle")
+ ;; ("c p" doc-view-fit-page-to-window :name "doc fit")
  ;; d based maps
  ("d u" sk/ediff-dwim :name "diff update")
  ("d r" kill-rectangle :name "delete rectangle")
+ ("d p" sk/other-doc-fit :name "doc fit other window")
  ;; y based maps
  ("y s" embrace-commander :name "surround")
  ("y p" sk/paste-from-clipboard :name "paste from clipboard")

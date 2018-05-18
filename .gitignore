@@ -34,3 +34,4 @@ irony/*
 /ycmd/*
 /cquery/*
 /magithub/*
+/.cache/treemacs-persist

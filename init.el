@@ -26,10 +26,10 @@
 (tooltip-mode -1)															  	; deactivate the tooltip
 (setq initial-frame-alist													  	; initial frame size
       '((width . 100)														  	; characters in a line
-		(height . 52)))														  	; number of lines
+		(height . 45)))														  	; number of lines
 (setq default-frame-alist													  	; subsequent frame size
       '((width . 100)														  	; characters in a line
-		(height . 52)))														  	; number of lines
+		(height . 45)))														  	; number of lines
 (blink-cursor-mode -1)														  	; don't blink the cursor
 (defun display-startup-echo-area-message () (message "Let the games begin!")) 	; change the default startup echo message
 (setq-default truncate-lines t)												  	; if line exceeds screen, let it
@@ -292,14 +292,23 @@
 (use-package dash
   :ensure t)
 
-;; Make sure the path is set right for macOS
-(when (memq window-system '(mac ns))
+;; Make sure the path is set right for macOS after installing brew
+(if (memq window-system '(mac ns))
   (use-package exec-path-from-shell
     :ensure t
     :defer 1
     :ensure-system-package
     (brew ."/usr/bin/ruby -e \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)\"")
     :bind* (("C-x x" . exec-path-from-shell-initialize)
+			("C-x y" . exec-path-from-shell-copy-env))
+    :init
+    (setq exec-path-from-shell-check-startup-files nil)
+    :config
+    (exec-path-from-shell-initialize))
+  (use-package exec-path-from-shell
+    :ensure t
+    :defer 1
+	:bind* (("C-x x" . exec-path-from-shell-initialize)
 			("C-x y" . exec-path-from-shell-copy-env))
     :init
     (setq exec-path-from-shell-check-startup-files nil)

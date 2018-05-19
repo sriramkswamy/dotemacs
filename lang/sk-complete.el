@@ -227,11 +227,11 @@
 ;;    Completion suggestions    ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; LSP support
-(use-package company-lsp
-  :ensure t
-  :after (company)
-  :bind* (("C-j l"	. company-lsp)))
+;; ;; LSP support
+;; (use-package company-lsp
+;;   :ensure t
+;;   :after (company)
+;;   :bind* (("C-j l"	. company-lsp)))
 
 ;; install ycmd first - https://github.com/Valloric/ycmd
 ;; cd ycmd, git submodule update --init --recursive and ./build.py --system-libclang --all

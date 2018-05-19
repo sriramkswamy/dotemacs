@@ -526,7 +526,7 @@
  ;; c based maps
  ("c o n" display-line-numbers-mode :name "line numbers")
  ("c o o" tool-bar-mode :name "tool bar")
- ("c o r" scroll-bar-mode :name "scroll bar")
+ ;; ("c o r" scroll-bar-mode :name "scroll bar")
  ("c o t" display-time-mode :name "time")
  ("c o d" diminish :name "diminish")
  ("c o w" visual-line-mode :name "word wrap")

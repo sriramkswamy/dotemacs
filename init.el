@@ -22,7 +22,8 @@
 (setq initial-scratch-message "")           								  	; print nothing and leave screen at insert mode
 (menu-bar-mode -1)															  	; deactivate the menubar
 ;; (tool-bar-mode -1)															  	; deactivate the toolbar
-(scroll-bar-mode -1)														  	; deactivate the scrollbar
+(when (eq system-type 'darwin)
+  (scroll-bar-mode -1))
 (tooltip-mode -1)															  	; deactivate the tooltip
 (setq initial-frame-alist													  	; initial frame size
       '((width . 100)														  	; characters in a line
@@ -393,13 +394,14 @@
   (heaven-and-hell-load-default-theme
    heaven-and-hell-toggle-theme))
 
-;; fancy battery
-(use-package fancy-battery
-  :ensure t
-  :init
-  (setq fancy-battery-show-percentage t)
-  :config
-  (fancy-battery-mode))
+(when (eq system-type 'darwin)
+  ;; fancy battery
+  (use-package fancy-battery
+	:ensure t
+	:init
+	(setq fancy-battery-show-percentage t)
+	:config
+	(fancy-battery-mode)))
 
 ;; restart emacs from emacs
 (use-package restart-emacs

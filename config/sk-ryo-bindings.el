@@ -526,7 +526,6 @@
  ;; c based maps
  ("c o n" display-line-numbers-mode :name "line numbers")
  ("c o o" tool-bar-mode :name "tool bar")
- ;; ("c o r" scroll-bar-mode :name "scroll bar")
  ("c o t" display-time-mode :name "time")
  ("c o d" diminish :name "diminish")
  ("c o w" visual-line-mode :name "word wrap")
@@ -536,7 +535,6 @@
  ("c o y" yas-minor-mode :name "local snippets")
  ("c o Y" yas-global-mode :name "global snippets")
  ("c o u" undo-tree-mode :name "undo tree")
- ("c o a" heaven-and-hell-toggle-theme :name "alter theme")
  ;; d based maps
  ("d o o" desktop+-load-auto :name "open session")
  ("d o n" desktop+-create :name "new session")
@@ -549,6 +547,9 @@
  ("y o f" yas-visit-snippet-file :name "snippet file")
  ("y o o" yas-tryout-snippet :name "tryout snippet")
  ("y o n" yas-new-snippet :name "new snippet"))
+
+(when (eq system-type 'darwin)
+  (ryo-modal-key "c o r" 'scroll-bar-mode :name "scroll bar"))
 
 (if (fboundp 'fancy-battery-mode)
 	(ryo-modal-key "c o b" 'fancy-battery-mode :name "battery")

@@ -378,10 +378,8 @@
 ;; narrowing framework
 (require 'sk-narrow)
 
-;; select a good theme based on a scheme
-(use-package flatui-dark-theme
-  :ensure t)
-(load-theme 'flatui-dark t)
+;; select a good theme
+(load-theme 'tsdh-dark t)
 
 (when (eq system-type 'darwin)
   ;; fancy battery

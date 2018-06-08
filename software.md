@@ -9,7 +9,7 @@ sudo apt-get install openssh-server git wget curl grep gawk sed build-essential 
 Basic editor and editor tool support
 
 ```
-sudo apt-get install neovim vim emacs25 silversearcher-ag ctags cargo tmux editorconfig
+sudo apt-get install neovim vim silversearcher-ag ctags cargo tmux editorconfig
 ```
 
 Subjectively a better shell
@@ -42,6 +42,22 @@ Install plugin manager for vim/neovim
 ```
 curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+```
+
+# Emacs
+
+Get this whole list of software first
+
+```
+sudo apt-get install libc6-dev libjpeg62-turbo-dev libncurses5-dev libpng-dev libtiff5-dev libgif-dev xaw3dg-dev zlib1g-dev libice-dev libsm-dev libx11-dev libxext-dev libxi-dev libxmu-dev libxmuu-dev libxpm-dev libxrandr-dev libxt-dev libxtst-dev libxv-dev libgnutls28-dev
+```
+
+Then configure with a prefix and install it
+
+```
+./configure prefix=
+make
+make install
 ```
 
 # Dropbox
@@ -78,6 +94,12 @@ Initiate the path to install other specific LaTeX packages
 tlmgr init-usertree
 ```
 
+Install `ispell` for Emacs usage
+
+```
+sudo apt-get install ispell
+```
+
 # C++
 
 ```
@@ -90,10 +112,28 @@ sudo apt-get install gcc gdb valgrind llvm lldb clang
 sudo apt-get install python3 python3-pip
 ```
 
+```
+python3 -m pip install --upgrade pip
+```
+
 Install editor specific stuff
 
 ```
-python3 -m pip install --user neovim virtualenv
+python3 -m pip install --user neovim
+```
+
+Install virtualenv for everything
+
+```
+python3 -m pip install --user virtualenv
+```
+
+Switch to the virtualenv and install required packages
+
+```
+python3 -m virtualenv ~/venv/global
+source ~/venv/global/bin/activate
+pip install -r ~/.emacs.d/requirements-global.txt
 ```
 
 # JavaScript

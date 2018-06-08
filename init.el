@@ -70,7 +70,8 @@
 
 ;; Set fonts
 (cond ((eq system-type 'gnu/linux)                 ; if system is GNU/Linux
-       (set-frame-font "DejaVu Sans Mono"))        ; set the font to DejaVu Sans Mono
+       ;; (set-frame-font "DejaVu Sans Mono")
+       )        ; set the font to DejaVu Sans Mono
       ((eq system-type 'darwin)                    ; if system is macOS
        (mac-auto-operator-composition-mode)        ; ligature support
        (set-frame-font "Fira Code"))               ; set the font to Monaco
@@ -379,7 +380,9 @@
 (require 'sk-narrow)
 
 ;; select a good theme
-(load-theme 'tsdh-dark t)
+(use-package flatui-dark-theme
+	:ensure t)
+(load-theme 'flatui-dark t)
 
 (when (eq system-type 'darwin)
   ;; fancy battery

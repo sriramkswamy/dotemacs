@@ -39,7 +39,7 @@
 
 ;; the matlab mode
 (use-package matlab-mode
-  :load-path "lang/matlab-mode/"
+  ;; :load-path "lang/matlab-mode/"
   :mode ("\\.m\\'" . matlab-mode)
   :diminish mlint-minor-mode
   :hook ((matlab-mode . mlint-minor-mode)
@@ -72,14 +72,20 @@
 	(defvar default-fill-column (default-value 'fill-column))
 	(defalias 'string-to-int 'string-to-number))
   ;; settings
-  (setq matlab-shell-command "/Applications/MATLAB_R2016a.app/bin/matlab"
-		matlab-indent-function t)
-  (setq matlab-mode-install-path '("/Applications/MATLAB_R2016a.app/toolbox"))
+  (cond ((eq system-type 'gnu/linux)                 ; if system is GNU/Linux
+		 (setq matlab-shell-command "/home/sriramkswamy/Downloads/MATLAB_R2018a/bin/matlab"
+			   matlab-indent-function t)
+		 (setq matlab-mode-install-path '("/Applications/MATLAB_R2016a.app/toolbox"))
+		 (setq-default mlint-programs '("/home/sriramkswamy/Downloads/MATLAB_R2018a.app/bin/glnxa64/mlint")))
+		((eq system-type 'darwin)                    ; if system is macOS
+		 (setq matlab-shell-command "/Applications/MATLAB_R2016a.app/bin/matlab"
+			   matlab-indent-function t)
+		 (setq matlab-mode-install-path '("/Applications/MATLAB_R2016a.app/toolbox"))
+		 (setq-default mlint-programs '("/Applications/MATLAB_R2016a.app/bin/glnxa64/mlint"))))
   (eval-after-load 'matlab
 	'(add-to-list 'matlab-shell-command-switches "-nodesktop -nosplash"))
   (setq-default matlab-show-mlint-warnings t)
   (setq-default mlint-verbose t)
-  (setq-default mlint-programs '("/Applications/MATLAB_R2016a.app/bin/maci64/mlint"))
 
   :config
   (require 'matlab-load)

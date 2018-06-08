@@ -35,3 +35,4 @@ irony/*
 /cquery/*
 /magithub/*
 /.cache/treemacs-persist
+/tags

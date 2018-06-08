@@ -22,10 +22,15 @@
 		ryo:914d0a2ad8701c2b7e34a57fab70e4ab:end\ of\ buffer
 		ryo:9aa38e17efbb2434c1e52d95c6145109:append
 		ryo:9c18ac4c2959ab93895fdf9ea12e378b:to\ end\ of\ word
+		ryo:9ce0af9cd3be773359309a09167a248b:scratch
+		ryo:9e00663a69ce1ebcce54a8e7755de96a:next\ char\(s\)
+		ryo:a4e3ce2a56110bbda0134b8ec48025c6:interrupt
 		ryo:ab2e3db597a537266eeaf6ea5bd6402f:open\ up
 		ryo:b0149f53ca1e7fbb80ec479545786acc:insert
+		ryo:bab6212da68063bb4a06af4d78a91764:dwim
 		ryo:dff4676e9e13ff5ff13e695aac818e69:next\ word
 		ryo:efc40336295ecb767ca17f53da17c18d:start\ of\ line
+		ryo:f6a89d6c77c72ebf8134ae9c8d49757a:save\ buffer
 		ryo:f702bcc409103f4740210958b21e5b8a:prev\ para
 		ryo:fe92aee84503d2040efde07672f5034c:insert\ start\ of\ line
 		sk/enable-ryo-modal-mode

@@ -75,8 +75,8 @@
   (cond ((eq system-type 'gnu/linux)                 ; if system is GNU/Linux
 		 (setq matlab-shell-command "/home/sriramkswamy/Downloads/MATLAB_R2018a/bin/matlab"
 			   matlab-indent-function t)
-		 (setq matlab-mode-install-path '("/Applications/MATLAB_R2016a.app/toolbox"))
-		 (setq-default mlint-programs '("/home/sriramkswamy/Downloads/MATLAB_R2018a.app/bin/glnxa64/mlint")))
+		 (setq matlab-mode-install-path '("/home/sriramkswamy/Downloads/MATLAB_R2018a/toolbox"))
+		 (setq-default mlint-programs '("/home/sriramkswamy/Downloads/MATLAB_R2018a/bin/glnxa64/mlint")))
 		((eq system-type 'darwin)                    ; if system is macOS
 		 (setq matlab-shell-command "/Applications/MATLAB_R2016a.app/bin/matlab"
 			   matlab-indent-function t)

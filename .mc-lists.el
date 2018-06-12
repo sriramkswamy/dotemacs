@@ -10,9 +10,11 @@
 		ryo:1d69d4d933b4d946c12c557c0cc424e9:line/region
 		ryo:3b4de6bfee978cda9fbfd533eb6b619e:prev\ char
 		ryo:3b5ff6385e5bc8f7bc61550b52b5d807:end\ of\ line
+		ryo:3f5c328e4371c0d467e4c35fb044e295:pairs
 		ryo:4aaf04fe48afa26e80280149dac22e08:next\ char
 		ryo:53b30d6e93958ac24aaa9cd3e8900c05:prev\ line
 		ryo:5c413f1850bc4e67b899d6f007f99154:undo
+		ryo:5dda49ae5f7861ffbbbcd01d47d55745:delete\ char
 		ryo:66a291f2c332a7f93d3ab5d1908e29df:start\ of\ buffer
 		ryo:6d4202fc8a4bc64f4ae366cad016d448:open
 		ryo:7f33085e6ca233c78a85c73419b5d27b:next\ para
@@ -32,6 +34,7 @@
 		ryo:efc40336295ecb767ca17f53da17c18d:start\ of\ line
 		ryo:f6a89d6c77c72ebf8134ae9c8d49757a:save\ buffer
 		ryo:f702bcc409103f4740210958b21e5b8a:prev\ para
+		ryo:fdd9ffea27f18efb32ef8d404f4ce6b8:pairs
 		ryo:fe92aee84503d2040efde07672f5034c:insert\ start\ of\ line
 		sk/enable-ryo-modal-mode
 		sk/kill-region-or-backward-word

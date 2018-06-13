@@ -13,6 +13,9 @@ unsetopt beep
 bindkey -v
 # End of lines configured by zsh-newuser-install
 
+# terminal
+export TERM=screen-256color
+
 # PATH
 export PATH=/home/sriramkswamy/.fzf/bin:$PATH
 export PATH=/home/sriramkswamy/.cargo/bin:$PATH

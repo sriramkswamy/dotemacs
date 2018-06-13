@@ -144,6 +144,20 @@ Install nodejs
 sudo apt-get install nodejs
 ```
 
+# R language
+
+Install the r language
+
+```
+sudo apt-get install r-base
+```
+
+Install the tidy verse in R
+
+```
+install.packages("tidyverse")
+```
+
 # Visual fluff
 
 Make a better prompt for zsh

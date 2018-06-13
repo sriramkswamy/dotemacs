@@ -382,7 +382,7 @@
 ;; select a good theme
 (use-package flatui-dark-theme
 	:ensure t)
-(load-theme 'dichromacy t)
+(load-theme 'flatui-dark t)
 
 (when (eq system-type 'darwin)
   ;; fancy battery

@@ -451,6 +451,9 @@
 ;; matlab support
 (require 'sk-matlab)
 
+;; stats support
+(require 'sk-stats)
+
 ;; python support
 (require 'sk-python)
 

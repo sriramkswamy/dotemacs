@@ -152,6 +152,12 @@ Install the r language
 sudo apt-get install r-base
 ```
 
+Install additional things required for tidyverse
+
+```
+sudo apt-get install libcurl4-openssl-dev libxml2-dev libssl-dev
+```
+
 Install the tidy verse in R
 
 ```

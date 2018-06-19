@@ -26,6 +26,7 @@ source ~/venv/global/bin/activate
 
 # alias
 alias e='emacs'
+alias v='nvim'
 alias m='tmux'
 alias matlab='~/local/MATLAB_R2018a/matlab -nodesktop -nosplash'
 alias matlabd='~/local/MATLAB_R2018a/matlab'

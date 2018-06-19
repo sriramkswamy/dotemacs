@@ -83,7 +83,7 @@
 		 (setq matlab-mode-install-path '("/Applications/MATLAB_R2016a.app/toolbox"))
 		 (setq-default mlint-programs '("/Applications/MATLAB_R2016a.app/bin/glnxa64/mlint"))))
   (eval-after-load 'matlab
-	'(add-to-list 'matlab-shell-command-switches "-nodesktop -nosplash"))
+	'(add-to-list 'matlab-shell-command-switches "-softwareopengl -nodesktop -nosplash"))
   (setq-default matlab-show-mlint-warnings t)
   (setq-default mlint-verbose t)
 

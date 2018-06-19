@@ -25,10 +25,10 @@ export PATH=/home/sriramkswamy/local/bin:$PATH
 source ~/venv/global/bin/activate
 
 # alias
-alias e='emacs'
+alias e='emacs -nw'
 alias v='nvim'
 alias m='tmux'
-alias matlab='~/local/MATLAB_R2018a/matlab -nodesktop -nosplash'
-alias matlabd='~/local/MATLAB_R2018a/matlab'
+alias matlab='~/local/MATLAB_R2018a/bin/matlab -softwareopengl -nodesktop -nosplash'
+alias matlabd='~/local/MATLAB_R2018a/bin/matlab -softwareopengl'
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

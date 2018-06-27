@@ -21,7 +21,7 @@
 (setq initial-major-mode 'fundamental-mode)                                     ; set the mode of the initial scratch buffer
 (setq initial-scratch-message "")           								  	; print nothing and leave screen at insert mode
 (menu-bar-mode -1)															  	; deactivate the menubar
-;; (tool-bar-mode -1)															  	; deactivate the toolbar
+(tool-bar-mode -1)															  	; deactivate the toolbar
 (when (eq system-type 'darwin)
   (scroll-bar-mode -1))
 (tooltip-mode -1)															  	; deactivate the tooltip

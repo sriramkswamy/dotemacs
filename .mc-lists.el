@@ -8,6 +8,7 @@
 		ryo:1cf9c664ed81221b6fc344af519fce32:prev\ word
 		ryo:1cfaf336c571fd5dc56b11f0501d658c:next\ line
 		ryo:1d69d4d933b4d946c12c557c0cc424e9:line/region
+		ryo:397a83ee2f149488d7befdb1e9d37ef9:change\ rest\ of\ line
 		ryo:3b4de6bfee978cda9fbfd533eb6b619e:prev\ char
 		ryo:3b5ff6385e5bc8f7bc61550b52b5d807:end\ of\ line
 		ryo:3f5c328e4371c0d467e4c35fb044e295:pairs
@@ -40,6 +41,7 @@
 		sk/kill-region-or-backward-word
 		sk/remove-mark
 		sp-backward-delete-char
+		sp-kill-hybrid-sexp
 		))
 
 (setq mc/cmds-to-run-once

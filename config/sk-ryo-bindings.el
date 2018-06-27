@@ -530,6 +530,7 @@
  ("c o d" diminish :name "diminish")
  ("c o w" visual-line-mode :name "word wrap")
  ("c o c" ycmd-mode :name "completion add source")
+ ("c o r" scroll-bar-mode :name "scroll bar mode")
  ("c o s" smartparens-strict-mode :name "smartparens strict")
  ("c o S" smartparens-mode :name "smartparens")
  ("c o y" yas-minor-mode :name "local snippets")
@@ -547,9 +548,6 @@
  ("y o f" yas-visit-snippet-file :name "snippet file")
  ("y o o" yas-tryout-snippet :name "tryout snippet")
  ("y o n" yas-new-snippet :name "new snippet"))
-
-(when (eq system-type 'darwin)
-  (ryo-modal-key "c o r" 'scroll-bar-mode :name "scroll bar"))
 
 (if (fboundp 'fancy-battery-mode)
 	(ryo-modal-key "c o b" 'fancy-battery-mode :name "battery")

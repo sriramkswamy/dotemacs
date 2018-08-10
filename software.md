@@ -18,10 +18,10 @@ Subjectively a better shell
 sudo apt-get install zsh
 ```
 
-Install emacs configuration
+Install emacs configuration and get the latest release from [here](https://mirrors.syringanetworks.net/gnu/emacs/)
 
 ```
-git clone --recurse-submodules https://github.com/sriramkswamy/dotemacs.git
+git clone --recurse-submodules https://github.com/sriramkswamy/dotemacs.git ~/.emacs.d
 ```
 
 Install FZF for everything
@@ -44,12 +44,13 @@ curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.c
 curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 ```
 
-# Emacs
+# Emacs and VS Code
 
-Get this whole list of software first
+Get this whole list of software first and then get VS Code from
+[here](https://code.visualstudio.com/Download)
 
 ```
-sudo apt-get install libc6-dev libjpeg62-turbo-dev libncurses5-dev libpng-dev libtiff5-dev libgif-dev xaw3dg-dev zlib1g-dev libice-dev libsm-dev libx11-dev libxext-dev libxi-dev libxmu-dev libxmuu-dev libxpm-dev libxrandr-dev libxt-dev libxtst-dev libxv-dev libgnutls28-dev
+sudo apt-get install libc6-dev libjpeg62-turbo-dev libncurses5-dev libpng-dev libtiff5-dev libgif-dev xaw3dg-dev zlib1g-dev libice-dev libsm-dev libx11-dev libxext-dev libxi-dev libxmu-dev libxmuu-dev libxpm-dev libxrandr-dev libxt-dev libxtst-dev libxv-dev libgnutls28-dev libgconf-2-4
 ```
 
 Then configure with a prefix and install it
@@ -170,4 +171,12 @@ Make a better prompt for zsh
 
 ```
 npm install --global pure-prompt
+```
+
+# Creative software
+
+Photo editing and art
+
+```
+sudo apt-get install gimp krita inkscape
 ```

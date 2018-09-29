@@ -46,7 +46,6 @@
  ("g (" ggtags-create-tags :name "create tags")
  ("g )" ggtags-update-tags :name "update tags")
  ("DEL" mode-line-other-buffer :name "last buffer")
- ("TAB" vimish-fold-toggle :name "toggle folds")
  ("W" dired-jump :name "open dir"))
 
 ;; ryo modal insert editing maps
@@ -469,6 +468,7 @@
  ;; basic operator repeats
  ("= =" sk/select-inside-line :then '(indent-region) :name "line")
  ("z r" vimish-fold :name "fold region")
+ ("z SPC" vimish-fold-toggle :name "toggle folds")
  ("v v" er/expand-region :name "expand region")
  ("c c" sk/kill-region-or-line :name "line/region" :exit t)
  ("d d" sk/kill-region-or-line :name "line/region")

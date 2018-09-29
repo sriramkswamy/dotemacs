@@ -2,4 +2,4 @@
 # name: exports
 # key: :x
 # --
-:exports ${1:both}$0
+:exports ${1:$$(yas-choose-value '("both" "source" "results" "none"))}$0

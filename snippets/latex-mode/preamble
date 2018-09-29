@@ -54,8 +54,7 @@
 \newcolumntype{C}[1]{>{\centering\let\newline\\\\\arraybackslash\hspace{0pt}}m{#1}}
 \newcolumntype{R}[1]{>{\raggedleft\let\newline\\\\\arraybackslash\hspace{0pt}}m{#1}}
 
-\titleformat{\chapter}[block]
-{\normalfont\huge\bfseries}{\thechapter.}{1em}{\Huge}
+\titleformat{\chapter}[block]{\normalfont\huge\bfseries}{\thechapter.}{1em}{\Huge}
 \titlespacing*{\chapter}{0pt}{-19pt}{0pt}
 
 \newcommand{\mychapter}[2]

@@ -196,6 +196,7 @@
    venv-cpvirtualenv)
   :config
   ;; settings
+  (setq venv-location "/home/sriramkrish92/venv/")
   (setq eshell-prompt-function
 		(lambda ()
 		  (concat venv-current-name " $ ")))

@@ -1,0 +1,2 @@
+command alias bfl breakpoint set -f %1 -l %2
+command alias pra process attach -name %1

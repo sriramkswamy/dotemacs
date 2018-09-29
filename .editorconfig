@@ -1,0 +1,40 @@
+# top-most EditorConfig file
+root = true
+
+# Unix-style newlines with a newline ending every file
+[*]
+end_of_line = lf
+insert_final_newline = true
+
+# Set default charset
+[*.{java,html,js,jl,c,cpp,h,py,tex,m,clj,css,go,pl,php,r,rb,scala,sql,sh}]
+charset = utf-8
+
+# 4 space indentation
+[*.{py,java,jl,m,pl,php}]
+indent_style = space
+indent_size = 4
+
+# 2 space indentation
+[*.{c,cpp,h,tex,js,clj,css,html,r,rb,scala,sql,sh}]
+indent_style = space
+indent_size = 2
+
+# tab indentation
+[*.{md,mkd,markdown,go}]
+indent_style = tab
+
+# CMakeLists.txt
+[CMakeLists.txt]
+indent_style = space
+indent_size = 2
+
+# Makefile
+[Makefile]
+indent_style = tab
+indent_size = 4
+
+# Matches the exact file .travis.yml
+[.travis.yml]
+indent_style = space
+indent_size = 2

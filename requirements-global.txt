@@ -37,3 +37,4 @@ autoflake
 ansible
 fabric
 sqlalchemy
+jupyter

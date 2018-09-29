@@ -32,6 +32,7 @@
 		ryo:ab2e3db597a537266eeaf6ea5bd6402f:open\ up
 		ryo:b0149f53ca1e7fbb80ec479545786acc:insert
 		ryo:bab6212da68063bb4a06af4d78a91764:dwim
+		ryo:d1fef67c9330c295d0b9d4d1f7352e9a:to\ end\ of\ word
 		ryo:dff4676e9e13ff5ff13e695aac818e69:next\ word
 		ryo:efc40336295ecb767ca17f53da17c18d:start\ of\ line
 		ryo:f6a89d6c77c72ebf8134ae9c8d49757a:save\ buffer

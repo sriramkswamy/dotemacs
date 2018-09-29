@@ -235,7 +235,7 @@
                  ("y" "M-y" :name "copy history" :norepeat t)
                  ("k" "C-x b" :name "switch buffer" :norepeat t)
 				 ("x" ibuffer :name "interactive buffer" :norepeat t)
-				 ("n" treemacs-toggle :name "file tree" :norepeat t)
+				 ("n" treemacs :name "file tree" :norepeat t)
 				 ("z" prodigy :name "background services" :norepeat t)
 				 ("q" quickrun :name "quickrun" :norepeat t)
 				 ("b" hydra-debug/body :name "begin debugging" :norepeat t)

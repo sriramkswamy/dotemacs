@@ -1,0 +1,129 @@
+# merge pdfs using ghostscript
+gsmerge () {
+  gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=merged.pdf $1 $2
+}
+
+# fzf-kill - kill process
+k() {
+  pid=$(ps -ef | sed 1d | fzf -m | awk '{print $2}')
+
+  if [ "x$pid" != "x" ]
+  then
+    kill -${1:-9} $pid
+  fi
+}
+
+# mkdir and move there
+mkd () {
+  mkdir -p $1
+  cd $1
+}
+
+# OneDrive and rclone
+
+# list all files
+onels () {
+  rclone ls onedrive-remote:$1
+}
+
+# list top level files
+onelsd () {
+  rclone lsd onedrive-remote:$1
+}
+
+# create remote directory
+onemkdir () {
+  rclone mkdir onedrive-remote:$1
+}
+
+# delete remote path
+onermdir () {
+  rclone rmdir onedrive-remote:$1
+}
+
+# delete contents
+onedel () {
+  rclone delete onedrive-remote:$1
+}
+
+# purge contents and path
+onepurge () {
+  rclone purge onedrive-remote:$1
+}
+
+# copy from local folder to remote
+onecptoremote () {
+  rclone copy /home/sriramkrish92/OneDrive/$1 onedrive-remote:$2
+}
+
+# copy from remote folder to local
+onecpfromremote () {
+  rclone copy onedrive-remote:$1 /home/sriramkrish92/OneDrive/$2 
+}
+
+# sync from local folder to remote
+onesynctoremote () {
+  rclone sync /home/sriramkrish92/OneDrive/$1 onedrive-remote:$2
+}
+
+# sync from remote folder to local
+onesyncfromremote () {
+  rclone sync onedrive-remote:$1 /home/sriramkrish92/OneDrive/$2 
+}
+
+# Google Drive and rclone
+
+# list all files
+gls () {
+  rclone ls gdrive-remote:$1
+}
+
+# list top level files
+glsd () {
+  rclone lsd gdrive-remote:$1
+}
+
+# create remote directory
+gmkdir () {
+  rclone mkdir gdrive-remote:$1
+}
+
+# delete remote path
+grmdir () {
+  rclone rmdir gdrive-remote:$1
+}
+
+# delete contents
+gdel () {
+  rclone delete gdrive-remote:$1
+}
+
+# purge contents and path
+gpurge () {
+  rclone purge gdrive-remote:$1
+}
+
+# copy from local folder to remote
+gcptoremote () {
+  rclone copy /home/sriramkrish92/GoogleDrive/$1 gdrive-remote:$2
+}
+
+# copy from remote folder to local
+gcpfromremote () {
+  rclone copy gdrive-remote:$1 /home/sriramkrish92/GoogleDrive/$2 
+}
+
+# sync from local folder to remote
+gsynctoremote () {
+  rclone sync /home/sriramkrish92/GoogleDrive/$1 gdrive-remote:$2
+}
+
+# sync from remote folder to local
+gsyncfromremote () {
+  rclone sync gdrive-remote:$1 /home/sriramkrish92/GoogleDrive/$2 
+}
+
+# pandoc convert from markdown to pdf
+mdtopdf () {
+  pandoc -V geometry:margin=1in $1 -o $2
+}

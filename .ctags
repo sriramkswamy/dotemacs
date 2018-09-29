@@ -1,0 +1,43 @@
+--recurse=yes
+--exclude=.git
+--exclude=vendor/*
+--exclude=node_modules/*
+--exclude=db/*
+--exclude=log/*
+
+--langdef=taskpaper
+--langmap=taskpaper:.taskpaper
+--regex-taskpaper=/^[ \t ]*(.*):$/\1/p,Project/
+
+--langdef=markdown
+--langmap=markdown:.md
+--regex-markdown=/^#[ \t ]+(.*)/\1/h,Heading_L1/
+--regex-markdown=/^##[ \t ]+(.*)/\1/i,Heading_L2/
+--regex-markdown=/^###[ \t ]+(.*)/\1/k,Heading_L3/
+
+--langdef=rmarkdown
+--langmap=rmarkdown:.rmd
+--regex-rmarkdown=/^#[ \t ]+(.*)/\1/h,Heading_L1/
+--regex-rmarkdown=/^##[ \t ]+(.*)/\1/i,Heading_L2/
+--regex-rmarkdown=/^###[ \t ]+(.*)/\1/k,Heading_L3/
+
+--langdef=vimwiki
+--langmap=vimwiki:.txt
+--regex-vimwiki=/^#[ \t ]+(.*)/\1/h,Heading_L1/
+--regex-vimwiki=/^##[ \t ]+(.*)/\1/i,Heading_L2/
+--regex-vimwiki=/^###[ \t ]+(.*)/\1/k,Heading_L3/
+
+--langdef=R
+--langmap=r:.R.r
+--regex-R=/^[ \t]*"?([.A-Za-z][.A-Za-z0-9_]*)"?[ \t]*<-[ \t]function/\1/f,Functions/
+--regex-R=/^"?([.A-Za-z][.A-Za-z0-9_]*)"?[ \t]*<-[ \t][^f][^u][^n][^c][^t][^i][^o][^n]/\1/g,GlobalVars/
+--regex-R=/[ \t]"?([.A-Za-z][.A-Za-z0-9_]*)"?[ \t]*<-[ \t][^f][^u][^n][^c][^t][^i][^o][^n]/\1/v,FunctionVariables/
+
+--langdef=bib
+--langmap=bib:.bib
+--regex-bib=/^@[A-Za-z]+\{([^,]*)/\1/b,bib/
+
+--langdef=matlab
+--langmap=matlab:.m
+--regex-matlab=/^function[ \t]*([a-zA-Z0-9_]+)[ \t]*=[ \t]*([a-zA-Z0-9_]+)/\2/f,functions/
+--regex-matlab=/^function[ \t]*([a-zA-Z0-9_]+)[^=]*$/\1/f,functions/

@@ -1,0 +1,185 @@
+############
+#  Common  #
+############
+
+# General Utilities
+alias ls='ls -GFh'
+alias sl='ls -GFh'
+alias la='ls -AGFh'
+alias lA='ls -alGFh'
+alias ll="ls -lh"
+alias lr="ls -Rlh"
+alias profile='vim ~/.alias'
+alias gscompress='gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dNOPAUSE -dQUIET -dBATCH -sOutputFile=gs-compressed.pdf '
+alias pingu='ping -c 25 www.google.com'
+alias please='sudo $(fc -ln -1)'
+alias rmtex="rm -rf *.aux *.fdb_latexmk *.fls *.lof *.log *.lot *.pdf *.toc"
+alias cl="clear"
+mkd() {mkdir -p $1 && cd $1}
+
+# Compilers and related
+alias mcc='/usr/local/openmpi/bin/mpicc -lgsl -lcblas -llapack -g'
+alias mpp='/usr/local/openmpi/bin/mpic++ -lgsl -lcblas -llapack -g'
+alias mrun='/usr/local/openmpi/bin/mpirun'
+alias mexec='/usr/local/openmpi/bin/mpiexec'
+alias mpi4py='/usr/local/openmpi/bin/mpiexec -n 4 python'
+alias ipopt='g++ -Wall -fopenmp -lgsl -lcblas -llapack -I/usr/local/ipopt/include -L/usr/local/ipopt/lib -g'
+alias tril='/usr/local/openmpi/bin/mpic++ -I/usr/local/trilinos/include -L/usr/local/trilinos/lib -lgsl -lcblas -llapack -g'
+
+# Command line programs
+alias r='R --no-save --quiet'
+alias mk='latexmk -pvc -pdf'
+alias pandoc="pandoc -V geometry:margin=1in"
+alias ofoam='hdiutil attach -quiet -mountpoint $HOME/OpenFOAM $HOME/OpenFOAM.sparsebundle; sleep 1; source $HOME/OpenFOAM/OpenFOAM-2.3.1/etc/bashrc'
+alias valmem='valgrind --leak-check=full --show-leak-kinds=all --dsymutil=yes --leak-check-heuristics=all --log-file=valmem.log --leak-resolution=low'
+alias valcall='valgrind --tool=callgrind --log-file=valcall.log'
+alias valmass='valgrind --tool=massif --log-file=valmass.log'
+alias valhel='valgrind --tool=helgrind --log-file=valhel.log'
+alias setJdk6='export JAVA_HOME=$(/usr/libexec/java_home -v 1.6)'
+alias setJdk7='export JAVA_HOME=$(/usr/libexec/java_home -v 1.7)'
+alias setJdk8='export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)'
+alias gistclip='gist -Pcd '
+alias yapf='~/Library/Python/3.6/bin/yapf'
+
+# python virtualenv
+alias ve='virtualenv'
+alias vm='mkvirtualenv'
+alias vw='workon'
+alias vr='rmvirtualenv'
+alias vd='deactivate'
+va () {source "$@"/bin/activate}
+
+# ledger aliases
+alias ledbal='ledger balance -f'
+
+# eclimd
+alias eclimd='/Applications/Eclipse.app/Contents/Eclipse/eclimd'
+
+# For blogging
+alias bnew='hexo new'
+alias bclean='hexo clean'
+alias bview='hexo generate && hexo server'
+alias bpost='hexo deploy'
+
+# Git aliases
+alias l='tig'
+alias gs='git status'
+alias ga='git add'
+alias gc='git commit'
+alias gl='git log --oneline --graph'
+alias gd='git diff'
+alias gp='git push'
+alias gf='git pull'
+alias gr='git remote'
+alias gi='git init'
+
+# For file browsing
+alias n='ranger'
+
+# For tmux
+alias m='tmux'
+alias a='tmux attach-session -t'
+alias d='tmux detach'
+PS1="$PS1"'$([ -n "$TMUX" ] && tmux setenv TMUXPWD_$(tmux display -p "#D" | tr -d %) "$PWD")'
+
+#########################
+#  OS X specific stuff  #
+#########################
+
+# disk usage
+alias df='df -h'
+alias du='du -h'
+
+# Turn off/restart
+alias poweroff='shutdown -h now'
+alias reboot='shutdown -r now'
+
+# Safari
+alias b='open -a Safari'
+alias geturl="osascript -e 'tell application "Safari" to get URL of current tab of front window'"
+
+# TextEdit
+alias texteditplain='defaults write com.apple.TextEdit RichText -int 0'
+
+# Skim
+alias skim='open -a /Applications/Skim.app'
+alias skimauto='defaults write -app Skim SKAutoReloadFileUpdate -boolean true'
+
+# youtube downloader
+alias ytvid="youtube-dl --format=mp4 -o '~/Downloads/MyVideos/%(title)s.%(ext)s'"
+alias ytplay="youtube-dl --format=mp4 -o '~/Downloads/MyVideos/%(playlist)s/%(playlist_index)s - %(title)s.%(ext)s'"
+alias ytchannel="youtube-dl --format=mp4 -o '~/Downloads/MyVideos/%(uploader)s/%(playlist)s/%(playlist_index)s - %(title)s.%(ext)s'"
+
+# Sage
+alias sage='/Applications/Sage-6.8.app/Contents/Resources/sage/sage'
+
+# Matlab
+alias matlab='/Applications/MATLAB_R2016a.app/bin/matlab -nodesktop -nosplash'
+alias matlabd='open -a /Applications/MATLAB_R2016a.app'
+
+# Emacs
+alias em='/Applications/Emacs.app/Contents/MacOS/Emacs'
+alias et='emacsclient -s default -t'
+alias ec='emacsclient -s default -c &'
+alias ed='/Applications/Emacs.app/Contents/MacOS/Emacs --daemon=default'
+alias eg='/Applications/Emacs.app/Contents/MacOS/Emacs --debug-init'
+alias profile-init="/Applications/Emacs.app/Contents/MacOS/Emacs -Q -l ~/.emacs.d/profile-init.el -f profile-dotemacs"
+alias profile-local="/Applications/Emacs.app/Contents/MacOS/Emacs -Q -l ~/.emacs.d/profile-local.el -f profile-dotemacs"
+
+# Vim/Nvim
+alias e='nvim'
+alias v='vimr'
+
+# Xcode
+alias xcodeinstall='xcode-select --install'
+alias xcodescmdline='sudo xcode-select -s /Library/Developer/CommandLineTools'
+alias xcodesdevelop='sudo xcode-select -s /Applications/Xcode.app/Contents/Developer'
+
+# iTerm background change function
+it2prof() { echo -e "\033]50;SetProfile=$1\a" }
+alias cod='it2prof Dark'
+alias col='it2prof Light'
+alias coh='it2prof Hotkey\ Window'
+
+# Finder
+alias findershow='defaults write com.apple.finder AppleShowAllFiles true'
+alias finderhide='defaults write com.apple.finder AppleShowAllFiles false'
+alias finderlib='chflags nohidden ~/Library'
+alias findershowpath='defaults write com.apple.finder ShowPathbar -bool true'
+alias finderhidepath='defaults write com.apple.finder ShowPathbar -bool false'
+
+# large files
+alias largefiles='du -a * | sort -r -n | head -10'
+
+# Power
+alias coffee='caffeinate -u -t 10800'
+alias rebootfreeze='sudo systemsetup -setrestartfreeze on'
+
+# Mute
+alias mute="osascript -e 'set volume output muted true'"
+
+# Network
+alias whatsmyip='ipconfig getifaddr en0'
+alias firewallup='sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setglobalstate on'
+alias firewalldown='sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setglobalstate off'
+
+# Software
+alias softupdate='sudo softwareupdate -ia'
+alias softupdatelist='sudo softwareupdate -l'
+
+# brew
+alias em2mac='brew unlinkapps emacs && brew linkapps emacs-mac'
+alias mac2em='brew unlinkapps emacs-mac && brew linkapps emacs'
+
+# App Store
+alias apps="find /Applications -path '*Contents/_MASReceipt/receipt' -maxdepth 4 -print |\sed 's#.app/Contents/_MASReceipt/receipt#.app#g; s#/Applications/##'"
+# Debug Enable
+alias debugappson="defaults write com.apple.appstore ShowDebugMenu -bool true"
+# Debug Disable (Default)
+alias debugappsoff"defaults write com.apple.appstore ShowDebugMenu -bool false"
+
+# Contacts
+# Debug Enable
+defaults write com.apple.addressbook ABShowDebugMenu -bool true
+# Debug Disable (Default)
+defaults write com.apple.addressbook ABShowDebugMenu -bool false

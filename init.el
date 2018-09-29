@@ -445,6 +445,9 @@
 ;; latex support
 (require 'sk-latex)
 
+;; markdown support
+(require 'sk-markdown)
+
 ;; lsp support
 (require 'sk-lsp)
 

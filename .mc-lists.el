@@ -4,6 +4,7 @@
 (setq mc/cmds-to-run-for-all
       '(
 		iy-go-to-char--command
+		ryo:02cf7a4d74931d7e2ad7863c945288a8:symbol
 		ryo:04a1830bad47c97c575a7afb01ebd040:line/region
 		ryo:1cf9c664ed81221b6fc344af519fce32:prev\ word
 		ryo:1cfaf336c571fd5dc56b11f0501d658c:next\ line

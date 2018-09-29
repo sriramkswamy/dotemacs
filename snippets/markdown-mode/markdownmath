@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: markdown math newline
+# key: mm
+# --
+$$
+$1
+$$
+$0

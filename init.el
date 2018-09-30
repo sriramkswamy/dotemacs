@@ -145,8 +145,8 @@
 
 ;; pdf/image viewing
 (use-package doc-view
-  :hook ((doc-view-mode . doc-view-fir-page-to-window)
-         (doc-view-minor-mode . doc-view-fir-page-to-window))
+  :hook ((doc-view-mode . doc-view-fit-page-to-window)
+         (doc-view-minor-mode . doc-view-fit-page-to-window))
   :init
   (setq doc-view-continuous t))
 
@@ -380,9 +380,9 @@
 (require 'sk-narrow)
 
 ;; select a good theme
-(use-package flatui-dark-theme
+(use-package flatui-theme
 	:ensure t)
-(load-theme 'flatui-dark t)
+(load-theme 'flatui t)
 
 (when (eq system-type 'darwin)
   ;; fancy battery

@@ -7,7 +7,7 @@ alias ll="ls -lh"
 alias lr="ls -Rlh"
 
 # editor alias
-alias v='emacs -nw'
+alias v='nvim'
 alias f='ranger'
 
 # tmux aliases

@@ -4,6 +4,7 @@
 (setq mc/cmds-to-run-for-all
       '(
 		iy-go-to-char--command
+		org-self-insert-command
 		ryo:02cf7a4d74931d7e2ad7863c945288a8:symbol
 		ryo:04a1830bad47c97c575a7afb01ebd040:line/region
 		ryo:1cf9c664ed81221b6fc344af519fce32:prev\ word
@@ -15,6 +16,7 @@
 		ryo:3f5c328e4371c0d467e4c35fb044e295:pairs
 		ryo:4aaf04fe48afa26e80280149dac22e08:next\ char
 		ryo:53b30d6e93958ac24aaa9cd3e8900c05:prev\ line
+		ryo:5c270435746ade06f1fa52b9040fa75e:paste
 		ryo:5c413f1850bc4e67b899d6f007f99154:undo
 		ryo:5dda49ae5f7861ffbbbcd01d47d55745:delete\ char
 		ryo:66a291f2c332a7f93d3ab5d1908e29df:start\ of\ buffer

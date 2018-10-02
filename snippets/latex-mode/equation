@@ -2,7 +2,7 @@
 # name: equation
 # key: eq
 # --
-\begin{equation${2:*}}
-	$1
+\begin{equation${1:*}}
+	$2
 	${0:$$(reftex-label)}
-\end{equation$2}
+\end{equation$1}

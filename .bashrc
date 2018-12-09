@@ -117,7 +117,7 @@ fi
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
 # python virtualenv
-source ~/venv/global/bin/activate
+source ~/.virtualenvs/global/bin/activate
 
-# start dropbox
-dropbox start
+# start tmux
+tmux

@@ -1,0 +1,7 @@
+[user]
+	name = Sriram Krishnaswamy
+	email = sriram.krish.92@gmail.com
+[core]
+	editor = nvim
+[push]
+	default = upstream

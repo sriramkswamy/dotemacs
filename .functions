@@ -3,127 +3,137 @@ gsmerge () {
   gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=merged.pdf $1 $2
 }
 
-# fzf-kill - kill process
-k() {
-  pid=$(ps -ef | sed 1d | fzf -m | awk '{print $2}')
+# pandoc convert from markdown to pdf
+mdtopdf () {
+  pandoc -V geometry:margin=1in $1 -o $2
+}
 
-  if [ "x$pid" != "x" ]
+# k - kill processes - list only the ones you can kill. Modified the earlier script.
+k() {
+    local pid
+    if [ "$UID" != "0" ]; then
+        pid=$(ps -f -u $UID | sed 1d | fzf -m | awk '{print $2}')
+    else
+        pid=$(ps -ef | sed 1d | fzf -m | awk '{print $2}')
+    fi
+
+    if [ "x$pid" != "x" ]
+    then
+        echo $pid | xargs kill -${1:-9}
+    fi
+}
+
+# f - cd to selected directory
+f() {
+  local dir
+  dir=$(find ${1:-.} -path '*/\.*' -prune \
+                  -o -type d -print 2> /dev/null | fzf +m) &&
+  cd "$dir"
+}
+
+# Another fd - cd into the selected directory
+# This one differs from the above, by only showing the sub directories and not
+#  showing the directories within those.
+j() {
+  DIR=`find * -maxdepth 0 -type d -print 2> /dev/null | fzf-tmux` \
+    && cd "$DIR"
+}
+
+# l - cd to selected parent directory
+l() {
+  local declare dirs=()
+  get_parent_dirs() {
+    if [[ -d "${1}" ]]; then dirs+=("$1"); else return; fi
+    if [[ "${1}" == '/' ]]; then
+      for _dir in "${dirs[@]}"; do echo $_dir; done
+    else
+      get_parent_dirs $(dirname "$1")
+    fi
+  }
+  local DIR=$(get_parent_dirs $(realpath "${1:-$PWD}") | fzf-tmux --tac)
+  cd "$DIR"
+}
+
+# d - fuzzy cd from anywhere
+# ex: d word1 word2 ... (even part of a file name)
+# zsh autoload function
+d() {
+  local file
+
+  file="$(locate -Ai -0 $@ | grep -z -vE '~$' | fzf --read0 -0 -1)"
+
+  if [[ -n $file ]]
   then
-    kill -${1:-9} $pid
+     if [[ -d $file ]]
+     then
+        cd -- $file
+     else
+        cd -- ${file:h}
+     fi
+  fi
+}
+
+# c - git commit browser
+c() {
+  git log --graph --color=always \
+      --format="%C(auto)%h%d %s %C(black)%C(bold)%cr" "$@" |
+  fzf --ansi --no-sort --reverse --tiebreak=index --bind=ctrl-s:toggle-sort \
+      --bind "ctrl-m:execute:
+                (grep -o '[a-f0-9]\{7\}' | head -1 |
+                xargs -I % sh -c 'git show --color=always % | less -R') << 'FZF-EOF'
+                {}
+FZF-EOF"
+}
+
+# x - create new tmux session, or switch to existing one. Works from within tmux too. (@bag-man)
+# `x` will allow you to select your tmux session via fzf.
+# `x irc` will attach to the irc session (if it exists), else it will create it.
+
+x() {
+  [[ -n "$TMUX" ]] && change="switch-client" || change="attach-session"
+  if [ $1 ]; then
+    tmux $change -t "$1" 2>/dev/null || (tmux new-session -d -s $1 && tmux $change -t "$1"); return
+  fi
+  session=$(tmux list-sessions -F "#{session_name}" 2>/dev/null | fzf --exit-0) &&  tmux $change -t "$session" || echo "No sessions found."
+}
+
+# ftpane - switch pane (@george-b)
+ftpane() {
+  local panes current_window current_pane target target_window target_pane
+  panes=$(tmux list-panes -s -F '#I:#P - #{pane_current_path} #{pane_current_command}')
+  current_pane=$(tmux display-message -p '#I:#P')
+  current_window=$(tmux display-message -p '#I')
+
+  target=$(echo "$panes" | grep -v "$current_pane" | fzf +m --reverse) || return
+
+  target_window=$(echo $target | awk 'BEGIN{FS=":|-"} {print$1}')
+  target_pane=$(echo $target | awk 'BEGIN{FS=":|-"} {print$2}' | cut -c 1)
+
+  if [[ $current_window -eq $target_window ]]; then
+    tmux select-pane -t ${target_window}.${target_pane}
+  else
+    tmux select-pane -t ${target_window}.${target_pane} &&
+    tmux select-window -t $target_window
   fi
 }
 
 # mkdir and move there
 mkd () {
-  mkdir -p $1
+  mkdir -p "$1"
   cd $1
 }
 
-# OneDrive and rclone
+# search pdfs and within pdfs
+p () {
+    open=mupdf   # this will open pdf file withthe default PDF viewer on KDE, xfce, LXDE and perhaps on other desktops.
 
-# list all files
-onels () {
-  rclone ls onedrive-remote:$1
+    ag -U -g ".pdf$" \
+    | fast-p \
+    | fzf --read0 --reverse -e -d $'\t'  \
+        --preview-window down:80% --preview '
+            v=$(echo {q} | tr " " "|");
+            echo -e {1}"\n"{2} | grep -E "^|$v" -i --color=always;
+        ' \
+    | cut -z -f 1 -d $'\t' | tr -d '\n' | xargs -r --null $open > /dev/null 2> /dev/null
 }
 
-# list top level files
-onelsd () {
-  rclone lsd onedrive-remote:$1
-}
-
-# create remote directory
-onemkdir () {
-  rclone mkdir onedrive-remote:$1
-}
-
-# delete remote path
-onermdir () {
-  rclone rmdir onedrive-remote:$1
-}
-
-# delete contents
-onedel () {
-  rclone delete onedrive-remote:$1
-}
-
-# purge contents and path
-onepurge () {
-  rclone purge onedrive-remote:$1
-}
-
-# copy from local folder to remote
-onecptoremote () {
-  rclone copy /home/sriramkrish92/OneDrive/$1 onedrive-remote:$2
-}
-
-# copy from remote folder to local
-onecpfromremote () {
-  rclone copy onedrive-remote:$1 /home/sriramkrish92/OneDrive/$2 
-}
-
-# sync from local folder to remote
-onesynctoremote () {
-  rclone sync /home/sriramkrish92/OneDrive/$1 onedrive-remote:$2
-}
-
-# sync from remote folder to local
-onesyncfromremote () {
-  rclone sync onedrive-remote:$1 /home/sriramkrish92/OneDrive/$2 
-}
-
-# Google Drive and rclone
-
-# list all files
-gls () {
-  rclone ls gdrive-remote:$1
-}
-
-# list top level files
-glsd () {
-  rclone lsd gdrive-remote:$1
-}
-
-# create remote directory
-gmkdir () {
-  rclone mkdir gdrive-remote:$1
-}
-
-# delete remote path
-grmdir () {
-  rclone rmdir gdrive-remote:$1
-}
-
-# delete contents
-gdel () {
-  rclone delete gdrive-remote:$1
-}
-
-# purge contents and path
-gpurge () {
-  rclone purge gdrive-remote:$1
-}
-
-# copy from local folder to remote
-gcptoremote () {
-  rclone copy /home/sriramkrish92/GoogleDrive/$1 gdrive-remote:$2
-}
-
-# copy from remote folder to local
-gcpfromremote () {
-  rclone copy gdrive-remote:$1 /home/sriramkrish92/GoogleDrive/$2 
-}
-
-# sync from local folder to remote
-gsynctoremote () {
-  rclone sync /home/sriramkrish92/GoogleDrive/$1 gdrive-remote:$2
-}
-
-# sync from remote folder to local
-gsyncfromremote () {
-  rclone sync gdrive-remote:$1 /home/sriramkrish92/GoogleDrive/$2 
-}
-
-# pandoc convert from markdown to pdf
-mdtopdf () {
-  pandoc -V geometry:margin=1in $1 -o $2
-}

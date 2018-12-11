@@ -108,6 +108,16 @@
   "g c a" "outside"
   "g c g" "global"
 
+  "g r" "replace"
+  "g r i" "inside"
+  "g r a" "outside"
+  "g r g" "global"
+
+  "g v" "regexp replace"
+  "g v i" "inside"
+  "g v a" "outside"
+  "g v g" "global"
+
   "g y" "copy to clipboard"
   "g y i" "inside"
   "g y a" "outside"
@@ -225,7 +235,9 @@
 
 ;; leader prefixes
 (which-key-add-key-based-replacements
-  "SPC i" "info ycmd")
+  "SPC i" "info ycmd"
+  "SPC v" "shells"
+  "SPC m" "minor leader")
 
 ;; general functions
 (which-key-add-key-based-replacements

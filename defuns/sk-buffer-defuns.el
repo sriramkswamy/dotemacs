@@ -152,5 +152,13 @@ Else call `ediff-buffers'."
      (t
       (call-interactively #'ediff-buffers)))))
 
+;; rclone sync
+(defun sk/org-rclone-sync-to-dropbox ()
+  (interactive)
+  (shell-command "rclone sync ~/Dropbox/org drop:org"))
+(defun sk/org-rclone-sync-from-dropbox ()
+  (interactive)
+  (shell-command "rclone sync drop:org ~/Dropbox/org"))
+
 ;; provide this configuration
 (provide 'sk-buffer-defuns)

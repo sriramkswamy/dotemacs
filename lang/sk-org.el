@@ -225,16 +225,6 @@
 
   ;; capture templates - brace yourselves
   (setq org-capture-templates '(
-								;; For notes on articles
-								("a"	    ; key
-								 "Articles" ; name
-								 entry	    ; type
-								 (file+headline "~/Dropbox/org/notes.org" "Articles") ; target
-								 "* %? %^G\n:PROPERTIES:\n:Created: %U\n:Linked: %A\n:END:\n%i" ; template
-								 :prepend t	 ; properties
-								 :empty-lines 1	 ; properties
-								 :created t	 ; properties
-								 :kill-buffer t) ; properties
 
 								;; For code snippets
 								("c"	; key
@@ -258,11 +248,22 @@
 								 :created t	 ; properties
 								 :kill-buffer t) ; properties
 
+								;; For taking notes on personal things
+								("p"	; key
+								 "Personal Note"	; name
+								 entry	; type
+								 (file+headline "~/Dropbox/org/personal.org" "Notes") ; target
+								 "* %? %^G\n:PROPERTIES:\n:Created: %U\n:Linked: %A\n:END:\n%i" ; template
+								 :prepend t	 ; properties
+								 :empty-lines 1	 ; properties
+								 :created t	 ; properties
+								 :kill-buffer t) ; properties
+
 								;; Blogging ideas
 								("b"	; key
 								 "Blog" ; name
 								 entry	; type
-								 (file+headline "~/Dropbox/org/notes.org" "Blog") ; target
+								 (file+headline "~/Dropbox/org/personal.org" "Blog") ; target
 								 "* %? %^G\n:PROPERTIES:\n:Created: %U\n:Linked: %A\n:END:\n%i" ; template
 								 :prepend t	 ; properties
 								 :empty-lines 1	 ; properties
@@ -307,7 +308,7 @@
 								 "Jobs"	    ; name
 								 table-line ; type
 								 (file+headline "~/Dropbox/org/notes.org" "Jobs") ; target
-								 "| %u | %^{Company} | [[%^{job link}][%^{position}]] | %^{referrals?} | %^{Experience?} | %^t | %^{Status} | %^{Follow up} | %^{Result} |" ; template
+								 "| %^{Company} | [[%^{job link}][%^{position}]] | %^{referrals?} | %^{Experience?} | %^{Status} |" ; template
 								 :prepend t ; properties
 								 ;; :table-line-pos "II-3"   ; properties
 								 :empty-lines 1	 ; properties
@@ -319,7 +320,18 @@
 								 "Todos" ; name
 								 entry	    ; type
 								 (file+headline "~/Dropbox/org/personal.org" "Todos") ; target
-								 "TODO %^{Title} %^G\n:PROPERTIES:\n:Created: %U\n:Linked: %A\n:END:\n%i\n%?" ; template
+								 "* TODO %^{Title} %^G\n:PROPERTIES:\n:Created: %U\n:END:\n%i\n%?" ; template
+								 :prepend t	 ; properties
+								 :empty-lines 1	 ; properties
+								 :created t	 ; properties
+								 :kill-buffer t) ; properties
+
+								;; For capturing minutes of the meeting
+								("d"	   ; key
+								 "Diary" ; name
+								 entry	   ; type
+								 (file+olp+datetree "~/Dropbox/org/personal.org" "Diary") ; target
+								 "* %^{Title} %^G\n:PROPERTIES:\n:Created: %U\n:END:\n%i\n %?" ; template
 								 :prepend t	 ; properties
 								 :empty-lines 1	 ; properties
 								 :created t	 ; properties

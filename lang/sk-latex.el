@@ -50,8 +50,9 @@
    TeX-kill-job
    preview-clearout-buffer)
   :mode (("\\.tex\\'" . latex-mode)
-		 ("\\.xtx\\'" . latex-mode))
-  
+		 ("\\.xtx\\'" . latex-mode)
+		 ("\\.bib\\'" . bibtex-mode))
+
   :bind (:map TeX-mode-map
 			  ("C-d" . company-auctex-symbols))
   ;; :bind (:map latex-mode-map
@@ -62,11 +63,14 @@
   :init
   (setq reftex-plug-into-AUCTeX t)
   (setq reftex-default-bibliography
-		'("~/Dropbox/PhD/articles/tensors/tensors.bib"
-		  "~/Dropbox/PhD/articles/datatensors/datatensors.bib"
-		  "~/Dropbox/PhD/articles/association/association.bib"
-		  "~/Dropbox/PhD/articles/lorenz/lorenz.bib"
-		  "~/Dropbox/PhD/articles/multiphysics/multiphysics.bib"))
+		'("~/Dropbox/Kumar/Conferences/ACC2019/references.bib"
+		  "~/Dropbox/Kumar/Conferences/GNC2018/references.bib"
+		  "~/Dropbox/Kumar/Conferences/GNC2019/references.bib"
+		  "~/Dropbox/Kumar/Conferences/ICSSA 2017/paper/references.bib"
+		  "~/Dropbox/Kumar/Journals/journal2018-applications/references.bib"
+		  "~/Dropbox/Kumar/Journals/journal2018-method/references.bib"
+		  "~/Dropbox/Kumar/Proposal/presentation/references.bib"
+		  "~/Dropbox/Kumar/Proposal/references.bib"))
   (setq TeX-auto-save t)
   (setq TeX-parse-self t)
   (setq-default TeX-master nil)
@@ -97,10 +101,17 @@
   ;; Skim's displayline is used for forward search (from .tex to .pdf)
   ;; option -b highlights the current line; option -g opens Skim in the background
   (setq TeX-view-program-selection '((output-pdf "PDF Viewer")))
-  (setq TeX-view-program-list
-		'(("PDF Viewer" "/Applications/Skim.app/Contents/SharedSupport/displayline -b -g %n %o %b")))
+  (cond
+   ((eq system-type 'darwin)
+	(setq TeX-view-program-list
+		  '(("PDF Viewer" "/Applications/Skim.app/Contents/SharedSupport/displayline -b -g %n %o %b"))))
+   ((eq system-type 'gnu/linux)
+	(setq TeX-view-program-list
+		  '(("PDF Viewer" "evince")))))
+
   ;; turn on reftex
   (reftex-mode))
+(add-hook 'bibtex-mode-hook 'sk/enable-ryo-modal-mode)
 
 ;; latex mode bindings
 (ryo-modal-keys

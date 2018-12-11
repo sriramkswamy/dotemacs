@@ -20,7 +20,7 @@
  (:norepeat t)
  (":" "C-x" :name "C-x maps")
  ("\"" "C-c" :name "C-c maps")
- ("`" "C-u" :name "C-u maps")
+ ("SPC u" "C-u" :name "C-u prefix")
  ("m =" "C-c '" :name "C-c edit special"))
 
 ;; ryo modal general mappings
@@ -175,10 +175,11 @@
 ;; ryo modal repl maps
 (ryo-modal-keys
  (:norepeat t)
- ("SPC u" sk/call-terminal :name "terminal")
+ ("SPC v u" sk/call-terminal :name "os terminal")
  ("SPC v s" sk/shell :name "shell")
  ("SPC v t" sk/term :name "term")
- ("SPC t" sk/eshell :name "eshell"))
+ ("SPC v e" sk/eshell :name "split eshell")
+ ("SPC v v" eshell :name "eshell"))
 
 ;; ryo modal window navigation maps
 (ryo-modal-keys
@@ -227,7 +228,7 @@
                  ("f" "C-x C-f" :name "open file" :norepeat t)
                  ("g" "C-g" :name "interrupt" :norepeat t)
                  ("r" counsel-recentf :name "recent files" :norepeat t)
-                 ("d" sk/counsel-fzf-project :name "project files" :norepeat t)
+                 ("d" sk/counsel-file-jump-project :name "project files" :norepeat t)
                  ("p" sk/counsel-ag-project :name "grep project" :norepeat t)
                  ("a" ivy-switch-view :name "switch views" :norepeat t)
                  ("l" flycheck-list-errors :name "list errors" :norepeat t)
@@ -241,6 +242,12 @@
 				 ("o" sk/counsel-org-folder :name "inside org folder" :norepeat t)
 				 ("c" org-capture :name "capture" :norepeat t)
 				 ("j" "M-x" :name "commands" :norepeat t)))
+
+;; mapping with minor leader
+(ryo-modal-key "SPC m"
+			   '(("p" sk/org-rclone-sync-to-dropbox :name "push org to rclone" :norepeat t)
+				 ("f" sk/org-rclone-sync-to-dropbox :name "fetch org from rclone" :norepeat t)
+				 (":" eval-expression :name "eval expression" :norepeat t)))
 
 ;; use locate or spotlight depending on the system
 (cond

@@ -298,6 +298,18 @@
       (counsel-fzf "" (vc-root-dir))
     (counsel-find-file)))
 
+;; vc based project file search
+(defun sk/counsel-file-jump-project (arg)
+  "use counsel file jump or counsel git to search the project files"
+  (interactive "P")
+  (if arg
+	  (if (eq (file-remote-p default-directory) nil)
+		  (counsel-file-jump "" (vc-root-dir))
+		(counsel-find-file))
+	(if (eq (file-remote-p default-directory) nil)
+		(counsel-git)
+	  (counsel-find-file))))
+
 ;; project based grep
 (defun sk/counsel-ag-project ()
   "use counsel ag to search the project"

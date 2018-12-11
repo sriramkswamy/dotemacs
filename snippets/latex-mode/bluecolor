@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: blue color
+# key: clb
+# --
+{\color{blue} $1}$0

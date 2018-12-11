@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: author's response
+# key: resp
+# --
+{\color{blue} \textbf{Author's Response:} $1}$0

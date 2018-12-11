@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: manuscript changes
+# key: chan
+# --
+{\color{red} \textbf{Changes to the manuscript:} $1}$0

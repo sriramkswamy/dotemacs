@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: color red
+# key: clr
+# --
+{\color{red} $1}$0

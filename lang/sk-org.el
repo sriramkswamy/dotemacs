@@ -345,7 +345,7 @@
   (add-to-list 'org-structure-template-alist '("E" "#+BEGIN_EXAMPLE\n?\n#+END_EXAMPLE\n"))
   (add-to-list 'org-structure-template-alist '("H" "#+LATEX_HEADER: ?"))
   (add-to-list 'org-structure-template-alist '("I" ":INTERLEAVE_PDF: ?"))
-  (add-to-list 'org-structure-template-alist '("L" "#+BEGIN_LaTeX\n?\n#+END_LaTeX"))
+  (add-to-list 'org-structure-template-alist '("L" "#+BEGIN_LATEX\n?\n#+END_LATEX"))
   (add-to-list 'org-structure-template-alist '("M" "#+LATEX_HEADER: \\usepackage{minted}\n"))
   (add-to-list 'org-structure-template-alist '("N" "#+NAME: ?"))
   (add-to-list 'org-structure-template-alist '("P" "#+HTML_HEAD: <link rel=\"stylesheet\" type=\"text/css\" href=\"org.css\"/>\n"))

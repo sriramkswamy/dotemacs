@@ -399,10 +399,12 @@
 	:ensure t)
 (use-package flatui-dark-theme
 	:ensure t)
-(if (display-graphic-p)
-	(load-theme 'flatui t)
-  (load-theme 'flatui-dark))
 
+;; choose a single theme or change it
+(load-theme 'flatui t)
+;; (if (display-graphic-p)
+;; 	(load-theme 'flatui t)
+;;   (load-theme 'flatui-dark))
 
 (when (eq system-type 'darwin)
   ;; fancy battery

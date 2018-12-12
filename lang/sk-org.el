@@ -190,25 +190,26 @@
 		  "pdflatex -interaction nonstopmode -output-directory %o %f"))
 
   ;; tags
-  (setq org-tag-alist (quote (("article"   . ?A)
-							  ("courses"   . ?O)
-							  ("code"      . ?C)
-							  ("errands"   . ?E)
-							  ("blog"      . ?B)
-							  ("idea"      . ?D)
-							  ("job"       . ?J)
-							  ("meeting"   . ?M)
-							  ("note"      . ?N)
-							  ("personal"  . ?I)
-							  ("learning"  . ?L)
-							  ("language"  . ?U)
-							  ("hobbies"   . ?H)
-							  ("gubby"     . ?G)
-							  ("project"   . ?P)
-							  ("reveal"    . ?R)
-							  ("vague"     . ?V)
-							  ("work"      . ?W)
-							  ("noexport"  . ?X))))
+  (setq org-tag-alist (quote (("article"	. ?A)
+							  ("courses"	. ?O)
+							  ("code"		. ?C)
+							  ("errands"	. ?E)
+							  ("blog"		. ?B)
+							  ("future"		. ?F)
+							  ("reading"	. ?R)
+							  ("idea"		. ?D)
+							  ("job"		. ?J)
+							  ("meeting"	. ?M)
+							  ("note"		. ?N)
+							  ("personal"	. ?I)
+							  ("learning"	. ?L)
+							  ("language"	. ?U)
+							  ("hobbies"	. ?H)
+							  ("gubby"		. ?G)
+							  ("project"	. ?P)
+							  ("vague"		. ?V)
+							  ("work"		. ?W)
+							  ("noexport"	. ?X))))
   ;; todo states
   (setq org-todo-keywords
 		'((sequence "TODO(t)" "IN-PROGRESS(i)" "WAITING(w@/!)" "|" "DONE(d!)" "CANCELLED(c@)")))
@@ -259,12 +260,12 @@
 								 :created t	 ; properties
 								 :kill-buffer t) ; properties
 
-								;; Blogging ideas
+								;; Books
 								("b"	; key
-								 "Blog" ; name
+								 "Books" ; name
 								 entry	; type
-								 (file+headline "~/Dropbox/org/personal.org" "Blog") ; target
-								 "* %? %^G\n:PROPERTIES:\n:Created: %U\n:Linked: %A\n:END:\n%i" ; template
+								 (file+headline "~/Dropbox/org/personal.org" "Books") ; target
+								 "* %? %^G\n:PROPERTIES:\n:Created: %U\n::END:\n%i" ; template
 								 :prepend t	 ; properties
 								 :empty-lines 1	 ; properties
 								 :created t	 ; properties
@@ -364,10 +365,10 @@
   (add-to-list 'org-structure-template-alist '("S" "#+SUBTITLE: ?"))
   (add-to-list 'org-structure-template-alist '("T" ":DRILL_CARD_TYPE: twosided"))
   (add-to-list 'org-structure-template-alist '("V" "#+BEGIN_VERSE\n?\n#+END_VERSE"))
-  (add-to-list 'org-structure-template-alist '("X" "#+EXCLUDE_TAGS: reveal?"))
+  (add-to-list 'org-structure-template-alist '("X" "#+EXCLUDE_TAGS: ?"))
   (add-to-list 'org-structure-template-alist '("a" "#+AUTHOR: ?"))
   (add-to-list 'org-structure-template-alist '("c" "#+CAPTION: ?"))
-  (add-to-list 'org-structure-template-alist '("d" "#+OPTIONS: ':nil *:t -:t ::t <:t H:3 \\n:nil ^:t arch:headline\n#+OPTIONS: author:t email:nil e:t f:t inline:t creator:nil d:nil date:t\n#+OPTIONS: toc:nil num:nil tags:nil todo:nil p:nil pri:nil stat:nil c:nil d:nil\n#+LATEX_HEADER: \\usepackage[margin=2cm]{geometry}\n#+LANGUAGE: en\n\n#+REVEAL_TRANS: slide\n#+REVEAL_THEME: white\n#+REVEAL_ROOT: file:///Users/sriramkswamy/Documents/github/reveal.js\n\n?"))
+  (add-to-list 'org-structure-template-alist '("d" "#+OPTIONS: ':nil *:t -:t ::t <:t H:3 \\n:nil ^:t arch:headline\n#+OPTIONS: author:t email:nil e:t f:t inline:t creator:nil d:nil date:t\n#+OPTIONS: toc:nil num:nil tags:nil todo:nil p:nil pri:nil stat:nil c:nil d:nil\n#+LATEX_HEADER: \\usepackage[margin=2cm]{geometry}\n#+LANGUAGE: en\n\n?"))
   (add-to-list 'org-structure-template-alist '("e" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC"))
   (add-to-list 'org-structure-template-alist '("f" "#+TAGS: @?"))
   (add-to-list 'org-structure-template-alist '("h" "#+BEGIN_HTML\n?\n#+END_HTML\n"))
@@ -416,16 +417,6 @@
 (use-package ob-ipython
   :ensure t
   :after (org))
-
-;; extra exports
-(use-package ox-reveal
-  :ensure t
-  :after (org)
-  :init
-  (setq org-reveal-title-slide-template "<h1>%t</h1>\n<h3>%a</h3>")
-  (setq org-reveal-root "file:///Users/sriramkswamy/Documents/github/reveal.js")
-  (use-package htmlize
-  	:ensure t))
 
 (use-package ox-twbs
   :ensure t

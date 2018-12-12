@@ -17,7 +17,13 @@ sudo apt-get install openssh-server git wget curl locate grep gawk sed build-ess
 Basic editor and editor tool support
 
 ```
-sudo apt-get install vim silversearcher-ag ctags tmux editorconfig poppler-utils
+sudo apt-get install vim silversearcher-ag ctags tmux editorconfig
+```
+
+Poppler for a lot of things
+
+```
+sudo apt-get install poppler-utils libpoppler-private-dev libpoppler-dev libpoppler-glib-dev
 ```
 
 Plugin support for tmux

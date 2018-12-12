@@ -14,6 +14,7 @@
 		ryo:3b4de6bfee978cda9fbfd533eb6b619e:prev\ char
 		ryo:3b5ff6385e5bc8f7bc61550b52b5d807:end\ of\ line
 		ryo:3f5c328e4371c0d467e4c35fb044e295:pairs
+		ryo:448d351be6b96f0d03006bc1b7f26005:prev\ selection/exchange\ selection
 		ryo:4aaf04fe48afa26e80280149dac22e08:next\ char
 		ryo:53b30d6e93958ac24aaa9cd3e8900c05:prev\ line
 		ryo:5c270435746ade06f1fa52b9040fa75e:paste
@@ -25,7 +26,9 @@
 		ryo:848b1d4c3d1ae485709df48d826047bd:word
 		ryo:8628beab3b735c231dec1454d5e52aaa:next\ like\ this
 		ryo:8d526cc7c75e2989b0c245f4e7fbf884:append\ end\ of\ line
+		ryo:8f441a01654c7767fc44cd8931130317:word
 		ryo:914d0a2ad8701c2b7e34a57fab70e4ab:end\ of\ buffer
+		ryo:9423fbf987ffa1e4f72349ad8b521065:to\ end\ of\ word
 		ryo:9aa38e17efbb2434c1e52d95c6145109:append
 		ryo:9c18ac4c2959ab93895fdf9ea12e378b:to\ end\ of\ word
 		ryo:9ce0af9cd3be773359309a09167a248b:scratch

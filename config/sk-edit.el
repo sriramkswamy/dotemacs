@@ -219,5 +219,17 @@
   :commands
   (prog-fill))
 
+;; install pdf-tools
+(use-package pdf-tools
+  :ensure t
+  :magic ("%PDF" . pdf-view-mode)
+  :config (pdf-tools-install)
+  :hook ((pdf-view-mode . pdf-view-fit-page-to-window))
+  :commands
+  (pdf-view-next-page
+   pdf-view-previous-page
+   pdf-view-fit-page-to-window
+   pdf-view-revert-buffer))
+
 ;; provide editing related packages
 (provide 'sk-edit)

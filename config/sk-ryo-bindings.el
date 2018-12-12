@@ -144,34 +144,6 @@
  ("g j" diff-hl-next-hunk :name "next diff")
  ("g k" diff-hl-previous-hunk :name "previous diff"))
 
-;; ryo scroll hydra
-(ryo-modal-key
- "S" :hydra
- '(hydra-scroll (:hint nil)
-				"
-^Window^                      ^Doc^                           ^Notes^         ^Quit^
-^^^^^^^^^^^^^-------------------------------------------------------------------------------
- _k_: up     _p_: other up      _b_: prev page  _a_: other revert _i_: note       _s_: smart
- _j_: down   _n_: other down    _f_: next page  _o_: other fit    _u_: notes up   _v_: ivy
- _h_: left   _l_: right                                       _d_: notes down _q_: quit
-"
-				("p" sk/other-window-up)
-				("n" scroll-other-window)
-				("f" sk/other-doc-down)
-				("b" sk/other-doc-up)
-				("a" sk/doc-revert-other-window :color blue)
-				("o" sk/other-doc-fit :color blue)
-				("u" sk/interleave-other-window-previous)
-				("d" sk/interleave-other-window-next)
-				("i" sk/interleave-other-window-note :color blue)
- 				("h" scroll-right)
-				("j" scroll-up-command)
-				("k" scroll-down-command)
-				("l" scroll-left)
-				("s" hydra-smartparens/body :color blue)
-				("v" hydra-ivy/body :color blue)
-				("q" nil :color blue)))
-
 ;; ryo modal repl maps
 (ryo-modal-keys
  (:norepeat t)
@@ -509,15 +481,77 @@
 (ryo-modal-keys
  ;; c based maps
  ("c r" string-rectangle :name "change rectangle")
- ;; ("c p" doc-view-fit-page-to-window :name "doc fit")
  ;; d based maps
  ("d u" sk/ediff-dwim :name "diff update")
  ("d r" kill-rectangle :name "delete rectangle")
- ("d p" sk/other-doc-fit :name "doc fit other window")
  ;; y based maps
  ("y s" embrace-commander :name "surround")
  ("y p" sk/paste-from-clipboard :name "paste from clipboard")
  ("y r" copy-rectangle-as-kill :name "copy rectangle"))
+
+;; ;; doc-view bindings
+;; (ryo-modal-keys
+;;   ;; ("c p" doc-view-fit-page-to-window :name "doc fit")
+;;  ("d p" sk/other-doc-fit :name "doc fit other window"))
+;; ;; doc-view ryo scroll hydra
+;; (ryo-modal-key
+;;  "S" :hydra
+;;  '(hydra-scroll (:hint nil)
+;; 				"
+;; ^Window^                      ^Doc^                           ^Notes^         ^Quit^
+;; ^^^^^^^^^^^^^-------------------------------------------------------------------------------
+;;  _k_: up     _p_: other up      _b_: prev page  _a_: other revert _i_: note       _s_: smart
+;;  _j_: down   _n_: other down    _f_: next page  _o_: other fit    _u_: notes up   _v_: ivy
+;;  _h_: left   _l_: right                                       _d_: notes down _q_: quit
+;; "
+;; 				("p" sk/other-window-up)
+;; 				("n" scroll-other-window)
+;; 				("f" sk/other-doc-down)
+;; 				("b" sk/other-doc-up)
+;; 				("a" sk/doc-revert-other-window :color blue)
+;; 				("o" sk/other-doc-fit :color blue)
+;; 				("u" sk/interleave-other-window-previous)
+;; 				("d" sk/interleave-other-window-next)
+;; 				("i" sk/interleave-other-window-note :color blue)
+;;  				("h" scroll-right)
+;; 				("j" scroll-up-command)
+;; 				("k" scroll-down-command)
+;; 				("l" scroll-left)
+;; 				("s" hydra-smartparens/body :color blue)
+;; 				("v" hydra-ivy/body :color blue)
+;; 				("q" nil :color blue)))
+
+;; pdf-view bindings
+(ryo-modal-keys
+ ("c p" pdf-view-fit-page-to-window :name "pdf fit")
+ ("d p" sk/other-pdf-fit :name "pdf fit other window"))
+;; doc-view ryo scroll hydra
+(ryo-modal-key
+ "S" :hydra
+ '(hydra-scroll (:hint nil)
+				"
+^Window^                      ^Doc^                           ^Notes^         ^Quit^
+^^^^^^^^^^^^^-------------------------------------------------------------------------------
+ _k_: up     _p_: other up      _b_: prev page  _a_: other revert _i_: note       _s_: smart
+ _j_: down   _n_: other down    _f_: next page  _o_: other fit    _u_: notes up   _v_: ivy
+ _h_: left   _l_: right                                       _d_: notes down _q_: quit
+"
+				("p" sk/other-window-up)
+				("n" scroll-other-window)
+				("f" sk/other-pdf-down)
+				("b" sk/other-pdf-up)
+				("a" sk/pdf-revert-other-window :color blue)
+				("o" sk/other-pdf-fit :color blue)
+				("u" sk/interleave-other-window-previous)
+				("d" sk/interleave-other-window-next)
+				("i" sk/interleave-other-window-note :color blue)
+ 				("h" scroll-right)
+				("j" scroll-up-command)
+				("k" scroll-down-command)
+				("l" scroll-left)
+				("s" hydra-smartparens/body :color blue)
+				("v" hydra-ivy/body :color blue)
+				("q" nil :color blue)))
 
 ;; operator based option maps
 (ryo-modal-keys

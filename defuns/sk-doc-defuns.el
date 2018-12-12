@@ -19,25 +19,67 @@
   (doc-view-fit-page-to-window))
 
 ;; document fit to page in other window
-(defun sk/other-doc-fit ()
+(defun sk/other-pdf-fit ()
   "Other document next page"
   (interactive)
   (other-window 1)
-  (doc-view-fit-page-to-window)
+  (pdf-view-fit-page-to-window)
   (other-window 1))
 
 ;; document revert
-(defun sk/doc-revert ()
+(defun sk/pdf-revert ()
   "Document revert"
   (interactive)
-  (doc-view-revert-buffer nil t))
+  (pdf-view-revert-buffer nil t))
 
 ;; document revert in the other window
-(defun sk/doc-revert-other-window ()
+(defun sk/pdf-revert-other-window ()
   "Document revert in the other window"
   (interactive)
   (other-window 1)
-  (doc-view-revert-buffer nil t)
+  (pdf-view-revert-buffer nil t)
+  (other-window 1))
+
+;; document in other window
+(defun sk/other-pdf-down ()
+  "Other document next page"
+  (interactive)
+  (other-window 1)
+  (pdf-view-next-page)
+  (other-window 1))
+(defun sk/other-pdf-up ()
+  "Other document prev page"
+  (interactive)
+  (other-window 1)
+  (pdf-view-previous-page)
+  (other-window 1))
+
+;; document fit to page in window
+(defun sk/pdf-fit ()
+  "Document next page"
+  (interactive)
+  (pdf-view-fit-page-to-window))
+
+;; document fit to page in other window
+(defun sk/other-pdf-fit ()
+  "Other document next page"
+  (interactive)
+  (other-window 1)
+  (pdf-view-fit-page-to-window)
+  (other-window 1))
+
+;; document revert
+(defun sk/pdf-revert ()
+  "Document revert"
+  (interactive)
+  (pdf-view-revert-buffer nil t))
+
+;; document revert in the other window
+(defun sk/pdf-revert-other-window ()
+  "Document revert in the other window"
+  (interactive)
+  (other-window 1)
+  (pdf-view-revert-buffer nil t)
   (other-window 1))
 
 ;; add interleave note for the pdf in the other window

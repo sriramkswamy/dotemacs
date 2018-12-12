@@ -419,23 +419,30 @@
   :bind* (("C-x C" . restart-emacs)))
 
 ;; treemacs for folder tree
-(use-package treemacs
-  :ensure t
-  :init
-  (setq treemacs-follow-after-init          t
-        treemacs-width                      25
-        treemacs-indentation                2
-        treemacs-collapse-dirs              (if (executable-find "python") 3 0)
-        treemacs-silent-refresh             nil
-        treemacs-change-root-without-asking nil
-        treemacs-sorting                    'alphabetic-desc
-        treemacs-show-hidden-files          t
-        treemacs-never-persist              nil
-        treemacs-is-never-other-window      nil
-        treemacs-goto-tag-strategy          'refetch-index)
-  :commands
-  (treemacs-toggle
-   treemacs))
+(if (version< emacs-version "25.2")
+	(use-package neotree
+	  :ensure t
+	  ;; :init
+	  :commands
+	  (neotree-toggle
+	   neotree))
+  (use-package treemacs
+	:ensure t
+	:init
+	(setq treemacs-follow-after-init          t
+		  treemacs-width                      25
+		  treemacs-indentation                2
+		  treemacs-collapse-dirs              (if (executable-find "python") 3 0)
+		  treemacs-silent-refresh             nil
+		  treemacs-change-root-without-asking nil
+		  treemacs-sorting                    'alphabetic-desc
+		  treemacs-show-hidden-files          t
+		  treemacs-never-persist              nil
+		  treemacs-is-never-other-window      nil
+		  treemacs-goto-tag-strategy          'refetch-index)
+	:commands
+	(treemacs-toggle
+	 treemacs)))
 
 ;; shell/tmux configuration
 (require 'sk-shell)

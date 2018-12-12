@@ -104,15 +104,16 @@
 			 goto-last-change-reverse))
 
 ;; smart beginning and end in buffers
-(use-package beginend
-  :ensure t
-  :hook ((dired-mode . beginend-global-mode)
-         (text-mode . beginend-global-mode)
-         (prog-mode . beginend-global-mode))
-  :diminish ((beginend-global-mode . "")
-             (beginend-prog-mode . ""))
-  :config
-  (beginend-global-mode))
+(if (not (version< emacs-version "25.3"))
+	(use-package beginend
+	  :ensure t
+	  :hook ((dired-mode . beginend-global-mode)
+			 (text-mode . beginend-global-mode)
+			 (prog-mode . beginend-global-mode))
+	  :diminish ((beginend-global-mode . "")
+				 (beginend-prog-mode . ""))
+	  :config
+	  (beginend-global-mode)))
 
 ;; moving across marks
 (use-package back-button

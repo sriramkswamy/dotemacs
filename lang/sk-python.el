@@ -135,7 +135,7 @@
 
   ;; language server protocol
   (require 'lsp-mode)
-  (require 'lsp-common)
+  ;; (require 'lsp-common)
   (lsp-define-stdio-client lsp-python "python"
 						   (lsp-make-traverser #'(lambda (dir)
 												   (directory-files

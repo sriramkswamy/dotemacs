@@ -235,13 +235,16 @@
                  ("y" "M-y" :name "copy history" :norepeat t)
                  ("k" "C-x b" :name "switch buffer" :norepeat t)
 				 ("x" ibuffer :name "interactive buffer" :norepeat t)
-				 ("n" treemacs :name "file tree" :norepeat t)
 				 ("z" prodigy :name "background services" :norepeat t)
 				 ("q" quickrun :name "quickrun" :norepeat t)
 				 ("b" hydra-debug/body :name "begin debugging" :norepeat t)
 				 ("o" sk/counsel-org-folder :name "inside org folder" :norepeat t)
 				 ("c" org-capture :name "capture" :norepeat t)
 				 ("j" "M-x" :name "commands" :norepeat t)))
+
+(if (version< emacs-version "25.2")
+	(ryo-modal-key "SPC n" 'neotree :name "file tree" :norepeat t)
+  (ryo-modal-key "SPC n" 'treemacs :name "file tree" :norepeat t))
 
 ;; mapping with minor leader
 (ryo-modal-key "SPC m"

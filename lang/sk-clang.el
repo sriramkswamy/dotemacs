@@ -445,7 +445,7 @@
   :init
   ;; language server protocol
   (require 'lsp-mode)
-  (require 'lsp-common)
+  ;; (require 'lsp-common)
   (lsp-define-stdio-client lsp-clangd-c++ "cpp"
 						 (lsp-make-traverser
 						  #'(lambda (dir)

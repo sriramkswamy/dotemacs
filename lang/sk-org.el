@@ -147,7 +147,8 @@
   :hook ((org-mode . visual-line-mode)
 		 (org-mode . flyspell-mode)
 		 (org-mode . sk/org-template-hook))
-
+  :bind (:map org-agenda-mode-map
+			  ("T"		. counsel-org-tag-agenda))
   :init
   ;; Set to the location of your Org files on your local system
   (setq org-directory "~/Dropbox/org")

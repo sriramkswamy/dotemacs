@@ -48,8 +48,7 @@
 			  ("C-SPC"		. ivy-toggle-calling)
 			  ("C-c g"	    . ivy-avy)
 			  ("C-s"		. ivy-restrict-to-matches))
-  :bind (:map org-agenda-mode-map
-			  ("T"		. counsel-org-tag-agenda))
+
   :config
   (define-key read-expression-map (kbd "C-r") 'counsel-minibuffer-history)
   ;; the hydra in ivy

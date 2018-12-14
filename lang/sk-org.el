@@ -190,26 +190,29 @@
 		  "pdflatex -interaction nonstopmode -output-directory %o %f"))
 
   ;; tags
-  (setq org-tag-alist (quote (("article"	. ?A)
-							  ("courses"	. ?O)
-							  ("code"		. ?C)
-							  ("errands"	. ?E)
-							  ("blog"		. ?B)
-							  ("future"		. ?F)
-							  ("reading"	. ?R)
-							  ("idea"		. ?D)
-							  ("job"		. ?J)
-							  ("meeting"	. ?M)
-							  ("note"		. ?N)
-							  ("personal"	. ?I)
-							  ("learning"	. ?L)
-							  ("language"	. ?U)
-							  ("hobbies"	. ?H)
-							  ("gubby"		. ?G)
-							  ("project"	. ?P)
-							  ("vague"		. ?V)
-							  ("work"		. ?W)
-							  ("noexport"	. ?X))))
+  (setq org-tag-alist (quote (("article"	. ?a)
+							  ("code"		. ?c)
+							  ("errands"	. ?e)
+							  ("books"		. ?b)
+							  ("future"		. ?f)
+							  ("next"		. ?n)
+							  ("immediate"	. ?i)
+							  ("reading"	. ?r)
+							  ("read"		. ?d)
+							  ("job"		. ?j)
+							  ("meeting"	. ?m)
+							  ("note"		. ?o)
+							  ("personal"	. ?l)
+							  ("language"	. ?u)
+							  ("hobby"		. ?y)
+							  ("habits"		. ?t)
+							  ("health"		. ?h)
+							  ("social"		. ?s)
+							  ("gubby"		. ?g)
+							  ("project"	. ?p)
+							  ("plans"		. ?v)
+							  ("work"		. ?w)
+							  ("noexport"	. ?x))))
   ;; todo states
   (setq org-todo-keywords
 		'((sequence "TODO(t)" "IN-PROGRESS(i)" "WAITING(w@/!)" "|" "DONE(d!)" "CANCELLED(c@)")))
@@ -244,6 +247,28 @@
 								 entry	; type
 								 (file+headline "~/Dropbox/org/notes.org" "Notes") ; target
 								 "* %? %^G\n:PROPERTIES:\n:Created: %U\n:Linked: %A\n:END:\n%i" ; template
+								 :prepend t	 ; properties
+								 :empty-lines 1	 ; properties
+								 :created t	 ; properties
+								 :kill-buffer t) ; properties
+
+								;; For making future plans
+								("f"	; key
+								 "Plans"	; name
+								 entry	; type
+								 (file+headline "~/Dropbox/org/personal.org" "Plans") ; target
+								 "* %? %^G\n:PROPERTIES:\n:Created: %U\n:END:\n%i" ; template
+								 :prepend t	 ; properties
+								 :empty-lines 1	 ; properties
+								 :created t	 ; properties
+								 :kill-buffer t) ; properties
+
+								;; For hobby related notes/tasks
+								("h"	; key
+								 "Hobbies"	; name
+								 entry	; type
+								 (file+headline "~/Dropbox/org/personal.org" "Hobbies") ; target
+								 "* %? %^G\n:PROPERTIES:\n:Created: %U\n:END:\n%i" ; template
 								 :prepend t	 ; properties
 								 :empty-lines 1	 ; properties
 								 :created t	 ; properties

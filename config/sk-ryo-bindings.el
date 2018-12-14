@@ -221,7 +221,7 @@
 ;; mapping with minor leader
 (ryo-modal-key "SPC m"
 			   '(("p" sk/org-rclone-sync-to-dropbox :name "push org to rclone" :norepeat t)
-				 ("f" sk/org-rclone-sync-to-dropbox :name "fetch org from rclone" :norepeat t)
+				 ("f" sk/org-rclone-sync-from-dropbox :name "fetch org from rclone" :norepeat t)
 				 (":" eval-expression :name "eval expression" :norepeat t)))
 
 ;; use locate or spotlight depending on the system

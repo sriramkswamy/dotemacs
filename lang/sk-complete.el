@@ -201,7 +201,7 @@
            company-yasnippet      ; snippets
            ;; company-keywords       ; keywords
 		   company-dabbrev-code   ; code words
-		   ;; company-ycmd           ; python ycmd completion
+		   company-ycmd           ; python ycmd completion
 		   ;; company-lsp            ; python lsp completion
 		   company-anaconda       ; python anaconda completion
 		   company-capf))))

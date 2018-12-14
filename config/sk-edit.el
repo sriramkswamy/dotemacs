@@ -1,3 +1,17 @@
+;; save automatically
+(use-package super-save
+  :ensure t
+  :init
+  (setq super-save-auto-save-when-idle t)
+  (setq auto-save-default nil)
+  (setq super-save-remote-files nil)
+  :config
+  ;; add integration with ace-window
+  (add-to-list 'super-save-triggers 'ace-window)
+  ;; save on find-file
+  (add-to-list 'super-save-hook-triggers 'find-file-hook)
+  (super-save-mode +1))
+
 ;; commenting easily
 (use-package comment-dwim-2
   :ensure t

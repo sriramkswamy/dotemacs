@@ -117,7 +117,7 @@
   :hook ((python-mode . sk/python-operator)
 		 (python-mode . lsp-mode)
 		 (python-mode . lsp-python-enable)
-		 ;; (python-mode . ycmd-mode)
+		 (python-mode . ycmd-mode)
 		 (python-mode . sk/company-python))
 
   :commands

@@ -574,6 +574,7 @@
  ("c o d" diminish :name "diminish")
  ("c o w" visual-line-mode :name "word wrap")
  ("c o c" ycmd-mode :name "completion add source")
+ ("c o a" super-save-mode :name "auto save")
  ("c o r" scroll-bar-mode :name "scroll bar mode")
  ("c o s" smartparens-strict-mode :name "smartparens strict")
  ("c o S" smartparens-mode :name "smartparens")

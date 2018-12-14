@@ -1,6 +1,7 @@
 ;; save automatically
 (use-package super-save
   :ensure t
+  :diminish super-save-mode
   :init
   (setq super-save-auto-save-when-idle t)
   (setq auto-save-default nil)

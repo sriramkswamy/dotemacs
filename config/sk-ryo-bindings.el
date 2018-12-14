@@ -269,7 +269,7 @@
 				 ("R" browse-at-remote :name "git remote" :norepeat t)
 				 ("f" ffap :name "find file at point" :norepeat t)
 				 ("W" wdired-change-to-wdired-mode :name "writeable dir" :norepeat t)
-				 ("i" package-install :name "install package" :norepeat t)
+				 ("i" counsel-package :name "install package" :norepeat t)
 				 ("`" async-shell-command :name "run shell command" :norepeat t)
 				 ("a" describe-char :name "describe char" :norepeat t)
 				 ("o" org-agenda :name "agenda" :norepeat t)

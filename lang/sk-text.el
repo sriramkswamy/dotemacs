@@ -83,8 +83,16 @@
 ;;    ReStructured Text    ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; bindings
-(ryo-modal-major-mode-keys
+(use-package rst
+  :ensure t
+  :mode (("\\.rst\\'" . rst-mode))
+  :config
+
+  ;; nice hooks
+  (add-hook 'rst-mode-hook 'visual-line-mode)
+
+  ;; bindings
+  (ryo-modal-major-mode-keys
    'rst-mode
    ;; navigation
    ("m j" rst-forward-section :name "next heading")
@@ -101,7 +109,7 @@
 
    ;; preview
    ("m c" rst-compile :name "compile")
-   ("m n" rst-adjust :name "adjust"))
+   ("m n" rst-adjust :name "adjust")))
 
 ;; ryo major mode hints
 (which-key-add-major-mode-key-based-replacements 'rst-mode

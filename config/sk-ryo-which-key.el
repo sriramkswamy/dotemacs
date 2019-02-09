@@ -1,3 +1,8 @@
+;; Emacs side of bindings
+(which-key-add-key-based-replacements
+  "C-j" "company backends"
+  "C-j a" "auctex")
+
 ;; basic operators
 (which-key-add-key-based-replacements
   "c" "change"

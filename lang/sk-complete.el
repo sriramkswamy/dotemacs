@@ -200,7 +200,7 @@
            company-yasnippet      ; snippets
            company-keywords       ; keywords
 		   company-dabbrev-code   ; code words
-		   company-lsp            ; python lsp completion
+		   ;; company-lsp            ; python lsp completion
 		   company-anaconda       ; python anaconda completion
 		   company-capf))))
 
@@ -215,7 +215,7 @@
            company-yasnippet      ; snippets
            company-keywords       ; keywords
 		   company-dabbrev-code   ; code words
-		   company-lsp            ; clangd lsp completion
+		   ;; company-lsp            ; clangd lsp completion
 		   company-rtags          ; clang rtags completion
 		   ;; company-irony          ; clang irony completion
 		   company-capf))))

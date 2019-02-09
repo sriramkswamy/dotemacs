@@ -79,5 +79,33 @@
 (which-key-add-major-mode-key-based-replacements 'markdown-mode
   "m i" "insert")
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;    ReStructured Text    ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; bindings
+(ryo-modal-major-mode-keys
+   'rst-mode
+   ;; navigation
+   ("m j" rst-forward-section :name "next heading")
+   ("m k" rst-backward-section :name "previous heading")
+   ;; organizing
+   ("m d" rst-mark-section :name "mark section")
+   ("m <" rst-promote-region :name "promote")
+   ("m >" rst-demote-region :name "demote")
+
+   ;; inserting
+   ("m i l" rst-insert-list :name "list" :exit t)
+   ("m i n" rst-insert-list-new-item :name "list item" :exit t)
+   ("m i t" rst-insert-toc :name "toc" :exit t)
+
+   ;; preview
+   ("m c" rst-compile :name "compile")
+   ("m n" rst-adjust :name "adjust"))
+
+;; ryo major mode hints
+(which-key-add-major-mode-key-based-replacements 'rst-mode
+  "m i" "insert")
+
 ;; provide this config
-(provide 'sk-markdown)
+(provide 'sk-text)

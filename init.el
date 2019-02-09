@@ -475,8 +475,8 @@
 ;; latex support
 (require 'sk-latex)
 
-;; markdown support
-(require 'sk-markdown)
+;; plain text format support
+(require 'sk-text)
 
 ;; lsp support
 (require 'sk-lsp)
@@ -492,6 +492,9 @@
 
 ;; clang based languages support
 (require 'sk-clang)
+
+;; support for all the various config files
+(require 'sk-config)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Extra services    ;;

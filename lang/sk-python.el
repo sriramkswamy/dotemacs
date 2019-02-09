@@ -115,9 +115,6 @@
   :ensure t
   :mode ("\\.py\\'" . python-mode)
   :hook ((python-mode . sk/python-operator)
-		 (python-mode . lsp-mode)
-		 (python-mode . lsp-python-enable)
-		 (python-mode . ycmd-mode)
 		 (python-mode . sk/company-python))
 
   :commands
@@ -126,23 +123,12 @@
    python-shell-switch-to-shell
    python-shell-send-file)
   :init
-  (setq python-shell-interpreter "ipython"
-		python-shell-interpreter-args "--simple-prompt -i")
+  ;; (setq python-shell-interpreter "ipython"
+  ;; 		python-shell-interpreter-args "--simple-prompt -i")
   ;; (setq ansi-color-for-comint-mode t)
-  (setq python-shell-interpreter "python3")
-  (setq python-shell-native-complete nil)
+  (setq python-shell-interpreter "python")
   ;; (add-to-list 'python-shell-completion-native-disabled-interpreters "python3")
-
-  ;; language server protocol
-  (require 'lsp-mode)
-  ;; (require 'lsp-common)
-  (lsp-define-stdio-client lsp-python "python"
-						   (lsp-make-traverser #'(lambda (dir)
-												   (directory-files
-													dir
-													nil
-													"\\(__init__\\|setup\\)\\.py")))
-						   '("pyls")))
+  (setq python-shell-native-complete nil))
 
 ;; navigation and auto completion
 (use-package anaconda-mode
@@ -196,7 +182,7 @@
    venv-cpvirtualenv)
   :config
   ;; settings
-  (setq venv-location "/home/sriramkrish92/venv/")
+  (setq venv-location "/home/sriramkrish92/.virtualenvs/")
   (setq eshell-prompt-function
 		(lambda ()
 		  (concat venv-current-name " $ ")))

@@ -62,7 +62,6 @@
 		   ;; company-eclim          ; eclim
 		   ;; company-clang          ; clang
 		   ;; company-rtags          ; rtags
-		   ;; company-ycmd           ; ycmd
 		   ;; company-matlab         ; matlab
 		   ;; company-matlab-shell   ; matlab-shell
 		   ;; company-anaconda       ; anaconda
@@ -197,12 +196,11 @@
   (require 'company)
   (setq company-backends
 		'((;; list of backends
-		   ;; company-files          ; files & directory
+		   company-files          ; files & directory
            company-yasnippet      ; snippets
-           ;; company-keywords       ; keywords
+           company-keywords       ; keywords
 		   company-dabbrev-code   ; code words
-		   company-ycmd           ; python ycmd completion
-		   ;; company-lsp            ; python lsp completion
+		   company-lsp            ; python lsp completion
 		   company-anaconda       ; python anaconda completion
 		   company-capf))))
 
@@ -213,92 +211,14 @@
   (require 'company)
   (setq company-backends
 		'((;; list of backends
-		   ;; company-files          ; files & directory
+		   company-files          ; files & directory
            company-yasnippet      ; snippets
-           ;; company-keywords       ; keywords
-		   ;; company-dabbrev-code   ; code words
-		   ;; company-ycmd           ; python ycmd completion
-		   ;; company-lsp            ; python lsp completion
+           company-keywords       ; keywords
+		   company-dabbrev-code   ; code words
+		   company-lsp            ; clangd lsp completion
 		   company-rtags          ; clang rtags completion
 		   ;; company-irony          ; clang irony completion
 		   company-capf))))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;    Completion suggestions    ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; ;; LSP support
-;; (use-package company-lsp
-;;   :ensure t
-;;   :after (company)
-;;   :bind* (("C-j l"	. company-lsp)))
-
-;; install ycmd first - https://github.com/Valloric/ycmd
-;; cd ycmd, git submodule update --init --recursive and ./build.py --system-libclang --all
-
-(use-package ycmd
-  :ensure t
-  :diminish ycmd-mode
-  :init
-  ;; FIXME: set based on location
-  (set-variable 'ycmd-server-command
-				(list "python" (file-truename (concat user-emacs-directory "ycmd/ycmd"))))
-  ;; (set-variable 'ycmd-extra-conf-whitelist
-  ;; 					(file-truename (concat user-emacs-directory "ycmd/.ycm_extra_conf.py")))
-  (set-variable 'ycmd-global-config
-				(file-truename (concat user-emacs-directory "ycmd/.ycm_extra_conf.py")))
-  (setq ycmd-force-semantic-completion t)
-
-  ;; :hook ((c++-mode . ycmd-mode)
-  ;; 		 (c-mode . ycmd-mode)
-  ;; 		 (python-mode . ycmd-mode)
-  ;; 		 (org-mode . ycmd-mode)
-  ;; 		 (markdown-mode . ycmd-mode)
-  ;; 		 (ycmd-mode . ycmd-eldoc-setup))
-
-  :commands
-  (ycmd-goto
-   ycmd-open
-   ycmd-close
-   ycmd-fixit
-   ycmd-setup
-   ycmd-version
-   ycmd-completer
-   ycmd-get-type
-   ycmd-goto-type
-   ycmd-get-parent
-   ycmd-eldoc-setup
-   ycmd-goto-include
-   ycmd-parse-buffer
-   ycmd-goto-imprecise
-   ycmd-goto-references
-   ycmd-refactor-rename
-   ycmd-goto-implementation
-   ycmd-load-conf-file
-   ycmd-toggle-log-enabled
-   ycmd-restart-semantic-server
-   ycmd-display-completions
-   ycmd-goto-definition
-   ycmd-goto-declaration
-   ycmd-show-documentation
-   ycmd-clear-compilation-flag-cache
-   ycmd-toggle-force-semantic-completion
-   ycmd-show-debug-info
-   ycmd-mode
-   ycmd-mode-menu
-   ycmd-view-mode
-   ycmd-eldoc-mode
-   ycmd-fixit-mode))
-
-(use-package company-ycmd
-  :ensure t
-  :after (ycmd)
-  :hook ((ycmd-mode . company-ycmd-setup)))
-
-(use-package flycheck-ycmd
-  :ensure t
-  :after (ycmd)
-  :hook ((ycmd-mode . flycheck-ycmd-setup)))
 
 ;; provide the config
 (provide 'sk-complete)

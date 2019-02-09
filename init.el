@@ -402,7 +402,7 @@
 	:ensure t)
 
 ;; choose a single theme or change it
-(load-theme 'flatui-dark t)
+(load-theme 'tango-dark t)
 ;; (if (display-graphic-p)
 ;; 	(load-theme 'flatui t)
 ;;   (load-theme 'flatui-dark))

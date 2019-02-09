@@ -441,19 +441,14 @@
 
 ;; cc based modes
 (use-package cc-mode
-  :hook ((c++-mode . lsp-mode))
   :init
   ;; language server protocol
   (require 'lsp-mode)
   ;; (require 'lsp-common)
-  (lsp-define-stdio-client lsp-clangd-c++ "cpp"
-						 (lsp-make-traverser
-						  #'(lambda (dir)
-							  (directory-files
-							   dir
-							   nil
-							   "\\(Makefile\\|CMakeLists.txt\\|main.cpp\\|compile_commands.json\\)")))
-						   '("clangd")))
+  (lsp-register-client
+   (make-lsp-client :new-connection (lsp-stdio-connection "clangd")
+					:major-modes '(cc-mode)
+					:server-id 'clangd)))
 
 ;; c++-mode bindings
 (ryo-modal-major-mode-keys

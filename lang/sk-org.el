@@ -333,7 +333,7 @@
 								 "Jobs"	    ; name
 								 table-line ; type
 								 (file+headline "~/Dropbox/org/notes.org" "Jobs") ; target
-								 "| %^{Company} | [[%^{job link}][%^{position}]] | %^{referrals?} | %^{Experience?} | %^{Status} |" ; template
+								 "| %^{Company} | [[%^{job link}][%^{position}]] | %^{referrals?} | %^{Experience?} | %^{Status} | " ; template
 								 :prepend t ; properties
 								 ;; :table-line-pos "II-3"   ; properties
 								 :empty-lines 1	 ; properties

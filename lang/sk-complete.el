@@ -16,8 +16,8 @@
   (setq company-minimum-prefix-length 1
 		company-require-match 0
 		company-selection-wrap-around t
-		company-tooltip-limit 10
-		company-idle-delay 0.05)
+		company-tooltip-limit 15
+		company-idle-delay 0)
   (setq company-dabbrev-ignore-buffers "\\.pdf\\'"
 		company-dabbrev-downcase nil
 		company-dabbrev-code-modes t

@@ -21,7 +21,6 @@
 (setq initial-major-mode 'fundamental-mode)                                     ; set the mode of the initial scratch buffer
 (setq initial-scratch-message "")           								  	; print nothing and leave screen at insert mode
 (menu-bar-mode -1)															  	; deactivate the menubar
-(tool-bar-mode -1)															  	; deactivate the toolbar
 (tooltip-mode -1)															  	; deactivate the tooltip
 (blink-cursor-mode -1)														  	; don't blink the cursor
 (defun display-startup-echo-area-message () (message "Let the games begin!")) 	; change the default startup echo message
@@ -61,37 +60,39 @@
   (setq mac-option-modifier 'meta))
 
 ;; General frame size and configuration plus Linux HiDPI hacks
-(cond ((eq system-type 'gnu/linux)                 ; if system is GNU/Linux
-       (setq initial-frame-alist													  	; initial frame size
-             '((width . 100)														  	; characters in a line
-               (height . 45)))														  	; number of lines
-       (setq default-frame-alist													  	; subsequent frame size
-             '((width . 100)														  	; characters in a line
-               (height . 45)))													  	    ; number of lines
-	   (when (display-graphic-p)
-		 (scroll-bar-mode -1)
-		 (set-frame-font "DejaVu Sans Mono")))
-       ((eq system-type 'darwin)                    ; if system is macOS
-        (setq initial-frame-alist													  	; initial frame size
-              '((width . 100)														  	; characters in a line
-                (height . 45)))														  	; number of lines
-        (setq default-frame-alist													  	; subsequent frame size
-              '((width . 100)														  	; characters in a line
-                (height . 45)))														  	; number of lines
-		(when (display-graphic-p)
-		  (scroll-bar-mode -1))
-        (mac-auto-operator-composition-mode)        ; ligature support
-        (set-frame-font "Fira Code"))
-       ((eq system-type 'windows-nt)                ; if system is Windows
-        (setq initial-frame-alist													  	; initial frame size
-              '((width . 100)														  	; characters in a line
-                (height . 45)))														  	; number of lines
-        (setq default-frame-alist													  	; subsequent frame size
-              '((width . 100)														  	; characters in a line
-                (height . 45)))														  	; number of lines
- 		(when (display-graphic-p)
-		  (scroll-bar-mode -1))
-       (set-frame-font "Lucida Sans Typewriter")))
+(when (display-graphic-p)
+  (tool-bar-mode -1)															  	; deactivate the toolbar
+  (cond ((eq system-type 'gnu/linux)                 ; if system is GNU/Linux
+		 (setq initial-frame-alist													  	; initial frame size
+			   '((width . 100)														  	; characters in a line
+				 (height . 45)))														  	; number of lines
+		 (setq default-frame-alist													  	; subsequent frame size
+			   '((width . 100)														  	; characters in a line
+				 (height . 45)))													  	    ; number of lines
+		 (when (display-graphic-p)
+		   (scroll-bar-mode -1)
+		   (set-frame-font "DejaVu Sans Mono")))
+		((eq system-type 'darwin)                    ; if system is macOS
+		 (setq initial-frame-alist													  	; initial frame size
+			   '((width . 100)														  	; characters in a line
+				 (height . 45)))														  	; number of lines
+		 (setq default-frame-alist													  	; subsequent frame size
+			   '((width . 100)														  	; characters in a line
+				 (height . 45)))														  	; number of lines
+		 (when (display-graphic-p)
+		   (scroll-bar-mode -1))
+		 (mac-auto-operator-composition-mode)        ; ligature support
+		 (set-frame-font "Fira Code"))
+		((eq system-type 'windows-nt)                ; if system is Windows
+		 (setq initial-frame-alist													  	; initial frame size
+			   '((width . 100)														  	; characters in a line
+				 (height . 45)))														  	; number of lines
+		 (setq default-frame-alist													  	; subsequent frame size
+			   '((width . 100)														  	; characters in a line
+				 (height . 45)))														  	; number of lines
+		 (when (display-graphic-p)
+		   (scroll-bar-mode -1))
+		 (set-frame-font "Lucida Sans Typewriter"))))
 
 ;; dummy function
 (defun sk/nothing ()

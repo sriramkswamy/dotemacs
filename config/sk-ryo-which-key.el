@@ -209,6 +209,7 @@
 (which-key-add-key-based-replacements
   "v o" "visual option"
   "c o" "change option"
+  "d o" "desktop option"
   "y o" "snippet option")
 
 ;; movement
@@ -235,7 +236,8 @@
 
 ;; leader prefixes
 (which-key-add-key-based-replacements
-  "SPC i" "info ycmd"
+  "SPC i" "info lsp"
+  "SPC o" "debug lsp"
   "SPC v" "shells"
   "SPC m" "minor leader")
 

@@ -333,6 +333,7 @@
   "m d" "doc"
   "m p" "pdb test"
   "m t" "test"
+  "m v" "virtualenv"
   
   "m s" "eval"
   "m s i" "inside"

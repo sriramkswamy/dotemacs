@@ -4,13 +4,16 @@
   (interactive)
   (require 'lsp-mode)
   (require 'lsp-ui)
+  (require 'dap-python)
   (lsp-register-client
    (make-lsp-client :new-connection (lsp-stdio-connection "clangd")
 					:major-modes '(c++-mode)
 					:server-id 'clangd))
   (lsp-mode)
   (lsp-ui-mode)
-  (lsp))
+  (lsp)
+  (dap-mode 1)
+  (dap-ui-mode 1))
 
 ;; language client registration for python
 (defun sk/lsp-register-python ()
@@ -18,6 +21,7 @@
   (interactive)
   (require 'lsp-mode)
   (require 'lsp-ui)
+  (require 'dap-lldb)
   (lsp-register-client
    (make-lsp-client :new-connection (lsp-stdio-connection
   									 (concat (getenv "HOME") "/.local/bin/pyls"))
@@ -25,7 +29,9 @@
   					:server-id 'pyls))
   (lsp-mode)
   (lsp-ui-mode)
-  (lsp))
+  (lsp)
+  (dap-mode 1)
+  (dap-ui-mode 1))
 
 ;; Microsoft Language Server Protocol (LSP)
 (use-package lsp-mode
@@ -71,36 +77,7 @@
    lsp-ui-imenu)
   :config
   (require 'lsp-mode)
-  (require 'lsp-ui)
-  
-  ;; mapping with leader and a key
-  (ryo-modal-key "SPC i"
-				 '(("a" lsp-workspace-folders-add :name "add workspace folder" :norepeat t)
-				   ("b" lsp-format-buffer :name "buffer format" :norepeat t)
-				   ("c" lsp-execute-command :name "command" :norepeat t)
-				   ("d" lsp-goto-type-definition :name "goto type def" :norepeat t)
-				   ("e" lsp-execute-code-action :name "execute action" :norepeat t)
-				   ("f" lsp-find-declaration :name "find declaration" :norepeat t)
-				   ("g" lsp-find-locations :name "goto locations" :norepeat t)
-				   ("h" lsp-hover :name "hover info" :norepeat t)
-				   ("i" lsp-ui-peek-find-definitions :name "peek defs" :norepeat t)
-				   ("j" lsp-goto-definition :name "jump to def" :norepeat t)
-				   ("k" lsp-ui-peek-find-workspace-symbol :name "workspace symbol" :norepeat t)
-				   ("l" lsp-ui-peek-find-references :name "peek references" :norepeat t)
-				   ("m" lsp-describe-session :name "describe mode" :norepeat t)
-				   ("n" lsp-rename :name "rename" :norepeat t)
-				   ("o" lsp-find-definition :name "open def" :norepeat t)
-				   ("p" lsp-find-implementation :name "implementation" :norepeat t)
-				   ("q" lsp-restart-workspace :name "restart" :norepeat t)
-				   ("r" lsp-find-references :name "any references" :norepeat t)
-				   ("s" lsp-find-session-folder :name "session folder" :norepeat t)
-				   ("t" lsp-find-type-definition :name "type def" :norepeat t)
-				   ("u" lsp-workspace-folders-remove :name "undo workspace folder" :norepeat t)
-				   ("v" lsp-workspace-folders-switch :name "switch workspace folder" :norepeat t)
-				   ("w" lsp-find-workspace :name "references" :norepeat t)
-				   ("x" lsp-ui-peek-find-implementation :name "peek implementation" :norepeat t)
-				   ("y" lsp-ui-doc :name "documentation" :norepeat t)
-				   ("z" lsp-ui-imenu :name "outline" :norepeat t))))
+  (require 'lsp-ui))
 
 ;; LSP debugging support
 (use-package dap-mode
@@ -134,39 +111,11 @@
    dap-debug-edit-template
    dap-disconnect
    dap-ui-inspect
-   dap-eval)
+   dap-eval
+   dap-hydra)
   :config
   (dap-mode 1)
-  (dap-ui-mode 1)
-  
-  ;; mapping with leader and a key
-  (ryo-modal-key "SPC o"
-				 '(("a" dap-breakpoint-add :name "add breakpoint" :norepeat t)
-				   ("b" dap-breakpoint-toggle :name "breakpoint toggle" :norepeat t)
-				   ("c" dap-breakpoint-condition :name "conditional breakpoint" :norepeat t)
-				   ("d" dap-breakpoint-delete :name "delete breakpoint" :norepeat t)
-				   ("e" dap-eval-thing-at-point :name "eval thing" :norepeat t)
-				   ("f" dap-continue :name "continue" :norepeat t)
-				   ("g" dap-go-to-output-buffer :name "goto output" :norepeat t)
-				   ("h" dap-breakpoint-hit-condition :name "hit conditional" :norepeat t)
-				   ("i" dap-ui-inspect-thing-at-point :name "inspect thing" :norepeat t)
-				   ("j" dap-step-in :name "jump in" :norepeat t)
-				   ("k" dap-step-out :name "get out" :norepeat t)
-				   ("l" dap-breakpoint-log-message :name "log breakpoint" :norepeat t)
-				   ("m" dap-ui-breakpoints :name "breakpoints" :norepeat t)
-				   ("n" dap-next :name "next" :norepeat t)
-				   ("o" dap-debug :name "debug on" :norepeat t)
-				   ("p" dap-switch-stack-frame :name "switch stack frame" :norepeat t)
-				   ("q" dap-restart-frame :name "restart" :norepeat t)
-				   ("r" dap-ui-repl :name "repl" :norepeat t)
-				   ("s" dap-switch-session :name "switch sessions" :norepeat t)
-				   ("t" dap-switch-thread :name "thread" :norepeat t)
-				   ("u" dap-stop-thread :name "stop thread" :norepeat t)
-				   ("v" dap-ui-locals :name "variables" :norepeat t)
-				   ("w" dap-debug-edit-template :name "work with template" :norepeat t)
-				   ("x" dap-disconnect :name "disconnect" :norepeat t)
-				   ("y" dap-ui-inspect :name "inspect" :norepeat t)
-				   ("z" dap-eval :name "eval" :norepeat t))))
+  (dap-ui-mode 1))
 
 ;; LSP for Java
 (use-package lsp-java

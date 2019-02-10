@@ -209,7 +209,9 @@
 				 ("x" ibuffer :name "interactive buffer" :norepeat t)
 				 ("z" prodigy :name "background services" :norepeat t)
 				 ("q" quickrun :name "quickrun" :norepeat t)
-				 ("b" hydra-debug/body :name "begin debugging" :norepeat t)
+				 ("b" sk/debug-hydra/body :name "begin debugging" :norepeat t)
+				 ("i" sk/lsp-hydra/body :name "lsp" :norepeat t)
+				 ("o" sk/dap-hydra/body :name "dap" :norepeat t)
 				 ("j" "M-x" :name "commands" :norepeat t)))
 
 (if (version< emacs-version "25.2")
@@ -473,7 +475,7 @@
 ;; ;; doc-view ryo scroll hydra
 ;; (ryo-modal-key
 ;;  "S" :hydra
-;;  '(hydra-scroll (:hint nil)
+;;  '(sk/hydra-scroll (:hint nil)
 ;; 				"
 ;; ^Window^                      ^Doc^                           ^Notes^         ^Quit^
 ;; ^^^^^^^^^^^^^-------------------------------------------------------------------------------
@@ -494,7 +496,7 @@
 ;; 				("j" scroll-up-command)
 ;; 				("k" scroll-down-command)
 ;; 				("l" scroll-left)
-;; 				("s" hydra-smartparens/body :color blue)
+;; 				("s" sk/smartparens-hydra/body :color blue)
 ;; 				("v" hydra-ivy/body :color blue)
 ;; 				("q" nil :color blue)))
 
@@ -505,7 +507,7 @@
 ;; doc-view ryo scroll hydra
 (ryo-modal-key
  "S" :hydra
- '(hydra-scroll (:hint nil)
+ '(sk/hydra-scroll (:hint nil)
 				"
 ^Window^                      ^Doc^                           ^Notes^         ^Quit^
 ^^^^^^^^^^^^^-------------------------------------------------------------------------------
@@ -526,7 +528,7 @@
 				("j" scroll-up-command)
 				("k" scroll-down-command)
 				("l" scroll-left)
-				("s" hydra-smartparens/body :color blue)
+				("s" sk/smartparens-hydra/body :color blue)
 				("v" hydra-ivy/body :color blue)
 				("q" nil :color blue)))
 

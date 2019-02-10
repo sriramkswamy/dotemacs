@@ -479,7 +479,7 @@
 (require 'sk-text)
 
 ;; lsp support
-;; (require 'sk-lsp)
+(require 'sk-lsp)
 
 ;; matlab support
 (require 'sk-matlab)

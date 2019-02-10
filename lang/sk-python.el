@@ -116,7 +116,7 @@
   :mode ("\\.py\\'" . python-mode)
   :hook ((python-mode . sk/python-operator)
 		 (python-mode . sk/company-python))
-
+  :interpreter ("python" . python-mode)
   :commands
   (python-shell-send-string
    python-shell-send-region
@@ -126,7 +126,6 @@
   ;; (setq python-shell-interpreter "ipython"
   ;; 		python-shell-interpreter-args "--simple-prompt -i")
   ;; (setq ansi-color-for-comint-mode t)
-  (setq python-shell-interpreter "python")
   ;; (add-to-list 'python-shell-completion-native-disabled-interpreters "python3")
   (setq python-shell-native-complete nil))
 

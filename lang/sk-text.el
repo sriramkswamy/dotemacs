@@ -86,6 +86,17 @@
 (use-package rst
   :ensure t
   :mode (("\\.rst\\'" . rst-mode))
+  :commands
+  (rst-forward-section
+   rst-backward-section
+   rst-mark-section
+   rst-promote-region
+   rst-demote-region
+   rst-insert-list
+   rst-insert-list-new-item
+   rst-insert-toc
+   rst-compile
+   rst-adjust)
   :config
 
   ;; nice hooks

@@ -82,7 +82,7 @@
 		 (when (display-graphic-p)
 		   (scroll-bar-mode -1))
 		 ;; (mac-auto-operator-composition-mode)        ; ligature support
-		 (set-frame-font "Fira Code"))
+		 ;; (set-frame-font "Fira Code"))
 		((eq system-type 'windows-nt)                ; if system is Windows
 		 (setq initial-frame-alist													  	; initial frame size
 			   '((width . 100)														  	; characters in a line

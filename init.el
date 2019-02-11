@@ -63,27 +63,18 @@
 (when (display-graphic-p)
   (tool-bar-mode -1)															  	; deactivate the toolbar
   (cond ((eq system-type 'gnu/linux)                 ; if system is GNU/Linux
-		 (setq initial-frame-alist													  	; initial frame size
-			   '((width . 100)														  	; characters in a line
-				 (height . 45)))														  	; number of lines
-		 (setq default-frame-alist													  	; subsequent frame size
-			   '((width . 100)														  	; characters in a line
-				 (height . 45)))													  	    ; number of lines
 		 (when (display-graphic-p)
 		   (scroll-bar-mode -1)
-		   (set-frame-font "DejaVu Sans Mono")))
+		   (set-frame-font "DejaVu Sans Mono"))
+		 (setq initial-frame-alist													  	; initial frame size
+			   '((width . 100)														  	; characters in a line
+				 (height . 45)))														  	; number of lines
+		 (setq default-frame-alist													  	; subsequent frame size
+			   '((width . 100)														  	; characters in a line
+				 (height . 45))))
 		((eq system-type 'darwin)                    ; if system is macOS
-		 (setq initial-frame-alist													  	; initial frame size
-			   '((width . 100)														  	; characters in a line
-				 (height . 45)))														  	; number of lines
-		 (setq default-frame-alist													  	; subsequent frame size
-			   '((width . 100)														  	; characters in a line
-				 (height . 45)))														  	; number of lines
-		 (when (display-graphic-p)
-		   (scroll-bar-mode -1))
 		 ;; (mac-auto-operator-composition-mode)        ; ligature support
-		 ;; (set-frame-font "Fira Code"))
-		((eq system-type 'windows-nt)                ; if system is Windows
+		 ;; (set-frame-font "Fira Code")
 		 (setq initial-frame-alist													  	; initial frame size
 			   '((width . 100)														  	; characters in a line
 				 (height . 45)))														  	; number of lines
@@ -91,8 +82,17 @@
 			   '((width . 100)														  	; characters in a line
 				 (height . 45)))														  	; number of lines
 		 (when (display-graphic-p)
-		   (scroll-bar-mode -1))
-		 (set-frame-font "Lucida Sans Typewriter"))))
+		   (scroll-bar-mode -1)))
+		((eq system-type 'windows-nt)                ; if system is Windows
+		 (set-frame-font "Lucida Sans Typewriter")
+		 (setq initial-frame-alist													  	; initial frame size
+			   '((width . 100)														  	; characters in a line
+				 (height . 45)))														  	; number of lines
+		 (setq default-frame-alist													  	; subsequent frame size
+			   '((width . 100)														  	; characters in a line
+				 (height . 45)))														  	; number of lines
+		 (when (display-graphic-p)
+		   (scroll-bar-mode -1)))))
 
 ;; dummy function
 (defun sk/nothing ()

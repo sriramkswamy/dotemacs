@@ -291,25 +291,29 @@
 		(counsel-ag (thing-at-point 'symbol) (vc-root-dir)))
     (counsel-git-grep (thing-at-point 'symbol))))
 
-;; fzf based project file search
-(defun sk/counsel-fzf-project ()
-  "use counsel fzf to search the project files"
-  (interactive)
-  (if (eq (file-remote-p default-directory) nil)
-      (counsel-fzf "" (vc-root-dir))
-    (counsel-find-file)))
-
 ;; vc based project file search
-(defun sk/counsel-file-jump-project (arg)
+(defun sk/counsel-file-jump-project-git (arg)
   "use counsel file jump or counsel git to search the project files"
   (interactive "P")
   (if arg
 	  (if (eq (file-remote-p default-directory) nil)
 		  (counsel-file-jump "" (vc-root-dir))
-		(counsel-find-file))
+		(project-find-file))
 	(if (eq (file-remote-p default-directory) nil)
 		(counsel-git)
-	  (counsel-find-file))))
+	  (project-find-file))))
+
+;; vc based project file search
+(defun sk/counsel-file-jump-project-fzf (arg)
+  "use counsel file jump or counsel git to search the project files"
+  (interactive "P")
+  (if arg
+	  (if (eq (file-remote-p default-directory) nil)
+		  (counsel-file-jump "" (vc-root-dir))
+		(project-find-file))
+	(if (eq (file-remote-p default-directory) nil)
+		(counsel-fzf "" (car (project-roots (project-current t))))
+	  (project-find-file))))
 
 ;; project based grep
 (defun sk/counsel-ag-project ()

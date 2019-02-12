@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: subsection
+# key: sub
+# --
+${1:Subsection}
+${1:$(make-string (string-width yas-text) ?\-)}
+
+$0

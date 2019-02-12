@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: numbered list
+# key: ni
+# --
+#. $0

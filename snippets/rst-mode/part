@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: part
+# key: part
+# --
+${1:$(make-string (string-width yas-text) ?\#)}
+${1:Part}
+${1:$(make-string (string-width yas-text) ?\#)}
+
+$0

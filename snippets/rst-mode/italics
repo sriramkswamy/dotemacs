@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: italics
+# key: it
+# --
+*$0*

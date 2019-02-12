@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: bullets
+# key: li
+# --
+* $0

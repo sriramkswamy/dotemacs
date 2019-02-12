@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: code inline
+# key: ci
+# --
+\`\`$0\`\`

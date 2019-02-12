@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: bold
+# key: bo
+# --
+**$0**

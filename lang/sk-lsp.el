@@ -62,7 +62,16 @@
    lsp-find-type-definition
    lsp-workspace-folders-remove
    lsp-workspace-folders-switch
-   lsp-find-workspace))
+   lsp-find-workspace)
+  :config
+
+  (ryo-modal-major-mode-keys
+   'c++-mode
+   ("m k" sk/lsp-register-clang :name "lsp clang"))
+
+  (ryo-modal-major-mode-keys
+   'python-mode
+   ("m k" sk/lsp-register-python :name "lsp python")))
 
 ;; LSP user interface
 (use-package lsp-ui

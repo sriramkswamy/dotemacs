@@ -525,7 +525,7 @@
  ("m a t" org-todo :name "todo")
  ("m a d" org-deadline :name "deadline")
  ("m a s" org-schedule :name "schedule")
-;  ("m x" org-reftex-citation :name "reftex")
+ ;; ("m x" org-reftex-citation :name "reftex")
  ("m m" org-export-dispatch :name "export")
  ("m u" interleave :name "interleave")
  ("m g" org-babel-tangle :name "tangle")

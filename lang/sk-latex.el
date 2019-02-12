@@ -114,32 +114,32 @@
 (add-hook 'bibtex-mode-hook 'sk/enable-ryo-modal-mode)
 
 ;; latex mode bindings
-(ryo-modal-keys
- ("\\ x" preview-at-point :name "preview at point")
- ("\\ a" preview-buffer :name "preview buffer")
- ("\\ q s" LaTeX-fill-section :name "fill section")
- ("\\ q e" LaTeX-fill-environment :name "fill env")
- ("\\ q p" LaTeX-fill-paragraph :name "fill para")
- ("\\ q q" LaTeX-fill-region :name "fill region")
- ("\\ r" reftex-reference :name "ref")
- ("\\ l" reftex-label :name "label")
- ("\\ c" reftex-citation :name "cite")
- ("\\ j" reftex-view-crossref :name "crossrefs")
- ("\\ t" reftex-toc-recenter :name "table of contents")
- ("\\ i" reftex-index :name "index")
- ("\\ e" LaTeX-insert-environment :name "environment")
- ("\\ s" LaTeX-section :name "section")
- ("\\ v" TeX-view :name "view")
- ("\\ f" TeX-master-file-ask :name "master file")
- ("\\ h" TeX-home-buffer :name "home buffer")
- ("\\ \\" TeX-command-run-all :name "compile")
- ("\\ o" TeX-recenter-output-buffer :name "compile output")
- ("\\ k" TeX-kill-job :name "kill compilation")
- ("\\ d" preview-clearout-buffer :name "clear preview"))
+(ryo-modal-major-mode-keys
+ 'latex-mode
+ ("m x" preview-at-point :name "preview at point")
+ ("m a" preview-buffer :name "preview buffer")
+ ("m q s" LaTeX-fill-section :name "fill section")
+ ("m q e" LaTeX-fill-environment :name "fill env")
+ ("m q p" LaTeX-fill-paragraph :name "fill para")
+ ("m q q" LaTeX-fill-region :name "fill region")
+ ("m r" reftex-reference :name "ref")
+ ("m l" reftex-label :name "label")
+ ("m c" reftex-citation :name "cite")
+ ("m j" reftex-view-crossref :name "crossrefs")
+ ("m t" reftex-toc-recenter :name "table of contents")
+ ("m i" reftex-index :name "index")
+ ("m e" LaTeX-insert-environment :name "environment")
+ ("m s" LaTeX-section :name "section")
+ ("m v" TeX-view :name "view")
+ ("m f" TeX-master-file-ask :name "master file")
+ ("m h" TeX-home-buffer :name "home buffer")
+ ("m m" TeX-command-run-all :name "compile")
+ ("m o" TeX-recenter-output-buffer :name "compile output")
+ ("m k" TeX-kill-job :name "kill compilation")
+ ("m d" preview-clearout-buffer :name "clear preview"))
 ;; hints
 (which-key-add-key-based-replacements
-  "\\" "auctex"
-  "\\ q" "fill")
+  "m q" "fill")
 
 ;; provide latex configuration
 (provide 'sk-latex)

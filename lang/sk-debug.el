@@ -134,7 +134,5 @@ realgud:pdb))
   (require 'realgud)
   (realgud:cmd-backtrace))
 
-
-
 ;; provide debugging configuration
 (provide 'sk-debug)

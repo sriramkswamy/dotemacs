@@ -278,7 +278,7 @@
  ("m p f" pytest-pdb-failed :name "failed")
  ("m p m" pytest-pdb-module :name "module")
 
-  ;;; Shell
+ ;;; Shell
 
  ;; bindings
  ("r r" sk/python-ipython-tmux :name "start repl")

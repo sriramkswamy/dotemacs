@@ -474,17 +474,17 @@
  ("m c c" compile :name "compile")
  ("m c r" rtags-compile-file :name "rtags compile")
 
- ("m k k" rtags-dependency-tree :name "dependency tree")
- ("m k r" rtags-references-tree :name "references tree")
- ("m k a" rtags-dependency-tree-all :name "all dependencies")
- ("m k p" rtags-print-dependencies :name "print dependencies")
- ("m k h" rtags-print-class-hierarchy :name "print class hierarchy"))
+ ("m a k" rtags-dependency-tree :name "dependency tree")
+ ("m a r" rtags-references-tree :name "references tree")
+ ("m a a" rtags-dependency-tree-all :name "all dependencies")
+ ("m a p" rtags-print-dependencies :name "print dependencies")
+ ("m a h" rtags-print-class-hierarchy :name "print class hierarchy"))
 
 ;; which key hints
 (which-key-add-major-mode-key-based-replacements 'c++-mode
   "m g" "debug"
   "m j" "jump"
-  "m k" "tree/calls"
+  "m a" "analyse"
   "m d" "doc"
   "m c" "compilation"
 

@@ -218,10 +218,10 @@
  ("m p" sk/matlab-edit-nil :name "preview in matlab")
  ("m x" sk/matlab-size-nil :name "size of variable")
  ("m l" sk/matlab-length-nil :name "length of variable")
- ("m k" sk/matlab-numel-nil :name "number of elements in variable")
+ ("m e" sk/matlab-numel-nil :name "number of elements in variable")
  ("m n" sk/matlab-fieldnames-nil :name "fieldnames in struct")
  ("m o" sk/matlab-ndim-nil :name "number of dimensions in variable")
- ("m e" sk/matlab-mean-nil :name "mean of variable")
+ ("m -" sk/matlab-mean-nil :name "mean of variable")
  ("m =" sk/matlab-sum-nil :name "sum of variable")
  ("m +" sk/matlab-cumsum-nil :name "cumulative sum of variable")
  ("m f p" sk/matlab-plot-nil :name "plot")
@@ -230,8 +230,10 @@
  ("m u" sk/matlab-clear-all-nil :name "clear all"))
 
 ;; ryo major mode
-(which-key-add-major-mode-key-based-replacements 'matlab-mode
+(which-key-add-major-mode-key-based-replacements
+  'matlab-mode
   "m g" "debug"
+  "m q" "error"
   "m f" "plot"
   "m s" "send")
 
@@ -352,10 +354,10 @@
  ("r p" sk/matlab-edit-tmux :name "preview in matlab")
  ("r x" sk/matlab-size-tmux :name "size")
  ("r l" sk/matlab-length-tmux :name "length")
- ("r k" sk/matlab-numel-tmux :name "number of elements")
+ ("r e" sk/matlab-numel-tmux :name "number of elements")
  ("r n" sk/matlab-fieldnames-tmux :name "fieldnames")
  ("r o" sk/matlab-ndim-tmux :name "number of dimensions")
- ("r e" sk/matlab-mean-tmux :name "mean")
+ ("r -" sk/matlab-mean-tmux :name "mean")
  ("r =" sk/matlab-sum-tmux :name "sum")
  ("r +" sk/matlab-cumsum-tmux :name "cumulative sum")
  ("r f p" sk/matlab-plot-tmux :name "plot")
@@ -364,7 +366,8 @@
  ("r u" sk/matlab-clear-all-tmux :name "clear all"))
 
 ;; which key hints
-(which-key-add-major-mode-key-based-replacements 'matlab-mode
+(which-key-add-major-mode-key-based-replacements
+  'matlab-mode
   "r g" "debug"
   "r f" "figure"
 

@@ -3,6 +3,11 @@
   :ensure t
   :mode (("\\.json\\'" . json-mode)))
 
+;; XML configuration
+(use-package nxml-mode
+  :mode (("\\.xml\\'" . nxml-mode)
+		 ("\\.launch\\'" . nxml-mode)))
+
 ;; YAML configuration
 (use-package yaml-mode
   :ensure t

@@ -17,7 +17,7 @@
 		company-require-match 0
 		company-selection-wrap-around t
 		company-tooltip-limit 15
-		company-idle-delay 0)
+		company-idle-delay 1)
   (setq company-dabbrev-ignore-buffers "\\.pdf\\'"
 		company-dabbrev-downcase nil
 		company-dabbrev-code-modes t

@@ -41,32 +41,6 @@
   ("A" sp-splice-sexp-killing-around)
   ("q" nil :color blue))
 
-;; hydra for debugging
-(defhydra sk/debug-hydra (:pre (sk/gud-mode) :color red :hint nil)
-  "
- ^Debuggers^   ^Breakpoints^    ^Navigation^             ^Quit^
-^^^^^^^^^^^^^--------------------------------------------------------------------------
- _g_: gdb      _b_: toggle      _j_: next  _i_: step in    _k_: kill debug
- _p_: pdb      _r_: remove      _s_: step  _o_: step out   _q_: quit hydra
-                            _c_: cont  _f_: finish
-"
-  ;; debuggers
-  ("g" realgud:gdb)
-  ("p" realgud:pdb)
-  ;; breakpoints
-  ("b" sk/gud-break)
-  ("r" sk/gud-remove)
-  ;; navigation
-  ("j" sk/gud-next)
-  ("s" sk/gud-step)
-  ("i" sk/gud-down)
-  ("o" sk/gud-up)
-  ("c" sk/gud-cont)
-  ("f" sk/gud-finish)
-  ;; quit
-  ("k" gdb-exit :color blue)
-  ("q" nil :color blue))
-
 ;; debug adapter protocol
 (defhydra sk/dap-hydra (:color red :hint nil)
   "
@@ -77,13 +51,14 @@ _i_: Step in        _st_: Thread             _bd_: Delete            _er_: Eval 
 _o_: Step out       _sf_: Stack frame        _ba_: Add               _es_: Eval thing at point
 _c_: Continue       _sl_: List locals        _bc_: Set condition     _eii_: Inspect
 _r_: Restart frame  _sb_: List breakpoints   _bh_: Set hit count     _eir_: Inspect region
-_Q_: Disconnect     _sS_: List sessions      _bl_: Set log message   _eis_: Inspect thing at point
+_g_: Go             _sS_: List sessions      _bl_: Set log message   _eis_: Inspect thing at point
 "
   ("n" dap-next)
   ("i" dap-step-in)
   ("o" dap-step-out)
   ("c" dap-continue)
   ("r" dap-restart-frame)
+  ("g" dap-debug)
   ("ss" dap-switch-session)
   ("st" dap-switch-thread)
   ("sf" dap-switch-stack-frame)
@@ -102,8 +77,7 @@ _Q_: Disconnect     _sS_: List sessions      _bl_: Set log message   _eis_: Insp
   ("eii" dap-ui-inspect)
   ("eir" dap-ui-inspect-region)
   ("eis" dap-ui-inspect-thing-at-point)
-  ("Q" dap-disconnect :color blue)
-  ("q" nil "quit" :color blue))
+  ("q" dap-disconnect "quit" :color blue))
 
 ;; lsp hydra
 (defhydra sk/lsp-hydra (:color pink :hint nil :foreign-keys run)

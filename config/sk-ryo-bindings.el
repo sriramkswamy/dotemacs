@@ -210,7 +210,6 @@
 				 ("x" ibuffer :name "interactive buffer" :norepeat t)
 				 ("z" prodigy :name "background services" :norepeat t)
 				 ("q" quickrun :name "quickrun" :norepeat t)
-				 ("b" sk/debug-hydra/body :name "begin debugging" :norepeat t)
 				 ("i" sk/lsp-hydra/body :name "lsp" :norepeat t)
 				 ("o" sk/dap-hydra/body :name "dap" :norepeat t)
 				 ("j" "M-x" :name "commands" :norepeat t)))

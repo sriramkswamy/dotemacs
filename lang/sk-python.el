@@ -116,16 +116,16 @@
   :mode ("\\.py\\'" . python-mode)
   :hook ((python-mode . sk/python-operator)
 		 (python-mode . sk/company-python))
-  :interpreter ("python" . python-mode)
+  ;; :interpreter ("python" . python-mode)
   :commands
   (python-shell-send-string
    python-shell-send-region
    python-shell-switch-to-shell
    python-shell-send-file)
   :init
-  ;; (setq python-shell-interpreter "ipython"
-  ;; 		python-shell-interpreter-args "--simple-prompt -i")
-  ;; (setq ansi-color-for-comint-mode t)
+  (setq python-shell-interpreter (concat (getenv "HOME") "/.local/bin/ipython2")
+  		python-shell-interpreter-args "--simple-prompt -i")
+  (setq ansi-color-for-comint-mode t)
   ;; (add-to-list 'python-shell-completion-native-disabled-interpreters "python3")
   (setq python-shell-native-complete nil))
 
@@ -237,18 +237,16 @@
 
  ;; debugging
  ("m g g" realgud:pdb :name "debug start")
- ("m g s" sk/gud-break :name "set break")
- ("m g x" sk/gud-remove :name "delete break")
- ("m g l" sk/python-dblist-nil :name "list")
- ("m g w" sk/python-dbwhere-nil :name "where")
- ("m g q" sk/gud-finish :name "quit")
- ("m g n" sk/gud-next :name "next")
- ("m g i" sk/gud-step :name "step in")
- ("m g c" sk/gud-cont :name "continue")
- ("m g u" sk/gud-up :name "up")
- ("m g p" sk/gud-print :name "print")
- ("m g r" sk/gud-refresh :name "refresh")
- ("m g f" sk/gud-find-c-expr :name "find c expression")
+ ("m g s" realgud:cmd-break :name "set break")
+ ("m g x" realgud:cmd-remove :name "delete break")
+ ("m g w" realgud:cmd-backtrace :name "where trace")
+ ("m g f" realgud:cmd-finish :name "quit")
+ ("m g n" realgud:cmd-next :name "next")
+ ("m g i" realgud:cmd-step :name "step in")
+ ("m g c" realgud:cmd-continue :name "continue")
+ ("m g j" realgud:cmd-jump :name "jump")
+ ("m g e" realgud:cmd-eval-dwim :name "eval")
+ ("m g r" realgud:cmd-restart :name "refresh")
 
  ;; operator/textobject formatting
  ("m q" py-yapf-buffer :name "format")

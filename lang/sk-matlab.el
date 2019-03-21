@@ -198,6 +198,7 @@
  ;; matlab functions bindings
  ("m g s" sk/gud-break :name "set break")
  ("m g x" sk/gud-remove :name "delete break")
+ ("m g g" matlab-shell-save-and-go :name "debug start")
  ("m g a" sk/matlab-dbclear-all-nil :name "clear all")
  ("m g l" sk/matlab-dbstatus-nil :name "status")
  ("m g q" sk/gud-finish :name "quit")

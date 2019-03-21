@@ -4,7 +4,7 @@
   (interactive)
   (require 'lsp-mode)
   (require 'lsp-ui)
-  (require 'dap-python)
+  (require 'dap-lldb)
   (lsp-register-client
    (make-lsp-client :new-connection (lsp-stdio-connection "clangd")
 					:major-modes '(c++-mode)
@@ -21,7 +21,7 @@
   (interactive)
   (require 'lsp-mode)
   (require 'lsp-ui)
-  (require 'dap-lldb)
+  (require 'dap-python)
   (lsp-register-client
    (make-lsp-client :new-connection (lsp-stdio-connection
   									 (concat (getenv "HOME") "/.local/bin/pyls"))

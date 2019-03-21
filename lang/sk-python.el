@@ -238,7 +238,8 @@
  ;; debugging
  ("m g g" realgud:pdb :name "debug start")
  ("m g s" realgud:cmd-break :name "set break")
- ("m g x" realgud:cmd-remove :name "delete break")
+ ("m g x" realgud:cmd-clear :name "delete break")
+ ("m g q" realgud:cmd-quit :name "quit")
  ("m g w" realgud:cmd-backtrace :name "where trace")
  ("m g f" realgud:cmd-finish :name "quit")
  ("m g n" realgud:cmd-next :name "next")

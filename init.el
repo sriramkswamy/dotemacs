@@ -68,7 +68,7 @@
 		   (set-frame-font "DejaVu Sans Mono"))
 		 (setq initial-frame-alist													  	; initial frame size
 			   '((width . 100)														  	; characters in a line
-				 (height . 45)))														  	; number of lines
+				 (height . 45)))													  	; number of lines
 		 (setq default-frame-alist													  	; subsequent frame size
 			   '((width . 100)														  	; characters in a line
 				 (height . 45))))
@@ -77,28 +77,28 @@
 		 ;; (set-frame-font "Fira Code")
 		 (setq initial-frame-alist													  	; initial frame size
 			   '((width . 100)														  	; characters in a line
-				 (height . 45)))														  	; number of lines
+				 (height . 45)))													  	; number of lines
 		 (setq default-frame-alist													  	; subsequent frame size
 			   '((width . 100)														  	; characters in a line
-				 (height . 45)))														  	; number of lines
+				 (height . 45)))													  	; number of lines
 		 (when (display-graphic-p)
 		   (scroll-bar-mode -1)))
 		((eq system-type 'windows-nt)                ; if system is Windows
 		 (set-frame-font "Lucida Sans Typewriter")
 		 (setq initial-frame-alist													  	; initial frame size
 			   '((width . 100)														  	; characters in a line
-				 (height . 45)))														  	; number of lines
+				 (height . 45)))													  	; number of lines
 		 (setq default-frame-alist													  	; subsequent frame size
 			   '((width . 100)														  	; characters in a line
-				 (height . 45)))														  	; number of lines
+				 (height . 45)))													  	; number of lines
 		 (when (display-graphic-p)
 		   (scroll-bar-mode -1)))))
 
 ;; dummy function
 (defun sk/nothing ()
-  "Sends a message saying nothing here"
+  "Sends a message saying nothing mapped"
   (interactive)
-  (message "Nothing here!"))
+  (message "Nothing mapped!"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Package management    ;;
@@ -398,14 +398,13 @@
 ;; select a good theme
 (use-package flatui-theme
 	:ensure t)
-(use-package flatui-dark-theme
+(use-package material-theme
 	:ensure t)
 
 ;; choose a single theme or change it
-(load-theme 'wombat t)
-;; (if (display-graphic-p)
-;; 	(load-theme 'flatui t)
-;;   (load-theme 'flatui-dark))
+(if (display-graphic-p)
+	(load-theme 'flatui t)
+  (load-theme 'material t))
 
 (when (eq system-type 'darwin)
   ;; fancy battery
@@ -510,6 +509,24 @@
    ws-butler-clean-region
    ws-butler-maybe-trim-eob-lines)
   :hook ((after-init . ws-butler-global-mode)))
+
+;; column margins
+(use-package whitespace
+  :diminish whitespace-mode
+  :init
+  (setq whitespace-line-column 80)
+  (setq whitespace-style '(face-lines-tail))
+  :hook ((prog-mode . whitespace-mode)))
+
+;; indent guides
+(use-package highlight-indent-guides
+  :ensure t
+  :diminish highlight-indent-guides-mode
+  :init
+  (setq highlight-indent-guides-method 'character)
+  :hook ((prog-mode . highlight-indent-guides-mode))
+  :config
+  (highlight-indent-guides-mode))
 
 ;; mode specific scratch buffer
 (use-package scratch

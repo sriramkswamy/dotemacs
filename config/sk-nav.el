@@ -124,11 +124,17 @@
    back-button-global-backward
    back-button-global-forward))
 
-;; dash documentation
+;; dash or zeal documentation
 (use-package dash-at-point
   :ensure t
   :commands
   (dash-at-point-with-docset))
+(use-package zeal-at-point
+  :ensure t
+  :commands
+  (zeal-at-point
+   zeal-at-point-search
+   zeal-at-point-set-docset))
 
 ;; dumb jumping
 (use-package dumb-jump

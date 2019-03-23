@@ -136,7 +136,6 @@
  ("SPC ," counsel-descbinds :name "bindings" :norepeat t)
  ("SPC ." counsel-load-theme :name "themes" :norepeat t)
  ("J" dumb-jump-go :name "dumb jump")
- ("K" dash-at-point-with-docset :name "dash doc")
  ("/" "C-s" :name "search in buffer"))
 
 ;; ryo scroll maps
@@ -226,14 +225,17 @@
 ;; use locate or spotlight depending on the system
 (cond
  ((eq system-type 'darwin)
-  (ryo-modal-key "SPC s" 'spotlight :name "desktop search"))
+  (ryo-modal-key "SPC s" 'spotlight :name "desktop search")
+  (ryo-modal-key "K" 'dash-at-point :name "doc search")
+  (ryo-modal-key "g D" 'dash-at-point-with-docset :name "doc set"))
  ((eq system-type 'gnu/linux)
-  (ryo-modal-key "SPC s" 'counsel-locate :name "desktop search")))
+  (ryo-modal-key "SPC s" 'counsel-locate :name "desktop search")
+  (ryo-modal-key "K" 'zeal-at-point :name "doc search")
+  (ryo-modal-key "g D" 'zeal-at-point-set-docset :name "doc set")))
 
 ;; mapping with global prefix
 (ryo-modal-key "g"
                '(("A" prog-fill :name "program fill" :norepeat t)
-                 ("D" dash-at-point-with-docset :name "dash doc" :norepeat t)
                  ("S" electric-newline-and-maybe-indent :name "split line")
                  ("J" join-line :name "join line")
 				 ("b" magit-blame :name "git blame" :norepeat t)

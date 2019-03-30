@@ -54,6 +54,11 @@
   (add-hook 'snippet-mode-hook '(lambda () (setq-local require-final-newline nil)))
   (yas-global-mode))
 
+;; snippet collection
+(use-package yasnippet-snippets
+  :ensure t
+  :after yasnippet)
+
 ;; select arbitrary regions
 (use-package expand-region
   :ensure t

@@ -164,6 +164,15 @@
   (ivy-mode 1)
   (counsel-mode 1))
 
+;; tramp using counsel
+(use-package counsel-tramp
+  :ensure t
+  :commands
+  (counsel-tramp)
+  :config
+  (ivy-mode 1)
+  (counsel-mode 1))
+
 ;; bibliography and citations
 (use-package ivy-bibtex
   :ensure t
@@ -337,14 +346,6 @@
 ;; save ivy-views in desktop variables
 (require 'desktop)
 (add-to-list 'desktop-globals-to-save 'ivy-views)
-
-;; bookmarks
-(defun sk/counsel-bookmarks (arg)
-  "post the gist. Toggle privacy with ARG"
-  (interactive "p")
-  (if (equal arg '(4))
-	  (counsel-bookmark)
-	(bookmark-set)))
 
 ;; provide the narrowing configuration
 (provide 'sk-narrow)

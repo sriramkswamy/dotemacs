@@ -28,7 +28,7 @@
 (setq large-file-warning-threshold (* 15 1024 1024))						  	; increase threshold for large files
 (fset 'yes-or-no-p 'y-or-n-p)												  	; prompt for 'y' or 'n' instead of 'yes' or 'no'
 (setq-default abbrev-mode t)												  	; turn on abbreviations by default
-(setq recenter-positions '(middle top bottom))								  	; recenter from the top instead of the middle
+(setq recenter-positions '(top middle bottom))								  	; recenter from the top instead of the middle
 (put 'narrow-to-region 'disabled nil)										  	; enable narrowing to region
 (put 'narrow-to-defun 'disabled nil)										  	; enable narrowing to function
 (when (fboundp 'winner-mode)												  	; when you can find 'winner-mode'

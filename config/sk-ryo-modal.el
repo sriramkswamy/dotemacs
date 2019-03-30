@@ -65,6 +65,7 @@
          :map ryo-modal-mode-map
          ("<escape>" . sk/remove-mark)
          ("."        . ryo-modal-repeat)
+         ("|"        . mc/mark-all-dwim)
 		 (">"        . mc/mark-next-like-this)
 		 ("<"        . mc/mark-previous-like-this)
 		 ("'"        . mc/edit-lines))

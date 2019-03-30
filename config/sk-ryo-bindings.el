@@ -27,7 +27,8 @@
 (ryo-modal-keys
  ("z z" recenter-top-bottom :name "recenter")
  ("%" sk/goto-matching-paren :name "matching paren")
- ("+" sk/counsel-bookmarks :name "add/see bookmarks" :norepeat t)
+ ("g o" counsel-bookmark :name "open bookmarks" :norepeat t)
+ ("+" bookmark-set :name "add bookmarks" :norepeat t)
  ("SPC h" "C-h" :name "help" :norepeat t)
  ("Z" sk/toggle-frame-fullscreen-non-native :name "fullscreen" :norepeat t)
  ("?" which-key-show-top-level :name "which key" :norepeat t))
@@ -208,6 +209,7 @@
 				 ("x" ibuffer :name "interactive buffer" :norepeat t)
 				 ("z" prodigy :name "background services" :norepeat t)
 				 ("q" quickrun :name "quickrun" :norepeat t)
+				 ("t" counsel-tramp :name "tramp" :norepeat t)
 				 ("i" sk/lsp-hydra/body :name "lsp" :norepeat t)
 				 ("o" sk/dap-hydra/body :name "debug" :norepeat t)
 				 ("j" "M-x" :name "commands" :norepeat t)))

@@ -3,5 +3,5 @@
 # key: def
 # --
 def ${1:funcname}(${2:arguments}):
-	"""${3:docstring}"""
-	${0:pass}
+    """${3:docstring}"""
+    ${0:pass}

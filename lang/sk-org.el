@@ -32,6 +32,8 @@
   "Expand org template."
   (insert str)
   (org-try-structure-completion))
+
+;; hydra
 (defhydra sk/hydra-org-template (:color blue
 										:hint nil)
   "

@@ -65,9 +65,11 @@
          :map ryo-modal-mode-map
          ("<escape>" . sk/remove-mark)
          ("."        . ryo-modal-repeat)
-         ("|"        . mc/mark-all-dwim)
+         ("\\"       . mc/skip-to-next-like-this)
+         ("|"        . mc/skip-to-previous-like-this)
 		 (">"        . mc/mark-next-like-this)
 		 ("<"        . mc/mark-previous-like-this)
+		 ("g d"      . mc/mark-all-dwim)
 		 ("'"        . mc/edit-lines))
 
   :init

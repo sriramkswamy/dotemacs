@@ -11,6 +11,7 @@
 		ryo:1cf9c664ed81221b6fc344af519fce32:prev\ word
 		ryo:1cfaf336c571fd5dc56b11f0501d658c:next\ line
 		ryo:1d69d4d933b4d946c12c557c0cc424e9:line/region
+		ryo:387d4eb23bd670ec587cbb4f419c5285:recenter
 		ryo:397a83ee2f149488d7befdb1e9d37ef9:change\ rest\ of\ line
 		ryo:3b4de6bfee978cda9fbfd533eb6b619e:prev\ char
 		ryo:3b5ff6385e5bc8f7bc61550b52b5d807:end\ of\ line
@@ -35,10 +36,12 @@
 		ryo:9c18ac4c2959ab93895fdf9ea12e378b:to\ end\ of\ word
 		ryo:9ce0af9cd3be773359309a09167a248b:scratch
 		ryo:9e00663a69ce1ebcce54a8e7755de96a:next\ char\(s\)
+		ryo:a1084d7db2ccb883ce9f47af4ba5db28:duplicate\ line/region
 		ryo:a4e3ce2a56110bbda0134b8ec48025c6:interrupt
 		ryo:ab2e3db597a537266eeaf6ea5bd6402f:open\ up
 		ryo:b0149f53ca1e7fbb80ec479545786acc:insert
 		ryo:bab6212da68063bb4a06af4d78a91764:dwim
+		ryo:c5a5f7db0cfbf4dd58f7bab9f41dfb84:symbol
 		ryo:d1fef67c9330c295d0b9d4d1f7352e9a:to\ end\ of\ word
 		ryo:dff4676e9e13ff5ff13e695aac818e69:next\ word
 		ryo:efc40336295ecb767ca17f53da17c18d:start\ of\ line

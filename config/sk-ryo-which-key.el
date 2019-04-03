@@ -108,6 +108,8 @@
   "v r a" "around"
   "v r g" "global"
 
+  "g d" "multi cursors mark all"
+
   "g c" "comment"
   "g c i" "inside"
   "g c a" "outside"

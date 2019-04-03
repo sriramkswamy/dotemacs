@@ -202,7 +202,7 @@
                  ("r" counsel-recentf :name "recent files" :norepeat t)
                  ("d" sk/counsel-file-jump-project :name "project files" :norepeat t)
                  ("p" sk/counsel-ag-project :name "grep project" :norepeat t)
-                 ("a" ivy-switch-view :name "switch views" :norepeat t)
+                 ("s" ivy-switch-view :name "switch views" :norepeat t)
                  ("l" flycheck-list-errors :name "list errors" :norepeat t)
                  ("y" "M-y" :name "copy history" :norepeat t)
                  ("k" "C-x b" :name "switch buffer" :norepeat t)
@@ -227,11 +227,11 @@
 ;; use locate or spotlight depending on the system
 (cond
  ((eq system-type 'darwin)
-  (ryo-modal-key "SPC s" 'spotlight :name "desktop search")
+  (ryo-modal-key "SPC a" 'spotlight :name "desktop search")
   (ryo-modal-key "K" 'dash-at-point :name "doc search")
   (ryo-modal-key "g D" 'dash-at-point-with-docset :name "doc set"))
  ((eq system-type 'gnu/linux)
-  (ryo-modal-key "SPC s" 'counsel-locate :name "desktop search")
+  (ryo-modal-key "SPC a" 'counsel-locate :name "desktop search")
   (ryo-modal-key "K" 'zeal-at-point :name "doc search")
   (ryo-modal-key "g D" 'zeal-at-point-set-docset :name "doc set")))
 

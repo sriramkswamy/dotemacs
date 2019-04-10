@@ -489,6 +489,9 @@
 ;; python support
 (require 'sk-python)
 
+;; sql support
+(require 'sk-sql)
+
 ;; clang based languages support
 (require 'sk-clang)
 

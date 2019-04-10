@@ -225,6 +225,7 @@
 ;; thanks to http://stackoverflow.com/questions/6286579/emacs-shell-mode-how-to-send-region-to-shell
 ;; send line or region to ansi-term
 (defun sk/term-send-line-or-region (&optional step)
+  "send the line or the region to a term buffer"
   (interactive)
   (let ((proc (get-process "*ansi-term*"))
         pbuf min max command)

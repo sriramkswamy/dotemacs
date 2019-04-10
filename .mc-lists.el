@@ -11,6 +11,7 @@
 		ryo:1cf9c664ed81221b6fc344af519fce32:prev\ word
 		ryo:1cfaf336c571fd5dc56b11f0501d658c:next\ line
 		ryo:1d69d4d933b4d946c12c557c0cc424e9:line/region
+		ryo:338d4a47f5f4b3b250d1ba13da99a4d7:change\ rest\ of\ line
 		ryo:387d4eb23bd670ec587cbb4f419c5285:recenter
 		ryo:397a83ee2f149488d7befdb1e9d37ef9:change\ rest\ of\ line
 		ryo:3b4de6bfee978cda9fbfd533eb6b619e:prev\ char
@@ -59,4 +60,5 @@
 
 (setq mc/cmds-to-run-once
       '(
+		ryo:982ea0399e8b956527174c22290941db:last\ buffer
 		))

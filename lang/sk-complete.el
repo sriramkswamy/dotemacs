@@ -17,7 +17,7 @@
 		company-require-match 0
 		company-selection-wrap-around t
 		company-tooltip-limit 15
-		company-idle-delay 0.1)
+		company-idle-delay 0.15)
   (setq company-dabbrev-ignore-buffers "\\.pdf\\'"
 		company-dabbrev-downcase nil
 		company-dabbrev-code-modes t
@@ -218,6 +218,20 @@
 		   ;; company-lsp            ; clangd lsp completion
 		   company-rtags          ; clang rtags completion
 		   ;; company-irony          ; clang irony completion
+		   company-capf))))
+
+;; sql
+(defun sk/company-sql ()
+  "Add backends for sql completion in company mode"
+  (interactive)
+  (require 'company)
+  (setq company-backends
+		'((;; list of backends
+		   company-files          ; files & directory
+           company-yasnippet      ; snippets
+           company-keywords       ; keywords
+		   company-dabbrev-code   ; code words
+		   ;; company-lsp            ; python lsp completion
 		   company-capf))))
 
 ;; provide the config

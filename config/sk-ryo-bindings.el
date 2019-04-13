@@ -27,7 +27,9 @@
 (ryo-modal-keys
  ("z z" recenter-top-bottom :name "recenter")
  ("%" sk/goto-matching-paren :name "matching paren")
- ("g o" counsel-bookmark :name "open bookmarks" :norepeat t)
+ ("g o" org-journal-new-entry :name "new journal" :norepeat t)
+ ("g O" org-journal-search :name "search journal" :norepeat t)
+ ("'" counsel-bookmark :name "open bookmarks" :norepeat t)
  ("+" bookmark-set :name "add bookmarks" :norepeat t)
  ("SPC h" "C-h" :name "help" :norepeat t)
  ("Z" sk/toggle-frame-fullscreen-non-native :name "fullscreen" :norepeat t)
@@ -150,7 +152,9 @@
  ("SPC v u" sk/call-terminal :name "os terminal")
  ("SPC v s" sk/shell :name "shell")
  ("SPC v t" sk/term :name "term")
- ("SPC v e" sk/eshell :name "split eshell")
+ ("SPC v d" sk/eshell :name "default eshell")
+ ("SPC v e" setenv :name "env set")
+ ("SPC v g" getenv :name "env get")
  ("SPC v v" eshell :name "eshell"))
 
 ;; ryo modal window navigation maps
@@ -194,13 +198,15 @@
 
 ;; mapping with leader
 (ryo-modal-key "SPC"
-               '(("SPC" scratch :name "scratch" :norepeat t)
+               '(("SPC" org-agenda :name "agenda" :norepeat t)
 				 ("w" "C-x C-s" :name "save buffer" :norepeat t)
                  ("e" magit-status :name "git status" :norepeat t)
                  ("f" "C-x C-f" :name "open file" :norepeat t)
                  ("g" "C-g" :name "interrupt" :norepeat t)
                  ("r" counsel-recentf :name "recent files" :norepeat t)
-                 ("d" sk/counsel-file-jump-project :name "project files" :norepeat t)
+                 ("d" counsel-git :name "git files" :norepeat t)
+                 ("c" org-capture :name "capture" :norepeat t)
+                 ("o" sk/counsel-file-jump-project :name "project files" :norepeat t)
                  ("p" sk/counsel-ag-project :name "grep project" :norepeat t)
                  ("s" ivy-switch-view :name "switch views" :norepeat t)
                  ("l" flycheck-list-errors :name "list errors" :norepeat t)
@@ -211,7 +217,7 @@
 				 ("q" quickrun :name "quickrun" :norepeat t)
 				 ("t" counsel-tramp :name "tramp" :norepeat t)
 				 ("i" sk/lsp-hydra/body :name "lsp" :norepeat t)
-				 ("o" sk/dap-hydra/body :name "debug" :norepeat t)
+				 ("b" sk/dap-hydra/body :name "debug" :norepeat t)
 				 ("j" "M-x" :name "commands" :norepeat t)))
 
 (if (version< emacs-version "25.2")
@@ -556,7 +562,8 @@
  ("c o d" diminish :name "diminish")
  ("c o w" visual-line-mode :name "word wrap")
  ;; ("c o c" ycmd-mode :name "completion add source")
- ("c o a" super-save-mode :name "auto save")
+ ("c o A" super-save-mode :name "auto save")
+ ("c o a" global-company-mode :name "auto completion")
  ("c o r" scroll-bar-mode :name "scroll bar mode")
  ("c o h" highlight-indent-guides-mode :name "highlight indents")
  ("c o c" highlight-changes-mode :name "changes highlight")

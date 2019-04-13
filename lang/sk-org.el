@@ -444,14 +444,17 @@
   :ensure t
   :after (org))
 
+;; twitter bootstrap
 (use-package ox-twbs
   :ensure t
   :after (org))
 
+;; github markdown
 (use-package ox-gfm
   :ensure t
   :after (org))
 
+;; reStructuredText
 (use-package ox-rst
   :ensure t
   :after (org))
@@ -466,6 +469,38 @@
   (setq interleave-org-notes-dir-list '("~/Dropbox/Paper/notes"))
   :config
   (add-hook 'doc-view-mode-hook 'doc-view-fit-page-to-window))
+
+;; jounral entry
+(use-package org-journal
+  :ensure t
+  :after (org)
+  :commands
+  (org-journal-mode
+   org-journal-search
+   org-journal-carryover
+   org-journal-new-entry
+   org-journal-next-entry
+   org-journal-read-entry
+   org-journal-mark-entries
+   org-journal-display-entry
+   org-journal-schedule-view
+   org-journal-search-future
+   org-journal-previous-entry
+   org-journal-search-forever
+   org-journal-new-date-entry
+   org-journal-open-next-entry
+   org-journal-new-scheduled-entry
+   org-journal-open-previous-entry
+   org-journal-file->calendar-dates
+   org-journal-search-calendar-week
+   org-journal-search-calendar-year
+   org-journal-search-calendar-month
+   org-journal-search-future-scheduled)
+  :init
+  (setq org-journal-file-type 'weekly
+		;; org-journal-encrypt-journal t
+		;; org-journal-enable-encryption t
+		org-journal-dir "~/Dropbox/org/journal"))
 
 ;; mappings
 (ryo-modal-major-mode-keys

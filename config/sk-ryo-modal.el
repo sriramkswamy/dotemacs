@@ -65,12 +65,12 @@
          :map ryo-modal-mode-map
          ("<escape>" . sk/remove-mark)
          ("."        . ryo-modal-repeat)
-         ("\\"       . mc/skip-to-next-like-this)
-         ("|"        . mc/skip-to-previous-like-this)
+         ("g >"      . mc/skip-to-next-like-this)
+         ("g <"        . mc/skip-to-previous-like-this)
 		 (">"        . mc/mark-next-like-this)
 		 ("<"        . mc/mark-previous-like-this)
-		 ("g d"      . mc/mark-all-dwim)
-		 ("'"        . mc/edit-lines))
+		 ("\\"      . mc/mark-all-dwim)
+		 ("|"        . mc/edit-lines))
 
   :init
   ;; remove ryo key word from which-key

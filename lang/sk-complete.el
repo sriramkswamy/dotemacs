@@ -13,11 +13,11 @@
 		 (matlab-mode-hook . global-company-mode)
 		 (markdown-mode-hook . global-company-mode))
   :init
-  (setq company-minimum-prefix-length 1
+  (setq company-minimum-prefix-length 2
 		company-require-match 0
 		company-selection-wrap-around t
 		company-tooltip-limit 15
-		company-idle-delay 0.15)
+		company-idle-delay 0.2)
   (setq company-dabbrev-ignore-buffers "\\.pdf\\'"
 		company-dabbrev-downcase nil
 		company-dabbrev-code-modes t

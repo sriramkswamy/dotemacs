@@ -101,14 +101,21 @@
   "g l a" "around"
   "g l g" "global")
 
+;; multiple cursors
+(which-key-add-key-based-replacements
+  ">" "multi cursors mark next"
+  "<" "multi cursors mark previous"
+  "\\" "multi cursors mark all"
+  "|" "multi cursors edit lines"
+  "g >" "multi cursors skip next"
+  "g <" "multi cursors skip previous")
+
 ;; complex operators
 (which-key-add-key-based-replacements
   "v r" "rectangle mark"
   "v r i" "inside"
   "v r a" "around"
   "v r g" "global"
-
-  "g d" "multi cursors mark all"
 
   "g c" "comment"
   "g c i" "inside"

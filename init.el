@@ -398,13 +398,15 @@
 ;; select a good theme
 (use-package flatui-theme
 	:ensure t)
+(use-package flatui-dark-theme
+	:ensure t)
 (use-package material-theme
 	:ensure t)
 
 ;; choose a single theme or change it
 (if (display-graphic-p)
 	(load-theme 'flatui t)
-  (load-theme 'material t))
+  (load-theme 'flatui-dark t))
 
 (when (eq system-type 'darwin)
   ;; fancy battery
@@ -545,6 +547,16 @@
   (prodigy-define-tag
 	:name 'latexmk
 	:ready-message "=== Watching for updated files. Use ctrl/C to stop ...")
+  (prodigy-define-tag
+	:name 'evince
+	:ready-message "=== Opening PDF. Use ctrl/C to quit ...")
+  (prodigy-define-service
+	:name "latex open version pdf"
+	:command "evince"
+	:args '("build/mainv0.pdf")
+	:cwd (file-name-directory (vc-root-dir))
+	:tags '(evince)
+	:kill-signal 'sigkill)
   (prodigy-define-service
 	:name "beamer slides+notes current"
 	:command "latexmk"

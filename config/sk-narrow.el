@@ -126,7 +126,7 @@
 (defun sk/swiper-at-point ()
   "use swiper to search for a word at point"
   (interactive)
-  (swiper (thing-at-point 'symbol)))
+  (swiper-isearch (thing-at-point 'symbol)))
 
 ;; search in all files
 (defun sk/swiper-all-at-point ()
@@ -137,7 +137,7 @@
 ;; search the buffer or all buffer
 (use-package swiper
   :ensure t
-  :bind (("C-s" . swiper))
+  :bind (("C-s" . swiper-isearch))
   :commands
   (swiper-all
    sk/swiper-at-point)

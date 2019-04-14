@@ -434,10 +434,23 @@
 								 (matlab . t)
 								 (python . t))))
 
+;; jupyter notebook with org and console frontend
+;; https://github.com/dzop/emacs-jupyter
+(use-package jupyter
+  :ensure t
+  :commands
+  (jupyter-run-repl
+   jupyter-connect-repl
+   jupyter-repl-persistent-mode
+   jupyter-repl-associate-buffer))
+
 ;; async execution
 (use-package ob-async
   :ensure t
-  :after (org))
+  :after (org)
+  :init
+  (setq ob-async-no-async-languages-alist '("jupyter-python"
+											"jupyter-julia")))
 
 ;; ipython
 (use-package ob-ipython

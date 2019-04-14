@@ -9,3 +9,5 @@ tags
 *.lock
 *.temp
 .netrwhist
+/transient/*
+/.cache/*

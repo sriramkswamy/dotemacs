@@ -4,7 +4,10 @@
 (setq mc/cmds-to-run-for-all
       '(
 		iy-go-to-char--command
+		org-force-self-insert
 		org-self-insert-command
+		orgtbl-hijacker-command-109
+		orgtbl-self-insert-command
 		ryo-modal-repeat
 		ryo:02cf7a4d74931d7e2ad7863c945288a8:symbol
 		ryo:04a1830bad47c97c575a7afb01ebd040:line/region

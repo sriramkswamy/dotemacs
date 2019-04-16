@@ -425,13 +425,14 @@
 								 ;; (ditaa . t)
 								 (latex . t)
 								 (gnuplot . t)
-								 ;; (sh . t)
+								 (shell . t)
 								 (js . t)
 								 (C . t)
 								 (ledger . t)
 								 (R . t)
 								 (octave . t)
 								 (matlab . t)
+								 ;; (julia . t)
 								 (python . t))))
 
 ;; jupyter notebook with org and console frontend

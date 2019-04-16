@@ -94,7 +94,7 @@
   (mlint-minor-mode 1))
 
 ;; hydra for mlint
-(defhydra hydra-mlint (:color pink :hint nil)
+(defhydra sk/hydra-mlint (:color pink :hint nil)
   "
  _k_: previous   _f_: fix
  _j_: next       _m_: mlint
@@ -191,7 +191,7 @@
  ("m c" matlab-shell-run-command :name "command")
  ("m r" sk/matlab-shell :name "run matlab")
  ("m z" matlab-show-matlab-shell-buffer :name "goto shell")
- ("m q" hydra-mlint/body :name "mlint")
+ ("m q" sk/hydra-mlint/body :name "mlint")
  ("m /" sk/matlab-shell-addpath :name "add path")
  ("m y" sk/matlab-shell-genpath :name "add general path")
 

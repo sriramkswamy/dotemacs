@@ -396,17 +396,19 @@
 (require 'sk-narrow)
 
 ;; select a good theme
-(use-package flatui-theme
-	:ensure t)
-(use-package flatui-dark-theme
-	:ensure t)
-(use-package material-theme
+(use-package moe-theme
 	:ensure t)
 
 ;; choose a single theme or change it
 (if (display-graphic-p)
-	(load-theme 'flatui t)
-  (load-theme 'flatui-dark t))
+	(load-theme 'moe-light t)
+  (load-theme 'moe-dark t))
+
+(use-package doom-modeline
+  :ensure t
+  :hook (after-init . doom-modeline-mode)
+  :init
+  (setq doom-modeline-height 25))
 
 (when (eq system-type 'darwin)
   ;; fancy battery
@@ -434,12 +436,12 @@
 	:ensure t
 	:init
 	(setq treemacs-follow-after-init          t
-		  treemacs-width                      25
+		  treemacs-width                      33
 		  treemacs-indentation                2
 		  treemacs-collapse-dirs              (if (executable-find "python") 3 0)
 		  treemacs-silent-refresh             nil
 		  treemacs-change-root-without-asking nil
-		  treemacs-sorting                    'alphabetic-desc
+		  treemacs-sorting                    'alphabetic-asc
 		  treemacs-show-hidden-files          t
 		  treemacs-never-persist              nil
 		  treemacs-is-never-other-window      nil

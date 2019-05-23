@@ -396,20 +396,20 @@
 (require 'sk-narrow)
 
 ;; select a good theme
-(use-package moe-theme
+(use-package doom-themes
 	:ensure t)
 
 ;; choose a single theme or change it
 ;; (if (display-graphic-p)
-;; 	(load-theme 'moe-light t)
-;;   (load-theme 'moe-dark t))
-(load-theme 'moe-dark t)
+;; 	(load-theme 'doom-molokai t)
+;;   (load-theme 'doom-molokai t))
+(load-theme 'doom-molokai t)
 
 (use-package doom-modeline
   :ensure t
   :hook (after-init . doom-modeline-mode)
   :init
-  (setq doom-modeline-height 25))
+  (setq doom-modeline-height 15))
 
 (when (eq system-type 'darwin)
   ;; fancy battery

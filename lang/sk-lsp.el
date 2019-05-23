@@ -33,12 +33,19 @@
   (dap-mode 1)
   (dap-ui-mode 1))
 
+(defun sk/lsp-clear-blacklist ()
+  "clears the blacklist in LSP"
+  (interactive)
+  (setf (lsp-session-folders-blacklist (lsp-session)) nil)
+  (lsp--persist-session (lsp-session)))
+
 ;; Microsoft Language Server Protocol (LSP)
 (use-package lsp-mode
   :ensure t
   :hook (c++-mode python-mode)
   :hook ((python-mode . sk/lsp-register-python)
 		 (c++-mode . sk/lsp-register-clang))
+
   :commands
   (lsp-register-client
    make-lsp-client
@@ -63,8 +70,8 @@
    lsp-workspace-folders-remove
    lsp-workspace-folders-switch
    lsp-find-workspace)
-  :config
 
+  :config
   (ryo-modal-major-mode-keys
    'c++-mode
    ("m k" sk/lsp-register-clang :name "lsp clang"))

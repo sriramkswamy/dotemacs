@@ -13,11 +13,11 @@
 		 (matlab-mode-hook . global-company-mode)
 		 (markdown-mode-hook . global-company-mode))
   :init
-  (setq company-minimum-prefix-length 2
+  (setq company-minimum-prefix-length 1
 		company-require-match 0
 		company-selection-wrap-around t
 		company-tooltip-limit 15
-		company-idle-delay 0.2)
+		company-idle-delay 0.1)
   (setq company-dabbrev-ignore-buffers "\\.pdf\\'"
 		company-dabbrev-downcase nil
 		company-dabbrev-code-modes t
@@ -56,21 +56,22 @@
 		   company-dabbrev-code   ; code words
 		   company-dabbrev        ; words
 		   ;; code backends
-		   ;; company-elisp          ; emacs-lisp code
+		   company-elisp          ; emacs-lisp code
 		   ;; company-semantic       ; semantic
 		   ;; company-shell       ; shell
 		   ;; company-eclim          ; eclim
 		   ;; company-clang          ; clang
 		   ;; company-rtags          ; rtags
 		   ;; company-matlab         ; matlab
-		   ;; company-matlab-shell   ; matlab-shell
-		   ;; company-anaconda       ; anaconda
+		   company-matlab-shell   ; matlab-shell
+		   company-anaconda       ; anaconda
            ;; tag backends
 		   ;; company-etags          ; etags
 		   ;; company-gtags          ; gtags
 		   ;; company-bbdb           ; bbdb
 		   ;; completion at point
-		   company-capf)))
+		   ;; company-capf              ; complete at point
+		   )))
   (global-company-mode))
 
 ;; ;; use a child frame
@@ -83,6 +84,12 @@
 ;;   (require 'desktop)
 ;;   (push '(company-childframe-mode . nil)
 ;;       desktop-minor-mode-table))
+
+;; LSP completion support
+(use-package company-lsp
+  :ensure t
+  :after (company)
+  :bind* (("C-j l"	. company-lsp)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Language completions    ;;
@@ -99,7 +106,8 @@
            company-yasnippet      ; snippets
            company-keywords       ; keywords
 		   company-dabbrev-code   ; code words
-		   company-capf))))
+		   ;; company-capf		      ; complete at point
+		   ))))
 
 ;; text fallback
 (defun sk/company-text-fallback ()
@@ -108,11 +116,12 @@
   (require 'company)
   (setq company-backends
 		'((;; list of backends
-		   company-files          ; files & directory
-           company-yasnippet      ; snippets
-		   company-dabbrev        ; words
-		   company-ispell         ; spelling
-		   company-capf))))
+		   company-files     ; files & directory
+           company-yasnippet ; snippets
+		   company-dabbrev   ; words
+		   company-ispell    ; spelling
+		   ;; company-capf		 ; complete at point
+		   ))))
 
 ;; elisp
 (defun sk/company-elisp ()
@@ -126,7 +135,8 @@
 		   company-keywords       ; keywords
 		   company-dabbrev-code   ; code words
 		   company-elisp          ; emacs-lisp code
-		   company-capf))))
+		   company-capf		    ; complete at point
+		   ))))
 
 ;; matlab
 (defun sk/company-matlab ()
@@ -139,7 +149,8 @@
            company-yasnippet      ; snippets
            company-keywords       ; keywords
 		   company-dabbrev-code   ; code words
-		   company-capf))))
+		   company-capf		    ; complete at point
+		   ))))
 
 ;; shell
 (defun sk/company-shell ()
@@ -153,7 +164,8 @@
            ;; company-keywords       ; keywords
 		   ;; company-dabbrev-code   ; code words
 		   company-shell          ; matlab shell commands
-		   company-capf))))
+		   company-capf		    ; complete at point
+		   ))))
 
 ;; matlab shell
 (defun sk/company-matlab-shell ()
@@ -167,7 +179,8 @@
            ;; company-keywords       ; keywords
 		   ;; company-dabbrev-code   ; code words
 		   company-matlab-shell   ; matlab shell commands
-		   company-capf))))
+		   company-capf		    ; complete at point
+		   ))))
 
 ;; auctex
 (defun sk/company-auctex ()
@@ -178,7 +191,7 @@
 		'((;; list of backends
 		   company-files			   ; files & directory
            company-yasnippet		   ; snippets
-		   ;; company-dabbrev			   ; words
+		   company-dabbrev			   ; words
 		   ;; company-ispell			   ; spelling
 		   company-auctex-labels	   ; latex labels
 		   company-auctex-macros	   ; latex macros
@@ -187,7 +200,8 @@
 		   company-auctex-bibs		   ; latex bibs
 		   company-reftex-citations    ; reftex citations
 		   company-reftex-labels       ; reftex labels
-		   company-capf))))
+		   company-capf		    ; complete at point
+		   ))))
 
 ;; python
 (defun sk/company-python ()
@@ -196,13 +210,14 @@
   (require 'company)
   (setq company-backends
 		'((;; list of backends
-		   company-files          ; files & directory
-           company-yasnippet      ; snippets
-           company-keywords       ; keywords
-		   company-dabbrev-code   ; code words
-		   ;; company-lsp            ; python lsp completion
-		   company-anaconda       ; python anaconda completion
-		   company-capf))))
+		   company-files        ; files & directory
+           company-yasnippet    ; snippets
+           company-keywords     ; keywords
+		   company-dabbrev-code ; code words
+		   company-lsp          ; python lsp completion
+		   company-anaconda     ; python anaconda completion
+		   company-capf		    ; complete at point
+		   ))))
 
 ;; clang
 (defun sk/company-clang ()
@@ -215,10 +230,11 @@
            company-yasnippet      ; snippets
            company-keywords       ; keywords
 		   company-dabbrev-code   ; code words
-		   ;; company-lsp            ; clangd lsp completion
+		   company-lsp            ; clangd lsp completion
 		   company-rtags          ; clang rtags completion
 		   ;; company-irony          ; clang irony completion
-		   company-capf))))
+		   company-capf		    ; complete at point
+		   ))))
 
 ;; sql
 (defun sk/company-sql ()
@@ -232,7 +248,8 @@
            company-keywords       ; keywords
 		   company-dabbrev-code   ; code words
 		   ;; company-lsp            ; python lsp completion
-		   company-capf))))
+		   company-capf		    ; complete at point
+		   ))))
 
 ;; provide the config
 (provide 'sk-complete)

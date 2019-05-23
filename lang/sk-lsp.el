@@ -136,45 +136,5 @@
   :config
   (require 'lsp-java))
 
-;; LSP completion support
-(use-package company-lsp
-  :ensure t
-  :after (company)
-  :bind* (("C-j l"	. company-lsp))
-  :config
-
-  ;; ;; python
-  ;; (defun sk/company-python ()
-  ;; 	"Add backends for python completion in company mode"
-  ;; 	(interactive)
-  ;; 	(require 'company)
-  ;; 	(setq company-backends
-  ;; 		  '((;; list of backends
-  ;; 			 company-files          ; files & directory
-  ;; 			 company-yasnippet      ; snippets
-  ;; 			 company-keywords       ; keywords
-  ;; 			 company-dabbrev-code   ; code words
-  ;; 			 company-lsp            ; python lsp completion
-  ;; 			 company-anaconda       ; python anaconda completion
-  ;; 			 company-capf))))
-
-  ;; ;; clang
-  ;; (defun sk/company-clang ()
-  ;; 	"Add backends for clang completion in company mode"
-  ;; 	(interactive)
-  ;; 	(require 'company)
-  ;; 	(setq company-backends
-  ;; 		  '((;; list of backends
-  ;; 			 company-files          ; files & directory
-  ;; 			 company-yasnippet      ; snippets
-  ;; 			 company-keywords       ; keywords
-  ;; 			 company-dabbrev-code   ; code words
-  ;; 			 company-lsp            ; clangd lsp completion
-  ;; 			 company-rtags          ; clang rtags completion
-  ;; 			 ;; company-irony          ; clang irony completion
-  ;; 			 company-capf))))
-
-  )
-
 ;; provide the configuration
 (provide 'sk-lsp)

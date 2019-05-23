@@ -652,6 +652,9 @@
 (require 'sk-ryo-bindings)
 (require 'sk-ryo-which-key)
 
+;; Miscellaneaous functions
+(require 'sk-misc-defuns)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Reduce GC threshold    ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

@@ -400,9 +400,10 @@
 	:ensure t)
 
 ;; choose a single theme or change it
-(if (display-graphic-p)
-	(load-theme 'moe-light t)
-  (load-theme 'moe-dark t))
+;; (if (display-graphic-p)
+;; 	(load-theme 'moe-light t)
+;;   (load-theme 'moe-dark t))
+(load-theme 'moe-dark t)
 
 (use-package doom-modeline
   :ensure t

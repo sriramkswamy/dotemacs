@@ -646,6 +646,174 @@
 	:tags '(latexmk)
 	:kill-signal 'sigkill))
 
+;;;;;;;;;;;;;;;;
+;;    Read    ;;
+;;;;;;;;;;;;;;;;
+
+;; Set executable path
+(setq youtube-dl-path "/usr/bin/youtube-dl")
+;; Set video storage path
+(setq youtube-dl-output-dir "~/Downloads/Videos/")
+
+(defun elfeed-download-video ()
+  "Download a video using youtube-dl."
+  (interactive)
+  (async-shell-command (format "%s -o \"%s%s\" -f bestvideo+bestaudio %s"
+                               youtube-dl-path
+                               youtube-dl-output-dir
+                               "%(title)s.%(ext)s"
+                               (elfeed-entry-link elfeed-show-entry))))
+
+;; Add `youtube` tag to all videos
+(defun sk/elfeed-youtube-tagger ()
+  "tag youtube videos autotically"
+  (interactive)
+  (elfeed-make-tagger :feed-url "youtube\\.com"
+					  :add '(video youtube)))
+
+;; go to bookmarked data science categories
+(defun sk/elfeed-data ()
+  "Filters out only the links corresponding to data science"
+  (interactive)
+  (bookmark-maybe-load-default-file)
+  (bookmark-jump "elfeed-data"))
+
+;; go to bookmarked editors categories
+(defun sk/elfeed-editors ()
+  "Filters out only the links corresponding to editors"
+  (interactive)
+  (bookmark-maybe-load-default-file)
+  (bookmark-jump "elfeed-editors"))
+
+;; go to bookmarked videos categories
+(defun sk/elfeed-videos ()
+  "Filters out only the links corresponding to videos"
+  (interactive)
+  (bookmark-maybe-load-default-file)
+  (bookmark-jump "elfeed-videos"))
+
+;; go to bookmarked edu categories
+(defun sk/elfeed-edu ()
+  "Filters out only the links corresponding to edu"
+  (interactive)
+  (bookmark-maybe-load-default-file)
+  (bookmark-jump "elfeed-edu"))
+
+;; go to bookmarked comics categories
+(defun sk/elfeed-comics ()
+  "Filters out only the links corresponding to comics"
+  (interactive)
+  (bookmark-maybe-load-default-file)
+  (bookmark-jump "elfeed-comics"))
+
+;; go to bookmarked blogs categories
+(defun sk/elfeed-blogs ()
+  "Filters out only the links corresponding to blogs"
+  (interactive)
+  (bookmark-maybe-load-default-file)
+  (bookmark-jump "elfeed-blogs"))
+
+;; go to all bookmarked categories
+(defun sk/elfeed-all ()
+  "Filters out only the links corresponding to all categories"
+  (interactive)
+  (bookmark-maybe-load-default-file)
+  (bookmark-jump "elfeed-all"))
+
+;; go to starred bookmarked categories
+(defun sk/elfeed-starred ()
+  "Filters out only the links corresponding to starred categories"
+  (interactive)
+  (bookmark-maybe-load-default-file)
+  (bookmark-jump "elfeed-starred"))
+
+;;write to disk when quiting
+(defun sk/elfeed-save-db-and-quit ()
+  "Wrapper to save the elfeed db to disk before quitting"
+  (interactive)
+  (elfeed-db-save)
+  (quit-window))
+
+(use-package elfeed
+  :ensure t
+  :ensure-system-package curl
+  :bind* ("C-x j" . elfeed)
+  :hook ((elfeed-new-entry . sk/elfeed-youtube-tagger))
+  :init
+  (setq elfeed-feeds
+		'(;; Blogs
+		  ("https://medium.com/feed/towardsdatascience" data blogs edu)
+		  ("https://www.analyticsvidhya.com/feed/" data blogs edu)
+		  ("https://planet.emacsen.org/atom.xml" editors emacs blogs)
+		  ("https://pragmaticemacs.com/feed/" editors emacs blogs)
+		  ;; Reddit/Hackernews
+		  ("https://www.reddit.com/r/emacs/.rss" editors emacs links)
+		  ("https://www.reddit.com/r/vim/.rss" editors vim links)
+		  ("https://www.reddit.com/r/neovim/.rss" editors vim links)
+		  ;; videos
+		  ;; ("https://www.youtube.com/feeds/videos.xml?channel_id=UC9-y-6csu5WGm29I7JiwpnA" video youtube cs edu)
+		  ;; ("https://www.youtube.com/feeds/videos.xml?channel_id=UCY1kMZp36IQSyNx_9h4mpCg" video youtube engg edu)
+		  ;; ("https://www.youtube.com/feeds/videos.xml?channel_id=UCYO_jab_esuFRV4b17AJtAw" video youtube math edu)
+		  ;; ("https://www.youtube.com/feeds/videos.xml?channel_id=UCHnyfMqiRRG1u-2MsSQLbXA" video youtube edu)
+		  ;; ("https://www.youtube.com/feeds/videos.xml?channel_id=UCoxcjq-8xIDTYp3uz647V5A" video youtube math edu)
+		  ;; ("https://www.youtube.com/feeds/videos.xml?channel_id=UCC552Sd-3nyi_tk2BudLUzA" video youtube science edu)
+		  ;; ("https://www.youtube.com/feeds/videos.xml?channel_id=UC06E4Y_-ybJgBUMtXx8uNNw" video youtube edu)
+		  ;; ("https://www.youtube.com/feeds/videos.xml?channel_id=UCcabW7890RKJzL968QWEykA" video youtube cs edu)
+		  ;; ("https://www.youtube.com/feeds/videos.xml?channel_id=UC7DdEm33SyaTDtWYGO2CwdA" video youtube science edu)
+		  ;; ("https://www.youtube.com/feeds/videos.xml?channel_id=UChWv6Pn_zP0rI6lgGt3MyfA" video youtube engg edu)
+		  ;; ("https://www.youtube.com/feeds/videos.xml?channel_id=UClqhvGmHcvWL9w3R48t9QXQ" video youtube engg edu)
+		  ;; ("https://www.youtube.com/feeds/videos.xml?channel_id=UCUcyEsEjhPEDf69RRVhRh4A" video youtube history edu)
+		  ;; ("https://www.youtube.com/feeds/videos.xml?channel_id=UCv_vLHiWVBh_FR9vbeuiY-A" video youtube history edu)
+		  ;; ("https://www.youtube.com/feeds/videos.xml?channel_id=UC6107grRI4m0o2-emgoDnAA" video youtube edu)
+		  ;; ("https://www.youtube.com/feeds/videos.xml?channel_id=UCH4BNI0-FOK2dMXoFtViWHw" video youtube edu)
+		  ;; ("https://www.youtube.com/feeds/videos.xml?channel_id=UC0vBXGSyV14uvJ4hECDOl0Q" video youtube tech edu)
+		  ;; ("https://www.youtube.com/feeds/videos.xml?channel_id=UCvjgXvBlbQiydffZU7m1_aw" video youtube cs edu)
+		  ;; ("https://www.youtube.com/feeds/videos.xml?channel_id=UCUHW94eEFW7hkUMVaZz4eDg" video youtube science edu)
+		  ;; ("https://www.youtube.com/feeds/videos.xml?channel_id=UCMOqf8ab-42UUQIdVoKwjlQ" video youtube engg edu)
+		  ;; ("https://www.youtube.com/feeds/videos.xml?channel_id=UC2C_jShtL725hvbm1arSV9w" video youtube edu)
+		  ;; ("https://www.youtube.com/feeds/videos.xml?channel_id=UCsXVk37bltHxD1rDPwtNM8Q" video youtube edu)
+		  ;; ("https://www.youtube.com/feeds/videos.xml?channel_id=UCBa659QWEk1AI4Tg--mrJ2A" video youtube edu)
+		  ;; comics
+		  ("https://xkcd.com/rss.xml" comics)))
+  :bind (:map elfeed-search-mode-map
+			  ;; filters
+			  ("D" . sk/elfeed-data)
+			  ("E" . sk/elfeed-editors)
+			  ("V" . sk/elfeed-videos)
+			  ("U" . sk/elfeed-edu)
+			  ("C" . sk/elfeed-comics)
+			  ("A" . sk/elfeed-all)
+			  ("S" . sk/elfeed-starred)
+			  ("B" . sk/elfeed-blogs)
+			  ;; commands
+			  ("q" . sk/elfeed-save-db-and-quit)
+			  ("d" . elfeed-download-video)
+			  ("*" . elfeed-toggle-star)
+			  ;; ("r" . elfeed-tag-read)
+			  ;; ("u" . elfeed-tag-unread)
+			  ("j" . elfeed-tag-junk)
+			  ("k" . elfeed-tag-not-junk)
+			  ("f" . elfeed-search-fetch))
+  :config
+  ;; (defalias 'elfeed-tag-unread (elfeed-expose #'elfeed-search-tag-all 'unread))
+  ;; (defalias 'elfeed-tag-read (elfeed-expose #'elfeed-search-untag-all 'unread))
+  (defalias 'elfeed-tag-junk (elfeed-expose #'elfeed-search-tag-all 'junk))
+  (defalias 'elfeed-tag-not-junk (elfeed-expose #'elfeed-search-untag-all 'junk))
+  (defalias 'elfeed-toggle-star (elfeed-expose #'elfeed-search-toggle-all 'star)))
+
+;;;;;;;;;;;;;;;;;
+;;    Learn    ;;
+;;;;;;;;;;;;;;;;;
+
+(use-package leetcode
+  :ensure t
+  :bind* (("C-x p" . leetcode)
+		  ("C-x t" . leetcode-try))
+  :commands
+  (leetcode
+   leetcode-try
+   leetcode-submit))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Key bindings    ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;

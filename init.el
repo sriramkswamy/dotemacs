@@ -310,6 +310,26 @@
 (use-package dash
   :ensure t)
 
+;; copy package paths
+(defun sk/init-python-path ()
+  "initialize the python path when opening GUI emacs"
+  (interactive)
+  (exec-path-from-shell-copy-env "PYTHONPATH")
+  (exec-path-from-shell-initialize))
+(defun sk/init-ros-path ()
+  "initialize the path when opening GUI emacs"
+  (interactive)
+  (exec-path-from-shell-copy-env "ROS_IP")
+  (exec-path-from-shell-copy-env "ROS_ROOT")
+  (exec-path-from-shell-copy-env "ROS_DISTRO")
+  (exec-path-from-shell-copy-env "ROS_VERSION")
+  (exec-path-from-shell-copy-env "ROS_ETC_DIR")
+  (exec-path-from-shell-copy-env "ROS_MASTER_URI")
+  (exec-path-from-shell-copy-env "ROS_PACKAGE_PATH")
+  (exec-path-from-shell-copy-env "ROS_PYTHON_VERSION")
+  (exec-path-from-shell-copy-env "ROSLISP_PACKAGE_DIRECTORIES")
+  (exec-path-from-shell-initialize))
+
 ;; Make sure the path is set right for macOS after installing brew
 (if (memq window-system '(mac ns))
   (use-package exec-path-from-shell
@@ -331,6 +351,8 @@
     :init
     (setq exec-path-from-shell-check-startup-files nil)
     :config
+	(sk/init-python-path)
+	(sk/init-ros-path)
     (exec-path-from-shell-initialize)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;

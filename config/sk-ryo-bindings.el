@@ -198,7 +198,7 @@
 
 ;; mapping with leader
 (ryo-modal-key "SPC"
-               '(("SPC" org-agenda :name "agenda" :norepeat t)
+               '(("a" org-agenda :name "agenda" :norepeat t)
 				 ("w" "C-x C-s" :name "save buffer" :norepeat t)
                  ("e" magit-status :name "git status" :norepeat t)
                  ("f" "C-x C-f" :name "open file" :norepeat t)
@@ -215,10 +215,10 @@
 				 ("x" ibuffer :name "interactive buffer" :norepeat t)
 				 ("z" prodigy :name "background services" :norepeat t)
 				 ("q" quickrun :name "quickrun" :norepeat t)
-				 ("t" counsel-tramp :name "tramp" :norepeat t)
 				 ("i" sk/lsp-hydra/body :name "lsp" :norepeat t)
 				 ("b" sk/dap-hydra/body :name "debug" :norepeat t)
-				 ("j" "M-x" :name "commands" :norepeat t)))
+				 ("j" "M-x" :name "commands" :norepeat t)
+				 (":" eval-expression :name "eval expression" :norepeat t)))
 
 (if (version< emacs-version "25.2")
 	(ryo-modal-key "SPC n" 'neotree :name "file tree" :norepeat t)
@@ -227,17 +227,16 @@
 ;; mapping with minor leader
 (ryo-modal-key "SPC m"
 			   '(("p" sk/org-rclone-sync-to-dropbox :name "push org to rclone" :norepeat t)
-				 ("f" sk/org-rclone-sync-from-dropbox :name "fetch org from rclone" :norepeat t)
-				 (":" eval-expression :name "eval expression" :norepeat t)))
+				 ("f" sk/org-rclone-sync-from-dropbox :name "fetch org from rclone" :norepeat t)))
 
 ;; use locate or spotlight depending on the system
 (cond
  ((eq system-type 'darwin)
-  (ryo-modal-key "SPC a" 'spotlight :name "desktop search")
+  (ryo-modal-key "SPC t" 'spotlight :name "desktop search")
   (ryo-modal-key "K" 'dash-at-point :name "doc search")
   (ryo-modal-key "g D" 'dash-at-point-with-docset :name "doc set"))
  ((eq system-type 'gnu/linux)
-  (ryo-modal-key "SPC a" 'counsel-locate :name "desktop search")
+  (ryo-modal-key "SPC t" 'counsel-locate :name "desktop search")
   (ryo-modal-key "K" 'zeal-at-point :name "doc search")
   (ryo-modal-key "g D" 'zeal-at-point-set-docset :name "doc set")))
 
@@ -253,6 +252,7 @@
 				 ("P" sk/post-gist :name "gist post" :norepeat t)
 				 ("I" browse-at-remote :name "internet remote" :norepeat t)
 				 ("f" ffap :name "find file at point" :norepeat t)
+				 ("t" counsel-tramp :name "tramp" :norepeat t)
 				 ("W" wdired-change-to-wdired-mode :name "writeable dir" :norepeat t)
 				 ("i" counsel-package :name "install package" :norepeat t)
 				 ("!" async-shell-command :name "run shell command" :norepeat t)

@@ -127,8 +127,8 @@
 ;; ryo modal search mappings
 (ryo-modal-keys
  (:norepeat t)
- ("*" sk/swiper-at-point :name "search word under cursor")
- ("#" sk/swiper-all-at-point :name "search word ina ll files")
+ ("*" loccur-current :name "search word")
+ ("#" sk/swiper-at-point :name "swipe word")
  ("E" ivy-occur :name "edit search results")
  ("g *" counsel-colors-emacs :name "search emacs colors")
  ("g #" counsel-colors-web :name "search web colors")

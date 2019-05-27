@@ -174,5 +174,13 @@
    desktop-create-auto
    desktop-load-auto))
 
+;; searching the current buffer quickly
+(use-package loccur
+  :ensure t
+  :commands
+  (loccur
+   loccur-current
+   loccur-previous-match))
+
 ;; provide navigation related packages
 (provide 'sk-nav)

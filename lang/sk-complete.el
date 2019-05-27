@@ -17,7 +17,7 @@
 		company-require-match 0
 		company-selection-wrap-around t
 		company-tooltip-limit 15
-		company-idle-delay 0.15)
+		company-idle-delay 0.2)
   (setq company-dabbrev-ignore-buffers "\\.pdf\\'"
 		company-dabbrev-downcase nil
 		company-dabbrev-code-modes t
@@ -64,7 +64,7 @@
 		   ;; company-rtags          ; rtags
 		   ;; company-matlab         ; matlab
 		   company-matlab-shell   ; matlab-shell
-		   company-anaconda       ; anaconda
+		   ;; company-anaconda       ; anaconda
            ;; tag backends
 		   ;; company-etags          ; etags
 		   ;; company-gtags          ; gtags
@@ -215,7 +215,7 @@
            company-keywords     ; keywords
 		   company-dabbrev-code ; code words
 		   company-lsp          ; python lsp completion
-		   company-anaconda     ; python anaconda completion
+		   ;; company-anaconda     ; python anaconda completion
 		   company-capf		    ; complete at point
 		   ))))
 

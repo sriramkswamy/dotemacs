@@ -148,10 +148,11 @@
 ;; correct spellings
 (use-package flyspell-correct-ivy
   :ensure t
+  :hook ((prog-mode . flyspell-prog-mode))
   :commands
   (flyspell-correct-previous-word-generic)
   :config
-  (require 'flyspell-ivy)
+  (require 'flyspell-correct-ivy)
   (ivy-mode 1)
   (counsel-mode 1))
 

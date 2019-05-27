@@ -645,6 +645,7 @@
  ("M-p"		. sk/nothing)
  ("C-x C-b" . ibuffer)
  ("C-c C-c" . sk/nothing)
+ ("C-l"		. flyspell-correct-previous-word-generic)
  ("C-c '"	. sk/nothing)
  ("C-c C-f" . sk/nothing))
 

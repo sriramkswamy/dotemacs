@@ -45,6 +45,7 @@
 		ryo:ab2e3db597a537266eeaf6ea5bd6402f:open\ up
 		ryo:b0149f53ca1e7fbb80ec479545786acc:insert
 		ryo:bab6212da68063bb4a06af4d78a91764:dwim
+		ryo:bcc1362392d5de0552e7ccb28c9fb0eb:beginning\ of\ line
 		ryo:c5a5f7db0cfbf4dd58f7bab9f41dfb84:symbol
 		ryo:d1fef67c9330c295d0b9d4d1f7352e9a:to\ end\ of\ word
 		ryo:dff4676e9e13ff5ff13e695aac818e69:next\ word

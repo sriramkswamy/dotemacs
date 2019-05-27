@@ -401,9 +401,9 @@
 
 ;; choose a single theme or change it
 ;; (if (display-graphic-p)
-;; 	(load-theme 'doom-molokai t)
-;;   (load-theme 'doom-molokai t))
-(load-theme 'doom-molokai t)
+;; 	(load-theme 'doom-Iosvkem t)
+;;   (load-theme 'doom-Iosvkem t))
+(load-theme 'doom-Iosvkem t)
 
 (use-package doom-modeline
   :ensure t

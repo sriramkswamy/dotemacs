@@ -203,7 +203,7 @@
                  ("e" magit-status :name "git status" :norepeat t)
                  ("f" "C-x C-f" :name "open file" :norepeat t)
                  ("g" "C-g" :name "interrupt" :norepeat t)
-                 ("r" counsel-recentf :name "recent files" :norepeat t)
+                 ("r" elfeed :name "read feed" :norepeat t)
                  ("d" counsel-git :name "git files" :norepeat t)
                  ("c" org-capture :name "capture" :norepeat t)
                  ("s" sk/counsel-file-jump-project :name "project files" :norepeat t)

@@ -24,7 +24,7 @@
   ;; if flipped, the candidates are above the input
   ;; (setq ivy-flip t)
   ;; virtual buffers - combines recentf and bookmarks to ivy-switch-buffer
-  ;; (setq ivy-use-virtual-buffers t)
+  (setq ivy-use-virtual-buffers t)
   ;; full file names - useful when multiple files have same names
   (setq ivy-virtual-abbreviate 'full)
   ;; fuzzy everywhere except when searching for something

@@ -737,7 +737,8 @@
 (use-package elfeed
   :ensure t
   :ensure-system-package curl
-  :bind* ("C-x j" . elfeed)
+  :commands
+  (elfeed)
   :hook ((elfeed-new-entry . sk/elfeed-youtube-tagger))
   :init
   (setq elfeed-feeds
@@ -807,12 +808,9 @@
 
 (use-package leetcode
   :ensure t
-  :bind* (("C-x p" . leetcode)
-		  ("C-x t" . leetcode-try))
-  :commands
-  (leetcode
-   leetcode-try
-   leetcode-submit))
+  :bind* (("C-x j" . leetcode)
+		  ("C-x t" . leetcode-try)
+		  ("C-x p" . leetcode-submit)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Key bindings    ;;

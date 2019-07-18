@@ -84,6 +84,7 @@
 ;; wrapper around ivy for many functions
 (use-package counsel
   :ensure t
+  ;; :ensure-system-package rg
   :diminish counsel-mode
   :bind (("M-x" . counsel-M-x)
 		 ("M-y" . counsel-yank-pop)

@@ -1,14 +1,34 @@
 ;; language client registration for clang
-(defun sk/lsp-register-clang ()
-  "Registers language client for clang"
+(defun sk/lsp-register-clangd ()
+  "Registers language client for clangd"
   (interactive)
   (require 'lsp-mode)
   (require 'lsp-ui)
   (require 'dap-lldb)
   (lsp-register-client
-   (make-lsp-client :new-connection (lsp-stdio-connection "clangd")
+   (make-lsp-client :new-connection (lsp-stdio-connection "clangd-9")
 					:major-modes '(c++-mode)
 					:server-id 'clangd))
+  (lsp-mode)
+  (lsp-ui-mode)
+  (lsp)
+  (dap-mode 1)
+  (dap-ui-mode 1))
+
+;; language client registration for cquery
+(defun sk/lsp-register-cquery ()
+  "Registers language client for cquery"
+  (interactive)
+  (require 'lsp-mode)
+  (require 'lsp-ui)
+  (require 'dap-lldb)
+  (lsp-register-client
+   (make-lsp-client :new-connection (lsp-stdio-connection
+									 (concat (getenv "HOME")
+											 "/sources/cquery/build/cquery"
+											 "--log-all-to-stderr"))
+					:major-modes '(c++-mode)
+					:server-id 'cquery))
   (lsp-mode)
   (lsp-ui-mode)
   (lsp)
@@ -74,7 +94,7 @@
   :config
   (ryo-modal-major-mode-keys
    'c++-mode
-   ("m k" sk/lsp-register-clang :name "lsp clang"))
+   ("m k" sk/lsp-register-clangd :name "lsp clang"))
 
   (ryo-modal-major-mode-keys
    'python-mode

@@ -26,5 +26,10 @@
   :mode (("\\.vimrc\\'" . vimrc-mode)
 		 ("\\.vim\\'" . vimrc-mode)))
 
+;; CMAKE configuration
+(use-package cmake-mode
+  :ensure t
+  :mode ("CMakeLists.txt" . cmake-mode))
+
 ;; provide the file
 (provide 'sk-config)

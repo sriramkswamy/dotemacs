@@ -35,9 +35,9 @@
   (dap-mode 1)
   (dap-ui-mode 1))
 
-;; language client registration for python
-(defun sk/lsp-register-python ()
-  "Registers language client for python"
+;; language client registration for system python2
+(defun sk/lsp-register-python2-system ()
+  "Registers language client for system python2"
   (interactive)
   (require 'lsp-mode)
   (require 'lsp-ui)
@@ -47,6 +47,61 @@
   									 (concat (getenv "HOME") "/.local/bin/pyls"))
   					:major-modes '(python-mode)
   					:server-id 'pyls))
+  (flycheck-set-checker-executable "python-flake8"
+								   (concat (getenv "HOME")
+										   "/.local/bin/flake8"))
+  (flycheck-set-checker-executable "python-pylint"
+								   (concat (getenv "HOME")
+										   "/.local/bin/pylint"))
+  (lsp-mode)
+  (lsp-ui-mode)
+  (lsp)
+  (dap-mode 1)
+  (dap-ui-mode 1))
+
+;; language client registration for system python3
+(defun sk/lsp-register-python3-system ()
+  "Registers language client for system python3"
+  (interactive)
+  (require 'lsp-mode)
+  (require 'lsp-ui)
+  (require 'dap-python)
+  (lsp-register-client
+   (make-lsp-client :new-connection (lsp-stdio-connection
+  									 (concat (getenv "HOME") "/.local/bin/pyls"))
+  					:major-modes '(python-mode)
+  					:server-id 'pyls))
+  (flycheck-set-checker-executable "python-flake8"
+								   (concat (getenv "HOME")
+										   "/.virtualenvs/global/bin/flake8"))
+  (flycheck-set-checker-executable "python-pylint"
+								   (concat (getenv "HOME")
+										   "/.virtualenvs/global/bin/pylint"))
+  (lsp-mode)
+  (lsp-ui-mode)
+  (lsp)
+  (dap-mode 1)
+  (dap-ui-mode 1))
+
+;; language client registration for global python3 virtualenv
+(defun sk/lsp-register-python-global-venv ()
+  "Registers language client for global python virtualenv"
+  (interactive)
+  (require 'lsp-mode)
+  (require 'lsp-ui)
+  (require 'dap-python)
+  (lsp-register-client
+   (make-lsp-client :new-connection (lsp-stdio-connection
+  									 (concat (getenv "HOME")
+											 "/.virtualenvs/global/bin/pyls"))
+  					:major-modes '(python-mode)
+  					:server-id 'pyls))
+  (flycheck-set-checker-executable "python-flake8"
+								   (concat (getenv "HOME")
+										   "/.virtualenvs/global/bin/flake8"))
+  (flycheck-set-checker-executable "python-pylint"
+								   (concat (getenv "HOME")
+										   "/.virtualenvs/global/bin/pylint"))
   (lsp-mode)
   (lsp-ui-mode)
   (lsp)
@@ -63,8 +118,8 @@
 (use-package lsp-mode
   :ensure t
   :hook (c++-mode python-mode)
-  :hook ((python-mode . sk/lsp-register-python)
-		 (c++-mode . sk/lsp-register-clang))
+  :hook ((python-mode . sk/lsp-register-python3-system)
+		 (c++-mode . sk/lsp-register-clangd))
 
   :commands
   (lsp-register-client
@@ -94,11 +149,14 @@
   :config
   (ryo-modal-major-mode-keys
    'c++-mode
-   ("m k" sk/lsp-register-clangd :name "lsp clang"))
+   ("m k d" sk/lsp-register-clangd :name "lsp clang")
+   ("m k q" sk/lsp-register-cquery :name "lsp cquery"))
 
   (ryo-modal-major-mode-keys
    'python-mode
-   ("m k" sk/lsp-register-python :name "lsp python")))
+   ("m k 2" sk/lsp-register-python2-system :name "lsp python2")
+   ("m k 3" sk/lsp-register-python3-system :name "lsp python3")
+   ("m k g" sk/lsp-register-python-global-venv :name "lsp global venv")))
 
 ;; LSP user interface
 (use-package lsp-ui

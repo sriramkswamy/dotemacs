@@ -151,10 +151,10 @@
 		 (org-mode . sk/org-template-hook))
   :init
   ;; Set to the location of your Org files on your local system
-  (setq org-directory "~/Dropbox/org")
+  (setq org-directory "/mnt/chromeos/GoogleDrive/MyDrive/org")
   ;; Set to the location of your Mobile Org files on your local system
-  (setq org-mobile-inbox-for-pull "~/Dropbox/Apps/MobileOrg/mobileorg.org")
-  (setq org-mobile-directory "~/Dropbox/Apps/MobileOrg")
+  (setq org-mobile-inbox-for-pull "/mnt/chromeos/GoogleDrive/MyDrive/Apps/MobileOrg/mobileorg.org")
+  (setq org-mobile-directory "/mnt/chromeos/GoogleDrive/MyDrive/Apps/MobileOrg")
   ;; hide markup
   (setq org-hide-emphasis-markers t)
   ;; minimal outlines
@@ -219,9 +219,9 @@
 		'((sequence "TODO(t)" "IN-PROGRESS(i)" "WAITING(w@/!)" "|" "DONE(d!)" "CANCELLED(c@)")))
   ;; agenda files
   (setq org-agenda-files (list
-						  "~/Dropbox/org/personal.org"
-						  "~/Dropbox/org/notes.org"
-                          "~/Dropbox/org/work.org"
+						  "/mnt/chromeos/GoogleDrive/MyDrive/org/personal.org"
+						  "/mnt/chromeos/GoogleDrive/MyDrive/org/notes.org"
+                          "/mnt/chromeos/GoogleDrive/MyDrive/org/work.org"
 						  ))
   ;; deadline handling
   (setq org-deadline-warning-days 7
@@ -235,7 +235,7 @@
 								("c"	; key
 								 "Code"	; name
 								 entry	; type
-								 (file+headline "~/Dropbox/org/notes.org" "Code") ; target
+								 (file+headline "/mnt/chromeos/GoogleDrive/MyDrive/org/notes.org" "Code") ; target
 								 "* %^{TITLE} %^G\n:PROPERTIES:\n:Created: %U\n:END:\n%i\#+BEGIN_SRC %^{language}\n%?\n\#END_SRC" ; template
 								 :prepend t	 ; properties
 								 :empty-lines 1	 ; properties
@@ -246,7 +246,7 @@
 								("n"	; key
 								 "Note"	; name
 								 entry	; type
-								 (file+headline "~/Dropbox/org/notes.org" "Notes") ; target
+								 (file+headline "/mnt/chromeos/GoogleDrive/MyDrive/org/notes.org" "Notes") ; target
 								 "* %? %^G\n:PROPERTIES:\n:Created: %U\n:Linked: %A\n:END:\n%i" ; template
 								 :prepend t	 ; properties
 								 :empty-lines 1	 ; properties
@@ -257,7 +257,7 @@
 								("f"	; key
 								 "Plans"	; name
 								 entry	; type
-								 (file+headline "~/Dropbox/org/personal.org" "Plans") ; target
+								 (file+headline "/mnt/chromeos/GoogleDrive/MyDrive/org/personal.org" "Plans") ; target
 								 "* %? %^G\n:PROPERTIES:\n:Created: %U\n:END:\n%i" ; template
 								 :prepend t	 ; properties
 								 :empty-lines 1	 ; properties
@@ -268,7 +268,7 @@
 								("h"	; key
 								 "Hobbies"	; name
 								 entry	; type
-								 (file+headline "~/Dropbox/org/personal.org" "Hobbies") ; target
+								 (file+headline "/mnt/chromeos/GoogleDrive/MyDrive/org/personal.org" "Hobbies") ; target
 								 "* %? %^G\n:PROPERTIES:\n:Created: %U\n:END:\n%i" ; template
 								 :prepend t	 ; properties
 								 :empty-lines 1	 ; properties
@@ -279,7 +279,7 @@
 								("p"	; key
 								 "Personal Note"	; name
 								 entry	; type
-								 (file+headline "~/Dropbox/org/personal.org" "Notes") ; target
+								 (file+headline "/mnt/chromeos/GoogleDrive/MyDrive/org/personal.org" "Notes") ; target
 								 "* %? %^G\n:PROPERTIES:\n:Created: %U\n:Linked: %A\n:END:\n%i" ; template
 								 :prepend t	 ; properties
 								 :empty-lines 1	 ; properties
@@ -290,7 +290,7 @@
 								("b"	; key
 								 "Books" ; name
 								 entry	; type
-								 (file+headline "~/Dropbox/org/personal.org" "Books") ; target
+								 (file+headline "/mnt/chromeos/GoogleDrive/MyDrive/org/personal.org" "Books") ; target
 								 "* %? %^G\n:PROPERTIES:\n:Created: %U\n::END:\n%i" ; template
 								 :prepend t	 ; properties
 								 :empty-lines 1	 ; properties
@@ -301,7 +301,7 @@
 								("g"	 ; key
 								 "Gubby" ; name
 								 entry	 ; type
-								 (file+headline "~/Dropbox/org/personal.org" "Gubby") ; target
+								 (file+headline "/mnt/chromeos/GoogleDrive/MyDrive/org/personal.org" "Gubby") ; target
 								 "* %? %^G\n:PROPERTIES:\n:Created: %U\n:Linked: %A\n:END:\n%i" ; template
 								 :prepend t	 ; properties
 								 :empty-lines 1	 ; properties
@@ -312,7 +312,7 @@
 								("w"	; key
 								 "Work"	; name
 								 entry	; type
-								 (file+headline "~/Dropbox/org/work.org" "Tasks")	; target
+								 (file+headline "/mnt/chromeos/GoogleDrive/MyDrive/org/work.org" "Tasks")	; target
 								 "* TODO %^{Title} %^G\n:PROPERTIES:\n:Created: %U\n:Linked: %A\n:END:\n%i\n%?" ; template
 								 :prepend t	 ; properties
 								 :empty-lines 1	 ; properties
@@ -323,7 +323,7 @@
 								("m"	   ; key
 								 "Meeting" ; name
 								 entry	   ; type
-								 (file+olp+datetree "~/Dropbox/org/work.org" "Meeting") ; target
+								 (file+olp+datetree "/mnt/chromeos/GoogleDrive/MyDrive/org/work.org" "Meeting") ; target
 								 "* %^{Title} %^G\n:PROPERTIES:\n:Created: %U\n:END:\n%i\n** Agenda:\n%?\n\n** Minutes of the meeting:\n" ; template
 								 :prepend t	 ; properties
 								 :empty-lines 1	 ; properties
@@ -334,8 +334,8 @@
 								("j"	    ; key
 								 "Jobs"	    ; name
 								 table-line ; type
-								 (file+headline "~/Dropbox/org/notes.org" "Jobs") ; target
-								 "| %^{Company} | [[%^{job link}][%^{position}]] | %^{referrals?} | %^{Experience?} | %^{Status} | " ; template
+								 (file+headline "/mnt/chromeos/GoogleDrive/MyDrive/org/notes.org" "Jobs") ; target
+								 "| %^{company} | [[%^{job link}][%^{position}]] | %^{referrals?} | %^{status?} | %U | %^{follow up} | %^{experience} | %^{files submitted} | %^{location} | %^{linkedin?} | " ; template
 								 :prepend t ; properties
 								 ;; :table-line-pos "II-3"   ; properties
 								 :empty-lines 1	 ; properties
@@ -346,7 +346,7 @@
 								("t"	    ; key
 								 "Todos" ; name
 								 entry	    ; type
-								 (file+headline "~/Dropbox/org/personal.org" "Todos") ; target
+								 (file+headline "/mnt/chromeos/GoogleDrive/MyDrive/org/personal.org" "Todos") ; target
 								 "* TODO %^{Title} %^G\n:PROPERTIES:\n:Created: %U\n:END:\n%i\n%?" ; template
 								 :prepend t	 ; properties
 								 :empty-lines 1	 ; properties
@@ -357,7 +357,7 @@
 								("d"	   ; key
 								 "Diary" ; name
 								 entry	   ; type
-								 (file+olp+datetree "~/Dropbox/org/personal.org" "Diary") ; target
+								 (file+olp+datetree "/mnt/chromeos/GoogleDrive/MyDrive/org/personal.org" "Diary") ; target
 								 "* %^{Title} %^G\n:PROPERTIES:\n:Created: %U\n:END:\n%i\n %?" ; template
 								 :prepend t	 ; properties
 								 :empty-lines 1	 ; properties
@@ -480,7 +480,7 @@
 			 interleave-pdf-mode)
   :after (org)
   :init
-  (setq interleave-org-notes-dir-list '("~/Dropbox/Paper/notes"))
+  (setq interleave-org-notes-dir-list '("/mnt/chromeos/GoogleDrive/MyDrive/Paper/notes"))
   :config
   (add-hook 'doc-view-mode-hook 'doc-view-fit-page-to-window))
 
@@ -514,7 +514,7 @@
   (setq org-journal-file-type 'weekly
 		;; org-journal-encrypt-journal t
 		;; org-journal-enable-encryption t
-		org-journal-dir "~/Dropbox/org/journal"))
+		org-journal-dir "/mnt/chromeos/GoogleDrive/MyDrive/org/journal"))
 
 ;; mappings
 (ryo-modal-major-mode-keys

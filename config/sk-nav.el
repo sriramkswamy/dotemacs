@@ -161,7 +161,7 @@
    vimish-fold-refold-all
    vimish-fold-next-fold
    vimish-fold-previous-fold)
-  :config
+  :init
   (vimish-fold-global-mode 1))
 
 ;; improve desktop

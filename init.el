@@ -433,6 +433,15 @@
   :init
   (setq doom-modeline-height 15))
 
+;; better file icons
+(use-package all-the-icons
+  :ensure t
+  :after (doom-modeline)
+  :config
+  (add-to-list 'all-the-icons-icon-alist
+			   '("\\.m$" all-the-icons-fileicon
+				 "matlab" :face all-the-icons-orange)))
+
 (when (eq system-type 'darwin)
   ;; fancy battery
   (use-package fancy-battery

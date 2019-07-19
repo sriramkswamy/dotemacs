@@ -77,7 +77,8 @@
 
 ;; ryo major mode hints
 (which-key-add-major-mode-key-based-replacements 'markdown-mode
-  "m i" "insert")
+  "m i" "insert"
+  "m a" "auxiliary")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    ReStructured Text    ;;

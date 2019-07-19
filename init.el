@@ -522,6 +522,9 @@
 ;; stats support
 (require 'sk-stats)
 
+;; multiple major modes
+(require 'sk-poly)
+
 ;; python support
 (require 'sk-python)
 

@@ -91,6 +91,7 @@
   :config
   (require 'matlab-load)
   (require 'mlint)
+  (require 'flycheck-matlab)
   (mlint-minor-mode 1))
 
 ;; hydra for mlint

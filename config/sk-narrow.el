@@ -56,18 +56,19 @@
 	:ensure t)
   ;; posframe
   (when (not (version< emacs-version "26"))
-		(use-package ivy-posframe
-		  :ensure t
-		  :init
-		  (setq ivy-display-function #'ivy-posframe-display)
-		  (setq ivy-display-function
-				#'ivy-posframe-display-at-point)
-		  (setq ivy-posframe-parameters
-				'((left-fringe . 10)
-				  (right-fringe . 10)))
-		  :config
-		  (require 'ivy-posframe)
-		  (ivy-posframe-enable)))
+	(when (display-graphic-p)
+	  (use-package ivy-posframe
+		:ensure t
+		:init
+		(setq ivy-display-function #'ivy-posframe-display)
+		(setq ivy-display-function
+			  #'ivy-posframe-display-at-point)
+		(setq ivy-posframe-parameters
+			  '((left-fringe . 10)
+				(right-fringe . 10)))
+		:config
+		(require 'ivy-posframe)
+		(ivy-posframe-enable))))
   (ivy-mode 1))
 
 ;; counsel in any comint derivatives

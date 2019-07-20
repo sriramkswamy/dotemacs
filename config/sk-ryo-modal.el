@@ -66,10 +66,10 @@
          ("<escape>" . sk/remove-mark)
          ("."        . ryo-modal-repeat)
          ("g >"      . mc/skip-to-next-like-this)
-         ("g <"        . mc/skip-to-previous-like-this)
+         ("g <"      . mc/skip-to-previous-like-this)
 		 (">"        . mc/mark-next-like-this)
 		 ("<"        . mc/mark-previous-like-this)
-		 ("\\"      . mc/mark-all-dwim)
+		 ("\\"       . mc/mark-all-dwim)
 		 ("|"        . mc/edit-lines))
 
   :init

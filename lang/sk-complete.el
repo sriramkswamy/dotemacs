@@ -61,15 +61,16 @@
   (global-company-mode))
 
 ;; use a child frame
-(use-package company-posframe
-  :ensure t
-  :diminish company-posframe-mode
-  :after company
-  :config
-  (company-posframe-mode 1)
-  (require 'desktop)
-  (push '(company-posframe-mode . nil)
-      desktop-minor-mode-table))
+(when (display-graphic-p)
+  (use-package company-posframe
+	:ensure t
+	:diminish company-posframe-mode
+	:after company
+	:config
+	(company-posframe-mode 1)
+	(require 'desktop)
+	(push '(company-posframe-mode . nil)
+		  desktop-minor-mode-table)))
 
 ;; LSP completion support
 (use-package company-lsp

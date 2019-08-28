@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: indented bullets
+# key: iu
+# --
+  - $0

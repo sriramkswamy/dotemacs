@@ -4,6 +4,7 @@
 (setq mc/cmds-to-run-for-all
       '(
 		iy-go-to-char--command
+		markdown-outdent-or-delete
 		org-force-self-insert
 		org-self-insert-command
 		orgtbl-hijacker-command-109

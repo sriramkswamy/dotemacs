@@ -4,7 +4,7 @@
 
 (use-package poly-R
   :ensure t
-  :mode ("\\.Rmd$" . poly-markdown+R-mode)
+  :mode ("\\.Rmd$" . poly-markdown+r-mode)
 
   :config
   (ryo-modal-major-mode-keys

@@ -57,11 +57,11 @@
 \titleformat{\chapter}[block]{\normalfont\huge\bfseries}{\thechapter.}{1em}{\Huge}
 \titlespacing*{\chapter}{0pt}{-19pt}{0pt}
 
-\newcommand{\mychapter}[2]
-{\setcounter{chapter}{#1}
- \setcounter{section}{0}
- \chapter*{#2}
- \addcontentsline{toc}{chapter}{#2}
+\newcommand{\mychapter}[2] {
+\setcounter{chapter}{#1}
+\setcounter{section}{0}
+\chapter*{#2}
+\addcontentsline{toc}{chapter}{#2}
 }
 
 \pagenumbering{${3:gobble}}

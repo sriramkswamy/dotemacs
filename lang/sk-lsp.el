@@ -1,3 +1,73 @@
+;; language client registration for typescript
+(defun sk/lsp-register-typescript ()
+  "Registers language client for typescript"
+  (interactive)
+  (require 'lsp-mode)
+  (require 'lsp-ui)
+  (lsp-register-client
+   (make-lsp-client :new-connection (lsp-stdio-connection "typescript-language-server --stdio")
+					:major-modes '(js-mode)
+					:server-id 'typescript))
+  (lsp-mode)
+  (lsp-ui-mode)
+  (lsp)
+  (dap-mode 1)
+  (dap-ui-mode 1))
+
+;; language client registration for javascript
+(defun sk/lsp-register-javascript ()
+  "Registers language client for javascript"
+  (interactive)
+  (require 'lsp-mode)
+  (require 'lsp-ui)
+  (lsp-register-client
+   (make-lsp-client :new-connection (lsp-stdio-connection "typescript-language-server --stdio")
+					:major-modes '(js-mode)
+					:server-id 'javascript))
+  (lsp-mode)
+  (lsp-ui-mode)
+  (lsp)
+  (dap-mode 1)
+  (dap-ui-mode 1))
+
+;; language client registration for golang
+(defun sk/lsp-register-gopls ()
+  "Registers language client for gopls"
+  (interactive)
+  (require 'lsp-mode)
+  (require 'lsp-ui)
+  (lsp-register-client
+   (make-lsp-client :new-connection (lsp-stdio-connection
+									 (concat (getenv "HOME")
+											 "/go/bin/"
+											 "gopls"))
+					:major-modes '(go-mode)
+					:server-id 'golang))
+  (lsp-mode)
+  (lsp-ui-mode)
+  (lsp)
+  (dap-mode 1)
+  (dap-ui-mode 1))
+
+;; language client registration for golang
+(defun sk/lsp-register-golsp ()
+  "Registers language client for golsp"
+  (interactive)
+  (require 'lsp-mode)
+  (require 'lsp-ui)
+  (lsp-register-client
+   (make-lsp-client :new-connection (lsp-stdio-connection
+									 (concat (getenv "HOME")
+											 "/go/bin/"
+											 "go-langserver"))
+					:major-modes '(go-mode)
+					:server-id 'golang))
+  (lsp-mode)
+  (lsp-ui-mode)
+  (lsp)
+  (dap-mode 1)
+  (dap-ui-mode 1))
+
 ;; language client registration for clang
 (defun sk/lsp-register-clangd ()
   "Registers language client for clangd"
@@ -8,6 +78,10 @@
   (lsp-register-client
    (make-lsp-client :new-connection (lsp-stdio-connection "clangd-9")
 					:major-modes '(c++-mode)
+					:server-id 'clangd))
+  (lsp-register-client
+   (make-lsp-client :new-connection (lsp-stdio-connection "clangd-9")
+					:major-modes '(c-mode)
 					:server-id 'clangd))
   (lsp-mode)
   (lsp-ui-mode)
@@ -28,6 +102,13 @@
 											 "/sources/cquery/build/cquery"
 											 "--log-all-to-stderr"))
 					:major-modes '(c++-mode)
+					:server-id 'cquery))
+  (lsp-register-client
+   (make-lsp-client :new-connection (lsp-stdio-connection
+									 (concat (getenv "HOME")
+											 "/sources/cquery/build/cquery"
+											 "--log-all-to-stderr"))
+					:major-modes '(c-mode)
 					:server-id 'cquery))
   (lsp-mode)
   (lsp-ui-mode)
@@ -53,6 +134,10 @@
   (flycheck-set-checker-executable "python-pylint"
 								   (concat (getenv "HOME")
 										   "/.local/bin/pylint"))
+  (setq python-shell-interpreter
+		(concat (getenv "HOME") "/.local/bin/ipython2")
+  		python-shell-interpreter-args "--simple-prompt -i")
+
   (lsp-mode)
   (lsp-ui-mode)
   (lsp)
@@ -77,7 +162,10 @@
   (flycheck-set-checker-executable "python-pylint"
 								   (concat (getenv "HOME")
 										   "/.virtualenvs/global/bin/pylint"))
-  (lsp-mode)
+  (setq python-shell-interpreter
+		(concat (getenv "HOME") "/.virtualenvs/global/bin/ipython")
+  		python-shell-interpreter-args "--simple-prompt -i") (lsp-mode)
+
   (lsp-ui-mode)
   (lsp)
   (dap-mode 1)
@@ -102,6 +190,10 @@
   (flycheck-set-checker-executable "python-pylint"
 								   (concat (getenv "HOME")
 										   "/.virtualenvs/global/bin/pylint"))
+  (setq python-shell-interpreter
+		(concat (getenv "HOME") "/.virtualenvs/global/bin/ipython")
+  		python-shell-interpreter-args "--simple-prompt -i")
+
   (lsp-mode)
   (lsp-ui-mode)
   (lsp)
@@ -146,12 +238,26 @@
    lsp-workspace-folders-switch
    lsp-find-workspace)
 
+  :init
+  (setq lsp-clients-clangd-executable "clangd-9")
+
   :config
+  (ryo-modal-major-mode-keys
+   'go-mode
+   ("m k g" sk/lsp-register-gopls :name "lsp gopls")
+   ("m k l" sk/lsp-register-golsp :name "lsp golsp"))
+   (ryo-modal-major-mode-keys
+   'js-mode
+   ("m k t" sk/lsp-register-typescript :name "lsp ts")
+   ("m k j" sk/lsp-register-javascript :name "lsp js"))
   (ryo-modal-major-mode-keys
    'c++-mode
    ("m k d" sk/lsp-register-clangd :name "lsp clang")
    ("m k q" sk/lsp-register-cquery :name "lsp cquery"))
-
+  (ryo-modal-major-mode-keys
+   'c-mode
+   ("m k d" sk/lsp-register-clangd :name "lsp clang")
+   ("m k q" sk/lsp-register-cquery :name "lsp cquery"))
   (ryo-modal-major-mode-keys
    'python-mode
    ("m k 2" sk/lsp-register-python2-system :name "lsp python2")

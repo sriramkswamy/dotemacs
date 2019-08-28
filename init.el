@@ -525,6 +525,9 @@
 ;; multiple major modes
 (require 'sk-poly)
 
+;; web support
+(require 'sk-web)
+
 ;; python support
 (require 'sk-python)
 
@@ -533,6 +536,9 @@
 
 ;; clang based languages support
 (require 'sk-clang)
+
+;; golang support
+(require 'sk-golang)
 
 ;; support for all the various config files
 (require 'sk-config)

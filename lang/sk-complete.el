@@ -141,6 +141,33 @@
   (add-to-list 'company-backends 'company-lsp)
   )
 
+;; golang
+(defun sk/company-golang ()
+  "Add backends for golang completion in company mode"
+  (interactive)
+  (require 'company)
+  ;; (add-to-list 'company-backends 'company-go)
+  (add-to-list 'company-backends 'company-lsp)
+  )
+
+;; js
+(defun sk/company-js ()
+  "Add backends for web completion in company mode"
+  (interactive)
+  (require 'company)
+  (add-to-list 'company-backends 'company-js)
+  (add-to-list 'company-backends 'company-lsp)
+  )
+
+;; web
+(defun sk/company-web ()
+  "Add backends for web completion in company mode"
+  (interactive)
+  (require 'company)
+  (add-to-list 'company-backends 'company-css)
+  (add-to-list 'company-backends 'company-lsp)
+  )
+
 ;; clang
 (defun sk/company-clang ()
   "Add backends for clang completion in company mode"

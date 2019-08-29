@@ -381,7 +381,7 @@
         ("g c" ,text-objects :then '(comment-dwim-2))
         ("w e" ,text-objects :then '(sk/eshell-send-region-or-line))
         ("r s" ,text-objects :then '(emamux:send-region))
-        ("r z" ,text-objects :then '(emamux:run-region))
+        ("r r" ,text-objects :then '(emamux:run-region))
         ("w r" ,text-objects :then '(sk/shell-send-region-or-line))
         ("r q" ,text-objects :then '(quickrun-region))
         ("r Q" ,text-objects :then '(quickrun-replace-region))
@@ -445,6 +445,24 @@
  ("d d" sk/kill-region-or-line :name "line/region")
  ("y y" sk/copy-region-or-line :name "line/region"))
 
+;; tmux
+(ryo-modal-keys
+ ;; send
+ ("r s r" emamux:send-command :name "send command")
+ ("r s q" emamux:close-panes :name "close panes")
+ ("r s -" emamux:split-window :name "split horizontal")
+ ("r s |" emamux:split-window-horizontally :name "split vertical")
+ ;; runner
+ ("r r z" emamux:run-command :name "run command")
+ ("r r q" emamux:close-panes :name "close panes")
+ ("r r -" emamux:split-window :name "split horizontal")
+ ("r r |" emamux:split-window-horizontally :name "split vertical")
+ ("r r +" emamux:zoom-runner :name "zoom runner")
+ ("r r p" emamux:run-last-command :name "prev command")
+ ("r r x" emamux:interrupt-runner :name "interrupt")
+ ("r r c" emamux:clear-runner-history :name "clear history")
+ ("r r v" emamux:inspect-runner :name "view runner"))
+
 ;; operator based extra repl maps
 (ryo-modal-keys
  ("w e e" sk/eshell-send-region-or-line :name "region")
@@ -452,7 +470,7 @@
  ("r q q" quickrun-region :name "region")
  ("r Q Q" quickrun-replace-region :name "region")
  ("w t t" sk/term-send-line-or-region :name "region")
- ("r z z" emamux:run-region :name "region")
+ ("r r r" emamux:run-region :name "region")
  ("r s s" emamux:send-region :name "region"))
 
 ;; operator based extra fold maps

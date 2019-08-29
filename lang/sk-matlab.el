@@ -331,7 +331,7 @@
  ("r w" sk/matlab-tmux-who :name "describe variable")
  ("r m" sk/matlab-tmux-run :name "run")
  ("r c" emamux:send-command :name "command")
- ("r r" sk/matlab-tmux :name "run matlab")
+ ("r z" sk/matlab-tmux :name "run matlab")
  ("r /" sk/matlab-tmux-addpath :name "add path")
  ("r y" sk/matlab-tmux-genpath :name "add gen path")
  ("r d" sk/matlab-help-tmux :name "doc")

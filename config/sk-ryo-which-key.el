@@ -209,10 +209,10 @@
   "w e a" "outside"
   "w e g" "global"
 
-  "r z" "tmux run"
-  "r z a" "inside"
-  "r z i" "around"
-  "r z g" "global"
+  "r r" "tmux run"
+  "r r a" "inside"
+  "r r i" "around"
+  "r r g" "global"
 
   "r s" "tmux send"
   "r s i" "inside"

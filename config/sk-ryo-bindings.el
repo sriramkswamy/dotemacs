@@ -448,12 +448,12 @@
 ;; tmux
 (ryo-modal-keys
  ;; send
- ("r s r" emamux:send-command :name "send command")
+ ("r s m" emamux:send-command :name "send command")
  ("r s q" emamux:close-panes :name "close panes")
  ("r s -" emamux:split-window :name "split horizontal")
  ("r s |" emamux:split-window-horizontally :name "split vertical")
  ;; runner
- ("r r z" emamux:run-command :name "run command")
+ ("r r m" emamux:run-command :name "run command")
  ("r r q" emamux:close-panes :name "close panes")
  ("r r -" emamux:split-window :name "split horizontal")
  ("r r |" emamux:split-window-horizontally :name "split vertical")

@@ -31,5 +31,10 @@
   :ensure t
   :mode ("CMakeLists.txt" . cmake-mode))
 
+;; AutoHotKey configuration
+(use-package ahk-mode
+  :ensure t
+  :mode ("\\.ahk\\'" . ahk-mode))
+
 ;; provide the file
 (provide 'sk-config)

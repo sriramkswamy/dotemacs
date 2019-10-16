@@ -1,3 +1,9 @@
+;; variables for the chromeos
+(defvar chromeos-google-drive-path "/mnt/chromeos/GoogleDrive/MyDrive/"
+  "The path for my Google Drive folder in ChromeOS")
+(defvar chromeos-downloads-path "/mnt/chromeos/MyFiles/Downloads/"
+  "The path for my Downloads folder in ChromeOS")
+
 ;; find the init file
 (defun sk/find-init ()
   "Find file at point other window"
@@ -5,11 +11,17 @@
   (sk/split-right-and-move)
   (find-file (concat user-emacs-directory "init.el")))
 
+;; open inbox notes
+(defun sk/goto-markdown-notes-inbox ()
+  "opens the inbox markdown notes file"
+  (interactive)
+  (find-file (concat chromeos-google-drive-path "notes/inbox.txt")))
+
 ;; open dropbox folder
 (defun sk/open-dropbox ()
   "opens dired in the dropbox directory to make a new folder"
   (interactive)
-  (dired "~/Dropbox"))
+  (dired (concat (getenv "HOME") "Dropbox")))
 
 ;; smarter start of line
 (defun sk/smarter-move-beginning-of-line (arg)

@@ -37,7 +37,6 @@
 		  (counsel-set-variable		. ivy--regex-plus)
 		  (counsel-package			. ivy--regex-plus)
 		  (t						. ivy--regex-fuzzy)))
-  :bind (("C-x b" . ivy-switch-buffer))
   :bind (:map ivy-minibuffer-map
 			  ("C-w"		. backward-kill-word)
 			  ("RET"		. ivy-alt-done)
@@ -89,6 +88,7 @@
   :diminish counsel-mode
   :bind (("M-x" . counsel-M-x)
 		 ("M-y" . counsel-yank-pop)
+		 ("C-x b" . counsel-switch-buffer)
 		 ("C-x C-f" . counsel-find-file)
 		 ("C-h j" . counsel-describe-face)
 		 ("C-h h" . counsel-set-variable)
@@ -138,25 +138,14 @@
 	  (counsel-ag "" org-directory)
 	(call-interactively #'rgrep)))
 
-;; search word under cursor
-(defun sk/swiper-at-point ()
-  "use swiper to search for a word at point"
-  (interactive)
-  (swiper-isearch (thing-at-point 'symbol)))
-
-;; search in all files
-(defun sk/swiper-all-at-point ()
-  "use swiper to search for a word at point in all buffers"
-  (interactive)
-  (swiper-all (thing-at-point 'symbol)))
-
 ;; search the buffer or all buffer
 (use-package swiper
   :ensure t
   :bind (("C-s" . swiper-isearch))
   :commands
   (swiper-all
-   sk/swiper-at-point)
+   swiper-thing-at-point
+   swiper-all-thing-at-point)
   :config
   (ivy-mode 1)
   (counsel-mode 1))

@@ -38,9 +38,9 @@
   (interactive)
   (setenv "ROS_MASTER_URI" "http://10.0.1.15:11311"))
 
-;; open sublime merge in the background
+;; sublime merge
 (defun sk/open-sublime-merge ()
-  "Opens sublime merge in the background"
+  "open sublime merge in the current directory"
   (interactive)
   (shell-command (concat "smerge " default-directory)))
 

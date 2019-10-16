@@ -27,7 +27,7 @@
 (ryo-modal-keys
  ("z z" recenter-top-bottom :name "recenter")
  ("%" sk/goto-matching-paren :name "matching paren")
- ("g d" sk/goto-markdown-notes-inbox :name "notes inbox" :norepeat t)
+ ("g d" counsel-compile :name "make/compile" :norepeat t)
  ("g o" org-journal-new-entry :name "new journal" :norepeat t)
  ("g O" org-journal-search :name "search journal" :norepeat t)
  ("'" counsel-bookmark :name "open bookmarks" :norepeat t)
@@ -138,7 +138,7 @@
  ("g X" wgrep-abort-changes :name "abort edited grep results")
  ("g E" ivy-wgrep-change-to-wgrep-mode :name "edit grep results")
  ("g L" counsel-git-log :name "git log")
- ("SPC ," counsel-descbinds :name "bindings" :norepeat t)
+ ("SPC /" counsel-descbinds :name "bindings" :norepeat t)
  ("SPC ." counsel-load-theme :name "themes" :norepeat t)
  ("J" dumb-jump-go :name "dumb jump")
  ("/" "C-s" :name "search in buffer"))
@@ -200,15 +200,15 @@
 
 ;; mapping with leader
 (ryo-modal-key "SPC"
-               '(("a" org-agenda :name "agenda" :norepeat t)
+               '(("a" sk/goto-markdown-notes-inbox :name "access inbox notes" :norepeat t)
 				 ("w" "C-x C-s" :name "save buffer" :norepeat t)
                  ("e" magit-status :name "git status" :norepeat t)
-                 ("SPC" sk/open-sublime-merge :name "git gui" :norepeat t)
                  ("f" "C-x C-f" :name "open file" :norepeat t)
                  ("g" "C-g" :name "interrupt" :norepeat t)
-                 ("r" ivy-resume :name "last search/narrow" :norepeat t)
+                 ("/" ivy-resume :name "last search/narrow" :norepeat t)
+                 ("r" counsel-recentf :name "recent files" :norepeat t)
                  ("d" counsel-git :name "git files" :norepeat t)
-                 ("c" org-capture :name "capture" :norepeat t)
+                 ;; ("c" sk/open-sublime-merge :name "git gui" :norepeat t)
                  ("s" sk/counsel-file-jump-project :name "project files" :norepeat t)
                  ("p" sk/counsel-ag-project :name "grep project" :norepeat t)
                  ("o" ivy-switch-view :name "switch views" :norepeat t)
@@ -479,7 +479,7 @@
 ;; operator based extra fold maps
 (ryo-modal-keys
  ("z d" vimish-fold-delete :name "delete")
- ("z m" vimish-fold-delete-all :name "deleta all")
+ ("z m" vimish-fold-delete-all :name "delete all")
  ("z n" vimish-fold-next-fold :name "next")
  ("z N" vimish-fold-previous-fold :name "previous")
  ("z o" vimish-fold-unfold :name "open")
@@ -491,13 +491,17 @@
 (ryo-modal-keys
  ;; c based maps
  ("c r" string-rectangle :name "change rectangle")
+ ("c v" sk/find-init :name "change init file")
  ;; d based maps
  ("d u" sk/ediff-dwim :name "diff update")
  ("d r" kill-rectangle :name "delete rectangle")
  ;; y based maps
  ("y s" embrace-commander :name "surround")
  ("y p" sk/paste-from-clipboard :name "paste from clipboard")
- ("y r" copy-rectangle-as-kill :name "copy rectangle"))
+ ("y r" copy-rectangle-as-kill :name "copy rectangle")
+ ;; search
+ ("g s c" sk/search-fixmes-in-project :name "project FIXMEs")
+ ("g s d" sk/search-todos-in-project :name "project TODOs"))
 
 ;; ;; doc-view bindings
 ;; (ryo-modal-keys

@@ -9,7 +9,7 @@
   "Find file at point other window"
   (interactive)
   (sk/split-right-and-move)
-  (find-file (concat user-emacs-directory "init.el")))
+  (find-file user-init-file))
 
 ;; open inbox notes
 (defun sk/goto-markdown-notes-inbox ()

@@ -22,9 +22,9 @@
   ;; make sure it always stays that high
   (setq ivy-fixed-height-minibuffer t)
   ;; if flipped, the candidates are above the input
-  ;; (setq ivy-flip t)
+  (setq ivy-flip t)
   ;; virtual buffers - combines recentf and bookmarks to ivy-switch-buffer
-  (setq ivy-use-virtual-buffers t)
+  (setq ivy-use-virtual-buffers nil)
   ;; full file names - useful when multiple files have same names
   (setq ivy-virtual-abbreviate 'full)
   ;; fuzzy everywhere except when searching for something

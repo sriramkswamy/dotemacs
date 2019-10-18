@@ -422,10 +422,10 @@
 	:ensure t)
 
 ;; choose a single theme or change it
-;; (if (display-graphic-p)
-;; 	(load-theme 'doom-nord t)
-;;   (load-theme 'doom-nord t))
-(load-theme 'doom-nord t)
+(if (display-graphic-p)
+	(load-theme 'doom-nord t)
+  (load-theme 'doom-nord-light t))
+;; (load-theme 'doom-nord t)
 
 (use-package doom-modeline
   :ensure t
@@ -867,4 +867,4 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; 1 MB now
-(add-hook 'after-init-hook (lambda () (setq gc-cons-threshold (* 1 1024 1024))))
+(add-hook 'after-init-hook (lambda () (setq gc-cons-threshold (* 500 1024))))

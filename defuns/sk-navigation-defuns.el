@@ -112,8 +112,8 @@ point reaches the beginning or end of the buffer, stop there."
   (call-interactively #'desktop-change-dir))
 
 ;; easier way to make desktops
-(defun sk/make-desktop ()
-  "opens dired in the desktop directory to make a new folder"
+(defun sk/desktop-folder ()
+  "opens dired in the desktop directory"
   (interactive)
   (dired (concat user-emacs-directory "desktops")))
 

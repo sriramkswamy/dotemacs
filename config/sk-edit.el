@@ -243,13 +243,17 @@
 (use-package pdf-tools
   :ensure t
   :magic ("%PDF" . pdf-view-mode)
-  :config (pdf-tools-install)
   :hook ((pdf-view-mode . pdf-view-fit-page-to-window))
   :commands
   (pdf-view-next-page
    pdf-view-previous-page
    pdf-view-fit-page-to-window
-   pdf-view-revert-buffer))
+   pdf-view-revert-buffer)
+  :config
+  (pdf-tools-install)
+  (ryo-modal-major-mode-keys
+   'pdf-view-mode
+   ("r" pdf-view-revert-buffer :name "refresh")))
 
 ;; provide editing related packages
 (provide 'sk-edit)

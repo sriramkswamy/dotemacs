@@ -141,7 +141,7 @@
 ;; search the buffer or all buffer
 (use-package swiper
   :ensure t
-  :bind (("C-s" . swiper-isearch))
+  :bind (("C-s" . counsel-grep-or-swiper))
   :commands
   (swiper-all
    swiper-thing-at-point

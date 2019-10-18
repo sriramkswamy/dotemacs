@@ -118,6 +118,7 @@
  'latex-mode
  ("m x" preview-at-point :name "preview at point")
  ("m a" preview-buffer :name "preview buffer")
+ ("m b" ivy-bibtex :name "bibliography")
  ("m q s" LaTeX-fill-section :name "fill section")
  ("m q e" LaTeX-fill-environment :name "fill env")
  ("m q p" LaTeX-fill-paragraph :name "fill para")

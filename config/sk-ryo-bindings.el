@@ -205,7 +205,7 @@
                  ("e" magit-status :name "git status" :norepeat t)
                  ("f" "C-x C-f" :name "open file" :norepeat t)
                  ("g" "C-g" :name "interrupt" :norepeat t)
-                 ("/" ivy-resume :name "last search/narrow" :norepeat t)
+                 ("," ivy-resume :name "last search/narrow" :norepeat t)
                  ("r" counsel-recentf :name "recent files" :norepeat t)
                  ("d" counsel-git :name "git files" :norepeat t)
                  ;; ("c" sk/open-sublime-merge :name "git gui" :norepeat t)
@@ -500,6 +500,7 @@
  ("y p" sk/paste-from-clipboard :name "paste from clipboard")
  ("y r" copy-rectangle-as-kill :name "copy rectangle")
  ;; search
+ ;; ("g s y" counsel-search :name "search the web")
  ("g s c" sk/search-fixmes-in-project :name "project FIXMEs")
  ("g s d" sk/search-todos-in-project :name "project TODOs"))
 
@@ -607,6 +608,7 @@
  ("d o s" desktop+-create-auto :name "save session")
  ("d o m" desktop-save-mode :name "auto save session")
  ("d o d" desktop-remove :name "delete session")
+ ("d o f" sk/desktop-folder :name "desktop folder")
  ;; y based maps
  ("y o r" yas-reload-all :name "reload all")
  ("y o f" yas-visit-snippet-file :name "snippet file")

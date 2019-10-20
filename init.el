@@ -821,6 +821,32 @@
   (defalias 'elfeed-toggle-star (elfeed-expose #'elfeed-search-toggle-all 'star)))
 
 ;;;;;;;;;;;;;;;;;
+;;    Tasks    ;;
+;;;;;;;;;;;;;;;;;
+
+(use-package todoist
+  :ensure t
+  :init
+  (setq todoist-backing-buffer
+		(concat chromeos-google-drive-path "notes/todoist.org"))
+  :commands
+  (todoist
+   todoist-task-menu
+   todoist-project-menu
+   todoist-show-all)
+  :config
+  (ryo-modal-major-mode-keys
+   'todoist-mode
+   ("m T" todoist-task-menu :name "tasks")
+   ("m P" todoist-project-menu :name "projects")
+   ("m A" todoist-show-all :name "show all"))
+  (ryo-modal-major-mode-keys
+   'org-mode
+   ("m T" todoist-task-menu :name "tasks")
+   ("m P" todoist-project-menu :name "projects")
+   ("m A" todoist-show-all :name "show all")))
+
+;;;;;;;;;;;;;;;;;
 ;;    Learn    ;;
 ;;;;;;;;;;;;;;;;;
 
@@ -861,6 +887,13 @@
 ;; modal bindings
 (require 'sk-ryo-bindings)
 (require 'sk-ryo-which-key)
+
+;; load secret files and settings for packages if it exists
+
+(defvar secret-file (concat user-emacs-directory "secret.el")
+  "file to store tokens and secrets")
+(when (file-exists-p secret-file)
+  (load secret-file))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Reduce GC threshold    ;;

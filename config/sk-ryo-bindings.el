@@ -200,15 +200,15 @@
 
 ;; mapping with leader
 (ryo-modal-key "SPC"
-               '(("a" sk/goto-markdown-notes-inbox :name "access inbox notes" :norepeat t)
+               '(("a" todoist :name "agenda" :norepeat t)
 				 ("w" "C-x C-s" :name "save buffer" :norepeat t)
-                 ("e" magit-status :name "git status" :norepeat t)
+                 ("e" sk/open-git :name "git status" :norepeat t)
                  ("f" "C-x C-f" :name "open file" :norepeat t)
                  ("g" "C-g" :name "interrupt" :norepeat t)
                  ("," ivy-resume :name "last search/narrow" :norepeat t)
                  ("r" counsel-recentf :name "recent files" :norepeat t)
                  ("d" counsel-git :name "git files" :norepeat t)
-                 ("c" sk/open-sublime-merge :name "git gui" :norepeat t)
+                 ("c" sk/goto-markdown-notes-inbox :name "capture notes" :norepeat t)
                  ("s" sk/counsel-file-jump-project :name "project files" :norepeat t)
                  ("p" sk/counsel-ag-project :name "grep project" :norepeat t)
                  ("o" ivy-switch-view :name "switch views" :norepeat t)

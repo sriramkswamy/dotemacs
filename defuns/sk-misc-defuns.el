@@ -39,10 +39,12 @@
   (setenv "ROS_MASTER_URI" "http://10.0.1.15:11311"))
 
 ;; sublime merge
-(defun sk/open-sublime-merge ()
+(defun sk/open-git (arg)
   "open sublime merge in the current directory"
-  (interactive)
-  (shell-command (concat "smerge " default-directory)))
+  (interactive "P")
+  (if arg
+	  (shell-command (concat "smerge " default-directory))
+	(magit-status)))
 
 ;; provide this configuration
 (provide 'sk-misc-defuns)

@@ -208,7 +208,7 @@
                  ("," ivy-resume :name "last search/narrow" :norepeat t)
                  ("r" counsel-recentf :name "recent files" :norepeat t)
                  ("d" counsel-git :name "git files" :norepeat t)
-                 ;; ("c" sk/open-sublime-merge :name "git gui" :norepeat t)
+                 ("c" sk/open-sublime-merge :name "git gui" :norepeat t)
                  ("s" sk/counsel-file-jump-project :name "project files" :norepeat t)
                  ("p" sk/counsel-ag-project :name "grep project" :norepeat t)
                  ("o" ivy-switch-view :name "switch views" :norepeat t)
@@ -500,7 +500,7 @@
  ("y p" sk/paste-from-clipboard :name "paste from clipboard")
  ("y r" copy-rectangle-as-kill :name "copy rectangle")
  ;; search
- ;; ("g s y" counsel-search :name "search the web")
+ ("g s y" counsel-search :name "search the web")
  ("g s c" sk/search-fixmes-in-project :name "project FIXMEs")
  ("g s d" sk/search-todos-in-project :name "project TODOs"))
 

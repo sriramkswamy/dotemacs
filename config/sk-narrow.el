@@ -97,6 +97,7 @@
 		 ("C-h f" . counsel-describe-function)
 		 ("C-x 8" . counsel-unicode-char))
   :commands (counsel-faces
+			 counsel-search
 			 counsel-recentf
 			 counsel-package
 			 counsel-find-file-extern

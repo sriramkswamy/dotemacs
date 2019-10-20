@@ -855,12 +855,12 @@
  ("C-c '"	. sk/nothing)
  ("C-c C-f" . sk/nothing))
 
+;; Misc functions
+(require 'sk-misc-defuns)
+
 ;; modal bindings
 (require 'sk-ryo-bindings)
 (require 'sk-ryo-which-key)
-
-;; Miscellaneaous functions
-(require 'sk-misc-defuns)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;    Reduce GC threshold    ;;

@@ -142,9 +142,12 @@
 ;; search the buffer or all buffer
 (use-package swiper
   :ensure t
-  :bind (("C-s" . counsel-grep-or-swiper))
+  :bind (("C-s" . counsel-grep-or-swiper)
+		 :map ivy-minibuffer-map
+		 ("C-x C-x"	. swiper-mc))
   :commands
   (swiper-all
+   swiper-mc
    swiper-thing-at-point
    swiper-all-thing-at-point)
   :config

@@ -101,6 +101,8 @@
   ;; Skim's displayline is used for forward search (from .tex to .pdf)
   ;; option -b highlights the current line; option -g opens Skim in the background
   (setq TeX-view-program-selection '((output-pdf "PDF Viewer")))
+  (setq TeX-source-correlate-method
+		'((pdf . synctex)))
   (cond
    ((eq system-type 'darwin)
 	(setq TeX-view-program-list

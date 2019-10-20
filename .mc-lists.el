@@ -65,6 +65,7 @@
 
 (setq mc/cmds-to-run-once
       '(
+		ryo:0b77cc277a66d90956a76cb9470e7936:search\ in\ buffer
 		ryo:982ea0399e8b956527174c22290941db:last\ buffer
 		sp-delete-char
 		))

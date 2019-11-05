@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: list of algorithms
+# key: loa
+# --
+\listofalgorithms
+\addcontentsline{toc}{section}{List of algorithms}

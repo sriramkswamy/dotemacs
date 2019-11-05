@@ -3,6 +3,8 @@
 
 (setq mc/cmds-to-run-for-all
       '(
+		LaTeX-insert-left-brace
+		TeX-insert-backslash
 		iy-go-to-char--command
 		markdown-outdent-or-delete
 		org-force-self-insert
@@ -16,6 +18,7 @@
 		ryo:1cfaf336c571fd5dc56b11f0501d658c:next\ line
 		ryo:1d69d4d933b4d946c12c557c0cc424e9:line/region
 		ryo:338d4a47f5f4b3b250d1ba13da99a4d7:change\ rest\ of\ line
+		ryo:383c5ebfbe83b7f3909fb586fad43303:surround
 		ryo:387d4eb23bd670ec587cbb4f419c5285:recenter
 		ryo:397a83ee2f149488d7befdb1e9d37ef9:change\ rest\ of\ line
 		ryo:3b4de6bfee978cda9fbfd533eb6b619e:prev\ char

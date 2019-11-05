@@ -46,5 +46,14 @@
 	  (shell-command (concat "smerge " default-directory))
 	(magit-status)))
 
+;; switch between light and dark themes
+(defun sk/switch-themes ()
+  "switch between a set of light and dark theme"
+  (interactive)
+  (cond ((not (eq current-theme nil))
+		 (sk/dark-theme))
+		((eq current-theme nil)
+		 (sk/light-theme))))
+
 ;; provide this configuration
 (provide 'sk-misc-defuns)

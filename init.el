@@ -417,16 +417,32 @@
 ;; narrowing framework
 (require 'sk-narrow)
 
-;; select a good theme
+;; variable for the current theme
+(defvar current-theme nil
+  "variable for the current theme; nil for dark and non-nil for light")
+
+;; package full of themes
 (use-package doom-themes
 	:ensure t)
 
-;; choose a single theme or change it
-;; (if (display-graphic-p)
-;; 	(load-theme 'doom-nord t)
-;;   (load-theme 'doom-nord-light t))
-(load-theme 'doom-nord t)
+;; select a light theme and a dark theme
+(defun sk/light-theme ()
+  "a light theme for emacs"
+  (interactive)
+  (load-theme 'doom-acario-light t)
+  (setq current-theme 1))
+(defun sk/dark-theme ()
+  "a dark theme for emacs"
+  (interactive)
+  (load-theme 'doom-acario-dark t)
+  (setq current-theme nil))
 
+;; choose a default theme based on GUI or TUI
+(if (display-graphic-p)
+    (sk/light-theme)
+  (sk/dark-theme))
+
+;; modeline
 (use-package doom-modeline
   :ensure t
   :hook (after-init . doom-modeline-mode)

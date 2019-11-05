@@ -601,6 +601,7 @@
  ("c o y" yas-minor-mode :name "local snippets")
  ("c o Y" yas-global-mode :name "global snippets")
  ("c o u" undo-tree-mode :name "undo tree")
+ ("c o ." sk/switch-themes :name "switch themes")
  ;; d based maps
  ("d o o" desktop+-load-auto :name "open session")
  ("d o n" desktop+-create :name "new session")

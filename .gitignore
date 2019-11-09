@@ -13,3 +13,4 @@ tags
 /transient/*
 /.cache/*
 url/*
+*.sqlite

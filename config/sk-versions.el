@@ -30,6 +30,11 @@
   (diff-hl-margin-mode)
   (diff-hl-dired-mode))
 
+;; forge for GitHub and GitLab
+(use-package forge
+  :ensure t
+  :after magit)
+
 ;; git timemachine
 (use-package git-timemachine
   :ensure t

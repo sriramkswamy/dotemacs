@@ -473,6 +473,11 @@
   :ensure t
   :after (org))
 
+;; ;; sidebar for org stuff
+;; (use-package org-sidebar
+;;   :ensure t
+;;   :commands (org-sidebar))
+
 ;; interleaved notes
 (use-package interleave
   :ensure t

@@ -94,7 +94,7 @@
   (add-hook 'LaTeX-mode-hook
 			(lambda ()
 			  (push
-			   '("latexmk" "latexmk -xelatex -pdf %s" TeX-run-TeX nil t
+			   '("latexmk" "latexmk -xelatex -pdf -synctex=1 %s" TeX-run-TeX nil t
 				 :help "Run latexmk on file")
 			   TeX-command-list)))
   (add-hook 'TeX-mode-hook '(lambda () (setq TeX-command-default "latexmk")))
@@ -110,7 +110,7 @@
 		  '(("PDF Viewer" "/Applications/Skim.app/Contents/SharedSupport/displayline -b -g %n %o %b"))))
    ((eq system-type 'gnu/linux)
 	(setq TeX-view-program-list
-		  '(("PDF Viewer" "evince")))))
+		  '(("PDF Viewer" TeX-evince-sync-view "evince")))))
 
   ;; turn on reftex
   (reftex-mode))

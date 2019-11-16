@@ -6,6 +6,7 @@
 		LaTeX-insert-left-brace
 		TeX-insert-backslash
 		iy-go-to-char--command
+		keyboard-escape-quit
 		markdown-outdent-or-delete
 		org-force-self-insert
 		org-self-insert-command

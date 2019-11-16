@@ -244,25 +244,25 @@
   :config
   (ryo-modal-major-mode-keys
    'go-mode
-   ("m k g" sk/lsp-register-gopls :name "lsp gopls")
-   ("m k l" sk/lsp-register-golsp :name "lsp golsp"))
+   ("m k l" sk/lsp-register-gopls :name "lsp gopls")
+   ("m k s" sk/lsp-register-golsp :name "lsp golsp"))
    (ryo-modal-major-mode-keys
    'js-mode
-   ("m k t" sk/lsp-register-typescript :name "lsp ts")
-   ("m k j" sk/lsp-register-javascript :name "lsp js"))
+   ("m k l" sk/lsp-register-typescript :name "lsp ts")
+   ("m k s" sk/lsp-register-javascript :name "lsp js"))
   (ryo-modal-major-mode-keys
    'c++-mode
-   ("m k d" sk/lsp-register-clangd :name "lsp clang")
-   ("m k q" sk/lsp-register-cquery :name "lsp cquery"))
+   ("m k l" sk/lsp-register-clangd :name "lsp clang")
+   ("m k s" sk/lsp-register-cquery :name "lsp cquery"))
   (ryo-modal-major-mode-keys
    'c-mode
-   ("m k d" sk/lsp-register-clangd :name "lsp clang")
-   ("m k q" sk/lsp-register-cquery :name "lsp cquery"))
+   ("m k l" sk/lsp-register-clangd :name "lsp clang")
+   ("m k s" sk/lsp-register-cquery :name "lsp cquery"))
   (ryo-modal-major-mode-keys
    'python-mode
-   ("m k 2" sk/lsp-register-python2-system :name "lsp python2")
-   ("m k 3" sk/lsp-register-python3-system :name "lsp python3")
-   ("m k g" sk/lsp-register-python-global-venv :name "lsp global venv")))
+   ("m k s" sk/lsp-register-python2-system :name "lsp python2")
+   ("m k l" sk/lsp-register-python3-system :name "lsp python3")
+   ("m k v" sk/lsp-register-python-global-venv :name "lsp global venv")))
 
 ;; LSP user interface
 (use-package lsp-ui
